@@ -1,36 +1,142 @@
 <div class="header">
-  <ul class="nav nav-pills pull-right">
-    <li class="active"><a ng-href="#">Home</a></li>
-    <li><a ng-href="#">About</a></li>
-    <li><a ng-href="#">Contact</a></li>
-  </ul>
-  <h3 class="text-muted">openhim webui 2</h3>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-5">
+            <!-- Logo -->
+            <div class="logo">
+               <h1><a href="index.html">OpenHIM Administration Console</a></h1>
+            </div>
+         </div>
+         <div class="col-md-5">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="input-group form">
+                     <input type="text" class="form-control" placeholder="Search...">
+                     <span class="input-group-btn">
+                       <button class="btn btn-primary" type="button">Search</button>
+                     </span>
+                </div>
+              </div>
+            </div>
+         </div>
+         <div class="col-md-2">
+            <div class="navbar navbar-inverse" role="banner">
+                <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                  <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
+                      <ul class="dropdown-menu animated fadeInUp">
+                        <li><a href="profile.html">Profile</a></li>
+                        <li><a href="login.html">Logout</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+<div class="page-content">
+  <div class="row">
+  <div class="col-md-2">
+    <div class="sidebar content-box" style="display: block;">
+      <ul class="nav">
+        <!-- Main menu -->
+        <li class="current"><a href="index.html"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+        <li><a href="channels.html"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
+        <li><a href="applications.html"><i class="glyphicon glyphicon-th"></i> Applications</a></li>
+        <li><a href="monitoring.html"><i class="glyphicon glyphicon-stats"></i> Monitoring</a></li>
+        <li class="submenu">
+          <a href="#">
+            <i class="glyphicon glyphicon-list"></i> More
+            <span class="caret pull-right"></span>
+          </a>
+          <!-- Sub menu -->
+          <ul>
+            <li><a href="users.html"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+            <li><a href="config.html"><i class="glyphicon glyphicon-cog"></i> Config</a></li>
+          </ul>
+        </li>
+      </ul>
+   </div>
+  </div>
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="content-box-large">
+          <div class="panel-heading">
+          <div class="panel-title">New vs Returning Visitors</div>
+          
+          <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          </div>
+        </div>
+          <div class="panel-body">
+            Ut tristique adipiscing mauris, sit amet suscipit metus porta quis. Donec dictum tincidunt erat, eu blandit ligula. Nam sit amet dolor sapien. Quisque velit erat, congue sed suscipit vel, feugiat sit amet enim. Suspendisse interdum enim at mi tempor commodo. Sed tincidunt sed tortor eu scelerisque. Donec luctus malesuada vulputate. Nunc vel auctor metus, vel adipiscing odio. Aliquam aliquet rhoncus libero, at varius nisi pulvinar nec. Aliquam erat volutpat. Donec ut neque mi. Praesent enim nisl, bibendum vitae ante et, placerat pharetra magna. Donec facilisis nisl turpis, eget facilisis turpis semper non. Maecenas luctus ligula tincidunt iasdsd vitae ante et, 
+            <br /><br />
+            Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque sed consectetur erat. Maecenas in elementum libero. Sed consequat pellentesque ultricies. Ut laoreet vehicula nisl sed placerat. Duis posuere lectus n, eros et hendrerit pellentesque, ante magna condimentum sapien, eget ultrices eros libero non orci. Etiam varius diam lectus.
+          <br /><br />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="content-box-header">
+              <div class="panel-title">New vs Returning Visitors</div>
+            
+            <div class="panel-options">
+              <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+              <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+            </div>
+            </div>
+            <div class="content-box-large box-with-header">
+              
+              Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+            <br /><br />
+          </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="content-box-header">
+              <div class="panel-title">New vs Returning Visitors</div>
+            
+            <div class="panel-options">
+              <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+              <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+            </div>
+            </div>
+            <div class="content-box-large box-with-header">
+              
+              Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+            <br /><br />
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 panel-warning">
+        <div class="content-box-header panel-heading">
+          <div class="panel-title ">New vs Returning Visitors</div>
+        
+        <div class="panel-options">
+          <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+          <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+        </div>
+        </div>
+        <div class="content-box-large box-with-header">
+          Pellentesque luctus quam quis consequat vulputate. Sed sit amet diam ipsum. Praesent in pellentesque diam, sit amet dignissim erat. Aliquam erat volutpat. Aenean laoreet metus leo, laoreet feugiat enim suscipit quis. Praesent mauris mauris, ornare vitae tincidunt sed, hendrerit eget augue. Nam nec vestibulum nisi, eu dignissim nulla.
+        <br /><br />
+      </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
-
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
-</div>
-
-<div class="footer">
-  <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
 </div>
