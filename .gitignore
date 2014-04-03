@@ -1,0 +1,7 @@
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
+openhim-webapp-2.sublime-project
+openhim-webapp-2.sublime-workspace
