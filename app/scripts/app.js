@@ -17,6 +17,22 @@ angular
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
       })
+      .when('/applications', {
+        templateUrl: 'views/applications.html',
+        controller: 'ApplicationsCtrl'
+      })
+      .when('/monitoring', {
+        templateUrl: 'views/monitoring.html',
+        controller: 'MonitoringCtrl'
+      })
+      .when('/users', {
+        templateUrl: 'views/users.html',
+        controller: 'UsersCtrl'
+      })
+      .when('/config', {
+        templateUrl: 'views/config.html',
+        controller: 'ConfigCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
