@@ -24,58 +24,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>1</td>
-                  <td><a href="#">Client Registry</a></td>
-                  <td><a href="#">3560</a></td>
-                  <td>Active</td>
-                  <td>
-                    <a href="#">edit</a> |
-                    <a href="#">delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td><a href="#">Provider Registry</a></td>
-                  <td><a href="#">100</a></td>
-                  <td>Active</td>
-                  <td>
-                    <a href="#">edit</a> |
-                    <a href="#">delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td><a href="#">Facility Registry</a></td>
-                  <td><a href="#">100</a></td>
-                  <td>Active</td>
-                  <td>
-                    <a href="#">edit</a> |
-                    <a href="#">delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td><a href="#">Terminology Service</a></td>
-                  <td><a href="#">100</a></td>
-                  <td>Active</td>
-                  <td>
-                    <a href="#">edit</a> |
-                    <a href="#">delete</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td><a href="#">Shared Health Record</a></td>
-                  <td><a href="#">100</a></td>
-                  <td>Active</td>
-                  <td>
-                    <a href="#">edit</a> |
-                    <a href="#">delete</a>
-                  </td>
-                </tr>
+              <tr ng-repeat="channel in channels">
+                <td>{{ $index +1 }}</td>
+                <td><a href="#">{{ channel.name }}</a></td>
+                <td><a href="#">0</a></td>
+                <td>Active</td>
+                <td>
+                  <a href="#">edit</a> |
+                  <a href="#">delete</a>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
         </div>
       </div>
     </div>
