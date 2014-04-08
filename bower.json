@@ -10,7 +10,9 @@
     "angular-resource": "1.2.15",
     "angular-cookies": "1.2.15",
     "angular-sanitize": "1.2.15",
-    "angular-route": "1.2.15"
+    "angular-route": "1.2.15",
+    "d3": "~3.4.5",
+    "rickshaw": "~1.4.6"
   },
   "devDependencies": {
     "angular-mocks": "1.2.15",
