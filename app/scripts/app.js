@@ -5,7 +5,8 @@ angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -32,6 +33,10 @@ angular
       .when('/config', {
         templateUrl: 'views/config.html',
         controller: 'ConfigCtrl'
+      })
+      .when('/transactions', {
+        templateUrl: 'views/transactions.html',
+        controller: 'TransactionsCtrl'
       })
       .otherwise({
         redirectTo: '/'
