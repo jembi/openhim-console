@@ -16,7 +16,8 @@ describe('Controller: ChannelsCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  it('should attach a list of channels to the scope', function () {
+    //expect(scope.channels.length).toBe(2);
+    expect(scope.openModal).toBeDefined();
   });
 });

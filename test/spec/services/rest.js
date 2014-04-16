@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: Rest', function () {
+describe('Service: Api', function () {
 
   // load the service's module
   beforeEach(module('openhimWebui2App'));
 
   // instantiate service
-  var Rest;
-  beforeEach(inject(function (_Rest_) {
-    Rest = _Rest_;
+  var Api;
+  beforeEach(inject(function (_Api_) {
+    Api = _Api_;
   }));
 
   it('should do something', function () {
-    expect(!!Rest).toBe(true);
+    expect(!!Api).toBe(true);
   });
 
 });
