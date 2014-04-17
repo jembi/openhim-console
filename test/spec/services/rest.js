@@ -1,4 +1,5 @@
 'use strict';
+/*jshint expr: true*/
 
 describe('Service: Api', function () {
 

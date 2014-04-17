@@ -1,4 +1,5 @@
 'use strict';
+/*jshint expr: true*/
 
 describe('Controller: ChannelsCtrl', function () {
 
