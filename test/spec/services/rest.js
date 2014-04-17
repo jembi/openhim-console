@@ -12,7 +12,7 @@ describe('Service: Api', function () {
   }));
 
   it('should do something', function () {
-    expect(!!Api).toBe(true);
+    Api.should.be.ok;
   });
 
 });
