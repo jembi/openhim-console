@@ -1,4 +1,5 @@
 'use strict';
+/*jshint expr: true*/
 
 describe('Controller: ChannelsCtrl', function () {
 
@@ -17,7 +18,7 @@ describe('Controller: ChannelsCtrl', function () {
   }));
 
   it('should attach a list of channels to the scope', function () {
-    //expect(scope.channels.length).toBe(2);
-    expect(scope.openModal).toBeDefined();
+    scope.channels.length.should.equal(0);
+    scope.openModal.should.be.ok;
   });
 });

@@ -18,6 +18,6 @@ describe('Controller: SidebarCtrl', function () {
 
   it('should do something', function () {
     // TODO
-    console.log("Test pending");
+    console.log('Test pending');
   });
 });

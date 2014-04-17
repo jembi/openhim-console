@@ -23,17 +23,17 @@ angular.module('openhimWebui2App')
             headers: headers
           }
         }),
-      Applications: $resource('http://' + host + ':' + port + '/applications/:appId', { appId: '@applicationId' }, {
+        Applications: $resource('http://' + host + ':' + port + '/applications/:appId', { appId: '@applicationId' }, {
           query: {
             headers: headers,
             isArray: true
           }
         }),
-      Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@name' }, {
+        Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@name' }, {
           query: {
             headers: headers,
             isArray: true
           }
         })
-    };
+      };
   });

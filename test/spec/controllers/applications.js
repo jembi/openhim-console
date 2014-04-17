@@ -18,6 +18,6 @@ describe('Controller: ApplicationsCtrl', function () {
 
   it('should attach a list of applications to the scope', function () {
     // TODO
-    console.log("Test pending");
+    console.log('Test pending');
   });
 });

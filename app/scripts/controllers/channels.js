@@ -5,9 +5,9 @@ angular.module('openhimWebui2App')
     $scope.channels = Api.Channels.query();
 
     $scope.openModal = function() {
-      var modalInstance = $modal.open({
+      $modal.open({
           templateUrl: 'views/channelsmodal.html',
           controller: 'ChannelsModalCtrl'
-      });
-    }
-});
+        });
+    };
+  });
