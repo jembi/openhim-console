@@ -2,6 +2,7 @@
 #
 # Required modules:
 # willdurand/nodejs
+#
 
 # defaults for Exec
 Exec {
@@ -9,13 +10,11 @@ Exec {
 	user => "root",
 }
 
-package { "apache2":
-    ensure => "installed",
-}
-
-package { "git":
-    ensure => "installed",
-}
+# Install required packages
+Package { ensure => "installed" }
+package { "apache2": }
+package { "git": }
+package { "libfontconfig1": }
 
 class { "nodejs":
 	version => "stable",
@@ -47,7 +46,7 @@ exec { "bower-install":
 
 exec { "grunt-build":
 	cwd => "/openhim-console",
-	command => "grunt --force",
+	command => "grunt",
 	require => [ Exec["bower-install"], Exec["install-grunt"] ],
 }
 
