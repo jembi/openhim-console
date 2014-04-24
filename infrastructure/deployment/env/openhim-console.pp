@@ -10,8 +10,11 @@ Exec {
 	user => "root",
 }
 
+$source_dir="/openhim-console"
+
 # Install required packages
 Package { ensure => "installed" }
+package { "apache2": }
 package { "git": }
 package { "libfontconfig1": }
 
@@ -41,4 +44,22 @@ exec { "bower-install":
 	cwd => "/openhim-console",
 	command => "bower --allow-root install",
 	require => Exec["install-bower"],
+}
+
+exec { "grunt-build":
+	cwd => "/openhim-console",
+	command => "grunt",
+	require => [ Exec["bower-install"], Exec["install-grunt"] ],
+}
+
+exec { "copy-to-appache":
+	cwd => "/openhim-console",
+	command => "cp -R dist/* /var/www/",
+	require => [ Exec["grunt-build"], Package["apache2"] ],
+}
+
+file { "${home}/deploy-openhim-console.sh":
+	ensure  => file,
+	mode    => 770,
+	content => template("$source_dir/infrastructure/deployment/update/deploy.sh"),
 }
