@@ -10,7 +10,8 @@ Exec {
 	user => "root",
 }
 
-$source_dir="/openhim-console"
+$source_dir="/root/openhim-console"
+$home="/root"
 
 # Install required packages
 Package { ensure => "installed" }
@@ -23,38 +24,39 @@ class { "nodejs":
 }
 
 exec { "npm-install":
-	cwd => "/openhim-console",
+	cwd => "$source_dir",
 	command => "npm install",
 	require => Class["nodejs"],
 }
 
 exec { "install-bower":
-	cwd => "/openhim-console",
+	cwd => "$source_dir",
 	command => "npm install -g bower",
 	require => Class["nodejs"],
 }
 
 exec { "install-grunt":
-	cwd => "/openhim-console",
+	cwd => "$source_dir",
 	command => "npm install -g grunt-cli",
 	require => Class["nodejs"],
 }
 
 exec { "bower-install":
-	cwd => "/openhim-console",
+	cwd => "$source_dir",
 	command => "bower --allow-root install",
 	require => Exec["install-bower"],
 }
 
 exec { "grunt-build":
-	cwd => "/openhim-console",
-	command => "grunt",
+	cwd => "$source_dir",
+	environment => ["HOME=/root"],
+	command => "grunt -v",
 	require => [ Exec["bower-install"], Exec["install-grunt"] ],
 }
 
 exec { "copy-to-appache":
-	cwd => "/openhim-console",
-	command => "cp -R dist/* /var/www/",
+	cwd => "$source_dir",
+	command => "cp -R dist/* /var/www/html",
 	require => [ Exec["grunt-build"], Package["apache2"] ],
 }
 
