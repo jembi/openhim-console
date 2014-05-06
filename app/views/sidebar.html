@@ -8,7 +8,7 @@
       <li ng-class="{current: isCurrent('/applications')}"><a href="#/applications"><i class="glyphicon glyphicon-th"></i> Applications</a></li>
       <li ng-class="{current: isCurrent('/monitoring')}"><a href="#/monitoring"><i class="glyphicon glyphicon-stats"></i> Monitoring</a></li>
       <li class="submenu">
-        <a href="#">
+        <a href="" onClick="toggleSubMenu(this)">
           <i class="glyphicon glyphicon-list"></i> More
           <span class="caret pull-right"></span>
         </a>
@@ -21,4 +21,3 @@
     </ul>
   </div>
 </div>
-<script src="scripts/sidebar.js"></script>
