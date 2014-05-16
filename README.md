@@ -17,7 +17,7 @@ Clone the repository and then run `npm install`
 
 To run the unit tests run `grunt test`
 
-To start up a development instance of the webapp run `grunt serve`.
+To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to 0.0.0.0 in order to access the site from outside.
 
 Note all changes will be automatically applied to the webapp and the page will be reloaded after each change. In addition JSHint will be run to provide information about errors or bad code style. The unit test will also be automatically be run if JSHint does not find any errors.
 
