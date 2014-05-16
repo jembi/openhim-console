@@ -5,7 +5,7 @@ angular.module('openhimWebui2App')
     $scope.channel = new Api.Channels();
 
     $scope.save = function(channel) {
-      channel.$save({ channelName: "" }, function() {
+      channel.$save({ channelName: '' }, function() {
         // On success
         // reset backing object and notify of change to channels
         $scope.channelToAdd = new Api.Channels();

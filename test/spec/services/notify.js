@@ -1,5 +1,6 @@
 'use strict';
-/*jshint expr: true*/
+/* jshint expr: true */
+/* global sinon:false */
 
 describe('Service: Notify', function () {
 
@@ -8,12 +9,17 @@ describe('Service: Notify', function () {
 
   // instantiate service
   var Notify;
-  beforeEach(inject(function (_Notify_) {
+  var rootScope;
+  beforeEach(inject(function (_Notify_, $rootScope) {
     Notify = _Notify_;
+    rootScope = $rootScope;
+    sinon.spy(rootScope, '$broadcast');
   }));
 
-  it('should do something', function () {
+  it('should broadcast an event', function () {
     Notify.should.be.ok;
+    Notify.notify('testEvent');
+    rootScope.$broadcast.should.have.been.calledWith('testEvent');
   });
 
 });
