@@ -52,7 +52,7 @@ describe('Controller: ChannelsCtrl', function () {
   it('should open a modal to add a channel', function () {
     createController();
 
-    scope.openModal();
+    scope.addChannel();
 
     modalSpy.should.be.calledWith({
         templateUrl: 'views/channelsmodal.html',

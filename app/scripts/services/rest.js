@@ -7,7 +7,9 @@ angular.module('openhimWebui2App')
     var port = '8080';
 
     return {
-      Channels: $resource('http://' + host + ':' + port + '/channels/:channelName', { channelName: '@name' }),
+      Channels: $resource('http://' + host + ':' + port + '/channels/:channelName', { channelName: '@name' }, {
+        update: { method: 'PUT' }
+      }),
       Applications: $resource('http://' + host + ':' + port + '/applications/:appId', { appId: '@applicationID' }),
       Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' })
     };

@@ -8,10 +8,15 @@ angular.module('openhimWebui2App')
       $scope.channels = Api.Channels.query();
     });
 
-    $scope.openModal = function() {
+    $scope.addChannel = function() {
       $modal.open({
         templateUrl: 'views/channelsmodal.html',
-        controller: 'ChannelsModalCtrl'
+        controller: 'ChannelsModalCtrl',
+        resolve: {
+          channel: function () {
+            return null;
+          }
+        }
       });
     };
 
@@ -19,6 +24,18 @@ angular.module('openhimWebui2App')
       channel.$remove(function() {
         // On success
         $scope.channels = Api.Channels.query();
+      });
+    };
+
+    $scope.editChannel = function(channel) {
+      $modal.open({
+        templateUrl: 'views/channelsmodal.html',
+        controller: 'ChannelsModalCtrl',
+        resolve: {
+          channel: function () {
+            return channel;
+          }
+        }
       });
     };
   });
