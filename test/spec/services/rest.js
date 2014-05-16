@@ -12,7 +12,7 @@ describe('Service: Api', function () {
     Api = _Api_;
   }));
 
-  it('should do something', function () {
+  it('should define an Api service', function () {
     Api.should.be.ok;
   });
 
