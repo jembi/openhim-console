@@ -21,25 +21,25 @@
       <label>Route 1</label>
       <div class="form-group">
         <label>Name</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model"channel.route[0].name">
       </div>
       <div class="form-group">
         <label>Path</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model"channel.route[0].path">
       </div>
       <div class="form-group">
         <label>Host</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model"channel.route[0].host">
       </div>
       <div class="form-group">
         <label>Port</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model"channel.route[0].port">
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
             <label>
-              <input type="checkbox"> Primary route
+              <input type="checkbox" ng-model"channel.route[0].primary"> Primary route
             </label>
           </div>
         </div>

@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api) {
+  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify) {
     $scope.channel = new Api.Channels();
 
     $scope.save = function(channel) {
-      channel.$save();
+      channel.$save({ channelName: "" }, function() {
+        // On success
+        // reset backing object and notify of change to channels
+        $scope.channelToAdd = new Api.Channels();
+        Notify.notify('channelsChanged');
 
-      // reset backing object and refresh channels list
-      $scope.channelToAdd = new Api.Channels();
-      $scope.channels = Api.Channels.query();
-
-      // close modal
-      $modalInstance.close();
+        // close modal
+        $modalInstance.close();
+      });
     };
 
     $scope.cancel = function () {
