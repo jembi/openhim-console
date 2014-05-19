@@ -54,4 +54,30 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.channel.$update.should.be.called;
   });
 
+  it.skip('should add a new route to the channel', function () {
+    createController(true);
+    scope.newRoute = {
+      name: 'Test route',
+      path: '/test/path',
+      host: 'localhost',
+      port: '9999'
+    };
+    scope.addRoute();
+    scope.channel.routes.should.have.length(1);
+    scope.channel.routes[0].should.have.property('name', 'Test route');
+    scope.channel.routes[0].should.have.property('path', '/test/path');
+    scope.channel.routes[0].should.have.property('host', 'localhost');
+    scope.channel.routes[0].should.have.property('port', '9999');
+    // ensure new route is reset
+    (scope.newRoute.name === undefined).should.be.true;
+  });
+
+  it.skip('should edit an existing route', function () {
+    createController(true);
+  });
+
+  it.skip('should remove an existing route', function () {
+    createController(true);
+  });
+
 });

@@ -7,43 +7,69 @@
     <fieldset>
       <div class="form-group">
         <label>Channel name</label>
-        <input class="form-control" type="text" ng-model="channel.name">
+        <input class="form-control" type="text" ng-model="channel.name" />
       </div>
       <div class="form-group">
         <label>URL Pattern</label>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern">
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" />
       </div>
       <div class="form-group">
         <label>Allowed roles and applications</label>
-        <input class="form-control" placeholder="start typing..." type="text" ng-model="channel.allow">
+        <input class="form-control" placeholder="start typing..." type="text" ng-model="channel.allow" />
       </div>
-      <h3>Add routes</h3>
-      <label>Route 1</label>
+      <h3>Routes</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Path</th>
+            <th>Host</th>
+            <th>Port</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="route in channel.routes">
+            <td>{{ $index +1 }}</td>
+            <td><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
+            <td>{{ route.path }}</td>
+            <td>{{ route.host }}</td>
+            <td>{{ route.port }}</td>
+            <td>
+              <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
+              <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>Add a new route</h4>
       <div class="form-group">
         <label>Name</label>
-        <input class="form-control" type="text" ng-model"channel.route[0].name">
+        <input class="form-control" type="text" ng-model="newRoute.name" />
       </div>
       <div class="form-group">
         <label>Path</label>
-        <input class="form-control" type="text" ng-model"channel.route[0].path">
+        <input class="form-control" type="text" ng-model="newRoute.path" />
       </div>
       <div class="form-group">
         <label>Host</label>
-        <input class="form-control" type="text" ng-model"channel.route[0].host">
+        <input class="form-control" type="text" ng-model="newRoute.host" />
       </div>
       <div class="form-group">
         <label>Port</label>
-        <input class="form-control" type="text" ng-model"channel.route[0].port">
+        <input class="form-control" type="text" ng-model="newRoute.port" />
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model"channel.route[0].primary"> Primary route
+              <input type="checkbox" ng-model="newRoute.primary" /> Primary route
             </label>
           </div>
         </div>
       </div>
+      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)"><i class="glyphicon glyphicon-plus"></i> Route</button>
     </fieldset>
   </div>
   <div class="modal-footer">

@@ -12,7 +12,7 @@ angular.module('openhimWebui2App')
     var onSuccess = function() {
       // On success
       // reset backing object and notify of change to channels
-      $scope.channelToAdd = new Api.Channels();
+      $scope.channel = new Api.Channels();
       Notify.notify('channelsChanged');
 
       // close modal
@@ -30,4 +30,28 @@ angular.module('openhimWebui2App')
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
+
+    $scope.addRoute = function (newRoute) {
+      if (!$scope.channel.routes) {
+        $scope.channel.routes = [];
+      }
+      $scope.channel.routes.push(angular.copy(newRoute));
+
+      // reset the backing object
+      newRoute.name = null;
+      newRoute.path = null;
+      newRoute.host = null;
+      newRoute.port = null;
+      newRoute.primary = null;
+    };
+
+    $scope.editRoute = function (routeIndex, route) {
+      $scope.channel.routes.splice(routeIndex, 1);
+      $scope.newRoute = route;
+    };
+
+    $scope.removeRoute = function (routeIndex) {
+      $scope.channel.routes.splice(routeIndex, 1);
+    };
+
   });
