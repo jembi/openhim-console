@@ -13,9 +13,7 @@ angular.module('openhimWebui2App')
         templateUrl: 'views/channelsmodal.html',
         controller: 'ChannelsModalCtrl',
         resolve: {
-          channel: function () {
-            return null;
-          }
+          channel: function () {}
         }
       });
     };

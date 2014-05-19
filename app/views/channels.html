@@ -26,8 +26,8 @@
             <tbody>
               <tr ng-repeat="channel in channels">
                 <td>{{ $index +1 }}</td>
-                <td><a href="#">{{ channel.name }}</a></td>
-                <td><a href="#">0</a></td>
+                <td><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
+                <td><a href="">0</a></td>
                 <td>Active</td>
                 <td>
                   <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 

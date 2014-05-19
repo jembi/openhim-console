@@ -51,13 +51,18 @@ describe('Controller: ChannelsCtrl', function () {
 
   it('should open a modal to add a channel', function () {
     createController();
-
     scope.addChannel();
 
-    modalSpy.should.be.calledWith({
-        templateUrl: 'views/channelsmodal.html',
-        controller: 'ChannelsModalCtrl'
-      });
+    modalSpy.should.be.calledOnce;
+
+    httpBackend.flush();
+  });
+
+  it('should open a modal to edit a channel', function () {
+    createController();
+    scope.editChannel();
+
+    modalSpy.should.be.calledOnce;
 
     httpBackend.flush();
   });
