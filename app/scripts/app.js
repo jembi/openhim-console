@@ -18,9 +18,9 @@ angular
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
       })
-      .when('/applications', {
-        templateUrl: 'views/applications.html',
-        controller: 'ApplicationsCtrl'
+      .when('/clients', {
+        templateUrl: 'views/clients.html',
+        controller: 'ClientsCtrl'
       })
       .when('/monitoring', {
         templateUrl: 'views/monitoring.html',

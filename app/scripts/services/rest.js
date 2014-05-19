@@ -23,7 +23,7 @@ angular.module('openhimWebui2App')
             headers: headers
           }
         }),
-        Applications: $resource('http://' + host + ':' + port + '/applications/:appId', { appId: '@applicationId' }, {
+        Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientId' }, {
           query: {
             headers: headers,
             isArray: true
