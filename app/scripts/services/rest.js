@@ -10,7 +10,7 @@ angular.module('openhimWebui2App')
       Channels: $resource('http://' + host + ':' + port + '/channels/:channelName', { channelName: '@name' }, {
         update: { method: 'PUT' }
       }),
-      Applications: $resource('http://' + host + ':' + port + '/applications/:appId', { appId: '@applicationID' }),
+      Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientID' }),
       Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' })
     };
   });
