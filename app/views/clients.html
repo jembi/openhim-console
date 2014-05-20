@@ -3,5 +3,43 @@
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
+      <div class="content-box-large">
+        <div class="panel-heading">
+        <div class="panel-title">Clients</div>
+        
+        <div class="panel-options">
+          <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+          <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+        </div>
+      </div>
+        <div class="panel-body">
+          <table class="table table-striped">
+            <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Domain</th>
+                  <th>Roles</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="client in clients">
+                <td><a href="#">{{ client.clientID }}</a></td>
+                <td><a href="#">{{ client.name }}</a></td>
+                <td>{{ client.domain }}</td>
+                <td>{{ client.roles.join(', ') }}</td>
+                <td></td>
+                <td>
+                  <button class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-pencil"></i></button> 
+                  <button class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary" ng-click="openClientsModal()"><i class="glyphicon glyphicon-plus"></i> Client</button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
