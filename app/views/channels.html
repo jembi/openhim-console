@@ -26,17 +26,17 @@
             <tbody>
               <tr ng-repeat="channel in channels">
                 <td>{{ $index +1 }}</td>
-                <td><a href="#">{{ channel.name }}</a></td>
-                <td><a href="#">0</a></td>
+                <td><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
+                <td><a href="">0</a></td>
                 <td>Active</td>
                 <td>
-                  <button class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-pencil"></i></button> 
-                  <button class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                  <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                  <button class="btn btn-danger btn-xs" ng-click="removeChannel(channel)"><i class="glyphicon glyphicon-remove"></i></button>
                 </td>
               </tr>
             </tbody>
           </table>
-          <button class="btn btn-primary" ng-click="openModal()"><i class="glyphicon glyphicon-plus"></i> Channel</button>
+          <button class="btn btn-primary" ng-click="addChannel()"><i class="glyphicon glyphicon-plus"></i> Channel</button>
         </div>
       </div>
     </div>
