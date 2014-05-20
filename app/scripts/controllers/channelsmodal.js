@@ -54,4 +54,20 @@ angular.module('openhimWebui2App')
       $scope.channel.routes.splice(routeIndex, 1);
     };
 
+    $scope.multiplePrimaries = function () {
+      var routes = $scope.channel.routes;
+      var count = 0;
+      for (var i = 0 ; i < routes.length ; i++) {
+        if (routes[i].primary) {
+          count++;
+        }
+
+        if (count > 1) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
   });

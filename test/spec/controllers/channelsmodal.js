@@ -122,4 +122,57 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.channel.routes[0].should.have.property('name', 'Test Route 1');
   });
 
+  it('should return true if there are multiple primary routes', function () {
+    createController(true);
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999',
+        primary: true
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      },
+      {
+        name: 'Test Route 3',
+        path: '/test/path3',
+        host: 'localhost',
+        port: '9988',
+        primary: true
+      }
+    ];
+    scope.multiplePrimaries().should.be.true;
+  });
+
+  it('should return false if there is only one primary route', function () {
+    createController(true);
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999'
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      },
+      {
+        name: 'Test Route 3',
+        path: '/test/path3',
+        host: 'localhost',
+        port: '9988',
+        primary: true
+      }
+    ];
+    scope.multiplePrimaries().should.be.false;
+  });
+
 });
