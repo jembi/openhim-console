@@ -4,7 +4,7 @@ angular.module('openhimWebui2App')
   .factory('Api', function ($resource) {
 
     var headers = {};
-    var host = '192.168.1.155';
+    var host = 'localhost';
     var port = '8080';
 
     return {
