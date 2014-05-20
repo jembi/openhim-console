@@ -54,30 +54,72 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.channel.$update.should.be.called;
   });
 
-  it.skip('should add a new route to the channel', function () {
+  it('should add a new route to the channel', function () {
     createController(true);
-    scope.newRoute = {
+    var newRoute = {
       name: 'Test route',
       path: '/test/path',
       host: 'localhost',
       port: '9999'
     };
-    scope.addRoute();
+    scope.newRoute = newRoute;
+    scope.addRoute(newRoute);
     scope.channel.routes.should.have.length(1);
     scope.channel.routes[0].should.have.property('name', 'Test route');
     scope.channel.routes[0].should.have.property('path', '/test/path');
     scope.channel.routes[0].should.have.property('host', 'localhost');
     scope.channel.routes[0].should.have.property('port', '9999');
     // ensure new route is reset
-    (scope.newRoute.name === undefined).should.be.true;
+    scope.newRoute.should.have.property('name', null);
+    scope.newRoute.should.have.property('path', null);
+    scope.newRoute.should.have.property('host', null);
+    scope.newRoute.should.have.property('port', null);
   });
 
-  it.skip('should edit an existing route', function () {
+  it('should edit an existing route', function () {
     createController(true);
+    var routeToEdit = {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      };
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999'
+      },
+      routeToEdit
+    ];
+
+    scope.editRoute(1, routeToEdit);
+    scope.channel.routes.should.have.length(1);
+    scope.channel.routes[0].should.have.property('name', 'Test Route 1');
+    scope.newRoute.should.eql(routeToEdit);
   });
 
-  it.skip('should remove an existing route', function () {
+  it('should remove an existing route', function () {
     createController(true);
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999'
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      }
+    ];
+
+    scope.removeRoute(1);
+    scope.channel.routes.should.have.length(1);
+    scope.channel.routes[0].should.have.property('name', 'Test Route 1');
   });
 
 });
