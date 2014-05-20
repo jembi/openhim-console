@@ -3,34 +3,14 @@
 angular.module('openhimWebui2App')
   .factory('Api', function ($resource) {
 
-    var headers = {};
-    var host = 'localhost';
+    var host = 'openhim-preprod.jembi.org';
     var port = '8080';
 
     return {
-      Channels: $resource('http://' + host + ':' + port + '/channels', null, {
-          query: {
-            url: 'http://' + host + ':' + port + '/channels/:channelName',
-            params: { channelname: '@name' },
-            headers: headers,
-            isArray: true
-          },
-          save: {
-            method: 'POST',
-            headers: headers
-          }
-        }),
-        Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientId' }, {
-          query: {
-            headers: headers,
-            isArray: true
-          }
-        }),
-        Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@name' }, {
-          query: {
-            headers: headers,
-            isArray: true
-          }
-        })
-      };
+      Channels: $resource('http://' + host + ':' + port + '/channels/:channelName', { channelName: '@name' }, {
+        update: { method: 'PUT' }
+      }),
+      Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientID' }),
+      Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' })
+    };
   });

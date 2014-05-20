@@ -2,52 +2,81 @@
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
   <h4 class="modal-title" id="addChannelLabel">Add a channel</h4>
 </div>
-<form>
+<form name="form" novalidate>
   <div class="modal-body">
     <fieldset>
       <div class="form-group">
         <label>Channel name</label>
-        <input class="form-control" type="text" ng-model="channel.name">
+        <input class="form-control" type="text" ng-model="channel.name" required />
       </div>
       <div class="form-group">
         <label>URL Pattern</label>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern">
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" required />
       </div>
       <div class="form-group">
-        <label>Allowed roles and applications</label>
-        <input class="form-control" placeholder="start typing..." type="text" ng-model="channel.allow">
+        <label>Allowed roles and clients</label>
+        <input class="form-control" placeholder="" type="text" ng-model="channel.allow" required />
       </div>
-      <h3>Add routes</h3>
-      <label>Route 1</label>
+      <h3>Routes</h3>
+      <div ng-show="channel.routes.length > 0">
+        <div class="alert alert-warning" ng-show="multiplePrimaries()"><strong>Warning!</strong> You cannot have multiple primary routes.</div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Path</th>
+              <th>Host</th>
+              <th>Port</th>
+              <th>Primary</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="route in channel.routes">
+              <td>{{ $index +1 }}</td>
+              <td><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
+              <td>{{ route.path }}</td>
+              <td>{{ route.host }}</td>
+              <td>{{ route.port }}</td>
+              <td><span ng-show="route.primary">&check;</span></td>
+              <td>
+                <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Add a new route</h4>
       <div class="form-group">
         <label>Name</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model="newRoute.name" />
       </div>
       <div class="form-group">
         <label>Path</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model="newRoute.path" />
       </div>
       <div class="form-group">
         <label>Host</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model="newRoute.host" />
       </div>
       <div class="form-group">
         <label>Port</label>
-        <input class="form-control" type="text">
+        <input class="form-control" type="text" ng-model="newRoute.port" />
       </div>
       <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Primary route
-            </label>
-          </div>
+        <div class="checkbox">
+          <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
+            <input type="checkbox" ng-model="newRoute.primary" /> Is this the primary route?
+          </label>
         </div>
       </div>
+      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && newRoute.path && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
     </fieldset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="save(channel)">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel)" ng-disabled="form.$invalid || multiplePrimaries()">Save changes</button>
   </div>
 </form>

@@ -33,9 +33,8 @@
     "karma-chrome-launcher": "0.1.3",
     "mocha": "^1.18.2",
     "karma-mocha": "^0.1.3",
-    "chai": "^1.9.1",
-    "karma-chai": "^0.1.0",
-    "karma-phantomjs-launcher": "^0.1.4"
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon-chai": "~0.1.5"
   },
   "engines": {
     "node": ">=0.10.0"
