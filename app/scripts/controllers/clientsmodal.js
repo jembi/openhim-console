@@ -40,9 +40,11 @@ angular.module('openhimWebui2App')
     };
 
     var hashSHA512 = function (client, password) {
-      //TODO
-      var salt = '1234';
-      var hash = CryptoJS.SHA512(salt + password);
+      var salt = CryptoJS.lib.WordArray.random(16).toString();
+      var sha512 = CryptoJS.algo.SHA512.create();
+      sha512.update(password);
+      sha512.update(salt);
+      var hash = sha512.finalize();
       setHashAndSave(client, hash.toString(CryptoJS.enc.Hex), salt);
     };
 
