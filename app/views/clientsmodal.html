@@ -6,7 +6,11 @@
   <div class="modal-body">
     <fieldset>
       <div class="form-group">
-        <label>Client name</label>
+        <label>Client ID</label>
+        <input class="form-control" type="text" ng-model="client.clientID">
+      </div>
+      <div class="form-group">
+        <label>Client Name</label>
         <input class="form-control" type="text" ng-model="client.name">
       </div>
       <div class="form-group">
@@ -14,17 +18,37 @@
         <input class="form-control" type="text" ng-model="client.domain">
       </div>
       <div class="form-group">
-        <label>Client ID</label>
-        <input class="form-control" type="text" ng-model="client.clientID">
+        <label>Allowed Roles</label>
+        <input class="form-control" placeholder="start typing..." type="text" ng-model="client.roles">
       </div>
       <div class="form-group">
-        <label>Allowed roles</label>
-        <input class="form-control" placeholder="start typing..." type="text" ng-model="client.roles">
+        <label>Certificate</label>
+        <textarea class="form-control" rows="5" ng-model="client.cert"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Basic Auth</label>
+        <input class="form-control" placeholder="set password..." type="password" ng-model="password"><br/>
+        <input class="form-control" placeholder="retype password..." type="password" ng-model="passwordRetype"><br/>
+      </div>
+      <div class="form-group">
+        <label>Password Algorithm</label>
+        <div class="radio">
+          <label>
+            <input type="radio" name="passwordAlg" value="bcrypt" ng-model="client.passwordAlgorithm">
+            bcrypt - Slower and more secure. Use for clients where security is a concern
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="passwordAlg" value="sha512" ng-model="client.passwordAlgorithm">
+            SHA-512 - Faster but not as secure. Use for clients where performance is a concern
+          </label>
+        </div>
       </div>
     </fieldset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="save(client)">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="(password && !client.passwordAlgorithm) || (password !== passwordRetype)">Save changes</button>
   </div>
 </form>
