@@ -3,5 +3,80 @@
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
+
+		<div class="content-box-large">
+			<div class="panel-heading">
+				<div class="panel-title">Transactions Log</div>
+			</div>
+			<div class="panel-body">
+
+				<table class="transaction-filter-options">
+					<tr>
+						<td>
+				          <label class="ng-scope customlabel" tooltip="Check this box to view only transactions which are flagged">
+				            <input class="form-control" type="checkbox" ng-model="filter.flagged" /> Show only flagged
+				          </label>
+						</td>
+						<td>
+				          <label class="ng-scope customlabel" tooltip="Check this box to view only transactions which are unreviewed">
+				            <input class="form-control" type="checkbox" ng-model="filter.unreviewed" /> Show only unreviewed
+				          </label>
+						</td>
+						<td>
+				          <label tooltip="Select an option to filter transactions by their status">
+				          	<span>Status: </span>
+				          	<select class="form-control" ng-model="filter.status">
+				          		<option value="">Don't filter</option>
+				          		<option value="Failed">Show Failed</option>
+				          		<option value="Processing">Show Processing</option>
+				          		<option value="Completed">Show Completed</option>
+				          	</select>
+				          </label>
+						</td>
+						<td>
+				          <label tooltip="Select an option to filter transactions by their endpoint">
+				          	<span>Endpoint: </span>
+				          	<select class="form-control" ng-model="filter.endpoint">
+				          		<option value="">Don't filter</option>
+				          		<option value="">Save patient Encounter</option>
+				          		<option value="">Query Prev Patient Encounter</option>
+				          		<option value="">Get Patient</option>
+				          		<option value="">Query Patients</option>
+				          	</select>
+				          </label>
+						</td>					
+						<td valign="top" align="right"><button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button></td>
+					</tr>
+				</table>
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>HTTP Method</th>
+							<th>Path</th>
+							<th>Request Params</th>
+							<th>Status</th>
+							<th>Received Time</th>
+							<th>Reviewed</th>
+							<th>Flagged</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
+							<td>{{ $index +1 }}</td>
+							<td>{{ transaction.request.method }}</td>
+							<td>{{ transaction.request.path }}</td>
+							<td>{{ transaction.request.requestParams }}</td>
+							<td>{{ transaction.status }}</td>
+							<td>{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
     </div>
 </div>

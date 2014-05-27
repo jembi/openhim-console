@@ -1,0 +1,85 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title"><h2>Transaction #{{transactionDetails._id}}</h2></div>
+        </div>
+        <div class="panel-body">
+
+          <div class="buttons-container">
+              <button class="btn btn-primary" ng-click="rerunEditTransaction();">Re-run and edit request</button>
+              <button class="btn btn-primary" ng-click="reviewedTransaction();">Mark as reviewed</button>
+              <button class="btn btn-primary" ng-click="flagTransaction();">Flag</button><br />
+            </div>
+
+          <div class="transaction-detail-container">
+
+            <div class="data-group">
+                <label>ID: </label>
+                <div class="data-value">{{transactionDetails._id}}</div>
+            </div>
+            <div class="data-group">
+                <label>Status: </label>
+                <div class="data-value">{{transactionDetails.status}}</div>
+            </div>
+            <div class="data-group">
+                <label>Authorized User: </label>
+                <div class="data-value">{{transactionDetails.clientID}}</div>
+            </div>
+
+            <label>Request: </label>
+            <div class="data-group left-indent">
+                <label>Path: </label>
+                <div class="data-value">{{transactionDetails.request.path}}</div>
+            </div>
+            <div class="data-group left-indent">
+                <label>Request Parameters: </label>
+                <div class="data-value">{{transactionDetails.request.requestParams}}</div>
+            </div>
+            <div class="data-group left-indent">
+                <label>HTTP Method: </label>
+                <div class="data-value">{{transactionDetails.request.method}}</div>
+            </div>
+            <div class="data-group left-indent">
+                <label>Received Timestamp: </label>
+                <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+            </div>
+            <div class="data-group left-indent"><label>Body: </label></div>
+            <div class="data-group left-indent">
+                <div class="data-value">
+                  <textarea rows="5">{{transactionDetails.request.body}}</textarea>
+                </div>
+            </div>
+
+            <label>Response: </label>
+            <div class="data-group left-indent">
+                <label>Response Status: </label>
+                <div class="data-value">{{transactionDetails.response.status}}</div>
+            </div>
+            <div class="data-group left-indent">
+                <label>Received timestamp: </label>
+                <div class="data-value">{{transactionDetails.response.timestamp}}</div>
+            </div>
+            <div class="data-group left-indent"><label>Response body:</label></div>
+            <div class="data-group left-indent">
+                <div class="data-value">
+                  <textarea rows="5">{{transactionDetails.response.body}}</textarea>
+                </div>
+            </div>
+
+            <label>Errors: </label>
+            <div class="data-group left-indent">
+                <label>Desciption: </label>
+                <div class="data-value"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

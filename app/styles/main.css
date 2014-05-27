@@ -580,6 +580,83 @@ body {
   clear:both;
 }
 
+
+/* ----- Transactions ----- */
+
+.transaction-filter-options {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.transaction-filter-options label {
+  width: 100%;
+  line-height: 34px;
+}
+
+.transaction-filter-options span {
+  float: left;
+  margin-right: 5px;
+}
+
+.transaction-filter-options select {
+  width: 60%;
+}
+
+.transaction-filter-options .customlabel>input[type='checkbox'] {
+  float: left;
+  width: 34px;
+  height: 34px;
+  margin: 0 5px 0 0;
+}
+
+.transactions-list:hover td{
+  cursor: pointer;
+  color: #fff;
+  background-color: #428BCA !important; 
+}
+
+.buttons-container {
+  float: right;
+  text-align: center;
+}
+
+.buttons-container>button {
+  margin-bottom: 10px;
+}
+
+.transaction-detail-container {
+  float: left;
+  width: 100%;
+}
+
+.transaction-detail-container>label {
+  float: left;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.transaction-detail-container .data-group {
+  float: left;
+  clear: both;
+  width: 100%;
+}
+
+.transaction-detail-container .data-group>label {
+  float: left;
+  width: 20%;
+  font-weight: normal;
+}
+
+.transaction-detail-container .data-group .data-value>textarea {;
+  width: 100%;
+}
+
+.left-indent>label, .left-indent>div{
+  padding-left: 3%;
+}
+
+/* ----- Transactions ----- */
+
 /* Responsive CSS */
 
 /* Mobile phones */
