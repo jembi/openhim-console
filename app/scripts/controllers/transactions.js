@@ -15,4 +15,15 @@ angular.module('openhimWebui2App')
 		$location.path(path);
 	}
 
+  })
+  .service('filterService', function() {
+    var filter = 0;
+    return {
+        getFilter: function () {
+            return filter;
+        },
+        setFilter: function(value) {
+            filter = value;
+        }
+    }
   });

@@ -589,13 +589,9 @@ body {
 }
 
 .transaction-filter-options label {
-  width: 100%;
   line-height: 34px;
-}
-
-.transaction-filter-options span {
-  float: left;
   margin-right: 5px;
+  float: left;
 }
 
 .transaction-filter-options select {
@@ -647,7 +643,7 @@ body {
   font-weight: normal;
 }
 
-.transaction-detail-container .data-group .data-value>textarea {;
+.transaction-detail-container .data-group .data-value>textarea {
   width: 100%;
 }
 

@@ -10,45 +10,59 @@
 			</div>
 			<div class="panel-body">
 
+            <!-- Filter options -->
 				<table class="transaction-filter-options">
 					<tr>
 						<td>
-				          <label class="ng-scope customlabel" tooltip="Check this box to view only transactions which are flagged">
-				            <input class="form-control" type="checkbox" ng-model="filter.flagged" /> Show only flagged
-				          </label>
+				            <label tooltip="Select an option to filter transactions by their status">Status: </label>
+                            <select class="form-control" ng-model="filter.status">
+                                <option value="">Don't filter</option>
+                                <option value="Failed">Show Failed</option>
+                                <option value="Processing">Show Processing</option>
+                                <option value="Completed">Show Completed</option>
+                            </select>
 						</td>
 						<td>
-				          <label class="ng-scope customlabel" tooltip="Check this box to view only transactions which are unreviewed">
-				            <input class="form-control" type="checkbox" ng-model="filter.unreviewed" /> Show only unreviewed
-				          </label>
+    				        <label tooltip="Select an option to filter transactions by their endpoint">Endpoint: </label>
+                            <select class="form-control" ng-model="filter.endpoint">
+                                <option value="">Don't filter</option>
+                                <option value="">Save patient Encounter</option>
+                                <option value="">Query Prev Patient Encounter</option>
+                                <option value="">Get Patient</option>
+                                <option value="">Query Patients</option>
+                            </select>
 						</td>
-						<td>
-				          <label tooltip="Select an option to filter transactions by their status">
-				          	<span>Status: </span>
-				          	<select class="form-control" ng-model="filter.status">
-				          		<option value="">Don't filter</option>
-				          		<option value="Failed">Show Failed</option>
-				          		<option value="Processing">Show Processing</option>
-				          		<option value="Completed">Show Completed</option>
-				          	</select>
-				          </label>
-						</td>
-						<td>
-				          <label tooltip="Select an option to filter transactions by their endpoint">
-				          	<span>Endpoint: </span>
-				          	<select class="form-control" ng-model="filter.endpoint">
-				          		<option value="">Don't filter</option>
-				          		<option value="">Save patient Encounter</option>
-				          		<option value="">Query Prev Patient Encounter</option>
-				          		<option value="">Get Patient</option>
-				          		<option value="">Query Patients</option>
-				          	</select>
-				          </label>
-						</td>					
-						<td valign="top" align="right"><button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button></td>
+                        <td>
+                            <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
+
+                            <!-- Date range picker functionality -->
+                            <link rel="stylesheet" href="styles/datepicker.css">
+                            <!-- Load jQuery and bootstrap datepicker scripts -->
+                            <script src="scripts/bootstrap-datepicker.js"></script>
+                            <script type="text/javascript">
+                                // When the document is ready
+                                $(document).ready(function () {                            
+                                    $('.input-daterange').datepicker({
+                                        todayBtn: "linked"
+                                    });                        
+                                });
+                            </script>
+                        
+                            <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
+                                <input type="text" class="form-control" name="start" />
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="form-control" name="end" />
+                            </div>                            
+                            <!-- Date range picker functionality -->
+
+                        </td>					
+						<td valign="top" align="right">
+                            <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
+                        </td>
 					</tr>
 				</table>
 
+                <!-- Table with all the transaction logs -->
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -58,20 +72,17 @@
 							<th>Request Params</th>
 							<th>Status</th>
 							<th>Received Time</th>
-							<th>Reviewed</th>
-							<th>Flagged</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
+                        <!--<tr class="transactions-list" ng-repeat="transaction in transactions | filter: {status: filter.status}" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>-->
+						<tr class="transactions-list" ng-repeat="transaction in transactions | filter:filterService.getFilter()" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
 							<td>{{ $index +1 }}</td>
 							<td>{{ transaction.request.method }}</td>
 							<td>{{ transaction.request.path }}</td>
 							<td>{{ transaction.request.requestParams }}</td>
 							<td>{{ transaction.status }}</td>
 							<td>{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-							<td></td>
-							<td></td>
 						</tr>
 					</tbody>
 				</table>
