@@ -6,7 +6,8 @@ angular
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angular_taglist_directive'
   ])
   .config(function ($routeProvider) {
     $routeProvider
