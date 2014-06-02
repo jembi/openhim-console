@@ -8,6 +8,7 @@ angular.module('openhimWebui2App')
     }
 
     $scope.channel = channel || new Api.Channels();
+    $scope.newRoute = {};
 
     var onSuccess = function() {
       // On success
@@ -38,11 +39,11 @@ angular.module('openhimWebui2App')
       $scope.channel.routes.push(angular.copy(newRoute));
 
       // reset the backing object
-      newRoute.name = null;
-      newRoute.path = null;
-      newRoute.host = null;
-      newRoute.port = null;
-      newRoute.primary = null;
+      $scope.newRoute.name = null;
+      $scope.newRoute.path = null;
+      $scope.newRoute.host = null;
+      $scope.newRoute.port = null;
+      $scope.newRoute.primary = false;
     };
 
     $scope.editRoute = function (routeIndex, route) {
@@ -55,15 +56,17 @@ angular.module('openhimWebui2App')
     };
 
     $scope.multiplePrimaries = function () {
-      var routes = $scope.channel.routes;
-      var count = 0;
-      for (var i = 0 ; i < routes.length ; i++) {
-        if (routes[i].primary) {
-          count++;
-        }
+      if ($scope.channel.routes) {
+        var routes = $scope.channel.routes;
+        var count = 0;
+        for (var i = 0 ; i < routes.length ; i++) {
+          if (routes[i].primary === true) {
+            count++;
+          }
 
-        if (count > 1) {
-          return true;
+          if (count > 1) {
+            return true;
+          }
         }
       }
 
