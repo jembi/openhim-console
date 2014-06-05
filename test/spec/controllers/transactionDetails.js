@@ -20,7 +20,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
 
     createController = function() {
       scope = $rootScope.$new();
-      return $controller('TransactionDetailsCtrl', { $scope: scope });
+      return $controller('TransactionDetailsCtrl', { $scope: scope, $routeParams: { transactionId: '538ed0867962a27d5df259b0' } });
     };
 
   }));
@@ -34,8 +34,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
     httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
     createController();
     httpBackend.flush();
-    //scope.transactionDetails.length.should.equal(1);
-    console.log(scope.transactions);
+    scope.transactionDetails.name.should.equal('Transaction 1');
   });
 
 });
