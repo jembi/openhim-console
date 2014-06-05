@@ -43,7 +43,8 @@
                                 // When the document is ready
                                 $(document).ready(function () {                            
                                     $('.input-daterange').datepicker({
-                                        todayBtn: "linked"
+                                        todayBtn: "linked",
+                                        format: 'yyyy-mm-dd'
                                     });                        
                                 });
                             </script>
@@ -76,7 +77,7 @@
 					</thead>
 					<tbody>
                         <!--<tr class="transactions-list" ng-repeat="transaction in transactions | filter: {status: filter.status}" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>-->
-						<tr class="transactions-list" ng-repeat="transaction in transactions | filter:filterService.getFilter()" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
+						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
 							<td>{{ $index +1 }}</td>
 							<td>{{ transaction.request.method }}</td>
 							<td>{{ transaction.request.path }}</td>

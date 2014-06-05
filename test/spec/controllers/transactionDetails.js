@@ -2,7 +2,7 @@
 /* jshint expr: true */
 /* global sinon: false */
 
-describe('Controller: TransactionsCtrl', function () {
+describe('Controller: TransactionDetailsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
@@ -14,16 +14,13 @@ describe('Controller: TransactionsCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/transactions')).respond([
-      {'name':'Transaction 1','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2b059ff5'},
-      {'name':'Transaction 2','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2b059ff6'}
-    ]);
+    $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0')).respond({'name':'Transaction 1','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2b059ff5'});
 
     modalSpy = sinon.spy($modal, 'open');
 
     createController = function() {
       scope = $rootScope.$new();
-      return $controller('TransactionsCtrl', { $scope: scope });
+      return $controller('TransactionDetailsCtrl', { $scope: scope });
     };
 
   }));
@@ -34,10 +31,11 @@ describe('Controller: TransactionsCtrl', function () {
   });
 
   it('should attach a list of transactions to the scope', function () {
-    httpBackend.expectGET(new RegExp('.*/transactions'));
+    httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
     createController();
     httpBackend.flush();
-    scope.transactions.length.should.equal(2);
+    //scope.transactionDetails.length.should.equal(1);
+    console.log(scope.transactions);
   });
 
 });

@@ -6,8 +6,6 @@ angular.module('openhimWebui2App')
     //get the Data for the supplied ID and store in 'transactionsDetails' object
     $scope.transactionDetails = Api.Transactions.get({ transactionId: $routeParams.transactionId });
 
-
-
     $scope.rerunEditTransaction = function(transactionDetails) {
       alert( 'Function to Re-run and edit Transaction' );
     };
