@@ -15,7 +15,7 @@
 					<tr>
 						<td>
 				            <label tooltip="Select an option to filter transactions by their status">Status: </label>
-                            <select class="form-control" ng-model="filter.status">
+                            <select id="filterStatus" class="form-control" ng-model="filter.status">
                                 <option value="">Don't filter</option>
                                 <option value="Failed">Show Failed</option>
                                 <option value="Processing">Show Processing</option>
@@ -24,7 +24,7 @@
 						</td>
 						<td>
     				        <label tooltip="Select an option to filter transactions by their endpoint">Endpoint: </label>
-                            <select class="form-control" ng-model="filter.endpoint">
+                            <select id="filterEndpoint" class="form-control" ng-model="filter.endpoint">
                                 <option value="">Don't filter</option>
                                 <option value="">Save patient Encounter</option>
                                 <option value="">Query Prev Patient Encounter</option>
@@ -50,9 +50,9 @@
                             </script>
                         
                             <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-                                <input type="text" class="form-control" name="start" />
+                                <input id="filterDateStart" type="text" class="form-control" name="start" />
                                 <span class="input-group-addon">to</span>
-                                <input type="text" class="form-control" name="end" />
+                                <input id="filterDateEnd" type="text" class="form-control" name="end" />
                             </div>                            
                             <!-- Date range picker functionality -->
 
@@ -62,6 +62,17 @@
                         </td>
 					</tr>
 				</table>
+
+                <style>
+                #table-wrapper table thead th .text {
+                  position:absolute;   
+                  top:-20px;
+                  z-index:2;
+                  height:20px;
+                  width:35%;
+                  border:1px solid red;
+                }
+                </style>
 
                 <!-- Table with all the transaction logs -->
 				<table class="table table-striped">
@@ -76,7 +87,6 @@
 						</tr>
 					</thead>
 					<tbody>
-                        <!--<tr class="transactions-list" ng-repeat="transaction in transactions | filter: {status: filter.status}" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>-->
 						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id)'>
 							<td>{{ $index +1 }}</td>
 							<td>{{ transaction.request.method }}</td>
@@ -85,8 +95,17 @@
 							<td>{{ transaction.status }}</td>
 							<td>{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
 						</tr>
+                        <tr>
+                            <td colspan="6">
+                                <button id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+
+                                <alert style="margin-top: 20px; margin-bottom: 0px;" ng-repeat="msg in msgs" close="closeMsg($index)">{{msg.msg}}</alert>
+
+                            </td>
+                        </tr>
 					</tbody>
 				</table>
+
 			</div>
 		</div>
 
