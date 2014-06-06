@@ -49,6 +49,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="(password && !client.passwordAlgorithm) || (password !== passwordRetype)">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="!isClientValid(client)">Save changes</button>
   </div>
 </form>
