@@ -104,8 +104,13 @@
     <script src="bower_components/rickshaw/rickshaw.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-taglist/js/angular-taglist-directive.js"></script>
+    <script src="bower_components/cryptojslib/**/*.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+
+    <!-- manual -->
+    <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
+    <!-- endmanual -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
@@ -121,6 +126,9 @@
     <script src="scripts/controllers/sidebar.js"></script>
     <script src="scripts/util/sidebar.js"></script>
     <script src="scripts/services/notify.js"></script>
+    <script src="scripts/services/authinterceptor.js"></script>
+    <script src="scripts/services/login.js"></script>
+    <script src="scripts/controllers/login.js"></script>
     <!-- endbuild -->
     
   </body>

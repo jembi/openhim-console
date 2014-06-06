@@ -3,10 +3,11 @@
 angular.module('openhimWebui2App')
   .factory('Api', function ($resource) {
 
-    var host = 'openhim-preprod.jembi.org';
+    var host = 'localhost';
     var port = '8080';
 
     return {
+      Authenticate: $resource('http://' + host + ':' + port + '/authenticate/:email'),
       Channels: $resource('http://' + host + ':' + port + '/channels/:channelName', { channelName: '@name' }, {
         update: { method: 'PUT' }
       }),
