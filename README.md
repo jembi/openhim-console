@@ -5,7 +5,7 @@ This application provides a web application to configure and manage the [OpenHIM
 
 * Configure and manage OpenHIM channels
 * View logged transactions
-* Configure applications that can access particular routes
+* Configure clients that can access particular routes
 * Monitor the operations of the OpenHIM application
 
 :warning:  **The OpenHIM Administration Console is currently in early active development and is not yet ready for production use.**
@@ -17,7 +17,7 @@ Clone the repository and then run `npm install`
 
 To run the unit tests run `grunt test`
 
-To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to 0.0.0.0 in order to access the site from outside.
+To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to `0.0.0.0` in order to access the site from outside.
 
 Note all changes will be automatically applied to the webapp and the page will be reloaded after each change. In addition JSHint will be run to provide information about errors or bad code style. The unit test will also be automatically be run if JSHint does not find any errors.
 
