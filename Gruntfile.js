@@ -147,6 +147,7 @@ module.exports = function (grunt) {
     bowerInstall: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
+        exclude: ['/cryptojslib', 'bcrypt'],
         ignorePath: '<%= yeoman.app %>/'
       }
     },
