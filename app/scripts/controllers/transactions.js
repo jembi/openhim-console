@@ -5,7 +5,7 @@ angular.module('openhimWebui2App')
 
   	//return results for the first page (20 results)
   	$scope.showpage = 0;
-  	$scope.showlimit = 1;
+  	$scope.showlimit = 5;
 
   	//setup filter options
 	$scope.returnFilterObject = function(){
@@ -37,24 +37,29 @@ angular.module('openhimWebui2App')
 		//Show the load more button again if hidden
 		jQuery('#loadMoreTransactions').show();
 		//close message box if it is visible
-		$scope.msgs = '';
+		$scope.alerts = '';
 
 		Api.Transactions.query( $scope.returnFilterObject(), function (values) {
 			// on success
-			$scope.transactions = Api.Transactions.query( $scope.returnFilterObject() );		
-			$scope.$apply();
-			$scope.alerts = {type: 'danger', msg: 'Alert message'};
+			$scope.transactions = values;
 
 			if( values.length < $scope.showlimit ){
 				jQuery('#loadMoreTransactions').hide();
-				$scope.msgs = [{ type: '', msg: 'There are no transactions for the current filters' }];
+
+				if( values.length == 0 ){
+					$scope.alerts = [{ type: '', msg: 'There are no transactions for the current filters' }];
+				}
+				
 			}
 
 		},
 		function () {
-			// on error - do something
+			// on error - Hide load more button and show error message
+			jQuery('#loadMoreTransactions').hide();
+			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact server administrator' }];
 		});
 
+		//$scope.$apply();
 						
 	}
 	//run the transaction list view for the first time
@@ -67,23 +72,25 @@ angular.module('openhimWebui2App')
 		Api.Transactions.query( $scope.returnFilterObject(), function (values) {
 			// on success
 			$scope.transactions = $scope.transactions.concat(values);
-			$scope.$apply();
 
 			if( values.length < $scope.showlimit ){
 				jQuery('#loadMoreTransactions').hide();
-				$scope.msgs = [{ type: '', msg: 'There are no more transactions to retrieve' }];
+				$scope.alerts = [{ type: '', msg: 'There are no more transactions to retrieve' }];
 			}
 
 		},
 		function () {
-			// on error - do something
+			// on error - Hide load more button and show error message
+			jQuery('#loadMoreTransactions').hide();
+			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact server administrator' }];
 		});
+
+		//$scope.$apply();
 
 	}
 
 	$scope.closeMsg = function(index) {
-		$scope.msgs.splice(index, 1);
+		$scope.alerts = '';
 	}
-
 
   });

@@ -99,7 +99,7 @@
                             <td colspan="6">
                                 <button id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
 
-                                <alert style="margin-top: 20px; margin-bottom: 0px;" ng-repeat="msg in msgs" close="closeMsg($index)">{{msg.msg}}</alert>
+                                <alert style="margin-top: 20px; margin-bottom: 0px;" type="alert.type" ng-repeat="alert in alerts" close="closeMsg($index)">{{alert.msg}}</alert>
 
                             </td>
                         </tr>
