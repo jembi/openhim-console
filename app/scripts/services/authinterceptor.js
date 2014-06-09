@@ -14,6 +14,9 @@ angular.module('openhimWebui2App')
       'setLoggedInUser': function (u) {
         user = u;
       },
+      'getLoggedInUser': function() {
+        return user;
+      },
       'request': function (config) {
 
         if (user) {

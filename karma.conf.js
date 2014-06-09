@@ -23,6 +23,7 @@ module.exports = function(config) {
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-taglist/js/angular-taglist-directive.js',
+      'app/bower_components/cryptojslib/rollups/sha512.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',

@@ -9,7 +9,6 @@ angular.module('openhimWebui2App')
 
     return {
       login: function (email, password, done) {
-        console.log('Logging in');
         // fetch salt from openhim-core serer and work out password hash
         Api.Authenticate.get({ email: email }, function (authDetails) {
           // on success
@@ -43,7 +42,6 @@ angular.module('openhimWebui2App')
         passwordhash = null;
       },
       getLoggedInUser: function () {
-        console.log('HERE');
         return {
           username: username,
           passwordhash: passwordhash
