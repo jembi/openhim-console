@@ -5,29 +5,32 @@ angular.module('openhimWebui2App')
 
   	//return results for the first page (20 results)
   	$scope.showpage = 0;
-  	$scope.showlimit = 5;
+  	$scope.showlimit = 10;
 
   	//setup filter options
 	$scope.returnFilterObject = function(){
+		var filtersObject = {};
+		var startDate, endDate;
 		var filterStatus = jQuery("#filterStatus").val();
 		var filterEndpoint = jQuery("#filterEndpoint").val();
 		var filterDateStart = jQuery("#filterDateStart").val();
 		var filterDateEnd = jQuery("#filterDateEnd").val();
-		var filterShowPage = $scope.showpage;
-		var filterShowLimit = $scope.showlimit;
 		
+		if(filterStatus){ filtersObject['status'] = filterStatus; }
+		if(filterEndpoint){ filtersObject['endpoint'] = filterEndpoint; }
+		if(filterDateStart && filterDateEnd){
+			startDate = new Date( filterDateStart ).toISOString();
+			endDate = new Date( filterDateEnd );
+			endDate.setDate(endDate.getDate() + 1);
+			endDate = endDate.toISOString();			
 
-		return {'filterStatus': filterStatus, 
-				'filterEndpoint': filterEndpoint, 
-				'filterDateStart': filterDateStart, 
-				'filterDateEnd': filterDateEnd, 
-				'filterShowPage': filterShowPage, 
-				'filterShowLimit': filterShowLimit};
-	}
+			filtersObject['startDate'] = startDate;
+			filtersObject['endDate'] = endDate;
+		}
+		filtersObject['filterPage'] = $scope.showpage;
+		filtersObject['filterLimit'] = $scope.showlimit;
 
-	//location provider - load transaction details
-	$scope.viewTransactionDetails = function (path) { 
-		$location.path(path);
+		return filtersObject;
 	}
 
 	//Refresh transactions list
@@ -47,7 +50,7 @@ angular.module('openhimWebui2App')
 				jQuery('#loadMoreTransactions').hide();
 
 				if( values.length == 0 ){
-					$scope.alerts = [{ type: '', msg: 'There are no transactions for the current filters' }];
+					$scope.alerts = [{ type: 'warning', msg: 'There are no transactions for the current filters' }];
 				}
 				
 			}
@@ -56,10 +59,8 @@ angular.module('openhimWebui2App')
 		function () {
 			// on error - Hide load more button and show error message
 			jQuery('#loadMoreTransactions').hide();
-			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact server administrator' }];
+			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
 		});
-
-		//$scope.$apply();
 						
 	}
 	//run the transaction list view for the first time
@@ -75,22 +76,22 @@ angular.module('openhimWebui2App')
 
 			if( values.length < $scope.showlimit ){
 				jQuery('#loadMoreTransactions').hide();
-				$scope.alerts = [{ type: '', msg: 'There are no more transactions to retrieve' }];
+				$scope.alerts = [{ type: 'warning', msg: 'There are no more transactions to retrieve' }];
 			}
 
 		},
 		function () {
 			// on error - Hide load more button and show error message
 			jQuery('#loadMoreTransactions').hide();
-			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact server administrator' }];
+			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
 		});
 
-		//$scope.$apply();
-
 	}
 
-	$scope.closeMsg = function(index) {
-		$scope.alerts = '';
-	}
+	//location provider - load transaction details
+	$scope.viewTransactionDetails = function (path) { $location.path(path); }
+
+	//close the alert box
+	$scope.closeMsg = function(index) { $scope.alerts = ''; }
 
   });
