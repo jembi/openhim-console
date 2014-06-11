@@ -30,7 +30,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should attach a list of transactions to the scope', function () {
+  it('should attach a single transaction to the scope', function () {
     httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
     createController();
     httpBackend.flush();
