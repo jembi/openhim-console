@@ -63,11 +63,9 @@ angular.module('openhimWebui2App')
 
 		},
 		function (err) {
-			console.log(err);
 			// on error - Hide load more button and show error message
 			jQuery('#loadMoreTransactions').hide();
 			$scope.returnError(err.status);
-			//$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
 		});
 						
 	}
@@ -88,10 +86,10 @@ angular.module('openhimWebui2App')
 			}
 
 		},
-		function () {
+		function (err) {
 			// on error - Hide load more button and show error message
 			jQuery('#loadMoreTransactions').hide();
-			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
+			$scope.returnError(err.status);
 		});
 
 	}
