@@ -15,7 +15,7 @@
       </div>
       <div class="form-group">
         <label>Allowed roles and clients</label>
-        <input class="form-control" placeholder="" type="text" ng-model="channel.allow" required />
+        <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
       </div>
       <h3>Routes</h3>
       <div ng-show="channel.routes.length > 0">

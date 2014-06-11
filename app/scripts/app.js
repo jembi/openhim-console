@@ -6,7 +6,8 @@ angular
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angular_taglist_directive'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -41,6 +42,10 @@ angular
       .when('/transactions/:transactionId', {
         templateUrl: 'views/transactionDetails.html',
         controller: 'TransactionDetailsCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
       })
       .otherwise({
         redirectTo: '/'
