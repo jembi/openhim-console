@@ -15,7 +15,6 @@
     "rickshaw": "~1.4.6",
     "angular-bootstrap": "~0.10.0",
     "cryptojslib": "3.1.2",
-    "bcrypt": null,
     "angular-taglist": "~0.1.5"
   },
   "devDependencies": {

@@ -33,30 +33,19 @@ angular.module('openhimWebui2App')
       saveClient(client);
     };
 
-    var hashBcrypt = function (client, password) {
-      var bcrypt = new bCrypt();
-      var salt = bcrypt.gensalt(10);
-      bcrypt.hashpw(password, salt, function(hash){ setHashAndSave(client, hash, null); }, function() {});
-    };
-
     var hashSHA512 = function (client, password) {
       var salt = CryptoJS.lib.WordArray.random(16).toString();
       var sha512 = CryptoJS.algo.SHA512.create();
       sha512.update(password);
       sha512.update(salt);
       var hash = sha512.finalize();
+      client.passwordAlgorithm = 'sha512';
       setHashAndSave(client, hash.toString(CryptoJS.enc.Hex), salt);
     };
 
     $scope.save = function (client, password) {
       if (password) {
-        if (client.passwordAlgorithm === 'bcrypt') {
-          hashBcrypt(client, password);
-        } else if (client.passwordAlgorithm === 'sha512') {
-          hashSHA512(client, password);
-        } else {
-          saveClient(client);
-        }
+        hashSHA512(client, password);
       } else {
         saveClient(client);
       }
@@ -68,7 +57,6 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isClientValid = function (client, password, passwordRetype) {
-      return client.clientID && client.name && client.domain && client.roles && (client.passwordAlgorithm || client.cert) &&
-        !(password && (!client.passwordAlgorithm || password !== passwordRetype));
-    }
+      return client.clientID && client.name && client.domain && client.roles && (password || client.passwordAlgorithm || client.cert) && !(password && password !== passwordRetype);
+    };
   });
