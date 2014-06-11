@@ -5,16 +5,21 @@ angular.module('openhimWebui2App')
 
   	//return results for the first page (20 results)
   	$scope.showpage = 0;
-  	$scope.showlimit = 10;
+  	$scope.showlimit = 5;
+  	$scope.filterStatus = '';
+  	$scope.filterEndpoint = '';
+  	$scope.filterDateStart = '';
+  	$scope.filterDateEnd = '';
 
   	//setup filter options
 	$scope.returnFilterObject = function(){
 		var filtersObject = {};
 		var startDate, endDate;
-		var filterStatus = jQuery("#filterStatus").val();
-		var filterEndpoint = jQuery("#filterEndpoint").val();
-		var filterDateStart = jQuery("#filterDateStart").val();
-		var filterDateEnd = jQuery("#filterDateEnd").val();
+
+		var filterStatus = $scope.filterStatus;
+	  	var filterEndpoint = $scope.filterEndpoint;
+	  	var filterDateStart = $scope.filterDateStart;
+	  	var filterDateEnd = $scope.filterDateEnd;
 		
 		if(filterStatus){ filtersObject['status'] = filterStatus; }
 		if(filterEndpoint){ filtersObject['endpoint'] = filterEndpoint; }
@@ -36,9 +41,7 @@ angular.module('openhimWebui2App')
 	//Refresh transactions list
 	$scope.refreshTransactionsList = function () { 
 		//reset the showpage filter to start at 0
-		$scope.showpage = 0;
-		//Show the load more button again if hidden
-		jQuery('#loadMoreTransactions').show();
+		$scope.showpage = 0;		
 		//close message box if it is visible
 		$scope.alerts = '';
 
@@ -53,13 +56,18 @@ angular.module('openhimWebui2App')
 					$scope.alerts = [{ type: 'warning', msg: 'There are no transactions for the current filters' }];
 				}
 				
+			}else{
+				//Show the load more button
+				jQuery('#loadMoreTransactions').show();
 			}
 
 		},
-		function () {
+		function (err) {
+			console.log(err);
 			// on error - Hide load more button and show error message
 			jQuery('#loadMoreTransactions').hide();
-			$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
+			$scope.returnError(err.status);
+			//$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
 		});
 						
 	}
@@ -93,5 +101,20 @@ angular.module('openhimWebui2App')
 
 	//close the alert box
 	$scope.closeMsg = function(index) { $scope.alerts = ''; }
+
+	//Function to generate server response errors
+	$scope.returnError = function(errCode){
+		switch (errCode){
+			case 401:
+				$scope.alerts = [{ type: 'danger', msg: 'Authentication is required to connect to the server. Please contact the server administrator' }];
+				break;
+			case 403:
+				$scope.alerts = [{ type: 'danger', msg: 'The request has been forbidden by the server. Please contact the server administrator' }];
+				break;
+			case 404:
+				$scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
+				break;
+		}
+	}
 
   });

@@ -15,7 +15,7 @@
 					<tr>
 						<td>
 				            <label tooltip="Select an option to filter transactions by their status">Status: </label>
-                            <select id="filterStatus" class="form-control" ng-model="filter.status">
+                            <select class="form-control" ng-model="filterStatus">
                                 <option value="">Don't filter</option>
                                 <option value="Failed">Show Failed</option>
                                 <option value="Processing">Show Processing</option>
@@ -24,7 +24,7 @@
 						</td>
 						<td>
     				        <label tooltip="Select an option to filter transactions by their endpoint">Endpoint: </label>
-                            <select id="filterEndpoint" class="form-control" ng-model="filter.endpoint">
+                            <select class="form-control" ng-model="filterEndpoint">
                                 <option value="">Don't filter</option>
                                 <option value="">Save patient Encounter</option>
                                 <option value="">Query Prev Patient Encounter</option>
@@ -50,9 +50,9 @@
                             </script>
                         
                             <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-                                <input id="filterDateStart" type="text" class="form-control" name="start" />
+                                <input ng-model="filterDateStart" type="text" class="form-control" name="start" />
                                 <span class="input-group-addon">to</span>
-                                <input id="filterDateEnd" type="text" class="form-control" name="end" />
+                                <input ng-model="filterDateEnd" type="text" class="form-control" name="end" />
                             </div>                            
                             <!-- Date range picker functionality -->
 
@@ -97,7 +97,7 @@
 						</tr>
                         <tr>
                             <td colspan="6">
-                                <button id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+                                <button style="display: none;" id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
 
                                 <alert style="margin-top: 20px; margin-bottom: 0px;" type="alert.type" ng-repeat="alert in alerts" close="closeMsg($index)">{{alert.msg}}</alert>
 
