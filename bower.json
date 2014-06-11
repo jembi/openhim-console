@@ -13,7 +13,8 @@
     "angular-route": "1.2.15",
     "d3": "~3.4.5",
     "rickshaw": "~1.4.6",
-    "angular-bootstrap": "~0.10.0"
+    "angular-bootstrap": "~0.10.0",
+    "bootstrap-datepicker": "~1.3.0"
   },
   "devDependencies": {
     "angular-mocks": "1.2.15",
