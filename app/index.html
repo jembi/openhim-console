@@ -12,6 +12,8 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/css/datepicker.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/css/datepicker3.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -103,14 +105,11 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/rickshaw/rickshaw.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="bower_components/angular-taglist/js/angular-taglist-directive.js"></script>
-    <script src="bower_components/cryptojslib/**/*.js"></script>
     <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- manual -->
     <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
-    <!-- endmanual -->
+    <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
@@ -118,10 +117,12 @@
     <script src="scripts/controllers/channels.js"></script>
     <script src="scripts/services/rest.js"></script>
     <script src="scripts/controllers/clients.js"></script>
+    <script src="scripts/controllers/clientsmodal.js"></script>
     <script src="scripts/controllers/monitoring.js"></script>
     <script src="scripts/controllers/users.js"></script>
     <script src="scripts/controllers/config.js"></script>
     <script src="scripts/controllers/transactions.js"></script>
+    <script src="scripts/controllers/transactionDetails.js"></script>
     <script src="scripts/controllers/channelsmodal.js"></script>
     <script src="scripts/controllers/sidebar.js"></script>
     <script src="scripts/util/sidebar.js"></script>
