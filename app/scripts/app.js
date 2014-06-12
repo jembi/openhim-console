@@ -39,6 +39,14 @@ angular
         templateUrl: 'views/transactions.html',
         controller: 'TransactionsCtrl'
       })
+      .when('/transactions/:transactionId', {
+        templateUrl: 'views/transactionDetails.html',
+        controller: 'TransactionDetailsCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

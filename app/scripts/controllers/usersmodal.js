@@ -1,4 +1,5 @@
 'use strict';
+/* global CryptoJS: false */
 
 angular.module('openhimWebui2App')
   .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, Notify, user) {
@@ -8,69 +9,55 @@ angular.module('openhimWebui2App')
     }
 
     $scope.user = user || new Api.Users();
-    $scope.newRoute = {};
 
-    var onSuccess = function() {
-      // On success
-      // reset backing object and notify of change to users
+    var done = function () {
+      // reset backing object and refresh users list
       $scope.user = new Api.Users();
       Notify.notify('usersChanged');
 
-      // close modal
       $modalInstance.close();
     };
 
-    $scope.saveOrUpdate = function(user) {
+    var saveClient = function (user) {
       if (update) {
-        user.$update(onSuccess);
+        user.$update(done);
       } else {
-        user.$save({ userName: '' }, onSuccess);
+        user.$save({ email: '' }, done);
       }
+    };
+
+    var setHashAndSave = function (user, hash, salt) {
+      if (typeof salt !== 'undefined' && salt !== null) {
+        user.passwordSalt = salt;
+      }
+      user.passwordHash = hash;
+      saveClient(user);
+    };
+
+    var hashSHA512 = function (user, password) {
+      var salt = CryptoJS.lib.WordArray.random(16).toString();
+      var sha512 = CryptoJS.algo.SHA512.create();
+      sha512.update(password);
+      sha512.update(salt);
+      var hash = sha512.finalize();
+      user.passwordAlgorithm = 'sha512';
+      setHashAndSave(user, hash.toString(CryptoJS.enc.Hex), salt);
+    };
+
+    $scope.save = function (user, password) {
+      if (password) {
+        hashSHA512(user, password);
+      } else {
+        saveClient(user);
+      }
+
     };
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
 
-    $scope.addRoute = function (newRoute) {
-      if (!$scope.user.routes) {
-        $scope.user.routes = [];
-      }
-      $scope.user.routes.push(angular.copy(newRoute));
-
-      // reset the backing object
-      $scope.newRoute.name = null;
-      $scope.newRoute.path = null;
-      $scope.newRoute.host = null;
-      $scope.newRoute.port = null;
-      $scope.newRoute.primary = false;
+    $scope.isUserValid = function (user, password, passwordRetype) {
+      return  !(password && password !== passwordRetype);
     };
-
-    $scope.editRoute = function (routeIndex, route) {
-      $scope.user.routes.splice(routeIndex, 1);
-      $scope.newRoute = route;
-    };
-
-    $scope.removeRoute = function (routeIndex) {
-      $scope.user.routes.splice(routeIndex, 1);
-    };
-
-    $scope.multiplePrimaries = function () {
-      if ($scope.user.routes) {
-        var routes = $scope.user.routes;
-        var count = 0;
-        for (var i = 0 ; i < routes.length ; i++) {
-          if (routes[i].primary === true) {
-            count++;
-          }
-
-          if (count > 1) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    };
-
   });

@@ -7,76 +7,35 @@
     <fieldset>
       <div class="form-group">
         <label>User name</label>
-        <input class="form-control" type="text" ng-model="user.name" required />
+        <input class="form-control" type="text" ng-model="user.email" required/>
       </div>
       <div class="form-group">
-        <label>URL Pattern</label>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="user.urlPattern" required />
+        <label>First Name</label>
+        <input class="form-control" type="text" ng-model="user.firstname" required/>
       </div>
       <div class="form-group">
-        <label>Allowed roles and clients</label>
-        <taglist tag-data="user.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
-      </div>
-      <h3>Routes</h3>
-      <div ng-show="user.routes.length > 0">
-        <div class="alert alert-warning" ng-show="multiplePrimaries()"><strong>Warning!</strong> You cannot have multiple primary routes.</div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Path</th>
-              <th>Host</th>
-              <th>Port</th>
-              <th>Primary</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="route in user.routes">
-              <td>{{ $index +1 }}</td>
-              <td><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
-              <td>{{ route.path }}</td>
-              <td>{{ route.host }}</td>
-              <td>{{ route.port }}</td>
-              <td><span ng-show="route.primary">&check;</span></td>
-              <td>
-                <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
-                <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <h4>Add a new route</h4>
-      <div class="form-group">
-        <label>Name</label>
-        <input class="form-control" type="text" ng-model="newRoute.name" />
+        <label>Surname</label>
+        <input class="form-control" type="text" ng-model="user.surname" required/>
       </div>
       <div class="form-group">
-        <label>Path</label>
-        <input class="form-control" type="text" ng-model="newRoute.path" />
+        <label>Allowed Roles</label>
+        <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..."
+                                               type="text" required/></taglist>
       </div>
       <div class="form-group">
-        <label>Host</label>
-        <input class="form-control" type="text" ng-model="newRoute.host" />
+        <label>Password</label>
+        <input class="form-control" type="text" ng-model="password" required/>
       </div>
       <div class="form-group">
-        <label>Port</label>
-        <input class="form-control" type="text" ng-model="newRoute.port" />
+        <label>Retype password</label>
+        <input class="form-control" type="text" ng-model="passwordRetype" required/>
       </div>
-      <div class="form-group">
-        <div class="checkbox">
-          <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
-            <input type="checkbox" ng-model="newRoute.primary" /> Is this the primary route?
-          </label>
-        </div>
-      </div>
-      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && newRoute.path && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
     </fieldset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(user)" ng-disabled="form.$invalid || multiplePrimaries()">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="save(user, password)"
+            ng-disabled="!isUserValid(user, password, passwordRetype)">Save changes
+    </button>
   </div>
 </form>

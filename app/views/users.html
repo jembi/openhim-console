@@ -2,43 +2,47 @@
   <div class="row">
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
-      <div class="col-md-10">
-          <div class="content-box-large">
-              <div class="panel-heading">
-                  <div class="panel-title">Users</div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">Users</div>
 
-                  <div class="panel-options">
-                      <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-                      <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
-                  </div>
-              </div>
-              <div class="panel-body">
-                  <table class="table table-striped">
-                      <thead>
-                      <tr>
-                          <th>#</th>
-                          <th>UserName</th>
-                          <th>User Load <br />(# transactions / Week)</th>
-                          <th>Status</th>
-                          <th></th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-repeat="user in users">
-                          <td>{{ $index +1 }}</td>
-                          <td><a href="" ng-click="editUser(user)">{{ user.name }}</a></td>
-                          <td><a href="">0</a></td>
-                          <td>Active</td>
-                          <td>
-                              <button class="btn btn-warning btn-xs" ng-click="editUser(user)"><i class="glyphicon glyphicon-pencil"></i></button>
-                              <button class="btn btn-danger btn-xs" ng-click="removeUser(user)"><i class="glyphicon glyphicon-remove"></i></button>
-                          </td>
-                      </tr>
-                      </tbody>
-                  </table>
-                  <button class="btn btn-primary" ng-click="addUser()"><i class="glyphicon glyphicon-plus"></i> User</button>
-              </div>
+          <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
           </div>
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Username (i.e email)</th>
+              <th>First Name</th>
+              <th>Surname</th>
+              <th>Groups</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in users">
+              <td>{{ $index +1 }}</td>
+              <td><a href="" ng-click="editUser(user)">{{ user.email }}</a></td>
+              <td>{{ user.firstname }}</td>
+              <td>{{ user.surname }}</td>
+              <td><span ng-repeat="group in user.groups"> {{ group }} </span></td>
+              <td>
+                <button class="btn btn-warning btn-xs" ng-click="editUser(user)"><i
+                        class="glyphicon glyphicon-pencil"></i></button>
+                <button class="btn btn-danger btn-xs" ng-click="removeUser(user)"><i
+                        class="glyphicon glyphicon-remove"></i></button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <button class="btn btn-primary" ng-click="addUser()"><i class="glyphicon glyphicon-plus"></i> User</button>
+        </div>
       </div>
     </div>
+  </div>
 </div>
