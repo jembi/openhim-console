@@ -611,7 +611,7 @@ body {
 
 /* Desktop */
 
-@media (max-width: 991px){
+@media (max-width: 2000px){
    .header{
       height:auto;
       padding:15px 0px;
@@ -623,7 +623,7 @@ body {
    .header .form{
       margin:10px auto;
    }
-   .sidebar, content-box{
+   .sidebar, .content-box{
       margin-bottom:30px;
       width:100%;
       float:none;
