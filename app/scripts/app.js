@@ -59,10 +59,10 @@ angular
 
     /*------------------------------CHECK USER SESSION---------------------------------*/
     // register listener to watch route changes
-    $rootScope.$on( "$routeChangeStart", function() {
+    $rootScope.$on( '$routeChangeStart', function() {
 
       // Retrieve the session from storage
-      var consoleSession = localStorage.getItem("consoleSession");
+      var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
 
       //check if session exists
@@ -72,24 +72,24 @@ angular
         var currentTime = new Date();
         currentTime = currentTime.toISOString();
         if( currentTime >= consoleSession.expires ){
-          localStorage.removeItem("consoleSession");
+          localStorage.removeItem('consoleSession');
 
           //session expired - user needs to log in
           $window.location = '#/login';
         }else{
 
           //session still active - update expires time
-          var currentTime = new Date();
+          currentTime = new Date();
           //add 2hours onto timestamp (2hours persistence time)
           var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
           //get sessionID
           var sessionID = consoleSession.sessionID;
 
           //create session object
-          var consoleSession = { "sessionID": sessionID, "expires": expireTime };
+          var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
 
           // Put updated object into storage
-          localStorage.setItem('consoleSession', JSON.stringify( consoleSession ));
+          localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
 
         }
 

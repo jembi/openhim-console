@@ -4,15 +4,15 @@ angular.module('openhimWebui2App')
   .controller('LoginCtrl', function ($scope, login, $window) {
 
     //if url "#/logout" is returned then destroy the session
-    if( $window.location.hash == '#/logout' ){
-      localStorage.removeItem("consoleSession");
+    if( $window.location.hash === '#/logout' ){
+      localStorage.removeItem('consoleSession');
     }
 
     $scope.loginEmail = '';
-    $scope.loginPassword = '';    
+    $scope.loginPassword = '';
 
     $scope.validateLogin = function(){
-      $scope.alerts = [];      
+      $scope.alerts = [];
       var loginEmail = $scope.loginEmail;
       var loginPassword = $scope.loginPassword;
 
@@ -24,7 +24,7 @@ angular.module('openhimWebui2App')
       }
 
       //if basic alerts empty continue to attempt login
-      if($scope.alerts.length == 0){
+      if($scope.alerts.length === 0){
 
         $scope.alerts = [];
         $scope.alerts.push({ type: 'warning', msg: 'Busy checking your credentials...' });
@@ -40,10 +40,10 @@ angular.module('openhimWebui2App')
             var sessionID = Math.random().toString(36).slice(2).toUpperCase();
 
             //create session object
-            var consoleSession = { "sessionID": sessionID, "expires": expireTime };
+            var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
 
             // Put the object into storage
-            localStorage.setItem('consoleSession', JSON.stringify( consoleSession ));
+            localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
             /*------------------Set sessionID and expire timestamp------------------*/
 
             //redirect user to landing page (Channels)
@@ -57,6 +57,6 @@ angular.module('openhimWebui2App')
 
       }
 
-    }
+    };
 
   });
