@@ -415,7 +415,7 @@ body {
 }
 .login-wrapper .box h6 {
   text-transform: uppercase;
-  margin-bottom: 35px;
+  /*margin-bottom: 35px;*/
   font-size: 18px;
   font-weight: 600;
 }
@@ -443,14 +443,15 @@ body {
 
 .login-wrapper .box .action {
   position: relative;
-  top: 30px;
-  padding: 15px 0px;
+  /*top: 30px;
+  padding: 15px 0px;*/
 }
 .login-wrapper .box .signup {
   text-transform: uppercase;
   font-size: 13px;
   padding: 7px 25px;
   border-radius: 5px;
+  margin-top: 10px;
 }
 .login-wrapper .already {
   margin: 0 auto;
@@ -550,6 +551,9 @@ body {
 .login-wrapper .box .division span{
   color: #666666;
   font-size: 18px;
+}
+.login-wrapper .alert{
+  margin-bottom: 5px;
 }
 
 .panel-heading>.panel-title, .content-box-header .panel-title {
