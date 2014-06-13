@@ -34,19 +34,11 @@ angular.module('openhimWebui2App')
       saveClient(user);
     };
 
-    var hashSHA512 = function (user, password) {
-      var salt = CryptoJS.lib.WordArray.random(16).toString();
-      var sha512 = CryptoJS.algo.SHA512.create();
-      sha512.update(password);
-      sha512.update(salt);
-      var hash = sha512.finalize();
-      user.passwordAlgorithm = 'sha512';
-      setHashAndSave(user, hash.toString(CryptoJS.enc.Hex), salt);
-    };
-
     $scope.save = function (user, password) {
       if (password) {
-        hashSHA512(user, password);
+       var h = getHashAndSalt(password);
+        user.passwordAlgorithm = h.algorithm;
+        setHashAndSave(user, h.hash, h.salt);
       } else {
         saveClient(user);
       }
