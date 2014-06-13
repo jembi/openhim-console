@@ -47,7 +47,7 @@ angular.module('openhimWebui2App')
             /*------------------Set sessionID and expire timestamp------------------*/
 
             //redirect user to landing page (Channels)
-            $window.location = '#/channels';
+            $window.location = '#/transactions';
 
           }else{
             $scope.alerts = [];
