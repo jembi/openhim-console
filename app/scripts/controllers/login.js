@@ -29,34 +29,44 @@ angular.module('openhimWebui2App')
         $scope.alerts = [];
         $scope.alerts.push({ type: 'warning', msg: 'Busy checking your credentials...' });
 
-        login.login(loginEmail, loginPassword, function(loggedIn) {
-          if (loggedIn) {
-
-            /*------------------Set sessionID and expire timestamp------------------*/
-            var currentTime = new Date();
-            //add 2hours onto timestamp (2hours persistence time)
-            var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
-            //generate random sessionID
-            var sessionID = Math.random().toString(36).slice(2).toUpperCase();
-
-            //create session object
-            var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
-
-            // Put the object into storage
-            localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
-            /*------------------Set sessionID and expire timestamp------------------*/
-
-            //redirect user to landing page (Channels)
-            $window.location = '#/transactions';
-
-          }else{
-            $scope.alerts = [];
-            $scope.alerts.push({ type: 'danger', msg: 'The supplied credentials were incorrect. Please try again' });
-          }
-        });
+        //check login credentials and create session if valid
+        $scope.checkLoginCredentials(loginEmail, loginPassword);
 
       }
 
+    };
+
+    $scope.checkLoginCredentials = function(loginEmail, loginPassword){
+      login.login(loginEmail, loginPassword, function(loggedIn) {
+        if (loggedIn) {
+
+          //Create the session for the logged in user
+          $scope.createUserSession();
+
+          //redirect user to landing page (Channels)
+          $window.location = '#/transactions';
+
+        }else{
+          $scope.alerts = [];
+          $scope.alerts.push({ type: 'danger', msg: 'The supplied credentials were incorrect. Please try again' });
+        }
+      });
+    };
+
+    $scope.createUserSession = function(){
+      /*------------------Set sessionID and expire timestamp------------------*/
+      var currentTime = new Date();
+      //add 2hours onto timestamp (2hours persistence time)
+      var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
+      //generate random sessionID
+      var sessionID = Math.random().toString(36).slice(2).toUpperCase();
+
+      //create session object
+      var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
+
+      // Put the object into storage
+      localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
+      /*------------------Set sessionID and expire timestamp------------------*/
     };
 
   });
