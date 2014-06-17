@@ -48,7 +48,7 @@ describe('Controller: LoginCtrl', function () {
     createController();
     scope.loginEmail = '';
     scope.loginPassword = '';
-    scope.validateLogin();    
+    scope.validateLogin();
     scope.alerts.length.should.equal(2);
   });
 
@@ -73,7 +73,7 @@ describe('Controller: LoginCtrl', function () {
     createController();
     scope.createUserSession();
     var consoleSession = localStorage.getItem('consoleSession');
-    expect(consoleSession).not.to.be.null;
+    consoleSession.should.exist;
   });
 
 });
