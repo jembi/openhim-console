@@ -26,7 +26,7 @@ module.exports = function(config) {
       'app/bower_components/cryptojslib/rollups/sha512.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
+      //'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
 
