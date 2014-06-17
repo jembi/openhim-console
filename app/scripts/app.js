@@ -47,7 +47,58 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+      .when('/logout', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .run( function($rootScope, $location, $window) {
+
+    /*------------------------------CHECK USER SESSION---------------------------------*/
+    // register listener to watch route changes
+    $rootScope.$on( '$routeChangeStart', function() {
+
+      // Retrieve the session from storage
+      var consoleSession = localStorage.getItem('consoleSession');
+      consoleSession = JSON.parse(consoleSession);
+
+      //check if session exists
+      if( consoleSession ){
+
+        //check if session has expired
+        var currentTime = new Date();
+        currentTime = currentTime.toISOString();
+        if( currentTime >= consoleSession.expires ){
+          localStorage.removeItem('consoleSession');
+
+          //session expired - user needs to log in
+          $window.location = '#/login';
+        }else{
+
+          //session still active - update expires time
+          currentTime = new Date();
+          //add 2hours onto timestamp (2hours persistence time)
+          var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
+          //get sessionID
+          var sessionID = consoleSession.sessionID;
+
+          //create session object
+          var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
+
+          // Put updated object into storage
+          localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
+
+        }
+
+      }else{
+        //No session - user needs to log in
+        $window.location = '#/login';
+      }
+
+    });
+    /*------------------------------CHECK USER SESSION---------------------------------*/
+
   });
