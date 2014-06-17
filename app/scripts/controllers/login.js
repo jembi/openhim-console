@@ -6,7 +6,7 @@ angular.module('openhimWebui2App')
     login.login('root@openhim.org', 'openhim-password', function(loggedIn) {
       if (loggedIn) {
         console.log('Logged in, redirecting...');
-        $window.location = '#/users';
+        $window.location = '#/channels';
       }
     });
   });
