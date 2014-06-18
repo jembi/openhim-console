@@ -6,5 +6,6 @@ describe('Utils: getHashAndSalt', function () {
     var result = getHashAndSalt('string');
     result.should.have.property('hash');
     result.should.have.property('salt');
+    result.should.have.property('algorithm');
   });
 });
