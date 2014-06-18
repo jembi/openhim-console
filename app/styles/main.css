@@ -387,10 +387,9 @@ body {
 /** Login & Signup **/
 
 .login-wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
   text-align: center;
+  width: 30%;
+  margin: 0 auto 30px auto;
 }
 
 
@@ -683,7 +682,7 @@ body {
 
 /* Desktop */
 
-@media (max-width: 2000px){
+@media (max-width: 991px){
    .header{
       height:auto;
       padding:15px 0px;
@@ -695,7 +694,7 @@ body {
    .header .form{
       margin:10px auto;
    }
-   .sidebar, .content-box{
+   .sidebar, content-box{
       margin-bottom:30px;
       width:100%;
       float:none;
