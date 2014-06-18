@@ -1,5 +1,5 @@
 'use strict';
-/* global CryptoJS: false */
+/* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
   .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, Notify, user) {
@@ -18,7 +18,7 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
-    var saveClient = function (user) {
+    var saveUser = function (user) {
       if (update) {
         user.$update(done);
       } else {
@@ -31,18 +31,17 @@ angular.module('openhimWebui2App')
         user.passwordSalt = salt;
       }
       user.passwordHash = hash;
-      saveClient(user);
+      saveUser(user);
     };
 
     $scope.save = function (user, password) {
       if (password) {
-       var h = getHashAndSalt(password);
+        var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
         setHashAndSave(user, h.hash, h.salt);
       } else {
-        saveClient(user);
+        saveUser(user);
       }
-
     };
 
     $scope.cancel = function () {

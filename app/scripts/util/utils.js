@@ -1,6 +1,6 @@
 'use strict';
-/* global $:false */
-/* exported toggleSubMenu */
+/* global CryptoJS:false */
+/* exported getHashAndSalt */
 
 function getHashAndSalt(stringToBeHashed) {
   var salt = CryptoJS.lib.WordArray.random(16).toString();
@@ -11,6 +11,6 @@ function getHashAndSalt(stringToBeHashed) {
   return  {
     hash: hash.toString(CryptoJS.enc.Hex),
     salt: salt,
-    algorithm : 'sha512'
+    algorithm: 'sha512'
   };
-};
+}

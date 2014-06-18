@@ -1,11 +1,13 @@
 'use strict';
+/* jshint expr: true */
+/* global sinon: false */
 
 describe('Controller: UsersCtrl', function () {
 
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var UsersCtrl, httpBackend,  scope, modalSpy;
+  var createController, httpBackend, scope, modalSpy;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -36,21 +38,22 @@ describe('Controller: UsersCtrl', function () {
     modalSpy = sinon.spy($modal, 'open');
 
     scope = $rootScope.$new();
-    UsersCtrl = $controller('UsersCtrl', {
-      $scope: scope
-    });
+    createController = function () {
+      scope = $rootScope.$new();
+      return $controller('UsersCtrl', { $scope: scope });
+    };
   }));
 
   it('should attach a list of users to the scope', function () {
     httpBackend.expectGET(new RegExp('.*/users'));
-    UsersCtrl;
+    createController();
     httpBackend.flush();
     scope.users.length.should.equal(2);
 
   });
 
   it('should remove a user', function () {
-    UsersCtrl;
+    createController();
     httpBackend.flush();
 
     httpBackend.expectDELETE(new RegExp('.*/users/super@openim.org')).respond(200, '');
@@ -59,7 +62,7 @@ describe('Controller: UsersCtrl', function () {
   });
 
   it('should open a modal to add a user', function () {
-    UsersCtrl
+    createController();
     scope.addUser();
 
     modalSpy.should.be.calledOnce;
@@ -68,7 +71,7 @@ describe('Controller: UsersCtrl', function () {
   });
 
   it('should open a modal to edit a user', function () {
-    UsersCtrl
+    createController();
     scope.editUser();
 
     modalSpy.should.be.calledOnce;
