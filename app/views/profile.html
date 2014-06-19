@@ -2,6 +2,8 @@
   <div class="row">
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
+    <!-- end -->
+
     <div class="col-md-10">
       <div class="content-box-large">
         <div class="panel-heading">
@@ -12,10 +14,43 @@
             <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
           </div>
         </div>
-        <div class="panel-body">
-          <button class="btn btn-primary" ng-click="updateProfile()"><i class="glyphicon glyphicon-plus"></i> Update Profile
-          </button>
-        </div>
+        <form name="form" novalidate>
+          <div class="modal-body">
+            <fieldset>
+              <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" type="text" ng-model="user.username" required/>
+              </div>
+              <div class="form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" ng-model="user.firstname" required/>
+              </div>
+              <div class="form-group">
+                <label>Surname</label>
+                <input class="form-control" type="text" ng-model="user.surname" required/>
+              </div>
+              <div class="form-group">
+                <label>Allowed Roles</label>
+                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..."
+                                                       type="text" required/></taglist>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input class="form-control" type="text" ng-model="password" required/>
+              </div>
+              <div class="form-group">
+                <label>Retype password</label>
+                <input class="form-control" type="text" ng-model="passwordRetype" required/>
+              </div>
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="save(user, password)"
+                    ng-disabled="!isUserValid(user, password, passwordRetype)">Save changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
