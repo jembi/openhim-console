@@ -24,3 +24,8 @@ Note all changes will be automatically applied to the webapp and the page will b
 For unit testing [mocha](http://visionmedia.github.io/mocha/) using [chai.js](http://chaijs.com/api/bdd/) for assertions. We are using the BDD `should` style for chai as it more closely resembles the unit testing style that is being used for the [OpenHIM-core component](https://github.com/jembi/openhim-core-js)
 
 This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular generator](https://github.com/yeoman/generator-angular). You can find more detials about the command available by looking at the docs of those tools.
+
+Login Credentials
+---------------
+username: `root@openhim.org`
+password: `openhim-password`
