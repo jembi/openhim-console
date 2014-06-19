@@ -387,10 +387,9 @@ body {
 /** Login & Signup **/
 
 .login-wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
   text-align: center;
+  width: 30%;
+  margin: 0 auto 30px auto;
 }
 
 
