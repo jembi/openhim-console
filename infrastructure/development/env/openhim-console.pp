@@ -28,12 +28,14 @@ exec { "npm-install":
 exec { "install-bower":
 	cwd => "/openhim-console",
 	command => "npm install -g bower",
+	unless => "npm list -g bower",
 	require => Class["nodejs"],
 }
 
 exec { "install-grunt":
 	cwd => "/openhim-console",
 	command => "npm install -g grunt-cli",
+	unless => "npm list -g grunt-cli",
 	require => Class["nodejs"],
 }
 
