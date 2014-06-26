@@ -18,6 +18,11 @@ angular.module('openhimWebui2App')
       }),
       Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientID' }),
 
-      Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' })
+      Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' }),
+
+      Tasks: $resource('http://' + host + ':' + port + '/tasks/:taskId', { taskId: '@_id' }, {
+        update: { method: 'PUT' }
+      }),
+      Queue: $resource('http://' + host + ':' + port + '/queues/:queueId', { queueId: '@_id' })
     };
   });

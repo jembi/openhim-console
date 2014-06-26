@@ -2,7 +2,9 @@
 /* global jQuery:false */
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsCtrl', function ($scope, $location, Api) {
+  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api) {
+
+    $scope.transactionsSelected = [];
 
     //return results for the first page (20 results)
     $scope.showpage = 0;
@@ -12,6 +14,7 @@ angular.module('openhimWebui2App')
     $scope.filterDateStart = '';
     $scope.filterDateEnd = '';
 
+    /*------------------------Transactions List and Detail view functions----------------------------*/
     //setup filter options
     $scope.returnFilterObject = function(){
       var filtersObject = {};
@@ -62,6 +65,9 @@ angular.module('openhimWebui2App')
           jQuery('#loadMoreTransactions').show();
         }
 
+        //make sure newly added transactions are checked as well
+        $scope.resetCheckedItems();
+
       },
       function (err) {
         // on error - Hide load more button and show error message
@@ -80,24 +86,37 @@ angular.module('openhimWebui2App')
       Api.Transactions.query( $scope.returnFilterObject(), function (values) {
         //on success
         $scope.transactions = $scope.transactions.concat(values);
+        //remove any duplicates objects found in the transactions scope
+        $scope.transactions = jQuery.unique($scope.transactions);
 
         if( values.length < $scope.showlimit ){
           jQuery('#loadMoreTransactions').hide();
           $scope.alerts = [{ type: 'warning', msg: 'There are no more transactions to retrieve' }];
         }
 
+        //make sure newly added transactions are checked as well
+        $scope.toggleCheckedAll();
+
       },
       function (err) {
         // on error - Hide load more button and show error message
         jQuery('#loadMoreTransactions').hide();
         $scope.returnError(err.status);
-      });
+      });      
 
     };
 
     //location provider - load transaction details
-    $scope.viewTransactionDetails = function (path) { $location.path(path); };
+    $scope.viewTransactionDetails = function (path, $event) { 
+      //do transactions details redirection when clicked on TD
+      if( $event.target.tagName === 'TD' ){        
+        $location.path(path); 
+      }
+    };
+    /*------------------------Transactions List and Detail view functions----------------------------*/
 
+
+    /*------------------------Error Codes functions----------------------------*/
     //close the alert box
     $scope.closeMsg = function() { $scope.alerts = ''; };
 
@@ -115,5 +134,57 @@ angular.module('openhimWebui2App')
           break;
       }
     };
+    /*------------------------Error Codes functions----------------------------*/
+
+    
+
+    /*------------------------Transactions ReRun Functions----------------------------*/
+    $scope.confirmRerunTransactions = function(){
+      
+      var transactionsSelected = $scope.transactionsSelected;
+      $modal.open({
+        templateUrl: 'views/transactionsmodal.html',
+        controller: 'TransactionsModalCtrl',
+        resolve: {
+          transactionsSelected: function () {
+            return transactionsSelected;
+          }
+        }
+
+      });
+
+    }
+
+    $scope.toggleCheckedAll = function () {
+      //if checked for all
+      if( $scope.checkAll === true ){
+        $scope.transactionsSelected = [];
+        angular.forEach($scope.transactions, function(transaction, key){
+          $scope.transactionsSelected.push(transaction._id);
+        });
+      }else{
+        $scope.resetCheckedItems();
+      }
+            
+    };
+
+    $scope.toggleTransactionSelection = function(transactionID) {
+      var idx = $scope.transactionsSelected.indexOf(transactionID);
+
+      // is currently selected
+      if (idx > -1) {
+        $scope.transactionsSelected.splice(idx, 1);
+      }else {
+        // is newly selected
+        $scope.transactionsSelected.push(transactionID);
+      }
+    }
+
+    $scope.resetCheckedItems = function(){
+      $scope.checkAll = false;
+      $scope.transactionsSelected = [];
+    }
+    /*------------------------Transactions ReRun Functions----------------------------*/
+
 
   });

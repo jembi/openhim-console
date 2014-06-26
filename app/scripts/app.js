@@ -61,12 +61,18 @@ angular
     // register listener to watch route changes
     $rootScope.$on( '$routeChangeStart', function() {
 
+      //set nav menu view to false
+      $rootScope.navMenuVisible = false;
+
       // Retrieve the session from storage
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
 
       //check if session exists
       if( consoleSession ){
+
+        //set the nav menu to show
+        $rootScope.navMenuVisible = true;
 
         //check if session has expired
         var currentTime = new Date();
