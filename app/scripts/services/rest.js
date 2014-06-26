@@ -16,7 +16,10 @@ angular.module('openhimWebui2App')
       Users: $resource('http://' + host + ':' + port + '/users/:email', { email: '@email' }, {
         update: { method: 'PUT' }
       }),
-      Clients: $resource('http://' + host + ':' + port + '/clients/:clientId', { clientId: '@clientID' }),
+
+      Clients: $resource('http://' + host + ':' + port + '/clients/:clientID', { clientID: '@clientID' }, {
+        update: { method: 'PUT' }
+      }),
 
       Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' }),
 

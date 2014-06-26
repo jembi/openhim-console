@@ -32,12 +32,14 @@ exec { "npm-install":
 exec { "install-bower":
 	cwd => "$source_dir",
 	command => "npm install -g bower",
+	unless => "npm list -g bower",
 	require => Class["nodejs"],
 }
 
 exec { "install-grunt":
 	cwd => "$source_dir",
 	command => "npm install -g grunt-cli",
+	unless => "npm list -g grunt-cli",
 	require => Class["nodejs"],
 }
 
