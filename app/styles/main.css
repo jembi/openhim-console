@@ -480,7 +480,6 @@ body {
   border-bottom-color: #000;
 }
 
-
 .login-wrapper .box .social{
   margin: 0 auto;
   width: 90%;
@@ -663,7 +662,6 @@ body {
 .transactionsButtonsDiv{
   display: inline-block; 
   width: 100%; 
-  /*margin-top: 5px;*/
 }
 
 .transactionsAlerts{
@@ -673,7 +671,7 @@ body {
 /* ----- Transactions ----- */
 
 /*------- Custom CSS Changes ----*/
-
+.modal-footer {margin-top: 0px;}
 .datepicker-dropdown {max-width: 220px !important;}
 .navbar-nav > li > a { padding-top: 15px; padding-bottom: 15px; }
 .navbar{ margin: 0; min-height: auto; }

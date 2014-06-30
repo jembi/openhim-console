@@ -21,7 +21,7 @@ angular.module('openhimWebui2App')
 
       });
 
-    }
+    };
     /*------------------------Transactions ReRun Functions----------------------------*/
 
   });

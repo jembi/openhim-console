@@ -102,15 +102,15 @@ angular.module('openhimWebui2App')
         // on error - Hide load more button and show error message
         jQuery('#loadMoreTransactions').hide();
         $scope.returnError(err.status);
-      });      
+      });
 
     };
 
     //location provider - load transaction details
-    $scope.viewTransactionDetails = function (path, $event) { 
+    $scope.viewTransactionDetails = function (path, $event) {
       //do transactions details redirection when clicked on TD
-      if( $event.target.tagName === 'TD' ){        
-        $location.path(path); 
+      if( $event.target.tagName === 'TD' ){
+        $location.path(path);
       }
     };
     /*------------------------Transactions List and Detail view functions----------------------------*/
@@ -145,6 +145,7 @@ angular.module('openhimWebui2App')
       $modal.open({
         templateUrl: 'views/transactionsmodal.html',
         controller: 'TransactionsModalCtrl',
+        scope: $scope,
         resolve: {
           transactionsSelected: function () {
             return transactionsSelected;
@@ -153,13 +154,13 @@ angular.module('openhimWebui2App')
 
       });
 
-    }
+    };
 
     $scope.toggleCheckedAll = function () {
       //if checked for all
       if( $scope.checkAll === true ){
         $scope.transactionsSelected = [];
-        angular.forEach($scope.transactions, function(transaction, key){
+        angular.forEach($scope.transactions, function(transaction){
           $scope.transactionsSelected.push(transaction._id);
         });
       }else{
@@ -178,12 +179,16 @@ angular.module('openhimWebui2App')
         // is newly selected
         $scope.transactionsSelected.push(transactionID);
       }
-    }
+    };
 
     $scope.resetCheckedItems = function(){
-      $scope.checkAll = false;
       $scope.transactionsSelected = [];
-    }
+      $scope.checkAll = false;
+    };
+
+    $scope.$on('transactionRerunSuccess', function() {
+      $scope.refreshTransactionsList();
+    });
     /*------------------------Transactions ReRun Functions----------------------------*/
 
 

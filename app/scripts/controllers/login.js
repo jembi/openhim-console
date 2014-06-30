@@ -41,7 +41,7 @@ angular.module('openhimWebui2App')
         if (loggedIn) {
 
           //Create the session for the logged in user
-          $scope.createUserSession();
+          $scope.createUserSession(loginEmail);
 
           //redirect user to landing page (Channels)
           $window.location = '#/transactions';
@@ -53,7 +53,7 @@ angular.module('openhimWebui2App')
       });
     };
 
-    $scope.createUserSession = function(){
+    $scope.createUserSession = function(loginEmail){
       /*------------------Set sessionID and expire timestamp------------------*/
       var currentTime = new Date();
       //add 2hours onto timestamp (2hours persistence time)
@@ -62,7 +62,7 @@ angular.module('openhimWebui2App')
       var sessionID = Math.random().toString(36).slice(2).toUpperCase();
 
       //create session object
-      var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
+      var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'expires': expireTime };
 
       // Put the object into storage
       localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));

@@ -90,9 +90,10 @@ angular
           var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
           //get sessionID
           var sessionID = consoleSession.sessionID;
+          var sessionUser = consoleSession.sessionUser;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 'expires': expireTime };
+          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': sessionUser, 'expires': expireTime };
 
           // Put updated object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
