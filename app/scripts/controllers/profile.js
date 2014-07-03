@@ -1,15 +1,24 @@
 'use strict';
+/* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('ProfileCtrl', function ($scope, login, Api, Notify) {
+  .controller('ProfileCtrl', function ($scope, Api, Notify,Authinterceptor) {
     var update = true;
-    $scope.user = login.getLoggedInUser();
+    var email = '';
+
+    $scope.user =  Authinterceptor.getLoggedInUser();
+    $scope.user =  Api.Users.get({ email: $scope.user.username }, function (userProfile) {
+      return userProfile;
+    });
+
+
 
     var done = function () {
-      // reset backing object and refresh users list
-      $scope.user = new Api.Users();
+      // reset backing object and refresh user profile
+      $scope.user =  Api.Users.get({ email: $scope.user.username }, function (userProfile) {
+        return userProfile;
+      });
       Notify.notify('usersChanged');
-
 
     };
 

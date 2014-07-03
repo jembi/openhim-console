@@ -36,7 +36,11 @@ angular.module('openhimWebui2App')
             // notify the authInterceptor of a logged in user
             Authinterceptor.setLoggedInUser({
               username: username,
-              passwordhash: passwordhash
+              email: username,
+              passwordhash: passwordhash,
+              firstname: firstname,
+              surname: surname,
+              groups: groups
             });
 
             done(true);
@@ -53,11 +57,7 @@ angular.module('openhimWebui2App')
       getLoggedInUser: function () {
         return {
           username: username,
-          passwordhash: passwordhash,
-          firstname: firstname,
-          surname: surname,
-          groups: groups
-
+          passwordhash: passwordhash
         };
       },
       isLoggedIn: function () {

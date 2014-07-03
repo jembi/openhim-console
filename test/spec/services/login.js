@@ -17,6 +17,13 @@ describe('Service: login', function () {
       salt: 'test-salt',
       ts: 'test-ts'
     });
+
+    httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
+      salt: 'test-salt',
+      ts: 'test-ts',
+      firstname: 'first name',
+      surname: 'surname'
+    });
   }));
 
   afterEach(function() {
@@ -26,6 +33,7 @@ describe('Service: login', function () {
 
   it('should login a user and fetch the currently logged in user', function () {
     httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'));
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
     login.login('test@user.org', 'test-password', function(){});
     
     httpBackend.flush();
@@ -41,6 +49,7 @@ describe('Service: login', function () {
   it('should logout a user', function () {
     login.logout();
     var user = login.getLoggedInUser();
+
     (user.username === null).should.be.true;
     (user.passwordhash === null).should.be.true;
   });
@@ -49,6 +58,7 @@ describe('Service: login', function () {
     login.isLoggedIn().should.be.false;
 
     login.login('test@user.org', 'test-password', function(){});
+
     httpBackend.flush();
 
     login.isLoggedIn().should.be.true;
