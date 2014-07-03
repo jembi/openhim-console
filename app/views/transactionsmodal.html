@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h3 class="modal-title">Transactions Rerun Confirmation</h3>
+</div>
+<form name="form" novalidate>
+  <div class="modal-body">
+
+      <div ng-if="rerunSuccess != true">
+        <h4 ng-show="transactionsSelected.length === 0">You have not selected any transactions to be rerun. <br /><br /> 
+        Please select the transactions you wish to rerun by ticking the boxes on the left and try again</h4>
+        <h4 ng-show="transactionsSelected.length === 1">You have selected that transaction <strong>#{{transactionsSelected[0]}}</strong> should be rerun. <br /><br />
+        Are you sure you wish to proceed with this operation?</h4>
+        <h4 ng-show="transactionsSelected.length > 1">You have selected a total of <strong>{{transactionsSelected.length}}</strong> transactions to be rerun. <br /><br />
+        Are you sure you wish to proceed with this operation?</h4>
+      </div>
+      
+      <div ng-if="rerunSuccess === true">
+        <h4 ng-show="transactionsSelected.length === 1">Your selected transaction has been added to the queue to be rerun.</h4>
+        <h4 ng-show="transactionsSelected.length > 1">Your selected transactions have been added to the queue to be rerun.</h4>
+      </div>      
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="confirmRerun()" ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true">Confirm Batch Rerun</button>
+  </div>
+</form>
