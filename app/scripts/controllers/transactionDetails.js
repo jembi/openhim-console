@@ -23,16 +23,8 @@ angular.module('openhimWebui2App')
       Api.Transactions.query( $scope.returnFilterObject(), function (values) {
         // on success
         $scope.childTransactions = values;
-
-        if( values.length < 1 ){
-          
-        }else{
-          
-        }
-
       },
       function (err) {
-        // on error - Hide load more button and show error message
         $scope.returnError(err.status);
       });
 
