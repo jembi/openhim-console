@@ -681,7 +681,7 @@ body {
 
 .responsiveTransactionIndexCheckbox label { display: none; }
 #loadMoreTransactions { float: right; display: none; }
-#no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 200px; }
+#no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
 .transactionsFilterRefreshDiv{ float: right; margin-bottom: 20px; padding-top: 22px; }
 /*------- Custom CSS Changes ----*/
 

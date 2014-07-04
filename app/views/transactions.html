@@ -74,7 +74,8 @@
     						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id, $event)'>
                                 <td class="transactionsCheckboxTD">
                                     <label>
-                                        <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                                        <input ng-if="!transaction.parentID" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                                        <i ng-if="transaction.parentID" class="glyphicon glyphicon-repeat"></i>
                                     </label>
                                 </td>
     							<td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
@@ -85,7 +86,7 @@
                                 </td>
     							<td data-title="HTTP Method">{{ transaction.request.method }}</td>
     							<td data-title="Path">{{ transaction.request.path }}</td>
-    							<td data-title="Request Params">{{ transaction.request.requestParams }}</td>
+    							<td data-title="Request Params">{{ transaction.request.querystring }}</td>
     							<td data-title="Status">{{ transaction.status }}</td>
     							<td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
     						</tr>
