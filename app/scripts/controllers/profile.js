@@ -7,24 +7,24 @@ angular.module('openhimWebui2App')
     var email = '';
 
     $scope.user =  Authinterceptor.getLoggedInUser();
-    $scope.user =  Api.Users.get({ email: $scope.user.username }, function (userProfile) {
+    $scope.user =  Api.Users.get({ email: $scope.user.email }, function (userProfile) {
       return userProfile;
     });
 
 
 
-    var done = function () {
+    var done = function (user) {
       // reset backing object and refresh user profile
-      $scope.user =  Api.Users.get({ email: $scope.user.username }, function (userProfile) {
-        return userProfile;
+      Api.Users.get({ email: user.email }, function (userProfile) {
+        $scope.user = userProfile;
       });
-      Notify.notify('usersChanged');
+      //Notify.notify('usersChanged');
 
     };
 
     var saveUser = function (user) {
       if (update) {
-        user.$update(done);
+        user.$update(done(user));
       } else {
         user.$save({ email: '' }, done);
       }

@@ -101,6 +101,8 @@ angular
 
           // Put updated object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
+          $rootScope.sessionUser = sessionUser;
+
 
         }
 
