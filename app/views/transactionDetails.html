@@ -6,7 +6,10 @@
 
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title" style="float: inherit"><h2>Transaction #{{transactionDetails._id}}</h2></div>
+          <div class="panel-title" style="float: inherit"><h2>
+            <i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-repeat"></i>
+            Transaction #{{transactionDetails._id}}
+          </h2></div>
         </div>
         <div class="panel-body">
             
@@ -37,12 +40,7 @@
                     </thead>
                     <tbody>
                         <tr class="transactions-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
-                            <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
-                                <span>{{ $index +1 }}</span>
-                                <label>
-                                    <input type="checkbox" ng-change="toggleTransactionSelection(childTransaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                                </label>
-                            </td>
+                            <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                             <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
                             <td data-title="Path">{{ childTransaction.request.path }}</td>
                             <td data-title="Request Params">{{ childTransaction.request.requestParams }}</td>

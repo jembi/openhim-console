@@ -3,7 +3,8 @@
 angular.module('openhimWebui2App')
   .factory('Api', function ($resource) {
 
-    var host = 'openhim-preprod.jembi.org';
+    //var host = 'openhim-preprod.jembi.org';
+    var host = 'localhost';
     var port = '8080';
 
     return {
@@ -25,7 +26,6 @@ angular.module('openhimWebui2App')
 
       Tasks: $resource('http://' + host + ':' + port + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
-      }),
-      Queue: $resource('http://' + host + ':' + port + '/queues/:queueId', { queueId: '@_id' })
+      })
     };
   });
