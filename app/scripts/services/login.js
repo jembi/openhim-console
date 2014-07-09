@@ -40,7 +40,7 @@ angular.module('openhimWebui2App')
               passwordhash: passwordhash,
               firstname: firstname,
               surname: surname,
-              groups: groups
+              groups: groups,
             });
 
             done(true);
