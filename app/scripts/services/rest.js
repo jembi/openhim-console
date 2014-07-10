@@ -25,7 +25,6 @@ angular.module('openhimWebui2App')
 
       Tasks: $resource('http://' + host + ':' + port + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
-      }),
-      Queue: $resource('http://' + host + ':' + port + '/queues/:queueId', { queueId: '@_id' })
+      })
     };
   });
