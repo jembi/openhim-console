@@ -16,10 +16,10 @@ angular.module('openhimWebui2App')
       'request': function (config) {
 
         if (user) {
-          
+
           var consoleSession = localStorage.getItem('consoleSession');
           consoleSession = JSON.parse(consoleSession);
-          console.log('user.email = ' + consoleSession.sessionUser);
+
           var passwordhash = user.passwordHash;
           var requestSalt = CryptoJS.lib.WordArray.random(16).toString();
           var requestTS = new Date().toISOString();
