@@ -18,7 +18,6 @@ angular.module('openhimWebui2App')
       Api.Users.get({ email: user.email }, function (userProfile) {
         $scope.user = userProfile;
       });
-      //Notify.notify('usersChanged');
 
     };
 
