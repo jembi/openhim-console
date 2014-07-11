@@ -3,7 +3,7 @@
 angular.module('openhimWebui2App')
   .factory('Api', function ($resource) {
 
-    var host = '192.168.1.177';
+    var host = 'openhim-preprod.jembi.org';
     var port = '8080';
 
     return {
