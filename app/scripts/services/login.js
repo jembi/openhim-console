@@ -6,9 +6,7 @@ angular.module('openhimWebui2App')
 
     var username = null;
     var passwordhash = null;
-    var firstname = null;
-    var surname = null;
-    var groups = null;
+    var userProfile;
 
     return {
       login: function (email, password, done) {
@@ -27,21 +25,15 @@ angular.module('openhimWebui2App')
             passwordhash = hash.toString(CryptoJS.enc.Hex);
             username = email;
             // Fetch currently logged in user's profile
-            Api.Users.get({ email: email }, function (userProfile) {
-              firstname = userProfile.firstname;
-              surname = userProfile.surname;
-              groups = userProfile.groups;
+            userProfile = Api.Users.get({ email: email }, function (userProfile) {
+              return  userProfile;
             });
+            //Add values to UserProfile
+            userProfile.passwordHash = passwordhash;
+            userProfile.username = email;
 
             // notify the authInterceptor of a logged in user
-            Authinterceptor.setLoggedInUser({
-              username: username,
-              email: username,
-              passwordhash: passwordhash,
-              firstname: firstname,
-              surname: surname,
-              groups: groups,
-            });
+            Authinterceptor.setLoggedInUser(userProfile);
 
             done(true);
           },
@@ -55,10 +47,7 @@ angular.module('openhimWebui2App')
         passwordhash = null;
       },
       getLoggedInUser: function () {
-        return {
-          username: username,
-          passwordhash: passwordhash
-        };
+        return userProfile;
       },
       isLoggedIn: function () {
         return !!passwordhash;
