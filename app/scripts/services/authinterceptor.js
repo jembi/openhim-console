@@ -1,5 +1,5 @@
 'use strict';
-/* global CryptoJS: false */
+/* global CryptoJS: true */
 
 angular.module('openhimWebui2App')
   .factory('Authinterceptor', function () {
@@ -23,7 +23,7 @@ angular.module('openhimWebui2App')
           var passwordhash = user.passwordHash;
           var requestSalt = CryptoJS.lib.WordArray.random(16).toString();
           var requestTS = new Date().toISOString();
-          var username = consoleSession.sessionUser;
+          var username = user.username;
 
           var sha512 = CryptoJS.algo.SHA512.create();
           sha512.update(passwordhash);

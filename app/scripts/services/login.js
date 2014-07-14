@@ -6,7 +6,10 @@ angular.module('openhimWebui2App')
 
     var username = null;
     var passwordhash = null;
-    var userProfile;
+    var userProfile = {
+      username: null,
+      passwordHash: null
+    };
 
     return {
       login: function (email, password, done) {
