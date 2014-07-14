@@ -34,6 +34,7 @@ angular.module('openhimWebui2App')
             //Add values to UserProfile
             userProfile.passwordHash = passwordhash;
             userProfile.username = email;
+            //console.log(userProfile)
 
             // notify the authInterceptor of a logged in user
             Authinterceptor.setLoggedInUser(userProfile);
