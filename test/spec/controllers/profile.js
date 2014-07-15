@@ -6,23 +6,14 @@ describe('Controller: ProfileCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var scope, createController, httpBackend,modalSpy;
+  var scope, createController, httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope,$httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope,$httpBackend) {
 
-    scope = $rootScope.$new();
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/authenticate/test@openhim.org')).respond('false');
-    $httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({
-      username: 'test@user.org',
-      passwordSalt: 'test-salt',
-      firstname: 'test',
-      surname: 'test'
-    });
-
-    $httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({
+    httpBackend.when('GET', new RegExp('.*/users')).respond({
       '__v': 0,
       '_id': '539846c240f2eb682ffeca4b',
       'email': 'test@user.org',
@@ -32,21 +23,17 @@ describe('Controller: ProfileCtrl', function () {
       'passwordSalt': 'test-salt',
       'surname': 'test',
       'groups': [
-        'admin'
+        'test',
+        'other'
       ]
     });
 
-    modalSpy = sinon.spy($modal, 'open');
-
     createController = function() {
-      var user = {
-        $save: sinon.spy(),
-        $update: sinon.spy()
-      };
-      console.log('called create controller');
+      scope = $rootScope.$new();
+      scope.consoleSession = {}
+      scope.consoleSession.sessionUser = 'test@user.org'
       return $controller('ProfileCtrl', {
-        $scope: scope,
-        user: user
+        $scope: scope
       });
     };
 
@@ -57,17 +44,17 @@ describe('Controller: ProfileCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it("calls the original function", function () {
-    var callback = sinon.spy();
-    var proxy = (callback);
+  it('should fetch a user profile', function () {
 
-    proxy();
+    httpBackend.expectGET(new RegExp('.*/users'));
+    createController();
+    httpBackend.flush();
 
-    assert(callback.called);
-  });
+    scope.user.should.have.property('email', 'test@user.org');
+    scope.user.should.have.property('firstname', 'test');
+    scope.user.should.have.property('surname', 'test');
+    scope.user.groups.should.have.length(2);
 
-  it('should update an a users profile', function () {
-     console.log('here')
   });
 
 });
