@@ -28,10 +28,12 @@ describe('Controller: ProfileCtrl', function () {
       ]
     });
 
+    httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated');
+
     createController = function() {
       scope = $rootScope.$new();
-      scope.consoleSession = {}
-      scope.consoleSession.sessionUser = 'test@user.org'
+      scope.consoleSession = {};
+      scope.consoleSession.sessionUser = 'test@user.org';
       return $controller('ProfileCtrl', {
         $scope: scope
       });
@@ -56,5 +58,4 @@ describe('Controller: ProfileCtrl', function () {
     scope.user.groups.should.have.length(2);
 
   });
-
 });
