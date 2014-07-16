@@ -29,7 +29,7 @@ angular.module('openhimWebui2App')
             username = email;
             // Fetch currently logged in user's profile
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
-              done(true)
+              done(true);
               return  userProfile;
             }, function (){
               done(false);
