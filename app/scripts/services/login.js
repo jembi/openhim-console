@@ -29,16 +29,16 @@ angular.module('openhimWebui2App')
             username = email;
             // Fetch currently logged in user's profile
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
+              done(true)
               return  userProfile;
+            }, function (){
+              done(false);
             });
             //Add values to UserProfile
             userProfile.passwordHash = passwordhash;
             userProfile.username = email;
-
             // notify the authInterceptor of a logged in user
             Authinterceptor.setLoggedInUser(userProfile);
-
-            done(true);
           },
           function () {
             // on error
