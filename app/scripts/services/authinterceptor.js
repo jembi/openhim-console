@@ -2,23 +2,24 @@
 /* global CryptoJS: true */
 
 angular.module('openhimWebui2App')
-  .factory('Authinterceptor', function () {
+  .factory('Authinterceptor', function ($rootScope) {
 
-    var user;
+    var user = localStorage.getItem('loggedOnUser');
+    user = JSON.parse(user);
 
     return {
       'setLoggedInUser': function (u) {
         user = u;
+        localStorage.setItem('loggedOnUser', JSON.stringify( user ));
       },
       'getLoggedInUser': function() {
+        var user = localStorage.getItem('loggedOnUser');
+        user = JSON.parse(user);
         return user;
       },
       'request': function (config) {
 
         if (user) {
-
-          var consoleSession = localStorage.getItem('consoleSession');
-          consoleSession = JSON.parse(consoleSession);
 
           var passwordhash = user.passwordHash;
           var requestSalt = CryptoJS.lib.WordArray.random(16).toString();

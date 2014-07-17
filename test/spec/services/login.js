@@ -57,7 +57,7 @@ describe('Service: login', function () {
     login.logout();
     var user = login.getLoggedInUser();
 
-    (user.username === null).should.be.true;
+    (user.email === null).should.be.true;
     (user.passwordHash === null).should.be.true;
   });
 

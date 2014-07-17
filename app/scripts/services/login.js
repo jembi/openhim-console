@@ -7,8 +7,8 @@ angular.module('openhimWebui2App')
     var username = null;
     var passwordhash = null;
     var userProfile = {
-      username: null,
-      passwordHash: null
+      username: false,
+      passwordHash: false
     };
 
     return {
@@ -29,7 +29,7 @@ angular.module('openhimWebui2App')
             username = email;
             // Fetch currently logged in user's profile
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
-              done(true);
+              done(userProfile);
               return  userProfile;
             }, function (){
               done(false);
@@ -46,14 +46,14 @@ angular.module('openhimWebui2App')
           });
       },
       logout: function () {
-        username = null;
-        passwordhash = null;
+        userProfile.email = null;
+        userProfile.passwordHash = null;
       },
       getLoggedInUser: function () {
         return userProfile;
       },
       isLoggedIn: function () {
-        return !!passwordhash;
+        return !!userProfile.passwordHash;
       }
 
     };
