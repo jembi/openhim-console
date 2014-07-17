@@ -65,7 +65,7 @@ describe('Controller: ProfileCtrl', function () {
 
   it('should update a user profile', function () {
     createController();
-    scope.user.surname = 'new surname'
+    scope.user.surname = 'new surname';
     scope.save(scope.user);
     httpBackend.expectPUT(new RegExp('.*/users'));
     scope.user.should.have.property('surname', 'new surname');
@@ -79,18 +79,18 @@ describe('Controller: ProfileCtrl', function () {
   it('should test whether the user profile has all the required fields', function() {
     createController();
     //Set the password and not the reset password
-    scope.user.password = 'test-password'
+    scope.user.password = 'test-password';
     //Save button should be disabled since the password has not been confirmed
-    scope.isUserValid(scope.user,scope.user.password,scope.user.passwordRetype).should.be.false
+    scope.isUserValid(scope.user,scope.user.password,scope.user.passwordRetype).should.be.false;
     httpBackend.flush();
   });
 
   it('should create a salt and generate a new hash and save it if a new password is provided in the profile', function() {
     createController();
     //Set the password and not the reset password
-    scope.user.password = 'test-password'
+    scope.user.password = 'test-password';
     //Save button should be disabled since the password has not been confirmed
-    scope.save(scope.user, scope.user.password)
+    scope.save(scope.user, scope.user.password);
     scope.user.should.have.property('passwordSalt');
     scope.user.should.have.property('passwordHash');
     httpBackend.flush();
@@ -98,15 +98,14 @@ describe('Controller: ProfileCtrl', function () {
 
   it('should refresh the user from api', function () {
     createController();
-    scope.user.surname = 'new surname'
+    scope.user.surname = 'new surname';
     scope.save(scope.user);
     httpBackend.expectPUT(new RegExp('.*/users'));
     scope.user.should.have.property('surname', 'new surname');
-    //modify mock object
 
     httpBackend.expectGET(new RegExp('.*/users'));
     httpBackend.flush();
-
+    //must be original object from api
     scope.user.should.have.property('surname', 'test');
 
   });
