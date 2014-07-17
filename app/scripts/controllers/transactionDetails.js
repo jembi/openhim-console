@@ -12,7 +12,7 @@ angular.module('openhimWebui2App')
       var filtersObject = {};
       
       filtersObject.filterPage = 0;
-      filtersObject.filterLimit = 9999999;
+      filtersObject.filterLimit = 0;
       filtersObject.parentID = $routeParams.transactionId;
       return filtersObject;
     };
@@ -37,7 +37,7 @@ angular.module('openhimWebui2App')
     $scope.viewTransactionDetails = function (path) {
       //do transactions details redirection when clicked on TD
       $location.path(path);
-    };    
+    };
     /*------------------------Transactions List and Detail view functions----------------------------*/
 
 
