@@ -164,11 +164,11 @@ angular.module('openhimWebui2App')
           //only allow original transactions to be rerun - Check that parentID doesnt exist
           if( !transaction.parentID ){
             $scope.transactionsSelected.push(transaction._id);
-          }          
+          }
         });
       }else{
         $scope.resetCheckedItems();
-      }            
+      }
     };
 
     $scope.toggleTransactionSelection = function(transactionID) {

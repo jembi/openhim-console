@@ -37,7 +37,7 @@ angular.module('openhimWebui2App')
     $scope.viewTransactionDetails = function (path) {
       //do transactions details redirection when clicked on TD
       $location.path(path);
-    };    
+    };
     /*------------------------Transactions List and Detail view functions----------------------------*/
 
 
