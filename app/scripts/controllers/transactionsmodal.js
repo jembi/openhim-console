@@ -8,17 +8,7 @@ angular.module('openhimWebui2App')
     $scope.confirmRerun = function() {
 
       var tIds = $scope.transactionsSelected;
-      var transactionsArray = [];
-      for (var i=0; i<tIds.length; i++){
-        transactionsArray.push({ tid: tIds[i], tstatus: 'Processing' });
-      }
-
-      var consoleSession = localStorage.getItem('consoleSession');
-      consoleSession = JSON.parse(consoleSession);
-      var sessionUser = consoleSession.sessionUser;
-
-      var taskObject = {status: 'NotStarted', transactions: transactionsArray, created: new Date(), user: sessionUser};
-      $scope.task = new Api.Tasks(taskObject);
+      $scope.task = new Api.Tasks({tids: tIds});
       $scope.task.$save({}, onSuccess);
 
     };

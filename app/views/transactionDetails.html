@@ -6,14 +6,49 @@
 
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title" style="float: inherit"><h2>Transaction #{{transactionDetails._id}}</h2></div>
+          <div class="panel-title" style="float: inherit"><h2>
+            <i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-repeat"></i>
+            Transaction #{{transactionDetails._id}}
+          </h2></div>
         </div>
         <div class="panel-body">
-
-          <div class="buttons-container">
-              <button class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run and edit request</button>
+            
+            <!-- div to hold any child transactions if any -->
+            <div class="rerunTransactionsDiv">
+                <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>
+                <button ng-if="transactionDetails.parentID" class="btn btn-primary" ng-click='viewTransactionDetails("/transactions/" + transactionDetails.parentID)'>View Original Transaction</button>
+            </div>
+            
+            <div class="buttons-container">
+              <button ng-if="!transactionDetails.parentID" class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run and edit request</button>
               <button class="btn btn-primary" ng-click="reviewedTransaction();">Mark as reviewed</button>
               <button class="btn btn-primary" ng-click="flagTransaction();">Flag</button><br />
+            </div>
+
+            <div id="no-more-tables" class="collapse" style="width: 100%; clear: both;">
+                <!-- Table with all the transaction logs -->
+                <table class="table table-striped rerunTransactionsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>HTTP Method</th>
+                            <th>Path</th>
+                            <th>Request Params</th>
+                            <th>Status</th>
+                            <th>Received Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="transactions-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
+                            <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                            <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
+                            <td data-title="Path">{{ childTransaction.request.path }}</td>
+                            <td data-title="Request Params">{{ childTransaction.request.requestParams }}</td>
+                            <td data-title="Status">{{ childTransaction.status }}</td>
+                            <td data-title="Received Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
           <div class="transaction-detail-container">

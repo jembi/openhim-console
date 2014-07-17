@@ -681,8 +681,10 @@ body {
 
 .responsiveTransactionIndexCheckbox label { display: none; }
 #loadMoreTransactions { float: right; display: none; }
-#no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 200px; }
+#no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
 .transactionsFilterRefreshDiv{ float: right; margin-bottom: 20px; padding-top: 22px; }
+.rerunTransactionsDiv{float: left; margin-bottom: 10px; }
+#no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
@@ -820,6 +822,7 @@ body {
     /*hide the first td (checkbox)*/
     #no-more-tables table td:nth-child(1) { display: none; }
     /*remove padding from first visible child*/
+    #no-more-tables .rerunTransactionsTable td:nth-child(2) { padding: 8px 8px 8px 50%; }
     #no-more-tables table td:nth-child(2) { padding: 0px; }
     #no-more-tables table td:nth-child(2):before { width: 0px; }
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
@@ -841,4 +844,5 @@ body {
 /* Mobile phones */
 @media (max-width: 480px){
   .login-wrapper { width: 80%; }
+  .rerunTransactionsDiv{float: none; text-align: center;}
 }

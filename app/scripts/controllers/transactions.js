@@ -8,7 +8,7 @@ angular.module('openhimWebui2App')
 
     //return results for the first page (20 results)
     $scope.showpage = 0;
-    $scope.showlimit = 5;
+    $scope.showlimit = 10;
     $scope.filterStatus = '';
     $scope.filterEndpoint = '';
     $scope.filterDateStart = '';
@@ -161,12 +161,14 @@ angular.module('openhimWebui2App')
       if( $scope.checkAll === true ){
         $scope.transactionsSelected = [];
         angular.forEach($scope.transactions, function(transaction){
-          $scope.transactionsSelected.push(transaction._id);
+          //only allow original transactions to be rerun - Check that parentID doesnt exist
+          if( !transaction.parentID ){
+            $scope.transactionsSelected.push(transaction._id);
+          }
         });
       }else{
         $scope.resetCheckedItems();
       }
-            
     };
 
     $scope.toggleTransactionSelection = function(transactionID) {
