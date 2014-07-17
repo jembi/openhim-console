@@ -12,7 +12,7 @@ angular.module('openhimWebui2App')
       return userProfile;
     });
 
-    var done = function (user) {
+    var done = function () {
       // reset backing object and refresh user profile
       Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (userProfile) {
         $scope.user = userProfile;
@@ -20,7 +20,8 @@ angular.module('openhimWebui2App')
     };
 
     var saveUser = function (user) {
-        user.$update(done(user));
+        user.$update(user);
+        done(user)
     };
 
     var setHashAndSave = function (user, hash, salt) {

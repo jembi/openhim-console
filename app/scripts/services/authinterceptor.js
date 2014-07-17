@@ -2,7 +2,7 @@
 /* global CryptoJS: true */
 
 angular.module('openhimWebui2App')
-  .factory('Authinterceptor', function ($rootScope) {
+  .factory('Authinterceptor', function () {
 
     var user = localStorage.getItem('loggedOnUser');
     user = JSON.parse(user);
