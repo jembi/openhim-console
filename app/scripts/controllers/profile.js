@@ -8,6 +8,7 @@ angular.module('openhimWebui2App')
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
+
     $scope.user =  Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (userProfile) {
       return userProfile;
     });
@@ -17,6 +18,8 @@ angular.module('openhimWebui2App')
       Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (userProfile) {
         $scope.user = userProfile;
       });
+      $scope.alerts = [];
+      $scope.alerts.push({ type: 'success', msg: 'Your profile was successfully updated!' });
     };
 
     var saveUser = function (user) {
