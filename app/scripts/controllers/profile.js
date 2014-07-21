@@ -23,9 +23,8 @@ angular.module('openhimWebui2App')
     };
 
     var saveUser = function (user) {
-      if (user.$update(user)){
-        done(user);
-      }
+      user.$update(user)
+        .then(done(user));     
     };
 
     var setHashAndSave = function (user, hash, salt) {
