@@ -13,108 +13,140 @@
         <label>URL Pattern</label>
         <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" required />
       </div>
+
+      <h3>Access Control</h3>
       <div class="form-group">
-        <label>Allowed roles and clients</label>
+        <label>Allowed groups and clients</label>
         <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
       </div>
+      <div class="form-group">
+        <label>Transaction View Access Control List</label>
+        <taglist tag-data="channel.txViewAcl"><input class="form-control" placeholder="Enter the user groups that can view transaction created by this channel..." type="text" /></taglist>
+      </div>
+      <div class="form-group">
+        <label>Transaction Rerun Access Control List</label>
+        <taglist tag-data="channel.txRerunAcl"><input class="form-control" placeholder="Enter the user groups that can view transaction created by this channel..." type="text" /></taglist>
+      </div>
 
+      <h3>Content Matching</h3>
       <div class="form-group">
         <label>Match Content Types</label>
         <taglist tag-data="channel.matchContentTypes"><input class="form-control" placeholder="Enter a content type and press enter..." type="text" /></taglist>
       </div>
-      <div class="form-group">
-        <label>Match Content Regex</label>
-        <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" />
-      </div>
-      <div class="form-group">
-        <label>Match Content X Path</label>
-        <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" />
-      </div>
-      <div class="form-group">
-        <label>Match Content JSON</label>
-        <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" />
-      </div>
-      <div class="form-group">
-        <label>Match Content Value</label>
-        <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" /></taglist>
-      </div>
-      <div class="form-group">
-        <label>Properties</label>
-        <taglist tag-data="channel.properties"><input class="form-control" placeholder="Enter a properties and press enter..." type="text" /></taglist>
-      </div>
-      <div class="form-group">
-        <label>Transaction View Access Control List</label>
-        <taglist tag-data="channel.txViewAcl"><input class="form-control" placeholder="Enter a View Access Control and press enter..." type="text" /></taglist>
-      </div>
-      <div class="form-group">
-        <label>Transaction Rerun Access Control List</label>
-        <taglist tag-data="channel.txRerunAcl"><input class="form-control" placeholder="Enter a Rerun Access Control and press enter..." type="text" /></taglist>
+
+      <div class="btn-group" style="margin-bottom: 10px">
+        <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'No matching'">No matching</label>
+        <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'RegEx Matching'">RegEx Matching</label>
+        <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'XML matching'">XML matching</label>
+        <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'JSON matching'">JSON matching</label>
       </div>
 
+      <div class="form-group-2columns" ng-show="contentMatching == 'RegEx Matching'">
+        <div class="form-group" style="float: left;">
+          <label>Match Content Regex</label>
+          <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" ng-required="contentMatching=='RegEx Matching'" />
+        </div>
+      </div>
+
+      <div class="form-group-2columns" ng-show="contentMatching == 'XML matching'">
+        <div class="form-group" style="float: left;">
+          <label>Match Content X Path</label>
+          <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" ng-required="contentMatching=='XML matching'" />
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Match Content Value</label>
+          <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="contentMatching=='XML matching'" /></taglist>
+        </div>
+      </div>
+
+      <div class="form-group-2columns" ng-show="contentMatching == 'JSON matching'">
+        <div class="form-group" style="float: left;">
+          <label>Match Content JSON</label>
+          <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" ng-required="contentMatching=='JSON matching'" />
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Match Content Value</label>
+          <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="contentMatching=='JSON matching'" /></taglist>
+        </div>
+      </div>
+
+
       <h3>Routes</h3>
+      <div class="alert alert-warning" ng-show="noRoutes()"><strong>Warning!</strong> You must supply atleast one route.</div>
+      <div class="alert alert-warning" ng-show="noPrimaries()"><strong>Warning!</strong> Atleast one of your routes must be set to the primary.</div>
       <div ng-show="channel.routes.length > 0">
         <div class="alert alert-warning" ng-show="multiplePrimaries()"><strong>Warning!</strong> You cannot have multiple primary routes.</div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Path</th>
-              <th>Host</th>
-              <th>Port</th>
-              <th>Username</th>
-              <th>Password</th>
-              <th>Primary</th>              
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="route in channel.routes">
-              <td>{{ $index +1 }}</td>
-              <td><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
-              <td>{{ route.path }}</td>
-              <td>{{ route.host }}</td>
-              <td>{{ route.port }}</td>
-              <td>{{ route.username }}</td>
-              <td>{{ route.password }}</td>
-              <td><span ng-show="route.primary">&check;</span></td>
-              <td>
-                <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
-                <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="no-more-tables">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Path</th>
+                <th>Path Transform</th>
+                <th>Host</th>
+                <th>Port</th>
+                <th>Primary</th>              
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="route in channel.routes">
+                <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                <td data-title="Name"><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
+                <td data-title="Path">{{ route.path }}</td>
+                <td data-title="Path Transform">{{ route.pathTransaform }}</td>
+                <td data-title="Host">{{ route.host }}</td>
+                <td data-title="Port">{{ route.port }}</td>
+                <td data-title="Primary"><span ng-show="route.primary">&check;</span></td>
+                <td>
+                  <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                  <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <h4>Add a new route</h4>
       <div class="form-group">
         <label>Name</label>
         <input class="form-control" type="text" ng-model="newRoute.name" />
       </div>
-      <div class="form-group">
-        <label>Path</label>
-        <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
+      
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Path</label>
+          <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Path Transform</label>
+          <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Path Transform</label>
-        <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
+
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Host</label>
+          <input class="form-control" type="text" ng-model="newRoute.host" />
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Port</label>
+          <input class="form-control" type="text" ng-model="newRoute.port" />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Host</label>
-        <input class="form-control" type="text" ng-model="newRoute.host" />
+
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Basic Auth Username</label>
+          <input class="form-control" type="text" ng-model="newRoute.username" />
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Basic Auth Password</label>
+          <input class="form-control" type="password" ng-model="newRoute.password" />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Port</label>
-        <input class="form-control" type="text" ng-model="newRoute.port" />
-      </div>
-      <div class="form-group">
-        <label>Username</label>
-        <input class="form-control" type="text" ng-model="newRoute.username" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input class="form-control" type="text" ng-model="newRoute.password" />
-      </div>
+
       <div class="form-group">
         <div class="checkbox">
           <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
@@ -127,6 +159,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel)" ng-disabled="form.$invalid || multiplePrimaries()">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="form.$invalid || multiplePrimaries() || noRoutes() || noPrimaries()">Save changes</button>
   </div>
 </form>

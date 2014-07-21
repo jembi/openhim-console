@@ -3,8 +3,13 @@
 angular.module('openhimWebui2App')
   .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, channel) {
     var update = false;
+    $scope.contentMatching = 'No matching';
     if (channel) {
       update = true;
+
+      if( channel.matchContentRegex ){ $scope.contentMatching = 'RegEx Matching'; }
+      if( channel.matchContentJson ){ $scope.contentMatching = 'JSON matching'; }
+      if( channel.matchContentXpath ){ $scope.contentMatching = 'XML matching'; }
     }
 
     $scope.channel = channel || new Api.Channels();
@@ -20,7 +25,28 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
-    $scope.saveOrUpdate = function(channel) {
+    $scope.saveOrUpdate = function(channel, contentMatching) {
+      switch (contentMatching) {
+        case 'RegEx Matching':
+          channel.matchContentXpath = null;
+          channel.matchContentJson = null;
+          channel.matchContentValue = null;
+          break;
+        case 'XML matching':
+          channel.matchContentRegex = null;
+          channel.matchContentJson = null;
+          break;
+        case 'JSON matching':
+          channel.matchContentRegex = null;
+          channel.matchContentXpath = null;
+          break;
+        default:
+          channel.matchContentRegex = null;
+          channel.matchContentXpath = null;
+          channel.matchContentJson = null;
+          channel.matchContentValue = null;
+      }
+
       if (update) {
         channel.$update(onSuccess);
       } else {
@@ -43,6 +69,8 @@ angular.module('openhimWebui2App')
       $scope.newRoute.path = null;
       $scope.newRoute.host = null;
       $scope.newRoute.port = null;
+      $scope.newRoute.username = null;
+      $scope.newRoute.password = null;
       $scope.newRoute.primary = false;
     };
 
@@ -72,5 +100,41 @@ angular.module('openhimWebui2App')
 
       return false;
     };
+
+
+
+    $scope.noPrimaries = function () {
+      if ($scope.channel.routes) {
+        var routes = $scope.channel.routes;
+        var count = 0;
+        for (var i = 0 ; i < routes.length ; i++) {
+          if (routes[i].primary === true) {
+            count++;
+          }
+
+          if (count == 0) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    };
+
+
+    /* ------------------ Check to see if routes are empty --------------------- */
+    $scope.noRoutes = function () {
+      if ($scope.channel.routes) {
+        var routes = $scope.channel.routes;
+        //no routes found - return true
+        if( routes.length == 0 ){
+          return true
+        }
+      }
+
+      return false;
+    };
+    /* ------------------ Check to see if routes are empty --------------------- */
+
 
   });

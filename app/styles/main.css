@@ -685,6 +685,8 @@ body {
 .transactionsFilterRefreshDiv{ float: right; margin-bottom: 20px; padding-top: 22px; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
+.form-group-2columns { clear: both; display: inline-block; width: 100% }
+.form-group-2columns .form-group { width: 47%; }
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
@@ -820,11 +822,12 @@ body {
     #no-more-tables td:before { content: attr(data-title); }
 
     /*hide the first td (checkbox)*/
-    #no-more-tables table td:nth-child(1) { display: none; }
+    #no-more-tables .transactionTable td:nth-child(1) { display: none; }
     /*remove padding from first visible child*/
     #no-more-tables .rerunTransactionsTable td:nth-child(2) { padding: 8px 8px 8px 50%; }
-    #no-more-tables table td:nth-child(2) { padding: 0px; }
-    #no-more-tables table td:nth-child(2):before { width: 0px; }
+    #no-more-tables .transactionTable td:nth-child(2) { padding: 0px; }
+    #no-more-tables .transactionTable td:nth-child(2):before { width: 0px; }
+    #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
 
     .transactionsCheckboxTD { padding: 0px !important; }
