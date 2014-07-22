@@ -33,7 +33,7 @@ angular.module('openhimWebui2App')
           } catch (e) {
             console.log(e.message);
           }
-          var username = user.email;
+          var username = user.username || user.email;
 
           var sha512 = CryptoJS.algo.SHA512.create();
           sha512.update(passwordhash);
