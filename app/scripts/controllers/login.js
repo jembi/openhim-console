@@ -62,6 +62,15 @@ angular.module('openhimWebui2App')
       //generate random sessionID
       var sessionID = Math.random().toString(36).slice(2).toUpperCase();
 
+      // Check logged in users' group presmission and set userGroupAdmin to true if user is a admin
+      var userProfile = login.getLoggedInUser();
+      if (userProfile.groups.indexOf('admin') >= 0) {
+        $rootScope.userGroupAdmin = true;
+      } else {
+        $rootScope.userGroupAdmin = false;
+      }
+      
+
       //create session object
       var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'expires': expireTime };
 
