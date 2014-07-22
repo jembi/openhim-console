@@ -19,14 +19,19 @@ angular.module('openhimWebui2App')
             sha512.update(password);
             var hash = sha512.finalize();
             // Fetch currently logged in user's profile
+            userProfile.email = email;
+            userProfile.passwordHash = hash.toString(CryptoJS.enc.Hex);
+            // notify the authInterceptor of a logged in user
+            Authinterceptor.setLoggedInUser(userProfile);
+            //Verify that you can make authenticated requests
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
-              // notify the authInterceptor of a logged in user
-              Authinterceptor.setLoggedInUser(userProfile);
               done(true);
-              return  userProfile;
+              return userProfile;
             }, function (){
+              //Throw error upon failure
               done(false);
             });
+
           },
           function () {
             done(false);
