@@ -21,11 +21,11 @@
       </div>
       <div class="form-group">
         <label>Transaction View Access Control List</label>
-        <taglist tag-data="channel.txViewAcl"><input class="form-control" placeholder="Enter the user groups that can view transaction created by this channel..." type="text" /></taglist>
+        <taglist tag-data="channel.txViewAcl"><input class="form-control" placeholder="Enter the user groups that can view transactions created by this channel..." type="text" /></taglist>
       </div>
       <div class="form-group">
         <label>Transaction Rerun Access Control List</label>
-        <taglist tag-data="channel.txRerunAcl"><input class="form-control" placeholder="Enter the user groups that can view transaction created by this channel..." type="text" /></taglist>
+        <taglist tag-data="channel.txRerunAcl"><input class="form-control" placeholder="Enter the user groups that can view transactions created by this channel..." type="text" /></taglist>
       </div>
 
       <h3>Content Matching</h3>
@@ -72,8 +72,13 @@
 
 
       <h3>Routes</h3>
-      <div class="alert alert-warning" ng-show="noRoutes()"><strong>Warning!</strong> You must supply atleast one route.</div>
-      <div class="alert alert-warning" ng-show="noPrimaries()"><strong>Warning!</strong> Atleast one of your routes must be set to the primary.</div>
+
+      <div id="routesWarningAlerts">
+        <div class="alert alert-warning" ng-show="noRoutes()"><strong>Warning!</strong> You must supply atleast one route.</div>
+        <div class="alert alert-warning" ng-show="noPrimaries()"><strong>Warning!</strong> Atleast one of your routes must be set to the primary.</div>
+      </div>
+
+      
       <div ng-show="channel.routes.length > 0">
         <div class="alert alert-warning" ng-show="multiplePrimaries()"><strong>Warning!</strong> You cannot have multiple primary routes.</div>
         <div id="no-more-tables">
@@ -154,7 +159,7 @@
           </label>
         </div>
       </div>
-      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && newRoute.path && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
+      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && (newRoute.path || newRoute.pathTransform) && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
     </fieldset>
   </div>
   <div class="modal-footer">
