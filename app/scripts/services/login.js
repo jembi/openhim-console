@@ -4,12 +4,7 @@
 angular.module('openhimWebui2App')
   .factory('login', function (Api, Authinterceptor) {
 
-    var username = null;
-    var passwordhash = null;
-    var userProfile = {
-      username: false,
-      passwordHash: false
-    };
+    var userProfile = {};
 
     return {
       login: function (email, password, done) {
@@ -19,35 +14,26 @@ angular.module('openhimWebui2App')
             if (!authDetails.salt) {
               done(false);
             }
-
             var sha512 = CryptoJS.algo.SHA512.create();
             sha512.update(authDetails.salt);
             sha512.update(password);
             var hash = sha512.finalize();
-
-            passwordhash = hash.toString(CryptoJS.enc.Hex);
-            username = email;
             // Fetch currently logged in user's profile
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
-              done(userProfile);
+              // notify the authInterceptor of a logged in user
+              Authinterceptor.setLoggedInUser(userProfile);
+              done(true);
               return  userProfile;
             }, function (){
               done(false);
             });
-            //Add values to UserProfile
-            userProfile.passwordHash = passwordhash;
-            userProfile.username = email;
-            // notify the authInterceptor of a logged in user
-            Authinterceptor.setLoggedInUser(userProfile);
           },
           function () {
-            // on error
             done(false);
           });
       },
       logout: function () {
-        userProfile.email = null;
-        userProfile.passwordHash = null;
+        userProfile = null;
       },
       getLoggedInUser: function () {
         return userProfile;
@@ -55,6 +41,5 @@ angular.module('openhimWebui2App')
       isLoggedIn: function () {
         return !!userProfile.passwordHash;
       }
-
     };
   });
