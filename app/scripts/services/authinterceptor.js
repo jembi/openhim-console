@@ -1,30 +1,30 @@
 'use strict';
-/* global CryptoJS: false */
+/* global CryptoJS: true */
 
 angular.module('openhimWebui2App')
   .factory('Authinterceptor', function () {
 
-    //var user = null;
-    var user = {
-      username: 'root@openhim.org',
-      passwordhash: '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb'
-    };
+    var user = localStorage.getItem('loggedOnUser');
+    user = JSON.parse(user);
 
     return {
       'setLoggedInUser': function (u) {
         user = u;
+        localStorage.setItem('loggedOnUser', JSON.stringify( user ));
       },
       'getLoggedInUser': function() {
+        var user = localStorage.getItem('loggedOnUser');
+        user = JSON.parse(user);
         return user;
       },
       'request': function (config) {
 
         if (user) {
 
-          var passwordhash = user.passwordhash;
+          var passwordhash = user.passwordHash;
           var requestSalt = CryptoJS.lib.WordArray.random(16).toString();
           var requestTS = new Date().toISOString();
-          var username = user.username;
+          var username = user.username || user.email;
 
           var sha512 = CryptoJS.algo.SHA512.create();
           sha512.update(passwordhash);

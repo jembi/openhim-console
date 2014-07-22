@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('LoginCtrl', function ($scope, login, $window) {
+  .controller('LoginCtrl', function ($scope, login, $window,$rootScope) {
 
     //if url "#/logout" is returned then destroy the session
     if( $window.location.hash === '#/logout' ){
       localStorage.removeItem('consoleSession');
+      $rootScope.navMenuVisible = false;
     }
 
     $scope.loginEmail = '';

@@ -15,7 +15,7 @@ describe('Service: Authinterceptor', function () {
 
   var u = {
     username: 'test-user',
-    passwordhash: 'test-hash'
+    passwordHash: 'test-hash'
   };
 
   it('should add add authentication details to each request config', function () {
@@ -31,7 +31,7 @@ describe('Service: Authinterceptor', function () {
     config.headers['auth-token'].should.exist;
 
     var sha512 = CryptoJS.algo.SHA512.create();
-    sha512.update(u.passwordhash);
+    sha512.update(u.passwordHash);
     sha512.update(config.headers['auth-salt']);
     sha512.update(config.headers['auth-ts']);
     var hash = sha512.finalize();

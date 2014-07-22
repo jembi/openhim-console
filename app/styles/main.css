@@ -777,7 +777,9 @@ body {
     #no-more-tables tr { 
         display: block; 
     }
-
+    #counter {
+        display: none;
+    }
     /* Hide table headers (but not display: none;, for accessibility) */
     #no-more-tables thead tr { 
         position: absolute;
