@@ -13,6 +13,11 @@ angular.module('openhimWebui2App')
             // on success
             if (!authDetails.salt) {
               done(false);
+            } else {
+              //Get Time diff
+              userProfile.clientTimeStamp = new Date().getTime();
+              userProfile.serverTimeStamp = new Date(authDetails.ts).getTime();
+              userProfile.timeDiff = userProfile.serverTimeStamp - userProfile.clientTimeStamp;
             }
             var sha512 = CryptoJS.algo.SHA512.create();
             sha512.update(authDetails.salt);

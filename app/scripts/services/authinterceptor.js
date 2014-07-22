@@ -24,7 +24,16 @@ angular.module('openhimWebui2App')
           var passwordhash = user.passwordHash;
           var requestSalt = CryptoJS.lib.WordArray.random(16).toString();
           var requestTS = new Date().toISOString();
-          var username = user.username || user.email;
+          try {
+            /**
+             * Try and syncronize with server time
+             *
+             */
+           requestTS = new Date(Math.abs(new Date().getTime() + user.timeDiff)).toISOString();
+          } catch (e) {
+            console.log(e.message);
+          }
+          var username = user.email;
 
           var sha512 = CryptoJS.algo.SHA512.create();
           sha512.update(passwordhash);
