@@ -56,9 +56,7 @@ describe('Service: login', function () {
   it('should logout a user', function () {
     login.logout();
     var user = login.getLoggedInUser();
-
-    (user.email === null).should.be.true;
-    (user.passwordHash === null).should.be.true;
+    (user === null).should.be.true;
   });
 
   it('should check if a user is currently logged in', function () {

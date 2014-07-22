@@ -25,8 +25,8 @@ angular.module('openhimWebui2App')
             Authinterceptor.setLoggedInUser(userProfile);
             //Verify that you can make authenticated requests
             userProfile = Api.Users.get({ email: email }, function (userProfile) {
+              Authinterceptor.setLoggedInUser(userProfile);
               done(true);
-              return userProfile;
             }, function (){
               //Throw error upon failure
               done(false);
@@ -44,7 +44,11 @@ angular.module('openhimWebui2App')
         return userProfile;
       },
       isLoggedIn: function () {
-        return !!userProfile.passwordHash;
+        if (userProfile !== null){
+          return typeof(userProfile.passwordHash) !== 'undefined';
+        } else {
+          return false;
+        }
       }
     };
   });
