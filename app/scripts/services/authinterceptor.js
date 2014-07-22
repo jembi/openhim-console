@@ -41,13 +41,6 @@ angular.module('openhimWebui2App')
           sha512.update(requestTS);
           var hash = sha512.finalize();
 
-          /**
-           * This console.log has been left here so that you can view the time diff between your client and the server
-           * adjust client accordingly to test.
-           * This will be removed when the code is merged into master
-           */
-          console.log('timeDiff: ' + user.timeDiff);
-
           config.headers['auth-username'] = username;
           config.headers['auth-ts'] = requestTS;
           config.headers['auth-salt'] = requestSalt;
