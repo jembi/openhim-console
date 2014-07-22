@@ -24,7 +24,7 @@ angular.module('openhimWebui2App')
             // notify the authInterceptor of a logged in user
             Authinterceptor.setLoggedInUser(userProfile);
             //Verify that you can make authenticated requests
-            userProfile = Api.Users.get({ email: email }, function (profile) {
+            Api.Users.get({ email: email }, function (profile) {
               userProfile = profile;
               done(true);
             }, function (){
