@@ -17,7 +17,7 @@
       <h3>Access Control</h3>
       <div class="form-group">
         <label>Allowed groups and clients</label>
-        <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
+        <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" ng-required="channel.allow.length==0" /></taglist>
       </div>
       <div class="form-group">
         <label>Transaction View Access Control List</label>
@@ -70,25 +70,23 @@
         </div>
       </div>
 
-
       <h3>Routes</h3>
-
+      <!-- route warning alerts Container -->
       <div id="routesWarningAlerts">
-        <div class="alert alert-warning" ng-show="noRoutes()"><strong>Warning!</strong> You must supply atleast one route.</div>
-        <div class="alert alert-warning" ng-show="noPrimaries()"><strong>Warning!</strong> Atleast one of your routes must be set to the primary.</div>
+        <div class="alert alert-warning" ng-repeat="routeWarning in routeWarnings">
+          <strong>Warning!</strong> {{routeWarning}}
+        </div>
       </div>
-
+      <!-- route warning alerts Container -->
       
       <div ng-show="channel.routes.length > 0">
-        <div class="alert alert-warning" ng-show="multiplePrimaries()"><strong>Warning!</strong> You cannot have multiple primary routes.</div>
         <div id="no-more-tables">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Path</th>
-                <th>Path Transform</th>
+                <th>Path/Transform</th>
                 <th>Host</th>
                 <th>Port</th>
                 <th>Primary</th>              
@@ -99,8 +97,10 @@
               <tr ng-repeat="route in channel.routes">
                 <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                 <td data-title="Name"><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
-                <td data-title="Path">{{ route.path }}</td>
-                <td data-title="Path Transform">{{ route.pathTransaform }}</td>
+                <td data-title="Path/Transform">
+                  <span ng-show="route.path">{{ route.path }}</span>
+                  <span ng-show="route.pathTransform">{{ route.pathTransform }}</span>
+                </td>
                 <td data-title="Host">{{ route.host }}</td>
                 <td data-title="Port">{{ route.port }}</td>
                 <td data-title="Primary"><span ng-show="route.primary">&check;</span></td>
@@ -125,7 +125,9 @@
           <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
         </div>
         <div class="form-group" style="float: right;">
-          <label>Path Transform</label>
+          <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')">
+            <label>Path Transform</label>
+          </label>
           <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
         </div>
       </div>
@@ -164,6 +166,13 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="form.$invalid || multiplePrimaries() || noRoutes() || noPrimaries()">Save changes</button>
+
+    <!-- if form isnt valid or channel warnings found then show the tooltip label and disbaled save button -->
+    <label ng-show="form.$invalid || checkChannelWarnings()" tooltip="There appears to be errors within your form. Please ensure all required fields are supplied and no route warnings exist.">
+      <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="true">Save changes</button>
+    </label>
+
+    <!-- if form is valid and NO channel warning then show save button -->
+    <button ng-show="!(form.$invalid || checkChannelWarnings())" type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="false">Save changes</button>
   </div>
 </form>
