@@ -2,12 +2,16 @@
 
 angular.module('openhimWebui2App')
   .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, channel) {
-    var update = false;
+    
+    // backup object for the route being editted
+    $scope.channelRoutesBackup = null;
     if (channel) {
-      update = true;
+      $scope.update = true;
+      $scope.channel = angular.copy(channel);      
+    }else{
+      $scope.update = false;
+      $scope.channel = new Api.Channels();
     }
-
-    $scope.channel = channel || new Api.Channels();
     $scope.newRoute = {};
 
     var onSuccess = function() {
@@ -21,7 +25,7 @@ angular.module('openhimWebui2App')
     };
 
     $scope.saveOrUpdate = function(channel) {
-      if (update) {
+      if ($scope.update) {
         channel.$update(onSuccess);
       } else {
         channel.$save({ channelName: '' }, onSuccess);
@@ -37,6 +41,8 @@ angular.module('openhimWebui2App')
         $scope.channel.routes = [];
       }
       $scope.channel.routes.push(angular.copy(newRoute));
+      // reset the backup route object when a record is added
+      $scope.channelRoutesBackup = null;
 
       // reset the backing object
       $scope.newRoute.name = null;
@@ -47,7 +53,18 @@ angular.module('openhimWebui2App')
     };
 
     $scope.editRoute = function (routeIndex, route) {
+
+      // remove the selected route object from scope
       $scope.channel.routes.splice(routeIndex, 1);
+
+      // if backup object exist update routes object with backup route
+      if ( $scope.channelRoutesBackup != null ){
+        $scope.channel.routes.push(angular.copy($scope.channelRoutesBackup));
+      }
+      // override backup route object to new route being editted
+      $scope.channelRoutesBackup = angular.copy(route);
+
+      
       $scope.newRoute = route;
     };
 

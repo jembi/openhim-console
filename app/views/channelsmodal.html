@@ -1,6 +1,10 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title" id="addChannelLabel">Add a channel</h4>
+  <h4 class="modal-title" id="addChannelLabel">
+    <span ng-show="update">Edit</span>
+    <span ng-show="!update">Add</span>
+     a channel
+  </h4>
 </div>
 <form name="form" novalidate>
   <div class="modal-body">
