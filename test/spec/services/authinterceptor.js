@@ -14,7 +14,7 @@ describe('Service: Authinterceptor', function () {
   }));
 
   var u = {
-    username: 'test-user',
+    email: 'test-user',
     passwordHash: 'test-hash'
   };
 
@@ -25,7 +25,7 @@ describe('Service: Authinterceptor', function () {
     config.headers = {};
     config = Authinterceptor.request(config);
 
-    config.headers['auth-username'].should.be.eql(u.username);
+    config.headers['auth-username'].should.be.eql(u.email);
     config.headers['auth-ts'].should.exist;
     config.headers['auth-salt'].should.exist;
     config.headers['auth-token'].should.exist;

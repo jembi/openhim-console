@@ -7,15 +7,16 @@ describe('Service: login', function () {
   beforeEach(module('openhimWebui2App'));
 
   // instantiate service
-  var login, httpBackend;
-  beforeEach(inject(function (_login_, $httpBackend) {
+  var login, httpBackend,Authinterceptor;
+  beforeEach(inject(function (_login_, $httpBackend,_Authinterceptor_) {
     login = _login_;
 
     httpBackend = $httpBackend;
+    Authinterceptor = _Authinterceptor_;
 
     httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
       salt: 'test-salt',
-      ts: 'test-ts'
+      ts: new Date(new Date().getTime() + 3600000).toISOString() // 1 hour ahead
     });
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
@@ -57,6 +58,13 @@ describe('Service: login', function () {
     login.logout();
     var user = login.getLoggedInUser();
     (user === null).should.be.true;
+  });
+
+  it('should have a timediff', function(){
+    login.login('test@user.org', 'test-password', function(){});
+    httpBackend.flush();
+    var user = Authinterceptor.getLoggedInUser();
+    user.should.have.property('timeDiff');
   });
 
   it('should check if a user is currently logged in', function () {
