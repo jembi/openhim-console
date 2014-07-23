@@ -32,7 +32,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
   });
 
   it('should attach a single transaction to the scope', function () {
-    httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));    
+    httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
     createController();
     httpBackend.flush();
     scope.transactionDetails.name.should.equal('Transaction 1');

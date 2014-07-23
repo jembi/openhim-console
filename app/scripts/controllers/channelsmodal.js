@@ -5,9 +5,15 @@ angular.module('openhimWebui2App')
     
     // backup object for the route being editted
     $scope.channelRoutesBackup = null;
+    $scope.routeWarnings = [];
+    $scope.contentMatching = 'No matching';
     if (channel) {
       $scope.update = true;
-      $scope.channel = angular.copy(channel);      
+      $scope.channel = angular.copy(channel);
+
+      if( channel.matchContentRegex ){ $scope.contentMatching = 'RegEx Matching'; }
+      if( channel.matchContentJson ){ $scope.contentMatching = 'JSON matching'; }
+      if( channel.matchContentXpath ){ $scope.contentMatching = 'XML matching'; }
     }else{
       $scope.update = false;
       $scope.channel = new Api.Channels();
@@ -24,7 +30,28 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
-    $scope.saveOrUpdate = function(channel) {
+    $scope.saveOrUpdate = function(channel, contentMatching) {
+      switch (contentMatching) {
+        case 'RegEx Matching':
+          channel.matchContentXpath = null;
+          channel.matchContentJson = null;
+          channel.matchContentValue = null;
+          break;
+        case 'XML matching':
+          channel.matchContentRegex = null;
+          channel.matchContentJson = null;
+          break;
+        case 'JSON matching':
+          channel.matchContentRegex = null;
+          channel.matchContentXpath = null;
+          break;
+        default:
+          channel.matchContentRegex = null;
+          channel.matchContentXpath = null;
+          channel.matchContentJson = null;
+          channel.matchContentValue = null;
+      }
+
       if ($scope.update) {
         channel.$update(onSuccess);
       } else {
@@ -44,11 +71,17 @@ angular.module('openhimWebui2App')
       // reset the backup route object when a record is added
       $scope.channelRoutesBackup = null;
 
+      // Check if any route warnings exist and add them to routeWarnings object
+      $scope.checkRouteWarnings();
+
       // reset the backing object
       $scope.newRoute.name = null;
       $scope.newRoute.path = null;
+      $scope.newRoute.pathTransform = null;
       $scope.newRoute.host = null;
       $scope.newRoute.port = null;
+      $scope.newRoute.username = null;
+      $scope.newRoute.password = null;
       $scope.newRoute.primary = false;
     };
 
@@ -66,11 +99,52 @@ angular.module('openhimWebui2App')
 
       
       $scope.newRoute = route;
+
+      // Check if any route warnings exist and add them to routeWarnings object
+      $scope.checkRouteWarnings();
     };
 
     $scope.removeRoute = function (routeIndex) {
       $scope.channel.routes.splice(routeIndex, 1);
+
+      // Check if any route warnings exist and add them to routeWarnings object
+      $scope.checkRouteWarnings();
     };
+
+    $scope.checkRouteWarnings = function () {
+
+      // clear the routeWarnings object to have a clean object
+      $scope.routeWarnings = [];
+      var countErrors = 0;
+
+      if ($scope.noRoutes() === true) {
+        $scope.routeWarnings.push('You must supply atleast one route.');
+        countErrors++;
+      }
+      if ($scope.noPrimaries() === true) {
+        $scope.routeWarnings.push('Atleast one of your routes must be set to the primary.');
+        countErrors++;
+      }
+      if ($scope.multiplePrimaries() === true) {
+        $scope.routeWarnings.push('You cannot have multiple primary routes.');
+        countErrors++;
+      }
+
+      return countErrors;
+      
+    };
+
+
+    // verify if any warnings exist - if warnings exist then disable channel save button
+    $scope.checkChannelWarnings = function () {
+      var routeWarnings = $scope.checkRouteWarnings();
+
+      if ( routeWarnings > 0 ){
+        return true;
+      }
+      return false; 
+    };
+
 
     $scope.multiplePrimaries = function () {
       if ($scope.channel.routes) {
@@ -89,5 +163,30 @@ angular.module('openhimWebui2App')
 
       return false;
     };
+
+    $scope.noPrimaries = function () {
+      if ($scope.channel.routes.length > 0) {
+        for (var i = 0 ; i < $scope.channel.routes.length ; i++) {
+          if ($scope.channel.routes[i].primary === true) {
+            // atleast one primary so return false
+            return false;
+          }
+        }
+      }
+      // return true if no primary routes found
+      return true;
+    };
+
+
+    /* ------------------ Check to see if routes are empty --------------------- */
+    $scope.noRoutes = function () {
+      //no routes found - return true
+      if ($scope.channel.routes.length === 0) {
+        return true;
+      }
+      return false;
+    };
+    /* ------------------ Check to see if routes are empty --------------------- */
+
 
   });

@@ -47,6 +47,10 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl'
+      })
       .when('/logout', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
@@ -97,6 +101,9 @@ angular
 
           // Put updated object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
+          $rootScope.sessionUser = sessionUser;
+          $rootScope.passwordHash = $rootScope.passwordHash || false;
+
 
         }
 

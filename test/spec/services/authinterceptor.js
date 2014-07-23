@@ -14,8 +14,8 @@ describe('Service: Authinterceptor', function () {
   }));
 
   var u = {
-    username: 'test-user',
-    passwordhash: 'test-hash'
+    email: 'test-user',
+    passwordHash: 'test-hash'
   };
 
   it('should add add authentication details to each request config', function () {
@@ -25,13 +25,13 @@ describe('Service: Authinterceptor', function () {
     config.headers = {};
     config = Authinterceptor.request(config);
 
-    config.headers['auth-username'].should.be.eql(u.username);
+    config.headers['auth-username'].should.be.eql(u.email);
     config.headers['auth-ts'].should.exist;
     config.headers['auth-salt'].should.exist;
     config.headers['auth-token'].should.exist;
 
     var sha512 = CryptoJS.algo.SHA512.create();
-    sha512.update(u.passwordhash);
+    sha512.update(u.passwordHash);
     sha512.update(config.headers['auth-salt']);
     sha512.update(config.headers['auth-ts']);
     var hash = sha512.finalize();

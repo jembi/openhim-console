@@ -7,15 +7,30 @@ describe('Service: login', function () {
   beforeEach(module('openhimWebui2App'));
 
   // instantiate service
-  var login, httpBackend;
-  beforeEach(inject(function (_login_, $httpBackend) {
+  var login, httpBackend,Authinterceptor;
+  beforeEach(inject(function (_login_, $httpBackend,_Authinterceptor_) {
     login = _login_;
 
     httpBackend = $httpBackend;
+    Authinterceptor = _Authinterceptor_;
 
     httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
       salt: 'test-salt',
-      ts: 'test-ts'
+      ts: new Date(new Date().getTime() + 3600000).toISOString() // 1 hour ahead
+    });
+
+    httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
+      '__v': 0,
+      '_id': '539846c240f2eb682ffeca4b',
+      'email': 'test@user.org',
+      'firstname': 'test',
+      'passwordAlgorithm': 'sha512',
+      'passwordHash': '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
+      'passwordSalt': 'test-salt',
+      'surname': 'test',
+      'groups': [
+        'admin'
+      ]
     });
   }));
 
@@ -26,6 +41,7 @@ describe('Service: login', function () {
 
   it('should login a user and fetch the currently logged in user', function () {
     httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'));
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
     login.login('test@user.org', 'test-password', function(){});
     
     httpBackend.flush();
@@ -33,16 +49,22 @@ describe('Service: login', function () {
     var user = login.getLoggedInUser();
 
     user.should.exist;
-    user.should.have.property('username', 'test@user.org');
-    user.should.have.property('passwordhash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160');
+    user.should.have.property('email', 'test@user.org');
+    user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160');
 
   });
 
   it('should logout a user', function () {
     login.logout();
     var user = login.getLoggedInUser();
-    (user.username === null).should.be.true;
-    (user.passwordhash === null).should.be.true;
+    (user === null).should.be.true;
+  });
+
+  it('should have a timediff', function(){
+    login.login('test@user.org', 'test-password', function(){});
+    httpBackend.flush();
+    var user = Authinterceptor.getLoggedInUser();
+    user.should.have.property('timeDiff');
   });
 
   it('should check if a user is currently logged in', function () {
