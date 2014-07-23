@@ -91,7 +91,7 @@ angular.module('openhimWebui2App')
       $scope.channel.routes.splice(routeIndex, 1);
 
       // if backup object exist update routes object with backup route
-      if ( $scope.channelRoutesBackup != null ){
+      if ( $scope.channelRoutesBackup !== null ){
         $scope.channel.routes.push(angular.copy($scope.channelRoutesBackup));
       }
       // override backup route object to new route being editted
@@ -142,7 +142,7 @@ angular.module('openhimWebui2App')
       if ( routeWarnings > 0 ){
         return true;
       }
-      return false; 
+      return false;
     };
 
 
