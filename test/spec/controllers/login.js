@@ -3,7 +3,7 @@
 
 describe('Controller: LoginCtrl', function () {
 
-  // load the service's module
+  // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
   // instantiate service
