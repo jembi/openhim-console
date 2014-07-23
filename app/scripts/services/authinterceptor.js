@@ -29,7 +29,7 @@ angular.module('openhimWebui2App')
              * Try and syncronize with server time
              *
              */
-           requestTS = new Date(Math.abs(new Date().getTime() + user.timeDiff)).toISOString();
+            requestTS = new Date(Math.abs(new Date().getTime() + user.timeDiff)).toISOString();
           } catch (e) {
             console.log(e.message);
           }

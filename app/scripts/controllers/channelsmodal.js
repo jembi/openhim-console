@@ -101,13 +101,22 @@ angular.module('openhimWebui2App')
       $scope.routeWarnings = [];
       var countErrors = 0;
 
-      if ( $scope.noRoutes() == true ){ $scope.routeWarnings.push('You must supply atleast one route.'), countErrors++; }
-      if ( $scope.noPrimaries() == true ){ $scope.routeWarnings.push('Atleast one of your routes must be set to the primary.'), countErrors++; }
-      if ( $scope.multiplePrimaries() == true ){ $scope.routeWarnings.push('You cannot have multiple primary routes.'), countErrors++; }
+      if ($scope.noRoutes() === true) {
+        $scope.routeWarnings.push('You must supply atleast one route.');
+        countErrors++;
+      }
+      if ($scope.noPrimaries() === true) {
+        $scope.routeWarnings.push('Atleast one of your routes must be set to the primary.');
+        countErrors++;
+      }
+      if ($scope.multiplePrimaries() === true) {
+        $scope.routeWarnings.push('You cannot have multiple primary routes.');
+        countErrors++;
+      }
 
       return countErrors;
       
-    }
+    };
 
 
     // verify if any warnings exist - if warnings exist then disable channel save button
@@ -118,9 +127,9 @@ angular.module('openhimWebui2App')
       if ( routeWarnings > 0 ){
         return true;
       }
-      return false
+      return false;
  
-    }
+    };
 
 
     $scope.multiplePrimaries = function () {
@@ -158,8 +167,8 @@ angular.module('openhimWebui2App')
     /* ------------------ Check to see if routes are empty --------------------- */
     $scope.noRoutes = function () {
       //no routes found - return true
-      if( $scope.channel.routes.length == 0 ){
-        return true
+      if ($scope.channel.routes.length === 0) {
+        return true;
       }
       return false;
     };
