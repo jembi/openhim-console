@@ -61,31 +61,29 @@ angular.module('openhimWebui2App')
         return 'No Email supplied!';
       }else{
         /*------------------Set sessionID and expire timestamp------------------*/
-        var currentTime = new Date();
-        //add 2hours onto timestamp (2hours persistence time)
-        var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
-        //generate random sessionID
-        var sessionID = Math.random().toString(36).slice(2).toUpperCase();
-
-        //create session object
-        var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'expires': expireTime };
-
-        // Put the object into storage
-        localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
-
-        // get the logged in user details
+        
+         // get the logged in user details
         var userProfile = login.getLoggedInUser();
         // check if userProfile exists
         if ( !userProfile.groups ){
           return 'Logged in user could not be found!';
         }else{
-          // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
-          if (userProfile.groups.indexOf('admin') >= 0) {
-            $rootScope.userGroupAdmin = true;
-          } else {
-            $rootScope.userGroupAdmin = false;
-          }
+
+          var currentTime = new Date();
+          //add 2hours onto timestamp (2hours persistence time)
+          var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
+          //generate random sessionID
+          var sessionID = Math.random().toString(36).slice(2).toUpperCase();
+
+          var sessionUserGroups = userProfile.groups;
+
+          //create session object
+          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'sessionUserGroups': sessionUserGroups, 'expires': expireTime };
+
+          // Put the object into storage
+          localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
         }
+        
         /*------------------Set sessionID and expire timestamp------------------*/
       }
       

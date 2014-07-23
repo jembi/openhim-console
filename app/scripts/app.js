@@ -95,15 +95,22 @@ angular
           //get sessionID
           var sessionID = consoleSession.sessionID;
           var sessionUser = consoleSession.sessionUser;
+          var sessionUserGroups = consoleSession.sessionUserGroups;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': sessionUser, 'expires': expireTime };
+          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': sessionUser, 'sessionUserGroups': sessionUserGroups, 'expires': expireTime };
 
           // Put updated object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
           $rootScope.sessionUser = sessionUser;
           $rootScope.passwordHash = $rootScope.passwordHash || false;
 
+          // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
+          if (sessionUserGroups.indexOf('admin') >= 0) {
+            $rootScope.userGroupAdmin = true;
+          } else {
+            $rootScope.userGroupAdmin = false;
+          }
 
         }
 
