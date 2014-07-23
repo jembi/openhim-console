@@ -186,7 +186,7 @@ describe('Controller: LoginCtrl', function () {
   // Testing the createUserSession() function
   describe('*createUserSession() tests', function () {
 
-    // process the createUserSession() function and throw email not supplied error
+    // process the createUserSession() function and throw email if not supplied error
     it('should run the createUserSession() function and throw error if email not supplied', function () {
 
       createController();

@@ -56,7 +56,7 @@ angular.module('openhimWebui2App')
 
     $scope.createUserSession = function(loginEmail){
 
-      // check if email supllied
+      // check if email supplied
       if ( !loginEmail ){
         return 'No Email supplied!';
       }else{

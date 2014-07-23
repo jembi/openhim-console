@@ -10,7 +10,7 @@ angular.module('openhimWebui2App')
       login: function (email, password, done) {
         // fetch salt from openhim-core serer and work out password hash
         Api.Authenticate.get({ email: email }, function (authDetails) {
-            // on success;
+            // on success
             if (!authDetails.salt) {
               done(false);
             }else{
