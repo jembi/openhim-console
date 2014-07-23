@@ -39,6 +39,7 @@ angular.module('openhimWebui2App')
 
     $scope.checkLoginCredentials = function(loginEmail, loginPassword){
       login.login(loginEmail, loginPassword, function(loggedIn) {
+        $scope.alerts = [];
         if (loggedIn) {
 
           //Create the session for the logged in user
@@ -48,26 +49,44 @@ angular.module('openhimWebui2App')
           $window.location = '#/transactions';
 
         }else{
-          $scope.alerts = [];
           $scope.alerts.push({ type: 'danger', msg: 'The supplied credentials were incorrect. Please try again' });
         }
       });
     };
 
     $scope.createUserSession = function(loginEmail){
-      /*------------------Set sessionID and expire timestamp------------------*/
-      var currentTime = new Date();
-      //add 2hours onto timestamp (2hours persistence time)
-      var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
-      //generate random sessionID
-      var sessionID = Math.random().toString(36).slice(2).toUpperCase();
 
-      //create session object
-      var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'expires': expireTime };
+      // check if email supplied
+      if ( !loginEmail ){
+        return 'No Email supplied!';
+      }else{
+        /*------------------Set sessionID and expire timestamp------------------*/
+        
+         // get the logged in user details
+        var userProfile = login.getLoggedInUser();
+        // check if userProfile exists
+        if ( !userProfile.groups ){
+          return 'Logged in user could not be found!';
+        }else{
 
-      // Put the object into storage
-      localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
-      /*------------------Set sessionID and expire timestamp------------------*/
+          var currentTime = new Date();
+          //add 2hours onto timestamp (2hours persistence time)
+          var expireTime = new Date(currentTime.getTime() + (2*1000*60*60));
+          //generate random sessionID
+          var sessionID = Math.random().toString(36).slice(2).toUpperCase();
+
+          var sessionUserGroups = userProfile.groups;
+
+          //create session object
+          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'sessionUserGroups': sessionUserGroups, 'expires': expireTime };
+
+          // Put the object into storage
+          localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
+        }
+        
+        /*------------------Set sessionID and expire timestamp------------------*/
+      }
+      
     };
 
   });
