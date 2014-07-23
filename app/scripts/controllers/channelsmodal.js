@@ -3,18 +3,21 @@
 angular.module('openhimWebui2App')
   .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, channel) {
     
+    // backup object for the route being editted
+    $scope.channelRoutesBackup = null;
     $scope.routeWarnings = [];
-    var update = false;
     $scope.contentMatching = 'No matching';
     if (channel) {
-      update = true;
+      $scope.update = true;
+      $scope.channel = angular.copy(channel);
 
       if( channel.matchContentRegex ){ $scope.contentMatching = 'RegEx Matching'; }
       if( channel.matchContentJson ){ $scope.contentMatching = 'JSON matching'; }
       if( channel.matchContentXpath ){ $scope.contentMatching = 'XML matching'; }
+    }else{
+      $scope.update = false;
+      $scope.channel = new Api.Channels();
     }
-
-    $scope.channel = channel || new Api.Channels();
     $scope.newRoute = {};
 
     var onSuccess = function() {
@@ -49,7 +52,7 @@ angular.module('openhimWebui2App')
           channel.matchContentValue = null;
       }
 
-      if (update) {
+      if ($scope.update) {
         channel.$update(onSuccess);
       } else {
         channel.$save({ channelName: '' }, onSuccess);
@@ -65,6 +68,8 @@ angular.module('openhimWebui2App')
         $scope.channel.routes = [];
       }
       $scope.channel.routes.push(angular.copy(newRoute));
+      // reset the backup route object when a record is added
+      $scope.channelRoutesBackup = null;
 
       // Check if any route warnings exist and add them to routeWarnings object
       $scope.checkRouteWarnings();
@@ -81,7 +86,18 @@ angular.module('openhimWebui2App')
     };
 
     $scope.editRoute = function (routeIndex, route) {
+
+      // remove the selected route object from scope
       $scope.channel.routes.splice(routeIndex, 1);
+
+      // if backup object exist update routes object with backup route
+      if ( $scope.channelRoutesBackup !== null ){
+        $scope.channel.routes.push(angular.copy($scope.channelRoutesBackup));
+      }
+      // override backup route object to new route being editted
+      $scope.channelRoutesBackup = angular.copy(route);
+
+      
       $scope.newRoute = route;
 
       // Check if any route warnings exist and add them to routeWarnings object
@@ -121,14 +137,12 @@ angular.module('openhimWebui2App')
 
     // verify if any warnings exist - if warnings exist then disable channel save button
     $scope.checkChannelWarnings = function () {
-
       var routeWarnings = $scope.checkRouteWarnings();
 
       if ( routeWarnings > 0 ){
         return true;
       }
       return false;
- 
     };
 
 
