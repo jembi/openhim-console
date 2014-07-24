@@ -685,7 +685,7 @@ body {
 .transactionsFilterRefreshDiv{ float: right; margin-bottom: 20px; padding-top: 22px; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
-.form-group-2columns { clear: both; display: inline-block; width: 100% }
+.form-group-2columns { clear: both; display: inline-block; width: 100%; }
 .form-group-2columns .form-group { width: 47%; }
 /*------- Custom CSS Changes ----*/
 
