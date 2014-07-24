@@ -4,6 +4,8 @@
 angular.module('openhimWebui2App')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api) {
 
+
+
     $scope.transactionsSelected = [];
 
     //return results for the first page (20 results)
@@ -192,6 +194,23 @@ angular.module('openhimWebui2App')
       $scope.refreshTransactionsList();
     });
     /*------------------------Transactions ReRun Functions----------------------------*/
+
+
+
+
+      $scope.alerting = [
+        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+        { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
+      ];
+
+      $scope.addAlert = function() {
+        $scope.alerting.push({msg: 'Another alert!'});
+      };
+
+      $scope.closeAlert = function(index) {
+        $scope.alerting.splice(index, 1);
+      };
+
 
 
   });
