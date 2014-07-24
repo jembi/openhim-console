@@ -129,9 +129,7 @@
           <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
         </div>
         <div class="form-group" style="float: right;">
-          <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')">
-            <label>Path Transform</label>
-          </label>
+          <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')">Path Transform</label>
           <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
         </div>
       </div>
@@ -165,7 +163,7 @@
           </label>
         </div>
       </div>
-      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && (newRoute.path || newRoute.pathTransform) && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
+      <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
     </fieldset>
   </div>
   <div class="modal-footer">
