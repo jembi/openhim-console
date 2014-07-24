@@ -9,6 +9,9 @@
 				<div class="panel-title">Transactions Log</div>
 			</div>
 			<div class="panel-body">
+            
+              <alert ng-repeat="alert in alerting" type="alert.type" close="closeAlert($index)">{{alert.msg}} {{alert.type}}</alert>
+              <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
 
             <!-- Filter options -->
                 <div class="transaction-filter-options">
