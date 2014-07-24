@@ -1,3 +1,5 @@
+<!-- $rooScope.userGroupAdmin is configured in scripts/app.js -->
+
 <div class="page-content">
   <div class="row">
     <!-- include the sidebar -->
@@ -25,10 +27,9 @@
                 <label>Surname</label>
                 <input class="form-control" type="text" ng-model="user.surname" required/>
               </div>
-              <div class="form-group">
+              <div ng-show="userGroupAdmin" class="form-group">
                 <label>Allowed Roles</label>
-                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..."
-                                                       type="text" required/></taglist>
+                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required/></taglist>
               </div>
               <div class="form-group">
                 <label>Password</label>
