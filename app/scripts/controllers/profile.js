@@ -2,7 +2,7 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('ProfileCtrl', function ($scope, Api) {
+  .controller('ProfileCtrl', function ($scope, Api, login) {
 
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
@@ -22,25 +22,39 @@ angular.module('openhimWebui2App')
       $scope.alerts.push({ type: 'success', msg: 'Your profile was successfully updated!' });
     };
 
-    var saveUser = function (user) {
-      user.$update(function () { done(); });
+    var saveUser = function (user,email,password) {
+      user.$update(function () {
+        if (password !== '') {
+          //re-login with new credentials
+          login.login(email, password, function (loggedIn) {
+            $scope.alerts = [];
+            if (loggedIn) {
+              done();
+            } else {
+              $scope.alerts.push({ type: 'danger', msg: 'Failed to re - login' });
+            }
+          });
+        } else {
+          done();
+        }
+      });
     };
 
-    var setHashAndSave = function (user, hash, salt) {
+    var setHashAndSave = function (user, hash, salt,email,password) {
       if (typeof salt !== 'undefined' && salt !== null) {
         user.passwordSalt = salt;
       }
       user.passwordHash = hash;
-      saveUser(user);
+      saveUser(user,email,password);
     };
 
     $scope.save = function (user, password) {
       if (password) {
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
-        setHashAndSave(user, h.hash, h.salt);
+        setHashAndSave(user, h.hash, h.salt,user.email,password);
       } else {
-        saveUser(user);
+        saveUser(user,'','');
       }
     };
 
