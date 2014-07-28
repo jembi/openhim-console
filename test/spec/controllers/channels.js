@@ -40,12 +40,13 @@ describe('Controller: ChannelsCtrl', function () {
     scope.channels.length.should.equal(2);
   });
 
-  it('should remove a channel', function () {
+  it('should open a modal to confirm deletion of a channel', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectDELETE(new RegExp('.*/channels/Sample%20JsonStub%20Channel%201')).respond(200, '');
-    scope.removeChannel(scope.channels[0]);
+    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    scope.confirmDelete(scope.channels[0]);
+    modalSpy.should.be.calledOnce;
     httpBackend.flush();
   });
 
@@ -54,7 +55,6 @@ describe('Controller: ChannelsCtrl', function () {
     scope.addChannel();
 
     modalSpy.should.be.calledOnce;
-
     httpBackend.flush();
   });
 
@@ -63,7 +63,6 @@ describe('Controller: ChannelsCtrl', function () {
     scope.editChannel();
 
     modalSpy.should.be.calledOnce;
-
     httpBackend.flush();
   });
 });

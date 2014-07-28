@@ -2,50 +2,68 @@
   <div class="row">
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
-    <!-- end -->
-
     <div class="col-md-10">
       <div class="content-box-large">
         <div class="panel-heading">
           <div class="panel-title">Profile</div>
         </div>
-        <form name="form" novalidate>
-          <div class="modal-body">
-            <alert type="alert.type" ng-repeat="alert in alerts">{{alert.msg}}</alert>
+
+
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+
+
+        <div class="panel-body">
+          <form name="form" novalidate>
             <fieldset>
               <div class="form-group">
                 <label>Email</label>
-                <input class="form-control" type="text" ng-model="user.email" required/>
+                <input class="form-control" type="text" ng-model="user.email" ng-disabled="true" required />
               </div>
-              <div class="form-group">
-                <label>First Name</label>
-                <input class="form-control" type="text" ng-model="user.firstname" required/>
+
+              <div class="form-group-2columns">
+                <div class="form-group" style="float: left;">
+                  <label>First Name</label>
+                  <input class="form-control" type="text" ng-model="user.firstname" required />
+                </div>
+                <div class="form-group" style="float: right;">
+                  <label>Surname</label>
+                  <input class="form-control" type="text" ng-model="user.surname" required />
+                </div>
               </div>
-              <div class="form-group">
-                <label>Surname</label>
-                <input class="form-control" type="text" ng-model="user.surname" required/>
-              </div>
+
               <div class="form-group">
                 <label>Allowed Roles</label>
-                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..."
-                                                       type="text" required/></taglist>
+                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
               </div>
-              <div class="form-group">
-                <label>Password</label>
-                <input class="form-control" type="text" ng-model="password" required/>
-              </div>
-              <div class="form-group">
-                <label>Retype password</label>
-                <input class="form-control" type="text" ng-model="passwordRetype" required/>
+
+              <div class="form-group-2columns">
+                <div class="form-group" style="float: left;">
+                  <label>Password</label>
+                  <input class="form-control" type="password" ng-model="password" />
+                </div>
+                <div class="form-group" style="float: right;">
+                  <label>Confirm password</label>
+                  <input class="form-control" type="password" ng-model="passwordConfirm" />
+                </div>
               </div>
             </fieldset>
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="save-profile-changes" class="btn btn-primary" ng-click="save(user, password)"
-                    ng-disabled="!isUserValid(user, password, passwordRetype)">Save changes
-            </button>
-          </div>
-        </form>
+
+            <!-- show loading gif when scope object empty and no server errors exist -->
+            <div class="loadingContainer" ng-show="!(user || alerts.server)">
+              <img src="images/loading.gif" alt="Loading..." />
+            </div>
+
+            <!-- Server Alerts -->
+            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <!-- Server Alerts -->
+            
+            <button type="button" id="save-profile-changes" class="btn btn-primary" ng-click="save(user, password)" ng-disabled="form.$invalid || !isUserValid(password, passwordConfirm)">Save changes</button>
+            
+          </form>  
+        </div>
+        
       </div>
     </div>
   </div>
