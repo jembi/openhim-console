@@ -22,13 +22,10 @@
                         </select>
                     </div>
                     <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
-                        <label tooltip="Select an option to filter transactions by their endpoint">Endpoint: </label>
-                        <select class="form-control" ng-model="filterEndpoint">
-                            <option value="">Don't filter</option>
-                            <option value="">Save patient Encounter</option>
-                            <option value="">Query Prev Patient Encounter</option>
-                            <option value="">Get Patient</option>
-                            <option value="">Query Patients</option>
+                        <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
+                        <select class="form-control" ng-model="filterChannel">
+                            <option value="">Don't filter</option>                            
+                            <option ng-repeat="channel in channels" ng-value="channel._id">{{channel.name}}</option>
                         </select>
                     </div>
                     <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
@@ -36,7 +33,7 @@
 
                         <script type="text/javascript">
                             // When the document is ready
-                            $(document).ready(function () {                            
+                            $(document).ready(function () {
                                 $('.input-daterange').datepicker({
                                     todayBtn: "linked",
                                     format: 'yyyy-mm-dd'
@@ -65,7 +62,8 @@
     							<th>#</th>
     							<th>HTTP Method</th>
     							<th>Path</th>
-    							<th>Request Params</th>
+                                <th>Request Params</th>
+    							<th>Channel</th>
     							<th>Status</th>
     							<th>Received Time</th>
     						</tr>
@@ -87,6 +85,7 @@
     							<td data-title="HTTP Method">{{ transaction.request.method }}</td>
     							<td data-title="Path">{{ transaction.request.path }}</td>
     							<td data-title="Request Params">{{ transaction.request.querystring }}</td>
+                                <td data-title="Channel">{{ channelsMap[transaction.channelID] }}</td>
     							<td data-title="Status">{{ transaction.status }}</td>
     							<td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
     						</tr>
