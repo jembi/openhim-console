@@ -2,7 +2,19 @@
 /* global jQuery:false */
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
+  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api) {
+
+    // get the channels for the transactions filter dropdown
+    $scope.channels = Api.Channels.query(function(){
+      $scope.channelsMap = [];
+      angular.forEach($scope.channels, function(channel){
+        $scope.channelsMap[channel._id] = channel.name;
+      });
+    },
+    function(){
+      // server error - could not connect to API to get channels
+    });
+
 
     $scope.transactionsSelected = [];
 
@@ -10,7 +22,7 @@ angular.module('openhimWebui2App')
     $scope.showpage = 0;
     $scope.showlimit = 10;
     $scope.filterStatus = '';
-    $scope.filterEndpoint = '';
+    $scope.filterChannel = '';
     $scope.filterDateStart = '';
     $scope.filterDateEnd = '';
 
@@ -21,12 +33,12 @@ angular.module('openhimWebui2App')
       var startDate, endDate;
 
       var filterStatus = $scope.filterStatus;
-      var filterEndpoint = $scope.filterEndpoint;
+      var filterChannel = $scope.filterChannel;
       var filterDateStart = $scope.filterDateStart;
       var filterDateEnd = $scope.filterDateEnd;
 
       if(filterStatus){ filtersObject.status = filterStatus; }
-      if(filterEndpoint){ filtersObject.endpoint = filterEndpoint; }
+      if(filterChannel){ filtersObject.channelID = filterChannel; }
       if(filterDateStart && filterDateEnd){
         startDate = new Date( filterDateStart ).toISOString();
         endDate = new Date( filterDateEnd );
@@ -38,17 +50,16 @@ angular.module('openhimWebui2App')
       }
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
-
+      
       return filtersObject;
     };
 
     //Refresh transactions list
     $scope.refreshTransactionsList = function () {
-      $scope.transactions = null;
-      Alerting.AlertReset();
-
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
+      //close message box if it is visible
+      $scope.alerts = '';
 
       Api.Transactions.query( $scope.returnFilterObject(), function (values) {
         // on success
@@ -58,7 +69,7 @@ angular.module('openhimWebui2App')
           jQuery('#loadMoreTransactions').hide();
 
           if( values.length === 0 ){
-            Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
+            $scope.alerts = [{ type: 'warning', msg: 'There are no transactions for the current filters' }];
           }
 
         }else{
@@ -73,7 +84,7 @@ angular.module('openhimWebui2App')
       function (err) {
         // on error - Hide load more button and show error message
         jQuery('#loadMoreTransactions').hide();
-        Alerting.AlertAddServerMsg(err.status);
+        $scope.returnError(err.status);
       });
 
     };
@@ -82,9 +93,6 @@ angular.module('openhimWebui2App')
 
     //Refresh transactions list
     $scope.loadMoreTransactions = function () {
-      $scope.busyLoadingMore = true;
-      Alerting.AlertReset();
-
       $scope.showpage++;
 
       Api.Transactions.query( $scope.returnFilterObject(), function (values) {
@@ -95,19 +103,17 @@ angular.module('openhimWebui2App')
 
         if( values.length < $scope.showlimit ){
           jQuery('#loadMoreTransactions').hide();
-          Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
+          $scope.alerts = [{ type: 'warning', msg: 'There are no more transactions to retrieve' }];
         }
 
         //make sure newly added transactions are checked as well
         $scope.toggleCheckedAll();
 
-        $scope.busyLoadingMore = false;
-
       },
       function (err) {
         // on error - Hide load more button and show error message
         jQuery('#loadMoreTransactions').hide();
-        Alerting.AlertAddServerMsg(err.status);
+        $scope.returnError(err.status);
       });
 
     };
@@ -122,9 +128,30 @@ angular.module('openhimWebui2App')
     /*------------------------Transactions List and Detail view functions----------------------------*/
 
 
+    /*------------------------Error Codes functions----------------------------*/
+    //close the alert box
+    $scope.closeMsg = function() { $scope.alerts = ''; };
+
+    //Function to generate server response errors
+    $scope.returnError = function(errCode){
+      switch (errCode){
+        case 401:
+          $scope.alerts = [{ type: 'danger', msg: 'Authentication is required to connect to the server. Please contact the server administrator' }];
+          break;
+        case 403:
+          $scope.alerts = [{ type: 'danger', msg: 'The request has been forbidden by the server. Please contact the server administrator' }];
+          break;
+        case 404:
+          $scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
+          break;
+      }
+    };
+    /*------------------------Error Codes functions----------------------------*/
+
+    
+
     /*------------------------Transactions ReRun Functions----------------------------*/
     $scope.confirmRerunTransactions = function(){
-      Alerting.AlertReset();
       
       var transactionsSelected = $scope.transactionsSelected;
       $modal.open({
@@ -177,5 +204,6 @@ angular.module('openhimWebui2App')
       $scope.refreshTransactionsList();
     });
     /*------------------------Transactions ReRun Functions----------------------------*/
+
 
   });
