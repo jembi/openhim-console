@@ -6,10 +6,11 @@ angular.module('openhimWebui2App')
 
     // get the channels for the transactions filter dropdown
     $scope.channels = Api.Channels.query(function(){
-      $scope.channelsMap = [];
+      $scope.channelsMap = {};
       angular.forEach($scope.channels, function(channel){
         $scope.channelsMap[channel._id] = channel.name;
       });
+      console.log($scope.channelsMap)
     },
     function(){
       // server error - could not connect to API to get channels
