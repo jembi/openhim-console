@@ -46,9 +46,8 @@ describe('Controller: TransactionsCtrl', function () {
     scope.channels.length.should.equal(2);
     scope.channels[0].should.have.property('name', 'Sample JsonStub Channel 1');
     scope.channels[1].should.have.property('name', 'Sample JsonStub Channel 2');
-    scope.channelsMap.length.should.equal(2);
-    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059dd8');
-    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059aa3');
+    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059dd8', 'Sample JsonStub Channel 1');
+    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059aa3', 'Sample JsonStub Channel 2');
   });
 
 });

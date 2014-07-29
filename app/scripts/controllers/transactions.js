@@ -10,7 +10,6 @@ angular.module('openhimWebui2App')
       angular.forEach($scope.channels, function(channel){
         $scope.channelsMap[channel._id] = channel.name;
       });
-      console.log($scope.channelsMap)
     },
     function(){
       // server error - could not connect to API to get channels
