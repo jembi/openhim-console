@@ -4,25 +4,13 @@
 angular.module('openhimWebui2App')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
-    // get the channels for the transactions filter dropdown
-    $scope.channels = Api.Channels.query(function(){
-      $scope.channelsMap = {};
-      angular.forEach($scope.channels, function(channel){
-        $scope.channelsMap[channel._id] = channel.name;
-      });
-    },
-    function(){
-      // server error - could not connect to API to get channels
-    });
-
-
     $scope.transactionsSelected = [];
 
     //return results for the first page (20 results)
     $scope.showpage = 0;
     $scope.showlimit = 10;
     $scope.filterStatus = '';
-    $scope.filterChannel = '';
+    $scope.filterEndpoint = '';
     $scope.filterDateStart = '';
     $scope.filterDateEnd = '';
 
@@ -33,12 +21,12 @@ angular.module('openhimWebui2App')
       var startDate, endDate;
 
       var filterStatus = $scope.filterStatus;
-      var filterChannel = $scope.filterChannel;
+      var filterEndpoint = $scope.filterEndpoint;
       var filterDateStart = $scope.filterDateStart;
       var filterDateEnd = $scope.filterDateEnd;
 
       if(filterStatus){ filtersObject.status = filterStatus; }
-      if(filterChannel){ filtersObject.channelID = filterChannel; }
+      if(filterEndpoint){ filtersObject.endpoint = filterEndpoint; }
       if(filterDateStart && filterDateEnd){
         startDate = new Date( filterDateStart ).toISOString();
         endDate = new Date( filterDateEnd );
@@ -50,7 +38,7 @@ angular.module('openhimWebui2App')
       }
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
-      
+
       return filtersObject;
     };
 

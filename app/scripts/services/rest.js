@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .factory('Api', function ($resource) {
+  .factory('Api', function ($resource, $rootScope) {
 
-    var host = 'openhim-preprod.jembi.org';
-    var port = '8080';
+    var CONFIG = $rootScope.CONFIG;
+    var host = CONFIG.API.HOST;
+    var port = CONFIG.API.PORT;
 
     return {
       Authenticate: $resource('http://' + host + ':' + port + '/authenticate/:email'),
