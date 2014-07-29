@@ -39,10 +39,15 @@ describe('Controller: TransactionsCtrl', function () {
   });
 
   it('should attach a list of transactions to the scope', function () {
-    httpBackend.expectGET(new RegExp('.*/transactions'));
     createController();
     httpBackend.flush();
     scope.transactions.length.should.equal(2);
+  });
+
+  it('should attach a list of channels to the scope and create an object map of the channel ID and name', function () {
+    createController();
+    httpBackend.flush();
+
     scope.channels.length.should.equal(2);
     scope.channels[0].should.have.property('name', 'Sample JsonStub Channel 1');
     scope.channels[1].should.have.property('name', 'Sample JsonStub Channel 2');
