@@ -42,6 +42,32 @@ angular.module('openhimWebui2App')
       return filtersObject;
     };
 
+    var refreshSuccess = function (transactions){
+      // on success
+      $scope.transactions = transactions;
+
+      if( transactions.length < $scope.showlimit ){
+        jQuery('#loadMoreTransactions').hide();
+
+        if( transactions.length === 0 ){
+          Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
+        }
+
+      }else{
+        //Show the load more button
+        jQuery('#loadMoreTransactions').show();
+      }
+
+      //make sure newly added transactions are checked as well
+      $scope.resetCheckedItems();
+    };
+
+    var refreshError = function(err){
+      // on error - Hide load more button and show error message
+        jQuery('#loadMoreTransactions').hide();
+        Alerting.AlertAddServerMsg(err.status);
+    };
+
     //Refresh transactions list
     $scope.refreshTransactionsList = function () {
       $scope.transactions = null;
@@ -50,31 +76,7 @@ angular.module('openhimWebui2App')
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
 
-      Api.Transactions.query( $scope.returnFilterObject(), function (values) {
-        // on success
-        $scope.transactions = values;
-
-        if( values.length < $scope.showlimit ){
-          jQuery('#loadMoreTransactions').hide();
-
-          if( values.length === 0 ){
-            Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
-          }
-
-        }else{
-          //Show the load more button
-          jQuery('#loadMoreTransactions').show();
-        }
-
-        //make sure newly added transactions are checked as well
-        $scope.resetCheckedItems();
-
-      },
-      function (err) {
-        // on error - Hide load more button and show error message
-        jQuery('#loadMoreTransactions').hide();
-        Alerting.AlertAddServerMsg(err.status);
-      });
+      Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
 
     };
     //run the transaction list view for the first time
@@ -86,30 +88,29 @@ angular.module('openhimWebui2App')
       Alerting.AlertReset();
 
       $scope.showpage++;
+      Api.Transactions.query( $scope.returnFilterObject(), loadMoreSuccess, loadMoreError);
+    };
 
-      Api.Transactions.query( $scope.returnFilterObject(), function (values) {
-        //on success
-        $scope.transactions = $scope.transactions.concat(values);
-        //remove any duplicates objects found in the transactions scope
-        $scope.transactions = jQuery.unique($scope.transactions);
+    var loadMoreSuccess = function (transactions){
+      //on success
+      $scope.transactions = $scope.transactions.concat(transactions);
+      //remove any duplicates objects found in the transactions scope
+      $scope.transactions = jQuery.unique($scope.transactions);
 
-        if( values.length < $scope.showlimit ){
-          jQuery('#loadMoreTransactions').hide();
-          Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
-        }
-
-        //make sure newly added transactions are checked as well
-        $scope.toggleCheckedAll();
-
-        $scope.busyLoadingMore = false;
-
-      },
-      function (err) {
-        // on error - Hide load more button and show error message
+      if( transactions.length < $scope.showlimit ){
         jQuery('#loadMoreTransactions').hide();
-        Alerting.AlertAddServerMsg(err.status);
-      });
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
+      }
 
+      //make sure newly added transactions are checked as well
+      $scope.toggleCheckedAll();
+      $scope.busyLoadingMore = false;
+    };
+
+    var loadMoreError = function(err){
+      // on error - Hide load more button and show error message
+      jQuery('#loadMoreTransactions').hide();
+      Alerting.AlertAddServerMsg(err.status);
     };
 
     //location provider - load transaction details
