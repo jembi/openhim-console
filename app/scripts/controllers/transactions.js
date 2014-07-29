@@ -4,18 +4,6 @@
 angular.module('openhimWebui2App')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api) {
 
-    // get the channels for the transactions filter dropdown
-    $scope.channels = Api.Channels.query(function(){
-      $scope.channelsMap = [];
-      angular.forEach($scope.channels, function(channel){
-        $scope.channelsMap[channel._id] = channel.name;
-      });
-    },
-    function(){
-      // server error - could not connect to API to get channels
-    });
-
-
     $scope.transactionsSelected = [];
 
     //return results for the first page (20 results)
