@@ -2,7 +2,7 @@
 /* global jQuery:false */
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api) {
+  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
     // get the channels for the transactions filter dropdown
     $scope.channels = Api.Channels.query(function(){
@@ -54,38 +54,41 @@ angular.module('openhimWebui2App')
       return filtersObject;
     };
 
-    //Refresh transactions list
-    $scope.refreshTransactionsList = function () {
-      //reset the showpage filter to start at 0
-      $scope.showpage = 0;
-      //close message box if it is visible
-      $scope.alerts = '';
+    var refreshSuccess = function (transactions){
+      // on success
+      $scope.transactions = transactions;
 
-      Api.Transactions.query( $scope.returnFilterObject(), function (values) {
-        // on success
-        $scope.transactions = values;
+      if( transactions.length < $scope.showlimit ){
+        jQuery('#loadMoreTransactions').hide();
 
-        if( values.length < $scope.showlimit ){
-          jQuery('#loadMoreTransactions').hide();
-
-          if( values.length === 0 ){
-            $scope.alerts = [{ type: 'warning', msg: 'There are no transactions for the current filters' }];
-          }
-
-        }else{
-          //Show the load more button
-          jQuery('#loadMoreTransactions').show();
+        if( transactions.length === 0 ){
+          Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
         }
 
-        //make sure newly added transactions are checked as well
-        $scope.resetCheckedItems();
+      }else{
+        //Show the load more button
+        jQuery('#loadMoreTransactions').show();
+      }
 
-      },
-      function (err) {
-        // on error - Hide load more button and show error message
+      //make sure newly added transactions are checked as well
+      $scope.resetCheckedItems();
+    };
+
+    var refreshError = function(err){
+      // on error - Hide load more button and show error message
         jQuery('#loadMoreTransactions').hide();
-        $scope.returnError(err.status);
-      });
+        Alerting.AlertAddServerMsg(err.status);
+    };
+
+    //Refresh transactions list
+    $scope.refreshTransactionsList = function () {
+      $scope.transactions = null;
+      Alerting.AlertReset();
+
+      //reset the showpage filter to start at 0
+      $scope.showpage = 0;
+
+      Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
 
     };
     //run the transaction list view for the first time
@@ -93,29 +96,33 @@ angular.module('openhimWebui2App')
 
     //Refresh transactions list
     $scope.loadMoreTransactions = function () {
+      $scope.busyLoadingMore = true;
+      Alerting.AlertReset();
+
       $scope.showpage++;
+      Api.Transactions.query( $scope.returnFilterObject(), loadMoreSuccess, loadMoreError);
+    };
 
-      Api.Transactions.query( $scope.returnFilterObject(), function (values) {
-        //on success
-        $scope.transactions = $scope.transactions.concat(values);
-        //remove any duplicates objects found in the transactions scope
-        $scope.transactions = jQuery.unique($scope.transactions);
+    var loadMoreSuccess = function (transactions){
+      //on success
+      $scope.transactions = $scope.transactions.concat(transactions);
+      //remove any duplicates objects found in the transactions scope
+      $scope.transactions = jQuery.unique($scope.transactions);
 
-        if( values.length < $scope.showlimit ){
-          jQuery('#loadMoreTransactions').hide();
-          $scope.alerts = [{ type: 'warning', msg: 'There are no more transactions to retrieve' }];
-        }
-
-        //make sure newly added transactions are checked as well
-        $scope.toggleCheckedAll();
-
-      },
-      function (err) {
-        // on error - Hide load more button and show error message
+      if( transactions.length < $scope.showlimit ){
         jQuery('#loadMoreTransactions').hide();
-        $scope.returnError(err.status);
-      });
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
+      }
 
+      //make sure newly added transactions are checked as well
+      $scope.toggleCheckedAll();
+      $scope.busyLoadingMore = false;
+    };
+
+    var loadMoreError = function(err){
+      // on error - Hide load more button and show error message
+      jQuery('#loadMoreTransactions').hide();
+      Alerting.AlertAddServerMsg(err.status);
     };
 
     //location provider - load transaction details
@@ -128,30 +135,9 @@ angular.module('openhimWebui2App')
     /*------------------------Transactions List and Detail view functions----------------------------*/
 
 
-    /*------------------------Error Codes functions----------------------------*/
-    //close the alert box
-    $scope.closeMsg = function() { $scope.alerts = ''; };
-
-    //Function to generate server response errors
-    $scope.returnError = function(errCode){
-      switch (errCode){
-        case 401:
-          $scope.alerts = [{ type: 'danger', msg: 'Authentication is required to connect to the server. Please contact the server administrator' }];
-          break;
-        case 403:
-          $scope.alerts = [{ type: 'danger', msg: 'The request has been forbidden by the server. Please contact the server administrator' }];
-          break;
-        case 404:
-          $scope.alerts = [{ type: 'danger', msg: 'The request could not connect to the API server. Please contact the server administrator' }];
-          break;
-      }
-    };
-    /*------------------------Error Codes functions----------------------------*/
-
-    
-
     /*------------------------Transactions ReRun Functions----------------------------*/
     $scope.confirmRerunTransactions = function(){
+      Alerting.AlertReset();
       
       var transactionsSelected = $scope.transactionsSelected;
       $modal.open({
@@ -204,6 +190,5 @@ angular.module('openhimWebui2App')
       $scope.refreshTransactionsList();
     });
     /*------------------------Transactions ReRun Functions----------------------------*/
-
 
   });

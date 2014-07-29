@@ -4,109 +4,124 @@
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
 
-		<div class="content-box-large">
-			<div class="panel-heading">
-				<div class="panel-title">Transactions Log</div>
-			</div>
-			<div class="panel-body">
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">Transactions Log</div>
+        </div>
+        <div class="panel-body">
 
-            <!-- Filter options -->
-                <div class="transaction-filter-options">
-                    <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
-                        <label tooltip="Select an option to filter transactions by their status">Status: </label>
-                        <select class="form-control" ng-model="filterStatus">
-                            <option value="">Don't filter</option>
-                            <option value="Failed">Show Failed</option>
-                            <option value="Processing">Show Processing</option>
-                            <option value="Completed">Show Completed</option>
-                            <option value="Completed with error(s)">Show Completed with error(s)</option>
-                            <option value="Successful">Show Successful</option>
-                        </select>
-                    </div>
-                    <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
-                        <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
-                        <select class="form-control" ng-model="filterChannel">
-                            <option value="">Don't filter</option>                            
-                            <option ng-repeat="channel in channels" ng-value="channel._id">{{channel.name}}</option>
-                        </select>
-                    </div>
-                    <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
-                        <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
+          <!-- Filter options -->
+          <div class="transaction-filter-options">
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Select an option to filter transactions by their status">Status: </label>
+              <select class="form-control" ng-model="filterStatus">
+                <option value="">Don't filter</option>
+                <option value="Failed">Show Failed</option>
+                <option value="Processing">Show Processing</option>
+                <option value="Completed">Show Completed</option>
+              </select>
+            </div>
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Select an option to filter transactions by their endpoint">Endpoint: </label>
+              <select class="form-control" ng-model="filterEndpoint">
+                <option value="">Don't filter</option>
+                <option value="">Save patient Encounter</option>
+                <option value="">Query Prev Patient Encounter</option>
+                <option value="">Get Patient</option>
+                <option value="">Query Patients</option>
+              </select>
+            </div>
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
 
-                        <script type="text/javascript">
-                            // When the document is ready
-                            $(document).ready(function () {
-                                $('.input-daterange').datepicker({
-                                    todayBtn: "linked",
-                                    format: 'yyyy-mm-dd'
-                                });                        
-                            });
-                        </script>
-                    
-                        <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-                            <input ng-model="filterDateStart" type="text" class="form-control" name="start" />
-                            <span class="input-group-addon">to</span>
-                            <input ng-model="filterDateEnd" type="text" class="form-control" name="end" />
-                        </div>                            
-                        <!-- Date range picker functionality -->
-                    </div>
-                    <div class="transactionsFilterRefreshDiv">
-                        <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
-                    </div>
-                </div>
+              
 
-                <div id="no-more-tables">
-                    <!-- Table with all the transaction logs -->
-    				<table class="table table-striped">
-    					<thead>
-    						<tr>
-                                <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-init='checkAll=false' ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
-    							<th>#</th>
-    							<th>HTTP Method</th>
-    							<th>Path</th>
-                                <th>Request Params</th>
-    							<th>Channel</th>
-    							<th>Status</th>
-    							<th>Received Time</th>
-    						</tr>
-    					</thead>
-    					<tbody>
-    						<tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id, $event)'>
-                                <td class="transactionsCheckboxTD">
-                                    <label>
-                                        <input ng-if="!transaction.parentID" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                                        <i ng-if="transaction.parentID" class="glyphicon glyphicon-repeat"></i>
-                                    </label>
-                                </td>
-    							<td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
-                                    <span>{{ $index +1 }}</span>
-                                    <label>
-                                        <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                                    </label>
-                                </td>
-    							<td data-title="HTTP Method">{{ transaction.request.method }}</td>
-    							<td data-title="Path">{{ transaction.request.path }}</td>
-    							<td data-title="Request Params">{{ transaction.request.querystring }}</td>
-                                <td data-title="Channel">{{ channelsMap[transaction.channelID] }}</td>
-    							<td data-title="Status">{{ transaction.status }}</td>
-    							<td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-    						</tr>
-    					</tbody>
-    				</table>
+              <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
+                <input ng-model="filterDateStart" type="text" class="form-control" name="start" />
+                <span class="input-group-addon">to</span>
+                <input ng-model="filterDateEnd" type="text" class="form-control" name="end" />
+              </div>                            
+              <!-- Date range picker functionality -->
+            </div>
+            <div class="transactionsFilterRefreshDiv">
+              <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
+            </div>
+          </div>
 
-                    <div>
-                        <alert class="transactionsAlerts" type="alert.type" ng-repeat="alert in alerts" close="closeMsg($index)">{{alert.msg}}</alert>
-                        <div class="transactionsButtonsDiv" ng-show="transactions.length > 0">
-                            <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();"><i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions</button>
+          <div id="no-more-tables">
+            <!-- Table with all the transaction logs -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-init='checkAll=false' ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
+                  <th>#</th>
+                  <th>HTTP Method</th>
+                  <th>Path</th>
+                  <th>Request Params</th>
+                  <th>Status</th>
+                  <th>Received Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id, $event)'>
+                  <td class="transactionsCheckboxTD">
+                    <label>
+                      <input ng-if="!transaction.parentID" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                      <i ng-if="transaction.parentID" class="glyphicon glyphicon-repeat"></i>
+                    </label>
+                  </td>
+                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
+                    <span>{{ $index +1 }}</span>
+                    <label>
+                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                    </label>
+                  </td>
+                  <td data-title="HTTP Method">{{ transaction.request.method }}</td>
+                  <td data-title="Path">{{ transaction.request.path }}</td>
+                  <td data-title="Request Params">{{ transaction.request.querystring }}</td>
+                  <td data-title="Status">{{ transaction.status }}</td>
+                  <td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                </tr>
+              </tbody>
+            </table>
 
-                            <button id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
-                        </div>                        
-                    </div>
+            <div>
 
-                </div>
+              <!-- show loading gif when scope object empty and no server errors exist -->
+              <div class="loadingContainer" ng-show="!(transactions || alerts.server) || busyLoadingMore">
+                <img src="images/loading.gif" alt="Loading..." />
+              </div>
 
-			</div>
-		</div>
+              <!-- Transaction Alerts -->
+              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <!-- Server Alerts -->
 
+              <!-- transaction Alerts -->
+              <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+              <!-- Server Alerts -->
+
+
+              <div class="transactionsButtonsDiv" ng-show="transactions.length > 0">
+                <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();"><i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions</button>
+
+                <button id="loadMoreTransactions" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+              </div>                        
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+
+
+<script type="text/javascript">
+  // When the document is ready
+  $(document).ready(function () {
+    $('.input-daterange').datepicker({
+      todayBtn: "linked",
+      format: 'yyyy-mm-dd'
+    });
+  });
+</script>

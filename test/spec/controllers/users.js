@@ -52,12 +52,13 @@ describe('Controller: UsersCtrl', function () {
 
   });
 
-  it('should remove a user', function () {
+  it('should open a modal to confirm deletion of a user', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectDELETE(new RegExp('.*/users/super@openim.org')).respond(200, '');
-    scope.removeUser(scope.users[0]);
+    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    scope.confirmDelete(scope.users[0]);
+    modalSpy.should.be.calledOnce;
     httpBackend.flush();
   });
 

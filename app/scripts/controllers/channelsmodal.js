@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, channel) {
+  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, channel) {
     
+    // get/set the users scope whether new or update
     // backup object for the route being editted
     $scope.channelRoutesBackup = null;
     $scope.routeWarnings = [];
@@ -20,13 +21,26 @@ angular.module('openhimWebui2App')
     }
     $scope.newRoute = {};
 
-    var onSuccess = function() {
-      // On success
-      // reset backing object and notify of change to channels
-      $scope.channel = new Api.Channels();
-      Notify.notify('channelsChanged');
 
-      // close modal
+
+
+
+    /* ------------------------- Save/update channel record ---------------------------- */
+    var success = function () {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'success', 'The channel has been saved successfully');
+      notifyUser();
+    };
+
+    var error = function (err) {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data);
+      notifyUser();
+    };
+
+    var notifyUser = function(){
+      // reset backing object and refresh users list
+      Notify.notify('channelsChanged');
       $modalInstance.close();
     };
 
@@ -53,16 +67,18 @@ angular.module('openhimWebui2App')
       }
 
       if ($scope.update) {
-        channel.$update(onSuccess);
+        channel.$update(success, error);
       } else {
-        channel.$save({ channelName: '' }, onSuccess);
+        channel.$save({ channelName: '' }, success, error);
       }
     };
+    /* ------------------------- Save/update channel record ---------------------------- */
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
 
+    /* -------------------------Add/edit/remove channel function---------------------------- */
     $scope.addRoute = function (newRoute) {
       if (!$scope.channel.routes) {
         $scope.channel.routes = [];
@@ -110,6 +126,20 @@ angular.module('openhimWebui2App')
       // Check if any route warnings exist and add them to routeWarnings object
       $scope.checkRouteWarnings();
     };
+    /* -------------------------Add/edit/remove channel function---------------------------- */
+    
+
+
+    /* ------------------ Validate form function --------------------- */
+    // verify if any warnings exist - if warnings exist then disable channel save button
+    $scope.checkChannelWarnings = function () {
+      var routeWarnings = $scope.checkRouteWarnings();
+
+      if ( routeWarnings > 0 ){
+        return true;
+      }
+      return false;
+    };
 
     $scope.checkRouteWarnings = function () {
 
@@ -133,18 +163,6 @@ angular.module('openhimWebui2App')
       return countErrors;
       
     };
-
-
-    // verify if any warnings exist - if warnings exist then disable channel save button
-    $scope.checkChannelWarnings = function () {
-      var routeWarnings = $scope.checkRouteWarnings();
-
-      if ( routeWarnings > 0 ){
-        return true;
-      }
-      return false;
-    };
-
 
     $scope.multiplePrimaries = function () {
       if ($scope.channel.routes) {
@@ -177,8 +195,6 @@ angular.module('openhimWebui2App')
       return true;
     };
 
-
-    /* ------------------ Check to see if routes are empty --------------------- */
     $scope.noRoutes = function () {
       //no routes found - return true
       if ($scope.channel.routes.length === 0) {
@@ -186,7 +202,7 @@ angular.module('openhimWebui2App')
       }
       return false;
     };
-    /* ------------------ Check to see if routes are empty --------------------- */
+    /* ------------------ Validate form function --------------------- */
 
 
   });

@@ -1,21 +1,28 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h4 class="modal-title" id="addClientLabel">Add a client</h4>
+  <h4 class="modal-title" id="addClientLabel">
+    <span ng-show="update">Edit</span>
+    <span ng-show="!update">Add</span>
+     a client</h4>
 </div>
-<form>
+<form name="form">
   <div class="modal-body">
     <fieldset>
-      <div class="form-group">
-        <label>Client ID</label>
-        <input class="form-control" type="text" ng-model="client.clientID">
+
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Client ID</label>
+          <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" required >
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Client Name</label>
+          <input class="form-control" type="text" ng-model="client.name" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Client Name</label>
-        <input class="form-control" type="text" ng-model="client.name">
-      </div>
+
       <div class="form-group">
         <label>Domain</label>
-        <input class="form-control" type="text" ng-model="client.domain">
+        <input class="form-control" type="text" ng-model="client.domain" required>
       </div>
       <div class="form-group">
         <label>Allowed Roles</label>
@@ -25,15 +32,23 @@
         <label>Certificate</label>
         <textarea class="form-control" rows="5" ng-model="client.cert" ng-trim="false"></textarea>
       </div>
-      <div class="form-group">
-        <label>Basic Auth</label>
-        <input class="form-control" placeholder="Set/change password..." type="password" ng-model="password"><br/>
-        <input class="form-control" placeholder="Retype password..." type="password" ng-model="passwordRetype"><br/>
+
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Basic Auth Password</label>
+          <input class="form-control" placeholder="Set/change password..." type="password" ng-model="password">
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Confirm Password</label>
+          <input class="form-control" placeholder="Retype password..." type="password" ng-model="passwordRetype">
+        </div>
       </div>
+
     </fieldset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="!isClientValid(client, password, passwordRetype)">Save changes</button>
+    <!--<button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="!isClientValid(client, password, passwordRetype)">Save changes</button>-->
+    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="( form.$invalid )">Save changes</button>
   </div>
 </form>

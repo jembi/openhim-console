@@ -2,27 +2,42 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, Notify, user) {
-    var update = false;
+  .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, user) {
+
+    // get/set the users scope whether new or update
     if (user) {
-      update = true;
+      $scope.update = true;
+      $scope.user = angular.copy(user);
+    }else{
+      $scope.update = false;
+      $scope.user = new Api.Users();
     }
 
-    $scope.user = user || new Api.Users();
 
-    var done = function () {
+    /* -------------------------Processing save request-----------------------------*/
+    var success = function () {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'success', 'The user has been saved successfully');
+      notifyUser();
+    };
+
+    var error = function (err) {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' details: #' + err.status + ' - ' + err.data);
+      notifyUser();
+    };
+
+    var notifyUser = function(){
       // reset backing object and refresh users list
-      $scope.user = new Api.Users();
       Notify.notify('usersChanged');
-
       $modalInstance.close();
     };
 
     var saveUser = function (user) {
-      if (update) {
-        user.$update(done);
+      if ($scope.update) {
+        user.$update(success, error);
       } else {
-        user.$save({ email: '' }, done);
+        user.$save({ email: '' }, success, error);
       }
     };
 
@@ -43,12 +58,18 @@ angular.module('openhimWebui2App')
         saveUser(user);
       }
     };
+    /* -------------------------Processing save request-----------------------------*/
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
 
-    $scope.isUserValid = function (user, password, passwordRetype) {
-      return  !(password && password !== passwordRetype);
+    $scope.isUserValid = function (password, passwordConfirm) {
+      if ( password && password === passwordConfirm ){
+        return true;
+      }else{
+        return false;
+      }
     };
+
   });
