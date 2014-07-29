@@ -2,28 +2,42 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('ProfileCtrl', function ($scope, Api) {
+  .controller('ProfileCtrl', function ($scope, Api, Alerting) {
+
 
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
 
-    $scope.user =  Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (userProfile) {
-      return userProfile;
-    });
+    /* -------------------------Initial load & onChanged---------------------------- */
+    var querySuccess = function(user){
+      $scope.user = user;
+    };
 
-    var done = function () {
-      // reset backing object and refresh user profile
-      Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (userProfile) {
-        $scope.user = userProfile;
-      });
-      $scope.alerts = [];
-      $scope.alerts.push({ type: 'success', msg: 'Your profile was successfully updated!' });
+    var queryError = function(err){
+      // on error - add server error alert
+      Alerting.AlertAddServerMsg(err.status);
+    };
+
+    // do the initial request
+    Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
+    /* -------------------------Initial load & onChanged---------------------------- */
+
+
+    /* -------------------------Processing save request-----------------------------*/
+    var success = function () {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.');
+    };
+
+    var error = function (err) {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data);
     };
 
     var saveUser = function (user) {
-      user.$update(function () { done(); });
+      user.$update(success, error);
     };
 
     var setHashAndSave = function (user, hash, salt) {
@@ -43,8 +57,14 @@ angular.module('openhimWebui2App')
         saveUser(user);
       }
     };
+    /* -------------------------Processing save request-----------------------------*/
 
-    $scope.isUserValid = function (user, password, passwordRetype) {
-      return  !(password && password !== passwordRetype);
+    $scope.isUserValid = function (password, passwordConfirm) {
+      if ( password && password === passwordConfirm ){
+        return true;
+      }else{
+        return false;
+      }
     };
+
   });
