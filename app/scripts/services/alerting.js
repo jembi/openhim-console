@@ -30,17 +30,11 @@ angular.module('openhimWebui2App')
 
         var alertMsg;
         switch (errCode){
-          case 401:
-            alertMsg = 'Authentication is required to connect to the server. Please contact the server administrator';
-            break;
           case 403:
             alertMsg = 'The request has been forbidden by the server. Please contact the server administrator';
             break;
-          case 404:
-            alertMsg = 'The request could not connect to the API server. Please contact the server administrator';
-            break;
           default:
-            alertMsg = 'Unknown Server Error. Please contact the administrator #' + errCode;
+            alertMsg = 'A server-side error has occurred. Please contact the server administrator';
         }
    
         // check if alerts object exist
@@ -49,9 +43,6 @@ angular.module('openhimWebui2App')
         }
 
         // check if alertScope object exists
-        /*if ( !$rootScope.alerts['server'] ){
-          $rootScope.alerts['server'] = [];
-        }*/
         if ( !$rootScope.alerts.server ){
           $rootScope.alerts.server = [];
         }
