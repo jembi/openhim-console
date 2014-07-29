@@ -20,8 +20,8 @@ describe('Controller: TransactionsCtrl', function () {
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
-      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'}
+      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059dd8'},
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059aa3'}
     ]);
 
     modalSpy = sinon.spy($modal, 'open');
@@ -43,6 +43,12 @@ describe('Controller: TransactionsCtrl', function () {
     createController();
     httpBackend.flush();
     scope.transactions.length.should.equal(2);
+    scope.channels.length.should.equal(2);
+    scope.channels[0].should.have.property('name', 'Sample JsonStub Channel 1');
+    scope.channels[1].should.have.property('name', 'Sample JsonStub Channel 2');
+    scope.channelsMap.length.should.equal(2);
+    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059dd8');
+    scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059aa3');
   });
 
 });
