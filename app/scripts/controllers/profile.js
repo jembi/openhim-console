@@ -40,12 +40,11 @@ angular.module('openhimWebui2App')
 
 
     var saveUser = function (user, email, password) {
-      user.$update(function () {
+      user.$update().then(function () {
         if (password !== '') {
           //re-login with new credentials
-          console.log(user.email);
+          
           login.login(email, password, function (loggedIn) {
-
             if (loggedIn) {
               success();
             } else {
@@ -71,7 +70,7 @@ angular.module('openhimWebui2App')
       if (password) {
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
-        console.log(user.password);
+
         setHashAndSave(user, h.hash, h.salt, user.email, password);
       } else {
         saveUser(user, '', '');
