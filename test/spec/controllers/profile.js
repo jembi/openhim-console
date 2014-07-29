@@ -73,9 +73,9 @@ describe('Controller: ProfileCtrl', function () {
     createController();
     scope.user.surname = 'new surname';
     scope.save(scope.user);
-    httpBackend.expectPUT(new RegExp('.*/users'));
+
     scope.user.should.have.property('surname', 'new surname');
-    httpBackend.expectGET(new RegExp('.*/users'));
+    
     httpBackend.flush();
    //original mock has not been modified
     scope.user.should.have.property('surname', 'test');
@@ -101,7 +101,6 @@ describe('Controller: ProfileCtrl', function () {
     scope.save(scope.user, scope.user.password);
     scope.user.should.have.property('passwordSalt');
     scope.user.should.have.property('passwordHash');
-    httpBackend.expectGET(new RegExp('.*/authenticate'));
     httpBackend.flush();
   });
 
@@ -109,10 +108,8 @@ describe('Controller: ProfileCtrl', function () {
     createController();
     scope.user.surname = 'new surname';
     scope.save(scope.user);
-    httpBackend.expectPUT(new RegExp('.*/users'));
     scope.user.should.have.property('surname', 'new surname');
 
-    httpBackend.expectGET(new RegExp('.*/users'));
     httpBackend.flush();
     //must be original object from api
     scope.user.should.have.property('surname', 'test');

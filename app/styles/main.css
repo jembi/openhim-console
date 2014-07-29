@@ -687,7 +687,7 @@ body {
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
 .form-group-2columns .form-group { width: 47%; }
-
+.loadingContainer { width: 100%; text-align: center; margin-bottom: 15px; }
 .allowedRolesStaticDiv { clear: both; border-left: 1px solid #ccc; padding-left: 10px; }
 .allowedRolesStaticDiv span { border-right: 1px solid #ccc; margin-right: 10px; padding-right: 10px; }
 /*------- Custom CSS Changes ----*/
