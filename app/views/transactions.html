@@ -10,7 +10,6 @@
         </div>
         <div class="panel-body">
 
-
           <!-- Filter options -->
           <div class="transaction-filter-options">
             <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
@@ -41,7 +40,8 @@
               <!-- Date range picker functionality -->
             </div>
             <div class="transactionsFilterRefreshDiv">
-              <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
+              <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+              <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
             </div>
           </div>
 
@@ -49,7 +49,7 @@
             <!-- Table with all the transaction logs -->
 
 
-            <table class="table table-striped">
+            <table class="table table-striped transactionTable">
               <thead>
                 <tr>
                   <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-init='checkAll=false' ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
