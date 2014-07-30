@@ -5,38 +5,59 @@
     <div class="col-md-10">
       <div class="content-box-large">
         <div class="panel-heading">
-        <div class="panel-title">Channels</div>
-        
-        <div class="panel-options">
-          <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-          <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          <div class="panel-title">Channels</div>
+          
+          <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
+            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          </div>
         </div>
-      </div>
+
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+
         <div class="panel-body">
-          <table class="table table-striped">
-            <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Channel Name</th>
-                  <th>Channel Load <br />(# transactions / Week)</th>
-                  <th>Status</th>
-                  <th></th>
+          <div id="no-more-tables">
+            <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Channel Name</th>
+                    <th>Channel Load <br />(# transactions / Week)</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="channel in channels">
+                  <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                  <td data-title="Channel Name"><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
+                  <td data-title="Channel Load"><a href="">0</a></td>
+                  <td data-title="status">Active</td>
+                  <td>
+                    <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(channel)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
                 </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="channel in channels">
-                <td>{{ $index +1 }}</td>
-                <td><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
-                <td><a href="">0</a></td>
-                <td>Active</td>
-                <td>
-                  <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 
-                  <button class="btn btn-danger btn-xs" ng-click="removeChannel(channel)"><i class="glyphicon glyphicon-remove"></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button class="btn btn-primary" ng-click="addChannel()"><i class="glyphicon glyphicon-plus"></i> Channel</button>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <div class="loadingContainer" ng-show="!(channels || alerts.server)">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <!-- Server Alerts -->
+          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <!-- Server Alerts -->
+
+          <!-- Bottom Alerts -->
+          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <!-- Bottom Alerts -->
+
+          <button class="btn btn-primary" ng-click="addChannel()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Channel</button>
         </div>
       </div>
     </div>

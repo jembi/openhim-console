@@ -40,12 +40,14 @@ describe('Controller: ClientsCtrl', function () {
     scope.clients.length.should.equal(2);
   });
 
-  it('should remove a client', function () {
+
+  it('should open a modal to confirm deletion of a client', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectDELETE(new RegExp('.*/clients/test1')).respond(200, '');
-    scope.removeClient(scope.clients[0]);
+    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    scope.confirmDelete(scope.clients[0]);
+    modalSpy.should.be.calledOnce;
     httpBackend.flush();
   });
 

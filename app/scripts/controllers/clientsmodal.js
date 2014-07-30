@@ -2,27 +2,42 @@
 /* global CryptoJS: false */
 
 angular.module('openhimWebui2App')
-  .controller('ClientsModalCtrl', function ($scope, $modalInstance, Api, Notify, client) {
-    var update = false;
+  .controller('ClientsModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, client) {
+    
+
     if (client) {
-      update = true;
+      $scope.update = true;
+      $scope.client = angular.copy(client);
+    }else{
+      $scope.update = false;
+      $scope.client = new Api.Clients();
     }
 
-    $scope.client = client || new Api.Clients();
 
-    var done = function () {
+
+    var success = function () {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'success', 'The client has been saved successfully');
+      notifyUser();
+    };
+
+    var error = function (err) {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
+      notifyUser();
+    };
+
+    var notifyUser = function(){
       // reset backing object and refresh clients list
-      $scope.client = new Api.Clients();
       Notify.notify('clientsChanged');
-
       $modalInstance.close();
     };
 
     var saveClient = function (client) {
-      if (update) {
-        client.$update(done);
+      if ($scope.update) {
+        client.$update(success, error);
       } else {
-        client.$save({ clientID: '' }, done);
+        client.$save({ clientID: '' }, success, error);
       }
     };
 
