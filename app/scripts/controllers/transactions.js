@@ -75,8 +75,8 @@ angular.module('openhimWebui2App')
 
     var refreshError = function(err){
       // on error - Hide load more button and show error message
-        jQuery('#loadMoreTransactions').hide();
-        Alerting.AlertAddServerMsg(err.status);
+      jQuery('#loadMoreTransactions').hide();
+      Alerting.AlertAddServerMsg(err.status);
     };
 
     //Refresh transactions list
