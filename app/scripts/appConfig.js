@@ -1,34 +1,24 @@
 'use strict';
 
-angular.module('openhimWebui2App')
-	.controller('AppConfigCtrl', function ($rootScope) {
+var app = angular.module('openhimWebui2App');
 
-		$rootScope.CONFIG = {};
+/**********************************************************************************************/
+/*	Setup of App Constants - (Global Variables)																								*/
+/**********************************************************************************************/
+app.constant('TITLE', 'OpenHIM Admin Console');
+app.constant('FOOTERTITLE', 'OpenHIM Administration Console');
 
-		/*--------------------------------------------*/
-		/*--------- CONFIG FOR APP VARIABLES ----------/
-		/*--------------------------------------------*/
-
-		$rootScope.CONFIG.APP = {};
-	  $rootScope.CONFIG.APP.TITLE = 'OpenHIM Admin Console';
-	  $rootScope.CONFIG.APP.FOOTERTITLE = 'OpenHIM Administration Console';
-
-	  /*--------------------------------------------*/
-		/*--------- CONFIG FOR APP VARIABLES ----------/
-		/*--------------------------------------------*/
+app.constant('HOST', 'openhim-preprod.jembi.org');
+app.constant('PORT', 8080);
 
 
 
-		/*---------------------------------------------------*/
-		/*--------- CONFIG FOR API SERVER VARIABLES ----------/
-		/*---------------------------------------------------*/
-
-	  $rootScope.CONFIG.API = {};
-	  $rootScope.CONFIG.API.HOST = 'openhim-preprod.jembi.org';
-	  $rootScope.CONFIG.API.PORT = 8080;
-
-	  /*---------------------------------------------------*/
-		/*--------- CONFIG FOR API SERVER VARIABLES ----------/
-		/*---------------------------------------------------*/
-
-	});
+/**********************************************************************************************/
+/*	This is the AppConfig controllers																													*/
+/*	This controller encapsulates all other controllers																				*/
+/*	Default applications settings are initialzed here - Assign global variable to scope				*/
+/**********************************************************************************************/
+app.controller('AppConfigCtrl', function($scope, TITLE, FOOTERTITLE) {
+  $scope.appTitle = TITLE;
+  $scope.appFooterTitle = FOOTERTITLE;
+});

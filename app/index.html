@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" ng-app="openhimWebui2App" ng-controller="AppConfigCtrl"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
-    <title>{{CONFIG.APP.TITLE}}</title>
+    <title>{{appTitle}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -32,7 +32,7 @@
              <div class="col-md-5 titleDiv">
                 <!-- Logo -->
                 <div class="logo">
-                   <h1><a href="index.html">{{CONFIG.APP.TITLE}}</a></h1>
+                   <h1><a href="index.html">{{appTitle}}</a></h1>
                 </div>
              </div>
 
@@ -86,7 +86,7 @@
     <footer>
       <div class="container">
         <div class="copy text-center">
-          {{CONFIG.APP.FOOTERTITLE}}<br />
+          {{appFooterTitle}}<br />
           Copyright 2014 <a href='http://jembi.org'>Jembi Health Systems NPC</a>
         </div>
       </div>
@@ -129,9 +129,8 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/appConfig.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/channels.js"></script>
-    <script src="scripts/services/rest.js"></script>
+    <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/controllers/channels.js"></script>    
     <script src="scripts/controllers/clients.js"></script>
     <script src="scripts/controllers/clientsmodal.js"></script>
     <script src="scripts/controllers/monitoring.js"></script>
@@ -142,17 +141,18 @@
     <script src="scripts/controllers/transactionDetails.js"></script>
     <script src="scripts/controllers/transactionsmodal.js"></script>
     <script src="scripts/controllers/channelsmodal.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
     <script src="scripts/controllers/sidebar.js"></script>
     <script src="scripts/controllers/deleteConfirmModal.js"></script>
     <!--- This is for utility functions -->
     <script src="scripts/util/sidebar.js"></script>
     <script src="scripts/util/utils.js"></script>
     <!-- endUtils -->
+    <script src="scripts/services/rest.js"></script>
     <script src="scripts/services/notify.js"></script>
     <script src="scripts/services/authinterceptor.js"></script>
-    <script src="scripts/services/login.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/profile.js"></script>
+    <script src="scripts/services/login.js"></script>    
     <script src="scripts/services/alerting.js"></script>
     <!-- endbuild -->
     
