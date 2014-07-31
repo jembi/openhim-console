@@ -690,6 +690,16 @@ body {
 .loadingContainer { width: 100%; text-align: center; margin-bottom: 15px; }
 .allowedRolesStaticDiv { clear: both; border-left: 1px solid #ccc; padding-left: 10px; }
 .allowedRolesStaticDiv span { border-right: 1px solid #ccc; margin-right: 10px; padding-right: 10px; }
+
+.nav-tabs.nav-justified > .active > a { color: #FFF; background-color: #428BCA; border-color: #357EBD; }
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  color: #FFF;
+  cursor: pointer;
+  background-color: #428BCA;
+  border-color: #357EBD !important;
+}
+.nav-tabs.nav-justified a:hover { cursor: pointer; }
+.channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
