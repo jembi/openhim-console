@@ -15,7 +15,6 @@ angular.module('openhimWebui2App')
       // server error - could not connect to API to get channels
     });
 
-
     $scope.transactionsSelected = [];
 
     //return results for the first page (20 results)
@@ -131,6 +130,17 @@ angular.module('openhimWebui2App')
       if( $event.target.tagName === 'TD' ){
         $location.path(path);
       }
+    };
+    
+    //Clear filter data end refresh transactions scope
+    $scope.clearFilters = function () {
+      $scope.filterStatus = '';
+      $scope.filterChannel = '';
+      $scope.filterDateStart = '';
+      $scope.filterDateEnd = '';
+
+      //run the transaction list view after filters been cleared
+      $scope.refreshTransactionsList();
     };
     /*------------------------Transactions List and Detail view functions----------------------------*/
 
