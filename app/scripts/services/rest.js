@@ -1,29 +1,26 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .factory('Api', function ($resource) {
-
-    var host = 'openhim-preprod.jembi.org';
-    var port = '8080';
+  .factory('Api', function ($resource, HOST, PORT) {
 
     return {
-      Authenticate: $resource('http://' + host + ':' + port + '/authenticate/:email'),
+      Authenticate: $resource('http://' + HOST + ':' + PORT + '/authenticate/:email'),
 
-      Channels: $resource('http://' + host + ':' + port + '/channels/:channelId', { channelId: '@_id' }, {
+      Channels: $resource('http://' + HOST + ':' + PORT + '/channels/:channelId', { channelId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 
-      Users: $resource('http://' + host + ':' + port + '/users/:email', { email: '@email' }, {
+      Users: $resource('http://' + HOST + ':' + PORT + '/users/:email', { email: '@email' }, {
         update: { method: 'PUT' }
       }),
 
-      Clients: $resource('http://' + host + ':' + port + '/clients/:clientID', { clientID: '@clientID' }, {
+      Clients: $resource('http://' + HOST + ':' + PORT + '/clients/:clientID', { clientID: '@clientID' }, {
         update: { method: 'PUT' }
       }),
 
-      Transactions: $resource('http://' + host + ':' + port + '/transactions/:transactionId', { transactionId: '@_id' }),
+      Transactions: $resource('http://' + HOST + ':' + PORT + '/transactions/:transactionId', { transactionId: '@_id' }),
 
-      Tasks: $resource('http://' + host + ':' + port + '/tasks/:taskId', { taskId: '@_id' }, {
+      Tasks: $resource('http://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
       })
     };
