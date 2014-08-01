@@ -58,8 +58,6 @@ angular.module('openhimWebui2App')
 
     $scope.saveOrUpdate = function(channel, contentMatching) {
 
-      console.log( "Content Matching: " + contentMatching );
-
       switch (contentMatching) {
         case 'RegEx matching':
           channel.matchContentXpath = null;
@@ -81,7 +79,6 @@ angular.module('openhimWebui2App')
           channel.matchContentValue = null;
       }
 
-      console.log($scope.channel)
       if ($scope.update) {
         channel.$update(success, error);
       } else {
@@ -305,7 +302,7 @@ angular.module('openhimWebui2App')
       if ( !noRoutes || !noPrimaries || !multiplePrimaries ){
         return false;
       }
-    }
+    };
     
     $scope.isRouteValid = function () {
       if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port ){
@@ -368,27 +365,6 @@ angular.module('openhimWebui2App')
     /***************************************************************************/
     /**   These are the general functions for the channel form validation     **/
     /***************************************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   });
