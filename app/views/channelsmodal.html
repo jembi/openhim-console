@@ -21,7 +21,7 @@
 
 
       <tabset justified="true" style="margin-top: 25px;">
-        <!-- TAB FOR CHANNEL ACCESS CONTROL -->
+        <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
         <tab heading="Access Control">
           <h3>Access Control</h3>
           <div class="form-group">
@@ -38,7 +38,8 @@
           </div>
         </tab>
 
-        <!-- TAB FOR CHANNEL CONTENT MATCHING -->
+
+        <!-- ************* TAB FOR CHANNEL CONTENT MATCHING ************** -->
         <tab heading="Content Matching">
           <h3>Content Matching</h3>
           <div class="form-group">
@@ -47,50 +48,49 @@
           </div>
 
           <div class="btn-group" style="margin-bottom: 10px">
-            <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'No matching'">No matching</label>
-            <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'RegEx Matching'">RegEx Matching</label>
-            <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'XML matching'">XML matching</label>
-            <label class="btn btn-primary" ng-model="contentMatching" btn-radio="'JSON matching'">JSON matching</label>
+            <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'No matching'">No matching</label>
+            <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'RegEx matching'">RegEx matching</label>
+            <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'XML matching'">XML matching</label>
+            <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'JSON matching'">JSON matching</label>
           </div>
-
-          <div class="form-group-2columns" ng-show="contentMatching == 'RegEx Matching'">
+          <div class="form-group-2columns" ng-show="matching.contentMatching == 'RegEx matching'">
             <div class="form-group" style="float: left;">
               <label>Match Content Regex</label>
-              <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" ng-required="contentMatching=='RegEx Matching'" />
+              <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" ng-required="matching.contentMatching=='RegEx Matching'" />
             </div>
           </div>
 
-          <div class="form-group-2columns" ng-show="contentMatching == 'XML matching'">
+          <div class="form-group-2columns" ng-show="matching.contentMatching == 'XML matching'">
             <div class="form-group" style="float: left;">
               <label>Match Content X Path</label>
-              <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" ng-required="contentMatching=='XML matching'" />
+              <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" ng-required="matching.contentMatching=='XML matching'" />
             </div>
             <div class="form-group" style="float: right;">
               <label>Match Content Value</label>
-              <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="contentMatching=='XML matching'" /></taglist>
+              <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='XML matching'" />
             </div>
           </div>
 
-          <div class="form-group-2columns" ng-show="contentMatching == 'JSON matching'">
+          <div class="form-group-2columns" ng-show="matching.contentMatching == 'JSON matching'">
             <div class="form-group" style="float: left;">
               <label>Match Content JSON</label>
-              <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" ng-required="contentMatching=='JSON matching'" />
+              <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" ng-required="matching.contentMatching=='JSON matching'" />
             </div>
             <div class="form-group" style="float: right;">
               <label>Match Content Value</label>
-              <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="contentMatching=='JSON matching'" /></taglist>
+              <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='JSON matching'" />
             </div>
           </div>
         </tab>
 
-        <!-- TAB FOR CHANNEL ROUTES -->
+
+
+        <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
         <tab heading="Routes">
           <h3>Routes</h3>
-          <!-- route warning alerts Container -->
-          <div class="alert alert-warning" ng-repeat="routeWarning in routeWarnings">
-            <strong>Warning!</strong> {{routeWarning}}
-          </div>
-          <!-- route warning alerts Container -->
+          <!-- Route Alerts -->
+          <alert ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
+          <!-- Route Alerts -->
           
           <div ng-show="channel.routes.length > 0">
             <div id="no-more-tables">
@@ -173,13 +173,16 @@
               </label>
             </div>
           </div>
-          <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!(newRoute.name && newRoute.host && newRoute.port)"><i class="glyphicon glyphicon-plus"></i> Route</button>
+          <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!isRouteValid()">
+            <i class="glyphicon glyphicon-plus"></i> Route
+          </button>
         </tab>
 
-        <!-- TAB FOR CHANNEL ALERTS -->
+
+
+        <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
         <tab heading="Alerts">
           <h3>Alerts</h3>
-
           <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>          
           <div ng-show="channel.alerts.length > 0">
             <div id="no-more-tables">
@@ -221,6 +224,7 @@
             </div>
           </div>
 
+          <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
           <h5>Add a new user</h5>
           <alert ng-show="newAlert.users.length==0" type="warning">There are currently no Users added for this Channel Alert</alert>
           <div ng-show="newAlert.users.length > 0">
@@ -275,27 +279,24 @@
           </div>
 
 
-
-
-
-
-
-
           <button class="btn btn-sm btn-primary" ng-click="addAlert(newAlert)" ng-disabled="!(isAlertValid())"><i class="glyphicon glyphicon-plus"></i> Alert</button>
         </tab>
       </tabset>
     </fieldset>
   </div>
 
+
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
 
     <!-- if form isnt valid or channel warnings found then show the tooltip label and disbaled save button -->
-    <label ng-show="form.$invalid || checkChannelWarnings()" tooltip="There appears to be errors within your form. Please ensure all required fields are supplied and no route warnings exist.">
-      <button type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="true">Save changes</button>
+    <label ng-show="form.$invalid || !isFormValid()" tooltip="There appears to be errors within your form. Please ensure all required fields are supplied and no route warnings exist.">
+      <button type="button" class="btn btn-primary" ng-disabled="true">Save changes</button>
     </label>
-
+    
     <!-- if form is valid and NO channel warning then show save button -->
-    <button ng-show="!(form.$invalid || checkChannelWarnings())" type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, contentMatching)" ng-disabled="false">Save changes</button>
+    <button ng-show="!form.$invalid && isFormValid()" type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, matching.contentMatching)">Save changes</button>
   </div>
+
+
 </form>

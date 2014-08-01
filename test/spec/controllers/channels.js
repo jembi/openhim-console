@@ -19,6 +19,11 @@ describe('Controller: ChannelsCtrl', function () {
       {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'}
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/channels')).respond([
+      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'}
+    ]);
+
     modalSpy = sinon.spy($modal, 'open');
 
     createController = function() {
