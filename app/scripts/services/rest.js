@@ -6,7 +6,7 @@ angular.module('openhimWebui2App')
     return {
       Authenticate: $resource('http://' + HOST + ':' + PORT + '/authenticate/:email'),
 
-      Channels: $resource('http://' + HOST + ':' + PORT + '/channels/:channelName', { channelName: '@name' }, {
+      Channels: $resource('http://' + HOST + ':' + PORT + '/channels/:channelId', { channelId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 

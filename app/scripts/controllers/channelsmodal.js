@@ -69,7 +69,7 @@ angular.module('openhimWebui2App')
       if ($scope.update) {
         channel.$update(success, error);
       } else {
-        channel.$save({ channelName: '' }, success, error);
+        channel.$save({ channelId: '' }, success, error);
       }
     };
     /* ------------------------- Save/update channel record ---------------------------- */
