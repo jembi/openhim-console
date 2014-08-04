@@ -37,7 +37,7 @@ angular.module('openhimWebui2App')
       if ($scope.update) {
         client.$update(success, error);
       } else {
-        client.$save({ clientID: '' }, success, error);
+        client.$save({ clientId: '' }, success, error);
       }
     };
 
