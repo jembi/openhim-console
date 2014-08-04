@@ -612,32 +612,17 @@ body {
   margin-bottom: 10px;
 }
 
-.transaction-detail-container {
-  float: left;
-  width: 100%;
-}
+.transaction-detail-container { float: left; width: 100%; }
+.transaction-detail-container>label { float: left; width: 100%; margin-top: 20px; }
+.transaction-detail-container .data-group { float: left; clear: both; width: 100%; }
+.transaction-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
+.transaction-detail-container .data-group .data-value>textarea { width: 100%; }
 
-.transaction-detail-container>label {
-  float: left;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.transaction-detail-container .data-group {
-  float: left;
-  clear: both;
-  width: 100%;
-}
-
-.transaction-detail-container .data-group>label {
-  float: left;
-  width: 25%;
-  font-weight: normal;
-}
-
-.transaction-detail-container .data-group .data-value>textarea {
-  width: 100%;
-}
+.route-detail-container { display: inline-block; width: 100%; }
+.route-detail-container>label { float: left; width: 100%; margin-top: 20px; }
+.route-detail-container .data-group { float: left; clear: both; width: 100%; }
+.route-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
+.route-detail-container .data-group .data-value>textarea { width: 100%; }
 
 .left-indent>label, .left-indent>div{
   padding-left: 3%;

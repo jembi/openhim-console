@@ -11,7 +11,11 @@
           </div>
         </div>
 
-        <div class="panel-body">
+        <!-- Transaction Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="transactionDetails">
           <!-- div to hold any child transactions if any -->
           <div class="rerunTransactionsDiv">
             <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>
@@ -40,7 +44,7 @@
                   <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                   <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
                   <td data-title="Path">{{ childTransaction.request.path }}</td>
-                  <td data-title="Request Params">{{ childTransaction.request.requestParams }}</td>
+                  <td data-title="Request Params">{{ childTransaction.request.querystring }}</td>
                   <td data-title="Status">{{ childTransaction.status }}</td>
                   <td data-title="Received Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>
@@ -58,8 +62,12 @@
               <div class="data-value">{{transactionDetails.status}}</div>
             </div>
             <div class="data-group">
+              <label>Channel: </label>
+              <div class="data-value">{{channel.name}}</div>
+            </div>
+            <div class="data-group">
               <label>Authorized User: </label>
-              <div class="data-value">{{transactionDetails.clientID}}</div>
+              <div class="data-value">{{client.clientID}}</div>
             </div>
 
             <label>Request: </label>
@@ -93,7 +101,7 @@
             </div>
             <div class="data-group left-indent">
               <label>Received timestamp: </label>
-              <div class="data-value">{{transactionDetails.response.timestamp}}</div>
+              <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
             <div class="data-group left-indent"><label>Response body:</label></div>
             <div class="data-group left-indent">
@@ -101,6 +109,36 @@
                 <textarea rows="5">{{transactionDetails.response.body}}</textarea>
               </div>
             </div>
+
+            <label ng-show="transactionDetails.routes">Routes: </label>
+            <div ng-show="transactionDetails.routes" id="no-more-tables" class="data-group left-indent">
+              <div class="data-value">
+                <!-- Table with all the transaction logs -->
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Route</th>
+                      <th>Method</th>
+                      <th>Path</th>                      
+                      <th>Request Params</th>
+                      <th>Status</th>
+                      <th>Received Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="transactions-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
+                      <td data-title="Route">{{ route.name }}</td>
+                      <td data-title="Method">{{ route.request.method }}</td>
+                      <td data-title="Path">{{ route.request.path }}</td>
+                      <td data-title="Request Params">{{ route.request.querystring }}</td>
+                      <td data-title="Status">{{ route.response.status }}</td>
+                      <td data-title="Received Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
           </div>
           
         </div>

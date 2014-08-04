@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsModalCtrl', function ($scope, $modalInstance, Api, Notify, transactionsSelected) {
+  .controller('TransactionsRerunModalCtrl', function ($scope, $modalInstance, Api, Notify, transactionsSelected) {
 
     $scope.transactionsSelected = transactionsSelected;
 
