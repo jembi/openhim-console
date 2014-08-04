@@ -13,6 +13,12 @@ describe('Controller: ProfileCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({
+      salt: 'test-salt',
+      ts: 'test-ts'
+    });
+
+
     httpBackend.when('GET', new RegExp('.*/users')).respond({
       '__v': 0,
       '_id': '539846c240f2eb682ffeca4b',
@@ -79,6 +85,7 @@ describe('Controller: ProfileCtrl', function () {
   it('should test whether the user profile has all the required fields', function() {
     createController();
     //Set the password and not the reset password
+
     scope.user.password = 'test-password';
     //Save button should be disabled since the password has not been confirmed
     scope.isUserValid(scope.user,scope.user.password,scope.user.passwordRetype).should.be.false;
@@ -88,6 +95,7 @@ describe('Controller: ProfileCtrl', function () {
   it('should create a salt and generate a new hash and save it if a new password is provided in the profile', function() {
     createController();
     //Set the password and not the reset password
+    scope.user.email ='test@user.org';
     scope.user.password = 'test-password';
     //Save button should be disabled since the password has not been confirmed
     scope.save(scope.user, scope.user.password);
