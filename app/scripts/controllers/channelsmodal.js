@@ -8,7 +8,16 @@ angular.module('openhimWebui2App')
     /****************************************************************/
 
     // get the users for the Channel Alert User dropdown
-    $scope.alertUsers = Api.Users.query();
+    $scope.alertUsers = Api.Users.query(function(){
+      $scope.usersMap = {};
+      angular.forEach($scope.alertUsers, function(user){
+        $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
+      });
+    },
+    function(){
+      // server error - could not connect to API to get channels
+    });
+
 
 
     // get/set the users scope whether new or update

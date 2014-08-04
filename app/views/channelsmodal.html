@@ -242,7 +242,7 @@
                 <tbody>
                   <tr ng-repeat="user in newAlert.users">
                     <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
-                    <td data-title="User"><a href="" ng-click="editAlertUser($index, user)">{{ user.user }}</a></td>
+                    <td data-title="User"><a href="" ng-click="editAlertUser($index, user)">{{usersMap[user.user]}}</a></td>
                     <td data-title="Method">{{ user.method }}</td>
                     <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
                     <td>
@@ -255,11 +255,10 @@
             </div>
           </div>
 
-
           <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
             <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.user" style="max-width: 170px;">
               <option value="">User</option>
-              <option ng-repeat="user in alertUsers" ng-value="newAlertUser.email">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
+              <option ng-repeat="user in alertUsers" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
             </select>
 
             <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.method">

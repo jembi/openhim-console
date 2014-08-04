@@ -10,11 +10,6 @@ angular.module('openhimWebui2App')
 
     return {
       AlertAddMsg: function (alertScope, alertType, alertMsg) {
-        
-        // check if alerts object exist
-        /*if( !$rootScope.alerts ){
-          $rootScope.alerts = {};
-        }*/
 
         // check if alertScope object exists
         if ( !$rootScope.alerts[alertScope] ){
@@ -38,11 +33,6 @@ angular.module('openhimWebui2App')
           default:
             alertMsg = 'A server-side error has occurred. Please contact the server administrator';
         }
-   
-        // check if alerts object exist
-        /*if( !$rootScope.alerts ){
-          $rootScope.alerts = {};
-        }*/
 
         // check if server object exists
         if ( !$rootScope.alerts.server ){
