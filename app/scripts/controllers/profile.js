@@ -25,9 +25,22 @@ angular.module('openhimWebui2App')
 
 
     /* -------------------------Processing save request-----------------------------*/
-    var success = function () {
+    var success = function (password) {
       // add the success message
-      Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
+      if (password !== '') {
+        //re-login with new credentials
+
+        login.login($scope.consoleSession.sessionUser, password, function (loggedIn) {
+          if (loggedIn) {
+            Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
+          } else {
+            error();
+          }
+        });
+      } else {
+        Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
+      }
+
       $scope.alerts = [];
       Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.');
     };
@@ -39,23 +52,8 @@ angular.module('openhimWebui2App')
     };
 
 
-    var saveUser = function (user, email, password) {
-      user.$update().then(function () {
-        if (password !== '') {
-          //re-login with new credentials
-          
-          login.login(email, password, function (loggedIn) {
-            if (loggedIn) {
-              success();
-            } else {
-              error();
-            }
-          });
-        } else {
-          success();
-        }
-      });
-
+    var saveUser = function (user, password) {
+      user.$update(success(password), error);
     };
 
     var setHashAndSave = function (user, hash, salt, email, password) {
@@ -63,7 +61,7 @@ angular.module('openhimWebui2App')
         user.passwordSalt = salt;
       }
       user.passwordHash = hash;
-      saveUser(user, email, password);
+      saveUser(user, password);
     };
 
     $scope.save = function (user, password) {
@@ -73,7 +71,7 @@ angular.module('openhimWebui2App')
 
         setHashAndSave(user, h.hash, h.salt, user.email, password);
       } else {
-        saveUser(user, '', '');
+        saveUser(user, '');
       }
     };
     /* -------------------------Processing save request-----------------------------*/
