@@ -6,13 +6,10 @@
 angular.module('openhimWebui2App')
   .factory('Alerting', function ($rootScope) {
 
+    $rootScope.alerts = {};
+
     return {
       AlertAddMsg: function (alertScope, alertType, alertMsg) {
-        
-        // check if alerts object exist
-        if( !$rootScope.alerts ){
-          $rootScope.alerts = {};
-        }
 
         // check if alertScope object exists
         if ( !$rootScope.alerts[alertScope] ){
@@ -36,13 +33,8 @@ angular.module('openhimWebui2App')
           default:
             alertMsg = 'A server-side error has occurred. Please contact the server administrator';
         }
-   
-        // check if alerts object exist
-        if( !$rootScope.alerts ){
-          $rootScope.alerts = {};
-        }
 
-        // check if alertScope object exists
+        // check if server object exists
         if ( !$rootScope.alerts.server ){
           $rootScope.alerts.server = [];
         }
@@ -54,9 +46,18 @@ angular.module('openhimWebui2App')
         $rootScope.alerts.server.push(alertObject);
 
       },
-      AlertReset: function () {
-        // reset the alerts objects
-        $rootScope.alerts = null;
+      AlertReset: function (alertScope) {
+
+        if( !alertScope ){
+          // reset the alerts objects
+          $rootScope.alerts = {};
+        }else{
+          if ( $rootScope.alerts ){
+            // reset the alerts objects
+            $rootScope.alerts[alertScope] = undefined;
+          }
+        }
+
       }
 
     };
@@ -68,7 +69,7 @@ angular.module('openhimWebui2App')
     $rootScope.$on( '$routeChangeStart', function() {
 
       // reset the alert object for each route changed
-      $rootScope.alerts = null;
+      $rootScope.alerts = undefined;
 
     });
 

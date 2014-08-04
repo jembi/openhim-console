@@ -3,29 +3,50 @@
 angular.module('openhimWebui2App')
   .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, channel) {
     
+    /****************************************************************/
+    /**   These are the functions for the Channel initial load     **/
+    /****************************************************************/
+
+    // get the users for the Channel Alert User dropdown
+    $scope.alertUsers = Api.Users.query(function(){
+      $scope.usersMap = {};
+      angular.forEach($scope.alertUsers, function(user){
+        $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
+      });
+    },
+    function(){
+      // server error - could not connect to API to get channels
+    });
+
+
+
     // get/set the users scope whether new or update
-    // backup object for the route being editted
-    $scope.channelRoutesBackup = null;
-    $scope.routeWarnings = [];
-    $scope.contentMatching = 'No matching';
+    $scope.matching = {};
+    $scope.matching.contentMatching = 'No matching';
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
 
-      if( channel.matchContentRegex ){ $scope.contentMatching = 'RegEx Matching'; }
-      if( channel.matchContentJson ){ $scope.contentMatching = 'JSON matching'; }
-      if( channel.matchContentXpath ){ $scope.contentMatching = 'XML matching'; }
+      if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
+      if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
+      if( channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
     }else{
       $scope.update = false;
       $scope.channel = new Api.Channels();
     }
-    $scope.newRoute = {};
+    
+    /****************************************************************/
+    /**   These are the functions for the Channel initial load     **/
+    /****************************************************************/
 
 
 
 
 
-    /* ------------------------- Save/update channel record ---------------------------- */
+    /***************************************************************/
+    /**   These are the functions for the Channel Modal Popup     **/
+    /***************************************************************/
+
     var success = function () {
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The channel has been saved successfully');
@@ -45,8 +66,9 @@ angular.module('openhimWebui2App')
     };
 
     $scope.saveOrUpdate = function(channel, contentMatching) {
+
       switch (contentMatching) {
-        case 'RegEx Matching':
+        case 'RegEx matching':
           channel.matchContentXpath = null;
           channel.matchContentJson = null;
           channel.matchContentValue = null;
@@ -72,13 +94,31 @@ angular.module('openhimWebui2App')
         channel.$save({ channelId: '' }, success, error);
       }
     };
-    /* ------------------------- Save/update channel record ---------------------------- */
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
 
-    /* -------------------------Add/edit/remove channel function---------------------------- */
+    /***************************************************************/
+    /**   These are the functions for the Channel Modal Popup     **/
+    /***************************************************************/
+
+
+
+
+
+
+
+
+
+    /**********************************************************/
+    /**   These are the functions for the Channel Routes     **/
+    /**********************************************************/
+
+    // define the routes backup object
+    $scope.channelRoutesBackup = null;
+    $scope.newRoute = {};
+
     $scope.addRoute = function (newRoute) {
       if (!$scope.channel.routes) {
         $scope.channel.routes = [];
@@ -86,9 +126,6 @@ angular.module('openhimWebui2App')
       $scope.channel.routes.push(angular.copy(newRoute));
       // reset the backup route object when a record is added
       $scope.channelRoutesBackup = null;
-
-      // Check if any route warnings exist and add them to routeWarnings object
-      $scope.checkRouteWarnings();
 
       // reset the backing object
       $scope.newRoute.name = null;
@@ -99,6 +136,9 @@ angular.module('openhimWebui2App')
       $scope.newRoute.username = null;
       $scope.newRoute.password = null;
       $scope.newRoute.primary = false;
+
+      // Check if any route warnings exist and add them to alerts route object
+      $scope.checkRouteWarnings();
     };
 
     $scope.editRoute = function (routeIndex, route) {
@@ -112,56 +152,195 @@ angular.module('openhimWebui2App')
       }
       // override backup route object to new route being editted
       $scope.channelRoutesBackup = angular.copy(route);
-
-      
       $scope.newRoute = route;
 
-      // Check if any route warnings exist and add them to routeWarnings object
+      // Check if any route warnings exist and add them to alerts route object
       $scope.checkRouteWarnings();
     };
 
     $scope.removeRoute = function (routeIndex) {
       $scope.channel.routes.splice(routeIndex, 1);
 
-      // Check if any route warnings exist and add them to routeWarnings object
+      // Check if any route warnings exist and add them to alerts route object
       $scope.checkRouteWarnings();
     };
-    /* -------------------------Add/edit/remove channel function---------------------------- */
+
+    /**********************************************************/
+    /**   These are the functions for the Channel Routes     **/
+    /**********************************************************/
+
+
     
 
 
-    /* ------------------ Validate form function --------------------- */
-    // verify if any warnings exist - if warnings exist then disable channel save button
-    $scope.checkChannelWarnings = function () {
-      var routeWarnings = $scope.checkRouteWarnings();
 
-      if ( routeWarnings > 0 ){
+
+
+
+
+
+
+    /**********************************************************/
+    /**   These are the functions for the Channel Alerts     **/
+    /**********************************************************/
+
+    // define the alerts backup object
+    $scope.channelAlertsBackup = null;
+    $scope.newAlert = {};
+
+    $scope.addAlert = function (newAlert) {
+      if (!$scope.channel.alerts) {
+        $scope.channel.alerts = [];
+      }
+      $scope.channel.alerts.push(angular.copy(newAlert));
+      // reset the backup route object when a record is added
+      $scope.channelAlertsBackup = null;
+
+      // reset the backing object
+      $scope.newAlert.status = null;
+      $scope.newAlert.failureRate = null;
+      $scope.newAlert.groups = null;
+      $scope.newAlert.users = null;
+    };
+
+    $scope.editAlert = function (alertIndex, alert) {
+
+      // remove the selected alert object from scope
+      $scope.channel.alerts.splice(alertIndex, 1);
+
+      // if backup object exist update alerts object with backup alert
+      if ( $scope.channelAlertsBackup !== null ){
+        $scope.channel.alerts.push(angular.copy($scope.channelAlertsBackup));
+      }
+      // override backup alert object to new alert being editted
+      $scope.channelAlertsBackup = angular.copy(alert);
+
+      $scope.newAlert = alert;
+    };
+
+    $scope.removeAlert = function (alertIndex) {
+      $scope.channel.alerts.splice(alertIndex, 1);
+    };
+
+    $scope.isAlertValid = function(){
+      if (!$scope.newAlert.status || !$scope.newAlert.users || $scope.newAlert.users.length === 0){
+        return false;
+      }
+      if ($scope.newAlert.status.length !== 3){
+        return false;
+      }
+      return true;
+    };
+
+    /**********************************************************/
+    /**   These are the functions for the Channel Alerts     **/
+    /**********************************************************/
+
+
+
+
+
+
+    /***************************************************************/
+    /**   These are the functions for the Channel Alert Users     **/
+    /***************************************************************/
+
+    // define the alerts users backup object
+    $scope.channelAlertsUsersBackup = null;
+    $scope.newAlertUser = {};
+
+    $scope.addAlertUser = function (newAlertUser) {
+      if (!$scope.newAlert.users) {
+        $scope.newAlert.users = [];
+      }
+      $scope.newAlert.users.push(angular.copy(newAlertUser));
+      // reset the backup route object when a record is added
+      $scope.channelAlertsUsersBackup = null;
+
+      // reset the backing object
+      $scope.newAlertUser.user = '';
+      $scope.newAlertUser.method = '';
+      $scope.newAlertUser.maxAlerts = '';
+    };
+
+    $scope.editAlertUser = function (alertUserIndex, alertUser) {
+
+      // remove the selected alert user object from scope
+      $scope.newAlert.users.splice(alertUserIndex, 1);
+
+      // if backup object exist update alerts users object with backup alert user
+      if ( $scope.channelAlertsUsersBackup !== null ){
+        $scope.newAlert.users.push(angular.copy($scope.channelAlertsUsersBackup));
+      }
+      // override backup alert user object to new alert user being editted
+      $scope.channelAlertsUsersBackup = angular.copy(alertUser);
+      $scope.newAlertUser = alertUser;
+    };
+
+    $scope.removeAlertUser = function (alertUserIndex) {
+      $scope.newAlert.users.splice(alertUserIndex, 1);
+    };
+
+    $scope.isAlertUserValid = function(){
+      if (!$scope.newAlertUser.user || !$scope.newAlertUser.method || !$scope.newAlertUser.maxAlerts){
+        return false;
+      }
+      return true;
+    };
+
+    /***************************************************************/
+    /**   These are the functions for the Channel Alert Users     **/
+    /***************************************************************/
+
+
+
+
+
+    /***************************************************************************/
+    /**   These are the general functions for the channel form validation     **/
+    /***************************************************************************/
+    
+    $scope.checkRouteWarnings = function(){
+      // reset route alert object
+      Alerting.AlertReset('route');
+
+      var noRoutes = $scope.noRoutes();
+      var noPrimaries = $scope.noPrimaries();
+      var multiplePrimaries = $scope.multiplePrimaries();
+
+      if ( !noRoutes || !noPrimaries || !multiplePrimaries ){
+        return false;
+      }
+    };
+    
+    $scope.isRouteValid = function () {
+      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port ){
+        return false;
+      }
+      return true;
+    };
+
+    $scope.noRoutes = function () {
+      //no routes found - return true
+      if (!$scope.channel.routes || $scope.channel.routes.length === 0) {
+        Alerting.AlertAddMsg('route', 'warning', 'You must supply atleast one route.');
         return true;
       }
       return false;
     };
 
-    $scope.checkRouteWarnings = function () {
-
-      // clear the routeWarnings object to have a clean object
-      $scope.routeWarnings = [];
-      var countErrors = 0;
-
-      if ($scope.noRoutes() === true) {
-        $scope.routeWarnings.push('You must supply atleast one route.');
-        countErrors++;
+    $scope.noPrimaries = function () {
+      if ($scope.channel.routes) {
+        for (var i = 0 ; i < $scope.channel.routes.length ; i++) {
+          if ($scope.channel.routes[i].primary === true) {
+            // atleast one primary so return false
+            return false;
+          }
+        }
       }
-      if ($scope.noPrimaries() === true) {
-        $scope.routeWarnings.push('Atleast one of your routes must be set to the primary.');
-        countErrors++;
-      }
-      if ($scope.multiplePrimaries() === true) {
-        $scope.routeWarnings.push('You cannot have multiple primary routes.');
-        countErrors++;
-      }
-
-      return countErrors;
-      
+      // return true if no primary routes found
+      Alerting.AlertAddMsg('route', 'warning', 'Atleast one of your routes must be set to the primary.');
+      return true;
     };
 
     $scope.multiplePrimaries = function () {
@@ -174,6 +353,7 @@ angular.module('openhimWebui2App')
           }
 
           if (count > 1) {
+            Alerting.AlertAddMsg('route', 'warning', 'You cannot have multiple primary routes.');
             return true;
           }
         }
@@ -182,27 +362,18 @@ angular.module('openhimWebui2App')
       return false;
     };
 
-    $scope.noPrimaries = function () {
-      if ($scope.channel.routes.length > 0) {
-        for (var i = 0 ; i < $scope.channel.routes.length ; i++) {
-          if ($scope.channel.routes[i].primary === true) {
-            // atleast one primary so return false
-            return false;
-          }
-        }
+    // Check if form conditions are all met and valid
+    $scope.isFormValid = function () {
+      // check if any form alerts in the scope and return false - not valid
+      if ( $scope.alerts.route ){
+        return false;
       }
-      // return true if no primary routes found
       return true;
     };
 
-    $scope.noRoutes = function () {
-      //no routes found - return true
-      if ($scope.channel.routes.length === 0) {
-        return true;
-      }
-      return false;
-    };
-    /* ------------------ Validate form function --------------------- */
+    /***************************************************************************/
+    /**   These are the general functions for the channel form validation     **/
+    /***************************************************************************/
 
 
   });
