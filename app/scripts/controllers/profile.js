@@ -56,7 +56,7 @@ angular.module('openhimWebui2App')
       user.$update(success(password), error);
     };
 
-    var setHashAndSave = function (user, hash, salt, email, password) {
+    var setHashAndSave = function (user, hash, salt,password) {
       if (typeof salt !== 'undefined' && salt !== null) {
         user.passwordSalt = salt;
       }
@@ -69,7 +69,7 @@ angular.module('openhimWebui2App')
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
 
-        setHashAndSave(user, h.hash, h.salt, user.email, password);
+        setHashAndSave(user, h.hash, h.salt, password);
       } else {
         saveUser(user, '');
       }
