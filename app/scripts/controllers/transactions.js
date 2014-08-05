@@ -209,13 +209,13 @@ angular.module('openhimWebui2App')
     var getObjectById = function(id, myArray) {
 
       var object = myArray.filter(function(obj) {
-        if(obj._id == id) {
-          return obj 
+        if(obj._id === id) {
+          return obj;
         }
-      })[0]
+      })[0];
 
       return object;
-    }
+    };
 
     $scope.toggleTransactionSelection = function(transactionID) {
       var idx = $scope.transactionsSelected.indexOf(transactionID);
