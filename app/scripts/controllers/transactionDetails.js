@@ -80,12 +80,21 @@ angular.module('openhimWebui2App')
 
     $scope.confirmRerunTransactions = function(){
       var transactionsSelected = [$scope.transactionDetails._id];
+      var rerunTransactionsSelected = 0;
+
+      if ($scope.transactionDetails.parentID){
+        rerunTransactionsSelected = 1;
+      }
+      
       $modal.open({
         templateUrl: 'views/transactionsRerunModal.html',
         controller: 'TransactionsRerunModalCtrl',
         resolve: {
           transactionsSelected: function () {
             return transactionsSelected;
+          },
+          rerunTransactionsSelected: function () {
+            return rerunTransactionsSelected;
           }
         }
       });
