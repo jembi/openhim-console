@@ -151,8 +151,8 @@ angular.module('openhimWebui2App')
       
       var transactionsSelected = $scope.transactionsSelected;
       $modal.open({
-        templateUrl: 'views/transactionsmodal.html',
-        controller: 'TransactionsModalCtrl',
+        templateUrl: 'views/transactionsRerunModal.html',
+        controller: 'TransactionsRerunModalCtrl',
         scope: $scope,
         resolve: {
           transactionsSelected: function () {

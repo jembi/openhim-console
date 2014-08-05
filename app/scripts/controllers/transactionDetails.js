@@ -1,12 +1,41 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api) {
+  .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+
+    /***************************************************/
+    /**         Initial page load functions           **/
+    /***************************************************/
+
+    var querySuccess = function(transactionDetails){
+      $scope.transactionDetails = transactionDetails;
+      
+      // get the channel object for the transactions details page
+      $scope.channel = Api.Channels.get({ channelId: transactionDetails.channelID });
+
+      // get the client object for the transactions details page
+      $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID });
+
+    };
+
+    var queryError = function(err){
+      // on error - add server error alert
+      Alerting.AlertAddServerMsg(err.status);
+    };
 
     //get the Data for the supplied ID and store in 'transactionsDetails' object
-    $scope.transactionDetails = Api.Transactions.get({ transactionId: $routeParams.transactionId });
+    Api.Transactions.get({ transactionId: $routeParams.transactionId }, querySuccess, queryError);
 
-    /*------------------------Transactions List and Detail view functions----------------------------*/
+    /***************************************************/
+    /**         Initial page load functions           **/
+    /***************************************************/
+
+
+
+    /*******************************************************************/
+    /**         Transactions List and Detail view functions           **/
+    /*******************************************************************/
+
     //setup filter options
     $scope.returnFilterObject = function(){
       var filtersObject = {};
@@ -38,25 +67,54 @@ angular.module('openhimWebui2App')
       //do transactions details redirection when clicked on TD
       $location.path(path);
     };
-    /*------------------------Transactions List and Detail view functions----------------------------*/
+
+    /*******************************************************************/
+    /**         Transactions List and Detail view functions           **/
+    /*******************************************************************/
 
 
-    /*------------------------Transactions ReRun Functions----------------------------*/
+
+    /****************************************************************/
+    /**               Transactions ReRun Functions                 **/
+    /****************************************************************/
+
     $scope.confirmRerunTransactions = function(){
-      
       var transactionsSelected = [$scope.transactionDetails._id];
       $modal.open({
-        templateUrl: 'views/transactionsmodal.html',
-        controller: 'TransactionsModalCtrl',
+        templateUrl: 'views/transactionsRerunModal.html',
+        controller: 'TransactionsRerunModalCtrl',
         resolve: {
           transactionsSelected: function () {
             return transactionsSelected;
           }
         }
-
       });
-
     };
-    /*------------------------Transactions ReRun Functions----------------------------*/
+
+    /****************************************************************/
+    /**               Transactions ReRun Functions                 **/
+    /****************************************************************/
+
+
+
+    /*********************************************************************/
+    /**               Transactions View Route Functions                 **/
+    /*********************************************************************/
+
+    $scope.viewRouteDetails = function(route){
+      $modal.open({
+        templateUrl: 'views/transactionsRouteModal.html',
+        controller: 'TransactionsRouteModalCtrl',
+        resolve: {
+          route: function () {
+            return route;
+          }
+        }
+      });
+    };
+
+    /*********************************************************************/
+    /**               Transactions View Route Functions                 **/
+    /*********************************************************************/
 
   });

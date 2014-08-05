@@ -6,113 +6,141 @@
 
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title" style="float: inherit"><h2>
-            <i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-repeat"></i>
-            Transaction #{{transactionDetails._id}}
-          </h2></div>
+          <div class="panel-title" style="float: inherit">
+            <h2><i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-repeat"></i>Transaction #{{transactionDetails._id}}</h2>
+          </div>
         </div>
-        <div class="panel-body">
-            
-            <!-- div to hold any child transactions if any -->
-            <div class="rerunTransactionsDiv">
-                <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>
-                <button ng-if="transactionDetails.parentID" class="btn btn-primary" ng-click='viewTransactionDetails("/transactions/" + transactionDetails.parentID)'>View Original Transaction</button>
-            </div>
-            
-            <div class="buttons-container">
-              <button ng-if="!transactionDetails.parentID" class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run and edit request</button>
-              <button class="btn btn-primary" ng-click="reviewedTransaction();">Mark as reviewed</button>
-              <button class="btn btn-primary" ng-click="flagTransaction();">Flag</button><br />
-            </div>
 
-            <div id="no-more-tables" class="collapse" style="width: 100%; clear: both;">
-                <!-- Table with all the transaction logs -->
-                <table class="table table-striped rerunTransactionsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>HTTP Method</th>
-                            <th>Path</th>
-                            <th>Request Params</th>
-                            <th>Status</th>
-                            <th>Received Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="transactions-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
-                            <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
-                            <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
-                            <td data-title="Path">{{ childTransaction.request.path }}</td>
-                            <td data-title="Request Params">{{ childTransaction.request.requestParams }}</td>
-                            <td data-title="Status">{{ childTransaction.status }}</td>
-                            <td data-title="Received Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- Transaction Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="transactionDetails">
+          <!-- div to hold any child transactions if any -->
+          <div class="rerunTransactionsDiv">
+            <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>
+            <button ng-if="transactionDetails.parentID" class="btn btn-primary" ng-click='viewTransactionDetails("/transactions/" + transactionDetails.parentID)'>View Original Transaction</button>
+          </div>
+
+          <div class="buttons-container">
+            <button ng-if="!transactionDetails.parentID" class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run and edit request</button>
+          </div>
+
+          <div id="no-more-tables" class="collapse" style="width: 100%; clear: both;">
+            <!-- Table with all the transaction logs -->
+            <table class="table table-striped rerunTransactionsTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>HTTP Method</th>
+                  <th>Path</th>
+                  <th>Request Params</th>
+                  <th>Status</th>
+                  <th>Received Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="transactions-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
+                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                  <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
+                  <td data-title="Path">{{ childTransaction.request.path }}</td>
+                  <td data-title="Request Params">{{ childTransaction.request.querystring }}</td>
+                  <td data-title="Status">{{ childTransaction.status }}</td>
+                  <td data-title="Received Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div class="transaction-detail-container">
-
             <div class="data-group">
-                <label>ID: </label>
-                <div class="data-value">{{transactionDetails._id}}</div>
+              <label>ID: </label>
+              <div class="data-value">{{transactionDetails._id}}</div>
             </div>
             <div class="data-group">
-                <label>Status: </label>
-                <div class="data-value">{{transactionDetails.status}}</div>
+              <label>Status: </label>
+              <div class="data-value">{{transactionDetails.status}}</div>
             </div>
             <div class="data-group">
-                <label>Authorized User: </label>
-                <div class="data-value">{{transactionDetails.clientID}}</div>
+              <label>Channel: </label>
+              <div class="data-value">{{channel.name}}</div>
+            </div>
+            <div class="data-group">
+              <label>Authorized User: </label>
+              <div class="data-value">{{client.clientID}}</div>
             </div>
 
             <label>Request: </label>
             <div class="data-group left-indent">
-                <label>Path: </label>
-                <div class="data-value">{{transactionDetails.request.path}}</div>
+              <label>Path: </label>
+              <div class="data-value">{{transactionDetails.request.path}}</div>
             </div>
             <div class="data-group left-indent">
-                <label>Request Parameters: </label>
-                <div class="data-value">{{transactionDetails.request.querystring}}</div>
+              <label>Request Parameters: </label>
+              <div class="data-value">{{transactionDetails.request.querystring}}</div>
             </div>
             <div class="data-group left-indent">
-                <label>HTTP Method: </label>
-                <div class="data-value">{{transactionDetails.request.method}}</div>
+              <label>HTTP Method: </label>
+              <div class="data-value">{{transactionDetails.request.method}}</div>
             </div>
             <div class="data-group left-indent">
-                <label>Received Timestamp: </label>
-                <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+              <label>Received Timestamp: </label>
+              <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
             <div class="data-group left-indent"><label>Body: </label></div>
             <div class="data-group left-indent">
-                <div class="data-value">
-                  <textarea rows="5">{{transactionDetails.request.body}}</textarea>
-                </div>
+              <div class="data-value">
+                <textarea rows="5">{{transactionDetails.request.body}}</textarea>
+              </div>
             </div>
 
             <label>Response: </label>
             <div class="data-group left-indent">
-                <label>Response Status: </label>
-                <div class="data-value">{{transactionDetails.response.status}}</div>
+              <label>Response Status: </label>
+              <div class="data-value">{{transactionDetails.response.status}}</div>
             </div>
             <div class="data-group left-indent">
-                <label>Received timestamp: </label>
-                <div class="data-value">{{transactionDetails.response.timestamp}}</div>
+              <label>Received timestamp: </label>
+              <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
             <div class="data-group left-indent"><label>Response body:</label></div>
             <div class="data-group left-indent">
-                <div class="data-value">
-                  <textarea rows="5">{{transactionDetails.response.body}}</textarea>
-                </div>
+              <div class="data-value">
+                <textarea rows="5">{{transactionDetails.response.body}}</textarea>
+              </div>
             </div>
 
-            <label>Errors: </label>
-            <div class="data-group left-indent">
-                <label>Desciption: </label>
-                <div class="data-value"></div>
+            <label ng-show="transactionDetails.routes">Routes: </label>
+            <div ng-show="transactionDetails.routes" id="no-more-tables" class="data-group left-indent">
+              <div class="data-value">
+                <!-- Table with all the transaction logs -->
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Route</th>
+                      <th>Method</th>
+                      <th>Path</th>                      
+                      <th>Request Params</th>
+                      <th>Status</th>
+                      <th>Received Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="transactions-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
+                      <td data-title="Route">{{ route.name }}</td>
+                      <td data-title="Method">{{ route.request.method }}</td>
+                      <td data-title="Path">{{ route.request.path }}</td>
+                      <td data-title="Request Params">{{ route.request.querystring }}</td>
+                      <td data-title="Status">{{ route.response.status }}</td>
+                      <td data-title="Received Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
           </div>
+          
         </div>
       </div>
     </div>
