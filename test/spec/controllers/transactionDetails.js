@@ -66,7 +66,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
 
     scope.client.name.should.equal('Test 1');
     scope.client.clientID.should.equal('test1');
-    scope.client.domain.should.equal('test1.openhim.org');
+    scope.client.clientDomain.should.equal('test1.openhim.org');
     scope.client.roles.length.should.equal(1);
   });
 
