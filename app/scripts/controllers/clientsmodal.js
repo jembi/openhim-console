@@ -73,6 +73,6 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isClientValid = function (client, password, passwordRetype) {
-      return client.clientID && client.name && client.domain && client.roles && (password || client.passwordAlgorithm || client.cert) && !(password && password !== passwordRetype);
+      return client.clientID && client.name && client.clientDomain && client.roles && (password || client.passwordAlgorithm || client.cert) && !(password && password !== passwordRetype);
     };
   });

@@ -35,7 +35,7 @@
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                   <td data-title="ID"><a href="" ng-click="editClient(client)">{{ client.clientID }}</a></td>
                   <td data-title="Name"><a href="" ng-click="editClient(client)">{{ client.name }}</a></td>
-                  <td data-title="Domain">{{ client.domain }}</td>
+                  <td data-title="clientDomain">{{ client.clientDomain }}</td>
                   <td data-title="Roles">{{ client.roles.join(', ') }}</td>
                   <td>
                     <button class="btn btn-warning btn-xs" ng-click="editClient(client)"><i class="glyphicon glyphicon-pencil"></i></button>
