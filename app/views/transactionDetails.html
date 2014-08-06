@@ -40,7 +40,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="transactions-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
+                <tr class="table-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
                   <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                   <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
                   <td data-title="Path">{{ childTransaction.request.path }}</td>
@@ -126,7 +126,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="transactions-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
+                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
                       <td data-title="Route">{{ route.name }}</td>
                       <td data-title="Method">{{ route.request.method }}</td>
                       <td data-title="Path">{{ route.request.path }}</td>

@@ -1,0 +1,91 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title" style="float: inherit">
+            <h2>Task #{{task._id}}</h2>
+          </div>
+        </div>
+
+        <!-- Transaction Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="task">
+
+          <div class="task-detail-container">
+            <div class="data-group">
+              <label>ID: </label>
+              <div class="data-value">{{task._id}}</div>
+            </div>
+            <div class="data-group">
+              <label>Status: </label>
+              <div class="data-value">
+	              <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
+	              <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
+	              <span ng-if="task.status === 'NotStarted'" class="label label-danger">Not Started</span>
+              </div>
+            </div>
+            <div class="data-group">
+              <label>Progress: </label>
+              <div class="data-value">
+	              <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="success"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                <progressbar ng-if="task.status === 'Processing'" class="progress-striped active" max="task.transactions.length" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+              </div>
+            </div>
+            <div class="data-group">
+              <label>User: </label>
+              <div class="data-value">{{task.user}}</div>
+            </div>
+            <div class="data-group">
+              <label>Created Date: </label>
+              <div class="data-value">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+            </div>
+            <div class="data-group">
+              <label>Completed Date: </label>
+              <div class="data-value">{{task.completedDate | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+            </div>
+            <div class="data-group">
+              <label>Execution Time: </label>
+              <div class="data-value">{{getExecutionTime(task)}} s</div>
+            </div>
+            
+
+          
+
+            <label>Original Transactions: </label>
+            <div class="data-value">
+              <!-- Table with all the transaction logs -->
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-list" ng-repeat="transaction in task.transactions" ng-click="viewTransactionDetails('/transactions/' + transaction.tid)">
+                  	<td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                    <td data-title="ID">{{ transaction.tid }}</td>
+                    <td data-title="Status">
+                    	<span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
+				              <span ng-if="transaction.tstatus === 'Processing'" class="label label-warning">Processing</span>
+				              <span ng-if="transaction.tstatus === 'NotStarted'" class="label label-info">Not Started</span>
+				              <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
+				             </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
