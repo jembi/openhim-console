@@ -110,9 +110,9 @@ describe('Controller: LoginCtrl', function () {
       scope.validateLogin();
 
       // One error should exist - 'Busy checking login credentials'
-      scope.alerts.length.should.equal(1);
-      scope.alerts[0].type.should.equal('warning');
-      scope.alerts[0].msg.should.equal('Busy checking your credentials...');
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
       
       httpBackend.flush();
 
