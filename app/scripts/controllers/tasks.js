@@ -34,19 +34,12 @@ angular.module('openhimWebui2App')
 
 
     /*****************************************************/
-    /**         View task details modal popup           **/
+    /**         General rerun task functions            **/
     /*****************************************************/
 
     $scope.viewTaskDetails = function(path) {
       $location.path(path);
     };
-    
-    /*****************************************************/
-    /**         View task details modal popup           **/
-    /*****************************************************/
-
-
-
 
     $scope.getProcessedTotal = function(task){
       var totalTransactions = task.transactions.length;
@@ -66,62 +59,14 @@ angular.module('openhimWebui2App')
       }
     };
 
-
-    $scope.refreshTasksList = function () {
-      
-    };
-
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
       $scope.filter = {};
     };
-
-
-    /**************************************************/
-    /**         Delete Confirm modal popup           **/
-    /**************************************************/
-
-    $scope.confirmDelete = function(task){
-      Alerting.AlertReset();
-
-      var deleteObject = {
-        title: 'Delete Task',
-        message: 'Are you sure you wish to delete this task?'
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/deleteConfirmModal.html',
-        controller: 'DeleteConfirmModalCtrl',
-        resolve: {
-          deleteObject: function () {
-            return deleteObject;
-          }
-        }
-      });
-
-      modalInstance.result.then(function () {
-        $scope.tasks = {};
-        // Delete confirmed - delete the user
-        task.$remove(deleteSuccess, deleteError);
-      }, function () {
-        // delete cancelled - do nothing
-      });
-
-    };
-
-    var deleteSuccess = function () {
-      // reload the scope with updated API result
-      Api.Tasks.query(querySuccess, queryError);
-      Alerting.AlertAddMsg('top', 'success', 'The task has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the task: #' + err.status + ' - ' + err.data);
-    };
     
-    /**************************************************/
-    /**         Delete Confirm modal popup           **/
-    /**************************************************/
+    /*****************************************************/
+    /**         General rerun task functions            **/
+    /*****************************************************/
+
 
   });

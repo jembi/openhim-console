@@ -11,6 +11,8 @@
           </div>
         </div>
 
+        
+
         <!-- Transaction Alerts -->
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
@@ -56,31 +58,44 @@
             
 
           
-
-            <label>Original Transactions: </label>
-            <div class="data-value">
-              <!-- Table with all the transaction logs -->
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>ID</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="table-list" ng-repeat="transaction in task.transactions" ng-click="viewTransactionDetails('/transactions/' + transaction.tid)">
-                  	<td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
-                    <td data-title="ID">{{ transaction.tid }}</td>
-                    <td data-title="Status">
-                    	<span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
-				              <span ng-if="transaction.tstatus === 'Processing'" class="label label-warning">Processing</span>
-				              <span ng-if="transaction.tstatus === 'NotStarted'" class="label label-info">Not Started</span>
-				              <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
-				             </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="data-group">
+              <label>Original Transactions: </label>
+              <div class="data-value">
+                <div id="no-more-tables">
+                  <!-- Table with all the transaction logs -->
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Rerun ID</th>
+                        <th>Rerun Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="transaction in task.transactions">
+                      	<td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                        <td data-title="ID"><a href="#/transactions/{{transaction.tid}}">{{ transaction.tid }}</a></td>
+                        <td data-title="Status">
+                        	<span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
+    				              <span ng-if="transaction.tstatus === 'Processing'" class="label label-warning">Processing</span>
+    				              <span ng-if="transaction.tstatus === 'NotStarted'" class="label label-info">Not Started</span>
+    				              <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
+    				            </td>
+                        <td data-title="Rerun ID"><a href="#/transactions/{{transaction.rerunID}}">{{ transaction.rerunID }}</a></td>
+                        <td data-title="Status">
+                          <span ng-if="transaction.tstatus === 'Successful'" class="label label-success">Successful</span>
+                          <span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
+                          <span ng-if="transaction.tstatus === 'Processing'" class="label label-info">Processing</span>
+                          <span ng-if="transaction.tstatus === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                          <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
           

@@ -37,7 +37,7 @@
             </div>
             <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
               <label tooltip="Pick a date to filter rerun tasks by">Date: </label>
-              <input type="text" type="text" class="form-control input-date" ng-model="filter.created">
+              <input type="text" class="form-control input-date" ng-model="filter.created">
             </div>
             <div class="transactionsFilterRefreshDiv">
               <button class="btn btn-primary" ng-click="clearFilters()"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
@@ -54,7 +54,6 @@
                     <th>User</th>
                     <th>Execution Time</th>
                     <th>Created Date</th>
-                    <th></th>
                   </tr>
               </thead>
               <tbody>
@@ -74,9 +73,6 @@
                   <td data-title="User">{{task.user}}</td>
                   <td data-title="Execution Time">{{getExecutionTime(task)}} s</td>
                   <td data-title="Created Date">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
-                  <td>
-                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(task)"><i class="glyphicon glyphicon-remove"></i></button>
-                  </td>
                 </tr>
               </tbody>
             </table>
