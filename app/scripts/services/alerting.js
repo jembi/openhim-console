@@ -69,7 +69,7 @@ angular.module('openhimWebui2App')
     $rootScope.$on( '$routeChangeStart', function() {
 
       // reset the alert object for each route changed
-      $rootScope.alerts = undefined;
+      $rootScope.alerts = {};
 
     });
 

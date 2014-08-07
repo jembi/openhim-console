@@ -5,19 +5,26 @@
 <form name="form" novalidate>
   <div class="modal-body">
 
-      <div ng-if="rerunSuccess != true">
-        <h4 ng-show="transactionsSelected.length === 0">You have not selected any transactions to be rerun. <br /><br /> 
-        Please select the transactions you wish to rerun by ticking the boxes on the left and try again</h4>
-        <h4 ng-show="transactionsSelected.length === 1">You have selected that transaction <strong>#{{transactionsSelected[0]}}</strong> should be rerun. <br /><br />
-        Are you sure you wish to proceed with this operation?</h4>
-        <h4 ng-show="transactionsSelected.length > 1">You have selected a total of <strong>{{transactionsSelected.length}}</strong> transactions to be rerun. <br /><br />
-        Are you sure you wish to proceed with this operation?</h4>
-      </div>
-      
-      <div ng-if="rerunSuccess === true">
-        <h4 ng-show="transactionsSelected.length === 1">Your selected transaction has been added to the queue to be rerun.</h4>
-        <h4 ng-show="transactionsSelected.length > 1">Your selected transactions have been added to the queue to be rerun.</h4>
-      </div>      
+    <div ng-if="rerunSuccess != true">
+      <h4 ng-show="transactionsSelected.length === 0">You have not selected any transactions to be rerun. <br /><br /> 
+      Please select the transactions you wish to rerun by ticking the boxes on the left and try again</h4>
+
+      <h4 ng-show="transactionsSelected.length > 0">
+        <div ng-show="transactionsSelected.length === 1" style="margin-bottom: 15px;">You have selected that transaction <strong>#{{transactionsSelected[0]}}</strong> should be rerun. </div>
+        <div ng-show="transactionsSelected.length > 1" style="margin-bottom: 15px;">You have selected a total of <strong>{{transactionsSelected.length}}</strong> transactions to be rerun. </div>
+
+        <!-- Rerun Alerts -->
+        <alert ng-repeat="alert in alerts.rerun" type="alert.type">{{alert.msg}}</alert>
+        <!-- Rerun Alerts -->
+
+        <div>Are you sure you wish to proceed with this operation?</div>
+      </h4>
+    </div>
+    
+    <div ng-if="rerunSuccess === true">
+      <h4 ng-show="transactionsSelected.length === 1">Your selected transaction has been added to the queue to be rerun.</h4>
+      <h4 ng-show="transactionsSelected.length > 1">Your selected transactions have been added to the queue to be rerun.</h4>
+    </div>      
 
   </div>
   <div class="modal-footer">
