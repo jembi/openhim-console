@@ -7,7 +7,7 @@ angular.module('openhimWebui2App')
     $scope.transactionsSelected = transactionsSelected;
     $scope.rerunTransactionsSelected = rerunTransactionsSelected;
 
-    if ( rerunTransactionsSelected === 1 ){
+    if ( rerunTransactionsSelected === 1 && transactionsSelected.length === 1 ){
       Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun');
     }else if( rerunTransactionsSelected > 0 ){
       Alerting.AlertAddMsg('rerun', 'warning', rerunTransactionsSelected + ' of these transactions have already been rerun');

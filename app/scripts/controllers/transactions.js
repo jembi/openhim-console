@@ -190,19 +190,19 @@ angular.module('openhimWebui2App')
     
     $scope.toggleCheckedAll = function () {
       //if checked for all
-      $scope.rerunTransactionsSelected = 0;
       if( $scope.checkAll === true ){
         $scope.transactionsSelected = [];
+        $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
           $scope.transactionsSelected.push(transaction._id);
 
           // check if transaction is a rerun
-          if (transaction.parentID){
-            $scope.rerunTransactionsSelected++;
+          if (transaction.childIDs){
+            if (transaction.childIDs.length > 0){
+              $scope.rerunTransactionsSelected++;
+            }
           }
         });
-      }else{
-        $scope.resetCheckedItems();
       }
     };
 
@@ -226,17 +226,21 @@ angular.module('openhimWebui2App')
       if (idx > -1) {
         $scope.transactionsSelected.splice(idx, 1);
 
-        // check if transaction is a rerun
-        if (transaction.parentID){
-          $scope.rerunTransactionsSelected--;
+        // check if transaction has reruns
+        if (transaction.childIDs){
+          if (transaction.childIDs.length > 0){
+            $scope.rerunTransactionsSelected--;
+          }
         }
       }else {
         // is newly selected
         $scope.transactionsSelected.push(transactionID);
 
-        // check if transaction is a rerun
-        if (transaction.parentID){
-          $scope.rerunTransactionsSelected++;
+        // check if transaction has reruns
+        if (transaction.childIDs){
+          if (transaction.childIDs.length > 0){
+            $scope.rerunTransactionsSelected++;
+          }
         }
       }
     };
