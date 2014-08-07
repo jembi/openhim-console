@@ -41,13 +41,13 @@ angular.module('openhimWebui2App')
         Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
       }
 
-      $scope.alerts = [];
+      Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.');
     };
 
     var error = function (err) {
       // add the error message
-      $scope.alerts = [];
+      Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data);
     };
 

@@ -4,6 +4,10 @@
 angular.module('openhimWebui2App')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
+    /***************************************************/
+    /**         Initial page load functions           **/
+    /***************************************************/
+
     // get the channels for the transactions filter dropdown
     $scope.channels = Api.Channels.query(function(){
       $scope.channelsMap = {};
@@ -16,6 +20,7 @@ angular.module('openhimWebui2App')
     });
 
     $scope.transactionsSelected = [];
+    $scope.rerunTransactionsSelected = 0;
 
     //return results for the first page (20 results)
     $scope.showpage = 0;
@@ -25,7 +30,16 @@ angular.module('openhimWebui2App')
     $scope.filterDateStart = '';
     $scope.filterDateEnd = '';
 
-    /*------------------------Transactions List and Detail view functions----------------------------*/
+    /***************************************************/
+    /**         Initial page load functions           **/
+    /***************************************************/
+
+
+
+    /*******************************************************************/
+    /**         Transactions List and Detail view functions           **/
+    /*******************************************************************/
+
     //setup filter options
     $scope.returnFilterObject = function(){
       var filtersObject = {};
@@ -142,14 +156,22 @@ angular.module('openhimWebui2App')
       //run the transaction list view after filters been cleared
       $scope.refreshTransactionsList();
     };
-    /*------------------------Transactions List and Detail view functions----------------------------*/
+
+    /*******************************************************************/
+    /**         Transactions List and Detail view functions           **/
+    /*******************************************************************/
 
 
-    /*------------------------Transactions ReRun Functions----------------------------*/
+
+    /****************************************************/
+    /**         Transactions ReRun Functions           **/
+    /****************************************************/
+    
     $scope.confirmRerunTransactions = function(){
       Alerting.AlertReset();
       
       var transactionsSelected = $scope.transactionsSelected;
+      var rerunTransactionsSelected = $scope.rerunTransactionsSelected;
       $modal.open({
         templateUrl: 'views/transactionsRerunModal.html',
         controller: 'TransactionsRerunModalCtrl',
@@ -157,48 +179,84 @@ angular.module('openhimWebui2App')
         resolve: {
           transactionsSelected: function () {
             return transactionsSelected;
+          },
+          rerunTransactionsSelected: function () {
+            return rerunTransactionsSelected;
           }
         }
-
       });
 
     };
-
+    
     $scope.toggleCheckedAll = function () {
       //if checked for all
       if( $scope.checkAll === true ){
         $scope.transactionsSelected = [];
+        $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
-          //only allow original transactions to be rerun - Check that parentID doesnt exist
-          if( !transaction.parentID ){
-            $scope.transactionsSelected.push(transaction._id);
+          $scope.transactionsSelected.push(transaction._id);
+
+          // check if transaction is a rerun
+          if (transaction.childIDs){
+            if (transaction.childIDs.length > 0){
+              $scope.rerunTransactionsSelected++;
+            }
           }
         });
-      }else{
-        $scope.resetCheckedItems();
       }
+    };
+
+    var getObjectById = function(id, myArray) {
+
+      var object = myArray.filter(function(obj) {
+        if(obj._id === id) {
+          return obj;
+        }
+      })[0];
+
+      return object;
     };
 
     $scope.toggleTransactionSelection = function(transactionID) {
       var idx = $scope.transactionsSelected.indexOf(transactionID);
 
+      var transaction = getObjectById(transactionID, $scope.transactions);
+
       // is currently selected
       if (idx > -1) {
         $scope.transactionsSelected.splice(idx, 1);
+
+        // check if transaction has reruns
+        if (transaction.childIDs){
+          if (transaction.childIDs.length > 0){
+            $scope.rerunTransactionsSelected--;
+          }
+        }
       }else {
         // is newly selected
         $scope.transactionsSelected.push(transactionID);
+
+        // check if transaction has reruns
+        if (transaction.childIDs){
+          if (transaction.childIDs.length > 0){
+            $scope.rerunTransactionsSelected++;
+          }
+        }
       }
     };
 
     $scope.resetCheckedItems = function(){
       $scope.transactionsSelected = [];
+      $scope.rerunTransactionsSelected = 0;
       $scope.checkAll = false;
     };
 
     $scope.$on('transactionRerunSuccess', function() {
       $scope.refreshTransactionsList();
     });
-    /*------------------------Transactions ReRun Functions----------------------------*/
+    
+    /****************************************************/
+    /**         Transactions ReRun Functions           **/
+    /****************************************************/
 
   });
