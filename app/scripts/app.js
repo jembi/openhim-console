@@ -55,6 +55,10 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
+      .when('/visualizer', {
+        templateUrl: 'views/visualizer.html',
+        controller: 'VisualizerCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

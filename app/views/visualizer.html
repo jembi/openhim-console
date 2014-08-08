@@ -1,0 +1,27 @@
+
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="container-fluid">
+        <div class="row">
+          <div id="visualizer"/>
+        </div>
+        <div class="row">
+          <div class="span2">
+            <div id="controls" class="btn-toolbar">
+              <div class="btn-group">
+                <a id="backward" class="btn" href="#" ng-click="slowDown();"><i class="glyphicon glyphicon-backward"></i></a>
+                <a id="play" class="btn" href="#" ng-click="play();" ng-show="showPlay"><i class="glyphicon glyphicon-play"></i></a>
+                <a id="pause" class="btn" href="#" ng-click="pause();" ng-show="showPause"><i class="glyphicon glyphicon-pause"></i></a>
+                <a id="forward" class="btn" href="#" ng-click="speedUp();"><i class="glyphicon glyphicon-forward"></i></a>
+              </div>
+            </div>
+          </div>
+          <div id="speed" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
