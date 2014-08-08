@@ -1,0 +1,58 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+
+        <div class="panel-heading">
+          <div class="panel-title" style="float: inherit">
+            <h2>Channel: {{channel.name}}</h2>
+          </div>
+        </div>
+
+        <!-- Transaction Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body">
+
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Load (Past Week)</div>
+              
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh" ng-click="getLoadMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="load-graph" style="height: 230px;"></div>
+            </div>
+          </div>
+
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Status (Last Day)</div>
+              
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh" ng-click="getStatusMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-9">
+                  <div id="status-bar" style="height: 230px;"></div>
+                </div>
+                <div class="col-md-3">
+                  <div id="status-donut" style="height: 230px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>          
+
+      </div>
+    </div>
+  </div>
+</div>

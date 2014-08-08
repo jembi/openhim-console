@@ -19,6 +19,10 @@ angular
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
       })
+      .when('/channels/:channelId', {
+        templateUrl: 'views/channelMonitoring.html',
+        controller: 'ChannelMonitoringCtrl'
+      })
       .when('/clients', {
         templateUrl: 'views/clients.html',
         controller: 'ClientsCtrl'
