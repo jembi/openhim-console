@@ -66,7 +66,7 @@
                 <td class="transactionsCheckboxTD">
                   <label>
                     <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                    <i ng-if="transaction.parentID" class="glyphicon glyphicon-repeat"></i>
+                    <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                   </label>
                 </td>
                 <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
