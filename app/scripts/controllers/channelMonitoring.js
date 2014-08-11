@@ -110,7 +110,7 @@ angular.module('openhimWebui2App')
       updateResponseTimeLineChart(responseTimeData);
     };
     
-    var updateResponseTimeLineChart = function(responseTimeData){      
+    var updateResponseTimeLineChart = function(responseTimeData){
       var lineChartData = [
         { 'date': responseTimeData.day7.date, 'value': responseTimeData.day7.value },
         { 'date': responseTimeData.day6.date, 'value': responseTimeData.day6.value },
@@ -198,7 +198,7 @@ angular.module('openhimWebui2App')
     var updateStatusDonutChart = function(status){
       var donutData = [
         { label: 'Processing', value: status.processingPercent },
-        { label: 'Failed', value: status.failedPercent },        
+        { label: 'Failed', value: status.failedPercent },
         { label: 'Completed', value: status.completedPercent },
         { label: 'Completed with error(s)', value: status.completedWErrorsPercent },
         { label: 'Successful', value: status.successfulPercent }
