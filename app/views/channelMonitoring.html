@@ -22,7 +22,7 @@
               <div class="panel-title">Transaction Load (Past Week)</div>
               
               <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh" ng-click="getLoadMetrics()"></i>
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
               </div>
             </div>
             <div class="panel-body">
@@ -32,10 +32,23 @@
 
           <div class="content-box-large">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Status (Last Day)</div>
+              <div class="panel-title">Average Response Time (Past Week)</div>
               
               <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh" ng-click="getStatusMetrics()"></i>
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getResponseTimeMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="response-time-graph" style="height: 230px;"></div>
+            </div>
+          </div>
+
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Status (Past Day)</div>
+              
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
               </div>
             </div>
             <div class="panel-body">

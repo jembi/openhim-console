@@ -690,6 +690,8 @@ body {
 }
 .nav-tabs.nav-justified a:hover { cursor: pointer; }
 .channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
+.reload-metrics-btn { margin: 5px; } 
+.reload-metrics-btn:hover { cursor: pointer; } 
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
