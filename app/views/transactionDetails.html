@@ -7,7 +7,7 @@
       <div class="content-box-large">
         <div class="panel-heading">
           <div class="panel-title" style="float: inherit">
-            <h2><i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-repeat"></i>Transaction #{{transactionDetails._id}}</h2>
+            <h2><i ng-if="transactionDetails.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>Transaction #{{transactionDetails._id}}</h2>
           </div>
         </div>
 
@@ -18,12 +18,12 @@
         <div class="panel-body" ng-show="transactionDetails">
           <!-- div to hold any child transactions if any -->
           <div class="rerunTransactionsDiv">
-            <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>
             <button ng-if="transactionDetails.parentID" class="btn btn-primary" ng-click='viewTransactionDetails("/transactions/" + transactionDetails.parentID)'>View Original Transaction</button>
+            <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>            
           </div>
 
           <div class="buttons-container">
-            <button ng-if="!transactionDetails.parentID" class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run and edit request</button>
+            <button class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
           </div>
 
           <div id="no-more-tables" class="collapse" style="width: 100%; clear: both;">

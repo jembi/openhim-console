@@ -630,7 +630,12 @@ body {
 
 .transactionsCheckboxTD{
   padding: 0px !important;
-  width: 33px;
+  width: 50px;
+}
+
+.transactionsCheckboxTD .glyphicon{
+  top: -1px;
+  margin-left: 2px;
 }
 
 .transactionsCheckboxTD label{
@@ -835,10 +840,11 @@ body {
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
 
-    .transactionsCheckboxTD { padding: 0px !important; }
+    .transactionsCheckboxTD { padding: 0px !important; }    
     .transactionsCheckboxTD label { padding: 0px; }
     .responsiveTransactionIndexCheckbox span { display: none; }
     .responsiveTransactionIndexCheckbox label { display: block; margin: 0; text-align: right; padding: 5px; }
+    .responsiveTransactionIndexCheckbox .glyphicon{ top: 0px; margin-left: 5px; }
 
     .task-detail-container .data-group>label { width: 35%; }
     .transaction-detail-container .data-group>label { width: 35%; }
