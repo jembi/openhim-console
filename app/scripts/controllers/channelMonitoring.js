@@ -167,11 +167,16 @@ angular.module('openhimWebui2App')
 
       var total = status.processing + status.failed + status.completed + status.successful + status.completedWErrors;
 
-      status.processingPercent = Math.floor(100 / total * status.processing);
+      /*status.processingPercent = Math.floor(100 / total * status.processing);
       status.failedPercent = Math.floor(100 / total * status.failed);
       status.completedPercent = Math.floor(100 / total * status.completed);
       status.successfulPercent = Math.floor(100 / total * status.successful);
-      status.completedWErrorsPercent = Math.floor(100 / total * status.completedWErrors);
+      status.completedWErrorsPercent = Math.floor(100 / total * status.completedWErrors);*/
+      status.processingPercent = (100 / total * status.processing).toFixed(2);
+      status.failedPercent = (100 / total * status.failed).toFixed(2);
+      status.completedPercent = (100 / total * status.completed).toFixed(2);
+      status.successfulPercent = (100 / total * status.successful).toFixed(2);
+      status.completedWErrorsPercent = (100 / total * status.completedWErrors).toFixed(2);
       /* SIMULATED STATUS VALUES */
 
       updateStatusBarChart(status);
@@ -224,7 +229,11 @@ angular.module('openhimWebui2App')
         xLabelMargin: 10,
         resize: true,
         hideHover: 'auto',
-        barColors: ['#3d88ba']
+        barColors: ['#3d88ba'],
+        hoverCallback: function (index, options, content, row) {
+          $scope.donutChart.select(index);
+          return content;
+        }
       });
     };
 
