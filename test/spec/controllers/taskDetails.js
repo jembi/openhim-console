@@ -13,7 +13,7 @@ describe('Controller: TaskDetailsCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/tasks/53e1eac5e907b57711509853')).respond({ '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-06', 'remainingTransactions': 0, 'user': 'testuser', 'created': '2014-08-06', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' });
+    $httpBackend.when('GET', new RegExp('.*/tasks/53e1eac5e907b57711509853')).respond({ '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'testuser', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' });
 
     createController = function() {
       scope = $rootScope.$new();
@@ -35,6 +35,20 @@ describe('Controller: TaskDetailsCtrl', function () {
     scope.task.transactions.length.should.equal(2);
   });
 
-  
+  it('should get the execution time', function () {
+    createController();
+    httpBackend.flush();
+
+    var executionTime = scope.getExecutionTime(scope.task);
+    executionTime.should.equal('4.89');
+  });
+
+  it('should get the amount of rerun transactions that has been processed', function () {
+    createController();
+    httpBackend.flush();
+
+    var processedTotal = scope.getProcessedTotal(scope.task);
+    processedTotal.should.equal(2);
+  });
 
 });

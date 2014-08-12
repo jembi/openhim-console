@@ -9,23 +9,23 @@ angular.module('openhimWebui2App')
 
     $scope.filter = {};
 
-    // get the channels for the transactions filter dropdown
+    // get the users for the transactions filter dropdown
     $scope.users = Api.Users.query();
 
-    var querySuccess = function(tasks){
+    $scope.querySuccess = function(tasks){
       $scope.tasks = tasks;
       if( tasks.length === 0 ){
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no tasks created');
+        Alerting.AlertAddMsg('top', 'warning', 'There are currently no tasks created');
       }
     };
 
-    var queryError = function(err){
+    $scope.queryError = function(err){
       // on error - add server error alert
       Alerting.AlertAddServerMsg(err.status);
     };
 
     // do the initial request
-    Api.Tasks.query(querySuccess, queryError);
+    Api.Tasks.query($scope.querySuccess, $scope.queryError);
 
     /**********************************************/
     /**         Initial load functions           **/
@@ -48,14 +48,16 @@ angular.module('openhimWebui2App')
     };
 
     $scope.getExecutionTime = function(task){
-      if( task.completedDate ){
-        var created = new Date(task.created);
-        var completedDate = new Date(task.completedDate);
-        var miliseconds = completedDate - created;
-        var seconds = miliseconds/1000;
-        return seconds.toFixed(2);
-      }else{
-        return 0;
+      if (task){
+        if( task.completedDate ){
+          var created = new Date(task.created);
+          var completedDate = new Date(task.completedDate);
+          var miliseconds = completedDate - created;
+          var seconds = miliseconds/1000;
+          return seconds.toFixed(2);
+        }else{
+          return 0;
+        }
       }
     };
 

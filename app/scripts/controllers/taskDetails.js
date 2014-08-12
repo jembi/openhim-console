@@ -9,10 +9,6 @@ angular.module('openhimWebui2App')
 
     var querySuccess = function(task){
       $scope.task = task;
-
-      // get the channel object for the transactions details page
-      //$scope.channel = Api.Channels.get({ channelId: taskDetails.channelID });
-
     };
 
     var queryError = function(err){
@@ -29,6 +25,10 @@ angular.module('openhimWebui2App')
     
 
 
+    /**************************************************/
+    /**         Task Calculation Functions           **/
+    /**************************************************/
+
     $scope.getProcessedTotal = function(task){
       var totalTransactions = task.transactions.length;
       var remainingTransactions = task.remainingTransactions;
@@ -36,26 +36,25 @@ angular.module('openhimWebui2App')
     };
 
     $scope.getExecutionTime = function(task){
-
-			if (task){
-				if( task.completedDate ){
-					var created = new Date(task.created);
-					var completedDate = new Date(task.completedDate);
-					var miliseconds = completedDate - created;
-					var seconds = miliseconds/1000;
-					return seconds.toFixed(2);
-				}else{
-					return 0;
-				}
-			}
-      
+      if (task){
+        if( task.completedDate ){
+          var created = new Date(task.created);
+          var completedDate = new Date(task.completedDate);
+          var miliseconds = completedDate - created;
+          var seconds = miliseconds/1000;
+          return seconds.toFixed(2);
+        }else{
+          return 0;
+        }
+      }
     };
-
-
 
     $scope.viewTransactionDetails = function(path) {
       $location.path(path);
     };
 
+    /**************************************************/
+    /**         Task Calculation Functions           **/
+    /**************************************************/
 
   });
