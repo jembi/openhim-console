@@ -36,36 +36,26 @@ angular.module('openhimWebui2App')
     $scope.getLoadMetrics = function(){
       // do API call here to pull channel load metrics
       /* SIMULATED STATUS VALUES */
-      var loadData = {};
-      loadData.day7 = { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day6 = { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day5 = { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day4 = { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day3 = { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day2 = { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      loadData.day1 = { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      console.log(loadData);
+      var loadData = [
+        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
+      ];
       /* SIMULATED STATUS VALUES */
 
       updateLoadLineChart(loadData);
     };
     
     var updateLoadLineChart = function(loadData){
-      var lineChartData = [
-        { 'date': loadData.day7.date, 'value': loadData.day7.value },
-        { 'date': loadData.day6.date, 'value': loadData.day6.value },
-        { 'date': loadData.day5.date, 'value': loadData.day5.value },
-        { 'date': loadData.day4.date, 'value': loadData.day4.value },
-        { 'date': loadData.day3.date, 'value': loadData.day3.value },
-        { 'date': loadData.day2.date, 'value': loadData.day2.value },
-        { 'date': loadData.day1.date, 'value': loadData.day1.value }
-      ];
-
       // if HTML in element then barChart already created - set new data
       if (jQuery('#load-graph').html().length > 0){
-        $scope.lineChart.setData(lineChartData);
+        $scope.lineChart.setData(loadData);
       }else{
-        createLoadLineChart(lineChartData);
+        createLoadLineChart(loadData);
       }
     };
 
@@ -97,35 +87,26 @@ angular.module('openhimWebui2App')
     $scope.getResponseTimeMetrics = function(){
       // do API call here to pull channel response metrics
       /* SIMULATED STATUS VALUES */
-      var responseTimeData = {};
-      responseTimeData.day7 = { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day6 = { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day5 = { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day4 = { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day3 = { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day2 = { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
-      responseTimeData.day1 = { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) };
+      var responseTimeData = [
+        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
+        { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
+      ];
       /* SIMULATED STATUS VALUES */
 
       updateResponseTimeLineChart(responseTimeData);
     };
     
     var updateResponseTimeLineChart = function(responseTimeData){
-      var lineChartData = [
-        { 'date': responseTimeData.day7.date, 'value': responseTimeData.day7.value },
-        { 'date': responseTimeData.day6.date, 'value': responseTimeData.day6.value },
-        { 'date': responseTimeData.day5.date, 'value': responseTimeData.day5.value },
-        { 'date': responseTimeData.day4.date, 'value': responseTimeData.day4.value },
-        { 'date': responseTimeData.day3.date, 'value': responseTimeData.day3.value },
-        { 'date': responseTimeData.day2.date, 'value': responseTimeData.day2.value },
-        { 'date': responseTimeData.day1.date, 'value': responseTimeData.day1.value }
-      ];
-
       // if HTML in element then barChart already created - set new data
       if (jQuery('#response-time-graph').html().length > 0){
-        $scope.responseTimeLineChart.setData(lineChartData);
+        $scope.responseTimeLineChart.setData(responseTimeData);
       }else{
-        createResponseTimeLineChart(lineChartData);
+        createResponseTimeLineChart(responseTimeData);
       }
     };
 
@@ -158,91 +139,102 @@ angular.module('openhimWebui2App')
     $scope.getStatusMetrics = function(){
       // do API call here to pull channel status metrics
       /* SIMULATED STATUS VALUES */
-      var status = {};
-      status.processing = Math.floor((Math.random() * 1000) + 1);
-      status.failed = Math.floor((Math.random() * 1000) + 1);
-      status.completed = Math.floor((Math.random() * 1000) + 1);
-      status.successful = Math.floor((Math.random() * 1000) + 1);
-      status.completedWErrors = Math.floor((Math.random() * 1000) + 1);
+      var statusData = [];
+      var total = 450;
+      var value, percent;
 
-      var total = status.processing + status.failed + status.completed + status.successful + status.completedWErrors;
+      if ( 1 === 1 ){
+        value = 40;
+        percent = (100 / total * value).toFixed(2);
+        statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
+      }
 
-      /*status.processingPercent = Math.floor(100 / total * status.processing);
-      status.failedPercent = Math.floor(100 / total * status.failed);
-      status.completedPercent = Math.floor(100 / total * status.completed);
-      status.successfulPercent = Math.floor(100 / total * status.successful);
-      status.completedWErrorsPercent = Math.floor(100 / total * status.completedWErrors);*/
-      status.processingPercent = (100 / total * status.processing).toFixed(2);
-      status.failedPercent = (100 / total * status.failed).toFixed(2);
-      status.completedPercent = (100 / total * status.completed).toFixed(2);
-      status.successfulPercent = (100 / total * status.successful).toFixed(2);
-      status.completedWErrorsPercent = (100 / total * status.completedWErrors).toFixed(2);
+      if ( 1 === 1 ){
+        value = 95;
+        percent = (100 / total * value).toFixed(2);
+        statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
+      }
+      
+      if ( 1 === 1 ){
+        value = 40;
+        percent = (100 / total * value).toFixed(2);
+        statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
+      }
+
+      if ( 1 === 1 ){
+        value = 25;
+        percent = (100 / total * value).toFixed(2);
+        statusData.push({ label: 'Completed with Error(s)', value: value, percent: percent, color: '#5bc0de' });
+      }
+
+      if ( 1 === 1 ){
+        value = 250;
+        percent = (100 / total * value).toFixed(2);
+        statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
+      }
       /* SIMULATED STATUS VALUES */
 
-      updateStatusBarChart(status);
-      updateStatusDonutChart(status);
+      updateStatusBarChart(statusData);
+      updateStatusDonutChart(statusData);
     };
     
-    var updateStatusBarChart = function(status){
-      var barData = [
-        { status: 'Processing', total: status.processing },
-        { status: 'Failed', total: status.failed },
-        { status: 'Completed', total: status.completed },
-        { status: 'Completed with error(s)', total: status.completedWErrors },
-        { status: 'Successful', total: status.successful }
-      ];
+    var updateStatusBarChart = function(statusData){
+      // construct status bar object for morris
+      var statusBarData = [];
+      for (var i = 0; i < statusData.length; i++) {
+        statusBarData.push({ label: statusData[i].label, value: statusData[i].value });
+      }
 
       // if HTML in element then barChart already created - set new data
       if (jQuery('#status-bar').html().length > 0){
-        $scope.barChart.setData(barData);
+        $scope.barChart.setData(statusBarData);
       }else{
-        createBarChart(barData);
+        createBarChart(statusBarData);
       }
     };
 
-    var updateStatusDonutChart = function(status){
-      var donutData = [
-        { label: 'Processing', value: status.processingPercent },
-        { label: 'Failed', value: status.failedPercent },
-        { label: 'Completed', value: status.completedPercent },
-        { label: 'Completed with error(s)', value: status.completedWErrorsPercent },
-        { label: 'Successful', value: status.successfulPercent }
-      ];
+    var updateStatusDonutChart = function(statusData){
+      var statusDonutData = [];
+      var statusDonutColors = [];
+      for (var i = 0; i < statusData.length; i++) {
+        statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
+        statusDonutColors.push(statusData[i].color);
+      }
 
       // if HTML in element then donutChart already created - set new data
       if (jQuery('#status-donut').html().length > 0){
-        $scope.donutChart.setData(donutData);
+        $scope.donutChart.setData(statusDonutData);
       }else{
-        createDonutChart(donutData);
+        createDonutChart(statusDonutData, statusDonutColors);
       }
     };
 
-    var createBarChart = function(barData){
+    var createBarChart = function(statusBarData){
       // Morris Bar Chart
       $scope.barChart = new Morris.Bar({
         element: 'status-bar',
-        data: barData,
-        xkey: 'status',
-        ykeys: ['total'],
+        data: statusBarData,
+        xkey: 'label',
+        ykeys: ['value'],
         labels: ['Total'],
         barRatio: 0.4,
         xLabelMargin: 10,
         resize: true,
         hideHover: 'auto',
         barColors: ['#3d88ba'],
-        hoverCallback: function (index, options, content, row) {
+        hoverCallback: function (index, options, content) {
           $scope.donutChart.select(index);
           return content;
         }
       });
     };
 
-    var createDonutChart = function(donutData){
+    var createDonutChart = function(statusDonutData, statusDonutColors){
       // Morris Donut Chart
       $scope.donutChart = new Morris.Donut({
         element: 'status-donut',
-        data: donutData,
-        colors: ['#777777', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'],
+        data: statusDonutData,
+        colors: statusDonutColors,
         resize: true,
         formatter: function (y) { return y + '%'; }
       });

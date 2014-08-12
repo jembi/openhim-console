@@ -11,13 +11,22 @@
           </div>
         </div>
 
-        <!-- Transaction Alerts -->
+        <!-- server Alerts -->
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
 
         <div class="panel-body">
 
-          <div class="content-box-large" style="width: 49%; float: left;">
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Basic Channel Metrics</div>
+            </div>
+            <div class="panel-body">
+              Some basic channel metric information can go here to give the user both visual illustrations as well as easy to read text 
+            </div>
+          </div>
+
+          <div class="content-box-large load-metrics-line-graph">
             <div class="panel-heading">
               <div class="panel-title">Transaction Load (Past Week)</div>
               
@@ -30,7 +39,7 @@
             </div>
           </div>
 
-          <div class="content-box-large"  style="width: 49%; float: right;">
+          <div class="content-box-large response-time-metrics-line-graph">
             <div class="panel-heading">
               <div class="panel-title">Average Response Time (Past Week)</div>
               
@@ -54,10 +63,10 @@
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-9">
-                  <div id="status-bar" style="height: 230px;"></div>
+                  <div id="status-bar" style="height: 300px;"></div>
                 </div>
                 <div class="col-md-3">
-                  <div id="status-donut" style="height: 230px;"></div>
+                  <div id="status-donut" style="height: 300px;"></div>
                 </div>
               </div>
             </div>
