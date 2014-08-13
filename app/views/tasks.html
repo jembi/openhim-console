@@ -1,0 +1,108 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">Rerun Tasks</div>
+        </div>
+
+
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+
+
+        <div class="panel-body">
+
+          <!-- Filter options -->
+          <div class="transaction-filter-options">
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Select an option to filter rerun tasks by their status">Status: </label>
+              <select class="form-control" ng-model="filter.status">
+                <option value="">Don't filter</option>
+                <option value="NotStarted">Show Not Started</option>
+                <option value="Processing">Show Processing</option>
+                <option value="Completed">Show Completed</option>
+              </select>
+            </div>
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Select an option to filter rerun tasks by user">User: </label>
+              <select class="form-control" ng-model="filter.user">
+                <option value="">Don't filter</option>                            
+                <option ng-repeat="user in users" ng-value="user.email">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
+              </select>
+            </div>
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Pick a date to filter rerun tasks by">Date: </label>
+              <input type="text" class="form-control input-date" ng-model="filter.created">
+            </div>
+            <div class="transactionsFilterRefreshDiv">
+              <button class="btn btn-primary" ng-click="clearFilters()"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+            </div>
+          </div>
+
+          <div id="no-more-tables">
+            <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th width="300">Progress</th>
+                    <th>User</th>
+                    <th>Execution Time</th>
+                    <th>Created Date</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="task in tasks | filter:filter | orderBy:'created':true" class="table-list" ng-click="viewTaskDetails('/tasks/' + task._id)">
+                  <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                  <td data-title="Status">
+
+                    <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
+                    <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
+                    <span ng-if="task.status === 'NotStarted'" class="label label-info">Not Started</span>
+
+                  </td>
+                  <td data-title="Progress">
+                    <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="success"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Processing'" class="progress-striped active" max="task.transactions.length" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                  </td>
+                  <td data-title="User">{{task.user}}</td>
+                  <td data-title="Execution Time">{{getExecutionTime(task)}} s</td>
+                  <td data-title="Created Date">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <div class="loadingContainer" ng-show="!(tasks || alerts.server)">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <!-- Server Alerts -->
+          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <!-- Server Alerts -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  // When the document is ready
+  $(document).ready(function () {
+
+    $('.input-date').datepicker({
+      todayBtn: "linked",
+      format: 'yyyy-mm-dd'
+    });
+
+  });
+
+</script>
