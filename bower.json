@@ -25,6 +25,7 @@
     "angular-scenario": "1.2.15"
   },
   "resolutions": {
-    "angular": ">=1"
+    "angular": ">=1",
+    "jquery": ">= 2.1.0"
   }
 }
