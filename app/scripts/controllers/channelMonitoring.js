@@ -1,5 +1,4 @@
 'use strict';
-/* global jQuery:false */
 /* global Morris:false */
 /* global moment:false */
 
@@ -35,7 +34,7 @@ angular.module('openhimWebui2App')
 
     $scope.getLoadMetrics = function(){
       // do API call here to pull channel load metrics
-      /* SIMULATED STATUS VALUES */
+      /* SIMULATED LOAD VALUES */
       var loadData = [
         { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
         { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
@@ -45,15 +44,15 @@ angular.module('openhimWebui2App')
         { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
         { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
       ];
-      /* SIMULATED STATUS VALUES */
+      /* SIMULATED LOAD VALUES */
 
       updateLoadLineChart(loadData);
     };
     
     var updateLoadLineChart = function(loadData){
-      // if HTML in element then barChart already created - set new data
-      if (jQuery('#load-graph').html().length > 0){
-        $scope.lineChart.setData(loadData);
+      // if chart object exist then set new data
+      if ($scope.loadLineChart){
+        $scope.loadLineChart.setData(loadData);
       }else{
         createLoadLineChart(loadData);
       }
@@ -61,7 +60,7 @@ angular.module('openhimWebui2App')
 
     var createLoadLineChart = function(lineChartData){
       // Morris Bar Chart
-      $scope.lineChart = new Morris.Line({
+      $scope.loadLineChart = new Morris.Line({
         element: 'load-graph',
         data: lineChartData,
         xkey: 'date',
@@ -86,7 +85,7 @@ angular.module('openhimWebui2App')
 
     $scope.getResponseTimeMetrics = function(){
       // do API call here to pull channel response metrics
-      /* SIMULATED STATUS VALUES */
+      /* SIMULATED RESPONSE TIME VALUES */
       var responseTimeData = [
         { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
         { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
@@ -96,14 +95,14 @@ angular.module('openhimWebui2App')
         { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
         { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
       ];
-      /* SIMULATED STATUS VALUES */
+      /* SIMULATED RESPONSE TIME VALUES */
 
       updateResponseTimeLineChart(responseTimeData);
     };
     
     var updateResponseTimeLineChart = function(responseTimeData){
-      // if HTML in element then barChart already created - set new data
-      if (jQuery('#response-time-graph').html().length > 0){
+      // if chart object exist then set new data
+      if ($scope.responseTimeLineChart){
         $scope.responseTimeLineChart.setData(responseTimeData);
       }else{
         createResponseTimeLineChart(responseTimeData);
@@ -185,9 +184,9 @@ angular.module('openhimWebui2App')
         statusBarData.push({ label: statusData[i].label, value: statusData[i].value });
       }
 
-      // if HTML in element then barChart already created - set new data
-      if (jQuery('#status-bar').html().length > 0){
-        $scope.barChart.setData(statusBarData);
+      // if chart object exist then set new data
+      if ($scope.statusBarChart){
+        $scope.statusBarChart.setData(statusBarData);
       }else{
         createBarChart(statusBarData);
       }
@@ -201,9 +200,9 @@ angular.module('openhimWebui2App')
         statusDonutColors.push(statusData[i].color);
       }
 
-      // if HTML in element then donutChart already created - set new data
-      if (jQuery('#status-donut').html().length > 0){
-        $scope.donutChart.setData(statusDonutData);
+      // if chart object exist then set new data
+      if ($scope.statusDonutChart){
+        $scope.statusDonutChart.setData(statusDonutData);
       }else{
         createDonutChart(statusDonutData, statusDonutColors);
       }
@@ -211,7 +210,7 @@ angular.module('openhimWebui2App')
 
     var createBarChart = function(statusBarData){
       // Morris Bar Chart
-      $scope.barChart = new Morris.Bar({
+      $scope.statusBarChart = new Morris.Bar({
         element: 'status-bar',
         data: statusBarData,
         xkey: 'label',
@@ -223,7 +222,7 @@ angular.module('openhimWebui2App')
         hideHover: 'auto',
         barColors: ['#3d88ba'],
         hoverCallback: function (index, options, content) {
-          $scope.donutChart.select(index);
+          $scope.statusDonutChart.select(index);
           return content;
         }
       });
@@ -231,7 +230,7 @@ angular.module('openhimWebui2App')
 
     var createDonutChart = function(statusDonutData, statusDonutColors){
       // Morris Donut Chart
-      $scope.donutChart = new Morris.Donut({
+      $scope.statusDonutChart = new Morris.Donut({
         element: 'status-donut',
         data: statusDonutData,
         colors: statusDonutColors,
