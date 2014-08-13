@@ -47,6 +47,14 @@ angular
         templateUrl: 'views/transactionDetails.html',
         controller: 'TransactionDetailsCtrl'
       })
+      .when('/tasks', {
+        templateUrl: 'views/tasks.html',
+        controller: 'TasksCtrl'
+      })
+      .when('/tasks/:taskId', {
+        templateUrl: 'views/taskDetails.html',
+        controller: 'TaskDetailsCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'

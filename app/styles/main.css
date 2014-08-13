@@ -597,12 +597,6 @@ body {
   margin: 0 5px 0 0;
 }
 
-.transactions-list:hover td{
-  cursor: pointer;
-  color: #fff;
-  background-color: #428BCA !important; 
-}
-
 .buttons-container {
   float: right;
   text-align: center;
@@ -611,6 +605,12 @@ body {
 .buttons-container>button {
   margin-bottom: 10px;
 }
+
+.task-detail-container { float: left; width: 100%; }
+.task-detail-container>label { float: left; width: 100%; margin-top: 20px; }
+.task-detail-container .data-group { float: left; clear: both; width: 100%; }
+.task-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
+.task-detail-container .progress { width: auto; }
 
 .transaction-detail-container { float: left; width: 100%; }
 .transaction-detail-container>label { float: left; width: 100%; margin-top: 20px; }
@@ -661,6 +661,8 @@ body {
 /* ----- Transactions ----- */
 
 /*------- Custom CSS Changes ----*/
+.table-list:hover td{ cursor: pointer; color: #fff; background-color: #428BCA !important; }
+
 .modal-footer {margin-top: 0px;}
 .datepicker-dropdown {max-width: 220px !important;}
 .navbar-nav > li > a { padding-top: 15px; padding-bottom: 15px; }
@@ -695,6 +697,10 @@ body {
 .reload-metrics-btn:hover { cursor: pointer; } 
 .load-metrics-line-graph { width: 49%; float: left; }
 .response-time-metrics-line-graph { width: 49%; float: right; }
+
+.label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
+.progress { margin: 0px; width: 90%; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
@@ -777,6 +783,7 @@ body {
     .navbar-right{ right: 0;  left: auto; margin-right: 15px; margin-left: 15px; }
     .dropdown-menu{ right: 0; left: auto; }
 
+    .task-detail-container .data-group>label { width: 30%; }
     .transaction-detail-container .data-group>label { width: 30%; }
 
 }
@@ -851,12 +858,15 @@ body {
     .responsiveTransactionIndexCheckbox label { display: block; margin: 0; text-align: right; padding: 5px; }
     .responsiveTransactionIndexCheckbox .glyphicon{ top: 0px; margin-left: 5px; }
 
+    .task-detail-container .data-group>label { width: 35%; }
     .transaction-detail-container .data-group>label { width: 35%; }
+    .table .progress { width: 100%; }
 }
 
 @media (max-width: 500px) {
     #loadMoreTransactions { float: left; clear: both; margin-top: 15px; }
     .transactionsFilterRefreshDiv{ padding-top: 0; }
+    .task-detail-container .data-group>label { width: 40%; }
     .transaction-detail-container .data-group>label { width: 40%; }
 }
 
