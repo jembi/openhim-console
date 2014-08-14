@@ -1,4 +1,5 @@
 'use strict';
+/* global jQuery:false */
 /* global Morris:false */
 /* global moment:false */
 
@@ -32,6 +33,18 @@ angular.module('openhimWebui2App')
     /**         Transaction Load Metric Functions           **/
     /*********************************************************/
 
+    $scope.getLoadMetrics = function(){
+      // reset any load metric alert warnings
+      Alerting.AlertReset();
+
+      // do API call here to pull channel load metrics
+      Api.Metrics.query({ 
+        time: 'day',
+        channelId : $routeParams.channelId,
+        startDate: moment().subtract(1,'weeks').toDate(),
+        endDate: moment().toDate()
+      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
+    };
 
     $scope.loadMetricsSuccess = function(loadResults){
       /* DEFAULT LOAD OBJECT */
@@ -44,7 +57,7 @@ angular.module('openhimWebui2App')
         { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: 0 },
         { date: moment().format('YYYY-MM-DD'), value: 0 }
       ];
-      console.log(loadData)
+      $scope.loadTotal = 0;
       /* DEFAULT LOAD OBJECT */
 
       var dateFormat, date;
@@ -53,35 +66,26 @@ angular.module('openhimWebui2App')
       for (var i = 0; i < loadResults.length; i++) {
         //moment format date to ensure zeros are present
         dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
-        date = moment(dateFormat).format('YYYY-MM-DD');
+        date = moment(dateFormat).format('YYYY-MM-DD');        
 
         // check if date is equal to date in object and update load total
         for (var x = 0; x < loadData.length; x++) {
           if( loadData[x].date === date ){
             loadData[x].value = loadResults[i].load;
+            // add to load total
+            $scope.loadTotal += loadResults[i].load;
           }
         }
       }
-      console.log(loadData)
 
       updateLoadLineChart(loadData);
     };
 
     $scope.loadMetricsError = function(err){
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status);
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
     };
 
-    $scope.getLoadMetrics = function(){
-      // do API call here to pull channel load metrics
-      Api.Metrics.query({ 
-        time: 'day',
-        channelId : $routeParams.channelId,
-        startDate: moment().subtract(1,'weeks').toDate(),
-        endDate: moment().toDate()
-      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
-    };
-    
     var updateLoadLineChart = function(loadData){
       // if chart object exist then set new data
       if ($scope.loadLineChart){
@@ -92,15 +96,18 @@ angular.module('openhimWebui2App')
     };
 
     var createLoadLineChart = function(lineChartData){
-      // Morris Bar Chart
-      $scope.loadLineChart = new Morris.Line({
-        element: 'load-graph',
-        data: lineChartData,
-        xkey: 'date',
-        ykeys: ['value'],
-        labels: ['Load'],
-        resize: true
-      });
+      // check if graph element exist before creating
+      if ( jQuery('#load-graph:visible').length ){
+        // Morris Bar Chart
+        $scope.loadLineChart = new Morris.Line({
+          element: 'load-graph',
+          data: lineChartData,
+          xkey: 'date',
+          ykeys: ['value'],
+          labels: ['Load'],
+          resize: true
+        });
+      }      
     };
 
     // do the inital load of the transaction status metrics
@@ -143,16 +150,19 @@ angular.module('openhimWebui2App')
     };
 
     var createResponseTimeLineChart = function(lineChartData){
-      // Morris Bar Chart
-      $scope.responseTimeLineChart = new Morris.Line({
-        element: 'response-time-graph',
-        data: lineChartData,
-        xkey: 'date',
-        ykeys: ['value'],
-        labels: ['Load'],
-        postUnits: ' ms',
-        resize: true
-      });
+      // check if graph element exist before creating
+      if ( jQuery('#response-time-graph:visible').length ){
+        // Morris Bar Chart
+        $scope.responseTimeLineChart = new Morris.Line({
+          element: 'response-time-graph',
+          data: lineChartData,
+          xkey: 'date',
+          ykeys: ['value'],
+          labels: ['Load'],
+          postUnits: ' ms',
+          resize: true
+        });
+      }
     };
 
     // do the inital load of the transaction status metrics
@@ -242,34 +252,40 @@ angular.module('openhimWebui2App')
     };
 
     var createBarChart = function(statusBarData){
-      // Morris Bar Chart
-      $scope.statusBarChart = new Morris.Bar({
-        element: 'status-bar',
-        data: statusBarData,
-        xkey: 'label',
-        ykeys: ['value'],
-        labels: ['Total'],
-        barRatio: 0.4,
-        xLabelMargin: 10,
-        resize: true,
-        hideHover: 'auto',
-        barColors: ['#3d88ba'],
-        hoverCallback: function (index, options, content) {
-          $scope.statusDonutChart.select(index);
-          return content;
-        }
-      });
+      // check if graph element exist before creating
+      if ( jQuery('#status-bar:visible').length ){
+        // Morris Bar Chart
+        $scope.statusBarChart = new Morris.Bar({
+          element: 'status-bar',
+          data: statusBarData,
+          xkey: 'label',
+          ykeys: ['value'],
+          labels: ['Total'],
+          barRatio: 0.4,
+          xLabelMargin: 10,
+          resize: true,
+          hideHover: 'auto',
+          barColors: ['#3d88ba'],
+          hoverCallback: function (index, options, content) {
+            $scope.statusDonutChart.select(index);
+            return content;
+          }
+        });
+      }
     };
 
     var createDonutChart = function(statusDonutData, statusDonutColors){
-      // Morris Donut Chart
-      $scope.statusDonutChart = new Morris.Donut({
-        element: 'status-donut',
-        data: statusDonutData,
-        colors: statusDonutColors,
-        resize: true,
-        formatter: function (y) { return y + '%'; }
-      });
+      // check if graph element exist before creating
+      if ( jQuery('#status-donut:visible').length ){
+        // Morris Donut Chart
+        $scope.statusDonutChart = new Morris.Donut({
+          element: 'status-donut',
+          data: statusDonutData,
+          colors: statusDonutColors,
+          resize: true,
+          formatter: function (y) { return y + '%'; }
+        });
+      }
     };
 
     // do the inital load of the transaction status metrics
