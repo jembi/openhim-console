@@ -38,7 +38,7 @@ angular.module('openhimWebui2App')
       Alerting.AlertReset();
 
       // do API call here to pull channel load metrics
-      Api.Metrics.query({ 
+      Api.Metrics.query({
         time: 'day',
         channelId : $routeParams.channelId,
         startDate: moment().subtract(1,'weeks').toDate(),
@@ -66,7 +66,7 @@ angular.module('openhimWebui2App')
       for (var i = 0; i < loadResults.length; i++) {
         //moment format date to ensure zeros are present
         dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
-        date = moment(dateFormat).format('YYYY-MM-DD');        
+        date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
         for (var x = 0; x < loadData.length; x++) {
@@ -107,7 +107,7 @@ angular.module('openhimWebui2App')
           labels: ['Load'],
           resize: true
         });
-      }      
+      }
     };
 
     // do the inital load of the transaction status metrics
