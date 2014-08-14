@@ -1,84 +1,80 @@
 <div class="page-content">
   <div class="row">
-  <!-- include the sidebar -->
-  <div ng-include="'views/sidebar.html'"></div>
-  <div class="col-md-10">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="content-box-header panel-heading">
-          <div class="panel-title ">Transaction load</div>
-        
-        <div class="panel-options">
-          <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-          <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
-        </div>
-        </div>
-        <div class="content-box-large box-with-header">
-          <div id="tx-load-chart"></div>  
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-
-      <div class="col-md-6">
-        <div class="content-box-header panel-heading">
-          <div class="panel-title">About the OpenHIM web console</div>
-          
-          <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+        <div class="panel-heading">
+          <div class="panel-title" style="float: inherit">
+            <h2>Dashboard</h2>
           </div>
         </div>
-        <div class="content-box-large box-with-header">
-          The OpenHIM web console provides a central place to monitor and manage an Health Information Exchange (HIE). Here you can perform a number of function to make the management of an HIE as simple as possible. The core activities that can be performed are as follows:
-          <ul>
-            <li>Authorization and authentication management of clients that connect to the HIE</li>
-            <li>Monitoring of the HIE performance</li>
-            <li>Inspecting logs of requests that have been make of the HIE infrastructure</li>
-            <li>Configure the channels that OpenHIM forward requests to</li>
-          </ul>
-        </div>
-      </div>
 
-      <div class="col-md-6">
-        <div class="content-box-header panel-heading">
-          <div class="panel-title">Statistics</div>
-          
-          <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+        <!-- server Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="!alerts.server">
+
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Basic Channel Metrics</div>
+            </div>
+            <div class="panel-body">
+              Some basic channel metric information can go here to give the user both visual illustrations as well as easy to read text 
+
+              <p>Total Transactions (Past Week): {{loadTotal}}</p>
+            </div>
           </div>
-        </div>
-        <div class="content-box-large box-with-header">
-          <ul>
-            <li>Total transactions processed today: 521</li>
-            <li>Average reseponse time: 341ms</li>
-            <li>Number of error'd transaction today: 6</li>
-          </ul>
-        </div>
-      </div>
-      
-    </div>
 
+
+
+
+          <div class="content-box-large dashboard-graph-left">
+            <div class="panel-heading">
+              <div class="panel-title">Error vs Success Rate (Past 24 Hours)</div>
+              
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getResponseTimeMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="bar-example" style="height: 300px;">
+                <!-- Transaction Load Alerts -->
+                <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
+                <!-- Transaction Load Alerts -->
+              </div>
+            </div>
+          </div>
+
+          <div class="content-box-large dashboard-graph-right">
+            <div class="panel-heading">
+              <div class="panel-title">Average Response Time (Past 24 Hours)</div>
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="status-bar" style="height: 300px;">
+                <!-- Transaction Load Alerts -->
+                <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
+                <!-- Transaction Load Alerts -->
+              </div>
+            </div>
+          </div>
+
+          
+
+
+
+          
+
+          
+
+        </div>          
+
+      </div>
+    </div>
   </div>
 </div>
-</div>
-
-<script>
-
-var data = [ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ];
-
-var graph = new Rickshaw.Graph( {
-        element: document.querySelector("#tx-load-chart"),
-        height: 250,
-        series: [ {
-                color: 'steelblue',
-                data: data
-        } ]
-} );
-
-graph.render();
-
-</script>

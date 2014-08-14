@@ -692,6 +692,12 @@ body {
 }
 .nav-tabs.nav-justified a:hover { cursor: pointer; }
 .channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
+
+.reload-metrics-btn { margin: 5px; } 
+.reload-metrics-btn:hover { cursor: pointer; } 
+.dashboard-graph-left { width: 49%; float: left; }
+.dashboard-graph-right { width: 49%; float: right; }
+
 .label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
 .progress { margin: 0px; width: 90%; }
 /*------- Custom CSS Changes ----*/
@@ -702,6 +708,11 @@ body {
 @media (max-width: 1325px){
   .col-md-2{ width: 25%; }
   .col-md-10{ width: 75%; }
+}
+
+@media (max-width: 1100px){
+  .dashboard-graph-left { width: 100%; float: left; }
+  .dashboard-graph-right { width: 100%; float: left; }
 }
 
 /* Desktop */
