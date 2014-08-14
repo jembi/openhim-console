@@ -20,6 +20,8 @@ angular.module('openhimWebui2App')
 
       Transactions: $resource('http://' + HOST + ':' + PORT + '/transactions/:transactionId', { transactionId: '@_id' }),
 
+      Metrics: $resource('http://' + HOST + ':' + PORT + '/metrics/:time/:channelId', {}),
+
       Tasks: $resource('http://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
       })

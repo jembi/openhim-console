@@ -32,21 +32,54 @@ angular.module('openhimWebui2App')
     /**         Transaction Load Metric Functions           **/
     /*********************************************************/
 
-    $scope.getLoadMetrics = function(){
-      // do API call here to pull channel load metrics
-      /* SIMULATED LOAD VALUES */
+
+    $scope.loadMetricsSuccess = function(loadResults){
+      /* DEFAULT LOAD OBJECT */
       var loadData = [
-        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
+        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().format('YYYY-MM-DD'), value: 0 }
       ];
-      /* SIMULATED LOAD VALUES */
+      console.log(loadData)
+      /* DEFAULT LOAD OBJECT */
+
+      var dateFormat, date;
+
+      // construct the loadData if API success
+      for (var i = 0; i < loadResults.length; i++) {
+        //moment format date to ensure zeros are present
+        dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
+        date = moment(dateFormat).format('YYYY-MM-DD');
+
+        // check if date is equal to date in object and update load total
+        for (var x = 0; x < loadData.length; x++) {
+          if( loadData[x].date === date ){
+            loadData[x].value = loadResults[i].load;
+          }
+        }
+      }
+      console.log(loadData)
 
       updateLoadLineChart(loadData);
+    };
+
+    $scope.loadMetricsError = function(err){
+      // on error - add server error alert
+      Alerting.AlertAddServerMsg(err.status);
+    };
+
+    $scope.getLoadMetrics = function(){
+      // do API call here to pull channel load metrics
+      Api.Metrics.query({ 
+        time: 'day',
+        channelId : $routeParams.channelId,
+        startDate: moment().subtract(1,'weeks').toDate(),
+        endDate: moment().toDate()
+      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
     };
     
     var updateLoadLineChart = function(loadData){
