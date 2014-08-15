@@ -11,7 +11,7 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
-    
+    // Anything needed here?
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -19,108 +19,177 @@ angular.module('openhimWebui2App')
 
 
 
-    
+    /******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
 
-    /***********************************************************/
-    /**         Transaction Status Metric Functions           **/
-    /***********************************************************/
+    $scope.getTransactionLoadMetrics = function(){
+      // do API call here to pull channel response metrics
+      /* SIMULATED RESPONSE TIME VALUES */
+      var value = 0;
+      $scope.loadTotal = 0;
+      var transactionLoadData = [];
+      for ( var i=1; i<=24; i++ ){
+      	value = Math.floor((Math.random() * 15) + 1);
+      	$scope.loadTotal += value;
+      	transactionLoadData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: value });
+      }
+      /* SIMULATED RESPONSE TIME VALUES */
+
+      updateTransactionLoadLineChart(transactionLoadData);
+    };
+    
+    var updateTransactionLoadLineChart = function(transactionLoadData){
+      // if chart object exist then set new data
+      if ($scope.transactionLoadLineChart){
+        $scope.transactionLoadLineChart.setData(transactionLoadData);
+      }else{
+        createTransactionLoadLineChart(transactionLoadData);
+      }
+    };
+
+    var createTransactionLoadLineChart = function(lineChartData){
+      // check if graph element exist before creating
+      if ( jQuery('#transaction-load-graph:visible').length ){
+        // Morris Bar Chart
+        $scope.transactionLoadLineChart = new Morris.Line({
+          element: 'transaction-load-graph',
+          data: lineChartData,
+          xkey: 'hour',
+          ykeys: ['value'],
+          labels: ['value'],
+          postUnits: ' per hour',
+          resize: true
+        });
+      }
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getTransactionLoadMetrics();
+
+    /******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
+
+
+
+    /******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
 
     $scope.getStatusMetrics = function(){
-      // do API call here to pull channel status metrics
+      // do API call here to pull channel response metrics
+
       /* SIMULATED STATUS VALUES */
       var statusData = [];
-      var total = 450;
-      var value;
+      var processing, failed, completed, completedWErrors, successful;
 
-      if ( 1 === 1 ){
-        value = 40;
-        statusData.push({ label: 'Processing', value: value });
-      }
+      var channels = ['Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5'];
+      for ( var i=0; i<channels.length; i++ ){
 
-      if ( 1 === 1 ){
-        value = 95;
-        statusData.push({ label: 'Failed', value: value });
-      }
-      
-      if ( 1 === 1 ){
-        value = 40;
-        statusData.push({ label: 'Completed', value: value });
+      	processing = Math.floor((Math.random() * 5000) + 1); 
+      	failed = Math.floor((Math.random() * 5000) + 1);
+      	completed = Math.floor((Math.random() * 5000) + 1);
+      	completedWErrors = Math.floor((Math.random() * 5000) + 1);
+      	successful = Math.floor((Math.random() * 5000) + 1);
+
+      	statusData.push({ channelLink: '53ed85c12fa9fcd14667bf71', channel: channels[i], processing: processing, failed: failed, completed: completed, completedWErrors: completedWErrors, successful: successful });
       }
 
-      if ( 1 === 1 ){
-        value = 25;
-        statusData.push({ label: 'Completed with Error(s)', value: value });
-      }
-
-      if ( 1 === 1 ){
-        value = 250;
-        statusData.push({ label: 'Successful', value: value });
-      }
+      var statusKeys = ['processing', 'failed', 'completed', 'completedWErrors', 'successful'];
+      var statusLabels = ['Processing', 'Failed', 'Completed', 'Completed With Errors', 'Successful'];
+      var statusColors = ['#777777', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'];
       /* SIMULATED STATUS VALUES */
 
-      updateStatusBarChart(statusData);
+
+      updateStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
     };
     
-    var updateStatusBarChart = function(statusData){
-      // construct status bar object for morris
-      var statusBarData = [];
-      for (var i = 0; i < statusData.length; i++) {
-        statusBarData.push({ label: statusData[i].label, value: statusData[i].value });
-      }
-
+    var updateStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
       // if chart object exist then set new data
       if ($scope.statusBarChart){
-        $scope.statusBarChart.setData(statusBarData);
+        $scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
       }else{
-        createBarChart(statusBarData);
+        createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
       }
     };
 
-    var createBarChart = function(statusBarData){
+    var createStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
       // check if graph element exist before creating
+      if ( jQuery('#response-time-graph:visible').length ){
+        
+      	$scope.statusBarChart = Morris.Bar({
+				  element: 'transaction-status-graph',
+				  data: statusData,
+				  xkey: 'channel',
+				  ykeys: statusKeys,
+				  stacked: true,
+				  hideHover: 'auto',
+				  labels: statusLabels,
+				  barColors: statusColors
+				}).on('click', function(i, row){
+				  console.log(i, row);
+				});
 
-
-      $scope.morrisChart = Morris.Bar({
-			  element: 'bar-example',
-			  data: [
-			    { y: '2006', a: 100, b: 90 },
-			    { y: '2007', a: 75,  b: 65 },
-			    { y: '2008', a: 50,  b: 40 },
-			    { y: '2009', a: 75,  b: 65 },
-			    { y: '2010', a: 50,  b: 40 },
-			    { y: '2011', a: 75,  b: 65 },
-			    { y: '2012', a: 100, b: 90 }
-			  ],
-			  xkey: 'y',
-			  ykeys: ['a', 'b'],
-			  stacked: true,
-			  labels: ['Series A', 'Series B'],
-			  barColors: ['#d9534f', '#5cb85c']
-			});
-
-
-      if ( jQuery('#status-bar:visible').length ){
-        // Morris Bar Chart
-        $scope.statusBarChart = new Morris.Bar({
-          element: 'status-bar',
-          data: statusBarData,
-          xkey: 'label',
-          ykeys: ['value'],
-          labels: ['Total'],
-          barRatio: 0.4,
-          xLabelMargin: 10,
-          resize: true,
-          hideHover: 'auto',
-          barColors: ['#3d88ba']
-        });
       }
     };
 
     // do the inital load of the transaction status metrics
     $scope.getStatusMetrics();
 
-    /***********************************************************/
-    /**         Transaction Status Metric Functions           **/
-    /***********************************************************/
+		/******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
+    
+
+
+    /******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
+
+    $scope.getResponseTimeMetrics = function(){
+      // do API call here to pull channel response metrics
+      /* SIMULATED RESPONSE TIME VALUES */
+      var responseTimeData = [];
+      for ( var i=1; i<=24; i++ ){
+      	responseTimeData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: Math.floor((Math.random() * 15) + 1) });
+      }
+
+      /* SIMULATED RESPONSE TIME VALUES */
+
+      updateResponseTimeLineChart(responseTimeData);
+    };
+    
+    var updateResponseTimeLineChart = function(responseTimeData){
+      // if chart object exist then set new data
+      if ($scope.responseTimeLineChart){
+        $scope.responseTimeLineChart.setData(responseTimeData);
+      }else{
+        createResponseTimeLineChart(responseTimeData);
+      }
+    };
+
+    var createResponseTimeLineChart = function(lineChartData){
+      // check if graph element exist before creating
+      if ( jQuery('#response-time-graph:visible').length ){
+        // Morris Bar Chart
+        $scope.responseTimeLineChart = new Morris.Line({
+          element: 'response-time-graph',
+          data: lineChartData,
+          xkey: 'hour',
+          ykeys: ['value'],
+          labels: ['value'],
+          postUnits: ' ms',
+          resize: true
+        });
+      }
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getResponseTimeMetrics();
+
+    /******************************************************************/
+    /**         Transaction Response Time Metric Functions           **/
+    /******************************************************************/
 
   });
