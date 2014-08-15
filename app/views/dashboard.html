@@ -24,7 +24,8 @@
             <div class="panel-body">
               Some basic channel metric information can go here to give the user both visual illustrations as well as easy to read text 
 
-              <p>Total Transactions (Today): {{loadTotal}}</p>
+              <h3>Number of active channels: {{channels.length}}</h3>
+              <h3>Total Transactions (Today): {{loadTotal}}</h3>              
             </div>
           </div>
 
@@ -45,25 +46,7 @@
             </div>
           </div>
 
-
-          <div class="content-box-large dashboard-graph-left">
-            <div class="panel-heading">
-              <div class="panel-title">Error vs Success Rate (Today)</div>
-              
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getResponseTimeMetrics()"></i>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div id="transaction-status-graph" style="height: 300px;">
-                <!-- Transaction Load Alerts -->
-                <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
-                <!-- Transaction Load Alerts -->
-              </div>
-            </div>
-          </div>
-
-          <div class="content-box-large dashboard-graph-right">
+          <div class="content-box-large">
             <div class="panel-heading">
               <div class="panel-title">Average Response Time (Today)</div>
               <div class="panel-options">
@@ -79,13 +62,22 @@
             </div>
           </div>
 
-          
-
-
-
-          
-
-          
+          <div class="content-box-large">
+            <div class="panel-heading">
+              <div class="panel-title">Transaction Statuses (Today)</div>
+              
+              <div class="panel-options">
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="transaction-status-graph" style="height: 300px;">
+                <!-- Transaction Load Alerts -->
+                <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
+                <!-- Transaction Load Alerts -->
+              </div>
+            </div>
+          </div>
 
         </div>          
 

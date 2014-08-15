@@ -5,7 +5,7 @@
 
 
 angular.module('openhimWebui2App')
-  .controller('DashboardCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('DashboardCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -17,11 +17,16 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
+		//location provider - load transaction details
+    $scope.viewChannelDetails = function (path) {
+    	var url = window.location.href+path;
+    	window.location = url;
+    };
 
 
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
+    /*********************************************************/
+    /**         Transaction Load Metric Functions           **/
+    /*********************************************************/
 
     $scope.getTransactionLoadMetrics = function(){
       // do API call here to pull channel response metrics
@@ -67,80 +72,10 @@ angular.module('openhimWebui2App')
     // do the inital load of the transaction status metrics
     $scope.getTransactionLoadMetrics();
 
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
+    /*********************************************************/
+    /**         Transaction Load Metric Functions           **/
+    /*********************************************************/
 
-
-
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-
-    $scope.getStatusMetrics = function(){
-      // do API call here to pull channel response metrics
-
-      /* SIMULATED STATUS VALUES */
-      var statusData = [];
-      var processing, failed, completed, completedWErrors, successful;
-
-      var channels = ['Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5'];
-      for ( var i=0; i<channels.length; i++ ){
-
-      	processing = Math.floor((Math.random() * 5000) + 1); 
-      	failed = Math.floor((Math.random() * 5000) + 1);
-      	completed = Math.floor((Math.random() * 5000) + 1);
-      	completedWErrors = Math.floor((Math.random() * 5000) + 1);
-      	successful = Math.floor((Math.random() * 5000) + 1);
-
-      	statusData.push({ channelLink: '53ed85c12fa9fcd14667bf71', channel: channels[i], processing: processing, failed: failed, completed: completed, completedWErrors: completedWErrors, successful: successful });
-      }
-
-      var statusKeys = ['processing', 'failed', 'completed', 'completedWErrors', 'successful'];
-      var statusLabels = ['Processing', 'Failed', 'Completed', 'Completed With Errors', 'Successful'];
-      var statusColors = ['#777777', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'];
-      /* SIMULATED STATUS VALUES */
-
-
-      updateStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
-    };
-    
-    var updateStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
-      // if chart object exist then set new data
-      if ($scope.statusBarChart){
-        $scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
-      }else{
-        createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
-      }
-    };
-
-    var createStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
-      // check if graph element exist before creating
-      if ( jQuery('#response-time-graph:visible').length ){
-        
-      	$scope.statusBarChart = Morris.Bar({
-				  element: 'transaction-status-graph',
-				  data: statusData,
-				  xkey: 'channel',
-				  ykeys: statusKeys,
-				  stacked: true,
-				  hideHover: 'auto',
-				  labels: statusLabels,
-				  barColors: statusColors
-				}).on('click', function(i, row){
-				  console.log(i, row);
-				});
-
-      }
-    };
-
-    // do the inital load of the transaction status metrics
-    $scope.getStatusMetrics();
-
-		/******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-    
 
 
     /******************************************************************/
@@ -191,5 +126,94 @@ angular.module('openhimWebui2App')
     /******************************************************************/
     /**         Transaction Response Time Metric Functions           **/
     /******************************************************************/
+
+
+
+    /********************************************************************/
+    /**         Channel Transactions Status Metric Functions           **/
+    /********************************************************************/
+
+    $scope.getStatusMetrics = function(){
+      // do API call here to pull channel response metrics
+
+
+	    Api.Channels.query(function(channels){
+	    	$scope.channels = channels;
+
+
+	    	/* SIMULATED STATUS VALUES */
+	      var statusData = [];
+	      var processing, failed, completed, completedWErrors, successful;
+
+	      //var channels = ['Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5'];
+	      for ( var i=0; i<$scope.channels.length; i++ ){
+
+	      	processing = Math.floor((Math.random() * 5000) + 1); 
+	      	failed = Math.floor((Math.random() * 5000) + 1);
+	      	completed = Math.floor((Math.random() * 5000) + 1);
+	      	completedWErrors = Math.floor((Math.random() * 5000) + 1);
+	      	successful = Math.floor((Math.random() * 5000) + 1);
+
+	      	statusData.push({ 
+	      		channelLink: $scope.channels[i]._id, 
+	      		channel: $scope.channels[i].name, 
+	      		processing: processing, 
+	      		failed: failed, 
+	      		completed: completed, 
+	      		completedWErrors: completedWErrors, 
+	      		successful: successful 
+	      	});
+	      }
+
+	      var statusKeys = ['processing', 'failed', 'completed', 'completedWErrors', 'successful'];
+	      var statusLabels = ['Processing', 'Failed', 'Completed', 'Completed With Errors', 'Successful'];
+	      var statusColors = ['#777777', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'];
+
+	      updateStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
+	    }, function(){
+	    	console.log('Need to log the error message to an alert box to inform the user.')
+	    });
+      /* SIMULATED STATUS VALUES */
+
+    };
+    
+    var updateStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
+      // if chart object exist then set new data
+      if ($scope.statusBarChart){
+        $scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
+      }else{
+        createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
+      }
+    };
+
+    var createStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
+      // check if graph element exist before creating
+      if ( jQuery('#response-time-graph:visible').length ){
+        
+      	$scope.statusBarChart = Morris.Bar({
+				  element: 'transaction-status-graph',
+				  data: statusData,
+				  xkey: 'channel',
+				  ykeys: statusKeys,
+				  stacked: true,
+				  resize: true,
+				  hideHover: 'auto',
+				  labels: statusLabels,
+				  barColors: statusColors
+				}).on('click', function(i, row){
+
+					$scope.viewChannelDetails('channels/'+row.channelLink);
+
+				});
+
+      }
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getStatusMetrics();
+
+		/********************************************************************/
+    /**         Channel Transactions Status Metric Functions           **/
+    /********************************************************************/
 
   });
