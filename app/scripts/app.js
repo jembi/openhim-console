@@ -71,11 +71,14 @@ angular
         redirectTo: '/'
       });
   })
-  .run( function($rootScope, $location, $window) {
+  .run( function($rootScope, $location, $window, $anchorScroll) {
 
     /*------------------------------CHECK USER SESSION---------------------------------*/
     // register listener to watch route changes
     $rootScope.$on( '$routeChangeStart', function() {
+
+      // scroll page to top - start fresh
+      $anchorScroll();
 
       //set nav menu view to false
       $rootScope.navMenuVisible = false;

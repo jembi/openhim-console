@@ -12,6 +12,11 @@ angular.module('openhimWebui2App')
     /***************************************************/
 
     // Anything needed here?
+    setInterval(function(){
+    	$scope.getTransactionLoadMetrics();
+    	$scope.getResponseTimeMetrics();
+    	$scope.getStatusMetrics();
+    }, 5000);
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -85,10 +90,16 @@ angular.module('openhimWebui2App')
     $scope.getResponseTimeMetrics = function(){
       // do API call here to pull channel response metrics
       /* SIMULATED RESPONSE TIME VALUES */
-      var responseTimeData = [];
+      var value = 0;
+      var avgResponseTimeTotal = 0;
+      var responseTimeData = []; 
       for ( var i=1; i<=24; i++ ){
-      	responseTimeData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: Math.floor((Math.random() * 15) + 1) });
+      	value = Math.floor((Math.random() * 15) + 1);
+      	avgResponseTimeTotal += value;
+      	responseTimeData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: value });
       }
+      var avgTime = avgResponseTimeTotal / 24;
+      $scope.avgResponseTime = avgTime.toFixed(2);
 
       /* SIMULATED RESPONSE TIME VALUES */
 

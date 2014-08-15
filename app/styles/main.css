@@ -702,6 +702,9 @@ body {
 .label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
 .progress { margin: 0px; width: 90%; }
 
+#transaction-status-graph:hover { cursor: pointer; }
+.dashboard-info-box{ margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
