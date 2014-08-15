@@ -695,16 +695,23 @@ body {
 
 .reload-metrics-btn { margin: 5px; } 
 .reload-metrics-btn:hover { cursor: pointer; } 
-.dashboard-graph-left { width: 49%; float: left; }
-.dashboard-graph-right { width: 49%; float: right; }
+
+.load-metrics-line-graph { width: 49%; float: left; }
+.response-time-metrics-line-graph { width: 49%; float: right; }
 
 .label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
 .progress { margin: 0px; width: 90%; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
 
 /*-custom responsive ccs for big view-*/
+@media (max-width: 1100px){
+  .load-metrics-line-graph { width: 100%; float: left; }
+  .response-time-metrics-line-graph { width: 100%; float: left; }
+}
+
 @media (max-width: 1325px){
   .col-md-2{ width: 25%; }
   .col-md-10{ width: 75%; }
