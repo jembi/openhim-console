@@ -704,6 +704,7 @@ body {
 
 #transaction-status-graph:hover { cursor: pointer; }
 .dashboard-info-box{ margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
+.dashboard-info-box strong { font-size: 30px; }
 
 /*------- Custom CSS Changes ----*/
 

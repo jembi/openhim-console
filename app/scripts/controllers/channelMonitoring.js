@@ -33,20 +33,8 @@ angular.module('openhimWebui2App')
     /**         Transaction Load Metric Functions           **/
     /*********************************************************/
 
-    $scope.getLoadMetrics = function(){
-      // reset any load metric alert warnings
-      Alerting.AlertReset();
+    var updateLoadLineChart = function(loadResults){
 
-      // do API call here to pull channel load metrics
-      Api.Metrics.query({
-        time: 'day',
-        channelId : $routeParams.channelId,
-        startDate: moment().subtract(1,'weeks').toDate(),
-        endDate: moment().toDate()
-      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
-    };
-
-    $scope.loadMetricsSuccess = function(loadResults){
       /* DEFAULT LOAD OBJECT */
       var loadData = [
         { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
@@ -78,15 +66,6 @@ angular.module('openhimWebui2App')
         }
       }
 
-      updateLoadLineChart(loadData);
-    };
-
-    $scope.loadMetricsError = function(err){
-      // add warning message when unable to get data
-      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
-
-    var updateLoadLineChart = function(loadData){
       // if chart object exist then set new data
       if ($scope.loadLineChart){
         $scope.loadLineChart.setData(loadData);
@@ -110,9 +89,6 @@ angular.module('openhimWebui2App')
       }
     };
 
-    // do the inital load of the transaction status metrics
-    $scope.getLoadMetrics();
-
     /*********************************************************/
     /**         Transaction Load Metric Functions           **/
     /*********************************************************/
@@ -122,25 +98,42 @@ angular.module('openhimWebui2App')
     /******************************************************************/
     /**         Transaction Response Time Metric Functions           **/
     /******************************************************************/
-
-    $scope.getResponseTimeMetrics = function(){
-      // do API call here to pull channel response metrics
-      /* SIMULATED RESPONSE TIME VALUES */
-      var responseTimeData = [
-        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) },
-        { date: moment().format('YYYY-MM-DD'), value: Math.floor((Math.random() * 5000) + 1) }
-      ];
-      /* SIMULATED RESPONSE TIME VALUES */
-
-      updateResponseTimeLineChart(responseTimeData);
-    };
     
-    var updateResponseTimeLineChart = function(responseTimeData){
+    var updateResponseTimeLineChart = function(loadResults){
+
+      /* DEFAULT LOAD OBJECT */
+      var responseTimeData = [
+        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: 0 },
+        { date: moment().format('YYYY-MM-DD'), value: 0 }
+      ];
+      $scope.avgResponseTime = 0;
+      /* DEFAULT LOAD OBJECT */
+
+      var dateFormat, date;
+      var avgResponseTimeTotal = 0;
+
+      // construct the loadData if API success
+      for (var i = 0; i < loadResults.length; i++) {
+        //moment format date to ensure zeros are present
+        dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
+        date = moment(dateFormat).format('YYYY-MM-DD');
+
+        // check if date is equal to date in object and update load total
+        for (var x = 0; x < responseTimeData.length; x++) {
+          if( responseTimeData[x].date === date ){
+            responseTimeData[x].value = loadResults[i].avgResp.toFixed(2);
+            // add to load total
+            avgResponseTimeTotal += parseFloat(loadResults[i].avgResp);
+          }
+        }
+      }
+      $scope.avgResponseTime = (avgResponseTimeTotal / responseTimeData.length).toFixed(2);
+
       // if chart object exist then set new data
       if ($scope.responseTimeLineChart){
         $scope.responseTimeLineChart.setData(responseTimeData);
@@ -165,12 +158,48 @@ angular.module('openhimWebui2App')
       }
     };
 
-    // do the inital load of the transaction status metrics
-    $scope.getResponseTimeMetrics();
-
     /******************************************************************/
     /**         Transaction Response Time Metric Functions           **/
     /******************************************************************/
+
+
+
+    /************************************************************/
+    /**         Transaction Load/Time Metric REQUEST           **/
+    /************************************************************/
+
+    $scope.getLoadTimeMetrics = function(){
+      // reset any load metric alert warnings
+      Alerting.AlertReset();
+
+      // do API call here to pull channel load metrics
+      Api.Metrics.query({
+        time: 'day',
+        channelId : $routeParams.channelId,
+        startDate: moment().subtract(1,'weeks').toDate(),
+        endDate: moment().toDate()
+      }, $scope.loadTimeMetricsSuccess, $scope.loadTimeMetricsError);
+    };
+
+    $scope.loadTimeMetricsSuccess = function(loadTimeResults){
+      updateLoadLineChart(loadTimeResults);
+      updateResponseTimeLineChart(loadTimeResults);
+    };
+
+    $scope.loadTimeMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getLoadTimeMetrics();
+
+    /************************************************************/
+    /**         Transaction Load/Time Metric REQUEST           **/
+    /************************************************************/
+
+    
 
 
 
