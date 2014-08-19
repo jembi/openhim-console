@@ -4,8 +4,9 @@
     <span ng-show="update">Edit</span>
     <span ng-show="!update">Add</span>
      a user
-</h4>
+  </h4>
 </div>
+
 <form name="form">
   <div class="modal-body">
     <fieldset>
@@ -26,6 +27,11 @@
       </div>
 
       <div class="form-group">
+        <label>MSISDN</label>
+        <input class="form-control" type="text" ng-model="user.msisdn" />
+      </div>
+
+      <div class="form-group">
         <label>Allowed Roles</label>
         <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
       </div>
@@ -33,11 +39,11 @@
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;">
           <label>Password</label>
-          <input class="form-control" type="password" ng-model="password" />
+          <input class="form-control" type="password" ng-model="password" ng-required='!update' />
         </div>
         <div class="form-group" style="float: right;">
           <label>Confirm password</label>
-          <input class="form-control" type="password" ng-model="passwordConfirm" />
+          <input class="form-control" type="password" ng-model="passwordConfirm" ng-required='!update' />
         </div>
       </div>
 

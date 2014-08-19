@@ -2,7 +2,10 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, user) {
+  .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, login, Notify, Alerting, user) {
+
+    $scope.password = '';
+    $scope.passwordConfirm = '';
 
     // get/set the users scope whether new or update
     if (user) {
@@ -16,9 +19,34 @@ angular.module('openhimWebui2App')
 
     /* -------------------------Processing save request-----------------------------*/
     var success = function () {
-      // add the success message
-      Alerting.AlertAddMsg('top', 'success', 'The user has been saved successfully');
-      notifyUser();
+
+      var consoleSession = localStorage.getItem('consoleSession');
+      consoleSession = JSON.parse(consoleSession);
+
+      if ( $scope.user.email === consoleSession.sessionUser ){        
+        if ( $scope.password ){
+          login.login($scope.user.email, $scope.password, function (loggedIn) {
+            if (loggedIn) {
+              // add the success message
+              Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully and you were logged in with your new credentials');
+              notifyUser();
+            } else {
+              // add the success message
+              Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials: #' + err.status + ' - ' + err.data);
+              notifyUser();
+            }
+          });
+        }else{
+          // add the success message
+          Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully');
+          notifyUser();
+        }
+      }else{              
+        // add the success message
+        Alerting.AlertAddMsg('top', 'success', 'The user has been saved successfully');
+        notifyUser();
+      }
+      
     };
 
     var error = function (err) {
@@ -35,7 +63,7 @@ angular.module('openhimWebui2App')
 
     var saveUser = function (user) {
       if ($scope.update) {
-        user.$update(success, error);
+        user.$update(success, error);        
       } else {
         user.$save({ email: '' }, success, error);
       }
@@ -51,6 +79,7 @@ angular.module('openhimWebui2App')
 
     $scope.save = function (user, password) {
       if (password) {
+        $scope.password = password;
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
         setHashAndSave(user, h.hash, h.salt);
@@ -65,11 +94,17 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isUserValid = function (password, passwordConfirm) {
-      if ( password && password === passwordConfirm ){
-        return true;
+      // user being updated and no pnew password supplied
+      if (!password && $scope.update === true){
+        return true
       }else{
-        return false;
-      }
+        // either user is new or password being updated
+        if ( password === passwordConfirm ){
+          return true;
+        }else{
+          return false;
+        }
+      } 
     };
 
   });

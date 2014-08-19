@@ -9,10 +9,7 @@ angular.module('openhimWebui2App')
     $scope.consoleSession = consoleSession;
 
 
-    /**********************************/
-    /**   INITIAL LOAD FUNCTIONS     **/
-    /**********************************/
-
+    /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function (user) {
       $scope.user = user;
     };
@@ -24,17 +21,10 @@ angular.module('openhimWebui2App')
 
     // do the initial request
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
-    
-    /**********************************/
-    /**   INITIAL LOAD FUNCTIONS     **/
-    /**********************************/
+    /* -------------------------Initial load & onChanged---------------------------- */
 
 
     /* -------------------------Processing save request-----------------------------*/
-    /**********************************/
-    /**   PROCESSING SAVE REQUEST     **/
-    /**********************************/
-
     var success = function (password) {
       // add the success message
       if (password !== '') {
@@ -89,11 +79,19 @@ angular.module('openhimWebui2App')
     /* -------------------------Processing save request-----------------------------*/
 
     $scope.isUserValid = function (password, passwordConfirm) {
-      if (password && password === passwordConfirm) {
-        return true;
-      } else {
-        return false;
-      }
+
+      // user being updated and no new password supplied
+      if (!password){
+        return true
+      }else{
+        // either user is new or password being updated
+        if ( password === passwordConfirm ){
+          return true;
+        }else{
+          return false;
+        }
+      } 
+
     };
 
   });
