@@ -23,7 +23,7 @@ angular.module('openhimWebui2App')
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
 
-      if ( $scope.user.email === consoleSession.sessionUser ){        
+      if ( $scope.user.email === consoleSession.sessionUser ){
         if ( $scope.password ){
           login.login($scope.user.email, $scope.password, function (loggedIn) {
             if (loggedIn) {
@@ -32,7 +32,7 @@ angular.module('openhimWebui2App')
               notifyUser();
             } else {
               // add the success message
-              Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials: #' + err.status + ' - ' + err.data);
+              Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials');
               notifyUser();
             }
           });
@@ -41,7 +41,7 @@ angular.module('openhimWebui2App')
           Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully');
           notifyUser();
         }
-      }else{              
+      }else{
         // add the success message
         Alerting.AlertAddMsg('top', 'success', 'The user has been saved successfully');
         notifyUser();
@@ -63,7 +63,7 @@ angular.module('openhimWebui2App')
 
     var saveUser = function (user) {
       if ($scope.update) {
-        user.$update(success, error);        
+        user.$update(success, error);
       } else {
         user.$save({ email: '' }, success, error);
       }
@@ -96,7 +96,7 @@ angular.module('openhimWebui2App')
     $scope.isUserValid = function (password, passwordConfirm) {
       // user being updated and no pnew password supplied
       if (!password && $scope.update === true){
-        return true
+        return true;
       }else{
         // either user is new or password being updated
         if ( password === passwordConfirm ){
@@ -104,7 +104,7 @@ angular.module('openhimWebui2App')
         }else{
           return false;
         }
-      } 
+      }
     };
 
   });

@@ -82,7 +82,7 @@ angular.module('openhimWebui2App')
 
       // user being updated and no new password supplied
       if (!password){
-        return true
+        return true;
       }else{
         // either user is new or password being updated
         if ( password === passwordConfirm ){
@@ -90,7 +90,7 @@ angular.module('openhimWebui2App')
         }else{
           return false;
         }
-      } 
+      }
 
     };
 
