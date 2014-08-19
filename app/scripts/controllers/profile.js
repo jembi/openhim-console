@@ -9,7 +9,10 @@ angular.module('openhimWebui2App')
     $scope.consoleSession = consoleSession;
 
 
-    /* -------------------------Initial load & onChanged---------------------------- */
+    /**********************************/
+    /**   INITIAL LOAD FUNCTIONS     **/
+    /**********************************/
+
     var querySuccess = function (user) {
       $scope.user = user;
     };
@@ -21,10 +24,17 @@ angular.module('openhimWebui2App')
 
     // do the initial request
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError);
-    /* -------------------------Initial load & onChanged---------------------------- */
+    
+    /**********************************/
+    /**   INITIAL LOAD FUNCTIONS     **/
+    /**********************************/
 
 
     /* -------------------------Processing save request-----------------------------*/
+    /**********************************/
+    /**   PROCESSING SAVE REQUEST     **/
+    /**********************************/
+
     var success = function (password) {
       // add the success message
       if (password !== '') {
