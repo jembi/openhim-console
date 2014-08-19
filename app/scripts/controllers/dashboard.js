@@ -5,18 +5,18 @@
 
 
 angular.module('openhimWebui2App')
-	.controller('DashboardCtrl', function ($scope, $modal, $location, Api) {
+	.controller('DashboardCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
 		/***************************************************/
 		/**         Initial page load functions           **/
 		/***************************************************/
 
 		// Anything needed here?
-		setInterval(function(){
+		/*setInterval(function(){
 			$scope.getTransactionLoadMetrics();
 			$scope.getResponseTimeMetrics();
 			$scope.getStatusMetrics();
-		}, 5000);
+		}, 5000);*/
 
 		//location provider - load transaction details
 		$scope.viewChannelDetails = function (path) {
@@ -34,23 +34,29 @@ angular.module('openhimWebui2App')
 		/**         Transaction Load Metric Functions           **/
 		/*********************************************************/
 
-		$scope.getTransactionLoadMetrics = function(){
-			// do API call here to pull channel response metrics
-			/* SIMULATED RESPONSE TIME VALUES */
+		$scope.updateTransactionLoadLineChart = function(loadTimeResults){
+
 			var value = 0;
-			$scope.loadTotal = 0;
+			var hour;
 			var transactionLoadData = [];
+			$scope.loadTotal = 0;			
 			for ( var i=1; i<=moment().format('H'); i++ ){
-				value = Math.floor((Math.random() * 100) + 1);
+
+				value = 0;
+				// needs to be in date format
+				hour = moment().format('YYYY-MM-DD')+' '+i+':00';
+				for ( var x=0; x<loadTimeResults.length; x++ ){
+					// check if the result has value for current hour in the loop
+					if ( loadTimeResults[x]._id.hour === i ){
+						value = loadTimeResults[x].load;
+					}
+				}
+
+				//value = Math.floor((Math.random() * 100) + 1);
 				$scope.loadTotal += value;
-				transactionLoadData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: value });
+				transactionLoadData.push({ hour: hour, value: value });
 			}
-			/* SIMULATED RESPONSE TIME VALUES */
 
-			updateTransactionLoadLineChart(transactionLoadData);
-		};
-
-		var updateTransactionLoadLineChart = function(transactionLoadData){
 			// if chart object exist then set new data
 			if ($scope.transactionLoadLineChart){
 				$scope.transactionLoadLineChart.setData(transactionLoadData);
@@ -75,9 +81,6 @@ angular.module('openhimWebui2App')
 			}
 		};
 
-		// do the inital load of the transaction status metrics
-		$scope.getTransactionLoadMetrics();
-
 		/*********************************************************/
 		/**         Transaction Load Metric Functions           **/
 		/*********************************************************/
@@ -88,26 +91,35 @@ angular.module('openhimWebui2App')
 		/**         Transaction Response Time Metric Functions           **/
 		/******************************************************************/
 
-		$scope.getResponseTimeMetrics = function(){
-			// do API call here to pull channel response metrics
-			/* SIMULATED RESPONSE TIME VALUES */
-			var value = 0;
+		$scope.updateResponseTimeLineChart = function(loadTimeResults){
+
+			var hour;
+			var value = 0;			
 			var avgResponseTimeTotal = 0;
 			var responseTimeData = [];
+			$scope.avgResponseTime = 0;
+			
 			for ( var i=1; i<=moment().format('H'); i++ ){
-				value = Math.floor((Math.random() * 500) + 1);
-				avgResponseTimeTotal += value;
-				responseTimeData.push({ hour: moment().format('YYYY-MM-DD')+' '+i+':00', value: value });
+
+				value = 0;
+				// needs to be in date format
+				hour = moment().format('YYYY-MM-DD')+' '+i+':00';
+				for ( var x=0; x<loadTimeResults.length; x++ ){
+					// check if the result has value for current hour in the loop
+					if ( loadTimeResults[x]._id.hour === i ){
+						value = loadTimeResults[x].avgResp;
+						avgResponseTimeTotal += value;
+					}
+				}
+
+				//value = Math.floor((Math.random() * 100) + 1);
+				$scope.avgResponseTime += value;
+				responseTimeData.push({ hour: hour, value: value });
 			}
-			var avgTime = avgResponseTimeTotal / moment().format('H');
-			$scope.avgResponseTime = avgTime.toFixed(2);
 
-			/* SIMULATED RESPONSE TIME VALUES */
+			$scope.avgResponseTime = avgResponseTimeTotal / loadTimeResults.length;
 
-			updateResponseTimeLineChart(responseTimeData);
-		};
 
-		var updateResponseTimeLineChart = function(responseTimeData){
 			// if chart object exist then set new data
 			if ($scope.responseTimeLineChart){
 				$scope.responseTimeLineChart.setData(responseTimeData);
@@ -132,12 +144,63 @@ angular.module('openhimWebui2App')
 			}
 		};
 
-		// do the inital load of the transaction status metrics
-		$scope.getResponseTimeMetrics();
-
 		/******************************************************************/
 		/**         Transaction Response Time Metric Functions           **/
 		/******************************************************************/
+
+
+
+		/************************************************************/
+    /**         Transaction Load/Time Metric REQUEST           **/
+    /************************************************************/
+
+		$scope.getLoadTimeMetrics = function(){
+      // reset any load metric alert warnings
+      Alerting.AlertReset('load');
+      Alerting.AlertReset('responseTime');
+
+      var startDate = moment().startOf('day').toDate();
+      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+
+      console.log(startDate);
+      console.log(endDate);
+      console.log({
+        startDate: startDate,
+        endDate: endDate
+      })
+
+      // do API call here to pull load metrics
+      Api.Metrics.query({
+        startDate: startDate,
+        endDate: endDate
+      }, $scope.loadTimeMetricsSuccess, $scope.loadTimeMetricsError);
+    };
+
+    $scope.loadTimeMetricsSuccess = function(loadTimeResults){
+
+    	if ( loadTimeResults.length === 0 ){
+        Alerting.AlertAddMsg('load', 'warning', 'There has been no transactions received for today');
+        Alerting.AlertAddMsg('responseTime', 'warning', 'There has been no transactions received for today');
+      }else{
+        $scope.updateTransactionLoadLineChart(loadTimeResults);
+        $scope.updateResponseTimeLineChart(loadTimeResults);
+      }
+      
+    };
+
+    $scope.loadTimeMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
+    };
+
+    $scope.getLoadTimeMetrics();
+
+    /************************************************************/
+    /**         Transaction Load/Time Metric REQUEST           **/
+    /************************************************************/
+
+
 
 
 
@@ -145,15 +208,22 @@ angular.module('openhimWebui2App')
 		/**         Channel Transactions Status Metric Functions           **/
 		/********************************************************************/
 
-		$scope.getStatusMetrics = function(){
-			// do API call here to pull channel response metrics
+		$scope.updateStatusBarChart = function(statusResults){
+			//statusData, statusKeys, statusLabels, statusColors
+			console.log(statusResults)
 
 
-			Api.Channels.query(function(channels){
+			for ( var i=0; 1<statusResults.length; i++ ){
+
+
+
+			}
+
+
+			/*Api.Channels.query(function(channels){
 				$scope.channels = channels;
 
 
-				/* SIMULATED STATUS VALUES */
 				var statusData = [];
 				var processing, failed, completed, completedWErrors, successful;
 
@@ -185,18 +255,17 @@ angular.module('openhimWebui2App')
 
 			}, function(){
 				console.log('Need to log the error message to an alert box to inform the user.');
-			});
-			/* SIMULATED STATUS VALUES */
+			});*/
 
-		};
 
-		var updateStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
+
+
 			// if chart object exist then set new data
-			if ($scope.statusBarChart){
+			/*if ($scope.statusBarChart){
 				$scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
 			}else{
 				createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
-			}
+			}*/
 		};
 
 		var createStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
@@ -221,6 +290,48 @@ angular.module('openhimWebui2App')
 
 			}
 		};
+
+
+
+
+
+
+
+
+
+		$scope.getStatusMetrics = function(){
+      // reset any load metric alert warnings
+      Alerting.AlertReset('status');
+
+      var startDate = moment().startOf('day').toDate();
+      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+
+      // do API call here to pull load metrics
+      Api.MetricsStatus.query({
+        startDate: startDate,
+        endDate: endDate
+      }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
+    };
+
+    $scope.statusMetricsSuccess = function(statusResults){
+
+    	//console.log(statusResults);
+
+    	if ( statusResults.length === 0 ){
+        Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
+      }else{
+        $scope.updateStatusBarChart(statusResults);
+      }
+      
+    };
+
+    $scope.statusMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+    };
+
+
+
 
 		// do the inital load of the transaction status metrics
 		$scope.getStatusMetrics();

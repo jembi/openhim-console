@@ -170,11 +170,12 @@ angular.module('openhimWebui2App')
 
     $scope.getLoadTimeMetrics = function(){
       // reset any load metric alert warnings
-      Alerting.AlertReset();
+      Alerting.AlertReset('load');
+      Alerting.AlertReset('responseTime');
 
       // do API call here to pull channel load metrics
       Api.Metrics.query({
-        time: 'day',
+        type: 'day',
         channelId : $routeParams.channelId,
         startDate: moment().subtract(1,'weeks').toDate(),
         endDate: moment().toDate()
@@ -182,8 +183,15 @@ angular.module('openhimWebui2App')
     };
 
     $scope.loadTimeMetricsSuccess = function(loadTimeResults){
-      updateLoadLineChart(loadTimeResults);
-      updateResponseTimeLineChart(loadTimeResults);
+
+      if ( loadTimeResults.length === 0 ){
+        Alerting.AlertAddMsg('load', 'warning', 'There were no transactions found for the past week');
+        Alerting.AlertAddMsg('responseTime', 'warning', 'There were no transactions found for the past week');
+      }else{
+        updateLoadLineChart(loadTimeResults);
+        updateResponseTimeLineChart(loadTimeResults);
+      }
+      
     };
 
     $scope.loadTimeMetricsError = function(err){
@@ -206,48 +214,6 @@ angular.module('openhimWebui2App')
     /***********************************************************/
     /**         Transaction Status Metric Functions           **/
     /***********************************************************/
-
-    $scope.getStatusMetrics = function(){
-      // do API call here to pull channel status metrics
-      /* SIMULATED STATUS VALUES */
-      var statusData = [];
-      var total = 450;
-      var value, percent;
-
-      if ( 1 === 1 ){
-        value = 40;
-        percent = (100 / total * value).toFixed(2);
-        statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
-      }
-
-      if ( 1 === 1 ){
-        value = 95;
-        percent = (100 / total * value).toFixed(2);
-        statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
-      }
-      
-      if ( 1 === 1 ){
-        value = 40;
-        percent = (100 / total * value).toFixed(2);
-        statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
-      }
-
-      if ( 1 === 1 ){
-        value = 25;
-        percent = (100 / total * value).toFixed(2);
-        statusData.push({ label: 'Completed with Error(s)', value: value, percent: percent, color: '#5bc0de' });
-      }
-
-      if ( 1 === 1 ){
-        value = 250;
-        percent = (100 / total * value).toFixed(2);
-        statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
-      }
-      /* SIMULATED STATUS VALUES */
-
-      updateStatusBarChart(statusData);
-      updateStatusDonutChart(statusData);
-    };
     
     var updateStatusBarChart = function(statusData){
       // construct status bar object for morris
@@ -261,22 +227,6 @@ angular.module('openhimWebui2App')
         $scope.statusBarChart.setData(statusBarData);
       }else{
         createBarChart(statusBarData);
-      }
-    };
-
-    var updateStatusDonutChart = function(statusData){
-      var statusDonutData = [];
-      var statusDonutColors = [];
-      for (var i = 0; i < statusData.length; i++) {
-        statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
-        statusDonutColors.push(statusData[i].color);
-      }
-
-      // if chart object exist then set new data
-      if ($scope.statusDonutChart){
-        $scope.statusDonutChart.setData(statusDonutData);
-      }else{
-        createDonutChart(statusDonutData, statusDonutColors);
       }
     };
 
@@ -303,6 +253,22 @@ angular.module('openhimWebui2App')
       }
     };
 
+    var updateStatusDonutChart = function(statusData){
+      var statusDonutData = [];
+      var statusDonutColors = [];
+      for (var i = 0; i < statusData.length; i++) {
+        statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
+        statusDonutColors.push(statusData[i].color);
+      }
+
+      // if chart object exist then set new data
+      if ($scope.statusDonutChart){
+        $scope.statusDonutChart.setData(statusDonutData);
+      }else{
+        createDonutChart(statusDonutData, statusDonutColors);
+      }
+    };
+
     var createDonutChart = function(statusDonutData, statusDonutColors){
       // check if graph element exist before creating
       if ( jQuery('#status-donut:visible').length ){
@@ -317,11 +283,92 @@ angular.module('openhimWebui2App')
       }
     };
 
-    // do the inital load of the transaction status metrics
-    $scope.getStatusMetrics();
-
     /***********************************************************/
     /**         Transaction Status Metric Functions           **/
     /***********************************************************/
+
+
+
+
+
+    /*********************************************************/
+    /**         Transaction Status Metric REQUEST           **/
+    /*********************************************************/
+
+    $scope.getStatusMetrics = function(){
+
+      // reset any load metric alert warnings
+      Alerting.AlertReset('status');
+
+      var startDate = moment().subtract(1, 'd').startOf('day').toDate();
+      var endDate = moment().subtract(1, 'd').endOf('day').toDate();
+      Api.Metrics.query({
+        type: 'status',
+        channelId : $routeParams.channelId,
+        startDate: startDate,
+        endDate: endDate
+      }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
+
+    };
+
+    $scope.statusMetricsSuccess = function(statusResults){
+
+      if ( statusResults.length === 0 ){
+        Alerting.AlertAddMsg('status', 'warning', 'There were no transactions found for the past day');
+      }else{
+
+        var statusData = [];
+        var totalTransactions = 0;
+        var value, percent;
+
+        // loop through array to calculate how many records there are to work out percentage
+        for ( var i=0; i<statusResults.length; i++ ){
+          totalTransactions += statusResults[i].load;
+        }
+        
+        // loop through array again to which statuses to add and what the percentages are
+        for ( var i=0; i<statusResults.length; i++ ){
+
+          value = statusResults[i].load;
+          percent = (100 / totalTransactions * value).toFixed(2);
+
+          switch ( statusResults[i]._id.status ) {
+            case 'Processing':
+              statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
+              break;
+            case 'Failed':
+              statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
+              break;
+            case 'Completed':
+              statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
+              break;
+            case 'Completed with Error(s)':
+              statusData.push({ label: 'Completed with Error(s)', value: value, percent: percent, color: '#5bc0de' });
+              break;
+            case 'Successful':
+              statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
+              break;
+          }
+
+        }
+
+        updateStatusBarChart(statusData);
+        updateStatusDonutChart(statusData);
+
+      }
+
+    };
+
+    $scope.statusMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('status', 'danger', 'Transaction Status Error: ' + err.status + ' ' + err.data);
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getStatusMetrics();
+
+    /*********************************************************/
+    /**         Transaction Status Metric REQUEST           **/
+    /*********************************************************/
 
   });
