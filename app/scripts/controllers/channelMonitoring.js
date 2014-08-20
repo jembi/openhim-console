@@ -52,8 +52,7 @@ angular.module('openhimWebui2App')
 
       // construct the loadData if API success
       for (var i = 0; i < loadResults.length; i++) {
-        //moment format date to ensure zeros are present
-        dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
+        dateFormat = loadResults[i].timestamp;
         date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
@@ -119,8 +118,7 @@ angular.module('openhimWebui2App')
 
       // construct the loadData if API success
       for (var i = 0; i < loadResults.length; i++) {
-        //moment format date to ensure zeros are present
-        dateFormat = new Date(loadResults[i]._id.year + '-' + loadResults[i]._id.month + '-' + loadResults[i]._id.day);
+        dateFormat = loadResults[i].timestamp;
         date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
@@ -183,15 +181,13 @@ angular.module('openhimWebui2App')
     };
 
     $scope.loadTimeMetricsSuccess = function(loadTimeResults){
-
       if ( loadTimeResults.length === 0 ){
         Alerting.AlertAddMsg('load', 'warning', 'There were no transactions found for the past week');
         Alerting.AlertAddMsg('responseTime', 'warning', 'There were no transactions found for the past week');
       }else{
         updateLoadLineChart(loadTimeResults);
         updateResponseTimeLineChart(loadTimeResults);
-      }
-      
+      }      
     };
 
     $scope.loadTimeMetricsError = function(err){
@@ -206,8 +202,6 @@ angular.module('openhimWebui2App')
     /************************************************************/
     /**         Transaction Load/Time Metric REQUEST           **/
     /************************************************************/
-
-    
 
 
 
@@ -289,8 +283,6 @@ angular.module('openhimWebui2App')
 
 
 
-
-
     /*********************************************************/
     /**         Transaction Status Metric REQUEST           **/
     /*********************************************************/
@@ -312,6 +304,8 @@ angular.module('openhimWebui2App')
     };
 
     $scope.statusMetricsSuccess = function(statusResults){
+
+      console.log(statusResults);
 
       if ( statusResults.length === 0 ){
         Alerting.AlertAddMsg('status', 'warning', 'There were no transactions found for the past day');
