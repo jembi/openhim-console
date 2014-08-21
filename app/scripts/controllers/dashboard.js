@@ -5,18 +5,20 @@
 
 
 angular.module('openhimWebui2App')
-	.controller('DashboardCtrl', function ($scope, $modal, $location, Api, Alerting) {
+	.controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting) {
 
 		/***************************************************/
 		/**         Initial page load functions           **/
 		/***************************************************/
 
 		// Anything needed here?
-		setInterval(function(){
-			$scope.getTransactionLoadMetrics();
-			$scope.getResponseTimeMetrics();
+
+		var dashboardInterval = $interval(function() {
+			//$scope.getTransactionLoadMetrics();
+			$scope.getLoadTimeMetrics();
 			$scope.getStatusMetrics();
 		}, 5000);
+
 
 		//location provider - load transaction details
 		$scope.viewChannelDetails = function (path) {
@@ -345,5 +347,16 @@ angular.module('openhimWebui2App')
 		/********************************************************************/
 		/**         Channel Transactions Status Metric Functions           **/
 		/********************************************************************/
+
+
+
+		$scope.$on('$destroy', function() {
+			// Make sure that the interval is destroyed too
+			if (angular.isDefined(dashboardInterval)) {
+				$interval.cancel(dashboardInterval);
+				dashboardInterval = undefined;
+			}
+		});
+
 
 	});
