@@ -1,5 +1,6 @@
 'use strict';
 /* global getHashAndSalt: false */
+/* global isValidMSISDN: false */
 
 angular.module('openhimWebui2App')
   .controller('ProfileCtrl', function ($scope, Api, login, Alerting) {
@@ -92,6 +93,12 @@ angular.module('openhimWebui2App')
         }
       }
 
+    };
+
+    // assign function to $scope object to validate via ng binding
+    $scope.isValidMSISDN = function(inputtxt){
+      // util function defined in utils.js
+      return isValidMSISDN(inputtxt);
     };
 
   });

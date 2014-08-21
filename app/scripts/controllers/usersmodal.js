@@ -1,5 +1,6 @@
 'use strict';
 /* global getHashAndSalt: false */
+/* global isValidMSISDN: false */
 
 angular.module('openhimWebui2App')
   .controller('UsersModalCtrl', function ($scope, $modalInstance, Api, login, Notify, Alerting, user) {
@@ -94,6 +95,7 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isUserValid = function (password, passwordConfirm) {
+
       // user being updated and no pnew password supplied
       if (!password && $scope.update === true){
         return true;
@@ -105,6 +107,12 @@ angular.module('openhimWebui2App')
           return false;
         }
       }
+    };
+
+    // assign function to $scope object to validate via ng binding
+    $scope.isValidMSISDN = function(inputtxt){
+      // util function defined in utils.js
+      return isValidMSISDN(inputtxt);
     };
 
   });

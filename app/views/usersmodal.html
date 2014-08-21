@@ -27,7 +27,7 @@
       </div>
 
       <div class="form-group">
-        <label>MSISDN</label>
+        <label tooltip-html-unsafe="Accepted format: <br />27123456789 <br />( 5 - 15 digits )">MSISDN</label>
         <input class="form-control" type="text" ng-model="user.msisdn" />
       </div>
 
@@ -51,6 +51,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="save(user, password)" ng-disabled="form.$invalid || !isUserValid(password, passwordConfirm)">Save changes</button>
+    <button type="button" class="btn btn-primary" ng-click="save(user, password)" ng-disabled="form.$invalid || !isUserValid(password, passwordConfirm) || !isValidMSISDN(user.msisdn)">Save changes</button>
   </div>
 </form>
