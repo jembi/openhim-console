@@ -187,7 +187,7 @@ angular.module('openhimWebui2App')
       }else{
         updateLoadLineChart(loadTimeResults);
         updateResponseTimeLineChart(loadTimeResults);
-      }      
+      }
     };
 
     $scope.loadTimeMetricsError = function(err){
@@ -321,12 +321,12 @@ angular.module('openhimWebui2App')
         }
         
         // loop through array again to which statuses to add and what the percentages are
-        for ( var i=0; i<statusResults.length; i++ ){
+        for ( var x=0; x<statusResults.length; x++ ){
 
-          value = statusResults[i].load;
+          value = statusResults[x].load;
           percent = (100 / totalTransactions * value).toFixed(2);
 
-          switch ( statusResults[i]._id.status ) {
+          switch ( statusResults[x]._id.status ) {
             case 'Processing':
               statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
               break;

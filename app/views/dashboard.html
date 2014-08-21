@@ -17,10 +17,10 @@
 
         <div class="panel-body" ng-show="!alerts.server">
 
-          <div class="content-box-large" ng-if="channels || loadTotal || avgResponseTime">
+          <div class="content-box-large" ng-if="activeChannels || loadTotal || avgResponseTime">
             <div class="panel-body">
-              <div ng-if="channels.length" class="content-box-large dashboard-info-box">
-                Active Channels (Today): <br /><strong>{{channels.length}}</strong>
+              <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
+                Active Channels (Today): <br /><strong>{{activeChannels}}</strong>
               </div>
               <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
                 Total Transactions (Today): <br /><strong>{{loadTotal}}</strong>

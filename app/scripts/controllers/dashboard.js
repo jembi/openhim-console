@@ -12,11 +12,11 @@ angular.module('openhimWebui2App')
 		/***************************************************/
 
 		// Anything needed here?
-		/*setInterval(function(){
+		setInterval(function(){
 			$scope.getTransactionLoadMetrics();
 			$scope.getResponseTimeMetrics();
 			$scope.getStatusMetrics();
-		}, 5000);*/
+		}, 5000);
 
 		//location provider - load transaction details
 		$scope.viewChannelDetails = function (path) {
@@ -39,7 +39,7 @@ angular.module('openhimWebui2App')
 			var value = 0;
 			var hour;
 			var transactionLoadData = [];
-			$scope.loadTotal = 0;			
+			$scope.loadTotal = 0;
 			for ( var i=1; i<=moment().add(1, 'hours').format('H'); i++ ){
 
 				value = 0;
@@ -204,68 +204,96 @@ angular.module('openhimWebui2App')
 		/********************************************************************/
 
 		$scope.updateStatusBarChart = function(statusResults){
-			//statusData, statusKeys, statusLabels, statusColors
 
+			// set scope variable for amount of active channels
+			$scope.activeChannels = statusResults.length;
 
-			for ( var i=0; 1<statusResults.length; i++ ){
+			var channelsMap;
 
-
-
-			}
-
-
+			// create channelsMap for status name reference
 			Api.Channels.query(function(channels){
-				$scope.channels = channels;
+	      channelsMap = {};
+	      angular.forEach(channels, function(channel){
+	        channelsMap[channel._id] = channel.name;
+	      });
 
-
+	      // define varables for graph data set
+				var objectData = {};
 				var statusData = [];
-				var processing, failed, completed, completedWErrors, successful;
+				var statusKeys = [];
+				var statusLabels = [];
+				var statusColors = [];
 
-				//var channels = ['Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5'];
-				for ( var i=0; i<$scope.channels.length; i++ ){
+				// loop through each channels found in result and construct graph objects
+				for ( var i=0; i<statusResults.length; i++ ){
 
-					processing = Math.floor((Math.random() * 5000) + 1);
-					failed = Math.floor((Math.random() * 5000) + 1);
-					completed = Math.floor((Math.random() * 5000) + 1);
-					completedWErrors = Math.floor((Math.random() * 5000) + 1);
-					successful = Math.floor((Math.random() * 5000) + 1);
+					objectData.channelLink = statusResults[i]._id.channelID;
+					objectData.channel = channelsMap[statusResults[i]._id.channelID];
 
-					statusData.push({
-						channelLink: $scope.channels[i]._id,
-						channel: $scope.channels[i].name,
-						processing: processing,
-						failed: failed,
-						completed: completed,
-						completedWErrors: completedWErrors,
-						successful: successful
-					});
+					// check if Processing status has any records
+					if ( statusResults[i]._id.status === 'Processing' ){
+						objectData.processing = statusResults[i].transactionCount;
+						statusKeys.push('processing');
+						statusLabels.push('Processing');
+						statusColors.push('#777777');
+					}
+
+					// check if Failed status has any records
+					if ( statusResults[i]._id.status === 'Failed' ){
+						objectData.failed = statusResults[i].transactionCount;
+						statusKeys.push('failed');
+						statusLabels.push('Failed');
+						statusColors.push('#d9534f');
+					}
+
+					// check if Completed status has any records
+					if ( statusResults[i]._id.status === 'Completed' ){
+						objectData.completed = statusResults[i].transactionCount;
+						statusKeys.push('completed');
+						statusLabels.push('Completed');
+						statusColors.push('#f0ad4e');
+					}
+
+					// check if Completed with error(s) status has any records
+					if ( statusResults[i]._id.status === 'Completed with error(s)' ){
+						objectData.completedWErrors = statusResults[i].transactionCount;
+						statusKeys.push('completedWErrors');
+						statusLabels.push('Completed With Errors');
+						statusColors.push('#5bc0de');
+					}
+
+					// check if Successful status has any records
+					if ( statusResults[i]._id.status === 'Successful' ){
+						objectData.successful = statusResults[i].transactionCount;
+						statusKeys.push('successful');
+						statusLabels.push('Successful');
+						statusColors.push('#5cb85c');
+					}
+
+					// push objectData to main statusData object
+					statusData.push(objectData);
+
 				}
 
-				var statusKeys = ['processing', 'failed', 'completed', 'completedWErrors', 'successful'];
-				var statusLabels = ['Processing', 'Failed', 'Completed', 'Completed With Errors', 'Successful'];
-				var statusColors = ['#777777', '#d9534f', '#f0ad4e', '#5bc0de', '#5cb85c'];
+				// if chart object exist then set new data
+				if ($scope.statusBarChart){
+					$scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
+				}else{
+					createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
+				}
 
-				updateStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
+	    },
+	    function(){
+	      // server error - could not connect to API to get channels
+	    });
 
-			}, function(){
-				console.log('Need to log the error message to an alert box to inform the user.');
-			});
-
-
-
-
-			// if chart object exist then set new data
-			if ($scope.statusBarChart){
-				$scope.statusBarChart.setData(statusData, statusKeys, statusLabels, statusColors);
-			}else{
-				createStatusBarChart(statusData, statusKeys, statusLabels, statusColors);
-			}
 		};
 
 		var createStatusBarChart = function(statusData, statusKeys, statusLabels, statusColors){
 			// check if graph element exist before creating
 			if ( jQuery('#response-time-graph:visible').length ){
 
+				// create the status bar graph
 				$scope.statusBarChart = Morris.Bar({
 					element: 'transaction-status-graph',
 					data: statusData,
@@ -277,21 +305,12 @@ angular.module('openhimWebui2App')
 					labels: statusLabels,
 					barColors: statusColors
 				}).on('click', function(i, row){
-
+					// on status click direct user to channel metrics page
 					$scope.viewChannelDetails('channels/'+row.channelLink);
-
 				});
 
 			}
 		};
-
-
-
-
-
-
-
-
 
 		$scope.getStatusMetrics = function(){
 			// reset any load metric alert warnings
