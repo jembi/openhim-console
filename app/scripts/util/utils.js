@@ -1,6 +1,7 @@
 'use strict';
 /* global CryptoJS:false */
 /* exported getHashAndSalt */
+/* exported isValidMSISDN */
 
 function getHashAndSalt(stringToBeHashed) {
   var salt = CryptoJS.lib.WordArray.random(16).toString();
@@ -13,4 +14,15 @@ function getHashAndSalt(stringToBeHashed) {
     salt: salt,
     algorithm: 'sha512'
   };
+}
+
+function isValidMSISDN(inputtxt){
+  if ( inputtxt ){
+    var numRegex = /^([1-9]\d{1})([0-9]{3,13})$/;
+    if ( inputtxt.match(numRegex) ){
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

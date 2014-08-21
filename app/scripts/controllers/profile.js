@@ -1,5 +1,6 @@
 'use strict';
 /* global getHashAndSalt: false */
+/* global isValidMSISDN: false */
 
 angular.module('openhimWebui2App')
   .controller('ProfileCtrl', function ($scope, Api, login, Alerting) {
@@ -79,11 +80,25 @@ angular.module('openhimWebui2App')
     /* -------------------------Processing save request-----------------------------*/
 
     $scope.isUserValid = function (password, passwordConfirm) {
-      if (password && password === passwordConfirm) {
+
+      // user being updated and no new password supplied
+      if (!password){
         return true;
-      } else {
-        return false;
+      }else{
+        // either user is new or password being updated
+        if ( password === passwordConfirm ){
+          return true;
+        }else{
+          return false;
+        }
       }
+
+    };
+
+    // assign function to $scope object to validate via ng binding
+    $scope.isValidMSISDN = function(inputtxt){
+      // util function defined in utils.js
+      return isValidMSISDN(inputtxt);
     };
 
   });
