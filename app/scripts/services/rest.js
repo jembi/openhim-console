@@ -22,6 +22,9 @@ angular.module('openhimWebui2App')
 
       Tasks: $resource('http://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
-      })
+      }),
+
+      VisualizerEvents: $resource('http://' + HOST + ':' + PORT + '/visualizer/events/:receivedTime'),
+      VisualizerSync: $resource('http://' + HOST + ':' + PORT + '/visualizer/sync')
     };
   });

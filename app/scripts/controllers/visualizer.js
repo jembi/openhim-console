@@ -1,18 +1,19 @@
 'use strict';
 //TODO it may be good to integrate d3 in a more 'angular', e.g. using directives
 /* global d3: false */
+/* global moment: false */
 
 angular.module('openhimWebui2App')
-  .controller('VisualizerCtrl', function ($scope, $http) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api) {
     var registries = [
-      { 'comp': 'cr', 'desc': 'Client Registry' },
-      { 'comp': 'dhis', 'desc': 'DHIS2' },
-      { 'comp': 'sub', 'desc': 'Subscription Database' }
+      { 'comp': 'server1', 'desc': 'Server 1' },
+      { 'comp': 'server2', 'desc': 'Server 2' },
+      { 'comp': 'route-server3', 'desc': 'Server 3' }
     ];
     var endpoints = [
-      { 'comp': 'ep-reg', 'desc': '/registration' },
-      { 'comp': 'ep-sub', 'desc': '/subscription' },
-      { 'comp': 'ep-id', 'desc': '/identification' }
+      { 'comp': 'channel-1', 'desc': '/channel1' },
+      { 'comp': 'channel-2', 'desc': '/channel2' },
+      { 'comp': 'channel-3', 'desc': '/channel3' }
     ];
 
     var himRect, himText;
@@ -186,7 +187,7 @@ angular.module('openhimWebui2App')
         return typeof status !== 'undefined' && status !== null && status.toLowerCase() === 'error';
       };
 
-      angular.forEach(data, function(i, item) {
+      angular.forEach(data, function(item) {
         var comp = null;
 
         comp = getRegistryRect(item.comp);
@@ -207,29 +208,34 @@ angular.module('openhimWebui2App')
       $scope.showPause = true;
 
       lastUpdate = (Date.now()-diffTime);
-      visualizerUpdateInterval = setInterval( function() {
-        $http.get(
-          'latest',
-          { receivedTime: lastUpdate }
-        ).success(
-          processEvents
-        ).fail(function(data, status) {
-          console.error('Error: ' + status + ' ' + data);
+      visualizerUpdateInterval = $interval( function() {
+        Api.VisualizerEvents.get({ receivedTime: lastUpdate}, function (events) {
+          processEvents(events.events);
+          lastUpdate = (Date.now()-diffTime);
         });
-        lastUpdate = (Date.now()-diffTime);
       }, updatePeriod);
     };
+
+    var cancelVisualizerUpdateInterval = function() {
+      if (angular.isDefined(visualizerUpdateInterval)) {
+        $interval.cancel(visualizerUpdateInterval);
+        visualizerUpdateInterval = undefined;
+      }
+    };
+
     $scope.play = play;
 
     $scope.pause = function pause() {
       $scope.showPlay = true;
       $scope.showPause = false;
-      clearInterval(visualizerUpdateInterval);
+      cancelVisualizerUpdateInterval();
     };
 
+    $scope.$on('$destroy', cancelVisualizerUpdateInterval);
+
     var sync = function sync() {
-      $http.get('sync').success(function(data) {
-        diffTime = Date.now() - data.time;
+      Api.VisualizerSync.get(function (sync) {
+        diffTime = Date.now() - moment(sync.now);
         play();
       });
     };
@@ -268,6 +274,7 @@ angular.module('openhimWebui2App')
     setupHIM(vis);
     setupRegistries(vis);
     setupEndpoints(vis);
+
     sync();
 
   });
