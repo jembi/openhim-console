@@ -863,3 +863,8 @@ body {
   .login-wrapper { width: 80%; }
   .rerunTransactionsDiv{float: none; text-align: center;}
 }
+
+
+.has-error-msg { display: none; }
+.has-error { color: #a94442; }
+.has-error .has-error-msg { display: block; color: #a94442; margin-top: 5px; }

@@ -5,28 +5,32 @@
     <span ng-show="!update">Add</span>
      a client</h4>
 </div>
-<form name="form">
+<form name="form" validate>
   <div class="modal-body">
     <fieldset>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;">
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
           <label>Client ID</label>
-          <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" required >
+          <input class="form-control" type="text" ng-model="client.clientID" name="clientID" ng-disabled="update" required >
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
         </div>
-        <div class="form-group" style="float: right;">
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : form.name.$invalid && !form.name.$pristine }">
           <label>Client Name</label>
-          <input class="form-control" type="text" ng-model="client.name" required>
+          <input class="form-control" type="text" ng-model="client.name" name="name" required>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" ng-class="{ 'has-error' : form.clientDomain.$invalid && !form.clientDomain.$pristine }">
         <label>Domain</label>
-        <input class="form-control" type="text" ng-model="client.clientDomain" required>
+        <input class="form-control" type="text" ng-model="client.clientDomain" name="clientDomain" required>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
       </div>
-      <div class="form-group">
-        <label>Allowed Roles</label>
-        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" required /></taglist>
+      <div class="form-group" ng-class="{ 'has-error' : form.client.roles.$invalid && !form.client.roles.$pristine }">
+        <label>Allowed Roles</label>{{form.$error}}
+        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles" onchange="if(!client.roles || client.roles.length==0){this.$setValidity(false);}" data-ng-required="!client.roles || client.roles.length==0" /></taglist>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
       </div>
       <div class="form-group">
         <label>Certificate</label>
@@ -34,13 +38,15 @@
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;">
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
           <label>Basic Auth Password</label>
           <input class="form-control" placeholder="Set/change password..." type="password" ng-model="password">
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
         </div>
-        <div class="form-group" style="float: right;">
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
           <label>Confirm Password</label>
           <input class="form-control" placeholder="Retype password..." type="password" ng-model="passwordRetype">
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
         </div>
       </div>
 
