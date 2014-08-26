@@ -41,7 +41,6 @@ describe('Controller: ProfileCtrl', function () {
       scope.consoleSession = {};
       scope.consoleSession.sessionUser = 'test@user.org';
       scope.user = {
-        $save: sinon.spy(),
         $update: sinon.spy()
       };
       return $controller('ProfileCtrl', {
@@ -69,50 +68,73 @@ describe('Controller: ProfileCtrl', function () {
 
   });
 
-  it('should update a user profile', function () {
+  it('should test for all validation and return TRUE - hasErrors', function() {
     createController();
-    scope.user.surname = 'new surname';
-    scope.save(scope.user);
 
-    scope.user.should.have.property('surname', 'new surname');
-    
+    // only admin can edit profile groups
+    scope.userGroupAdmin = true;
+
+    scope.user.firstname = '';
+    scope.user.surname = '';
+    scope.user.msisdn = '2712';
+    scope.user.groups = [];
+    scope.temp.password = 'password';
+
+    // Should check all form validations and create object ngError.hasErrors with value true.
+    scope.validateFormProfile();
+    scope.ngError.should.have.property('hasErrors', true);
+    scope.ngError.should.have.property('firstname', true);
+    scope.ngError.should.have.property('surname', true);
+    scope.ngError.should.have.property('msisdn', true);
+    scope.ngError.should.have.property('groups', true);
+    scope.ngError.should.have.property('passwordConfirm', true);
+
     httpBackend.flush();
-   //original mock has not been modified
-    scope.user.should.have.property('surname', 'test');
-
   });
 
-  it('should test whether the user profile has all the required fields', function() {
+  it('should test for all validation and return FALSE - hasErrors', function() {
     createController();
-    //Set the password and not the reset password
 
-    scope.user.password = 'test-password';
-    //Save button should be disabled since the password has not been confirmed
-    scope.isUserValid(scope.user,scope.user.password,scope.user.passwordRetype).should.be.false;
+    // only admin can edit profile groups
+    scope.userGroupAdmin = true;
+
+    // Should check all form validations and create object ngError.hasErrors with value true.
+    scope.user.firstname = 'John';
+    scope.user.surname = 'Doe';
+    scope.user.msisdn = '27123456789';
+    scope.user.groups = ['group1', 'group2'];
+
+    scope.validateFormProfile();
+    scope.ngError.should.have.property('hasErrors', false);
+
     httpBackend.flush();
   });
 
-  it('should create a salt and generate a new hash and save it if a new password is provided in the profile', function() {
+  it('should save the user profile with updated details', function() {
     createController();
-    //Set the password and not the reset password
-    scope.user.email ='test@user.org';
-    scope.user.password = 'test-password';
-    //Save button should be disabled since the password has not been confirmed
-    scope.save(scope.user, scope.user.password);
-    scope.user.should.have.property('passwordSalt');
+
+    scope.user.email = 'test@user.org';
+    scope.user.firstname = 'Jane';
+    scope.user.surname = 'Doe';
+    scope.user.msisdn = '27123456789';
+    scope.user.groups = ['group1', 'group2'];
+    scope.temp.password = 'password';
+    scope.temp.passwordConfirm = 'password';
+
+    // Should submit the form with supplied values annd save the user with new password salt/hash
+    scope.submitFormProfile();
+    scope.user.$update.should.be.called;
+    scope.ngError.should.have.property('hasErrors', false);
+
+    scope.user.should.have.property('passwordSalt' );
     scope.user.should.have.property('passwordHash');
-    httpBackend.flush();
-  });
-
-  it('should refresh the user from api', function () {
-    createController();
-    scope.user.surname = 'new surname';
-    scope.save(scope.user);
-    scope.user.should.have.property('surname', 'new surname');
+    scope.user.should.have.property('firstname', 'Jane');
+    scope.user.should.have.property('surname', 'Doe');
+    scope.user.should.have.property('msisdn', '27123456789');
+    scope.user.groups.should.have.length(2);
 
     httpBackend.flush();
-    //must be original object from api
-    scope.user.should.have.property('surname', 'test');
 
   });
+
 });

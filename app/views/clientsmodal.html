@@ -5,32 +5,37 @@
     <span ng-show="!update">Add</span>
      a client</h4>
 </div>
-<form name="form" validate>
+<form name="form" novalidate>
   <div class="modal-body">
+
+    <div class="form-group has-error-key">
+      <span>*</span> Indicates a required field<br />
+    </div>
+
     <fieldset>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
-          <label>Client ID</label>
-          <input class="form-control" type="text" ng-model="client.clientID" name="clientID" ng-disabled="update" required >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
+          <label><span>*</span> Client ID</label>
+          <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" >
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : form.name.$invalid && !form.name.$pristine }">
-          <label>Client Name</label>
-          <input class="form-control" type="text" ng-model="client.name" name="name" required>
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
+          <label><span>*</span> Client Name</label>
+          <input class="form-control" type="text" ng-model="client.name" name="name" >
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
         </div>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-error' : form.clientDomain.$invalid && !form.clientDomain.$pristine }">
-        <label>Domain</label>
-        <input class="form-control" type="text" ng-model="client.clientDomain" name="clientDomain" required>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
+        <label><span>*</span> Domain</label>
+        <input class="form-control" type="text" ng-model="client.clientDomain" >
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
       </div>
-      <div class="form-group" ng-class="{ 'has-error' : form.client.roles.$invalid && !form.client.roles.$pristine }">
-        <label>Allowed Roles</label>{{form.$error}}
-        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles" onchange="if(!client.roles || client.roles.length==0){this.$setValidity(false);}" data-ng-required="!client.roles || client.roles.length==0" /></taglist>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
+        <label><span>*</span> Allowed Roles</label>
+        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles"  /></taglist>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
       </div>
       <div class="form-group">
         <label>Certificate</label>
@@ -38,23 +43,30 @@
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
+        <div class="form-group" style="float: left;">
           <label>Basic Auth Password</label>
-          <input class="form-control" placeholder="Set/change password..." type="password" ng-model="password">
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+          <input class="form-control" placeholder="Set/change password..." type="password" ng-model="temp.password">
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : form.clientID.$invalid && !form.clientID.$pristine }">
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Confirm Password</label>
-          <input class="form-control" placeholder="Retype password..." type="password" ng-model="passwordRetype">
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i> This field is required!</div>
+          <input class="form-control" placeholder="Confirm password..." type="password" ng-model="temp.passwordConfirm">
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Please confirm you password!</div>
         </div>
       </div>
 
     </fieldset>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <!--<button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="!isClientValid(client, password, passwordRetype)">Save changes</button>-->
-    <button type="button" class="btn btn-primary" ng-click="save(client, password)" ng-disabled="( form.$invalid )">Save changes</button>
+
+    <!-- hasErrors Alerts -->
+    <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
+    <!-- hasErrors Alerts -->
+
+    <div>
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="submitFormClients()">Save changes</button>
+    </div>
   </div>
 </form>
