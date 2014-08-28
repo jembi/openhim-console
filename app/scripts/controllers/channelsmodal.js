@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, channel) {
+  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel) {
     
     /****************************************************************/
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
+
+    // object to store temp values like password (not associated with schema object)
+    $scope.temp = {};
 
     // get the users for the Channel Alert User dropdown
     $scope.alertUsers = Api.Users.query(function(){
@@ -17,8 +20,6 @@ angular.module('openhimWebui2App')
     function(){
       // server error - could not connect to API to get channels
     });
-
-
 
     // get/set the users scope whether new or update
     $scope.matching = {};
@@ -138,7 +139,7 @@ angular.module('openhimWebui2App')
       $scope.newRoute.primary = false;
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     $scope.editRoute = function (routeIndex, route) {
@@ -155,14 +156,14 @@ angular.module('openhimWebui2App')
       $scope.newRoute = route;
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     $scope.removeRoute = function (routeIndex) {
       $scope.channel.routes.splice(routeIndex, 1);
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     /**********************************************************/
@@ -196,7 +197,7 @@ angular.module('openhimWebui2App')
       // reset the backup route object when a record is added
       $scope.channelAlertsBackup = null;
 
-      // reset the backing object
+      // reset the alert object
       $scope.newAlert.status = null;
       $scope.newAlert.failureRate = null;
       $scope.newAlert.groups = null;
@@ -300,7 +301,7 @@ angular.module('openhimWebui2App')
     /**   These are the general functions for the channel form validation     **/
     /***************************************************************************/
     
-    $scope.checkRouteWarnings = function(){
+    $scope.hasRouteWarnings = function(){
       // reset route alert object
       Alerting.AlertReset('route');
 
@@ -308,8 +309,8 @@ angular.module('openhimWebui2App')
       var noPrimaries = $scope.noPrimaries();
       var multiplePrimaries = $scope.multiplePrimaries();
 
-      if ( !noRoutes || !noPrimaries || !multiplePrimaries ){
-        return false;
+      if ( noRoutes || noPrimaries || multiplePrimaries ){
+        return true;
       }
     };
     
@@ -362,13 +363,93 @@ angular.module('openhimWebui2App')
       return false;
     };
 
-    // Check if form conditions are all met and valid
-    $scope.isFormValid = function () {
-      // check if any form alerts in the scope and return false - not valid
-      if ( $scope.alerts.route ){
-        return false;
+
+
+
+
+    $scope.validateFormChannels = function(){
+
+      // reset hasErrors alert object
+      Alerting.AlertReset('hasErrors');
+
+      // clear timeout if it has been set
+      $timeout.cancel( $scope.clearValidation );
+
+      $scope.ngError = {};
+      $scope.ngError.hasErrors = false;
+
+      // name validation
+      if( !$scope.channel.name ){
+        $scope.ngError.name = true;
+        $scope.ngError.hasErrors = true;
       }
-      return true;
+
+      // clientID validation
+      if( !$scope.channel.urlPattern ){
+        $scope.ngError.urlPattern = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      // roles validation
+      if( !$scope.channel.allow || $scope.channel.allow.length===0 ){
+        $scope.ngError.allow = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      switch ($scope.matching.contentMatching){
+        case 'RegEx matching':
+          if( !$scope.channel.matchContentRegex){
+            $scope.ngError.matchContentRegex = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'XML matching':
+          if( !$scope.channel.matchContentXpath){
+            $scope.ngError.matchContentXpath = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.matchContentValue){
+            $scope.ngError.matchContentValue = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'JSON matching':
+          if( !$scope.channel.matchContentJson){
+            $scope.ngError.matchContentJson = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.matchContentValue){
+            $scope.ngError.matchContentValue = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+      }
+
+      // has route errors
+      if ( $scope.hasRouteWarnings() ){
+        $scope.ngError.hasRouteWarnings = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      if ( $scope.ngError.hasErrors ){
+        $scope.clearValidation = $timeout(function(){
+          // clear errors after 5 seconds
+          $scope.ngError = {};
+        }, 5000);
+        Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg);
+      }
+
+    };
+
+    $scope.submitFormChannels = function(){
+
+      // validate the form first to check for any errors
+      $scope.validateFormChannels();
+      // save the channel object if no errors are present
+      if ( $scope.ngError.hasErrors === false ){
+        $scope.saveOrUpdate($scope.channel, $scope.matching.contentMatching);
+      }
+
     };
 
     /***************************************************************************/

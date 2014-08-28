@@ -863,3 +863,13 @@ body {
   .login-wrapper { width: 80%; }
   .rerunTransactionsDiv{float: none; text-align: center;}
 }
+
+
+.form-group label span { color: #a94442; }
+.has-error-msg { display: none; }
+.has-error { color: #a94442; }
+.has-error .form-control { color: #a94442; }
+.has-error .has-error-msg { display: block; color: #a94442; margin-top: 5px; }
+.has-error-key span { color: #a94442; }
+.glyphicon-warning-sign { margin-right: 5px; }
+
