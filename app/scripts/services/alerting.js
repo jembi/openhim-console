@@ -63,7 +63,7 @@ angular.module('openhimWebui2App')
 
         $rootScope.validationRequiredMsg = 'This field is required!';
         $rootScope.validationPasswordConfirmMsg = 'Please confirm you password!';
-        $rootScope.validationFormErrorsMsg = 'There appears to be some errors in your form. Please correct and try again.';        
+        $rootScope.validationFormErrorsMsg = 'There appears to be some errors in your form. Please correct and try again.';
 
       }
 
