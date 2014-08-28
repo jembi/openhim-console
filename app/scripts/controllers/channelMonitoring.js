@@ -5,7 +5,7 @@
 
 
 angular.module('openhimWebui2App')
-  .controller('ChannelMonitoringCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('ChannelMonitoringCtrl', function ($scope, $modal, $interval, $location, $routeParams, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -27,16 +27,15 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
-
+    
 
     /*********************************************************/
     /**         Transaction Load Metric Functions           **/
     /*********************************************************/
 
     var updateLoadLineChart = function(loadResults){
-
       /* DEFAULT LOAD OBJECT */
-      var loadData = [
+      $scope.transactionLoadData = [
         { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
         { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
         { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
@@ -50,43 +49,51 @@ angular.module('openhimWebui2App')
 
       var dateFormat, date;
 
-      // construct the loadData if API success
+      // construct the transactionLoadData if API success
       for (var i = 0; i < loadResults.length; i++) {
         dateFormat = loadResults[i].timestamp;
         date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
-        for (var x = 0; x < loadData.length; x++) {
-          if( loadData[x].date === date ){
-            loadData[x].value = loadResults[i].load;
+        for (var x = 0; x < $scope.transactionLoadData.length; x++) {
+          if( $scope.transactionLoadData[x].date === date ){
+            $scope.transactionLoadData[x].value = loadResults[i].load;
             // add to load total
             $scope.loadTotal += loadResults[i].load;
           }
         }
-      }
+      }      
+    };    
 
-      // if chart object exist then set new data
-      if ($scope.loadLineChart){
-        $scope.loadLineChart.setData(loadData);
+    $scope.loadMetricsSuccess = function(loadResults){
+      if ( loadResults.length === 0 ){
+        Alerting.AlertAddMsg('load', 'warning', 'There were no transactions found for the past week');
       }else{
-        createLoadLineChart(loadData);
+        updateLoadLineChart(loadResults);
       }
     };
 
-    var createLoadLineChart = function(lineChartData){
-      // check if graph element exist before creating
-      if ( jQuery('#load-graph:visible').length ){
-        // Morris Bar Chart
-        $scope.loadLineChart = new Morris.Line({
-          element: 'load-graph',
-          data: lineChartData,
-          xkey: 'date',
-          ykeys: ['value'],
-          labels: ['Load'],
-          resize: true
-        });
-      }
+    $scope.loadMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
     };
+
+    $scope.getLoadMetrics = function(){
+      // reset any load metric alert warnings
+      Alerting.AlertReset('load');
+
+      // do API call here to pull channel load metrics
+      Api.Metrics.query({
+        type: 'day',
+        channelId : $routeParams.channelId,
+        startDate: moment().subtract(1,'weeks').toDate(),
+        endDate: moment().toDate()
+      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
+    };
+
+    // do the inital load of the transaction status metrics
+    $scope.getLoadMetrics();
+
 
     /*********************************************************/
     /**         Transaction Load Metric Functions           **/
@@ -98,10 +105,10 @@ angular.module('openhimWebui2App')
     /**         Transaction Response Time Metric Functions           **/
     /******************************************************************/
     
-    var updateResponseTimeLineChart = function(loadResults){
+    var updateResponseTimeLineChart = function(timeResults){
 
       /* DEFAULT LOAD OBJECT */
-      var responseTimeData = [
+      $scope.transactionTimeData = [
         { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
         { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
         { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
@@ -117,44 +124,50 @@ angular.module('openhimWebui2App')
       var avgResponseTimeTotal = 0;
 
       // construct the loadData if API success
-      for (var i = 0; i < loadResults.length; i++) {
-        dateFormat = loadResults[i].timestamp;
+      for (var i = 0; i < timeResults.length; i++) {
+        dateFormat = timeResults[i].timestamp;
         date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
-        for (var x = 0; x < responseTimeData.length; x++) {
-          if( responseTimeData[x].date === date ){
-            responseTimeData[x].value = loadResults[i].avgResp.toFixed(2);
+        for (var x = 0; x < $scope.transactionTimeData.length; x++) {
+          if( $scope.transactionTimeData[x].date === date ){
+            $scope.transactionTimeData[x].value = timeResults[i].avgResp.toFixed(2);
             // add to load total
-            avgResponseTimeTotal += parseFloat(loadResults[i].avgResp);
+            avgResponseTimeTotal += parseFloat(timeResults[i].avgResp);
           }
         }
       }
-      $scope.avgResponseTime = (avgResponseTimeTotal / responseTimeData.length).toFixed(2);
+      $scope.avgResponseTime = (avgResponseTimeTotal / timeResults.length).toFixed(2);
+    };
 
-      // if chart object exist then set new data
-      if ($scope.responseTimeLineChart){
-        $scope.responseTimeLineChart.setData(responseTimeData);
+    $scope.timeMetricsSuccess = function(timeResults){
+      if ( timeResults.length === 0 ){
+        Alerting.AlertAddMsg('responseTime', 'warning', 'There were no transactions found for the past week');
       }else{
-        createResponseTimeLineChart(responseTimeData);
+        updateResponseTimeLineChart(timeResults);
       }
     };
 
-    var createResponseTimeLineChart = function(lineChartData){
-      // check if graph element exist before creating
-      if ( jQuery('#response-time-graph:visible').length ){
-        // Morris Bar Chart
-        $scope.responseTimeLineChart = new Morris.Line({
-          element: 'response-time-graph',
-          data: lineChartData,
-          xkey: 'date',
-          ykeys: ['value'],
-          labels: ['Load'],
-          postUnits: ' ms',
-          resize: true
-        });
-      }
+    $scope.timeMetricsError = function(err){
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
     };
+
+    $scope.getTimeMetrics = function(){
+      // reset any time metric alert warnings
+      Alerting.AlertReset('responseTime');
+
+      // do API call here to pull channel time metrics
+      Api.Metrics.query({
+        type: 'day',
+        channelId : $routeParams.channelId,
+        startDate: moment().subtract(1,'weeks').toDate(),
+        endDate: moment().toDate()
+      }, $scope.timeMetricsSuccess, $scope.timeMetricsError);
+    };
+
+    // do the inital load of the transaction time metrics
+    $scope.getTimeMetrics();
 
     /******************************************************************/
     /**         Transaction Response Time Metric Functions           **/
@@ -162,46 +175,22 @@ angular.module('openhimWebui2App')
 
 
 
-    /************************************************************/
-    /**         Transaction Load/Time Metric REQUEST           **/
-    /************************************************************/
 
-    $scope.getLoadTimeMetrics = function(){
-      // reset any load metric alert warnings
-      Alerting.AlertReset('load');
-      Alerting.AlertReset('responseTime');
 
-      // do API call here to pull channel load metrics
-      Api.Metrics.query({
-        type: 'day',
-        channelId : $routeParams.channelId,
-        startDate: moment().subtract(1,'weeks').toDate(),
-        endDate: moment().toDate()
-      }, $scope.loadTimeMetricsSuccess, $scope.loadTimeMetricsError);
-    };
 
-    $scope.loadTimeMetricsSuccess = function(loadTimeResults){
-      if ( loadTimeResults.length === 0 ){
-        Alerting.AlertAddMsg('load', 'warning', 'There were no transactions found for the past week');
-        Alerting.AlertAddMsg('responseTime', 'warning', 'There were no transactions found for the past week');
-      }else{
-        updateLoadLineChart(loadTimeResults);
-        updateResponseTimeLineChart(loadTimeResults);
-      }
-    };
 
-    $scope.loadTimeMetricsError = function(err){
-      // add warning message when unable to get data
-      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
-    };
 
-    // do the inital load of the transaction status metrics
-    $scope.getLoadTimeMetrics();
 
-    /************************************************************/
-    /**         Transaction Load/Time Metric REQUEST           **/
-    /************************************************************/
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -224,7 +213,7 @@ angular.module('openhimWebui2App')
       }
     };
 
-    var createBarChart = function(statusBarData){
+    /*var createBarChart = function(statusBarData){
       // check if graph element exist before creating
       if ( jQuery('#status-bar:visible').length ){
         // Morris Bar Chart
@@ -245,36 +234,18 @@ angular.module('openhimWebui2App')
           }
         });
       }
-    };
+    };*/
 
     var updateStatusDonutChart = function(statusData){
-      var statusDonutData = [];
-      var statusDonutColors = [];
+      $scope.statusDonutData = [];
+      $scope.statusDonutColors = [];
       for (var i = 0; i < statusData.length; i++) {
-        statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
-        statusDonutColors.push(statusData[i].color);
+        $scope.statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
+        $scope.statusDonutColors.push(statusData[i].color);
       }
 
-      // if chart object exist then set new data
-      if ($scope.statusDonutChart){
-        $scope.statusDonutChart.setData(statusDonutData);
-      }else{
-        createDonutChart(statusDonutData, statusDonutColors);
-      }
-    };
+      console.log($scope.statusDonutColors)
 
-    var createDonutChart = function(statusDonutData, statusDonutColors){
-      // check if graph element exist before creating
-      if ( jQuery('#status-donut:visible').length ){
-        // Morris Donut Chart
-        $scope.statusDonutChart = new Morris.Donut({
-          element: 'status-donut',
-          data: statusDonutData,
-          colors: statusDonutColors,
-          resize: true,
-          formatter: function (y) { return y + '%'; }
-        });
-      }
     };
 
     /***********************************************************/
@@ -304,8 +275,6 @@ angular.module('openhimWebui2App')
     };
 
     $scope.statusMetricsSuccess = function(statusResults){
-
-      console.log(statusResults);
 
       if ( statusResults.length === 0 ){
         Alerting.AlertAddMsg('status', 'warning', 'There were no transactions found for the past day');
@@ -346,7 +315,7 @@ angular.module('openhimWebui2App')
 
         }
 
-        updateStatusBarChart(statusData);
+        //updateStatusBarChart(statusData);
         updateStatusDonutChart(statusData);
 
       }

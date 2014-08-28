@@ -41,8 +41,17 @@
             <!-- Transaction Load Alerts -->
 
             <div class="panel-body" ng-if="!alerts.load">
-              <div id="load-graph" style="height: 230px;"></div>
+              <div morris-line-chart
+                id="load-graph" 
+                element="load-graph"
+                data="transactionLoadData"
+                xkey="date"
+                ykeys="['value']"
+                labels="['Load']" 
+                style="height: 250px;">
+              </div>
             </div>
+
           </div>
 
           <div class="content-box-large response-time-metrics-line-graph">
@@ -59,7 +68,16 @@
             <!-- Transaction ResponseTime Alerts -->
 
             <div class="panel-body" ng-if="!alerts.responseTime">
-              <div id="response-time-graph" style="height: 230px;"></div>
+              <div morris-line-chart
+                id="response-time-graph" 
+                element="response-time-graph"
+                data="transactionTimeData"
+                xkey="date"
+                ykeys="['value']"
+                labels="['Load']" 
+                postunits=" ms"
+                style="height: 250px;">
+              </div>
             </div>
           </div>
 
@@ -75,13 +93,30 @@
               <!-- Transaction Status Alerts -->
               <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
               <!-- Transaction Status Alerts -->
-
+              {{statusDonutData}}
               <div class="row" ng-if="!alerts.status">
                 <div class="col-md-9">
                   <div id="status-bar" style="height: 300px;"></div>
+                  <!--<div morris-bar-chart
+                    id="response-time-graph" 
+                    element="response-time-graph"
+                    data="transactionTimeData"
+                    xkey="date"
+                    ykeys="['value']"
+                    labels="['Load']" 
+                    postunits=" ms"
+                    style="height: 250px;">
+                  </div>-->
                 </div>
                 <div class="col-md-3">
-                  <div id="status-donut" style="height: 300px;"></div>
+                  <!--<div id="status-donut" style="height: 300px;"></div>-->
+                  <div morris-donut-chart
+                    id="status-donut" 
+                    element="status-donut"
+                    data="statusDonutData"
+                    colors="statusDonutColors"
+                    style="height: 250px;">
+                  </div>
                 </div>
               </div>
             </div>
