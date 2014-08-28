@@ -18,32 +18,32 @@
       <div class="form-group" ng-class="{ 'has-error' : ngError.email }">
         <label><span>*</span> Email</label>
         <input class="form-control" type="text" ng-model="user.email" ng-disabled="update" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.firstname }">
           <label><span>*</span> First Name</label>
           <input class="form-control" type="text" ng-model="user.firstname" />
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.surname }">
           <label><span>*</span> Surname</label>
           <input class="form-control" type="text" ng-model="user.surname" />
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.msisdn }">
         <label tooltip-html-unsafe="Accepted format: <br />27123456789 <br />( 5 - 15 digits )">MSISDN</label>
         <input class="form-control" type="text" ng-model="user.msisdn" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.groups }">
         <label><span>*</span> Allowed Roles</label>
         <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..." type="text" /></taglist>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
       <div class="form-group-2columns">
@@ -54,7 +54,7 @@
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Confirm password</label>
           <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-required='!update' />
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
         </div>
       </div>
 

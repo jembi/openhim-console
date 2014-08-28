@@ -18,24 +18,24 @@
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
           <label><span>*</span> Client ID</label>
           <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
           <label><span>*</span> Client Name</label>
           <input class="form-control" type="text" ng-model="client.name" name="name" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
         <label><span>*</span> Domain</label>
         <input class="form-control" type="text" ng-model="client.clientDomain" >
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
         <label><span>*</span> Allowed Roles</label>
         <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles"  /></taglist>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>This field is required!</div>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group">
         <label>Certificate</label>
@@ -50,7 +50,7 @@
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Confirm Password</label>
           <input class="form-control" placeholder="Confirm password..." type="password" ng-model="temp.passwordConfirm">
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Please confirm you password!</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
         </div>
       </div>
 

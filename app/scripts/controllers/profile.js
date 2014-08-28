@@ -105,6 +105,9 @@ angular.module('openhimWebui2App')
       Alerting.AlertReset('hasErrors');
       Alerting.AlertReset('top');
 
+      // clear timeout if it has been set
+      $timeout.cancel( $scope.clearValidation );
+
       $scope.ngError = {};
       $scope.ngError.hasErrors = false;
 
@@ -141,11 +144,11 @@ angular.module('openhimWebui2App')
       }
 
       if ( $scope.ngError.hasErrors ){
-        $timeout(function(){
+        $scope.clearValidation = $timeout(function(){
           // clear errors after 5 seconds
           $scope.ngError = {};
         }, 5000);
-        Alerting.AlertAddMsg('hasErrors', 'danger', 'There appears to be some errors in your form. Please correct and try again.');
+        Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg);
       }
 
     };

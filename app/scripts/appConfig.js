@@ -19,8 +19,12 @@ app.constant('PORT', 8080);
 /*	This controller encapsulates all other controllers										*/
 /*	Default applications settings are initialzed here - Assign global variable to scope		*/
 /********************************************************************************************/
-app.controller('AppConfigCtrl', function($scope, TITLE, FOOTERTITLE, FOOTERPOWEREDBY) {
+app.controller('AppConfigCtrl', function($scope, Alerting, TITLE, FOOTERTITLE, FOOTERPOWEREDBY) {
   $scope.appTitle = TITLE;
   $scope.appFooterTitle = FOOTERTITLE;
   $scope.appFooterPoweredBy = FOOTERPOWEREDBY;
+
+  // invoke Alerting factory to create all alert messages
+  Alerting.AlertValidationMsgs();
+
 });
