@@ -32,7 +32,7 @@
             <div class="panel-heading">
               <div class="panel-title">Transaction Load (Past Week)</div>
               <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadTimeMetrics()"></i>
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
               </div>
             </div>
 
@@ -43,11 +43,7 @@
             <div class="panel-body" ng-if="!alerts.load">
               <div morris-line-chart
                 id="load-graph" 
-                element="load-graph"
                 data="transactionLoadData"
-                xkey="date"
-                ykeys="['value']"
-                labels="['Load']" 
                 style="height: 250px;">
               </div>
             </div>
@@ -59,7 +55,7 @@
               <div class="panel-title">Average Response Time (Past Week)</div>
               
               <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadTimeMetrics()"></i>
+                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getTimeMetrics()"></i>
               </div>
             </div>
 
@@ -70,12 +66,7 @@
             <div class="panel-body" ng-if="!alerts.responseTime">
               <div morris-line-chart
                 id="response-time-graph" 
-                element="response-time-graph"
                 data="transactionTimeData"
-                xkey="date"
-                ykeys="['value']"
-                labels="['Load']" 
-                postunits=" ms"
                 style="height: 250px;">
               </div>
             </div>
@@ -85,36 +76,28 @@
             <div class="panel-heading">
               <div class="panel-title">Transaction Status (Past Day)</div>
               
-              <div class="panel-options">
+              <div class="panel-options">              
                 <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
               </div>
             </div>
             <div class="panel-body">
+
               <!-- Transaction Status Alerts -->
               <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
               <!-- Transaction Status Alerts -->
-              {{statusDonutData}}
+
               <div class="row" ng-if="!alerts.status">
                 <div class="col-md-9">
-                  <div id="status-bar" style="height: 300px;"></div>
-                  <!--<div morris-bar-chart
-                    id="response-time-graph" 
-                    element="response-time-graph"
-                    data="transactionTimeData"
-                    xkey="date"
-                    ykeys="['value']"
-                    labels="['Load']" 
-                    postunits=" ms"
+                  <div morris-bar-chart
+                    id="status-bar" 
+                    data="statusBarData"
                     style="height: 250px;">
-                  </div>-->
+                  </div>
                 </div>
                 <div class="col-md-3">
-                  <!--<div id="status-donut" style="height: 300px;"></div>-->
                   <div morris-donut-chart
-                    id="status-donut" 
-                    element="status-donut"
+                    id="status-donut"
                     data="statusDonutData"
-                    colors="statusDonutColors"
                     style="height: 250px;">
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 'use strict';
 /* global CryptoJS:false */
 /* exported getHashAndSalt */
+/* exported viewPage */
 
 function getHashAndSalt(stringToBeHashed) {
   var salt = CryptoJS.lib.WordArray.random(16).toString();
@@ -13,4 +14,10 @@ function getHashAndSalt(stringToBeHashed) {
     salt: salt,
     algorithm: 'sha512'
   };
+}
+
+//location provider
+function viewPage(path) {
+  var url = window.location.href+path;
+  window.location = url;
 }
