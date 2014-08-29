@@ -29,8 +29,6 @@ angular.module('openhimWebui2App')
 
 		$scope.updateTransactionLoadLineChart = function(loadResults){
 
-			$scope.jsontest = loadResults;
-
 			var value;
 			var hour;
 			var transactionLoadData = [];
