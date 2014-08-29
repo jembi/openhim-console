@@ -29,6 +29,8 @@ angular.module('openhimWebui2App')
 
 		$scope.updateTransactionLoadLineChart = function(loadResults){
 
+			$scope.jsontest = loadResults;
+
 			var value;
 			var hour;
 			var transactionLoadData = [];
@@ -40,9 +42,10 @@ angular.module('openhimWebui2App')
 				hour = moment().format('YYYY-MM-DD')+' '+i+':00:00';
 				for ( var x=0; x<loadResults.length; x++ ){
 					var date = loadResults[x].timestamp;
+
 					// check if the result has value for current hour in the loop
 					// add one hour to simulate transactions for the end of the hour and not in the hour
-					if ( moment(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').format('H') === moment(hour, 'YYYY-MM-DD HH:mm:ss').format('H') ){
+					if ( moment( date ).add(1, 'hours').format('H') === moment( hour ).format('H') ){
 						value = loadResults[x].load;
 					}
 				}
@@ -109,7 +112,7 @@ angular.module('openhimWebui2App')
 				for ( var x=0; x<timeResults.length; x++ ){
 					var date = timeResults[x].timestamp;
 					// check if the result has value for current hour in the loop
-					if ( moment(date, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours').format('H') === moment(hour, 'YYYY-MM-DD HH:mm:ss').format('H') ){
+					if ( moment( date ).add(1, 'hours').format('H') === moment( hour ).format('H') ){
 						value = timeResults[x].avgResp;
 						avgResponseTimeTotal += value;
 					}
