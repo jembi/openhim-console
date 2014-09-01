@@ -15,6 +15,10 @@ Developer guide
 
 Clone the repository and then run `npm install`
 
+Install cli tools: `npm install -g grunt-cli grunt bower`
+
+Install bower web components: `bower install`
+
 To run the unit tests run `grunt test`
 
 To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to `0.0.0.0` in order to access the site from outside.
