@@ -11,6 +11,9 @@
           </div>
         </div>
 
+        <pre>{{jsontest | json}}</pre>
+        <pre>{{transactionLoadData | json}}</pre>
+
         <!-- server Alerts -->
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->

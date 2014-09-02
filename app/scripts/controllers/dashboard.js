@@ -29,6 +29,8 @@ angular.module('openhimWebui2App')
 
 		$scope.updateTransactionLoadLineChart = function(loadResults){
 
+			$scope.jsontest = loadResults;
+
 			var value;
 			var hour;
 			var transactionLoadData = [];
@@ -43,7 +45,7 @@ angular.module('openhimWebui2App')
 
 					// check if the result has value for current hour in the loop
 					// add one hour to simulate transactions for the end of the hour and not in the hour
-					if ( moment( date ).add(1, 'hours').format('H') === moment( hour ).format('H') ){
+					if ( moment( date ).add(1, 'hours').format('H') === moment( hour, 'YYYY-MM-DD H' ).format('H') ){
 						value = loadResults[x].load;
 					}
 				}
