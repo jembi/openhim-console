@@ -110,7 +110,7 @@ angular.module('openhimWebui2App')
 				for ( var x=0; x<timeResults.length; x++ ){
 					var date = timeResults[x].timestamp;
 					// check if the result has value for current hour in the loop
-					if ( moment( date ).add(1, 'hours').format('H') === moment( hour ).format('H') ){
+					if ( moment( date ).add(1, 'hours').format('H') === moment( hour, 'YYYY-MM-DD H' ).format('H') ){
 						value = timeResults[x].avgResp;
 						avgResponseTimeTotal += value;
 					}

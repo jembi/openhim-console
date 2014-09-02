@@ -17,11 +17,11 @@ describe('Controller: DashboardCtrl', function () {
     var statusData = [{ '_id': { 'channelID': '53884f881fdb6f2d69e29cff' }, 'failed': 10, 'successful': 58, 'processing': 0, 'completed': 20, 'completedWErrors': 2 },
                       { '_id': { 'channelID': '12344f881faa6f2d69e29cee' }, 'failed': 8, 'successful': 43, 'processing': 2, 'completed': 4, 'completedWErrors': 4 },
                       { '_id': { 'channelID': '53884f881fdb6f2d35353cdd' }, 'failed': 16, 'successful': 26, 'processing': 0, 'completed': 8, 'completedWErrors': 5 }];
-    var timeLoadData = [{ 'load': 21, 'avgResp': 43269.95, 'timestamp': moment().subtract(4, 'hours').format('YYYY-MM-DD H')+':00:00' },
-                        { 'load': 65, 'avgResp': 13367.98, 'timestamp': moment().subtract(3, 'hours').format('YYYY-MM-DD H')+':00:00' },
-                        { 'load': 32, 'avgResp': 11249.94, 'timestamp': moment().subtract(2, 'hours').format('YYYY-MM-DD H')+':00:00' },
-                        { 'load': 13, 'avgResp': 54668.97, 'timestamp': moment().subtract(1, 'hours').format('YYYY-MM-DD H')+':00:00' },
-                        { 'load': 56, 'avgResp': 34769.91, 'timestamp': moment().format('YYYY-MM-DD H')+':00:00' }];
+    var timeLoadData = [{ 'load': 21, 'avgResp': 43269.95, 'timestamp': moment().subtract(4, 'hours').startOf('hour').format() },
+                        { 'load': 65, 'avgResp': 13367.98, 'timestamp': moment().subtract(3, 'hours').startOf('hour').format() },
+                        { 'load': 32, 'avgResp': 11249.94, 'timestamp': moment().subtract(2, 'hours').startOf('hour').format() },
+                        { 'load': 13, 'avgResp': 54668.97, 'timestamp': moment().subtract(1, 'hours').startOf('hour').format() },
+                        { 'load': 56, 'avgResp': 34769.91, 'timestamp': moment().startOf('hour').format() }];
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([{'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]}]);
     $httpBackend.when('GET', new RegExp('.*/metrics/status?.*.')).respond( statusData );
