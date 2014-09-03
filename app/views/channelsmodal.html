@@ -9,14 +9,22 @@
 
 <form name="form" novalidate>
   <div class="modal-body">
+
+    <div class="form-group has-error-key">
+      <span>*</span> Indicates a required field<br />
+      <span>*</span><span>*</span> Indicates one of the fields are required
+    </div>
+
     <fieldset>
-      <div class="form-group">
-        <label>Channel name</label>
-        <input class="form-control" type="text" ng-model="channel.name" required />
+      <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
+        <label><span>*</span> Channel name</label>
+        <input class="form-control" type="text" ng-model="channel.name" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
-      <div class="form-group">
-        <label>URL Pattern</label>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" required />
+      <div class="form-group" ng-class="{ 'has-error' : ngError.urlPattern }">
+        <label><span>*</span> URL Pattern</label>
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
 
@@ -24,9 +32,10 @@
         <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
         <tab heading="Access Control">
           <h3>Access Control</h3>
-          <div class="form-group">
-            <label>Allowed groups and clients</label>
-            <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" ng-required="channel.allow.length==0" /></taglist>
+          <div class="form-group" ng-class="{ 'has-error' : ngError.allow }">
+            <label><span>*</span> Allowed groups and clients</label>
+            <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" /></taglist>
+            <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
           </div>
           <div class="form-group">
             <label>Transaction View Access Control List</label>
@@ -54,31 +63,36 @@
             <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'JSON matching'">JSON matching</label>
           </div>
           <div class="form-group-2columns" ng-show="matching.contentMatching == 'RegEx matching'">
-            <div class="form-group" style="float: left;">
-              <label>Match Content Regex</label>
+            <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentRegex }">
+              <label><span>*</span> Match Content Regex</label>
               <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" ng-required="matching.contentMatching=='RegEx Matching'" />
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
           </div>
 
           <div class="form-group-2columns" ng-show="matching.contentMatching == 'XML matching'">
-            <div class="form-group" style="float: left;">
-              <label>Match Content X Path</label>
+            <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentXpath }">
+              <label><span>*</span> Match Content X Path</label>
               <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" ng-required="matching.contentMatching=='XML matching'" />
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
-            <div class="form-group" style="float: right;">
-              <label>Match Content Value</label>
+            <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+              <label><span>*</span> Match Content Value</label>
               <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='XML matching'" />
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
           </div>
 
           <div class="form-group-2columns" ng-show="matching.contentMatching == 'JSON matching'">
-            <div class="form-group" style="float: left;">
-              <label>Match Content JSON</label>
+            <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentJson }">
+              <label><span>*</span> Match Content JSON</label>
               <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" ng-required="matching.contentMatching=='JSON matching'" />
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
-            <div class="form-group" style="float: right;">
-              <label>Match Content Value</label>
+            <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+              <label><span>*</span> Match Content Value</label>
               <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='JSON matching'" />
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
           </div>
         </tab>
@@ -129,28 +143,28 @@
 
           <h4>Add a new route</h4>
           <div class="form-group">
-            <label>Name</label>
+            <label><span>*</span> Name</label>
             <input class="form-control" type="text" ng-model="newRoute.name" />
           </div>
           
           <div class="form-group-2columns">
             <div class="form-group" style="float: left;">
-              <label>Path</label>
+              <label><span>*</span><span>*</span> Path</label>
               <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
             </div>
             <div class="form-group" style="float: right;">
-              <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')">Path Transform</label>
+              <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')"><span>*</span><span>*</span> Path Transform</label>
               <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
             </div>
           </div>
 
           <div class="form-group-2columns">
             <div class="form-group" style="float: left;">
-              <label>Host</label>
+              <label><span>*</span> Host</label>
               <input class="form-control" type="text" ng-model="newRoute.host" />
             </div>
             <div class="form-group" style="float: right;">
-              <label>Port</label>
+              <label><span>*</span> Port</label>
               <input class="form-control" type="text" ng-model="newRoute.port" />
             </div>
           </div>
@@ -215,7 +229,7 @@
           <h4>Add a new alert</h4>
           <div class="form-group-2columns">
             <div class="form-group" style="float: left;">
-              <label>Status</label>
+              <label><span>*</span> Status</label>
               <input class="form-control" type="text" ng-model="newAlert.status" />
             </div>
             <div class="form-group" style="float: right;">
@@ -286,15 +300,17 @@
 
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
 
-    <!-- if form isnt valid or channel warnings found then show the tooltip label and disbaled save button -->
-    <label ng-show="form.$invalid || !isFormValid()" tooltip="There appears to be errors within your form. Please ensure all required fields are supplied and no route warnings exist.">
-      <button type="button" class="btn btn-primary" ng-disabled="true">Save changes</button>
-    </label>
-    
-    <!-- if form is valid and NO channel warning then show save button -->
-    <button ng-show="!form.$invalid && isFormValid()" type="button" class="btn btn-primary" ng-click="saveOrUpdate(channel, matching.contentMatching)">Save changes</button>
+    <!-- hasErrors Alerts -->
+    <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
+    <!-- hasErrors Alerts -->
+
+    <div>
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="submitFormChannels()">Save changes</button>
+    </div>
   </div>
 
 
