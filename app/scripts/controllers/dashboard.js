@@ -308,7 +308,6 @@ angular.module('openhimWebui2App')
 		/********************************************************************/
 
 
-
 		$scope.$on('$destroy', function() {
 			// Make sure that the interval is destroyed too
 			if (angular.isDefined(dashboardInterval)) {

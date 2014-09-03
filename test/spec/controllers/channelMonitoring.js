@@ -54,7 +54,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
 
 
-  it('should run getStatusMetrics() and re', function () {
+  it('should run getStatusMetrics() and set the statusDonutData graph object', function () {
     createController();
     scope.getStatusMetrics();
     httpBackend.flush();
@@ -84,7 +84,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
   });
 
 
-  it('should run getLoadMetrics() and re', function () {
+  it('should run getLoadMetrics() and set the transactionLoadData graph object', function () {
     createController();
     scope.getLoadMetrics();
     httpBackend.flush();
@@ -117,7 +117,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
-  it('should run getLoadMetrics() and re', function () {
+  it('should run getLoadMetrics() and set the transactionTimeData graph object', function () {
     httpBackend.expectGET(new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8'));
     createController();
     scope.getLoadMetrics();
