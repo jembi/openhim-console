@@ -1,6 +1,7 @@
 'use strict';
 /* global CryptoJS:false */
 /* exported getHashAndSalt */
+/* exported viewPage */
 /* exported isValidMSISDN */
 
 function getHashAndSalt(stringToBeHashed) {
@@ -14,6 +15,13 @@ function getHashAndSalt(stringToBeHashed) {
     salt: salt,
     algorithm: 'sha512'
   };
+}
+
+
+//location provider
+function viewPage(path) {
+  var url = window.location.href+path;
+  window.location = url;
 }
 
 function isValidMSISDN(inputtxt){

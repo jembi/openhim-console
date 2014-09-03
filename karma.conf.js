@@ -27,7 +27,9 @@ module.exports = function(config) {
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      'app/bower_components/moment/moment.js',
+      'app/bower_components/morris.js/morris.js'
     ],
 
     // list of files / patterns to exclude

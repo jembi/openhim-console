@@ -7,7 +7,7 @@
 
         <div class="panel-heading">
           <div class="panel-title" style="float: inherit">
-            <h2>Dashboard</h2>
+            <h2>Channel: {{channel.name}}</h2>
           </div>
         </div>
 
@@ -17,23 +17,20 @@
 
         <div class="panel-body" ng-show="!alerts.server">
 
-          <div class="content-box-large" ng-if="activeChannels || loadTotal || avgResponseTime">
+          <div class="content-box-large" ng-if="loadTotal || avgResponseTime">
             <div class="panel-body">
-              <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
-                Active Channels (Today): <br /><strong>{{activeChannels}}</strong>
-              </div>
               <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions (Today): <br /><strong>{{loadTotal}}</strong>
+                Total Transactions (Past Week): <br /><strong>{{loadTotal}}</strong>
               </div>
               <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time (Today): <br /><strong>{{avgResponseTime}} ms</strong>
+                Average Response Time (Past Week): <br /><strong>{{avgResponseTime}} ms</strong>
               </div>
             </div>
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large load-metrics-line-graph">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Load (Today - Per Hour)</div>
+              <div class="panel-title">Transaction Load (Past Week)</div>
               <div class="panel-options">
                 <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
               </div>
@@ -45,55 +42,71 @@
 
             <div class="panel-body" ng-if="!alerts.load">
               <div morris-line-chart
-                id="transaction-load-graph" 
+                id="load-graph" 
                 data="transactionLoadData"
                 style="height: 250px;">
               </div>
             </div>
+
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large response-time-metrics-line-graph">
             <div class="panel-heading">
-              <div class="panel-title">Average Response Time (Today - Per Hour)</div>
+              <div class="panel-title">Average Response Time (Past Week)</div>
+              
               <div class="panel-options">
                 <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getTimeMetrics()"></i>
               </div>
             </div>
 
-            <!-- Transaction Load Alerts -->
+            <!-- Transaction ResponseTime Alerts -->
             <alert ng-repeat="alert in alerts.responseTime" type="alert.type">{{alert.msg}}</alert>
-            <!-- Transaction Load Alerts -->
+            <!-- Transaction ResponseTime Alerts -->
 
             <div class="panel-body" ng-if="!alerts.responseTime">
               <div morris-line-chart
                 id="response-time-graph" 
-                data="transactionResponseTimeData"
+                data="transactionTimeData"
                 style="height: 250px;">
               </div>
             </div>
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large" style="clear: both">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Statuses (Today - Per Channel)</div>
-              <div class="panel-options">
+              <div class="panel-title">Transaction Status (Past Day)</div>
+              
+              <div class="panel-options">              
                 <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
               </div>
             </div>
+            <div class="panel-body">
 
-            <!-- Transaction Load Alerts -->
-            <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
-            <!-- Transaction Load Alerts -->
-            
-            <div class="panel-body" ng-if="!alerts.status">
-              <div morris-bar-chart
-                id="transaction-status-graph"
-                data="statusData"
-                style="height: 250px;">
+              <!-- Transaction Status Alerts -->
+              <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
+              <!-- Transaction Status Alerts -->
+
+              <div class="row" ng-if="!alerts.status">
+                <div class="col-md-9">
+                  <div morris-bar-chart
+                    id="status-bar" 
+                    data="statusBarData"
+                    style="height: 250px;">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div morris-donut-chart
+                    id="status-donut"
+                    data="statusDonutData"
+                    style="height: 250px;">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+
+        </div>          
+
       </div>
     </div>
   </div>
