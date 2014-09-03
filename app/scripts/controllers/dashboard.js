@@ -28,7 +28,6 @@ angular.module('openhimWebui2App')
     /*********************************************************/
 
     $scope.updateTransactionLoadLineChart = function(loadResults){
-
       var value;
       var hour;
       var transactionLoadData = [];
@@ -95,7 +94,6 @@ angular.module('openhimWebui2App')
     /******************************************************************/
 
     $scope.updateResponseTimeLineChart = function(timeResults){
-
       var value = 0;
       var hour;
       var avgResponseTimeTotal = 0;
@@ -273,30 +271,30 @@ angular.module('openhimWebui2App')
     };
 
     $scope.statusMetricsSuccess = function(statusResults){
-    if ( statusResults.length === 0 ){
-    Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
-    }else{
-    $scope.updateStatusBarChart(statusResults);
-    }
+      if ( statusResults.length === 0 ){
+        Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
+      }else{
+        $scope.updateStatusBarChart(statusResults);
+      }
     };
 
     $scope.statusMetricsError = function(err){
-    // add warning message when unable to get data
-    Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      // add warning message when unable to get data
+      Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
     };
 
     $scope.getStatusMetrics = function(){
-    // reset any load metric alert warnings
-    Alerting.AlertReset('status');
+      // reset any load metric alert warnings
+      Alerting.AlertReset('status');
 
-    var startDate = moment().startOf('day').toDate();
-    var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+      var startDate = moment().startOf('day').toDate();
+      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
 
-    // do API call here to pull load metrics
-    Api.MetricsStatus.query({
-    startDate: startDate,
-    endDate: endDate
-    }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
+      // do API call here to pull load metrics
+      Api.MetricsStatus.query({
+        startDate: startDate,
+        endDate: endDate
+      }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
     };
 
     // do the inital load of the transaction status metrics
