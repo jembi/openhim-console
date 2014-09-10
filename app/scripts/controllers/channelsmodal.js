@@ -24,6 +24,9 @@ angular.module('openhimWebui2App')
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';
+    $scope.newRoute = {};
+    $scope.newRoute.type = 'http';
+    $scope.newRoute.secured = false;
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
@@ -31,9 +34,11 @@ angular.module('openhimWebui2App')
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
       if( channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+
     }else{
       $scope.update = false;
       $scope.channel = new Api.Channels();
+      $scope.channel.type = 'http';
     }
     
     /****************************************************************/
@@ -67,6 +72,20 @@ angular.module('openhimWebui2App')
     };
 
     $scope.saveOrUpdate = function(channel, contentMatching) {
+
+      switch (channel.type) {
+        case 'tcp':
+          channel.pollingSchedule = null;
+          break;
+        case 'polling':
+          channel.tcpHost = null;
+          channel.tcpPort = null;
+          break;
+        default:
+          channel.pollingSchedule = null;
+          channel.tcpHost = null;
+          channel.tcpPort = null;
+      }
 
       switch (contentMatching) {
         case 'RegEx matching':
@@ -118,8 +137,6 @@ angular.module('openhimWebui2App')
 
     // define the routes backup object
     $scope.channelRoutesBackup = null;
-    $scope.newRoute = {};
-
     $scope.addRoute = function (newRoute) {
       if (!$scope.channel.routes) {
         $scope.channel.routes = [];
@@ -129,6 +146,8 @@ angular.module('openhimWebui2App')
       $scope.channelRoutesBackup = null;
 
       // reset the backing object
+      $scope.newRoute.type = 'http';
+      $scope.newRoute.secured = false;
       $scope.newRoute.name = null;
       $scope.newRoute.path = null;
       $scope.newRoute.pathTransform = null;
@@ -388,6 +407,25 @@ angular.module('openhimWebui2App')
       if( !$scope.channel.urlPattern ){
         $scope.ngError.urlPattern = true;
         $scope.ngError.hasErrors = true;
+      }
+
+      switch ($scope.channel.type){
+        case 'tcp':
+          if( !$scope.channel.tcpHost){
+            $scope.ngError.tcpHost = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.tcpPort){
+            $scope.ngError.tcpPort = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'polling':
+          if( !$scope.channel.pollingSchedule){
+            $scope.ngError.pollingSchedule = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
       }
 
       // roles validation
