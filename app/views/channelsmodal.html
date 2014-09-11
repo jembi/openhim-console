@@ -27,6 +27,34 @@
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
+      <div class="form-group-2columns">
+        <label style="display: block;">Channel Type</label>
+        <div class="btn-group" style="margin-bottom: 10px">
+          <label class="btn btn-primary" ng-model="channel.type" btn-radio="'http'">HTTP</label>
+          <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tcp'">TCP</label>
+          <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tls'">TLS</label>
+          <label class="btn btn-primary" ng-model="channel.type" btn-radio="'polling'">Polling</label>
+        </div>
+      </div>
+      <div class="form-group-2columns" ng-show="channel.type == 'tcp'">
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
+          <label><span>*</span> TCP Host</label>
+          <input ng-model="channel.tcpHost" class="form-control" type="text" />
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        </div>
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.tcpPort }">
+          <label><span>*</span> TCP Port</label>
+          <input ng-model="channel.tcpPort" class="form-control" type="text" />
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        </div>
+      </div>
+      <div class="form-group-2columns" ng-show="channel.type == 'polling'">
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.pollingSchedule }">
+          <label tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'"><span>*</span> Polling Schedule</label>
+          <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        </div>
+      </div>
 
       <tabset justified="true" style="margin-top: 25px;">
         <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
@@ -113,6 +141,8 @@
                   <tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Type</th>
+                    <th>Secured</th>
                     <th>Path/Transform</th>
                     <th>Host</th>
                     <th>Port</th>
@@ -124,6 +154,14 @@
                   <tr ng-repeat="route in channel.routes">
                     <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                     <td data-title="Name"><a href="" ng-click="editRoute($index, route)">{{ route.name }}</a></td>
+                    <td data-title="Type">
+                      <span ng-if="route.type === 'http'">HTTP</span>
+                      <span ng-if="route.type === 'tcp'">TCP</span>
+                    </td>
+                    <td data-title="Secured">
+                      <span ng-if="route.secured === false">False</span>
+                      <span ng-if="route.secured === true">True</span>
+                    </td>
                     <td data-title="Path/Transform">
                       <span ng-show="route.path">{{ route.path }}</span>
                       <span ng-show="route.pathTransform">{{ route.pathTransform }}</span>
@@ -145,6 +183,23 @@
           <div class="form-group">
             <label><span>*</span> Name</label>
             <input class="form-control" type="text" ng-model="newRoute.name" />
+          </div>
+
+          <div class="form-group-2columns">
+            <div class="form-group" style="float: left; margin: 0">
+              <label style="display: block;">Route Type</label>
+              <div class="btn-group" style="margin-bottom: 10px">
+                <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'http'">HTTP</label>
+                <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'tcp'">TCP</label>
+              </div>
+            </div>
+            <div class="form-group" style="float: right; margin: 0">
+              <label style="display: block;">Route Secured</label>
+              <div class="btn-group" style="margin-bottom: 10px">
+                <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="false">False</label>
+                <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="true">True</label>
+              </div>
+            </div>
           </div>
           
           <div class="form-group-2columns">

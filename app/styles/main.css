@@ -896,3 +896,5 @@ body {
 .has-error-key span { color: #a94442; }
 .glyphicon-warning-sign { margin-right: 5px; }
 
+.btn-group .btn-primary:hover { text-decoration: underline } 
+.btn-group .btn-primary.active { text-decoration: underline } 
