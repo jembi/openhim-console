@@ -55,6 +55,10 @@ angular
         templateUrl: 'views/taskDetails.html',
         controller: 'TaskDetailsCtrl'
       })
+      .when('/groups', {
+        templateUrl: 'views/contactGroups.html',
+        controller: 'ContactGroupsCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'

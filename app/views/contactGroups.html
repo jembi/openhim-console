@@ -1,0 +1,58 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Groups</div>
+        </div>
+
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+
+        <div class="panel-body">
+          <div id="no-more-tables">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th style="width: 50px">#</th>
+                  <th>Group</th>
+                  <th>Users</th>
+                  <th style="width: 80px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="group in contactGroups">
+                  <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                  <td data-title="Group"><a href="" ng-click="editContactGroup(group)">{{ group.group }}</a></td>
+                  <td data-title="Users"><span ng-repeat="user in group.users"> {{ user.user }}{{$last ? '' : ', '}} </span></td>
+                  <td>
+                    <button class="btn btn-warning btn-xs" ng-click="editContactGroup(group)"><i class="glyphicon glyphicon-pencil"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(group)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <div class="loadingContainer" ng-show="!(contactGroups || alerts.server)">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <!-- Server Alerts -->
+          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <!-- Server Alerts -->
+
+          <!-- Bottom Alerts -->
+          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <!-- Bottom Alerts -->
+
+          <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Group</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
