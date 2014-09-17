@@ -300,8 +300,6 @@
 
 
 
-
-
           <tabset justified="true">
             
             <tab heading="Add Users">              
@@ -371,21 +369,16 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>#</th>
+                          <th width="50">#</th>
                           <th>Group</th>
-                          <th>Users</th>
-                          <th>Max Alerts</th>
                           <th width="70"></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr ng-repeat="group in newAlert.groups">
                           <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
-                          <td data-title="Group"><a href="" ng-click="editAlertGroup($index, group)">{{groupsMap[group.group]}}</a></td>
-                          <td data-title="Method">{{ group.method }}</td>
-                          <td data-title="Max Alerts">{{ group.maxAlerts }}</td>
+                          <td data-title="Group">{{groupsMap[group]}}</td>
                           <td>
-                            <button class="btn btn-warning btn-xs" ng-click="editAlertGroup($index, group)"><i class="glyphicon glyphicon-pencil"></i></button> 
                             <button class="btn btn-danger btn-xs" ng-click="removeAlertGroup($index)"><i class="glyphicon glyphicon-remove"></i></button>
                           </td>
                         </tr>
@@ -399,20 +392,6 @@
                     <option value="">Group</option>
                     <option ng-repeat="group in alertGroups" value="{{group._id}}">{{group.group}}</option>
                   </select>
-
-                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertGroup.method">
-                    <option value="">Method</option>
-                    <option value="email">email</option>
-                    <option value="sms">sms</option>
-                  </select>
-
-                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertGroup.maxAlerts">
-                    <option value="">Max Alerts</option>
-                    <option value="no max">no max</option>
-                    <option value="1 per hour">1 per hour</option>
-                    <option value="1 per day">1 per day</option>
-                  </select>
-
                   <button class="btn btn-sm btn-primary channelAlertUserDropDown" ng-click="addAlertGroup(newAlertGroup)" ng-disabled="!(isAlertGroupValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> Group</button>
                 </div>
               </div>

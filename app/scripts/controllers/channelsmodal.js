@@ -337,35 +337,17 @@ angular.module('openhimWebui2App')
     /****************************************************************/
 
     // define the alerts groups backup object
-    $scope.channelAlertsGroupsBackup = null;
     $scope.newAlertGroup = {};
+    $scope.newAlert.groups = [];
 
     $scope.addAlertGroup = function (newAlertGroup) {
-      if (!$scope.newAlert.groups) {
-        $scope.newAlert.groups = [];
+      
+      if( $scope.newAlert.groups.indexOf(newAlertGroup.group) === -1 ){
+        $scope.newAlert.groups.push(angular.copy(newAlertGroup.group));
       }
-      $scope.newAlert.groups.push(angular.copy(newAlertGroup));
-      // reset the backup groups object when a record is added
-      $scope.channelAlertsGroupsBackup = null;
 
       // reset the backing object
       $scope.newAlertGroup.group = '';
-      $scope.newAlertGroup.method = '';
-      $scope.newAlertGroup.maxAlerts = '';
-    };
-
-    $scope.editAlertGroup = function (alertGroupIndex, alertGroup) {
-
-      // remove the selected alert group object from scope
-      $scope.newAlert.groups.splice(alertGroupIndex, 1);
-
-      // if backup object exist update alerts groups object with backup alert group
-      if ( $scope.channelAlertsGroupsBackup !== null ){
-        $scope.newAlert.groups.push(angular.copy($scope.channelAlertsGroupsBackup));
-      }
-      // override backup alert group object to new alert group being editted
-      $scope.channelAlertsGroupsBackup = angular.copy(alertGroup);
-      $scope.newAlertGroup = alertGroup;
     };
 
     $scope.removeAlertGroup = function (alertGroupIndex) {
@@ -373,7 +355,7 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isAlertGroupValid = function(){
-      if (!$scope.newAlertGroup.group || !$scope.newAlertGroup.method || !$scope.newAlertGroup.maxAlerts){
+      if (!$scope.newAlertGroup.group){
         return false;
       }
       return true;
