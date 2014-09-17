@@ -68,6 +68,7 @@
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
                             <li ng-class="{current: isCurrent('/monitoring')}"><a href="#/monitoring"><i class="glyphicon glyphicon-stats"></i> Monitoring</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                           </ul>
                   
@@ -137,7 +138,8 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/appConfig.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
-    <script src="scripts/controllers/channels.js"></script>    
+    <script src="scripts/controllers/channels.js"></script>
+    <script src="scripts/controllers/channelsmodal.js"></script>    
     <script src="scripts/controllers/channelMonitoring.js"></script>    
     <script src="scripts/controllers/clients.js"></script>
     <script src="scripts/controllers/clientsmodal.js"></script>
@@ -151,7 +153,8 @@
     <script src="scripts/controllers/transactionsRouteModal.js"></script>
     <script src="scripts/controllers/tasks.js"></script>
     <script src="scripts/controllers/taskDetails.js"></script>
-    <script src="scripts/controllers/channelsmodal.js"></script>
+    <script src="scripts/controllers/contactGroups.js"></script>
+    <script src="scripts/controllers/contactGroupsModal.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/profile.js"></script>
     <script src="scripts/controllers/sidebar.js"></script>

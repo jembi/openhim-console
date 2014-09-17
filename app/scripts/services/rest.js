@@ -26,6 +26,11 @@ angular.module('openhimWebui2App')
 
       Tasks: $resource('http://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
+      }),
+
+      ContactGroups: $resource('http://' + HOST + ':' + PORT + '/groups/:groupId', { groupId: '@_id' }, {
+        update: { method: 'PUT' }
       })
+
     };
   });

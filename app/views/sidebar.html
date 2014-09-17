@@ -10,6 +10,7 @@
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
       <li ng-if="false" ng-class="{current: isCurrent('/monitoring')}"><a href="#/monitoring"><i class="glyphicon glyphicon-stats"></i> Monitoring</a></li>
+      <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
       <!-- config page doesn't exist yet, uncomment when ready -->
       <!-- <li ng-class="{current: isCurrent('/config')}"><a href="#/config"><i class="glyphicon glyphicon-cog"></i> Config</a></li> -->

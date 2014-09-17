@@ -204,11 +204,11 @@
           
           <div class="form-group-2columns">
             <div class="form-group" style="float: left;">
-              <label><span>*</span><span>*</span> Path</label>
+              <label><span>**</span> Path</label>
               <input class="form-control" type="text" ng-model="newRoute.path" ng-disabled="newRoute.pathTransform" />
             </div>
             <div class="form-group" style="float: right;">
-              <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')"><span>*</span><span>*</span> Path Transform</label>
+              <label tooltip="The pathTransform needs to follow a certain pattern (E.g. 's/from/to/g')"><span>**</span> Path Transform</label>
               <input class="form-control" type="text" ng-model="newRoute.pathTransform" ng-disabled="newRoute.path" />
             </div>
           </div>
@@ -261,6 +261,7 @@
                     <th>#</th>
                     <th>Status</th>
                     <th>Users</th>
+                    <th>Groups</th>
                     <th>Failure Rate (%)</th>              
                     <th width="70"></th>
                   </tr>
@@ -270,6 +271,7 @@
                     <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                     <td data-title="Status"><a href="" ng-click="editAlert($index, alert)">{{ alert.status }}</a></td>
                     <td data-title="Users">{{ alert.users.length }}</td>
+                    <td data-title="Groups">{{ alert.groups.length }}</td>
                     <td data-title="Failure Rate (%)">{{ alert.failureRate }}</td>
                     <td>
                       <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button> 
@@ -293,58 +295,120 @@
             </div>
           </div>
 
-          <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
-          <h5>Add a new user</h5>
-          <alert ng-show="newAlert.users.length==0" type="warning">There are currently no Users added for this Channel Alert</alert>
-          <div ng-show="newAlert.users.length > 0">
-            <div id="no-more-tables">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>User</th>
-                    <th>Method</th>
-                    <th>Max Alerts</th>
-                    <th width="70"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="user in newAlert.users">
-                    <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
-                    <td data-title="User"><a href="" ng-click="editAlertUser($index, user)">{{usersMap[user.user]}}</a></td>
-                    <td data-title="Method">{{ user.method }}</td>
-                    <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
-                    <td>
-                      <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button> 
-                      <button class="btn btn-danger btn-xs" ng-click="removeAlertUser($index)"><i class="glyphicon glyphicon-remove"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
 
-          <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
-            <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.user" style="max-width: 170px;">
-              <option value="">User</option>
-              <option ng-repeat="user in alertUsers" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
-            </select>
 
-            <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.method">
-              <option value="">Method</option>
-              <option value="email">email</option>
-              <option value="sms">sms</option>
-            </select>
 
-            <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.maxAlerts">
-              <option value="">Max Alerts</option>
-              <option value="no max">no max</option>
-              <option value="1 per hour">1 per hour</option>
-              <option value="1 per day">1 per day</option>
-            </select>
 
-            <button class="btn btn-sm btn-primary channelAlertUserDropDown" ng-click="addAlertUser(newAlertUser)" ng-disabled="!(isAlertUserValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> User</button>
-          </div>
+
+          <tabset justified="true">
+            
+            <tab heading="Add Users">              
+              <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
+              <div class="form-group" style="margin-top: 15px;">
+                <label><span>**</span> Add a new user</label>
+                <alert ng-show="newAlert.users.length==0" type="warning">There are currently no Users added for this Channel Alert</alert>
+                <div ng-show="newAlert.users.length > 0">
+                  <div id="no-more-tables">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>User</th>
+                          <th>Method</th>
+                          <th>Max Alerts</th>
+                          <th width="70"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="user in newAlert.users">
+                          <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                          <td data-title="User"><a href="" ng-click="editAlertUser($index, user)">{{usersMap[user.user]}}</a></td>
+                          <td data-title="Method">{{ user.method }}</td>
+                          <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
+                          <td>
+                            <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                            <button class="btn btn-danger btn-xs" ng-click="removeAlertUser($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
+                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.user" style="max-width: 170px;">
+                    <option value="">User</option>
+                    <option ng-repeat="user in alertUsers" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
+                  </select>
+
+                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.method">
+                    <option value="">Method</option>
+                    <option value="email">email</option>
+                    <option value="sms">sms</option>
+                  </select>
+
+                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.maxAlerts">
+                    <option value="">Max Alerts</option>
+                    <option value="no max">no max</option>
+                    <option value="1 per hour">1 per hour</option>
+                    <option value="1 per day">1 per day</option>
+                  </select>
+
+                  <button class="btn btn-sm btn-primary channelAlertUserDropDown" ng-click="addAlertUser(newAlertUser)" ng-disabled="!(isAlertUserValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> User</button>
+                </div>
+              </div>
+            </tab>
+
+            <tab heading="Add Groups">
+              <!-- ************* NEW GROUP FOR CHANNNEL ALERT ************** -->
+              <div class="form-group" style="margin-top: 15px;">
+                <label><span>**</span> Add a new group</label>
+                <alert ng-show="newAlert.groups.length==0" type="warning">There are currently no Groups added for this Channel Alert</alert>
+                <div ng-show="newAlert.groups.length > 0">
+                  <div id="no-more-tables">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th width="50">#</th>
+                          <th>Group</th>
+                          <th width="70"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="group in newAlert.groups">
+                          <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                          <td data-title="Group">{{groupsMap[group]}}</td>
+                          <td>
+                            <button class="btn btn-danger btn-xs" ng-click="removeAlertGroup($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
+                  <select class="form-control channelAlertUserDropDown" ng-model="newAlertGroup.group" style="max-width: 170px;">
+                    <option value="">Group</option>
+                    <option ng-repeat="group in alertGroups" value="{{group._id}}">{{group.group}}</option>
+                  </select>
+                  <button class="btn btn-sm btn-primary channelAlertUserDropDown" ng-click="addAlertGroup(newAlertGroup)" ng-disabled="!(isAlertGroupValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> Group</button>
+                </div>
+              </div>
+              <!-- ************* NEW GROUP FOR CHANNNEL ALERT ************** -->
+            </tab>
+
+          </tabset>
+
+
+
+
+          
+
+
+
+
+
 
 
           <button class="btn btn-sm btn-primary" ng-click="addAlert(newAlert)" ng-disabled="!(isAlertValid())"><i class="glyphicon glyphicon-plus"></i> Alert</button>

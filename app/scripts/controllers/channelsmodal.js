@@ -21,6 +21,17 @@ angular.module('openhimWebui2App')
       // server error - could not connect to API to get channels
     });
 
+    // get the groups for the Channel Alert Group dropdown
+    $scope.alertGroups = Api.ContactGroups.query(function(){
+      $scope.groupsMap = {};
+      angular.forEach($scope.alertGroups, function(group){
+        $scope.groupsMap[group._id] = group.group;
+      });
+    },
+    function(){
+      // server error - could not connect to API to get channels
+    });
+
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';
@@ -243,9 +254,14 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isAlertValid = function(){
-      if (!$scope.newAlert.status || !$scope.newAlert.users || $scope.newAlert.users.length === 0){
+      if (!$scope.newAlert.status){
         return false;
       }
+
+      if ( (!$scope.newAlert.users || $scope.newAlert.users.length === 0) && (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0) ){
+        return false;
+      }
+
       if ($scope.newAlert.status.length !== 3){
         return false;
       }
@@ -311,6 +327,43 @@ angular.module('openhimWebui2App')
     /***************************************************************/
     /**   These are the functions for the Channel Alert Users     **/
     /***************************************************************/
+
+
+
+
+
+    /****************************************************************/
+    /**   These are the functions for the Channel Alert Groups     **/
+    /****************************************************************/
+
+    // define the alerts groups backup object
+    $scope.newAlertGroup = {};
+    $scope.newAlert.groups = [];
+
+    $scope.addAlertGroup = function (newAlertGroup) {
+      
+      if( $scope.newAlert.groups.indexOf(newAlertGroup.group) === -1 ){
+        $scope.newAlert.groups.push(angular.copy(newAlertGroup.group));
+      }
+
+      // reset the backing object
+      $scope.newAlertGroup.group = '';
+    };
+
+    $scope.removeAlertGroup = function (alertGroupIndex) {
+      $scope.newAlert.groups.splice(alertGroupIndex, 1);
+    };
+
+    $scope.isAlertGroupValid = function(){
+      if (!$scope.newAlertGroup.group){
+        return false;
+      }
+      return true;
+    };
+
+    /****************************************************************/
+    /**   These are the functions for the Channel Alert Groups     **/
+    /****************************************************************/
 
 
 
