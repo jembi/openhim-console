@@ -1,6 +1,7 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
   <h4 class="modal-title" id="addClientLabel">
+    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
     <span ng-show="update">Edit</span>
     <span ng-show="!update">Add</span>
      a client</h4>
@@ -10,6 +11,7 @@
 
     <div class="form-group has-error-key">
       <span>*</span> Indicates a required field<br />
+      <span>*</span><span>*</span> Indicates one of the fields are required
     </div>
 
     <fieldset>
@@ -37,15 +39,20 @@
         <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles"  /></taglist>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
-      <div class="form-group">
-        <label>Certificate</label>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.cert }">
+        <label><span>**</span> Certificate</label>
         <textarea class="form-control" rows="5" ng-model="client.cert" ng-trim="false"></textarea>
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;">
-          <label>Basic Auth Password</label>
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
+          <label ng-if="client.passwordHash" tooltip="A password has been set for this client" style="float: right">
+            <i class="glyphicon glyphicon-lock"></i>
+          </label>
+
+          <label><span>**</span> Basic Auth Password</label>
           <input class="form-control" placeholder="Set/change password..." type="password" ng-model="temp.password">
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Confirm Password</label>
