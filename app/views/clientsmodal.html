@@ -46,6 +46,10 @@
 
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
+          <label ng-if="client.passwordHash" tooltip="A password has been set for this client" style="float: right">
+            <i class="glyphicon glyphicon-lock"></i>
+          </label>
+
           <label><span>**</span> Basic Auth Password</label>
           <input class="form-control" placeholder="Set/change password..." type="password" ng-model="temp.password">
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>

@@ -132,13 +132,19 @@ angular.module('openhimWebui2App')
 
 
       // password/certificate validation (new user)
-      if ( $scope.update == false ){
+      if ( $scope.update === false ){
         if( !$scope.client.cert && !$scope.temp.password ){
           $scope.ngError.cert = true;
           $scope.ngError.password = true;
           $scope.ngError.hasErrors = true;
         }
-      }      
+      }else{
+        if( !$scope.client.cert && !$scope.temp.password && !$scope.client.passwordHash ){
+          $scope.ngError.cert = true;
+          $scope.ngError.password = true;
+          $scope.ngError.hasErrors = true;
+        }
+      }
 
 
       // password validation
