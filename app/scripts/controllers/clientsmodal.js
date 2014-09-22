@@ -130,6 +130,15 @@ angular.module('openhimWebui2App')
         $scope.ngError.hasErrors = true;
       }
 
+
+      // roles validation
+      if( !$scope.client.cert && !$scope.temp.password ){
+        $scope.ngError.cert = true;
+        $scope.ngError.password = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+
       // password validation
       if( $scope.temp.password ){
         if( !$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm ){
