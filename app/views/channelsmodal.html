@@ -63,7 +63,7 @@
           <h3>Access Control</h3>
           <div class="form-group" ng-class="{ 'has-error' : ngError.allow }">
             <label><span>*</span> Allowed groups and clients</label>
-            <taglist tag-data="channel.allow"><input class="form-control" placeholder="Enter a role and press enter..." type="text" /></taglist>
+            <taglist tag-data="channel.allow" taglist-blur-timeout="250"><input class="form-control" placeholder="Enter a role and press enter..." type="text" ng-model="allowedRoles" typeahead="role for role in allowedRolesOptions | filter:$viewValue" /></taglist>
             <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
           </div>
           <div class="form-group">

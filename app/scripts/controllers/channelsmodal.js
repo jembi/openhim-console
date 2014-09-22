@@ -7,6 +7,10 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
 
+
+    $scope.allowedRolesOptions = [];
+
+
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
 
@@ -15,6 +19,14 @@ angular.module('openhimWebui2App')
       $scope.usersMap = {};
       angular.forEach($scope.alertUsers, function(user){
         $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
+
+        angular.forEach(user.groups, function(group){
+
+          if ( $scope.allowedRolesOptions.indexOf(group) === -1 ){
+            $scope.allowedRolesOptions.push(group);
+          }
+
+        });
       });
     },
     function(){
