@@ -97,6 +97,9 @@ angular.module('openhimWebui2App')
         case 'tcp':
           channel.pollingSchedule = null;
           break;
+        case 'tls':
+          channel.pollingSchedule = null;
+          break;
         case 'polling':
           channel.tcpHost = null;
           channel.tcpPort = null;
@@ -465,7 +468,7 @@ angular.module('openhimWebui2App')
         $scope.ngError.hasErrors = true;
       }
 
-      // clientID validation
+      // urlPattern validation
       if( !$scope.channel.urlPattern ){
         $scope.ngError.urlPattern = true;
         $scope.ngError.hasErrors = true;
@@ -477,7 +480,17 @@ angular.module('openhimWebui2App')
             $scope.ngError.tcpHost = true;
             $scope.ngError.hasErrors = true;
           }
-          if( !$scope.channel.tcpPort){
+          if( !$scope.channel.tcpPort || isNaN($scope.channel.tcpPort) ){
+            $scope.ngError.tcpPort = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'tls':
+          if( !$scope.channel.tcpHost){
+            $scope.ngError.tcpHost = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.tcpPort || isNaN($scope.channel.tcpPort) ){
             $scope.ngError.tcpPort = true;
             $scope.ngError.hasErrors = true;
           }
@@ -493,6 +506,7 @@ angular.module('openhimWebui2App')
       // roles validation
       if( !$scope.channel.allow || $scope.channel.allow.length===0 ){
         $scope.ngError.allow = true;
+        $scope.ngError.accessControlTab = true;
         $scope.ngError.hasErrors = true;
       }
 
@@ -500,26 +514,31 @@ angular.module('openhimWebui2App')
         case 'RegEx matching':
           if( !$scope.channel.matchContentRegex){
             $scope.ngError.matchContentRegex = true;
+            $scope.ngError.contentMatchingTab = true;
             $scope.ngError.hasErrors = true;
           }
           break;
         case 'XML matching':
           if( !$scope.channel.matchContentXpath){
             $scope.ngError.matchContentXpath = true;
+            $scope.ngError.contentMatchingTab = true;
             $scope.ngError.hasErrors = true;
           }
           if( !$scope.channel.matchContentValue){
             $scope.ngError.matchContentValue = true;
+            $scope.ngError.contentMatchingTab = true;
             $scope.ngError.hasErrors = true;
           }
           break;
         case 'JSON matching':
           if( !$scope.channel.matchContentJson){
             $scope.ngError.matchContentJson = true;
+            $scope.ngError.contentMatchingTab = true;
             $scope.ngError.hasErrors = true;
           }
           if( !$scope.channel.matchContentValue){
             $scope.ngError.matchContentValue = true;
+            $scope.ngError.contentMatchingTab = true;
             $scope.ngError.hasErrors = true;
           }
           break;
@@ -528,6 +547,7 @@ angular.module('openhimWebui2App')
       // has route errors
       if ( $scope.hasRouteWarnings() ){
         $scope.ngError.hasRouteWarnings = true;
+        $scope.ngError.routesTab = true;
         $scope.ngError.hasErrors = true;
       }
 
