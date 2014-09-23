@@ -19,7 +19,7 @@ describe('Controller: ProfileCtrl', function () {
     });
 
 
-    httpBackend.when('GET', new RegExp('.*/users')).respond({
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({
       '__v': 0,
       '_id': '539846c240f2eb682ffeca4b',
       'email': 'test@user.org',
@@ -33,6 +33,11 @@ describe('Controller: ProfileCtrl', function () {
         'other'
       ]
     });
+
+    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+    ]);
 
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated');
 
@@ -57,7 +62,7 @@ describe('Controller: ProfileCtrl', function () {
 
   it('should fetch a user profile', function () {
 
-    httpBackend.expectGET(new RegExp('.*/users'));
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
     createController();
     httpBackend.flush();
 
