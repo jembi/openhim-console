@@ -36,7 +36,7 @@
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
         <label><span>*</span> Allowed Roles</label>
-        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles"  /></taglist>
+        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles" ng-model="roles" typeahead="role for role in taglistRoleOptions | filter:$viewValue" /></taglist>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.cert }">

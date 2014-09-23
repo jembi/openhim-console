@@ -13,8 +13,25 @@ angular.module('openhimWebui2App')
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
+    // object for the taglist roles
+    $scope.taglistRoleOptions = [];
+
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
+
+    // get the users for the taglist roles options
+    var users = Api.Users.query(function(){
+      angular.forEach(users, function(user){
+        angular.forEach(user.groups, function(group){
+          if ( $scope.taglistRoleOptions.indexOf(group) === -1 ){
+            $scope.taglistRoleOptions.push(group);
+          }
+        });
+      });
+    },
+    function(){
+      // server error - could not connect to API to get Users
+    });
 
     var querySuccess = function (user) {
       $scope.user = user;

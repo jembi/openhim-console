@@ -7,9 +7,8 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
 
-
-    $scope.allowedRolesOptions = [];
-
+    // object for the taglist roles
+    $scope.taglistRoleOptions = [];
 
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
@@ -21,16 +20,14 @@ angular.module('openhimWebui2App')
         $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
 
         angular.forEach(user.groups, function(group){
-
-          if ( $scope.allowedRolesOptions.indexOf(group) === -1 ){
-            $scope.allowedRolesOptions.push(group);
+          if ( $scope.taglistRoleOptions.indexOf(group) === -1 ){
+            $scope.taglistRoleOptions.push(group);
           }
-
         });
       });
     },
     function(){
-      // server error - could not connect to API to get channels
+      // server error - could not connect to API to get Users
     });
 
     // get the groups for the Channel Alert Group dropdown
@@ -41,7 +38,7 @@ angular.module('openhimWebui2App')
       });
     },
     function(){
-      // server error - could not connect to API to get channels
+      // server error - could not connect to API to get Alert Groups
     });
 
     // get/set the users scope whether new or update
