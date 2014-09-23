@@ -14,8 +14,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
     httpBackend = $httpBackend;
 
-
-    var statusData = [{ 'load': 7, '_id': { 'status': 'Successful' } }, { 'load': 3, '_id': { 'status': 'Failed' } }];
+    var statusData = [{ completed: 2, completedWErrors: 0, failed: 3, processing: 0, successful: 16 }];
 
     var timeLoadData = [{ 'load': 34, 'avgResp': 2881.91, 'timestamp': moment().subtract(6, 'd').format('YYYY-MM-DD') },
                         { 'load': 73, 'avgResp': 1313.57, 'timestamp': moment().subtract(5, 'd').format('YYYY-MM-DD') },
@@ -60,25 +59,30 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     httpBackend.flush();
 
     scope.statusDonutData.should.have.property('data');
-    scope.statusDonutData.data.length.should.equal(2);
+    scope.statusDonutData.data.length.should.equal(3);
     scope.statusDonutData.should.have.property('colors');
-    scope.statusDonutData.colors.length.should.equal(2);
-    scope.statusDonutData.data[0].should.have.property('label', 'Successful');
-    scope.statusDonutData.data[0].should.have.property('value', '70.00');
-    scope.statusDonutData.data[1].should.have.property('label', 'Failed');
-    scope.statusDonutData.data[1].should.have.property('value', '30.00');
+    scope.statusDonutData.colors.length.should.equal(3);
+    scope.statusDonutData.data[0].should.have.property('label', 'Failed');
+    scope.statusDonutData.data[0].should.have.property('value', '14.29');
+    scope.statusDonutData.data[1].should.have.property('label', 'Completed');
+    scope.statusDonutData.data[1].should.have.property('value', '9.52');
+    scope.statusDonutData.data[2].should.have.property('label', 'Successful');
+    scope.statusDonutData.data[2].should.have.property('value', '76.19');
+    
 
     scope.statusBarData.should.have.property('data');
-    scope.statusBarData.data.length.should.equal(2);
+    scope.statusBarData.data.length.should.equal(3);
     scope.statusBarData.should.have.property('xkey', 'label');
     scope.statusBarData.should.have.property('ykeys');
     scope.statusBarData.ykeys[0].should.equal('value');
     scope.statusBarData.should.have.property('labels');
     scope.statusBarData.labels[0].should.equal('Total');
-    scope.statusBarData.data[0].should.have.property('label', 'Successful');
-    scope.statusBarData.data[0].should.have.property('value', 7);
-    scope.statusBarData.data[1].should.have.property('label', 'Failed');
-    scope.statusBarData.data[1].should.have.property('value', 3);
+    scope.statusBarData.data[0].should.have.property('label', 'Failed');
+    scope.statusBarData.data[0].should.have.property('value', 3);
+    scope.statusBarData.data[1].should.have.property('label', 'Completed');
+    scope.statusBarData.data[1].should.have.property('value', 2);
+    scope.statusBarData.data[2].should.have.property('label', 'Successful');
+    scope.statusBarData.data[2].should.have.property('value', 16);
     
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
