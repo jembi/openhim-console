@@ -10,8 +10,27 @@ angular.module('openhimWebui2App')
     var querySuccess = function(transactionDetails){
       $scope.transactionDetails = transactionDetails;
       
-      // get the channel object for the transactions details page
-      $scope.channel = Api.Channels.get({ channelId: transactionDetails.channelID });
+      var consoleSession = localStorage.getItem('consoleSession');
+      consoleSession = JSON.parse(consoleSession);
+      $scope.consoleSession = consoleSession;
+
+      // get the user to find user roles
+      Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
+        // get the channels for the transactions filter dropdown
+        Api.Channels.get({ channelId: transactionDetails.channelID }, function(channel){
+          $scope.channel = channel;
+          angular.forEach(user.groups, function(role){
+            if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+              $scope.rerunAllowed = true;
+            }
+          });
+        },
+        function(){
+          // server error - could not connect to API to get channels
+        });
+      }, function(){
+        // server error - could not connect to API to get user details
+      });
 
       // get the client object for the transactions details page
       $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID });
