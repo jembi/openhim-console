@@ -8,8 +8,6 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
-    ///////////////////////////////////
-
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
@@ -36,13 +34,6 @@ angular.module('openhimWebui2App')
     }, function(){
       // server error - could not connect to API to get user details
     });
-
-    ///////////////////////////////////
-
-
-
-
-    
 
 
     $scope.checkAll = false;
