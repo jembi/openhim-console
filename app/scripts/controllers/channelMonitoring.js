@@ -219,35 +219,40 @@ angular.module('openhimWebui2App')
         var totalTransactions = 0;
         var value, percent;
 
-        // loop through array to calculate how many records there are to work out percentage
-        for ( var i=0; i<statusResults.length; i++ ){
-          totalTransactions += statusResults[i].load;
-        }
-        
-        // loop through array again to determine which statuses to add and what the percentages are
-        for ( var x=0; x<statusResults.length; x++ ){
+        totalTransactions += parseInt( statusResults[0].processing );
+        totalTransactions += parseInt( statusResults[0].failed );
+        totalTransactions += parseInt( statusResults[0].completed );
+        totalTransactions += parseInt( statusResults[0].completedWErrors );
+        totalTransactions += parseInt( statusResults[0].successful );
 
-          value = statusResults[x].load;
+        if (parseInt( statusResults[0].processing ) !== 0){
+          value = parseInt( statusResults[0].processing );
           percent = (100 / totalTransactions * value).toFixed(2);
+          statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
+        }
 
-          switch ( statusResults[x]._id.status ) {
-            case 'Processing':
-              statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
-              break;
-            case 'Failed':
-              statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
-              break;
-            case 'Completed':
-              statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
-              break;
-            case 'Completed with Error(s)':
-              statusData.push({ label: 'Completed with Error(s)', value: value, percent: percent, color: '#5bc0de' });
-              break;
-            case 'Successful':
-              statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
-              break;
-          }
+        if (parseInt( statusResults[0].failed ) !== 0){
+          value = parseInt( statusResults[0].failed );
+          percent = (100 / totalTransactions * value).toFixed(2);
+          statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
+        }
 
+        if (parseInt( statusResults[0].completed ) !== 0){
+          value = parseInt( statusResults[0].completed );
+          percent = (100 / totalTransactions * value).toFixed(2);
+          statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
+        }
+
+        if (parseInt( statusResults[0].completedWErrors ) !== 0){
+          value = parseInt( statusResults[0].completedWErrors );
+          percent = (100 / totalTransactions * value).toFixed(2);
+          statusData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#5bc0de' });
+        }
+
+        if ( parseInt( statusResults[0].successful ) !== 0 ){
+          value = parseInt( statusResults[0].successful );
+          percent = (100 / totalTransactions * value).toFixed(2);
+          statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
         }
 
         updateStatusBarChart(statusData);
@@ -267,8 +272,9 @@ angular.module('openhimWebui2App')
       // reset any load metric alert warnings
       Alerting.AlertReset('status');
 
-      var startDate = moment().subtract(1, 'd').startOf('day').toDate();
-      var endDate = moment().subtract(1, 'd').endOf('day').toDate();
+      var startDate = moment().subtract(6, 'd').toDate();
+      var endDate = moment().toDate();
+
       Api.Metrics.query({
         type: 'status',
         channelId : $routeParams.channelId,

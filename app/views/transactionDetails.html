@@ -26,7 +26,7 @@
           </div>
 
           <div class="buttons-container">
-            <button class="btn btn-primary" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
+            <button class="btn btn-primary" ng-if="rerunAllowed" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
           </div>
 
           <div id="no-more-tables" class="collapse" style="width: 100%; clear: both;">
@@ -69,7 +69,7 @@
               <div class="data-value">{{channel.name}}</div>
             </div>
             <div class="data-group">
-              <label>Authorized User: </label>
+              <label>Authorized Client: </label>
               <div class="data-value">{{client.clientID}}</div>
             </div>
 
