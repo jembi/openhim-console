@@ -142,4 +142,15 @@ describe('Controller: ProfileCtrl', function () {
 
   });
 
+  it('should create two taglist objects', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.taglistUserRoleOptions.should.have.length(2);
+    
+    scope.taglistUserRoleOptions[0].should.equal('admin');
+    scope.taglistUserRoleOptions[1].should.equal('limited');
+    
+  });
+
 });
