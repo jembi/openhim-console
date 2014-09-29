@@ -38,10 +38,6 @@ describe('Controller: TransactionDetailsCtrl', function () {
   });
 
   it('should attach a single transaction to the scope', function () {
-    //httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
-    //httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
-    //httpBackend.expectGET(new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8'));
-    //httpBackend.expectGET(new RegExp('.*/clients/5344fe7d8b6add4b2b069dd7'));
     createController();
     httpBackend.flush();
     scope.transactionDetails.name.should.equal('Transaction 1');
@@ -49,10 +45,6 @@ describe('Controller: TransactionDetailsCtrl', function () {
   });
 
   it('should attach a single channel object to the scope', function () {
-    //httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
-    //httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
-    //httpBackend.expectGET(new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8'));
-    //httpBackend.expectGET(new RegExp('.*/clients/5344fe7d8b6add4b2b069dd7'));
     createController();
     httpBackend.flush();
 
@@ -62,10 +54,6 @@ describe('Controller: TransactionDetailsCtrl', function () {
   });
 
   it('should attach a single client to the scope', function () {
-    //httpBackend.expectGET(new RegExp('.*/transactions/538ed0867962a27d5df259b0'));
-    //httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
-    //httpBackend.expectGET(new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8'));
-    //httpBackend.expectGET(new RegExp('.*/clients/5344fe7d8b6add4b2b069dd7'));
     createController();
     httpBackend.flush();
 
