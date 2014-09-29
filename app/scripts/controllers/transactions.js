@@ -21,19 +21,18 @@ angular.module('openhimWebui2App')
           $scope.channelsMap[channel._id] = {};
           $scope.channelsMap[channel._id].name = channel.name;
 
-          angular.forEach(user.groups, function(role){
-            if ( channel.txRerunAcl.indexOf(role) >= 0 ){
-              $scope.channelsMap[channel._id].rerun = true;
-            }
-          });
+          if ( user.groups.indexOf('admin') >= 0 ){
+            $scope.rerunAllowedAdmin = true;
+          }else{
+            angular.forEach(user.groups, function(role){
+              if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+                $scope.channelsMap[channel._id].rerun = true;
+              }
+            });
+          }
         });
-      },
-      function(){
-        // server error - could not connect to API to get channels
-      });
-    }, function(){
-      // server error - could not connect to API to get user details
-    });
+      }, function(){ /* server error - could not connect to API to get channels */ });
+    }, function(){ /* server error - could not connect to API to get user details */ });
 
 
     $scope.checkAll = false;
@@ -216,8 +215,8 @@ angular.module('openhimWebui2App')
         $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
 
-          // only add transaction if channel Rerun is allowed
-          if ( $scope.channelsMap[transaction.channelID].rerun ){
+          // if admin user then all reruns allowed
+          if ( $scope.rerunAllowedAdmin === true ){
             $scope.transactionsSelected.push(transaction._id);
 
             // check if transaction is a rerun
@@ -226,9 +225,23 @@ angular.module('openhimWebui2App')
                 $scope.rerunTransactionsSelected++;
               }
             }
-          }
+          }else{
+            // only add transaction if channel Rerun is allowed
+            if ( $scope.channelsMap[transaction.channelID].rerun ){
+              $scope.transactionsSelected.push(transaction._id);
 
+              // check if transaction is a rerun
+              if (transaction.childIDs){
+                if (transaction.childIDs.length > 0){
+                  $scope.rerunTransactionsSelected++;
+                }
+              }
+            }
+          }
         });
+      }else{
+        $scope.transactionsSelected = [];
+        $scope.rerunTransactionsSelected = 0;
       }
     };
 
