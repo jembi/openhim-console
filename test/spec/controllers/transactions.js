@@ -46,7 +46,7 @@ describe('Controller: TransactionsCtrl', function () {
     scope.transactions.length.should.equal(2);
   });
 
-  it('should attach a list of channels to the scope and create an object map of the channel ID and name', function () {
+  it('should check rerun permissions for admin user', function () {
     createController();
     httpBackend.flush();
 
@@ -57,8 +57,9 @@ describe('Controller: TransactionsCtrl', function () {
     scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059aa3');
     scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('name', 'Sample JsonStub Channel 1');
     scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('name', 'Sample JsonStub Channel 2');
-    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', true);
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.not.have.property('rerun');
     scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.not.have.property('rerun');
+    scope.should.have.property('rerunAllowedAdmin', true);
   });
 
 });
