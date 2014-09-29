@@ -8,23 +8,42 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
-    // get the channels for the transactions filter dropdown
-    $scope.channels = Api.Channels.query(function(){
-      $scope.channelsMap = {};
-      angular.forEach($scope.channels, function(channel){
-        $scope.channelsMap[channel._id] = channel.name;
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+    $scope.consoleSession = consoleSession;
+
+    // get the user to find user roles
+    Api.Users.get({ email: $scope.consoleSession.sessionUser } , function(user){
+      // get the channels for the transactions filter dropdown
+      $scope.channels = Api.Channels.query(function(){
+        $scope.channelsMap = {};
+        angular.forEach($scope.channels, function(channel){
+          $scope.channelsMap[channel._id] = {};
+          $scope.channelsMap[channel._id].name = channel.name;
+
+          angular.forEach(user.groups, function(role){
+            if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+              $scope.channelsMap[channel._id].rerun = true;
+            }
+          });
+        });
+      },
+      function(){
+        // server error - could not connect to API to get channels
       });
-    },
-    function(){
-      // server error - could not connect to API to get channels
+    }, function(){
+      // server error - could not connect to API to get user details
     });
 
+
+    $scope.checkAll = false;
     $scope.transactionsSelected = [];
     $scope.rerunTransactionsSelected = 0;
 
     //return results for the first page (20 results)
     $scope.showpage = 0;
     $scope.showlimit = 10;
+    $scope.filterlimit = 10;
     $scope.filterStatus = '';
     $scope.filterChannel = '';
     $scope.filterDateStart = '';
@@ -100,6 +119,7 @@ angular.module('openhimWebui2App')
 
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
+      $scope.showlimit = $scope.filterlimit;
 
       Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
 
@@ -148,6 +168,7 @@ angular.module('openhimWebui2App')
     
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
+      $scope.filterlimit = 10;
       $scope.filterStatus = '';
       $scope.filterChannel = '';
       $scope.filterDateStart = '';
@@ -194,14 +215,19 @@ angular.module('openhimWebui2App')
         $scope.transactionsSelected = [];
         $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
-          $scope.transactionsSelected.push(transaction._id);
 
-          // check if transaction is a rerun
-          if (transaction.childIDs){
-            if (transaction.childIDs.length > 0){
-              $scope.rerunTransactionsSelected++;
+          // only add transaction if channel Rerun is allowed
+          if ( $scope.channelsMap[transaction.channelID].rerun ){
+            $scope.transactionsSelected.push(transaction._id);
+
+            // check if transaction is a rerun
+            if (transaction.childIDs){
+              if (transaction.childIDs.length > 0){
+                $scope.rerunTransactionsSelected++;
+              }
             }
           }
+
         });
       }
     };
