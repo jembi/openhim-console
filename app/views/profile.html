@@ -53,14 +53,14 @@
 
               <!-- if user is admin -->
               <div ng-show="userGroupAdmin" class="form-group" ng-class="{ 'has-error' : ngError.groups }">
-                <label><span>*</span> Allowed Roles</label>
-                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a role and press enter..." type="text" ng-model="roles" typeahead="role for role in taglistRoleOptions | filter:$viewValue" /></taglist>
+                <label><span>*</span> Groups</label>
+                <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a group and press enter..." type="text" ng-model="roles" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
                 <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
               </div>
 
               <!-- if user is NOT admin -->
               <div ng-show="!userGroupAdmin" class="form-group">
-                <label>Allowed Roles</label>
+                <label>Groups</label>
                 <div class="allowedRolesStaticDiv">
                   <span ng-repeat="group in user.groups">{{group}}</span>
                 </div>
