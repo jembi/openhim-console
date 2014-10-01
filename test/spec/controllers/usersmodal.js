@@ -96,6 +96,8 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.groups = ['group1', 'group2'];
     scope.temp.password = 'password';
     scope.temp.passwordConfirm = 'password';
+    scope.user.dailyReport = true;
+    scope.user.weeklyReport = true;
 
     scope.submitFormUsers();
     scope.ngError.should.have.property('hasErrors', false);
@@ -112,6 +114,8 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.firstname = 'John';
     scope.user.surname = 'Doe';
     scope.user.msisdn = '27987654321';
+    scope.user.dailyReport = true;
+    scope.user.weeklyReport = true;
     scope.user.groups = ['group333', 'group444', 'group555'];
     scope.temp.password = 'passwordtest';
     scope.temp.passwordConfirm = 'passwordtest';
@@ -124,6 +128,8 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.should.have.property('passwordHash');
     scope.user.should.have.property('firstname', 'John');
     scope.user.should.have.property('surname', 'Doe');
+    scope.user.should.have.property('dailyReport', true);
+    scope.user.should.have.property('weeklyReport', true);
     scope.user.should.have.property('msisdn', '27987654321');
     scope.user.groups.should.have.length(3);
   });
