@@ -90,10 +90,11 @@
               <label>Received Timestamp: </label>
               <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
-            <div class="data-group left-indent"><label>Body: </label></div>
-            <div class="data-group left-indent">
+            <div class="data-group left-indent" ng-if="transactionDetails.request.body"><label>Body: </label></div>
+            <div class="data-group left-indent" ng-if="transactionDetails.request.body">
               <div class="data-value">
                 <textarea rows="5">{{transactionDetails.request.body}}</textarea>
+                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Request', transactionDetails.request.body);">View Full Request Body</button>
               </div>
             </div>
 
@@ -106,10 +107,11 @@
               <label>Received timestamp: </label>
               <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
-            <div class="data-group left-indent"><label>Response body:</label></div>
-            <div class="data-group left-indent">
+            <div class="data-group left-indent" ng-if="transactionDetails.response.body"><label>Response body:</label></div>
+            <div class="data-group left-indent" ng-if="transactionDetails.response.body">
               <div class="data-value">
                 <textarea rows="5">{{transactionDetails.response.body}}</textarea>
+                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Response', transactionDetails.response.body);">View Full Response Body</button>
               </div>
             </div>
 
@@ -141,6 +143,8 @@
                 </table>
               </div>
             </div>
+
+            <!-- still need to include the listings for the "orchestrations" -->
 
           </div>
           

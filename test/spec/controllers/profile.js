@@ -28,6 +28,8 @@ describe('Controller: ProfileCtrl', function () {
       'passwordHash': '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
       'passwordSalt': 'test-salt',
       'surname': 'test',
+      'weeklyAlert': true,
+      'dailyAlert': true,
       'groups': [
         'test',
         'other'
@@ -69,6 +71,8 @@ describe('Controller: ProfileCtrl', function () {
     scope.user.should.have.property('email', 'test@user.org');
     scope.user.should.have.property('firstname', 'test');
     scope.user.should.have.property('surname', 'test');
+    scope.user.should.have.property('weeklyAlert', true);
+    scope.user.should.have.property('dailyAlert', true);
     scope.user.groups.should.have.length(2);
 
   });
@@ -122,6 +126,8 @@ describe('Controller: ProfileCtrl', function () {
     scope.user.firstname = 'Jane';
     scope.user.surname = 'Doe';
     scope.user.msisdn = '27123456789';
+    scope.user.weeklyAlert = true;
+    scope.user.dailyAlert = true;
     scope.user.groups = ['group1', 'group2'];
     scope.temp.password = 'password';
     scope.temp.passwordConfirm = 'password';
@@ -135,6 +141,8 @@ describe('Controller: ProfileCtrl', function () {
     scope.user.should.have.property('passwordHash');
     scope.user.should.have.property('firstname', 'Jane');
     scope.user.should.have.property('surname', 'Doe');
+    scope.user.should.have.property('weeklyAlert', true);
+    scope.user.should.have.property('dailyAlert', true);
     scope.user.should.have.property('msisdn', '27123456789');
     scope.user.groups.should.have.length(2);
 
