@@ -7,19 +7,42 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
 
+    // object for the taglist roles
+    $scope.taglistClientRoleOptions = [];
+    $scope.taglistUserRoleOptions = [];
+
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
 
-    // get the users for the Channel Alert User dropdown
+    // get the users for the Channel taglist option
     $scope.alertUsers = Api.Users.query(function(){
       $scope.usersMap = {};
       angular.forEach($scope.alertUsers, function(user){
         $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
+
+        angular.forEach(user.groups, function(group){
+          if ( $scope.taglistUserRoleOptions.indexOf(group) === -1 ){
+            $scope.taglistUserRoleOptions.push(group);
+          }
+        });
       });
     },
-    function(){
-      // server error - could not connect to API to get channels
-    });
+    function(){ /* server error - could not connect to API to get Users */ });
+
+    // get the roles for the client taglist option
+    Api.Clients.query(function(clients){
+      angular.forEach(clients, function(client){
+        if ( $scope.taglistClientRoleOptions.indexOf(client.clientID) === -1 ){
+          $scope.taglistClientRoleOptions.push(client.clientID);
+        }
+        angular.forEach(client.roles, function(role){
+          if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
+            $scope.taglistClientRoleOptions.push(role);
+          }
+        });
+      });
+    },
+    function(){ /* server error - could not connect to API to get clients */  });
 
     // get the groups for the Channel Alert Group dropdown
     $scope.alertGroups = Api.ContactGroups.query(function(){
@@ -28,9 +51,7 @@ angular.module('openhimWebui2App')
         $scope.groupsMap[group._id] = group.group;
       });
     },
-    function(){
-      // server error - could not connect to API to get channels
-    });
+    function(){ /* server error - could not connect to API to get Alert Groups */ });
 
     // get/set the users scope whether new or update
     $scope.matching = {};

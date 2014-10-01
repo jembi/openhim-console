@@ -6,10 +6,18 @@ describe('Controller: UsersModalCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var scope, createController;
+  var scope, createController, httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
+
+    httpBackend = $httpBackend;
+
+    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+    ]);
+
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
@@ -27,13 +35,21 @@ describe('Controller: UsersModalCtrl', function () {
     };
   }));
 
+  afterEach(function() {
+    httpBackend.verifyNoOutstandingExpectation();
+    httpBackend.verifyNoOutstandingRequest();
+  });
+
   it('should create a new user if this is not an update', function () {
     createController();
+    httpBackend.flush();
+
     scope.user.should.be.ok;
   });
 
   it('should run validateFormUsers() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
     createController();
+    httpBackend.flush();
 
     scope.user.firstname = '';
     scope.user.surname = '';
@@ -52,6 +68,7 @@ describe('Controller: UsersModalCtrl', function () {
 
   it('should run validateFormUsers() for any validation errors - ngErrors.hasErrors -> FALSE', function () {
     createController();
+    httpBackend.flush();
 
     scope.user.email = 'new@user.com';
     scope.user.firstname = 'John';
@@ -67,6 +84,7 @@ describe('Controller: UsersModalCtrl', function () {
 
   it('should run submitFormUsers() and check any validation errors - FALSE - should not save the record', function () {
     createController();
+    httpBackend.flush();
 
     scope.user.firstname = '';
     scope.user.surname = '';
@@ -85,6 +103,7 @@ describe('Controller: UsersModalCtrl', function () {
 
   it('should run submitFormUsers() and check any validation errors - TRUE - Should save the record', function () {
     createController();
+    httpBackend.flush();
 
     // update is false so create new user
     scope.update = false;
@@ -106,6 +125,7 @@ describe('Controller: UsersModalCtrl', function () {
 
   it('should run submitFormUsers() and check any validation errors - TRUE - Should update the record', function () {
     createController();
+    httpBackend.flush();
 
     // update is false so create new user
     scope.update = true;
@@ -132,6 +152,17 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.should.have.property('weeklyReport', true);
     scope.user.should.have.property('msisdn', '27987654321');
     scope.user.groups.should.have.length(3);
+  });
+
+  it('should create two taglist objects', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.taglistUserRoleOptions.should.have.length(2);
+    
+    scope.taglistUserRoleOptions[0].should.equal('admin');
+    scope.taglistUserRoleOptions[1].should.equal('limited');
+    
   });
 
 });

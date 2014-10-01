@@ -8,8 +8,23 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Client initial load     **/
     /***************************************************************/
 
+    // object for the taglist roles
+    $scope.taglistClientRoleOptions = [];
+
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
+
+    // get the roles for the client taglist option
+    Api.Clients.query(function(clients){
+      angular.forEach(clients, function(client){
+        angular.forEach(client.roles, function(role){
+          if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
+            $scope.taglistClientRoleOptions.push(role);
+          }
+        });
+      });
+    },
+    function(){ /* server error - could not connect to API to get clients */  });
 
     if (client) {
       $scope.update = true;
