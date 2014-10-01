@@ -78,6 +78,18 @@
                   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
                 </div>
               </div>
+              <div class="form-group">
+                <div class="checkbox">
+                    <label tooltip="Receive Daily Channel Reports">
+                        <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label tooltip="Receive Weekly Channel Reports">
+                        <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
+                    </label>
+                </div>
+              </div>
             </fieldset>
 
             <!-- show loading gif when scope object empty and no server errors exist -->
