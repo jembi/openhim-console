@@ -148,4 +148,26 @@ angular.module('openhimWebui2App')
     /**               Transactions View Route Functions                 **/
     /*********************************************************************/
 
+
+
+    /********************************************************************/
+    /**               Transactions View Body Functions                 **/
+    /********************************************************************/
+
+    $scope.viewBodyDetails = function(type, content){
+      $modal.open({
+        templateUrl: 'views/transactionsBodyModal.html',
+        controller: 'TransactionsBodyModalCtrl',
+        resolve: {
+          bodyData: function () {
+            return {type: type, content: content};
+          }
+        }
+      });
+    };
+
+    /********************************************************************/
+    /**               Transactions View Body Functions                 **/
+    /********************************************************************/
+
   });
