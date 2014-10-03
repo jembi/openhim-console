@@ -20,6 +20,8 @@ angular.module('openhimWebui2App')
 
       Transactions: $resource('http://' + HOST + ':' + PORT + '/transactions/:transactionId', { transactionId: '@_id' }),
 
+      Mediators: $resource('http://' + HOST + ':' + PORT + '/mediators/:uuid', { uuid: '@uuid' }),
+
       // add the metric endpoints
       Metrics: $resource('http://' + HOST + ':' + PORT + '/metrics/:type/:channelId', {}),
       MetricsStatus: $resource('http://' + HOST + ':' + PORT + '/metrics/status', {}),

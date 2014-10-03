@@ -1,0 +1,67 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title" style="float: inherit">
+            <h2>
+              <i class="glyphicon glyphicon-link"></i>
+              &nbsp;Mediator: {{mediatorDetails.name}}</h2>
+          </div>
+        </div>
+
+        <!-- Server Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="mediatorDetails">
+
+          <table class="table table-striped transactionTable" style="margin-top: 20px">
+            <tr>
+              <td><strong>UUID: </strong></td>
+              <td>{{mediatorDetails.uuid}}</td>
+            </tr>
+            <tr>
+              <td><strong>Name: </strong></td>
+              <td>{{mediatorDetails.name}}</td>
+            </tr>
+            <tr>
+              <td><strong>Description: </strong></td>
+              <td>{{mediatorDetails.description}}</td>
+            </tr>
+            <tr>
+              <td><strong>Version: </strong></td>
+              <td>{{mediatorDetails.version}}</td>
+            </tr>
+            <tr>
+              <td><strong>Endpoints: </strong></td>
+              <td style="padding: 0px;">
+                
+                <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
+                  <tr>
+                    <th style="border-top: 0px">Name: </th>
+                    <th style="border-top: 0px">Host: </th>
+                    <th style="border-top: 0px">Port: </th>
+                    <th style="border-top: 0px">Type: </th>
+                  </tr>
+                  <tr ng-repeat="endpoints in mediatorDetails.endpoints">
+                    <td style="width: 25%">{{endpoints.name}}</td>
+                    <td style="width: 25%">{{endpoints.host}}</td>
+                    <td style="width: 25%">{{endpoints.port}}</td>
+                    <td style="width: 25%">{{endpoints.type}}</td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>            
+          </table>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
