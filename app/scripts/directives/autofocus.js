@@ -9,7 +9,7 @@ angular.module('openhimWebui2App').directive('focus', function($timeout) {
       },
       link : function(scope, element) {
         scope.$watch('trigger', function(value) {
-          if (value === "true") {
+          if (value === 'true') {
             $timeout(function() {
               element[0].focus();
             });
@@ -17,4 +17,4 @@ angular.module('openhimWebui2App').directive('focus', function($timeout) {
         });
       }
     };
-  }); 
+  });
