@@ -67,6 +67,14 @@ angular
         templateUrl: 'views/profile.html',
         controller: 'ProfileCtrl'
       })
+      .when('/mediators', {
+        templateUrl: 'views/mediators.html',
+        controller: 'MediatorsCtrl'
+      })
+      .when('/mediators/:uuid', {
+        templateUrl: 'views/mediatorDetails.html',
+        controller: 'MediatorDetailsCtrl'
+      })
       .when('/logout', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
