@@ -19,7 +19,7 @@
     <fieldset>
       <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
         <label><span>*</span> Channel name</label>
-        <input class="form-control" type="text" ng-model="channel.name" />
+        <input class="form-control" type="text" ng-model="channel.name" focus="{{!update}}" />
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.urlPattern }">

@@ -5,7 +5,7 @@
         <div class="content-wrap">
           <h6>Sign In</h6>
           <form ng-submit="validateLogin()">
-            <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address">
+            <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="true">
             <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password">
 
             <alert type="alert.type" ng-repeat="alert in alerts">{{alert.msg}}</alert>

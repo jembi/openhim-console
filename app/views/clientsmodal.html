@@ -19,7 +19,7 @@
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
           <label><span>*</span> Client ID</label>
-          <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" >
+          <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" focus="{{!update}}" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">

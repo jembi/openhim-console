@@ -1,6 +1,7 @@
 <!-- $rooScope.userGroupAdmin is configured in scripts/app.js -->
 
-<div ng-controller="SidebarCtrl" class="col-md-2 col-xs-6 col-sm-3" role="navigation">
+<div class="scollNavAnchor"></div>
+<div ng-controller="SidebarCtrl" class="col-md-2 col-xs-6 col-sm-3 scollNav" role="navigation" >
   <div class="sidebar content-box" style="display: block;">
     <ul class="nav">
       <!-- Main menu -->
@@ -9,7 +10,6 @@
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
-      <li ng-if="false" ng-class="{current: isCurrent('/monitoring')}"><a href="#/monitoring"><i class="glyphicon glyphicon-stats"></i> Monitoring</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
@@ -18,3 +18,18 @@
     </ul>
   </div>
 </div>
+
+
+<script>
+  // This function will be executed when the user scrolls the page.
+  $(window).scroll(function(e) {
+    // Get the position of the location where the scroller starts.
+    var scroller_anchor = $(".scollNavAnchor").offset().top;
+    if ( scroller_anchor >= 60 ){
+      $(".scollNav").css("position", "fixed");
+      $(".scollNav").css("top", "20px");
+    }else{
+      $(".scollNav").removeAttr( 'style' );
+    }
+  })
+</script>
