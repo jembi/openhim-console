@@ -118,7 +118,7 @@
             <label ng-show="transactionDetails.routes">Routes: </label>
             <div ng-show="transactionDetails.routes" id="no-more-tables" class="data-group left-indent">
               <div class="data-value">
-                <!-- Table with all the transaction logs -->
+                <!-- Table with all the Routes logs -->
                 <table class="table table-striped">
                   <thead>
                     <tr>
@@ -131,7 +131,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
+                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewAddReqResDetails(route)'>
                       <td data-title="Route">{{ route.name }}</td>
                       <td data-title="Method">{{ route.request.method }}</td>
                       <td data-title="Path">{{ route.request.path }}</td>
@@ -144,7 +144,45 @@
               </div>
             </div>
 
-            <!-- still need to include the listings for the "orchestrations" -->
+
+            <label ng-show="transactionDetails.orchestrations">Orchestrations: </label>
+            <div ng-show="transactionDetails.orchestrations" id="no-more-tables" class="data-group left-indent">
+              <div class="data-value">
+                <!-- Table with all the orchestrations -->
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Method</th>
+                      <th>Path</th>                      
+                      <th>Request Params</th>
+                      <th>Status</th>
+                      <th>Received Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
+                      <td data-title="Name">{{ orchestration.name }}</td>
+                      <td data-title="Method">{{ orchestration.request.method }}</td>
+                      <td data-title="Path">{{ orchestration.request.path }}</td>
+                      <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
+                      <td data-title="Status">{{ orchestration.response.status }}</td>
+                      <td data-title="Received Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+            <label ng-show="transactionDetails.properties">Properties: </label>
+            <div class="data-group left-indent">
+              <div class="data-value">
+                <div class="content-box-large default-labels-box" ng-repeat="(key, property) in transactionDetails.properties">
+                  {{key}}: <strong>{{property}}</strong>
+                </div>  
+              </div>
+            </div>
 
           </div>
           

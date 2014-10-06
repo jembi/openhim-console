@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsRouteModalCtrl', function ($scope, $modalInstance, route) {
+  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modalInstance, record) {
 
     $scope.viewFullBody = false;
-    $scope.route = route;
+    $scope.record = record;
 
     $scope.toggleFullView = function () {
-      var viewFullBody = $scope.viewFullBody;
-
-      if (viewFullBody === true){
+      if ($scope.viewFullBody === true){
         $scope.viewFullBody = false;
       }else{
         $scope.viewFullBody = true;

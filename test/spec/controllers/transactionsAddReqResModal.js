@@ -2,18 +2,18 @@
 /* jshint expr: true */
 /* global sinon: false */
 
-describe('Controller: TransactionsRouteModalCtrl', function () {
+describe('Controller: TransactionsAddReqResModalCtrl', function () {
 
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var scope, createController, modalInstance, route;
+  var scope, createController, modalInstance, record;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
 
     createController = function() {
-      route = {
+      record = {
         'name': 'second',
         '_id': '53df5d525b6d133c7de9eb56',
         'response': {
@@ -30,17 +30,17 @@ describe('Controller: TransactionsRouteModalCtrl', function () {
 
       scope = $rootScope.$new();
       modalInstance = sinon.spy();
-      return $controller('TransactionsRouteModalCtrl', { $scope: scope, $modalInstance: modalInstance, route: route } );
+      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record } );
     };
 
   }));
 
-  it('should attach a single route object to the scope', function () {
+  it('should attach a single record object to the scope', function () {
     createController();
 
-    scope.route.name.should.equal('second');
-    scope.route.response.status.should.equal(301);
-    scope.route.request.method.should.equal('GET');
+    scope.record.name.should.equal('second');
+    scope.record.response.status.should.equal(301);
+    scope.record.request.method.should.equal('GET');
   });
 
 });

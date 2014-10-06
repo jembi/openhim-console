@@ -726,6 +726,9 @@ body {
 .dashboard-info-box{ margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
 .dashboard-info-box strong { font-size: 30px; }
 
+.default-labels-box{ margin: 0 20px 0 0; float: left; font-size: 14px; padding: 5px 10px; background: #2c3742; color: #fff; text-align: center; }
+.default-labels-box strong { font-size: 18px; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
