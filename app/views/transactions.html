@@ -70,7 +70,7 @@
                   <th>Request Params</th>
                   <th>Channel</th>
                   <th>Status</th>
-                  <th>Received Time</th>
+                  <th>Request Time</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,7 +93,7 @@
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
                   <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
                   <td data-title="Status">{{ transaction.status }}</td>
-                  <td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                  <td data-title="Request Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>
               </tbody>
             </table>
