@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" id="addUserLabel">
+    <i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;
+    <span ng-show="update">Edit</span>
+    <span ng-show="!update">Add</span>
+     a Contact Group
+  </h4>
+</div>
+
+<form name="form" novalidate>
+  <div class="modal-body">
+
+    <div class="form-group has-error-key">
+      <span>*</span> Indicates a required field<br />
+    </div>
+
+    <fieldset>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.group }">
+        <label><span>*</span> Group Name</label>
+        <input class="form-control" type="text" ng-model="contactGroup.group" focus="{{!update}}" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
+
+      <div ng-show="contactGroup.users.length > 0">
+        <div id="no-more-tables">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Method</th>
+                <th>Max Alerts</th>
+                <th width="70"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="user in contactGroup.users">
+                <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                <td data-title="User"><a href="" ng-click="editGroupUser($index, user)">{{usersMap[user.user]}}</a></td>
+                <td data-title="Method">{{ user.method }}</td>
+                <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
+                <td>
+                  <button class="btn btn-warning btn-xs" ng-click="editGroupUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                  <button class="btn btn-danger btn-xs" ng-click="removeGroupUser($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;" ng-class="{ 'has-error' : ngError.users }">
+        <label style="display: block"><span>*</span> Users</label>
+
+        <select class="form-control groupUserDropDown" ng-model="newGroupUser.user" style="max-width: 170px;">
+          <option value="">User</option>
+          <option ng-repeat="user in alertUsers" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
+        </select>
+
+        <select class="form-control groupUserDropDown" ng-model="newGroupUser.method">
+          <option value="">Method</option>
+          <option value="email">email</option>
+          <option value="sms">sms</option>
+        </select>
+
+        <select class="form-control groupUserDropDown" ng-model="newGroupUser.maxAlerts">
+          <option value="">Max Alerts</option>
+          <option value="no max">no max</option>
+          <option value="1 per hour">1 per hour</option>
+          <option value="1 per day">1 per day</option>
+        </select>
+
+        <button class="btn btn-sm btn-primary groupUserDropDown" ng-click="addGroupUser(newGroupUser)" ng-disabled="!(isGroupUserValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> User</button>
+        <div class="has-error-msg" style="clear: both;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
+
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+
+    <!-- hasErrors Alerts -->
+    <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
+    <!-- hasErrors Alerts -->
+
+    <div>
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="submitFormContactGroups()">Save changes</button>
+    </div>
+  </div>
+</form>

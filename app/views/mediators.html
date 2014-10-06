@@ -1,0 +1,61 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-link"></i>&nbsp;&nbsp;Mediators</h2>
+          </div>
+        </div>
+        <div class="panel-body">
+
+          <div id="no-more-tables">
+            <!-- Table with all the transaction logs -->
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>UUID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Version</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-list" ng-repeat="mediator in mediators" ng-click='viewMediatorDetails("/mediators/" + mediator.uuid, $event)'>
+                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
+                    <span>{{ $index +1 }}</span>
+                  </td>
+                  <td data-title="UUID">{{ mediator.uuid }}</td>
+                  <td data-title="Name">{{ mediator.name }}</td>
+                  <td data-title="Description">{{ mediator.description }}</td>
+                  <td data-title="Version">{{ mediator.version }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div>
+              <!-- show loading gif when scope object empty and no server errors exist -->
+              <div class="loadingContainer" ng-show="!(mediators || alerts.server)">
+                <img src="images/loading.gif" alt="Loading..." />
+              </div>
+
+              <!-- server Alerts -->
+              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <!-- Server Alerts -->
+
+              <!-- Mediators Alerts -->
+              <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+              <!-- Mediators Alerts -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

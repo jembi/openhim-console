@@ -1,28 +1,64 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, channel) {
+  .controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel) {
     
     /****************************************************************/
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
 
-    // get the users for the Channel Alert User dropdown
+    // object for the taglist roles
+    $scope.taglistClientRoleOptions = [];
+    $scope.taglistUserRoleOptions = [];
+
+    // object to store temp values like password (not associated with schema object)
+    $scope.temp = {};
+
+    // get the users for the Channel taglist option
     $scope.alertUsers = Api.Users.query(function(){
       $scope.usersMap = {};
       angular.forEach($scope.alertUsers, function(user){
         $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')';
+
+        angular.forEach(user.groups, function(group){
+          if ( $scope.taglistUserRoleOptions.indexOf(group) === -1 ){
+            $scope.taglistUserRoleOptions.push(group);
+          }
+        });
       });
     },
-    function(){
-      // server error - could not connect to API to get channels
-    });
+    function(){ /* server error - could not connect to API to get Users */ });
 
+    // get the roles for the client taglist option
+    Api.Clients.query(function(clients){
+      angular.forEach(clients, function(client){
+        if ( $scope.taglistClientRoleOptions.indexOf(client.clientID) === -1 ){
+          $scope.taglistClientRoleOptions.push(client.clientID);
+        }
+        angular.forEach(client.roles, function(role){
+          if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
+            $scope.taglistClientRoleOptions.push(role);
+          }
+        });
+      });
+    },
+    function(){ /* server error - could not connect to API to get clients */  });
 
+    // get the groups for the Channel Alert Group dropdown
+    $scope.alertGroups = Api.ContactGroups.query(function(){
+      $scope.groupsMap = {};
+      angular.forEach($scope.alertGroups, function(group){
+        $scope.groupsMap[group._id] = group.group;
+      });
+    },
+    function(){ /* server error - could not connect to API to get Alert Groups */ });
 
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';
+    $scope.newRoute = {};
+    $scope.newRoute.type = 'http';
+    $scope.newRoute.secured = false;
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
@@ -30,9 +66,11 @@ angular.module('openhimWebui2App')
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
       if( channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+
     }else{
       $scope.update = false;
       $scope.channel = new Api.Channels();
+      $scope.channel.type = 'http';
     }
     
     /****************************************************************/
@@ -66,6 +104,23 @@ angular.module('openhimWebui2App')
     };
 
     $scope.saveOrUpdate = function(channel, contentMatching) {
+
+      switch (channel.type) {
+        case 'tcp':
+          channel.pollingSchedule = null;
+          break;
+        case 'tls':
+          channel.pollingSchedule = null;
+          break;
+        case 'polling':
+          channel.tcpHost = null;
+          channel.tcpPort = null;
+          break;
+        default:
+          channel.pollingSchedule = null;
+          channel.tcpHost = null;
+          channel.tcpPort = null;
+      }
 
       switch (contentMatching) {
         case 'RegEx matching':
@@ -117,8 +172,6 @@ angular.module('openhimWebui2App')
 
     // define the routes backup object
     $scope.channelRoutesBackup = null;
-    $scope.newRoute = {};
-
     $scope.addRoute = function (newRoute) {
       if (!$scope.channel.routes) {
         $scope.channel.routes = [];
@@ -128,6 +181,8 @@ angular.module('openhimWebui2App')
       $scope.channelRoutesBackup = null;
 
       // reset the backing object
+      $scope.newRoute.type = 'http';
+      $scope.newRoute.secured = false;
       $scope.newRoute.name = null;
       $scope.newRoute.path = null;
       $scope.newRoute.pathTransform = null;
@@ -138,7 +193,7 @@ angular.module('openhimWebui2App')
       $scope.newRoute.primary = false;
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     $scope.editRoute = function (routeIndex, route) {
@@ -155,14 +210,14 @@ angular.module('openhimWebui2App')
       $scope.newRoute = route;
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     $scope.removeRoute = function (routeIndex) {
       $scope.channel.routes.splice(routeIndex, 1);
 
       // Check if any route warnings exist and add them to alerts route object
-      $scope.checkRouteWarnings();
+      $scope.hasRouteWarnings();
     };
 
     /**********************************************************/
@@ -196,7 +251,7 @@ angular.module('openhimWebui2App')
       // reset the backup route object when a record is added
       $scope.channelAlertsBackup = null;
 
-      // reset the backing object
+      // reset the alert object
       $scope.newAlert.status = null;
       $scope.newAlert.failureRate = null;
       $scope.newAlert.groups = null;
@@ -223,9 +278,14 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isAlertValid = function(){
-      if (!$scope.newAlert.status || !$scope.newAlert.users || $scope.newAlert.users.length === 0){
+      if (!$scope.newAlert.status){
         return false;
       }
+
+      if ( (!$scope.newAlert.users || $scope.newAlert.users.length === 0) && (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0) ){
+        return false;
+      }
+
       if ($scope.newAlert.status.length !== 3){
         return false;
       }
@@ -296,11 +356,48 @@ angular.module('openhimWebui2App')
 
 
 
+    /****************************************************************/
+    /**   These are the functions for the Channel Alert Groups     **/
+    /****************************************************************/
+
+    // define the alerts groups backup object
+    $scope.newAlertGroup = {};
+    $scope.newAlert.groups = [];
+
+    $scope.addAlertGroup = function (newAlertGroup) {
+      
+      if( $scope.newAlert.groups.indexOf(newAlertGroup.group) === -1 ){
+        $scope.newAlert.groups.push(angular.copy(newAlertGroup.group));
+      }
+
+      // reset the backing object
+      $scope.newAlertGroup.group = '';
+    };
+
+    $scope.removeAlertGroup = function (alertGroupIndex) {
+      $scope.newAlert.groups.splice(alertGroupIndex, 1);
+    };
+
+    $scope.isAlertGroupValid = function(){
+      if (!$scope.newAlertGroup.group){
+        return false;
+      }
+      return true;
+    };
+
+    /****************************************************************/
+    /**   These are the functions for the Channel Alert Groups     **/
+    /****************************************************************/
+
+
+
+
+
     /***************************************************************************/
     /**   These are the general functions for the channel form validation     **/
     /***************************************************************************/
     
-    $scope.checkRouteWarnings = function(){
+    $scope.hasRouteWarnings = function(){
       // reset route alert object
       Alerting.AlertReset('route');
 
@@ -308,8 +405,8 @@ angular.module('openhimWebui2App')
       var noPrimaries = $scope.noPrimaries();
       var multiplePrimaries = $scope.multiplePrimaries();
 
-      if ( !noRoutes || !noPrimaries || !multiplePrimaries ){
-        return false;
+      if ( noRoutes || noPrimaries || multiplePrimaries ){
+        return true;
       }
     };
     
@@ -362,13 +459,129 @@ angular.module('openhimWebui2App')
       return false;
     };
 
-    // Check if form conditions are all met and valid
-    $scope.isFormValid = function () {
-      // check if any form alerts in the scope and return false - not valid
-      if ( $scope.alerts.route ){
-        return false;
+
+
+
+
+    $scope.validateFormChannels = function(){
+
+      // reset hasErrors alert object
+      Alerting.AlertReset('hasErrors');
+
+      // clear timeout if it has been set
+      $timeout.cancel( $scope.clearValidation );
+
+      $scope.ngError = {};
+      $scope.ngError.hasErrors = false;
+
+      // name validation
+      if( !$scope.channel.name ){
+        $scope.ngError.name = true;
+        $scope.ngError.hasErrors = true;
       }
-      return true;
+
+      // urlPattern validation
+      if( !$scope.channel.urlPattern ){
+        $scope.ngError.urlPattern = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      switch ($scope.channel.type){
+        case 'tcp':
+          if( !$scope.channel.tcpHost){
+            $scope.ngError.tcpHost = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.tcpPort || isNaN($scope.channel.tcpPort) ){
+            $scope.ngError.tcpPort = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'tls':
+          if( !$scope.channel.tcpHost){
+            $scope.ngError.tcpHost = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.tcpPort || isNaN($scope.channel.tcpPort) ){
+            $scope.ngError.tcpPort = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'polling':
+          if( !$scope.channel.pollingSchedule){
+            $scope.ngError.pollingSchedule = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+      }
+
+      // roles validation
+      if( !$scope.channel.allow || $scope.channel.allow.length===0 ){
+        $scope.ngError.allow = true;
+        $scope.ngError.accessControlTab = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      switch ($scope.matching.contentMatching){
+        case 'RegEx matching':
+          if( !$scope.channel.matchContentRegex){
+            $scope.ngError.matchContentRegex = true;
+            $scope.ngError.contentMatchingTab = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'XML matching':
+          if( !$scope.channel.matchContentXpath){
+            $scope.ngError.matchContentXpath = true;
+            $scope.ngError.contentMatchingTab = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.matchContentValue){
+            $scope.ngError.matchContentValue = true;
+            $scope.ngError.contentMatchingTab = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+        case 'JSON matching':
+          if( !$scope.channel.matchContentJson){
+            $scope.ngError.matchContentJson = true;
+            $scope.ngError.contentMatchingTab = true;
+            $scope.ngError.hasErrors = true;
+          }
+          if( !$scope.channel.matchContentValue){
+            $scope.ngError.matchContentValue = true;
+            $scope.ngError.contentMatchingTab = true;
+            $scope.ngError.hasErrors = true;
+          }
+          break;
+      }
+
+      // has route errors
+      if ( $scope.hasRouteWarnings() ){
+        $scope.ngError.hasRouteWarnings = true;
+        $scope.ngError.routesTab = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      if ( $scope.ngError.hasErrors ){
+        $scope.clearValidation = $timeout(function(){
+          // clear errors after 5 seconds
+          $scope.ngError = {};
+        }, 5000);
+        Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg);
+      }
+
+    };
+
+    $scope.submitFormChannels = function(){
+
+      // validate the form first to check for any errors
+      $scope.validateFormChannels();
+      // save the channel object if no errors are present
+      if ( $scope.ngError.hasErrors === false ){
+        $scope.saveOrUpdate($scope.channel, $scope.matching.contentMatching);
+      }
+
     };
 
     /***************************************************************************/

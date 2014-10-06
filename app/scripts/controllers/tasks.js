@@ -15,7 +15,7 @@ angular.module('openhimWebui2App')
     $scope.querySuccess = function(tasks){
       $scope.tasks = tasks;
       if( tasks.length === 0 ){
-        Alerting.AlertAddMsg('top', 'warning', 'There are currently no tasks created');
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no tasks created');
       }
     };
 

@@ -6,7 +6,9 @@
 
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title">Transactions Log</div>
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;Transactions Log</h2>
+          </div>
         </div>
         <div class="panel-body">
 
@@ -39,6 +41,16 @@
               </div>                            
               <!-- Date range picker functionality -->
             </div>
+            <div style="float: left; margin-right: 5%; margin-bottom: 20px;">
+              <label tooltip="Set the limit of how many records to display">Limit: </label>
+              <select class="form-control" ng-model="filterlimit">
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="500">500</option>
+              </select>
+            </div>
             <div class="transactionsFilterRefreshDiv">
               <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
               <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
@@ -51,7 +63,7 @@
             <table class="table table-striped transactionTable">
               <thead>
                 <tr>
-                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-init='checkAll=false' ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
+                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
                   <th>#</th>
                   <th>HTTP Method</th>
                   <th>Path</th>
@@ -62,10 +74,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="transactions-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id, $event)'>
+                <tr class="table-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("/transactions/" + transaction._id, $event)'>
                   <td class="transactionsCheckboxTD">
                     <label>
-                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                      <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="channelsMap[transaction.channelID].rerun || rerunAllowedAdmin" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
                       <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                     </label>
                   </td>
@@ -79,7 +91,7 @@
                   <td data-title="HTTP Method">{{ transaction.request.method }}</td>
                   <td data-title="Path">{{ transaction.request.path }}</td>
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
-                  <td data-title="Channel">{{ channelsMap[transaction.channelID] }}</td>
+                  <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
                   <td data-title="Status">{{ transaction.status }}</td>
                   <td data-title="Received Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>

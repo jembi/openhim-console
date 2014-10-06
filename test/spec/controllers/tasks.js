@@ -108,8 +108,8 @@ describe('Controller: TasksCtrl', function () {
 
     scope.querySuccess(tasks);
     scope.tasks.length.should.equal(0);
-    scope.alerts.top.length.should.equal(1);
-    scope.alerts.top[0].should.have.property('msg', 'There are currently no tasks created');
+    scope.alerts.bottom.length.should.equal(1);
+    scope.alerts.bottom[0].should.have.property('msg', 'There are currently no tasks created');
   });
 
 });

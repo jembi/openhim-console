@@ -64,7 +64,12 @@ footer .copy{
 .header .logo h1{
    font-size:30px;
    margin:0px;
-   padding:10px 0px;
+   padding:7px 0px;
+}
+
+.header .logo h1 i{
+   top: 5px;
+   margin-right: 15px;
 }
 
 .header .logo h1 a{
@@ -661,6 +666,20 @@ body {
 /* ----- Transactions ----- */
 
 /*------- Custom CSS Changes ----*/
+
+.form-group label span { color: #a94442; }
+.has-error-msg { display: none; }
+.has-error { color: #a94442; }
+.has-error .form-control { color: #a94442; }
+.has-error .has-error-msg { display: block; color: #a94442; margin-top: 5px; }
+.has-error-key span { color: #a94442; }
+.glyphicon-warning-sign { margin-right: 5px; }
+.has-error-tab a { color: #a94442 !important; border-left-color: #a94442 !important; border-top-color: #a94442 !important; border-right-color: #a94442 !important; }
+.has-error-tab i { display: block !important; position: absolute; top: 10px; left: 10px; }
+
+.btn-group .btn-primary:hover { text-decoration: underline } 
+.btn-group .btn-primary.active { text-decoration: underline } 
+
 .table-list:hover td{ cursor: pointer; color: #fff; background-color: #428BCA !important; }
 
 .modal-footer {margin-top: 0px;}
@@ -668,7 +687,7 @@ body {
 .navbar-nav > li > a { padding-top: 15px; padding-bottom: 15px; }
 .navbar{ margin: 0; min-height: auto; }
 .topMenu{ display: none; }
-.panel-heading { padding: 0; margin-bottom: 20px; display: inline-block; width: 100% ;}
+.panel-heading { padding: 0; margin-bottom: 10px; display: inline-block; width: 100% ;}
 .panel-body { padding: 0; }
 
 .responsiveTransactionIndexCheckbox label { display: none; }
@@ -692,16 +711,39 @@ body {
 }
 .nav-tabs.nav-justified a:hover { cursor: pointer; }
 .channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
+.groupUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 5px; }
+
+.reload-metrics-btn { margin: 5px; } 
+.reload-metrics-btn:hover { cursor: pointer; } 
+
+.load-metrics-line-graph { width: 49%; float: left; }
+.response-time-metrics-line-graph { width: 49%; float: right; }
+
 .label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
 .progress { margin: 0px; width: 90%; }
+
+#transaction-status-graph:hover { cursor: pointer; }
+.dashboard-info-box{ margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
+.dashboard-info-box strong { font-size: 30px; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
 
 /*-custom responsive ccs for big view-*/
+@media (max-width: 1100px){
+  .load-metrics-line-graph { width: 100%; float: left; }
+  .response-time-metrics-line-graph { width: 100%; float: left; }
+}
+
 @media (max-width: 1325px){
   .col-md-2{ width: 25%; }
   .col-md-10{ width: 75%; }
+}
+
+@media (max-width: 1100px){
+  .dashboard-graph-left { width: 100%; float: left; }
+  .dashboard-graph-right { width: 100%; float: left; }
 }
 
 /* Desktop */
@@ -863,3 +905,14 @@ body {
   .login-wrapper { width: 80%; }
   .rerunTransactionsDiv{float: none; text-align: center;}
 }
+
+@media (min-width: 768px){
+  .modal-dialog {
+    width: 700px;
+  }
+}
+
+
+
+.scollNavAnchor { display: none; position: fixed; }
+.row .col-md-10 { float: right; }

@@ -5,11 +5,8 @@
     <div class="col-md-10">
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title">Channels</div>
-          
-          <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-refresh"></i></a>
-            <a href="#" data-rel="reload"><i class="glyphicon glyphicon-cog"></i></a>
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Channels</h2>
           </div>
         </div>
 
@@ -22,11 +19,12 @@
             <table class="table table-striped">
               <thead>
                   <tr>
-                    <th>#</th>
+                    <th width="50">#</th>
                     <th>Channel Name</th>
                     <th>Channel Load <br />(# transactions / Week)</th>
+                    <th>Monitoring</th>
                     <th>Status</th>
-                    <th></th>
+                    <th width="80"></th>
                   </tr>
               </thead>
               <tbody>
@@ -34,6 +32,7 @@
                   <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
                   <td data-title="Channel Name"><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
                   <td data-title="Channel Load"><a href="">0</a></td>
+                  <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">Active</td>
                   <td>
                     <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 

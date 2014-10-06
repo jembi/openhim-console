@@ -19,6 +19,10 @@ angular
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
       })
+      .when('/channels/:channelId', {
+        templateUrl: 'views/channelMonitoring.html',
+        controller: 'ChannelMonitoringCtrl'
+      })
       .when('/clients', {
         templateUrl: 'views/clients.html',
         controller: 'ClientsCtrl'
@@ -51,6 +55,10 @@ angular
         templateUrl: 'views/taskDetails.html',
         controller: 'TaskDetailsCtrl'
       })
+      .when('/groups', {
+        templateUrl: 'views/contactGroups.html',
+        controller: 'ContactGroupsCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
@@ -58,6 +66,14 @@ angular
       .when('/profile', {
         templateUrl: 'views/profile.html',
         controller: 'ProfileCtrl'
+      })
+      .when('/mediators', {
+        templateUrl: 'views/mediators.html',
+        controller: 'MediatorsCtrl'
+      })
+      .when('/mediators/:uuid', {
+        templateUrl: 'views/mediatorDetails.html',
+        controller: 'MediatorDetailsCtrl'
       })
       .when('/logout', {
         templateUrl: 'views/login.html',
@@ -71,11 +87,14 @@ angular
         redirectTo: '/'
       });
   })
-  .run( function($rootScope, $location, $window) {
+  .run( function($rootScope, $location, $window, $anchorScroll) {
 
     /*------------------------------CHECK USER SESSION---------------------------------*/
     // register listener to watch route changes
     $rootScope.$on( '$routeChangeStart', function() {
+
+      // scroll page to top - start fresh
+      $anchorScroll();
 
       //set nav menu view to false
       $rootScope.navMenuVisible = false;

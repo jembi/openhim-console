@@ -6,14 +6,10 @@
 
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title">Rerun Tasks</div>
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;Rerun Tasks</h2>
+          </div>
         </div>
-
-
-        <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
-        <!-- Top Alerts -->
-
 
         <div class="panel-body">
 
@@ -48,7 +44,7 @@
             <table class="table table-striped">
               <thead>
                   <tr>
-                    <th>#</th>
+                    <th width="50">#</th>
                     <th>Status</th>
                     <th width="300">Progress</th>
                     <th>User</th>
@@ -82,6 +78,10 @@
           <div class="loadingContainer" ng-show="!(tasks || alerts.server)">
             <img src="images/loading.gif" alt="Loading..." />
           </div>
+
+          <!-- Top Alerts -->
+          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <!-- Top Alerts -->
 
           <!-- Server Alerts -->
           <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>

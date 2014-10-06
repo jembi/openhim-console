@@ -6,7 +6,7 @@
       <div class="content-box-large">
         <div class="panel-heading">
           <div class="panel-title">
-            <h2><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Users</h2>
+            <h2><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Groups</h2>
           </div>
         </div>
 
@@ -20,23 +20,19 @@
               <thead>
                 <tr>
                   <th width="50">#</th>
-                  <th>Email</th>
-                  <th>First Name</th>
-                  <th>Surname</th>
-                  <th>Groups</th>
+                  <th>Group</th>
+                  <th>Users</th>
                   <th width="80"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="user in users">
+                <tr ng-repeat="group in contactGroups">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="Email"><a href="" ng-click="editUser(user)">{{ user.email }}</a></td>
-                  <td data-title="First Name">{{ user.firstname }}</td>
-                  <td data-title="Surname">{{ user.surname }}</td>
-                  <td data-title="Group"><span ng-repeat="group in user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
+                  <td data-title="Group"><a href="" ng-click="editContactGroup(group)">{{ group.group }}</a></td>
+                  <td data-title="Users"><span ng-repeat="user in group.users"> {{ user.user }}{{$last ? '' : ', '}} </span></td>
                   <td>
-                    <button class="btn btn-warning btn-xs" ng-click="editUser(user)"><i class="glyphicon glyphicon-pencil"></i></button>
-                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(user)"><i class="glyphicon glyphicon-remove"></i></button>
+                    <button class="btn btn-warning btn-xs" ng-click="editContactGroup(group)"><i class="glyphicon glyphicon-pencil"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(group)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -44,7 +40,7 @@
           </div>
 
           <!-- show loading gif when scope object empty and no server errors exist -->
-          <div class="loadingContainer" ng-show="!(users || alerts.server)">
+          <div class="loadingContainer" ng-show="!(contactGroups || alerts.server)">
             <img src="images/loading.gif" alt="Loading..." />
           </div>
 
@@ -56,7 +52,7 @@
           <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
           <!-- Bottom Alerts -->
 
-          <button class="btn btn-primary" ng-click="addUser()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> User</button>
+          <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Group</button>
         </div>
       </div>
     </div>
