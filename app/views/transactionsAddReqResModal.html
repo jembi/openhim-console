@@ -1,7 +1,7 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
   <h3 class="modal-title" ng-show="!viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}</h3>
-  <h3 class="modal-title" ng-show="viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}: Response Body</h3>
+  <h3 class="modal-title" ng-show="viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}: {{viewFullBodyType}} Body</h3>
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
@@ -19,6 +19,20 @@
       <label>HTTP Method: </label>
       <div class="data-value">{{record.request.method}}</div>
     </div>
+    <div class="data-group left-indent">
+      <label>Received timestamp: </label>
+      <div class="data-value">{{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+    </div>
+    <div class="data-group left-indent" ng-if="record.request.body"><label>Request body:</label></div>
+    <div class="data-group left-indent" ng-if="record.request.body">
+      <div class="data-value">
+        <textarea rows="5">{{record.request.body}}</textarea>
+      </div>
+      <!-- show only if record has request body -->
+      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body)" style="float: right; margin-top: 10px;">
+        <span ng-show="!viewFullBody">View Full Request Body</span>
+      </button>
+    </div>
 
     <label>Response: </label>
     <div class="data-group left-indent">
@@ -34,21 +48,28 @@
       <div class="data-value">
         <textarea rows="5">{{record.response.body}}</textarea>
       </div>
+      <!-- show only if record has response body -->
+      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body)" style="float: right; margin-top: 10px;">
+        <span>View Full Response Body</span>
+      </button>
     </div>
   </div>
+
+
 
   <div class="route-detail-container" ng-show="viewFullBody">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <textarea rows="25">{{record.response.body}}</textarea>
+        <textarea rows="25">{{viewFullBodyContent}}</textarea>
       </div>
     </div>
+    <!-- show only if full body is show -->
+    <button ng-if="viewFullBody" type="button" class="btn btn-primary" ng-click="toggleFullView()" style="float: right; margin-top: 10px;">
+      <span>View Details</span>
+    </button>
   </div>
 
-  <button ng-if="record.response.body" type="button" class="btn btn-primary" ng-click="toggleFullView()" style="float: right; margin-top: 10px;">
-    <span ng-show="!viewFullBody">View Full Response Body</span>
-    <span ng-show="viewFullBody">View Details</span>
-  </button>
+  
 
 </div>
 
