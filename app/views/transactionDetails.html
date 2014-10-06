@@ -39,7 +39,7 @@
                   <th>Path</th>
                   <th>Request Params</th>
                   <th>Status</th>
-                  <th>Received Time</th>
+                  <th>Request Time</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,7 +49,7 @@
                   <td data-title="Path">{{ childTransaction.request.path }}</td>
                   <td data-title="Request Params">{{ childTransaction.request.querystring }}</td>
                   <td data-title="Status">{{ childTransaction.status }}</td>
-                  <td data-title="Received Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                  <td data-title="Request Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -79,7 +79,7 @@
               <div class="data-value">{{transactionDetails.request.path}}</div>
             </div>
             <div class="data-group left-indent">
-              <label>Request Parameters: </label>
+              <label>Parameters: </label>
               <div class="data-value">{{transactionDetails.request.querystring}}</div>
             </div>
             <div class="data-group left-indent">
@@ -87,7 +87,7 @@
               <div class="data-value">{{transactionDetails.request.method}}</div>
             </div>
             <div class="data-group left-indent">
-              <label>Received Timestamp: </label>
+              <label>Timestamp: </label>
               <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
             <div class="data-group left-indent" ng-if="transactionDetails.request.body"><label>Body: </label></div>
@@ -100,14 +100,14 @@
 
             <label>Response: </label>
             <div class="data-group left-indent">
-              <label>Response Status: </label>
+              <label>Status: </label>
               <div class="data-value">{{transactionDetails.response.status}}</div>
             </div>
             <div class="data-group left-indent">
-              <label>Received timestamp: </label>
+              <label>Timestamp: </label>
               <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
             </div>
-            <div class="data-group left-indent" ng-if="transactionDetails.response.body"><label>Response body:</label></div>
+            <div class="data-group left-indent" ng-if="transactionDetails.response.body"><label>Body:</label></div>
             <div class="data-group left-indent" ng-if="transactionDetails.response.body">
               <div class="data-value">
                 <textarea rows="5">{{transactionDetails.response.body}}</textarea>
@@ -118,7 +118,7 @@
             <label ng-show="transactionDetails.routes">Routes: </label>
             <div ng-show="transactionDetails.routes" id="no-more-tables" class="data-group left-indent">
               <div class="data-value">
-                <!-- Table with all the transaction logs -->
+                <!-- Table with all the Routes logs -->
                 <table class="table table-striped">
                   <thead>
                     <tr>
@@ -127,27 +127,63 @@
                       <th>Path</th>                      
                       <th>Request Params</th>
                       <th>Status</th>
-                      <th>Received Time</th>
+                      <th>Request Time</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewRouteDetails(route)'>
+                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewAddReqResDetails(route)'>
                       <td data-title="Route">{{ route.name }}</td>
                       <td data-title="Method">{{ route.request.method }}</td>
                       <td data-title="Path">{{ route.request.path }}</td>
                       <td data-title="Request Params">{{ route.request.querystring }}</td>
                       <td data-title="Status">{{ route.response.status }}</td>
-                      <td data-title="Received Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                      <td data-title="Request Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <!-- still need to include the listings for the "orchestrations" -->
 
-          </div>
-          
+            <label ng-show="transactionDetails.orchestrations">Orchestrations: </label>
+            <div ng-show="transactionDetails.orchestrations" id="no-more-tables" class="data-group left-indent">
+              <div class="data-value">
+                <!-- Table with all the orchestrations -->
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Method</th>
+                      <th>Path</th>                      
+                      <th>Request Params</th>
+                      <th>Status</th>
+                      <th>Request Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
+                      <td data-title="Name">{{ orchestration.name }}</td>
+                      <td data-title="Method">{{ orchestration.request.method }}</td>
+                      <td data-title="Path">{{ orchestration.request.path }}</td>
+                      <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
+                      <td data-title="Status">{{ orchestration.response.status }}</td>
+                      <td data-title="Request Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+            <label ng-show="transactionDetails.properties">Properties: </label>
+            <div class="data-group left-indent">
+              <div class="data-value">
+                <div class="content-box-large default-labels-box" ng-repeat="(key, property) in transactionDetails.properties">
+                  {{key}}: <strong>{{property}}</strong>
+                </div>  
+              </div>
+            </div>
+          </div>          
         </div>
       </div>
     </div>

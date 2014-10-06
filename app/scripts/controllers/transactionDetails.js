@@ -132,13 +132,13 @@ angular.module('openhimWebui2App')
     /**               Transactions View Route Functions                 **/
     /*********************************************************************/
 
-    $scope.viewRouteDetails = function(route){
+    $scope.viewAddReqResDetails = function(record){
       $modal.open({
-        templateUrl: 'views/transactionsRouteModal.html',
-        controller: 'TransactionsRouteModalCtrl',
+        templateUrl: 'views/transactionsAddReqResModal.html',
+        controller: 'TransactionsAddReqResModalCtrl',
         resolve: {
-          route: function () {
-            return route;
+          record: function () {
+            return record;
           }
         }
       });
