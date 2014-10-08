@@ -1,5 +1,6 @@
 'use strict';
 /* global jQuery:false */
+/* global moment:false */
 
 angular.module('openhimWebui2App')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
@@ -79,17 +80,15 @@ angular.module('openhimWebui2App')
       if(filterStatus){ filtersObject.status = filterStatus; }
       if(filterChannel){ filtersObject.channelID = filterChannel; }
       if(filterDateStart && filterDateEnd){
-        startDate = new Date( filterDateStart ).toISOString();
-        endDate = new Date( filterDateEnd );
-        endDate.setDate(endDate.getDate() + 1);
-        endDate = endDate.toISOString();
+        startDate = moment(filterDateStart).format();
+        endDate = moment(filterDateEnd).endOf("day").format();
 
         filtersObject.startDate = startDate;
         filtersObject.endDate = endDate;
       }
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
-      
+
       return filtersObject;
     };
 
