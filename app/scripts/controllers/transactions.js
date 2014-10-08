@@ -22,15 +22,15 @@ angular.module('openhimWebui2App')
 
 
     // setup default transactions settings
-    $scope.settings = {}
-    $scope.settings.filter = {}
+    $scope.settings = {};
+    $scope.settings.filter = {};
     $scope.settings.filter.limit = 10;
     $scope.settings.filter.status = '';
     $scope.settings.filter.channel = '';
     $scope.settings.filter.dateStart = '';
     $scope.settings.filter.dateEnd = '';
-    $scope.settings.list = {}
-    $scope.settings.list.tabview = 'same'
+    $scope.settings.list = {};
+    $scope.settings.list.tabview = 'same';
     // setup default transactions settings
     
 
@@ -166,9 +166,8 @@ angular.module('openhimWebui2App')
     };
 
     //location provider - load transaction details
-    $scope.viewTransactionDetails = function (path, $event) {  
+    $scope.viewTransactionDetails = function (path, $event) {
       //do transactions details redirection when clicked on TD
-      console.log( $scope.settings.list.tabview )
       if( $event.target.tagName === 'TD' ){
         var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
         var txUrl = baseUrl + path;
@@ -176,7 +175,7 @@ angular.module('openhimWebui2App')
           window.open(txUrl, '_blank');
         }else{
           $location.path(path);
-        }        
+        }
       }
     };
     
