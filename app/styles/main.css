@@ -918,3 +918,7 @@ body {
 
 .scollNavAnchor { display: none; position: fixed; }
 .row .col-md-10 { float: right; }
+.transaction_settings_tabset { margin-bottom: 20px; background-color: #eee }
+.transaction_settings_tabset ul { background-color: #fff; }
+.transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
+.transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
