@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jembi/openhim-console.svg?branch=master)](https://travis-ci.org/jembi/openhim-console)
+
 OpenHIM Administration Console
 ==============================
 
