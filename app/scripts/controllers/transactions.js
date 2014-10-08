@@ -77,8 +77,6 @@ angular.module('openhimWebui2App')
       var filterDateStart = $scope.settings.filter.dateStart;
       var filterDateEnd = $scope.settings.filter.dateEnd;
 
-      console.log( moment.utc(filterDateEnd) )
-
       if(filterStatus){ filtersObject.status = filterStatus; }
       if(filterChannel){ filtersObject.channelID = filterChannel; }
       if(filterDateStart && filterDateEnd){
@@ -90,7 +88,7 @@ angular.module('openhimWebui2App')
       }
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
-      console.log(filtersObject)
+
       return filtersObject;
     };
 
