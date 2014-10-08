@@ -693,7 +693,7 @@ body {
 .responsiveTransactionIndexCheckbox label { display: none; }
 #loadMoreTransactions { float: right; display: none; }
 #no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
-.transactionsFilterRefreshDiv{ float: right; margin-bottom: 20px; padding-top: 22px; }
+.transactionsFilterRefreshDiv{ float: right; padding-top: 22px; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
@@ -709,7 +709,7 @@ body {
   background-color: #428BCA;
   border-color: #357EBD !important;
 }
-.nav-tabs.nav-justified a:hover { cursor: pointer; }
+.nav-tabs a:hover { cursor: pointer; }
 .channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
 .groupUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 5px; }
 
@@ -898,7 +898,6 @@ body {
 
 @media (max-width: 500px) {
     #loadMoreTransactions { float: left; clear: both; margin-top: 15px; }
-    .transactionsFilterRefreshDiv{ padding-top: 0; }
     .task-detail-container .data-group>label { width: 40%; }
     .transaction-detail-container .data-group>label { width: 40%; }
 }
@@ -919,3 +918,7 @@ body {
 
 .scollNavAnchor { display: none; position: fixed; }
 .row .col-md-10 { float: right; }
+.transaction_settings_tabset { margin-bottom: 20px; background-color: #eee }
+.transaction_settings_tabset ul { background-color: #fff; }
+.transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
+.transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }

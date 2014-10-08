@@ -12,6 +12,28 @@ angular.module('openhimWebui2App')
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
+    $scope.checkAll = false;
+    $scope.transactionsSelected = [];
+    $scope.rerunTransactionsSelected = 0;
+
+    //return results for the first page (10 results)
+    $scope.showpage = 0;
+    $scope.showlimit = 10;
+
+
+    // setup default transactions settings
+    $scope.settings = {};
+    $scope.settings.filter = {};
+    $scope.settings.filter.limit = 10;
+    $scope.settings.filter.status = '';
+    $scope.settings.filter.channel = '';
+    $scope.settings.filter.dateStart = '';
+    $scope.settings.filter.dateEnd = '';
+    $scope.settings.list = {};
+    $scope.settings.list.tabview = 'same';
+    // setup default transactions settings
+    
+
     // get the user to find user roles
     Api.Users.get({ email: $scope.consoleSession.sessionUser } , function(user){
       // get the channels for the transactions filter dropdown
@@ -34,20 +56,6 @@ angular.module('openhimWebui2App')
       }, function(){ /* server error - could not connect to API to get channels */ });
     }, function(){ /* server error - could not connect to API to get user details */ });
 
-
-    $scope.checkAll = false;
-    $scope.transactionsSelected = [];
-    $scope.rerunTransactionsSelected = 0;
-
-    //return results for the first page (20 results)
-    $scope.showpage = 0;
-    $scope.showlimit = 10;
-    $scope.filterlimit = 10;
-    $scope.filterStatus = '';
-    $scope.filterChannel = '';
-    $scope.filterDateStart = '';
-    $scope.filterDateEnd = '';
-
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
@@ -63,10 +71,10 @@ angular.module('openhimWebui2App')
       var filtersObject = {};
       var startDate, endDate;
 
-      var filterStatus = $scope.filterStatus;
-      var filterChannel = $scope.filterChannel;
-      var filterDateStart = $scope.filterDateStart;
-      var filterDateEnd = $scope.filterDateEnd;
+      var filterStatus = $scope.settings.filter.status;
+      var filterChannel = $scope.settings.filter.channel;
+      var filterDateStart = $scope.settings.filter.dateStart;
+      var filterDateEnd = $scope.settings.filter.dateEnd;
 
       if(filterStatus){ filtersObject.status = filterStatus; }
       if(filterChannel){ filtersObject.channelID = filterChannel; }
@@ -118,7 +126,7 @@ angular.module('openhimWebui2App')
 
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
-      $scope.showlimit = $scope.filterlimit;
+      $scope.showlimit = $scope.settings.filter.limit;
 
       Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
 
@@ -161,17 +169,24 @@ angular.module('openhimWebui2App')
     $scope.viewTransactionDetails = function (path, $event) {
       //do transactions details redirection when clicked on TD
       if( $event.target.tagName === 'TD' ){
-        $location.path(path);
+        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
+        var txUrl = baseUrl + path;
+        if ( $scope.settings.list.tabview && $scope.settings.list.tabview === 'new' ){
+          window.open(txUrl, '_blank');
+        }else{
+          $location.path(path);
+        }
       }
     };
     
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
-      $scope.filterlimit = 10;
-      $scope.filterStatus = '';
-      $scope.filterChannel = '';
-      $scope.filterDateStart = '';
-      $scope.filterDateEnd = '';
+      $scope.settings.filter.limit = 10;
+      $scope.settings.filter.status = '';
+      $scope.settings.filter.channel = '';
+      $scope.settings.filter.dateStart = '';
+      $scope.settings.filter.dateEnd = '';
+      $scope.settings.list.tabview = 'same';
 
       //run the transaction list view after filters been cleared
       $scope.refreshTransactionsList();
@@ -205,7 +220,6 @@ angular.module('openhimWebui2App')
           }
         }
       });
-
     };
     
     $scope.toggleCheckedAll = function () {
@@ -246,19 +260,16 @@ angular.module('openhimWebui2App')
     };
 
     var getObjectById = function(id, myArray) {
-
       var object = myArray.filter(function(obj) {
         if(obj._id === id) {
           return obj;
         }
       })[0];
-
       return object;
     };
 
     $scope.toggleTransactionSelection = function(transactionID) {
       var idx = $scope.transactionsSelected.indexOf(transactionID);
-
       var transaction = getObjectById(transactionID, $scope.transactions);
 
       // is currently selected
