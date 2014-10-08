@@ -81,7 +81,7 @@ angular.module('openhimWebui2App')
       if(filterChannel){ filtersObject.channelID = filterChannel; }
       if(filterDateStart && filterDateEnd){
         startDate = moment(filterDateStart).format();
-        endDate = moment(filterDateEnd).endOf("day").format();
+        endDate = moment(filterDateEnd).endOf('day').format();
 
         filtersObject.startDate = startDate;
         filtersObject.endDate = endDate;
