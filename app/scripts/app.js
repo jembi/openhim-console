@@ -85,6 +85,10 @@ angular
   })
   .run( function($rootScope, $location, $window, $anchorScroll) {
 
+    $rootScope.goToTop = function() {
+      $anchorScroll();
+    };
+
     /*------------------------------CHECK USER SESSION---------------------------------*/
     // register listener to watch route changes
     $rootScope.$on( '$routeChangeStart', function() {
@@ -123,9 +127,14 @@ angular
           var sessionID = consoleSession.sessionID;
           var sessionUser = consoleSession.sessionUser;
           var sessionUserGroups = consoleSession.sessionUserGroups;
+          var sessionUserSettings = consoleSession.sessionUserSettings;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': sessionUser, 'sessionUserGroups': sessionUserGroups, 'expires': expireTime };
+          var consoleSessionObject = { 'sessionID': sessionID, 
+                                        'sessionUser': sessionUser, 
+                                        'sessionUserGroups': sessionUserGroups, 
+                                        'sessionUserSettings': sessionUserSettings, 
+                                        'expires': expireTime };
 
           // Put updated object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));

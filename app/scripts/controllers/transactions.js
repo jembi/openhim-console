@@ -12,6 +12,7 @@ angular.module('openhimWebui2App')
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
+    var userSettings = consoleSession.sessionUserSettings;
 
     $scope.checkAll = false;
     $scope.transactionsSelected = [];
@@ -25,13 +26,13 @@ angular.module('openhimWebui2App')
     // setup default transactions settings
     $scope.settings = {};
     $scope.settings.filter = {};
-    $scope.settings.filter.limit = 10;
-    $scope.settings.filter.status = '';
-    $scope.settings.filter.channel = '';
+    $scope.settings.filter.limit = userSettings.filter.limit;
+    $scope.settings.filter.status = userSettings.filter.status;
+    $scope.settings.filter.channel = userSettings.filter.channel;
     $scope.settings.filter.dateStart = '';
     $scope.settings.filter.dateEnd = '';
     $scope.settings.list = {};
-    $scope.settings.list.tabview = 'same';
+    $scope.settings.list.tabview = userSettings.list.tabview;
     // setup default transactions settings
     
 
