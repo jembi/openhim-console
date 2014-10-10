@@ -35,6 +35,11 @@ describe('Controller: UsersCtrl', function () {
       }
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/channels')).respond([
+      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'txRerunAcl':['test'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059dd8'},
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'txRerunAcl':['testing'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059aa3'}
+    ]);
+
     modalSpy = sinon.spy($modal, 'open');
 
     scope = $rootScope.$new();

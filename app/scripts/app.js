@@ -130,10 +130,10 @@ angular
           var sessionUserSettings = consoleSession.sessionUserSettings;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 
-                                        'sessionUser': sessionUser, 
-                                        'sessionUserGroups': sessionUserGroups, 
-                                        'sessionUserSettings': sessionUserSettings, 
+          var consoleSessionObject = { 'sessionID': sessionID,
+                                        'sessionUser': sessionUser,
+                                        'sessionUserGroups': sessionUserGroups,
+                                        'sessionUserSettings': sessionUserSettings,
                                         'expires': expireTime };
 
           // Put updated object into storage

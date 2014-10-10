@@ -79,10 +79,10 @@ angular.module('openhimWebui2App')
           var sessionUserSettings = userProfile.settings;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 
-                                        'sessionUser': loginEmail, 
-                                        'sessionUserGroups': sessionUserGroups, 
-                                        'sessionUserSettings': sessionUserSettings, 
+          var consoleSessionObject = { 'sessionID': sessionID,
+                                        'sessionUser': loginEmail,
+                                        'sessionUserGroups': sessionUserGroups,
+                                        'sessionUserSettings': sessionUserSettings,
                                         'expires': expireTime };
                                         
           // Put the object into storage
