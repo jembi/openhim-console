@@ -24,16 +24,28 @@ angular.module('openhimWebui2App')
 
 
     // setup default transactions settings
+    $scope.settings = {};
+    $scope.settings.filter = {};
+    $scope.settings.filter.limit = 10;
+    $scope.settings.filter.status = '';
+    $scope.settings.filter.channel = '';
+    $scope.settings.filter.dateStart = '';
+    $scope.settings.filter.dateEnd = '';
+    $scope.settings.list = {};
+    $scope.settings.list.tabview = 'same';
+
     if ( userSettings ){
-      $scope.settings = {};
-      $scope.settings.filter = {};
-      $scope.settings.filter.limit = userSettings.filter.limit;
-      $scope.settings.filter.status = userSettings.filter.status;
-      $scope.settings.filter.channel = userSettings.filter.channel;
-      $scope.settings.filter.dateStart = '';
-      $scope.settings.filter.dateEnd = '';
-      $scope.settings.list = {};
-      $scope.settings.list.tabview = userSettings.list.tabview;
+      if ( userSettings.filter ){
+        $scope.settings.filter.limit = userSettings.filter.limit;
+        $scope.settings.filter.status = userSettings.filter.status;
+        $scope.settings.filter.channel = userSettings.filter.channel;
+        $scope.settings.filter.dateStart = '';
+        $scope.settings.filter.dateEnd = '';
+      }
+      
+      if ( userSettings.list ){
+        $scope.settings.list.tabview = userSettings.list.tabview;
+      }
     }
     // setup default transactions settings
     
@@ -76,17 +88,10 @@ angular.module('openhimWebui2App')
       var startDate, endDate;
       var filterStatus, filterChannel, filterDateStart, filterDateEnd;
 
-      if ( $scope.settings ){
-        filterStatus = $scope.settings.filter.status;
-        filterChannel = $scope.settings.filter.channel;
-        filterDateStart = $scope.settings.filter.dateStart;
-        filterDateEnd = $scope.settings.filter.dateEnd;
-      }else{
-        filterStatus = '';
-        filterChannel = '';
-        filterDateStart = '';
-        filterDateEnd = '';
-      }
+      filterStatus = $scope.settings.filter.status;
+      filterChannel = $scope.settings.filter.channel;
+      filterDateStart = $scope.settings.filter.dateStart;
+      filterDateEnd = $scope.settings.filter.dateEnd;
       
 
       if(filterStatus){ filtersObject.status = filterStatus; }
@@ -137,12 +142,7 @@ angular.module('openhimWebui2App')
 
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
-      if ( $scope.settings ){
-        $scope.showlimit = $scope.settings.filter.limit;
-      }else{
-        $scope.showlimit = 10;
-      }
-      
+      $scope.showlimit = $scope.settings.filter.limit;
 
       Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
 
