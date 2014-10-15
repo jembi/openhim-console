@@ -198,16 +198,7 @@ angular.module('openhimWebui2App')
         $scope.newRoute.port = $scope.mediator.route.route.port;
       }else{
         // reset the backing object
-        $scope.newRoute.type = 'http';
-        $scope.newRoute.secured = false;
-        $scope.newRoute.name = null;
-        $scope.newRoute.path = null;
-        $scope.newRoute.pathTransform = null;
-        $scope.newRoute.host = null;
-        $scope.newRoute.port = null;
-        $scope.newRoute.username = null;
-        $scope.newRoute.password = null;
-        $scope.newRoute.primary = false;
+        resetRouteFields();
       }
 
     };
@@ -221,16 +212,7 @@ angular.module('openhimWebui2App')
       $scope.channelRoutesBackup = null;
 
       // reset the backing object
-      $scope.newRoute.type = 'http';
-      $scope.newRoute.secured = false;
-      $scope.newRoute.name = null;
-      $scope.newRoute.path = null;
-      $scope.newRoute.pathTransform = null;
-      $scope.newRoute.host = null;
-      $scope.newRoute.port = null;
-      $scope.newRoute.username = null;
-      $scope.newRoute.password = null;
-      $scope.newRoute.primary = false;
+      resetRouteFields();
 
       // Check if any route warnings exist and add them to alerts route object
       $scope.hasRouteWarnings();
@@ -258,6 +240,23 @@ angular.module('openhimWebui2App')
 
       // Check if any route warnings exist and add them to alerts route object
       $scope.hasRouteWarnings();
+    };
+
+    var resetRouteFields = function(){
+
+      // reset the dropdown option
+      $scope.mediator.route = null;
+
+      $scope.newRoute.type = 'http';
+      $scope.newRoute.secured = false;
+      $scope.newRoute.name = null;
+      $scope.newRoute.path = null;
+      $scope.newRoute.pathTransform = null;
+      $scope.newRoute.host = null;
+      $scope.newRoute.port = null;
+      $scope.newRoute.username = null;
+      $scope.newRoute.password = null;
+      $scope.newRoute.primary = false;
     };
 
     /**********************************************************/

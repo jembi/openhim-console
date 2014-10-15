@@ -354,5 +354,35 @@ describe('Controller: ChannelsmodalCtrl', function () {
   });
 
 
+  it('should check that selected mediator option is supplied in newRoute fields', function () {
+    
+    createController();
+    httpBackend.flush();
+
+    scope.newRoute.type.should.equal('http');
+    scope.newRoute.secured.should.equal(false);
+    scope.newRoute.should.not.have.property('name');
+    scope.newRoute.should.not.have.property('host');
+    scope.newRoute.should.not.have.property('port');
+
+    scope.mediator = {};
+    scope.mediator.route = { 'name': 'WC XD-LAB Mediator - WC XD-LAB Mediator',
+                              'route': { 'host': 'localhost',
+                                          'name': 'WC XD-LAB Mediator',
+                                          'port': '8148',
+                                          'type': 'http' } };
+
+    // run function to populate newRoute with mediator route details
+    scope.addMediatorRoute();
+
+    scope.newRoute.should.have.property('type', 'http');
+    scope.newRoute.should.have.property('secured', false);
+    scope.newRoute.should.have.property('name', 'WC XD-LAB Mediator');
+    scope.newRoute.should.have.property('host', 'localhost');
+    scope.newRoute.should.have.property('port', '8148');
+    
+  });
+
+
 
 });
