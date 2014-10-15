@@ -10,38 +10,43 @@ angular.module('openhimWebui2App')
       login: function (email, password, done) {
         // fetch salt from openhim-core serer and work out password hash
         Api.Authenticate.get({ email: email }, function (authDetails) {
-            // on success
-            if (!authDetails.salt) {
-              done(false);
-            }else{
-              //Get Time diff
-              userProfile.clientTimeStamp = new Date().getTime();
-              userProfile.serverTimeStamp = new Date(authDetails.ts).getTime();
-              userProfile.timeDiff = userProfile.serverTimeStamp - userProfile.clientTimeStamp;
+          // on success
+          if (!authDetails.salt) {
+            done('Authentication Failed');
+          }else{
+            //Get Time diff
+            userProfile.clientTimeStamp = new Date().getTime();
+            userProfile.serverTimeStamp = new Date(authDetails.ts).getTime();
+            userProfile.timeDiff = userProfile.serverTimeStamp - userProfile.clientTimeStamp;
 
-              var sha512 = CryptoJS.algo.SHA512.create();
-              sha512.update(authDetails.salt);
-              sha512.update(password);
-              var hash = sha512.finalize();
+            var sha512 = CryptoJS.algo.SHA512.create();
+            sha512.update(authDetails.salt);
+            sha512.update(password);
+            var hash = sha512.finalize();
 
-              userProfile.email = email;
-              userProfile.passwordHash = hash.toString(CryptoJS.enc.Hex);
-              // notify the authInterceptor of a logged in user
-              Authinterceptor.setLoggedInUser(userProfile);
-              //Verify that you can make authenticated requests
-              Api.Users.get({ email: email }, function (profile) {
-                userProfile = profile;
-                done(true);
-              }, function (){
-                //Throw error upon failure
-                done(false);
-              });
-            }
+            userProfile.email = email;
+            userProfile.passwordHash = hash.toString(CryptoJS.enc.Hex);
+            // notify the authInterceptor of a logged in user
+            Authinterceptor.setLoggedInUser(userProfile);
+            //Verify that you can make authenticated requests
+            Api.Users.get({ email: email }, function (profile) {
+              userProfile = profile;
+              done('Authentication Success');
+            }, function (){
+              //Throw error upon failure
+              done('Authentication Failed');
+            });
+          }
 
-          },
-          function () {
-            done(false);
-          });
+        }, function (err) {
+          // if error returns a status then server is active - user not authenticated
+          if ( err.status ){
+            done('Authentication Failed');
+          }else{
+            // no status returned - server error occured
+            done('Internal Server Error');
+          }
+        });
       },
       logout: function () {
         userProfile = null;
