@@ -411,7 +411,7 @@ angular.module('openhimWebui2App')
     };
 
     $scope.isRouteValid = function () {
-      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port || !isNaN($scope.channel.port) ){
+      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port || isNaN($scope.newRoute.port) ){
         return false;
       }
       return true;
