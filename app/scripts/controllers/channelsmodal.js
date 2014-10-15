@@ -2,7 +2,7 @@
 
 angular.module('openhimWebui2App')
   .controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel) {
-    
+
     /****************************************************************/
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
@@ -72,7 +72,7 @@ angular.module('openhimWebui2App')
       $scope.channel = new Api.Channels();
       $scope.channel.type = 'http';
     }
-    
+
     /****************************************************************/
     /**   These are the functions for the Channel initial load     **/
     /****************************************************************/
@@ -225,7 +225,7 @@ angular.module('openhimWebui2App')
     /**********************************************************/
 
 
-    
+
 
 
 
@@ -365,7 +365,7 @@ angular.module('openhimWebui2App')
     $scope.newAlert.groups = [];
 
     $scope.addAlertGroup = function (newAlertGroup) {
-      
+
       if( $scope.newAlert.groups.indexOf(newAlertGroup.group) === -1 ){
         $scope.newAlert.groups.push(angular.copy(newAlertGroup.group));
       }
@@ -396,7 +396,7 @@ angular.module('openhimWebui2App')
     /***************************************************************************/
     /**   These are the general functions for the channel form validation     **/
     /***************************************************************************/
-    
+
     $scope.hasRouteWarnings = function(){
       // reset route alert object
       Alerting.AlertReset('route');
@@ -409,9 +409,9 @@ angular.module('openhimWebui2App')
         return true;
       }
     };
-    
+
     $scope.isRouteValid = function () {
-      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port ){
+      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port || isNaN($scope.channel.tcpPort) ){
         return false;
       }
       return true;
