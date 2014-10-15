@@ -8,7 +8,13 @@
             <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="true">
             <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password">
 
-            <alert type="alert.type" ng-repeat="alert in alerts">{{alert.msg}}</alert>
+            <!-- Login Alerts -->
+            <alert ng-repeat="alert in alerts.login" type="alert.type">{{alert.msg}}</alert>
+            <!-- Login Alerts -->
+
+            <!-- Server Alerts -->
+            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <!-- Server Alerts -->
 
             <div class="action">
               <input type="submit" class="btn btn-primary signup" value="Login" />

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('LoginCtrl', function ($scope, login, $window,$rootScope) {
+  .controller('LoginCtrl', function ($scope, login, $window, $rootScope, Alerting) {
 
     //if url "#/logout" is returned then destroy the session
     if( $window.location.hash === '#/logout' ){
@@ -13,43 +13,40 @@ angular.module('openhimWebui2App')
     $scope.loginPassword = '';
 
     $scope.validateLogin = function(){
-      $scope.alerts = [];
+      // reset alert object
+      Alerting.AlertReset();
       var loginEmail = $scope.loginEmail;
       var loginPassword = $scope.loginPassword;
 
-      if(!loginEmail){
-        $scope.alerts.push({ type: 'danger', msg: 'Please provide your E-mail address' });
-      }
-      if(!loginPassword){
-        $scope.alerts.push({ type: 'danger', msg: 'Please provide your Password' });
-      }
-
-      //if basic alerts empty continue to attempt login
-      if($scope.alerts.length === 0){
-
-        $scope.alerts = [];
-        $scope.alerts.push({ type: 'warning', msg: 'Busy checking your credentials...' });
+      if(!loginEmail || !loginPassword){
+        Alerting.AlertAddMsg('login', 'danger', 'Please provide your login credentials');
+      }else{
+        // reset alert to show processing message
+        Alerting.AlertReset();
+        Alerting.AlertAddMsg('login', 'warning', 'Busy checking your credentials...');
 
         //check login credentials and create session if valid
         $scope.checkLoginCredentials(loginEmail, loginPassword);
-
       }
 
     };
 
     $scope.checkLoginCredentials = function(loginEmail, loginPassword){
-      login.login(loginEmail, loginPassword, function(loggedIn) {
-        $scope.alerts = [];
-        if (loggedIn) {
-
+      login.login(loginEmail, loginPassword, function(result) {
+        // reset alert object
+        Alerting.AlertReset();
+        if (result === 'Authentication Success') {
           //Create the session for the logged in user
           $scope.createUserSession(loginEmail);
 
           //redirect user to landing page (Channels)
           $window.location = '#/transactions';
-
         }else{
-          $scope.alerts.push({ type: 'danger', msg: 'The supplied credentials were incorrect. Please try again' });
+          if ( result === 'Internal Server Error' ){
+            Alerting.AlertAddServerMsg();
+          }else{
+            Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again');
+          }
         }
       });
     };

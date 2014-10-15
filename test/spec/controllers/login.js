@@ -63,7 +63,7 @@ describe('Controller: LoginCtrl', function () {
       scope.loginEmail = '';
       scope.loginPassword = '';
       scope.validateLogin();
-      scope.alerts.length.should.equal(2);
+      scope.alerts.login.length.should.equal(1);
     });
 
 
@@ -78,16 +78,16 @@ describe('Controller: LoginCtrl', function () {
       scope.validateLogin();
 
       // One error should exist - 'Busy checking login credentials'
-      scope.alerts.length.should.equal(1);
-      scope.alerts[0].type.should.equal('warning');
-      scope.alerts[0].msg.should.equal('Busy checking your credentials...');
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
 
       httpBackend.flush();
 
       // One error should exist - 'Busy checking login credentials'
-      scope.alerts.length.should.equal(1);
-      scope.alerts[0].type.should.equal('danger');
-      scope.alerts[0].msg.should.equal('The supplied credentials were incorrect. Please try again');
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('danger');
+      scope.alerts.login[0].msg.should.equal('The supplied credentials were incorrect. Please try again');
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser();
@@ -110,9 +110,9 @@ describe('Controller: LoginCtrl', function () {
       scope.validateLogin();
 
       // One error should exist - 'Busy checking login credentials'
-      scope.alerts.length.should.equal(1);
-      scope.alerts[0].type.should.equal('warning');
-      scope.alerts[0].msg.should.equal('Busy checking your credentials...');
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
       
       httpBackend.flush();
 
@@ -146,9 +146,9 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.flush();
 
       // One error should exist - 'Busy checking login credentials'
-      scope.alerts.length.should.equal(1);
-      scope.alerts[0].type.should.equal('danger');
-      scope.alerts[0].msg.should.equal('The supplied credentials were incorrect. Please try again');
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('danger');
+      scope.alerts.login[0].msg.should.equal('The supplied credentials were incorrect. Please try again');
 
       // user should not exist if incorrect login credentials
       user = login.getLoggedInUser();
