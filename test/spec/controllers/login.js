@@ -36,9 +36,9 @@ describe('Controller: LoginCtrl', function () {
       'passwordHash': '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
       'passwordSalt': 'test-salt',
       'surname': 'test',
-      'groups': [
-        'admin'
-      ]
+      'groups': [ 'admin' ],
+      'settings': { 'filter': { 'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
+                    'list': { 'tabview': 'new'} }
     });
 
     createController = function() {

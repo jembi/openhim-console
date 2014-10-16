@@ -15,6 +15,11 @@ angular.module('openhimWebui2App')
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
 
+    // get the allowed channels for the transaction settings
+    Api.Channels.query(function(channels){
+      $scope.channels = channels;
+    }, function(){ /* server error - could not connect to API to get channels */ });
+
     // get the users for the taglist roles options
     Api.Users.query(function(users){
       angular.forEach(users, function(user){
@@ -24,8 +29,7 @@ angular.module('openhimWebui2App')
           }
         });
       });
-    },
-    function(){ /* server error - could not connect to API to get Users */ });
+    }, function(){ /* server error - could not connect to API to get Users */ });
 
     // get/set the users scope whether new or update
     if (user) {
@@ -52,6 +56,11 @@ angular.module('openhimWebui2App')
       consoleSession = JSON.parse(consoleSession);
 
       if ( $scope.user.email === consoleSession.sessionUser ){
+
+        // update consoleSession with new userSettings
+        consoleSession.sessionUserSettings = $scope.user.settings;
+        localStorage.setItem('consoleSession', JSON.stringify( consoleSession ));
+
         if ( $scope.password ){
           login.login($scope.user.email, $scope.password, function (loggedIn) {
             if (loggedIn) {
@@ -59,7 +68,7 @@ angular.module('openhimWebui2App')
               Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully and you were logged in with your new credentials');
               notifyUser();
             } else {
-              // add the success message
+              // add the error message
               Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials');
               notifyUser();
             }

@@ -2,7 +2,7 @@
 
 <div class="scollNavAnchor"></div>
 <div ng-controller="SidebarCtrl" class="col-md-2 col-xs-6 col-sm-3 scollNav" role="navigation" >
-  <div class="sidebar content-box" style="display: block;">
+  <div class="sidebar content-box" style="display: block; margin-bottom: 15px;">
     <ul class="nav">
       <!-- Main menu -->
       <li ng-class="{current: isCurrent('/')}"><a href="#"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
@@ -17,6 +17,11 @@
       <!-- <li ng-class="{current: isCurrent('/config')}"><a href="#/config"><i class="glyphicon glyphicon-cog"></i> Config</a></li> -->
     </ul>
   </div>
+
+  <button class="btn btn-primary" ng-click="goToTop()" id="scrollToTop" style="display: none; width: 100%">
+    <i class="glyphicon glyphicon-chevron-up"></i>&nbsp;&nbsp;&nbsp;Jump To Top&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-up"></i>
+  </button>
+
 </div>
 
 
@@ -28,8 +33,14 @@
     if ( scroller_anchor >= 60 ){
       $(".scollNav").css("position", "fixed");
       $(".scollNav").css("top", "20px");
+
+      // show the scroll to button
+      $("#scrollToTop").css("display", "block");
     }else{
       $(".scollNav").removeAttr( 'style' );
+
+      // hide the scroll to button
+      $("#scrollToTop").css("display", "none");
     }
   })
 </script>

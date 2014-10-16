@@ -32,9 +32,8 @@
                 </div>
                 <div class="settings_div">
                   <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
-                  <select class="form-control" ng-model="settings.filter.channel">
+                  <select class="form-control" ng-model="settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
                     <option value="">Don't filter</option>
-                    <option ng-repeat="channel in channels" ng-value="channel._id">{{channel.name}}</option>
                   </select>
                 </div>
                 <div class="settings_div">

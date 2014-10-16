@@ -19,6 +19,11 @@ angular.module('openhimWebui2App')
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
 
+    // get the allowed channels for the transaction settings
+    Api.Channels.query(function(channels){
+      $scope.channels = channels;
+    }, function(){ /* server error - could not connect to API to get channels */ });
+
     // get the users for the taglist roles options
     Api.Users.query(function(users){
       angular.forEach(users, function(user){
@@ -28,8 +33,7 @@ angular.module('openhimWebui2App')
           }
         });
       });
-    },
-    function(){ /* server error - could not connect to API to get Users */ });
+    }, function(){ /* server error - could not connect to API to get Users */ });
 
     var querySuccess = function (user) {
       $scope.user = user;
@@ -53,7 +57,11 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Profile save process     **/
     /****************************************************************/
 
-    var success = function (password) {
+    var success = function (user, password) {
+      // update consoleSession with new userSettings
+      $scope.consoleSession.sessionUserSettings = user.settings;
+      localStorage.setItem('consoleSession', JSON.stringify( $scope.consoleSession ));
+
       // add the success message
       if (password !== '') {
         //re-login with new credentials
@@ -80,8 +88,9 @@ angular.module('openhimWebui2App')
 
 
     var saveUser = function (user, password) {
+      var userObject = angular.copy(user);
       user.$update({}, function(){
-        success(password);
+        success(userObject, password);
       });
     };
 
