@@ -13,6 +13,16 @@ describe('Controller: UsersCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
     httpBackend = $httpBackend;
 
+    
+    $httpBackend.when('GET', new RegExp('.*/usersChannelsMatrix')).respond({
+      'channels': [{ '_id': '5436482f6ad2579b26aa31b3', 'name': 'test2' },
+                  { '_id': '5436482f6ad2579b26aa31b4', 'name': 'test3' },
+                  { '_id': '5436482f6ad2579b26aa31b2', 'name': 'test' }],
+      'users': [{ 'user': 'normal@openhim.org', 'allowedChannels': [ '5436482f6ad2579b26aa31b4', '5436482f6ad2579b26aa31b'] },
+                { 'user': 'super@openhim.org', 'allowedChannels': ['5436482f6ad2579b26aa31b', '5436482f6ad2579b26aa31b', '5436482f6ad2579b26aa31b2'] }]
+    });
+
+
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
       {
         'firstname': 'Super',
@@ -34,6 +44,8 @@ describe('Controller: UsersCtrl', function () {
         'groups': ['limited']
       }
     ]);
+
+    
 
     modalSpy = sinon.spy($modal, 'open');
 
@@ -79,4 +91,21 @@ describe('Controller: UsersCtrl', function () {
 
     httpBackend.flush();
   });
+
+
+  it('should attached a usersChannelsMatrix object to the scope', function () {
+    //httpBackend.expectGET(new RegExp('.*/usersChannelsMatrix'));
+    createController();
+    httpBackend.flush();
+
+    scope.usersChannelsMatrix.should.have.property('channels');
+    scope.usersChannelsMatrix.channels.length.should.equal(3);
+    scope.usersChannelsMatrix.should.have.property('users');
+    scope.usersChannelsMatrix.users.length.should.equal(2);
+    scope.usersChannelsMatrix.users[0].user.should.equal('normal@openhim.org');
+    scope.usersChannelsMatrix.users[0].allowedChannels.length.should.equal(2);
+    scope.usersChannelsMatrix.users[1].user.should.equal('super@openhim.org');
+    scope.usersChannelsMatrix.users[1].allowedChannels.length.should.equal(3);
+  });
+
 });

@@ -23,6 +23,28 @@ angular.module('openhimWebui2App')
     $scope.$on('usersChanged', function () {
       Api.Users.query(querySuccess, queryError);
     });
+
+
+
+
+
+
+    /* API call to load Users - Channels Matrix */
+
+    $scope.usersChannelsMatrix = Api.UsersChannelsMatrix.get();
+
+    $scope.isAllowedChannel = function(channelID, allowedChannels){
+      // check if channelID is found in allowedChannels
+      if ( allowedChannels.indexOf(channelID) >= 0 ){
+        return true;
+      }
+      return false;
+    };
+
+    /* API call to load Users - Channels Matrix */
+
+
+
     /* -------------------------Initial load & onChanged---------------------------- */
 
 

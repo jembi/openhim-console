@@ -13,6 +13,7 @@ angular.module('openhimWebui2App')
       Users: $resource('https://' + HOST + ':' + PORT + '/users/:email', { email: '@email' }, {
         update: { method: 'PUT' }
       }),
+      UsersChannelsMatrix: $resource('https://' + HOST + ':' + PORT + '/usersChannelsMatrix', {}),
 
       Clients: $resource('https://' + HOST + ':' + PORT + '/clients/:clientId', { clientId: '@_id' }, {
         update: { method: 'PUT' }
@@ -24,7 +25,7 @@ angular.module('openhimWebui2App')
 
       // add the metric endpoints
       Metrics: $resource('https://' + HOST + ':' + PORT + '/metrics/:type/:channelId', {}),
-      MetricsStatus: $resource('http://' + HOST + ':' + PORT + '/metrics/status', {}),
+      MetricsStatus: $resource('https://' + HOST + ':' + PORT + '/metrics/status', {}),
 
       Tasks: $resource('https://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
