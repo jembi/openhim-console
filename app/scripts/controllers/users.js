@@ -26,9 +26,6 @@ angular.module('openhimWebui2App')
 
 
 
-
-
-
     /* API call to load Users - Channels Matrix */
 
     $scope.usersChannelsMatrix = Api.UsersChannelsMatrix.get();
@@ -42,8 +39,6 @@ angular.module('openhimWebui2App')
     };
 
     /* API call to load Users - Channels Matrix */
-
-
 
     /* -------------------------Initial load & onChanged---------------------------- */
 

@@ -14,8 +14,6 @@
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
 
-        <pre>{{usersChannelsMatrix | json}}</pre>
-
         <!-- Users/Channels Matrix Table -->
         <button ng-if="usersChannelsMatrix" class="btn btn-primary" data-toggle="collapse" data-target="#users-channels-matrix" style="float: left; margin-bottom: 20px;"><i class="glyphicon glyphicon-star"></i> Users/Channels Matrix</button>
         <div id="users-channels-matrix" class="panel-body collapse" style="overflow-x: auto;">
