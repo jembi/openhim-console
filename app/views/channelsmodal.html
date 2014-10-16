@@ -189,6 +189,14 @@
 
           <h4>Add a new route</h4>
           <div class="form-group">
+            <label><span>*</span> Mediator Route</label>
+            <select class="form-control" ng-model="mediator.route" ng-change="addMediatorRoute()" ng-options="route as route.name for route in mediators">
+              <option value="">None</option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
             <label><span>*</span> Name</label>
             <input class="form-control" type="text" ng-model="newRoute.name" />
           </div>

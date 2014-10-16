@@ -28,6 +28,41 @@ describe('Controller: ChannelsmodalCtrl', function () {
       { 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] },
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
+      {
+        'uuid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+        'version': '0.0.1',
+        'name': 'Test 1 Mediator',
+        'description': 'Test 1 Description',
+        'defaultChannelConfig': [
+          {
+            'name': 'Mediator Channel 1',
+            'urlPattern': '/channel1',
+            'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
+            'allow': [ 'xdlab' ],
+            'type': 'http'
+          }
+        ],
+        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
+      },
+      {
+        'uuid': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
+        'version': '0.1.2',
+        'name': 'Test 2 Mediator',
+        'description': 'Test 2 Description',
+        'defaultChannelConfig': [
+          {
+            'name': 'Mediator Channel 2',
+            'urlPattern': '/channnel2',
+            'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }],
+            'allow': [ 'xdlab' ],
+            'type': 'http'
+          }
+        ],
+        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
+      }
+    ]);
+
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
@@ -315,6 +350,36 @@ describe('Controller: ChannelsmodalCtrl', function () {
 
     scope.taglistUserRoleOptions[0].should.equal('admin');
     scope.taglistUserRoleOptions[1].should.equal('limited');
+    
+  });
+
+
+  it('should check that selected mediator option is supplied in newRoute fields', function () {
+    
+    createController();
+    httpBackend.flush();
+
+    scope.newRoute.type.should.equal('http');
+    scope.newRoute.secured.should.equal(false);
+    scope.newRoute.should.not.have.property('name');
+    scope.newRoute.should.not.have.property('host');
+    scope.newRoute.should.not.have.property('port');
+
+    scope.mediator = {};
+    scope.mediator.route = { 'name': 'WC XD-LAB Mediator - WC XD-LAB Mediator',
+                              'route': { 'host': 'localhost',
+                                          'name': 'WC XD-LAB Mediator',
+                                          'port': '8148',
+                                          'type': 'http' } };
+
+    // run function to populate newRoute with mediator route details
+    scope.addMediatorRoute();
+
+    scope.newRoute.should.have.property('type', 'http');
+    scope.newRoute.should.have.property('secured', false);
+    scope.newRoute.should.have.property('name', 'WC XD-LAB Mediator');
+    scope.newRoute.should.have.property('host', 'localhost');
+    scope.newRoute.should.have.property('port', '8148');
     
   });
 
