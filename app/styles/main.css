@@ -756,6 +756,7 @@ body {
   .col-md-10{ width: 100%; }
   .sidebar{ display: none !important; }
   .topMenu{ display: block; }
+  #scrollToTop { display: none !important; }
 
    .header{
       height:auto;

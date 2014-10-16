@@ -12,6 +12,7 @@ angular.module('openhimWebui2App')
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
+    var userSettings = consoleSession.sessionUserSettings;
 
     $scope.checkAll = false;
     $scope.transactionsSelected = [];
@@ -32,6 +33,20 @@ angular.module('openhimWebui2App')
     $scope.settings.filter.dateEnd = '';
     $scope.settings.list = {};
     $scope.settings.list.tabview = 'same';
+
+    if ( userSettings ){
+      if ( userSettings.filter ){
+        $scope.settings.filter.limit = userSettings.filter.limit;
+        $scope.settings.filter.status = userSettings.filter.status;
+        $scope.settings.filter.channel = userSettings.filter.channel;
+        $scope.settings.filter.dateStart = '';
+        $scope.settings.filter.dateEnd = '';
+      }
+      
+      if ( userSettings.list ){
+        $scope.settings.list.tabview = userSettings.list.tabview;
+      }
+    }
     // setup default transactions settings
     
 
@@ -71,11 +86,13 @@ angular.module('openhimWebui2App')
     $scope.returnFilterObject = function(){
       var filtersObject = {};
       var startDate, endDate;
+      var filterStatus, filterChannel, filterDateStart, filterDateEnd;
 
-      var filterStatus = $scope.settings.filter.status;
-      var filterChannel = $scope.settings.filter.channel;
-      var filterDateStart = $scope.settings.filter.dateStart;
-      var filterDateEnd = $scope.settings.filter.dateEnd;
+      filterStatus = $scope.settings.filter.status;
+      filterChannel = $scope.settings.filter.channel;
+      filterDateStart = $scope.settings.filter.dateStart;
+      filterDateEnd = $scope.settings.filter.dateEnd;
+      
 
       if(filterStatus){ filtersObject.status = filterStatus; }
       if(filterChannel){ filtersObject.channelID = filterChannel; }

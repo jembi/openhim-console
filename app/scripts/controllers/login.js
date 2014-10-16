@@ -73,10 +73,15 @@ angular.module('openhimWebui2App')
           var sessionID = Math.random().toString(36).slice(2).toUpperCase();
 
           var sessionUserGroups = userProfile.groups;
+          var sessionUserSettings = userProfile.settings;
 
           //create session object
-          var consoleSessionObject = { 'sessionID': sessionID, 'sessionUser': loginEmail, 'sessionUserGroups': sessionUserGroups, 'expires': expireTime };
-
+          var consoleSessionObject = { 'sessionID': sessionID,
+                                        'sessionUser': loginEmail,
+                                        'sessionUserGroups': sessionUserGroups,
+                                        'sessionUserSettings': sessionUserSettings,
+                                        'expires': expireTime };
+                                        
           // Put the object into storage
           localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
         }

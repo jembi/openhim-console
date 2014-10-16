@@ -62,4 +62,15 @@ describe('Controller: TransactionsCtrl', function () {
     scope.should.have.property('rerunAllowedAdmin', true);
   });
 
+  it('should check that the user prefered filters are set', function () {
+    createController();
+    httpBackend.flush();
+
+    // the consoleSession object is setup with user profile in 'login.js'
+    scope.settings.filter.limit.should.equal('200');
+    scope.settings.filter.status.should.equal('Successful');
+    scope.settings.filter.channel.should.equal('5322fe9d8b6add4b2b059dd8');
+    scope.settings.list.tabview.should.equal('new');
+  });
+
 });

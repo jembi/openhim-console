@@ -14,6 +14,23 @@ angular.module('openhimWebui2App')
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
 
+    // get the mediators for the route option
+    Api.Mediators.query(function(mediators){
+      $scope.mediator = {};
+      $scope.mediator.route = {};
+      $scope.mediators = [];
+
+      // foreach mediator
+      angular.forEach(mediators, function(mediator){
+        // foreach endpoint in the mediator
+        angular.forEach(mediator.endpoints, function(route){
+          $scope.mediators.push({ 'name': mediator.name + ' - ' + route.name, route: route });
+        });
+      });
+    }, function(){ /* server error - could not connect to API to get Mediators */ });
+
+
+
     // get the users for the Channel taglist option
     $scope.alertUsers = Api.Users.query(function(){
       $scope.usersMap = {};
@@ -172,6 +189,20 @@ angular.module('openhimWebui2App')
 
     // define the routes backup object
     $scope.channelRoutesBackup = null;
+    
+    $scope.addMediatorRoute = function () {
+      if ( $scope.mediator.route ){
+        $scope.newRoute.type = $scope.mediator.route.route.type;
+        $scope.newRoute.name = $scope.mediator.route.route.name;
+        $scope.newRoute.host = $scope.mediator.route.route.host;
+        $scope.newRoute.port = $scope.mediator.route.route.port;
+      }else{
+        // reset the backing object
+        resetRouteFields();
+      }
+
+    };
+
     $scope.addRoute = function (newRoute) {
       if (!$scope.channel.routes) {
         $scope.channel.routes = [];
@@ -181,16 +212,7 @@ angular.module('openhimWebui2App')
       $scope.channelRoutesBackup = null;
 
       // reset the backing object
-      $scope.newRoute.type = 'http';
-      $scope.newRoute.secured = false;
-      $scope.newRoute.name = null;
-      $scope.newRoute.path = null;
-      $scope.newRoute.pathTransform = null;
-      $scope.newRoute.host = null;
-      $scope.newRoute.port = null;
-      $scope.newRoute.username = null;
-      $scope.newRoute.password = null;
-      $scope.newRoute.primary = false;
+      resetRouteFields();
 
       // Check if any route warnings exist and add them to alerts route object
       $scope.hasRouteWarnings();
@@ -218,6 +240,23 @@ angular.module('openhimWebui2App')
 
       // Check if any route warnings exist and add them to alerts route object
       $scope.hasRouteWarnings();
+    };
+
+    var resetRouteFields = function(){
+
+      // reset the dropdown option
+      $scope.mediator.route = null;
+
+      $scope.newRoute.type = 'http';
+      $scope.newRoute.secured = false;
+      $scope.newRoute.name = null;
+      $scope.newRoute.path = null;
+      $scope.newRoute.pathTransform = null;
+      $scope.newRoute.host = null;
+      $scope.newRoute.port = null;
+      $scope.newRoute.username = null;
+      $scope.newRoute.password = null;
+      $scope.newRoute.primary = false;
     };
 
     /**********************************************************/
