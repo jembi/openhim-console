@@ -45,7 +45,7 @@
                 <tr>
                   <th width="50">#</th>
                   <th>User</th>
-                  <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:channel.name:reverse" style="text-align: center;">{{channel.name}}</th>
+                  <th ng-repeat="channel in usersChannelsMatrix.channels" style="text-align: center;">{{channel.name}}</th>
                 </tr>
               </thead>
               <tbody>
