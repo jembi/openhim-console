@@ -86,7 +86,6 @@ describe('Controller: UsersCtrl', function () {
 
 
   it('should attached a usersChannelsMatrix object to the scope', function () {
-    //httpBackend.expectGET(new RegExp('.*/usersChannelsMatrix'));
     createController();
     httpBackend.flush();
 
@@ -104,7 +103,6 @@ describe('Controller: UsersCtrl', function () {
     scope.usersChannelsMatrix.users[1].allowedChannels.length.should.equal(2);
     scope.usersChannelsMatrix.users[1].allowedChannelsBody.length.should.equal(0);
     scope.usersChannelsMatrix.users[1].allowedChannelsRerun.length.should.equal(1);
-    
   });
 
 });

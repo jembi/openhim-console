@@ -14,14 +14,6 @@
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
 
-        <style>
-        .usersChannelsMatrixDiv { overflow-x: auto; }
-        .usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
-        .usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
-        .usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
-        .usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }
-        </style>
-
         <!-- Users/Channels Matrix Table -->
         <button ng-if="usersChannelsMatrix" class="btn btn-primary" data-toggle="collapse" data-target="#users-channels-matrix" style="float: left; margin-bottom: 20px;"><i class="glyphicon glyphicon-eye-open"></i> Show/hide Users to Channels permissions</button>
         <div id="users-channels-matrix" class="panel-body collapse usersChannelsMatrixDiv">

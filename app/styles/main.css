@@ -927,3 +927,8 @@ body {
 .transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
 
 .usersChannelsMatrixTD { text-align: center; }
+.usersChannelsMatrixDiv { overflow-x: auto; }
+.usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
+.usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }
