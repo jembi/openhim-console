@@ -14,6 +14,75 @@
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
 
+        <!-- Users/Channels Matrix Table -->
+        <button ng-if="usersChannelsMatrix" class="btn btn-primary" data-toggle="collapse" data-target="#users-channels-matrix" style="float: left; margin-bottom: 20px;"><i class="glyphicon glyphicon-eye-open"></i> Show/hide Users to Channels permissions</button>
+        <div id="users-channels-matrix" class="panel-body collapse usersChannelsMatrixDiv">
+
+          <div class="usersChannelsMatrixLegendDiv">
+            <title>Legend:</title>
+            <div>
+              <span tooltip="User allowed to view transactions"><i class="isAllowed glyphicon glyphicon-eye-open"></i></span>
+              <span tooltip="User NOT allowed to view transactions"><i class="isNotAllowed glyphicon glyphicon-eye-open"></i></span>  
+              Allowed to View Transactions
+            </div>
+            
+            <div>
+              <span tooltip="User allowed to view transaction's body"><i class="isAllowed glyphicon glyphicon-book"></i></span>
+              <span tooltip="User NOT allowed to view transaction's body"><i class="isNotAllowed glyphicon glyphicon-book"></i></span>
+              Allowed to View a Transaction's Body
+            </div>
+
+            <div>
+              <span tooltip="User allowed to rerun transactions"><i class="isAllowed glyphicon glyphicon-repeat"></i></span>
+              <span tooltip="User NOT allowed to rerun transactions"><i class="isNotAllowed glyphicon glyphicon-repeat"></i></span>
+              Allowed to Rerun Transactions
+            </div>
+          </div>
+
+          <div id="no-more-tables">
+            <table class="table table-bordered" style="width: auto;">
+              <thead>
+                <tr>
+                  <th width="50">#</th>
+                  <th>User</th>
+                  <th ng-repeat="channel in usersChannelsMatrix.channels" style="text-align: center;">{{channel.name}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="user in usersChannelsMatrix.users">
+                  <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                  <td data-title="User">{{ user.user }}</td>
+                  
+                  <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
+
+                    <!-- show if channel is allowed -->
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannels)" class="isAllowed glyphicon glyphicon-eye-open"></i>
+
+                    <!-- show if channel is NOT allowed -->
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannels)" class="isNotAllowed glyphicon glyphicon-eye-open"></i>
+
+
+                    <!-- show if channel is allowed -->
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsBody)" class="isAllowed glyphicon glyphicon-book"></i>
+
+                    <!-- show if channel is NOT allowed -->
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsBody)" class="isNotAllowed glyphicon glyphicon-book"></i>
+
+
+                    <!-- show if channel is allowed -->
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsRerun)" class="isAllowed glyphicon glyphicon-repeat"></i>
+
+                    <!-- show if channel is NOT allowed -->
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsRerun)" class="isNotAllowed glyphicon glyphicon-repeat"></i>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
         <div class="panel-body">
           <div id="no-more-tables">
             <table class="table table-striped">

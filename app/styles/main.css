@@ -895,6 +895,8 @@ body {
     .task-detail-container .data-group>label { width: 35%; }
     .transaction-detail-container .data-group>label { width: 35%; }
     .table .progress { width: 100%; }
+
+    .usersChannelsMatrixTD { text-align: left; }
 }
 
 @media (max-width: 500px) {
@@ -923,3 +925,10 @@ body {
 .transaction_settings_tabset ul { background-color: #fff; }
 .transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
 .transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
+
+.usersChannelsMatrixTD { text-align: center; }
+.usersChannelsMatrixDiv { overflow-x: auto; }
+.usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
+.usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }

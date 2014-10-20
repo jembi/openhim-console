@@ -10,6 +10,60 @@ angular.module('openhimWebui2App')
       if( users.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no users created');
       }
+
+
+      /* ----- Users Channels matrix ----- */
+      // Query all channels for Users Channels matrix table
+      Api.Channels.query(function(channels){
+      
+        var usersArray = [];
+        var channelsArray = [];
+
+        // loop through channels to create channels map
+        angular.forEach(channels, function(channnel){
+          channelsArray.push({ 'id': channnel._id, 'name':channnel.name });
+        });
+
+        // loop through all users
+        angular.forEach(users, function(user){
+
+          var allowedChannels = [];
+          var allowedChannelsRerun = [];
+          var allowedChannelsBody = [];
+
+          // loop through channels to determine if user has permissions
+          angular.forEach(channels, function(channel){
+
+            // loop through each user group to check if channel has access
+            angular.forEach(user.groups, function(group){
+
+              // check if user group found in channel txViewAcl
+              if ( channel.txViewAcl.indexOf(group) >= 0 || group === 'admin' ){
+                allowedChannels.push(channel._id);
+              }
+
+              // check if user group found in channel txViewFullAcl
+              if ( channel.txViewFullAcl.indexOf(group) >= 0 || group === 'admin' ){
+                allowedChannelsBody.push(channel._id);
+              }
+
+              // check if user group found in channel txRerunAcl
+              if ( channel.txRerunAcl.indexOf(group) >= 0 || group === 'admin' ){
+                allowedChannelsRerun.push(channel._id);
+              }
+            });
+          });
+
+          usersArray.push({ 'user': user.email, 'allowedChannels':allowedChannels, 'allowedChannelsBody':allowedChannelsBody, 'allowedChannelsRerun':allowedChannelsRerun });
+        });
+
+        $scope.usersChannelsMatrix = {};
+        $scope.usersChannelsMatrix.channels = channelsArray;
+        $scope.usersChannelsMatrix.users = usersArray;
+
+      }, function(){ /* server error - could not connect to API to get channels */ });
+      /* ----- Users Channels matrix ----- */
+
     };
 
     var queryError = function(err){
@@ -23,7 +77,18 @@ angular.module('openhimWebui2App')
     $scope.$on('usersChanged', function () {
       Api.Users.query(querySuccess, queryError);
     });
+
     /* -------------------------Initial load & onChanged---------------------------- */
+
+
+    // function to determine if channel is in the allowedChannels array
+    $scope.isAllowedChannel = function(channelID, allowedChannels){
+      // check if channelID is found in allowedChannels
+      if ( allowedChannels.indexOf(channelID) >= 0 ){
+        return true;
+      }
+      return false;
+    };
 
 
 
