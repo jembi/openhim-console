@@ -32,7 +32,10 @@ angular.module('openhimWebui2App')
 
       ContactGroups: $resource('https://' + HOST + ':' + PORT + '/groups/:groupId', { groupId: '@_id' }, {
         update: { method: 'PUT' }
-      })
+      }),
+
+      // endpoint to restart the core server
+      Restart: $resource('https://' + HOST + ':' + PORT + '/restart', {})
 
     };
   });

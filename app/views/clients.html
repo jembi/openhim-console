@@ -14,6 +14,19 @@
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
 
+        <!-- Restart the server message -->
+        <div ng-if="serverRestartRequired" style="padding: 10px; border: 1px solid #d2322d; margin-bottom: 10px; text-align: center;">
+          <div style="margin-bottom: 10px;font-weight: bold; font-size: 16px;">When adding/updating a clients' certificate, a server restart is required for it to be applied.</div>
+          <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button><span style="font-weight: bold; font-size: 16px;"> - Or manually restart it later.</span>
+        </div>
+
+        <!-- Server busy restarting -->
+        <div ng-if="serverRestarting" style="padding: 10px; border: 1px solid #d2322d; margin-bottom: 10px; text-align: center;">
+          <div style="margin-bottom: 10px; font-weight: bold; text-align: center; font-size: 16px;">The server is currently being restarted.</div>
+          <img src="images/loading.gif" alt="Loading..." />
+          <div style="margin-bottom: 10px; font-weight: bold; text-align: center; font-size: 16px;">Roughly <u>{{restartTimeout}}</u> seconds remain before the server will have restarted.</div> 
+        </div>
+
         <div class="panel-body">
           <div id="no-more-tables">
             <table class="table table-striped">
