@@ -9,7 +9,9 @@ angular.module('openhimWebui2App')
 
     // server restart confirm function
     $scope.restartServer = function(){
-      Api.Restart.get(function(){
+
+      var restartServer = new Api.Restart();
+      restartServer.$save({}, function(){
         // restart request sent successfully
 
         // update restart variables
@@ -28,9 +30,14 @@ angular.module('openhimWebui2App')
             $interval.cancel(restartInterval);
           }
         }, 1000);
-
-
       }, function(){ /* server error - could not connect to API send restart request */ });
+
+
+      //Api.Restart.get(function(){
+        
+
+
+      //}, function(){ /* server error - could not connect to API send restart request */ });
     };
 
 
