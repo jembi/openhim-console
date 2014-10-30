@@ -10,7 +10,7 @@ angular.module('openhimWebui2App')
     // server restart later function
     $scope.restartServerLater = function(){
       $rootScope.serverRestartRequired = false;
-    }
+    };
 
     // server restart confirm function
     $scope.restartServer = function(){
