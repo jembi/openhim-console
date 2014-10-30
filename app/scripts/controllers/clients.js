@@ -7,7 +7,7 @@ angular.module('openhimWebui2App')
     $scope.serverRestarting = false;
     $scope.restartTimeout = 0;
 
-    // server restart confirm function
+    // server restart later function
     $scope.restartServerLater = function(){
       $rootScope.serverRestartRequired = false;
     }
