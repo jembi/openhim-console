@@ -8,6 +8,11 @@ angular.module('openhimWebui2App')
     $scope.restartTimeout = 0;
 
     // server restart confirm function
+    $scope.restartServerLater = function(){
+      $rootScope.serverRestartRequired = false;
+    }
+
+    // server restart confirm function
     $scope.restartServer = function(){
 
       var restartServer = new Api.Restart();
