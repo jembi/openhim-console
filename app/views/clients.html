@@ -17,7 +17,9 @@
         <!-- Restart the server message -->
         <alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
           <div style="margin-bottom: 10px;">When adding/updating a clients' certificate, a server restart is required for it to be applied.</div>
-          <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button><span> - Or manually restart it later.</span>
+          <!-- Remove restart button untill the node bug has been corrected -->
+          <!--<button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button><span> - Or manually restart it later.</span>-->
+          <button class="btn btn-danger btn-lg">I'll manually restart later</button>
         </alert>
 
         <!-- Server busy restarting -->
