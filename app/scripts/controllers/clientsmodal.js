@@ -2,7 +2,7 @@
 /* global CryptoJS: false */
 
 angular.module('openhimWebui2App')
-  .controller('ClientsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, client) {
+  .controller('ClientsModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, client) {
     
     /***************************************************************/
     /**   These are the functions for the Client initial load     **/
@@ -34,6 +34,10 @@ angular.module('openhimWebui2App')
       $scope.client = new Api.Clients();
     }
 
+    // backup original client certifcate
+    $scope.originalCertificate = angular.copy($scope.client.cert);
+    $rootScope.serverRestartRequired = false;
+
     /***************************************************************/
     /**   These are the functions for the Client initial load     **/
     /***************************************************************/
@@ -45,9 +49,16 @@ angular.module('openhimWebui2App')
     /**************************************************************/
 
     var success = function () {
+
+      // if client certificate has changed - display restart message
+      if ( $scope.originalCertificate !== $scope.clientBackup.cert ){
+        $rootScope.serverRestartRequired = true;
+      }
+
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The client has been saved successfully');
       notifyUser();
+      
     };
 
     var error = function (err) {
@@ -63,6 +74,8 @@ angular.module('openhimWebui2App')
     };
 
     var saveClient = function (client) {
+      // set backup client object to check if cert has changed
+      $scope.clientBackup = angular.copy(client);
       if ($scope.update) {
         client.$update(success, error);
       } else {
