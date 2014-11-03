@@ -127,7 +127,7 @@
                       <th>Path</th>                      
                       <th>Request Params</th>
                       <th>Status</th>
-                      <th>Request Time</th>
+                      <th>Response Time</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -137,7 +137,7 @@
                       <td data-title="Path">{{ route.request.path }}</td>
                       <td data-title="Request Params">{{ route.request.querystring }}</td>
                       <td data-title="Status">{{ route.response.status }}</td>
-                      <td data-title="Request Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                      <td data-title="Response Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -157,7 +157,7 @@
                       <th>Path</th>                      
                       <th>Request Params</th>
                       <th>Status</th>
-                      <th>Request Time</th>
+                      <th>Response Time</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -167,7 +167,7 @@
                       <td data-title="Path">{{ orchestration.request.path }}</td>
                       <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
                       <td data-title="Status">{{ orchestration.response.status }}</td>
-                      <td data-title="Request Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                      <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                     </tr>
                   </tbody>
                 </table>
