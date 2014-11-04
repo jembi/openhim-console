@@ -32,6 +32,11 @@
           </label>
         </div>
       </div>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
+        <label><span></span> Description</label>
+        <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
 
       <div class="form-group-2columns">
         <label style="display: block;">Channel Type</label>
