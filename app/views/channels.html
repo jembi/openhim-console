@@ -21,6 +21,7 @@
                   <tr>
                     <th width="50">#</th>
                     <th>Channel Name</th>
+                    <th>Channel Description</th>
                     <th>Channel Load <br />(# transactions / Week)</th>
                     <th>Monitoring</th>
                     <th>Status</th>
@@ -31,11 +32,12 @@
                 <tr ng-repeat="channel in channels">
                   <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
                   <td data-title="Channel Name"><a href="" ng-click="editChannel(channel)">{{ channel.name }}</a></td>
+                  <td data-title="Channel Name"><a href="" ng-click="editChannel(channel)">{{ channel.description }}</a></td>
                   <td data-title="Channel Load"><a href="">0</a></td>
                   <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">Active</td>
                   <td>
-                    <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                    <button class="btn btn-warning btn-xs" ng-click="editChannel(channel)"><i class="glyphicon glyphicon-pencil"></i></button>
                     <button class="btn btn-danger btn-xs" ng-click="confirmDelete(channel)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>
