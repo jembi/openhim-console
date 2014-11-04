@@ -29,7 +29,7 @@
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
         <label><span></span> Description</label>
-        <input class="form-control" placeholder="About channel..." type="text" ng-model="channel.description" />
+        <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
