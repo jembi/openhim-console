@@ -26,6 +26,11 @@
         <label><span>*</span> URL Pattern</label>
         <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" />
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <div class="checkbox">
+          <label tooltip="This automatically adds start and ending regex">
+            <input type="checkbox" ng-model="channel.regex" /> Add regex
+          </label>
+        </div>
       </div>
 
       <div class="form-group-2columns">
@@ -141,7 +146,7 @@
           <!-- Route Alerts -->
           <alert ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
           <!-- Route Alerts -->
-          
+
           <div ng-show="channel.routes.length > 0">
             <div id="no-more-tables">
               <table class="table table-striped">
@@ -178,7 +183,7 @@
                     <td data-title="Port">{{ route.port }}</td>
                     <td data-title="Primary"><span ng-show="route.primary">&check;</span></td>
                     <td>
-                      <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                      <button class="btn btn-warning btn-xs" ng-click="editRoute($index, route)"><i class="glyphicon glyphicon-pencil"></i></button>
                       <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
                     </td>
                   </tr>
@@ -217,7 +222,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="form-group-2columns">
             <div class="form-group" style="float: left;">
               <label><span>**</span> Path</label>
@@ -269,7 +274,7 @@
         <tab>
           <tab-heading>Alerts</tab-heading>
           <h3>Alerts</h3>
-          <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>          
+          <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>
           <div ng-show="channel.alerts.length > 0">
             <div id="no-more-tables">
               <table class="table table-striped">
@@ -279,7 +284,7 @@
                     <th>Status</th>
                     <th>Users</th>
                     <th>Groups</th>
-                    <th>Failure Rate (%)</th>              
+                    <th>Failure Rate (%)</th>
                     <th width="70"></th>
                   </tr>
                 </thead>
@@ -291,7 +296,7 @@
                     <td data-title="Groups">{{ alert.groups.length }}</td>
                     <td data-title="Failure Rate (%)">{{ alert.failureRate }}</td>
                     <td>
-                      <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                      <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button>
                       <button class="btn btn-danger btn-xs" ng-click="removeAlert($index)"><i class="glyphicon glyphicon-remove"></i></button>
                     </td>
                   </tr>
@@ -318,8 +323,8 @@
 
 
           <tabset justified="true">
-            
-            <tab heading="Add Users">              
+
+            <tab heading="Add Users">
               <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
               <div class="form-group" style="margin-top: 15px;">
                 <label><span>**</span> Add a new user</label>
@@ -343,7 +348,7 @@
                           <td data-title="Method">{{ user.method }}</td>
                           <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
                           <td>
-                            <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                            <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button>
                             <button class="btn btn-danger btn-xs" ng-click="removeAlertUser($index)"><i class="glyphicon glyphicon-remove"></i></button>
                           </td>
                         </tr>
@@ -420,7 +425,7 @@
 
 
 
-          
+
 
 
 
