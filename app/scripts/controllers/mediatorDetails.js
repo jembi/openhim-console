@@ -17,7 +17,7 @@ angular.module('openhimWebui2App')
     };
 
     //get the Data for the supplied ID and store in 'mediatorDetails' object
-    Api.Mediators.get({ uuid: $routeParams.uuid }, querySuccess, queryError);
+    Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError);
 
     /***************************************************/
     /**         Initial page load functions           **/

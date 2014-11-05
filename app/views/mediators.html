@@ -19,18 +19,18 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>UUID</th>
+                  <th>URN</th>
                   <th>Name</th>
                   <th>Description</th>
                   <th>Version</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="table-list" ng-repeat="mediator in mediators" ng-click='viewMediatorDetails("/mediators/" + mediator.uuid, $event)'>
+                <tr class="table-list" ng-repeat="mediator in mediators" ng-click='viewMediatorDetails("/mediators/" + mediator.urn, $event)'>
                   <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
                     <span>{{ $index +1 }}</span>
                   </td>
-                  <td data-title="UUID">{{ mediator.uuid }}</td>
+                  <td data-title="UUID">{{ mediator.urn }}</td>
                   <td data-title="Name">{{ mediator.name }}</td>
                   <td data-title="Description">{{ mediator.description }}</td>
                   <td data-title="Version">{{ mediator.version }}</td>

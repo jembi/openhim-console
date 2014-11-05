@@ -71,7 +71,7 @@ angular
         templateUrl: 'views/mediators.html',
         controller: 'MediatorsCtrl'
       })
-      .when('/mediators/:uuid', {
+      .when('/mediators/:urn', {
         templateUrl: 'views/mediatorDetails.html',
         controller: 'MediatorDetailsCtrl'
       })
