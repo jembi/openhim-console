@@ -29,10 +29,10 @@
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;">
-          <label tooltip="This automatically adds start and ending regex">Add regex delimiters </label>
-          <div class="checkbox">
+          <label tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want.">
               <input type="checkbox" ng-model="channel.regex" ng-change="addRegexDelimiters(channel)" />
-          </div>
+              Auto-add regex delimiters
+          </label>
         </div>
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
