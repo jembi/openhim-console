@@ -24,11 +24,11 @@
       </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.urlPattern }">
         <label><span>*</span> URL Pattern</label>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" />
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-blur="allowRegexDelimiters(channel)"  />
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         <div class="checkbox">
           <label tooltip="This automatically adds start and ending regex">
-            <input type="checkbox" ng-model="channel.regex" /> Add regex
+            <input type="checkbox" ng-model="channel.regex" ng-change="addRegexDelimiters(channel)" /> Add regex delimiters
           </label>
         </div>
       </div>
