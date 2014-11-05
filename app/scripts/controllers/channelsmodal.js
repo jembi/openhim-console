@@ -88,6 +88,7 @@ angular.module('openhimWebui2App')
       $scope.update = false;
       $scope.channel = new Api.Channels();
       $scope.channel.type = 'http';
+      $scope.channel.routes = [];
     }
 
     /****************************************************************/
@@ -190,7 +191,7 @@ angular.module('openhimWebui2App')
     // define the routes backup object
     $scope.channelRoutesBackup = null;
     
-    $scope.addMediatorRoute = function () {
+    /*$scope.addMediatorRoute = function () {
       if ( $scope.mediator.route ){
         $scope.newRoute.type = $scope.mediator.route.route.type;
         $scope.newRoute.name = $scope.mediator.route.route.name;
@@ -216,7 +217,7 @@ angular.module('openhimWebui2App')
 
       // Check if any route warnings exist and add them to alerts route object
       $scope.hasRouteWarnings();
-    };
+    };*/
 
     $scope.editRoute = function (routeIndex, route) {
 
@@ -628,4 +629,72 @@ angular.module('openhimWebui2App')
     /***************************************************************************/
 
 
-  });
+
+    $scope.primaryOptions = [{ key: false, value: 'False' }, { key: true, value: 'True' }];
+    $scope.typeOptions = [{ key: 'http', value: 'HTTP' }, { key: 'tcp', value: 'TCP' }];
+    $scope.securedOptions = [{ key: false, value: 'Not Secured' }, { key: true, value: 'Secured' }];
+
+
+    $scope.checkRouteName = function(value) {
+      if ( value.length == 0 ) {
+        return "Route name is required!";
+      }
+    };
+
+
+    // remove route
+    $scope.removeRoute = function(index) {
+      $scope.channel.routes.splice(index, 1);
+    };
+
+    // add user
+    $scope.addRoute = function() {
+      $scope.newRoute = {
+        name: "",
+        secured: false,
+        host: "",
+        port: "",
+        path: "",
+        pathTransform: "",
+        primary: false,
+        username: "",
+        password: "",
+        type : "http"
+      };
+      $scope.channel.routes.push($scope.newRoute);
+    };
+
+    // add Mediator Route
+    $scope.addMediatorRoute = function() {
+
+      if ( $scope.mediator.route ){
+        $scope.newRoute = {
+          name: $scope.mediator.route.route.name,
+          secured: false,
+          host: $scope.mediator.route.route.host,
+          port: $scope.mediator.route.route.port,
+          path: "",
+          pathTransform: "",
+          primary: false,
+          username: "",
+          password: "",
+          type : $scope.mediator.route.route.type
+        };
+        $scope.channel.routes.push($scope.newRoute);
+
+      }
+    };
+
+
+
+
+
+
+
+
+
+
+
+  }).run(function(editableOptions) {
+    editableOptions.theme = 'bs3';
+  });;

@@ -8,7 +8,7 @@
   </h4>
 </div>
 
-<form name="form" novalidate>
+<!--<form name="form" novalidate>-->
   <div class="modal-body">
 
     <div class="form-group has-error-key">
@@ -141,8 +141,91 @@
           <!-- Route Alerts -->
           <alert ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
           <!-- Route Alerts -->
+
+          <pre>{{channel.routes | json}}</pre>
+
+          <style>
+          .primaryRoute { background: #428bca; color: #fff; }
+          .editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
+          </style>
           
-          <div ng-show="channel.routes.length > 0">
+          <div id="no-more-tables">
+            <table class="table table-striped">
+              <tr style="font-weight: bold">
+                <td>Name</td>
+                <td>Type | Secured</td>
+                <td>Host | Port</td>
+                <td>Path/Transform</td>
+                <td></td>
+                <td style="width:70px"></td>
+              </tr>
+              <tr ng-repeat="route in channel.routes">
+
+                <td>
+
+                  <span editable-text="route.name" e-name="name" e-form="rowform" e-placeholder="Route Name" e-title="Route Name" onbeforesave="checkRouteName($data)" e-required>{{ route.name }}</span>
+
+
+                  
+                  <span editable-select="route.primary" e-name="primary" e-form="rowform" e-title="Primary Route?" e-ng-options="option.key as option.value for option in primaryOptions"></span>
+                  <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
+                    <i ng-if="route.primary" class="glyphicon glyphicon-star" style="color: #428bca"></i>
+                  </label>
+                </td>
+
+                <td>
+                  <span editable-select="route.type" e-name="type" e-form="rowform" e-title="Route Type?" e-ng-options="option.key as option.value for option in typeOptions">
+                    <span ng-if="route.type=='http'" class="btn-info btn-xs">HTTP</span> 
+                    <span ng-if="route.type=='tcp'" class="btn-warning btn-xs">TCP</span>
+                  </span>
+
+                  <span editable-select="route.secured" e-name="secured" e-form="rowform" e-title="Route Secured?" e-ng-options="option.key as option.value for option in securedOptions">
+                    <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span> 
+                    <span ng-if="route.secured==false" class="btn-danger btn-xs">Unsecured</span>
+                  </span>
+                </td>
+
+                <td>
+                  <span editable-text="route.host" e-name="host" e-form="rowform" e-placeholder="Host" e-title="Route Host" onbeforesave="checkRouteName($data)" e-required>{{ route.host }}</span>
+                  <span editable-text="route.port" e-name="port" e-form="rowform" e-placeholder="Port" e-title="Route Port" onbeforesave="checkRouteName($data)" e-required>:{{ route.port }}</span>
+                </td>
+
+                <td>
+                  <span editable-text="route.path" e-name="path" e-form="rowform" e-placeholder="Path" e-title="Route Path">{{ route.path }}</span>
+                  <span editable-text="route.pathTransform" e-name="pathTransform" e-form="rowform" e-placeholder="Path Transform" e-title="Route Path Transform">{{ route.pathTransform }}</span>
+                </td>
+
+                <td>
+                  <span editable-text="route.username" e-name="username" e-form="rowform" e-placeholder="Auth Username" e-title="Basic Auth Username">{{ route.username }}</span>
+                  <span editable-text="route.username" e-name="username" e-form="rowform" e-placeholder="Auth Password" e-title="Basic Auth Password">{{ route.password }}</span>
+                </td>
+
+
+                <td style="white-space: nowrap">
+                  <!-- form -->
+                  <form editable-form name="rowform" onbeforesave="saveRoute($data, route.name)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="newRoute == route">
+                    <button class="btn btn-warning btn-xs" ng-disabled="rowform.$waiting" type="submit"><i class="glyphicon glyphicon-pencil"></i></button> 
+                    <button class="btn btn-default btn-xs" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"><i class="glyphicon glyphicon-remove"></i></button>
+                  </form>
+                  <div class="buttons" ng-show="!rowform.$visible">
+                    <button class="btn btn-success btn-xs" ng-click="rowform.$show()"><i class="glyphicon glyphicon-ok"></i></button> 
+                    <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </div>  
+                </td>
+              </tr>
+            </table>
+          </div>
+          <button style="float: left; margin-right: 20px;" class="btn btn-default" ng-click="addRoute()">Add New Route</button>
+          <select style="float: left; width: auto;" class="form-control" ng-model="mediator.route" ng-change="addMediatorRoute(route)" ng-options="route as route.name for route in mediators">
+            <option value="">Add Mediator Route</option>
+          </select>
+
+
+
+
+
+          
+          <!--<div ng-show="channel.routes.length > 0">
             <div id="no-more-tables">
               <table class="table table-striped">
                 <thead>
@@ -260,7 +343,7 @@
           </div>
           <button class="btn btn-sm btn-primary" ng-click="addRoute(newRoute)" ng-disabled="!isRouteValid()">
             <i class="glyphicon glyphicon-plus"></i> Route
-          </button>
+          </button>-->
         </tab>
 
 
@@ -450,4 +533,4 @@
   </div>
 
 
-</form>
+<!--</form>-->

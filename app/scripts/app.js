@@ -7,7 +7,8 @@ angular
     'ngSanitize',
     'ngRoute',
     'ui.bootstrap',
-    'angular_taglist_directive'
+    'angular_taglist_directive',
+    'xeditable'
   ])
   .config(function ($routeProvider) {
     $routeProvider
