@@ -120,6 +120,32 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
+    $scope.allowRegexDelimiters = function (channel) {
+      if ($scope.channel.regex == true) {
+        //do nothing
+      } else {
+
+        if (confirm('Automatically add regex delimiters')) {
+          channel.regex = true;
+        }
+        else {
+         //do nothing
+        }
+      }
+      $scope.addRegexDelimiters(channel);
+    };
+
+    $scope.addRegexDelimiters = function(channel){
+
+      if ($scope.channel.regex == true) {
+          channel.urlPattern = "^\\" + channel.urlPattern + '$'
+      } else {
+        // Remove decorations
+        channel.urlPattern = channel.urlPattern.replace("^\\", '');
+        channel.urlPattern = channel.urlPattern.replace("$", '');
+      }
+    };
+
     $scope.saveOrUpdate = function(channel, contentMatching) {
 
       switch (channel.type) {
@@ -189,7 +215,7 @@ angular.module('openhimWebui2App')
 
     // define the routes backup object
     $scope.channelRoutesBackup = null;
-    
+
     $scope.addMediatorRoute = function () {
       if ( $scope.mediator.route ){
         $scope.newRoute.type = $scope.mediator.route.route.type;
