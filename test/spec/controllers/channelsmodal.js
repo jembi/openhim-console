@@ -6,7 +6,7 @@ describe('Controller: ChannelsmodalCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var scope, createController, httpBackend;
+  var scope, createController, createController, httpBackend;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -66,18 +66,15 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
+
     createController = function () {
-      var channel;
-      channel = {
-        $save: sinon.spy(),
-        $update: sinon.spy()
-      };
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: channel
+        channel: null
       });
     };
+
   }));
 
   afterEach(function() {
@@ -321,6 +318,8 @@ describe('Controller: ChannelsmodalCtrl', function () {
     createController();
     httpBackend.flush();
 
+    scope.channel.$save = sinon.spy();
+
     // update is false so create new channel
     scope.update = false;
 
@@ -334,6 +333,7 @@ describe('Controller: ChannelsmodalCtrl', function () {
     // run the submit
     scope.submitFormChannels();
     scope.ngError.should.have.property('hasErrors', false);
+
     scope.channel.$save.should.be.called;
   });
 
@@ -341,6 +341,8 @@ describe('Controller: ChannelsmodalCtrl', function () {
   it('should run submitFormChannels() and add the regex delimiters to the URL Pattern', function () {
     createController();
     httpBackend.flush();
+
+    scope.channel.$save = sinon.spy();
 
     // update is false so create new channel
     scope.update = false;
@@ -365,11 +367,14 @@ describe('Controller: ChannelsmodalCtrl', function () {
     createController();
     httpBackend.flush();
 
+    scope.channel.$update = sinon.spy();
+
     // update is false so create new channel
     scope.update = true;
 
     scope.channel.name = 'ChannelName';
     scope.channel.urlPattern = 'sample/api';
+    scope.urlPattern.regex = false;
     scope.channel.allow = ['allow1', 'allow2'];
     scope.matching.contentMatching = 'XML matching';
     scope.channel.matchContentXpath = 'XPath';
