@@ -6,7 +6,7 @@ describe('Controller: ChannelsmodalCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
-  var scope, createController, createController, httpBackend;
+  var scope, createController, httpBackend;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
