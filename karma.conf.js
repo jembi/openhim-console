@@ -29,7 +29,8 @@ module.exports = function(config) {
       'test/mock/**/*.js',
       'test/spec/**/*.js',
       'app/bower_components/moment/moment.js',
-      'app/bower_components/morris.js/morris.js'
+      'app/bower_components/morris.js/morris.js',
+      'app/bower_components/angular-xeditable/dist/js/xeditable.js'
     ],
 
     // list of files / patterns to exclude
