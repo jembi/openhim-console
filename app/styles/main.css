@@ -917,7 +917,9 @@ body {
   }
 }
 
-
+.addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
+.addUrlRegexDelimiterDiv label { margin: 0px; }
+.addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
 
 .scollNavAnchor { display: none; position: fixed; }
 .row .col-md-10 { float: right; }

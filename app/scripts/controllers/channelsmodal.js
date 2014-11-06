@@ -76,6 +76,7 @@ angular.module('openhimWebui2App')
     $scope.newRoute = {};
     $scope.newRoute.type = 'http';
     $scope.newRoute.secured = false;
+    $scope.urlPatternRegex = true;
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
@@ -120,24 +121,9 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
-    $scope.allowRegexDelimiters = function (channel) {
-      if ($scope.channel.regex == true) {
-        //do nothing
-      } else {
-
-        if (confirm('Automatically add regex delimiters')) {
-          channel.regex = true;
-        }
-        else {
-         //do nothing
-        }
-      }
-      $scope.addRegexDelimiters(channel);
-    };
-
     $scope.addRegexDelimiters = function(channel){
 
-      if ($scope.channel.regex == true) {
+      if ($scope.urlPatternRegex == true) {
           channel.urlPattern = "^\\" + channel.urlPattern + '$'
       } else {
         // Remove decorations

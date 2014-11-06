@@ -17,6 +17,48 @@
     </div>
 
     <fieldset>
+      
+      
+
+
+
+
+      <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
+        <label><span>*</span> Channel name</label>
+        <input class="form-control" type="text" ng-model="channel.name" focus="{{!update}}" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.urlPattern }">
+
+
+        <div class="form-group" style="float: left;">
+          <label><span>*</span> URL Pattern</label>
+          <div class="input-group">
+            <div class="input-group-addon addUrlRegexDelimiterDiv" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want.">
+              <label>
+                <input type="checkbox" ng-model="urlPatternRegex" ng-change="addRegexDelimiters(channel)" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
+              </label>
+            </div>
+
+            <div class="input-group-addon">$</div>
+            <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-blur="allowRegexDelimiters(channel)"  />
+            <div class="input-group-addon">.00</div>
+
+
+          </div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+
       <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
         <label><span>*</span> Channel name</label>
         <input class="form-control" type="text" ng-model="channel.name" focus="{{!update}}" />
@@ -30,11 +72,11 @@
         </div>
         <div class="form-group" style="float: right;">
           <label tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want.">
-              <input type="checkbox" ng-model="channel.regex" ng-change="addRegexDelimiters(channel)" />
-              Auto-add regex delimiters
+            <input type="checkbox" ng-model="urlPatternRegex" ng-change="addRegexDelimiters(channel)" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
           </label>
         </div>
       </div>
+
       <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
         <label><span></span> Description</label>
         <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
