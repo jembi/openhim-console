@@ -913,11 +913,20 @@ body {
 
 @media (min-width: 768px){
   .modal-dialog {
+    width: 750px;
+  }
+}
+
+@media (min-width: 900px){
+  .modal-dialog {
     width: 850px;
   }
 }
 
 
+.primaryRoute { background: #428bca; color: #fff; }
+.editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
+.editable-error { margin-top: 0px; }
 
 .scollNavAnchor { display: none; position: fixed; }
 .row .col-md-10 { float: right; }

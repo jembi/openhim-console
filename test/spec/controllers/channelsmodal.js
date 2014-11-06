@@ -96,51 +96,46 @@ describe('Controller: ChannelsmodalCtrl', function () {
     createController(true);
     httpBackend.flush();
 
-    var newRoute = {
-      name: 'Test route',
-      path: '/test/path',
-      host: 'localhost',
-      port: '9999'
-    };
-    scope.newRoute = newRoute;
-    scope.addRoute(newRoute);
+    scope.channel.routes = [];
+    scope.channel.routes.should.have.length(0);
+
+    scope.addRoute();
     scope.channel.routes.should.have.length(1);
-    scope.channel.routes[0].should.have.property('name', 'Test route');
-    scope.channel.routes[0].should.have.property('path', '/test/path');
-    scope.channel.routes[0].should.have.property('host', 'localhost');
-    scope.channel.routes[0].should.have.property('port', '9999');
-    // ensure new route is reset
-    scope.newRoute.should.have.property('name', null);
-    scope.newRoute.should.have.property('path', null);
-    scope.newRoute.should.have.property('host', null);
-    scope.newRoute.should.have.property('port', null);
+    scope.channel.routes[0].should.have.property('name', '');
+    scope.channel.routes[0].should.have.property('path', '');
+    scope.channel.routes[0].should.have.property('host', '');
+    scope.channel.routes[0].should.have.property('port', '');
+
   });
 
-  it('should edit an existing route', function () {
-    createController(true);
+  
+  it('should add a new Mediator route to the channel (selected from dropdown)', function () {
+    
+    createController();
     httpBackend.flush();
 
-    var routeToEdit = {
-        name: 'Test Route 2',
-        path: '/test/path2',
-        host: 'localhost',
-        port: '9988'
-      };
-    scope.channel.routes = [
-      {
-        name: 'Test Route 1',
-        path: '/test/path',
-        host: 'localhost',
-        port: '9999'
-      },
-      routeToEdit
-    ];
+    scope.channel.routes = [];
+    scope.channel.routes.should.have.length(0);
 
-    scope.editRoute(1, routeToEdit);
-    scope.channel.routes.should.have.length(1);
-    scope.channel.routes[0].should.have.property('name', 'Test Route 1');
-    scope.newRoute.should.eql(routeToEdit);
+    scope.mediator = {};
+    // the seelcted mediator from the dropdown
+    scope.mediator.route = { 'name': 'WC XD-LAB Mediator - WC XD-LAB Mediator',
+                              'route': { 'host': 'localhost',
+                                          'name': 'WC XD-LAB Mediator',
+                                          'port': '8148',
+                                          'type': 'http' } };
+
+    // run function to populate newRoute with mediator route details
+    scope.addRoute('mediator');
+
+    scope.channel.routes[0].should.have.property('type', 'http');
+    scope.channel.routes[0].should.have.property('secured', false);
+    scope.channel.routes[0].should.have.property('name', 'WC XD-LAB Mediator');
+    scope.channel.routes[0].should.have.property('host', 'localhost');
+    scope.channel.routes[0].should.have.property('port', '8148');
+    
   });
+
 
   it('should remove an existing route', function () {
     createController(true);
@@ -165,6 +160,41 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.channel.routes.should.have.length(1);
     scope.channel.routes[0].should.have.property('name', 'Test Route 1');
   });
+
+
+  it('should run removeIncompleteRoutes() and remove all incomplete routes', function () {
+    createController(true);
+    httpBackend.flush();
+
+    // start with 10 routes
+    scope.channel.routes = [{ name: '', path: '/test/path', host: '', port: '' },
+      { name: 'Test Route 2', path: '/test/path2', host: 'localhost', port: '2222' },
+      { name: '', path: '/test/path3', host: 'localhost', port: '3333' },
+      { name: 'Test Route 4', path: '/test/path4', host: 'localhost', port: '4444' },
+      { name: 'Test Route 5', path: '/test/path5', host: 'localhost', port: '5555' },
+      { name: 'Test Route 6', path: '/test/path6', host: '', port: '6666' },
+      { name: 'Test Route 7', path: '/test/path7', host: 'localhost', port: '7777' },
+      { name: 'Test Route 8', path: '/test/path7', host: 'localhost', port: '' },
+      { name: 'Test Route 9', path: '/test/path7', host: '', port: '' },
+      { name: 'Test Route 10', path: '/test/path7', host: 'localhost', port: '1010' }
+    ];
+    scope.channel.routes.should.have.length(10);
+
+    scope.removeIncompleteRoutes();
+    scope.channel.routes.should.have.length(5);
+
+    scope.channel.routes[0].should.have.property('name', 'Test Route 2');
+    scope.channel.routes[0].should.have.property('port', '2222');
+    scope.channel.routes[1].should.have.property('name', 'Test Route 4');
+    scope.channel.routes[1].should.have.property('port', '4444');
+    scope.channel.routes[2].should.have.property('name', 'Test Route 5');
+    scope.channel.routes[2].should.have.property('port', '5555');
+    scope.channel.routes[3].should.have.property('name', 'Test Route 7');
+    scope.channel.routes[3].should.have.property('port', '7777');
+    scope.channel.routes[4].should.have.property('name', 'Test Route 10');
+    scope.channel.routes[4].should.have.property('port', '1010');
+  });
+
 
   it('should return true if there are multiple primary routes', function () {
     createController(true);
@@ -352,37 +382,6 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.taglistUserRoleOptions[1].should.equal('limited');
     
   });
-
-
-  it('should check that selected mediator option is supplied in newRoute fields', function () {
-    
-    createController();
-    httpBackend.flush();
-
-    scope.newRoute.type.should.equal('http');
-    scope.newRoute.secured.should.equal(false);
-    scope.newRoute.should.not.have.property('name');
-    scope.newRoute.should.not.have.property('host');
-    scope.newRoute.should.not.have.property('port');
-
-    scope.mediator = {};
-    scope.mediator.route = { 'name': 'WC XD-LAB Mediator - WC XD-LAB Mediator',
-                              'route': { 'host': 'localhost',
-                                          'name': 'WC XD-LAB Mediator',
-                                          'port': '8148',
-                                          'type': 'http' } };
-
-    // run function to populate newRoute with mediator route details
-    scope.addMediatorRoute();
-
-    scope.newRoute.should.have.property('type', 'http');
-    scope.newRoute.should.have.property('secured', false);
-    scope.newRoute.should.have.property('name', 'WC XD-LAB Mediator');
-    scope.newRoute.should.have.property('host', 'localhost');
-    scope.newRoute.should.have.property('port', '8148');
-    
-  });
-
 
 
 });
