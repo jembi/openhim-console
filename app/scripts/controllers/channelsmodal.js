@@ -73,13 +73,13 @@ angular.module('openhimWebui2App')
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';
-    $scope.newRoute = {};
-    $scope.newRoute.type = 'http';
-    $scope.newRoute.secured = false;
-    $scope.urlPatternRegex = true;
+    $scope.urlPattern = {};
+    $scope.urlPattern.regex = true;
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
+      // set urlPattern.regex to false for every update. 
+      $scope.urlPattern.regex = false;
 
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
@@ -89,6 +89,7 @@ angular.module('openhimWebui2App')
       $scope.update = false;
       $scope.channel = new Api.Channels();
       $scope.channel.type = 'http';
+      $scope.channel.routes = [];
     }
 
     /****************************************************************/
@@ -121,18 +122,12 @@ angular.module('openhimWebui2App')
       $modalInstance.close();
     };
 
-    $scope.addRegexDelimiters = function(channel){
-
-      if ($scope.urlPatternRegex == true) {
-          channel.urlPattern = "^\\" + channel.urlPattern + '$'
-      } else {
-        // Remove decorations
-        channel.urlPattern = channel.urlPattern.replace("^\\", '');
-        channel.urlPattern = channel.urlPattern.replace("$", '');
-      }
-    };
-
     $scope.saveOrUpdate = function(channel, contentMatching) {
+
+      // add regex delimiter when true
+      if ( $scope.urlPattern.regex === true )
+{        channel.urlPattern = "^\\" + channel.urlPattern + '$';
+      }
 
       switch (channel.type) {
         case 'tcp':
@@ -199,77 +194,78 @@ angular.module('openhimWebui2App')
     /**   These are the functions for the Channel Routes     **/
     /**********************************************************/
 
-    // define the routes backup object
-    $scope.channelRoutesBackup = null;
+    // setup dropdown options
+    $scope.primaryOptions = [{ key: false, value: 'False' }, { key: true, value: 'True' }];
+    $scope.typeOptions = [{ key: 'http', value: 'HTTP' }, { key: 'tcp', value: 'TCP' }];
+    $scope.securedOptions = [{ key: false, value: 'Not Secured' }, { key: true, value: 'Secured' }];
 
-    $scope.addMediatorRoute = function () {
-      if ( $scope.mediator.route ){
-        $scope.newRoute.type = $scope.mediator.route.route.type;
-        $scope.newRoute.name = $scope.mediator.route.route.name;
-        $scope.newRoute.host = $scope.mediator.route.route.host;
-        $scope.newRoute.port = $scope.mediator.route.route.port;
+    // check required fields for empty inputs
+    $scope.checkRequiredField = function(value) {
+      if ( value.length === 0 ) {
+        // return error message
+        return 'This field is required!';
+      }
+    };
+
+    // check both path and pathTransform isnt supplied
+    $scope.checkPathTransformPathSet = function(route, field) {
+      // if both supplied
+      if ( route.path && route.pathTransform ){
+        // if field being checked is pathTransform (always checked after 'path')
+        if ( field === 'pathTransform' ){
+          // reset the path fields
+          route.path = '';
+          route.pathTransform = '';
+        }
+        //return error message
+        return 'Cant supply both!';
+      }
+    };
+
+    // remove route
+    $scope.removeRoute = function(index) {
+      $scope.channel.routes.splice(index, 1);
+    };
+
+    // add route
+    $scope.addRoute = function(mediator) {
+      var newRoute = {};
+
+      // create new route object
+      if ( mediator === undefined ){
+        $scope.newRoute = {
+          name: '',
+          secured: false,
+          host: '',
+          port: '',
+          path: '',
+          pathTransform: '',
+          primary: false,
+          username: '',
+          password: '',
+          type : 'http'
+        };
       }else{
-        // reset the backing object
-        resetRouteFields();
+        // create mediator route object
+        $scope.newRoute = {
+          name: $scope.mediator.route.route.name,
+          secured: false,
+          host: $scope.mediator.route.route.host,
+          port: $scope.mediator.route.route.port,
+          path: '',
+          pathTransform: '',
+          primary: false,
+          username: '',
+          password: '',
+          type : $scope.mediator.route.route.type
+        };
+        // reset selected mediator option
+        $scope.mediator.route = null;
       }
-
+      
+      $scope.channel.routes.push($scope.newRoute);
     };
 
-    $scope.addRoute = function (newRoute) {
-      if (!$scope.channel.routes) {
-        $scope.channel.routes = [];
-      }
-      $scope.channel.routes.push(angular.copy(newRoute));
-      // reset the backup route object when a record is added
-      $scope.channelRoutesBackup = null;
-
-      // reset the backing object
-      resetRouteFields();
-
-      // Check if any route warnings exist and add them to alerts route object
-      $scope.hasRouteWarnings();
-    };
-
-    $scope.editRoute = function (routeIndex, route) {
-
-      // remove the selected route object from scope
-      $scope.channel.routes.splice(routeIndex, 1);
-
-      // if backup object exist update routes object with backup route
-      if ( $scope.channelRoutesBackup !== null ){
-        $scope.channel.routes.push(angular.copy($scope.channelRoutesBackup));
-      }
-      // override backup route object to new route being editted
-      $scope.channelRoutesBackup = angular.copy(route);
-      $scope.newRoute = route;
-
-      // Check if any route warnings exist and add them to alerts route object
-      $scope.hasRouteWarnings();
-    };
-
-    $scope.removeRoute = function (routeIndex) {
-      $scope.channel.routes.splice(routeIndex, 1);
-
-      // Check if any route warnings exist and add them to alerts route object
-      $scope.hasRouteWarnings();
-    };
-
-    var resetRouteFields = function(){
-
-      // reset the dropdown option
-      $scope.mediator.route = null;
-
-      $scope.newRoute.type = 'http';
-      $scope.newRoute.secured = false;
-      $scope.newRoute.name = null;
-      $scope.newRoute.path = null;
-      $scope.newRoute.pathTransform = null;
-      $scope.newRoute.host = null;
-      $scope.newRoute.port = null;
-      $scope.newRoute.username = null;
-      $scope.newRoute.password = null;
-      $scope.newRoute.primary = false;
-    };
 
     /**********************************************************/
     /**   These are the functions for the Channel Routes     **/
@@ -452,6 +448,9 @@ angular.module('openhimWebui2App')
       // reset route alert object
       Alerting.AlertReset('route');
 
+      // remove incomplete routes that got added
+      $scope.removeIncompleteRoutes();
+
       var noRoutes = $scope.noRoutes();
       var noPrimaries = $scope.noPrimaries();
       var multiplePrimaries = $scope.multiplePrimaries();
@@ -461,11 +460,15 @@ angular.module('openhimWebui2App')
       }
     };
 
-    $scope.isRouteValid = function () {
-      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port || isNaN($scope.newRoute.port) ){
-        return false;
+    // validate no incomplete routes added - remove if incomplete routes
+    $scope.removeIncompleteRoutes = function () {
+      // loop backwards to keep object 'index' integrity for object removal (start from the last record)
+      var indexStart = $scope.channel.routes.length - 1;
+      for (var index = indexStart; index >= 0 ; index--) {
+        if ( !$scope.channel.routes[index].name || !$scope.channel.routes[index].host || !$scope.channel.routes[index].port || isNaN($scope.channel.routes[index].port) ){
+          $scope.channel.routes.splice(index, 1);
+        }
       }
-      return true;
     };
 
     $scope.noRoutes = function () {
@@ -639,5 +642,7 @@ angular.module('openhimWebui2App')
     /**   These are the general functions for the channel form validation     **/
     /***************************************************************************/
 
-
+  }).run(function(editableOptions) {
+    // add boostrap theme to xeditable module
+    editableOptions.theme = 'bs3';
   });
