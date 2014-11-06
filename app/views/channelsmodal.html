@@ -27,6 +27,11 @@
         <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" />
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
+      <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
+        <label><span></span> Description</label>
+        <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
 
       <div class="form-group-2columns">
         <label style="display: block;">Channel Type</label>
@@ -212,7 +217,7 @@
         <tab>
           <tab-heading>Alerts</tab-heading>
           <h3>Alerts</h3>
-          <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>          
+          <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>
           <div ng-show="channel.alerts.length > 0">
             <div id="no-more-tables">
               <table class="table table-striped">
@@ -222,7 +227,7 @@
                     <th>Status</th>
                     <th>Users</th>
                     <th>Groups</th>
-                    <th>Failure Rate (%)</th>              
+                    <th>Failure Rate (%)</th>
                     <th width="70"></th>
                   </tr>
                 </thead>
@@ -234,7 +239,7 @@
                     <td data-title="Groups">{{ alert.groups.length }}</td>
                     <td data-title="Failure Rate (%)">{{ alert.failureRate }}</td>
                     <td>
-                      <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                      <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button>
                       <button class="btn btn-danger btn-xs" ng-click="removeAlert($index)"><i class="glyphicon glyphicon-remove"></i></button>
                     </td>
                   </tr>
@@ -261,8 +266,8 @@
 
 
           <tabset justified="true">
-            
-            <tab heading="Add Users">              
+
+            <tab heading="Add Users">
               <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
               <div class="form-group" style="margin-top: 15px;">
                 <label><span>**</span> Add a new user</label>
@@ -286,7 +291,7 @@
                           <td data-title="Method">{{ user.method }}</td>
                           <td data-title="Max Alerts">{{ user.maxAlerts }}</td>
                           <td>
-                            <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button> 
+                            <button class="btn btn-warning btn-xs" ng-click="editAlertUser($index, user)"><i class="glyphicon glyphicon-pencil"></i></button>
                             <button class="btn btn-danger btn-xs" ng-click="removeAlertUser($index)"><i class="glyphicon glyphicon-remove"></i></button>
                           </td>
                         </tr>
@@ -363,7 +368,7 @@
 
 
 
-          
+
 
 
 
@@ -393,4 +398,8 @@
   </div>
 
 
+<<<<<<< HEAD
 <!--</form>-->
+=======
+</form>
+>>>>>>> 528ee9d6be2255e53a90b81df5991645fda231dd

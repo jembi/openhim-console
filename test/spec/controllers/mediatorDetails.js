@@ -18,7 +18,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
     //$httpBackend.when('GET', new RegExp('.*/transactions?.*parentID=.+')).respond([{'name':'Transaction 5','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2basd979', 'parentID': '5322fe9d8b6add4b2b059ff5'}]);
 
     $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond({
-        'uuid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
         'version': '0.0.1',
         'name': 'Test 1 Mediator',
         'description': 'Test 1 Description',
@@ -38,7 +38,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
 
     createController = function() {
       scope = $rootScope.$new();
-      return $controller('MediatorDetailsCtrl', { $scope: scope, $routeParams: { uuid: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE' } });
+      return $controller('MediatorDetailsCtrl', { $scope: scope, $routeParams: { urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE' } });
     };
 
   }));
@@ -51,7 +51,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
   it('should attach a single meditor to the scope', function () {
     createController();
     httpBackend.flush();
-    scope.mediatorDetails.uuid.should.equal('AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE');
+    scope.mediatorDetails.urn.should.equal('AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE');
     scope.mediatorDetails.version.should.equal('0.0.1');
     scope.mediatorDetails.name.should.equal('Test 1 Mediator');
     scope.mediatorDetails.description.should.equal('Test 1 Description');

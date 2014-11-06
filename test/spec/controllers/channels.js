@@ -36,7 +36,7 @@ describe('Controller: ChannelsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
       {
-        'uuid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
         'version': '0.0.1',
         'name': 'Test 1 Mediator',
         'description': 'Test 1 Description',
@@ -52,7 +52,7 @@ describe('Controller: ChannelsCtrl', function () {
         'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
       },
       {
-        'uuid': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
+        'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
         'version': '0.1.2',
         'name': 'Test 2 Mediator',
         'description': 'Test 2 Description',
