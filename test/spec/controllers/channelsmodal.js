@@ -337,6 +337,30 @@ describe('Controller: ChannelsmodalCtrl', function () {
     scope.channel.$save.should.be.called;
   });
 
+
+  it('should run submitFormChannels() and add the regex delimiters to the URL Pattern', function () {
+    createController();
+    httpBackend.flush();
+
+    // update is false so create new channel
+    scope.update = false;
+
+    scope.channel.name = 'ChannelName';
+    scope.channel.urlPattern = 'sample/api';
+    scope.urlPattern.regex = true;
+    scope.channel.allow = ['allow1', 'allow2'];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = 'XPath';
+    scope.channel.matchContentValue = 'Value';
+    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}];
+    // run the submit
+    scope.submitFormChannels();
+    scope.ngError.should.have.property('hasErrors', false);
+    scope.channel.should.have.property('urlPattern', '^sample/api$');
+    scope.channel.$save.should.be.called;
+  });
+
+
   it('should run submitFormChannels() and check any validation errors - TRUE - Should update the record', function () {
     createController();
     httpBackend.flush();

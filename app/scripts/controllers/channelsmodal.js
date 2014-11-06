@@ -125,8 +125,8 @@ angular.module('openhimWebui2App')
     $scope.saveOrUpdate = function(channel, contentMatching) {
 
       // add regex delimiter when true
-      if ( $scope.urlPattern.regex === true )
-{        channel.urlPattern = "^\\" + channel.urlPattern + '$';
+      if ( $scope.urlPattern.regex === true ){
+        channel.urlPattern = '^' + channel.urlPattern + '$';
       }
 
       switch (channel.type) {
@@ -229,8 +229,6 @@ angular.module('openhimWebui2App')
 
     // add route
     $scope.addRoute = function(mediator) {
-      var newRoute = {};
-
       // create new route object
       if ( mediator === undefined ){
         $scope.newRoute = {
