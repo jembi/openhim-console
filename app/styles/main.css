@@ -924,7 +924,7 @@ body {
 }
 
 .addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
-.addUrlRegexDelimiterDiv label { margin: 0px; }
+.addUrlRegexDelimiterDiv label { margin: 25px 0px 0px 15px; float: left; }
 .addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
 
 .primaryRoute { background: #428bca; color: #fff; }

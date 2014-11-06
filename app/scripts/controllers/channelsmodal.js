@@ -78,8 +78,21 @@ angular.module('openhimWebui2App')
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
-      // set urlPattern.regex to false for every update. 
-      $scope.urlPattern.regex = false;
+
+
+
+      // check if urlPattern has regex delimiters
+      var urlPatternLength = channel.urlPattern.length;
+      if ( channel.urlPattern.indexOf('^') === 0 && channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
+        var urlPattern = $scope.channel.urlPattern;
+        // remove delimiters
+        $scope.channel.urlPattern = urlPattern.slice(1,-1);
+      }else{
+        // update checkbox if no regex delimiters
+        $scope.urlPattern.regex = false;
+      }
+
+
 
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
