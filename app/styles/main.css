@@ -693,7 +693,7 @@ body {
 .responsiveTransactionIndexCheckbox label { display: none; }
 #loadMoreTransactions { float: right; display: none; }
 #no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
-.transactionsFilterRefreshDiv{ float: right; padding-top: 22px; }
+.transactionsFilterRefreshDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
@@ -923,6 +923,8 @@ body {
   }
 }
 
+/*ng-cloak style to force no display at first load*/
+[ng-cloak]{ display: none !important; }
 
 .primaryRoute { background: #428bca; color: #fff; }
 .editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
