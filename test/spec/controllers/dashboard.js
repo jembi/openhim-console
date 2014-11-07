@@ -64,11 +64,30 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.labels[0].should.equal('Load');
     scope.transactionLoadData.should.have.property('postunits', ' per hour');
 
-    scope.transactionLoadData.data[parseInt( moment( fourHoursAgo ).format('H') )].should.have.property('value', 21);
-    scope.transactionLoadData.data[parseInt( moment( threeHoursAgo ).format('H') )].should.have.property('value', 65);
-    scope.transactionLoadData.data[parseInt( moment( twoHoursAgo ).format('H') )].should.have.property('value', 32);
-    scope.transactionLoadData.data[parseInt( moment( oneHourAgo ).format('H') )].should.have.property('value', 13);
+
+    // only test if four hours ago isnt in the past day
+    if ( moment( fourHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionLoadData.data[parseInt( moment( fourHoursAgo ).format('H') )].should.have.property('value', 22);
+    }
+
+    // only test if three hours ago isnt in the past day
+    if ( moment( threeHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionLoadData.data[parseInt( moment( threeHoursAgo ).format('H') )].should.have.property('value', 65);
+    }
+
+    // only test if two hours ago isnt in the past day
+    if ( moment( twoHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionLoadData.data[parseInt( moment( twoHoursAgo ).format('H') )].should.have.property('value', 32);
+    }
+
+    // only test if one hours ago isnt in the past day
+    if ( moment( oneHourAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionLoadData.data[parseInt( moment( oneHourAgo ).format('H') )].should.have.property('value', 13);
+    }
+
+    // always test for current hour
     scope.transactionLoadData.data[parseInt( moment( nowHour ).format('H') )].should.have.property('value', 56);
+
   });
 
 
@@ -86,11 +105,29 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.labels[0].should.equal('Load');
     scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
-    scope.transactionResponseTimeData.data[parseInt( moment( fourHoursAgo ).format('H') )].should.have.property('value', '43269.95');
-    scope.transactionResponseTimeData.data[parseInt( moment( threeHoursAgo ).format('H') )].should.have.property('value', '13367.98');
-    scope.transactionResponseTimeData.data[parseInt( moment( twoHoursAgo ).format('H') )].should.have.property('value', '11249.94');
-    scope.transactionResponseTimeData.data[parseInt( moment( oneHourAgo ).format('H') )].should.have.property('value', '54668.97');
+    // only test if four hours ago isnt in the past day
+    if ( moment( fourHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionResponseTimeData.data[parseInt( moment( fourHoursAgo ).format('H') )].should.have.property('value', '43269.95');
+    }
+
+    // only test if three hours ago isnt in the past day
+    if ( moment( threeHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionResponseTimeData.data[parseInt( moment( threeHoursAgo ).format('H') )].should.have.property('value', '13367.98');
+    }
+
+    // only test if two hours ago isnt in the past day
+    if ( moment( twoHoursAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionResponseTimeData.data[parseInt( moment( twoHoursAgo ).format('H') )].should.have.property('value', '11249.94');
+    }
+
+    // only test if one hours ago isnt in the past day
+    if ( moment( oneHourAgo ).format('H') < moment( nowHour ).format('H') ){
+      scope.transactionResponseTimeData.data[parseInt( moment( oneHourAgo ).format('H') )].should.have.property('value', '54668.97');
+    }
+
+    // always test for current hour
     scope.transactionResponseTimeData.data[parseInt( moment( nowHour ).format('H') )].should.have.property('value', '34769.91');
+
   });
 
   
