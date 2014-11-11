@@ -79,8 +79,6 @@ angular.module('openhimWebui2App')
       $scope.update = true;
       $scope.channel = angular.copy(channel);
 
-      console.log($scope.channel);
-
       // check if urlPattern has regex delimiters
       var urlPatternLength = $scope.channel.urlPattern.length;
       if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
