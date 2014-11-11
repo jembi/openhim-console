@@ -192,11 +192,11 @@
                 <td style="white-space: nowrap">
                   <!-- form -->
                   <form editable-form name="rowform" onbeforesave="saveRoute($data, route.name)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="newRoute == route">
-                    <button class="btn btn-warning btn-xs" ng-disabled="rowform.$waiting" type="submit"><i class="glyphicon glyphicon-pencil"></i></button> 
+                    <button class="btn btn-success btn-xs" ng-disabled="rowform.$waiting" type="submit"><i class="glyphicon glyphicon-ok"></i></button> 
                     <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
                   </form>
                   <div class="buttons" ng-show="!rowform.$visible">
-                    <button class="btn btn-success btn-xs" ng-click="rowform.$show()"><i class="glyphicon glyphicon-ok"></i></button> 
+                    <button class="btn btn-warning btn-xs" ng-click="rowform.$show()"><i class="glyphicon glyphicon-pencil"></i></button> 
                     <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
                   </div>  
                 </td>
