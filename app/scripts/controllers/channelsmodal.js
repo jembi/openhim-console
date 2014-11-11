@@ -73,12 +73,24 @@ angular.module('openhimWebui2App')
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';
-    $scope.newRoute = {};
-    $scope.newRoute.type = 'http';
-    $scope.newRoute.secured = false;
+    $scope.urlPattern = {};
+    $scope.urlPattern.regex = true;
     if (channel) {
       $scope.update = true;
       $scope.channel = angular.copy(channel);
+
+      // check if urlPattern has regex delimiters
+      var urlPatternLength = $scope.channel.urlPattern.length;
+      if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
+        var urlPattern = $scope.channel.urlPattern;
+        // remove delimiters
+        $scope.channel.urlPattern = urlPattern.slice(1,-1);
+      }else{
+        // update checkbox if no regex delimiters
+        $scope.urlPattern.regex = false;
+      }
+
+
 
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
@@ -122,6 +134,11 @@ angular.module('openhimWebui2App')
     };
 
     $scope.saveOrUpdate = function(channel, contentMatching) {
+
+      // add regex delimiter when true
+      if ( $scope.urlPattern.regex === true ){
+        channel.urlPattern = '^' + channel.urlPattern + '$';
+      }
 
       switch (channel.type) {
         case 'tcp':
@@ -461,13 +478,6 @@ angular.module('openhimWebui2App')
           $scope.channel.routes.splice(index, 1);
         }
       }
-    };
-
-    $scope.isRouteValid = function () {
-      if ( !$scope.newRoute.name || !$scope.newRoute.host || !$scope.newRoute.port || isNaN($scope.newRoute.port) ){
-        return false;
-      }
-      return true;
     };
 
     $scope.noRoutes = function () {
