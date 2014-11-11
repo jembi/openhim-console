@@ -923,6 +923,11 @@ body {
   }
 }
 
+
+.addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
+.addUrlRegexDelimiterDiv label { margin: 25px 0px 0px 15px; float: left; }
+.addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
+
 /*ng-cloak style to force no display at first load*/
 [ng-cloak]{ display: none !important; }
 
