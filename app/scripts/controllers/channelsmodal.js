@@ -91,7 +91,6 @@ angular.module('openhimWebui2App')
       }
 
 
-
       if( channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
       if( channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
@@ -101,6 +100,8 @@ angular.module('openhimWebui2App')
       $scope.channel = new Api.Channels();
       $scope.channel.type = 'http';
       $scope.channel.routes = [];
+      $scope.channel.requestBody = true;
+      $scope.channel.responseBody = true;
     }
 
     /****************************************************************/
@@ -214,6 +215,22 @@ angular.module('openhimWebui2App')
     $scope.checkRequiredField = function(value) {
       if ( value.length === 0 ) {
         // return error message
+        return 'This field is required!';
+      }
+    };
+
+    // check required fields for empty inputs
+    $scope.checkIsPortValid = function(value) {
+      if ( value !== '' && value !== undefined ) {
+        if ( isNaN( value ) ){
+          // return error message
+          return 'Only numbers allowed!';
+        }else{
+          if ( value <= 0 || value > 65536 ){
+            return 'Not in valid port range!';
+          }
+        }
+      }else{
         return 'This field is required!';
       }
     };
