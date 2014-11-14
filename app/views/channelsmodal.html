@@ -195,7 +195,7 @@
                 </td>
                 <td data-title="Host | Port">
                   <span editable-text="route.host" e-name="host" e-form="rowform" e-placeholder="Host" e-title="Route Host" onaftersave="checkRequiredField($data)" e-required style="float: left;">{{ route.host || "Host Required!" }}</span>
-                  <span editable-text="route.port" e-name="port" e-form="rowform" e-placeholder="Port" e-title="Route Port" onaftersave="checkRequiredField($data)" e-required>:{{ route.port || "Port Required!" }}</span>
+                  <span editable-text="route.port" e-name="port" e-form="rowform" e-placeholder="Port" e-title="Route Port" onaftersave="checkIsPortValid($data)" e-required>:{{ route.port || "Port Required!" }}</span>
                 </td>
                 <td data-title="Path/Transform">
                   <span editable-text="route.path" e-name="path" e-form="rowform" e-placeholder="Path" e-title="Route Path" onaftersave="checkPathTransformPathSet(route, 'path')">{{ route.path }}</span>
@@ -277,11 +277,7 @@
 
 
 
-
-
-
         <tabset justified="true">
-
           <tab heading="Add Users">
             <!-- ************* NEW USER FOR CHANNNEL ALERT ************** -->
             <div class="form-group" style="margin-top: 15px;">
@@ -377,22 +373,38 @@
             </div>
             <!-- ************* NEW GROUP FOR CHANNNEL ALERT ************** -->
           </tab>
-
         </tabset>
-
-
-
-
-
-
-
-
-
-
 
 
         <button class="btn btn-sm btn-primary" ng-click="addAlert(newAlert)" ng-disabled="!(isAlertValid())"><i class="glyphicon glyphicon-plus"></i> Alert</button>
       </tab>
+
+
+      <!-- ************* TAB FOR GENERAL CHANNEL SETTINGS ************** -->
+      <tab class="{{ngError.contentSettingsTab === true ? 'has-error-tab' : ''}}">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Settings</tab-heading>
+        <h3>Settings</h3>
+        
+        <div class="form-group-2columns">
+          <div style="float: left; margin-right: 50px;">
+            <label tooltip="Set whether the transaction request body should be saved" style="display: block;">Store Request Body</label>
+            <div class="btn-group" style="margin-bottom: 10px; clear: both;">
+              <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="true">True</label>
+              <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="false">False</label>
+            </div>
+          </div>
+          <div style="float: left;">
+            <label tooltip="Set whether the transaction response body should be saved" style="display: block;">Store Response Body</label>
+            <div class="btn-group" style="margin-bottom: 10px: clear: both;">
+              <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="true">True</label>
+              <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="false">False</label>
+            </div>
+          </div>
+        </div>
+
+      </tab>
+
+
     </tabset>
   </fieldset>
 </div>
