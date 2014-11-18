@@ -10,8 +10,6 @@ This application provides a web application to configure and manage the [OpenHIM
 * Configure clients that can access particular routes
 * Monitor the operations of the OpenHIM application
 
-:warning:  **The OpenHIM Administration Console is currently in early active development and is not yet ready for production use.**
-
 See the [development roadmap](https://github.com/jembi/openhim-console/wiki/OpenHIM-console-Development-Roadmap) for more details on what is to come!
 
 Developer guide
