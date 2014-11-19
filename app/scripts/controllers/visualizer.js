@@ -18,13 +18,20 @@ angular.module('openhimWebui2App')
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, speed, maxSpeed, maxTimeout, vis;
 
 
-
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
     // get the user settings to construct the visualizer
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
+
+      // user doesnt have settings saved
+      if ( !user.settings ){
+        $scope.loadingVisualizerError = true;
+        $scope.loadingVisualizer = false;
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Settings Error', msg: 'There appear to be no settings saved for this user. Please save the user settings' });
+        return
+      }
 
       var visSettings = user.settings.visualizer;
 

@@ -49,6 +49,10 @@ angular.module('openhimWebui2App')
       $scope.user = user;
 
       // check visualizer settings properties exist
+      if ( !$scope.user.settings ){
+        $scope.user.settings = {};
+      }
+
       if ( !$scope.user.settings.list ){
         $scope.user.settings.list = {};
       }
