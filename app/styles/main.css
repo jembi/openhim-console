@@ -824,6 +824,9 @@ body {
 
 @media (max-width: 650px) {
 
+    .components_div { width: 100% !important; float: left; margin: 0px; }
+    .endpoints_div { width: 100% !important; float: left; margin: 0px; }
+
     /* Force table to not be like tables anymore */
     #no-more-tables table, 
     #no-more-tables thead, 
@@ -948,3 +951,7 @@ body {
 .usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
 .usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
 .usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }
+
+.components_div { width: 48%; float: left; margin: 0px; }
+.endpoints_div { width: 48%; float: right; margin: 0px; }
+.visualizerSpeed { margin-left: 20px; font-weight: bold; display: inline-block; font-size: 16px; }

@@ -18,6 +18,13 @@ describe('Controller: ProfileCtrl', function () {
       ts: 'test-ts'
     });
 
+    httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
+      'components': [],
+      'endpoints': [],
+      'color': { 'inactive': 'CCCCCC', 'active': '4cae4c', 'error': 'd43f3a', 'text': '000000' },
+      'size': { 'width': 1000, 'height': 400, 'padding': 20 },
+      'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
+    });
 
     httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({
       '__v': 0,
@@ -33,12 +40,13 @@ describe('Controller: ProfileCtrl', function () {
       'groups': [
         'test',
         'other'
-      ]
+      ],
+      'settings': {}
     });
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
-      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'], 'settings': {} },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'], 'settings': {} }
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
