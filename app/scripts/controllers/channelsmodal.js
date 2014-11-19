@@ -208,7 +208,7 @@ angular.module('openhimWebui2App')
 
     // setup dropdown options
     $scope.primaryOptions = [{ key: false, value: 'False' }, { key: true, value: 'True' }];
-    $scope.typeOptions = [{ key: 'http', value: 'HTTP' }, { key: 'tcp', value: 'TCP' }];
+    $scope.typeOptions = [{ key: 'http', value: 'HTTP' }, { key: 'tcp', value: 'TCP' },  { key: 'mllp', value: 'MLLP' }];
     $scope.securedOptions = [{ key: false, value: 'Not Secured' }, { key: true, value: 'Secured' }];
 
     // check required fields for empty inputs
