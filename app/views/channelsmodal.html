@@ -187,6 +187,7 @@
                   <span editable-select="route.type" e-name="type" e-form="rowform" e-title="Route Type?" e-ng-options="option.key as option.value for option in typeOptions">
                     <span ng-if="route.type=='http'" class="btn-info btn-xs">HTTP</span> 
                     <span ng-if="route.type=='tcp'" class="btn-warning btn-xs">TCP</span>
+                    <span ng-if="route.type=='mllp'" class="btn-primary btn-xs">MLLP</span>
                   </span>
                   <span editable-select="route.secured" e-name="secured" e-form="rowform" e-title="Route Secured?" e-ng-options="option.key as option.value for option in securedOptions">
                     <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span> 
