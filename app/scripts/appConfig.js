@@ -9,7 +9,8 @@ app.constant('TITLE', 'OpenHIM Admin Console');
 app.constant('FOOTERTITLE', 'OpenHIM Administration Console');
 app.constant('FOOTERPOWEREDBY', '<a href="http://openhim.org/" target="_blank">Powered by OpenHIM</a>');
 
-app.constant('HOST', 'openhim-preprod.jembi.org');
+//app.constant('HOST', 'openhim-preprod.jembi.org');
+app.constant('HOST', 'sandbox-him.jembi.org');
 app.constant('PORT', 8080);
 
 

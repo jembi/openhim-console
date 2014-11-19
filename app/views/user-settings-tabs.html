@@ -1,0 +1,232 @@
+<style>
+  .settingComponentDivs { clear: both; display: inline-block; border-top: 1px solid #ccc; width: 100%;margin-top: 10px;padding-top: 10px; }
+  .settingComponentDivs .settings_div { width: 15%; min-width: 150px; }
+  .settingComponentDivs .settings_div .input-group { clear: both; }
+</style>
+
+
+
+<tabset class="transaction_settings_tabset" justified="false" style="margin-bottom: 0px;">
+  <!-- FILTER SETTINGS -->
+  <tab>
+    <tab-heading>Filter Settings</tab-heading>
+    <div class="settings_div">
+      <label tooltip="Select an option to filter transactions by their status">Status: </label>
+      <!--<select class="form-control" ng-model="filterStatus">-->
+      <select class="form-control" ng-model="user.settings.filter.status">
+        <option value="">Don't filter</option>
+        <option value="Failed">Show Failed</option>
+        <option value="Processing">Show Processing</option>
+        <option value="Completed">Show Completed</option>
+        <option value="Completed with error(s)">Show Completed with error(s)</option>
+        <option value="Successful">Show Successful</option>
+      </select>
+    </div>
+    <div class="settings_div">
+      <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
+      <select class="form-control" ng-model="user.settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
+        <option value="">Don't filter</option>
+      </select>
+    </div>
+    <div class="settings_div">
+      <label tooltip="Set the limit of how many records to display">Limit: </label>
+      <select class="form-control" ng-model="user.settings.filter.limit">
+        <option value="10">10</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+        <option value="500">500</option>
+      </select>
+    </div>
+  </tab>
+
+
+
+  <!-- LIST SETTINGS -->
+  <tab>
+    <tab-heading>List Settings</tab-heading>
+    <div class="settings_div">
+      <label style="float: left" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'">Transaction View</label>
+      <div class="btn-group" style="float: left; clear: both">
+        <label class="btn btn-primary" ng-model="user.settings.list.tabview" btn-radio="'same'">Same Tab</label>
+        <label class="btn btn-primary" ng-model="user.settings.list.tabview" btn-radio="'new'">New Tab</label>
+      </div>
+    </div>
+  </tab>
+
+
+
+  <!-- VISUALIZER SETTINGS -->
+  <tab>
+    <tab-heading>Visualizer Settings</tab-heading>
+    
+    <div>
+      <h4>Visualizations Management</h4>
+      <div class="components_div">
+        <label style="float: left" tooltip="Select the components you wish to add to the visualizer">Components</label>
+        <div class="btn-group" style="width: 100%; clear: both;">
+          <select class="form-control" ng-options="component.key as component.event for component in components" ng-model="visualizer.addSelectComponent" ng-change="addSelectComponentEndpoint('component')">
+            <option value="">Select Component</option>
+          </select>
+          
+          <div id="no-more-tables" style="margin-top: 15px;">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr style="font-weight: bold">
+                  <th>Event</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+              <thead>
+              <tbody>
+                <tr ng-repeat="component in user.settings.visualizer.components">
+                  <td style="vertical-align: middle;" data-title="Event">{{component.event}}</td>
+                  <td data-title="Description"><input class="form-control" type="text" ng-model="component.desc" /></td>
+                  <td style="vertical-align: middle;">
+                    <button class="btn btn-danger btn-xs" ng-click="removeComponentEndpoint('component', $index)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-title="Event"><input class="form-control" type="text" ng-model="visualizer.addComponent.event" /></td>
+                  <td data-title="Description"><input class="form-control" type="text" ng-model="visualizer.addComponent.desc" /></td>
+                  <td style="vertical-align: middle;">
+                    <button class="btn btn-success btn-xs" ng-click="addComponentEndpoint('component')"><i class="glyphicon glyphicon-plus"></i></button>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="endpoints_div">
+        <label style="float: left" tooltip="Select the endpoints you wish to add to the visualizer">Endpoints</label>
+        <div class="btn-group" style="width: 100%; clear: both;">
+          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectEndpoint" ng-change="addSelectComponentEndpoint('endpoint')">
+            <option value="">Select Endpoint</option>
+          </select>
+          
+          <div id="no-more-tables" style="margin-top: 15px;">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr style="font-weight: bold">
+                  <th>Event</th>
+                  <th>Description</th>
+                  <th></th>
+                </tr>
+              <thead>
+              <tbody>
+                <tr ng-repeat="endpoint in user.settings.visualizer.endpoints">
+                  <td style="vertical-align: middle;" data-title="Event">{{endpoint.event}}</td>
+                  <td data-title="Description"><input class="form-control" type="text" ng-model="endpoint.desc" /></td>
+                  <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs" ng-click="removeComponentEndpoint('endpoint', $index)"><i class="glyphicon glyphicon-remove"></i></button></td>
+                </tr>
+                <tr>
+                  <td data-title="Event"><input class="form-control" type="text" ng-model="visualizer.addEndpoint.event" /></td>
+                  <td data-title="Description"><input class="form-control" type="text" ng-model="visualizer.addEndpoint.desc" /></td>
+                  <td style="vertical-align: middle;">
+                    <button class="btn btn-success btn-xs" ng-click="addComponentEndpoint('endpoint')"><i class="glyphicon glyphicon-plus"></i></button>
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settingComponentDivs">
+      <h4>Visualizer Color Management</h4>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set color value for Inactive Events (e.g #cccccc)">Inactive Event Color</label>
+        <div class="input-group">
+          <span class="input-group-addon">#</span>
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.inactive">
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set color value for Active Events (e.g #419641)">Active Event Color</label>
+        <div class="input-group">
+          <span class="input-group-addon">#</span>
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.active">
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set color value for Error Events (e.g #d9534f)">Error Event Color</label>
+        <div class="input-group">
+          <span class="input-group-addon">#</span>
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.error">
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set color value for Events Text (e.g #000000)">Event Text Color</label>
+        <div class="input-group">
+          <span class="input-group-addon">#</span>
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.text">
+        </div>
+      </div>
+    </div>
+
+    <div class="settingComponentDivs">
+      <h4>Visualizer Size Management</h4>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set the width of the Visualizer (in Pixels)">Width</label>
+        <div class="input-group">
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.size.width">
+          <span class="input-group-addon">px</span>
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set the height of the Visualizer (in Pixels)">Height</label>
+        <div class="input-group">
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.size.height">
+          <span class="input-group-addon">px</span>
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)">Padding</label>
+        <div class="input-group">
+          <input class="form-control" type="text" ng-model="user.settings.visualizer.size.padding">
+          <span class="input-group-addon">px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settingComponentDivs">
+      <h4>Visualizer Time Management</h4>
+      
+      <div class="settings_div">
+        <label style="float: left" tooltip-html-unsafe="How often to fetch events from the server <br /> (min: 50ms, max: 5000ms)">Update Period</label>
+        <div class="input-group">
+          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.updatePeriod" min="50" max="5000">
+          <span class="input-group-addon">ms</span>
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)">Max Speed</label>
+        <div class="btn-group" style="clear: both; width: 100%">
+          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxSpeed" min="1" max="10">
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)">Max Timeout</label>
+        <div class="input-group">
+          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxTimeout" min="1000" max="10000">
+          <span class="input-group-addon">ms</span>
+        </div>
+      </div>
+    </div>
+
+
+  </tab>
+</tabset>

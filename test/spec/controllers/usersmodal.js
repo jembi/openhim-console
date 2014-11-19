@@ -13,9 +13,17 @@ describe('Controller: UsersModalCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
+      'components': [],
+      'endpoints': [],
+      'color': { 'inactive': 'CCCCCC', 'active': '4cae4c', 'error': 'd43f3a', 'text': '000000' },
+      'size': { 'width': 1000, 'height': 400, 'padding': 20 },
+      'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
+    });
+
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
-      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'], 'settings': {} },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'], 'settings': {} }
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
@@ -27,15 +35,10 @@ describe('Controller: UsersModalCtrl', function () {
     var modalInstance = sinon.spy();
 
     createController = function () {
-      var user;
-      user = {
-        $save: sinon.spy(),
-        $update: sinon.spy()
-      };
       return $controller('UsersModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        user: user
+        user: null
       });
     };
   }));
@@ -110,6 +113,8 @@ describe('Controller: UsersModalCtrl', function () {
     createController();
     httpBackend.flush();
 
+    scope.user.$save = sinon.spy();
+
     // update is false so create new user
     scope.update = false;
 
@@ -131,6 +136,8 @@ describe('Controller: UsersModalCtrl', function () {
   it('should run submitFormUsers() and check any validation errors - TRUE - Should update the record', function () {
     createController();
     httpBackend.flush();
+
+    scope.user.$update = sinon.spy();
 
     // update is false so create new user
     scope.update = true;

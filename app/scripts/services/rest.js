@@ -35,7 +35,7 @@ angular.module('openhimWebui2App')
       }),
 
       VisualizerEvents: $resource('https://' + HOST + ':' + PORT + '/visualizer/events/:receivedTime'),
-      VisualizerSync: $resource('https://' + HOST + ':' + PORT + '/visualizer/sync'),        
+      VisualizerSync: $resource('https://' + HOST + ':' + PORT + '/visualizer/sync'),
 
       // endpoint to restart the core server
       Restart: $resource('https://' + HOST + ':' + PORT + '/restart', {})

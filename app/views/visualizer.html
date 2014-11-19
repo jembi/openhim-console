@@ -4,24 +4,57 @@
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
-      <div class="container-fluid">
-        <div class="row">
-          <div id="visualizer"/>
-        </div>
-        <div class="row">
-          <div class="span2">
-            <div id="controls" class="btn-toolbar">
-              <div class="btn-group">
-                <i class="glyphicon glyphicon-backward" ng-click="slowDown();"/>
-                <i class="glyphicon glyphicon-play" ng-click="play();" ng-show="showPlay"/>
-                <i class="glyphicon glyphicon-pause" ng-click="pause();" ng-show="showPause"/>
-                <i class="glyphicon glyphicon-forward" ng-click="speedUp();"/>
-              </div>
-            </div>
+
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-road"></i>&nbsp;&nbsp;Visualizer</h2>
           </div>
-          <div>{{speedText}}</div>
+        </div>
+
+        <!-- show loading gif when visualizer busy initializing -->
+        <div class="loadingContainer" ng-show="loadingVisualizer">
+          <img src="images/loading.gif" alt="Loading..." />
+        </div>
+
+        <!-- Server Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
+        <div class="panel-body" ng-show="loadingVisualizerError">
+          There seems to be issues with you visualizer settings. please configure them in the '<a href="/#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
+
+          <div ng-repeat="errorMsg in loadingVisualizerErrorMsgs">
+            <span style="font-weight: bold; font-size: 14px;">{{errorMsg.section}}: </span>
+            <span>{{errorMsg.msg}}</span>
+          </div>
+        </div>
+
+        <div class="panel-body" ng-show="!loadingVisualizer && !loadingVisualizerError">
+
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="slowDown();" title="Process Slower"><i class="glyphicon glyphicon-backward"></i></button>
+            <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
+            <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
+            <button class="btn btn-default" ng-click="speedUp();" title="Process Faster"><i class="glyphicon glyphicon-forward"></i></button>
+          </div>
+          <div class="visualizerSpeed">{{speedText}}</div>
+
+
+          <div id="visualizer"></div>
+
+
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="slowDown();" title="Process Slower"><i class="glyphicon glyphicon-backward"></i></button>
+            <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
+            <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
+            <button class="btn btn-default" ng-click="speedUp();" title="Process Faster"><i class="glyphicon glyphicon-forward"></i></button>
+          </div>
+          <div class="visualizerSpeed">{{speedText}}</div>
+
         </div>
       </div>
+
     </div>
   </div>
 </div>

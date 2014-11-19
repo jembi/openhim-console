@@ -13,6 +13,14 @@ describe('Controller: UsersCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
     httpBackend = $httpBackend;
 
+    httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
+      'components': [],
+      'endpoints': [],
+      'color': { 'inactive': 'CCCCCC', 'active': '4cae4c', 'error': 'd43f3a', 'text': '000000' },
+      'size': { 'width': 1000, 'height': 400, 'padding': 20 },
+      'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
+    });
+
     $httpBackend.when('GET', new RegExp('.*/users')).respond([{
         'firstname': 'Super',
         'surname': 'User',
@@ -20,7 +28,8 @@ describe('Controller: UsersCtrl', function () {
         'passwordAlgorithm': 'sample/api',
         'passwordHash': '539aa778930879b01b37ff62',
         'passwordSalt': '79b01b37ff62',
-        'groups': ['admin']
+        'groups': ['admin'],
+        'settings': {}
       }, {
         'firstname': 'Ordinary',
         'surname': 'User',
@@ -28,7 +37,8 @@ describe('Controller: UsersCtrl', function () {
         'passwordAlgorithm': 'sample/api',
         'passwordHash': '539aa778930879b01b37ff62',
         'passwordSalt': '79b01b37ff62',
-        'groups': ['limited']
+        'groups': ['limited'],
+        'settings': {}
       }
     ]);
 

@@ -4,41 +4,132 @@
 /* global moment: false */
 
 angular.module('openhimWebui2App')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api) {
-    var registries = [
-      { 'comp': 'server1', 'desc': 'Server 1' },
-      { 'comp': 'server2', 'desc': 'Server 2' },
-      { 'comp': 'route-server3', 'desc': 'Server 3' }
-    ];
-    var endpoints = [
-      { 'comp': 'channel-1', 'desc': '/channel1' },
-      { 'comp': 'channel-2', 'desc': '/channel2' },
-      { 'comp': 'channel-3', 'desc': '/channel3' }
-    ];
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api, Alerting) {
 
-    var himRect, himText;
+    $scope.loadingVisualizer = true;
+    $scope.loadingVisualizerError = false;
+    $scope.loadingVisualizerErrorMsgs = [];
 
-    var visW = 900, visH = 400;
-    var pad = 20;
 
-    var himX = 0 + pad,
-      himY = visH/2.0,
-      himW = visW - 2.0*pad,
+    // initialize global variables
+    var registries = [];
+    var endpoints = [];
+    var himRect, himText, visW, visH, pad, himX, himY, himW, himH, inactiveColor, activeColor, errorColor, textColor;
+    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, speed, maxSpeed, maxTimeout, vis;
+
+
+
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+    $scope.consoleSession = consoleSession;
+
+    // get the user settings to construct the visualizer
+    Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
+
+      var visSettings = user.settings.visualizer;
+
+      /********** Visualizations Management **********/
+      // setup components (registries)
+      angular.forEach(visSettings.components, function(component){
+        registries.push({ comp: component.event, desc: component.desc });
+      });
+
+      // setup endpoints
+      angular.forEach(visSettings.endpoints, function(endpoint){
+        endpoints.push({ comp: endpoint.event, desc: endpoint.desc });
+      });
+
+      // check if components and registries have events
+      if ( registries.length === 0 || endpoints.length === 0 ){
+        $scope.loadingVisualizerError = true;
+        $scope.loadingVisualizer = false;
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has atleast one Component and one Endpoint added!' });
+      }
+      /********** Visualizations Management **********/
+
+
+      /********** Size Management **********/
+      visW = parseInt( visSettings.size.width );
+      visH = parseInt( visSettings.size.height );
+      pad = parseInt( visSettings.size.padding );
+
+      himX = 0 + pad;
+      himY = visH/2.0;
+      himW = visW - 2.0*pad;
       himH = visH/4.0 - 2.0*pad;
 
-    var inactiveColor = '#ccc',
-      activeColor = '#555',
-      errorColor = '#a55';
+      // check if config not empty
+      if ( !visW || !visH || !pad ){
+        $scope.loadingVisualizerError = true;
+        $scope.loadingVisualizer = false;
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Size Management', msg: 'Please ensure all size management fields are supplied!' });
+      }
+      /********** Size Management **********/
 
-    var visualizerUpdateInterval;
-    //How often to fetch updates from the server (in millis)
-    var updatePeriod = 200;
-    var diffTime;
-    var lastUpdate;
 
-    //play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
-    var speed = 0;
-    var maxSpeed = 4;
+      /********** Color Management **********/
+      inactiveColor = '#'+visSettings.color.inactive;
+      activeColor = '#'+visSettings.color.active;
+      errorColor = '#'+visSettings.color.error;
+      textColor = '#'+visSettings.color.text;
+
+      // check if config not empty
+      if ( inactiveColor === '#' || activeColor === '#' || errorColor === '#' || textColor === '#' ){
+        $scope.loadingVisualizerError = true;
+        $scope.loadingVisualizer = false;
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' });
+      }
+      /********** Color Management **********/
+
+
+      /********** Time Management **********/
+      //How often to fetch updates from the server (in millis)
+      updatePeriod = parseInt( visSettings.time.updatePeriod );
+
+      //play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
+      speed = 0;
+      maxSpeed = parseInt( visSettings.time.maxSpeed );
+      maxTimeout = parseInt( visSettings.time.maxTimeout );
+
+      // check if config not empty
+      if ( !updatePeriod || !maxSpeed || !maxTimeout ){
+        $scope.loadingVisualizerError = true;
+        $scope.loadingVisualizer = false;
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Speed Management', msg: 'Please ensure all speed management fields are supplied!' });
+      }
+      /********** Time Management **********/
+
+
+      
+
+      if ( $scope.loadingVisualizer === true ){
+
+        // visualizer loaded - change state
+        $scope.loadingVisualizer = false;
+
+        /* execute the visualizer code */
+        vis = d3.select('#visualizer')
+          .append('svg:svg')
+          .attr('width', visW)
+          .attr('height', visH);
+
+        setupHIM(vis);
+        setupRegistries(vis);
+        setupEndpoints(vis);
+
+        sync();
+        /* execute the visualizer code */
+      }
+
+    }, function(err){
+      $scope.loadingVisualizer = false;
+      // on error - add server error alert
+      Alerting.AlertAddServerMsg(err.status);
+    });
+
+
+
+
 
 
     var getRegistryRect = function getRegistryRect(name) {
@@ -78,7 +169,7 @@ angular.module('openhimWebui2App')
         .attr('text-anchor', 'middle')
         .attr('font-size', textSize)
         .text(text)
-        .style('fill', '#000');
+        .style('fill', textColor);
     };
 
     var setupRegistryComponent = function setupRegistryComponent(compRect, compText, compConnector, index, text) {
@@ -169,10 +260,19 @@ angular.module('openhimWebui2App')
         .delay(delay * delayMultiplier)
         .style('fill', color);
 
-      if (isError) {
+      if (ev.toLowerCase() === 'start' || isError) {
+
+        var timeout;
+        if ( isError ){
+          timeout = 1000;
+        }else{
+          timeout = maxTimeout;
+        }
+
+
         comp
           .transition()
-          .delay(delay * delayMultiplier + 1000)
+          .delay(delay * delayMultiplier + timeout)
           .style('fill', inactiveColor);
       }
     };
@@ -264,17 +364,5 @@ angular.module('openhimWebui2App')
       }
     };
 
-    /* */
-
-    var vis = d3.select('#visualizer')
-      .append('svg:svg')
-      .attr('width', visW)
-      .attr('height', visH);
-
-    setupHIM(vis);
-    setupRegistries(vis);
-    setupEndpoints(vis);
-
-    sync();
-
+    
   });

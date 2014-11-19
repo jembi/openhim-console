@@ -3,7 +3,7 @@
 /* global isValidMSISDN: false */
 
 angular.module('openhimWebui2App')
-  .controller('UsersModalCtrl', function ($scope, $modalInstance, $timeout, Api, login, Notify, Alerting, user) {
+  .controller('UsersModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, login, Notify, Alerting, user) {
 
     /*************************************************************/
     /**   These are the functions for the User initial load     **/
@@ -18,6 +18,17 @@ angular.module('openhimWebui2App')
     // get the allowed channels for the transaction settings
     Api.Channels.query(function(channels){
       $scope.channels = channels;
+
+      $scope.components = [];
+      // setup components object
+      angular.forEach(channels, function(channel){
+        $scope.components.push({ key: channel.name, event: channel.name });
+
+        angular.forEach(channel.routes, function(route){
+          $scope.components.push({ key: 'route-'+route.name, event: '----> route-'+route.name });
+        });
+      });
+      
     }, function(){ /* server error - could not connect to API to get channels */ });
 
     // get the users for the taglist roles options
@@ -35,10 +46,41 @@ angular.module('openhimWebui2App')
     if (user) {
       $scope.update = true;
       $scope.user = angular.copy(user);
+
+      // check visualizer settings properties exist
+      if ( !$scope.user.settings.list ){
+        $scope.user.settings.list = {};
+      }
+
+      if ( !$scope.user.settings.filter ){
+        $scope.user.settings.filter = {};
+      }
+
+      if ( !$scope.user.settings.visualizer ){
+        $scope.user.settings.visualizer = {};
+
+        // load default visualizer config for user with no visualizer settings
+        $http.get('config/visualizer.json').success(function( visualizerConfig ) {
+          angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
+        });
+      }
+
     }else{
       $scope.update = false;
       $scope.user = new Api.Users();
+
+      // create visualizer settings properties
+      $scope.user.settings = {};
+      $scope.user.settings.list = {};
+      $scope.user.settings.filter = {};
+      $scope.user.settings.visualizer = {};
+
+      // load default visualizer config for new user
+      $http.get('config/visualizer.json').success(function( visualizerConfig ) {
+        angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
+      });
     }
+
 
     /*************************************************************/
     /**   These are the functions for the User initial load     **/
@@ -134,6 +176,54 @@ angular.module('openhimWebui2App')
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
+
+
+
+    
+
+    /*******************************************/
+    /**   Settings - Visualizer Functions     **/
+    /*******************************************/
+
+    // setup visualizer object
+    $scope.visualizer = {};
+
+    $scope.addSelectComponentEndpoint = function(type){
+      // check type and add to correct object
+      if ( type === 'component' ){
+        $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addSelectComponent, desc: $scope.visualizer.addSelectComponent });
+        $scope.visualizer.addSelectComponent = null;
+      }else if( type === 'endpoint' ){
+        $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addSelectEndpoint.name, desc: $scope.visualizer.addSelectEndpoint.name });
+        $scope.visualizer.addSelectEndpoint = null;
+      }
+    };
+
+    $scope.addComponentEndpoint = function(type){
+      // check type and add to correct object
+      if ( type === 'component' ){
+        $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addComponent.event, desc: $scope.visualizer.addComponent.desc });
+        $scope.visualizer.addComponent.event = '';
+        $scope.visualizer.addComponent.desc = '';
+      }else if( type === 'endpoint' ){
+        $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addEndpoint.event, desc: $scope.visualizer.addEndpoint.desc });
+        $scope.visualizer.addEndpoint.event = '';
+        $scope.visualizer.addEndpoint.desc = '';
+      }
+    };
+
+    $scope.removeComponentEndpoint = function(type, index){
+      if ( type === 'component' ){
+        $scope.user.settings.visualizer.components.splice(index, 1);
+      }else if( type === 'endpoint' ){
+        $scope.user.settings.visualizer.endpoints.splice(index, 1);
+      }
+    };
+
+    /*******************************************/
+    /**   Settings - Visualizer Functions     **/
+    /*******************************************/
+
 
 
 
