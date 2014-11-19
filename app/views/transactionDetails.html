@@ -29,7 +29,7 @@
             <button class="btn btn-primary" ng-if="rerunAllowed && transactionDetails.canRerun" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
             <div style="font-size: 16px; display: block;" ng-if="!transactionDetails.canRerun" class="label label-danger">
               RERUN NOT POSSIBLE!<br />
-              Method is POST and Request Body not saved!
+              Method is either POST/PUT/PATCH and Request Body not saved!
             </div>
           </div>
 
