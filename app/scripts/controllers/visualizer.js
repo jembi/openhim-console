@@ -30,7 +30,7 @@ angular.module('openhimWebui2App')
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Settings Error', msg: 'There appear to be no settings saved for this user. Please save the user settings' });
-        return
+        return;
       }
 
       var visSettings = user.settings.visualizer;
