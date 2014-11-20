@@ -176,6 +176,15 @@
       <h4>Visualizer Size Management</h4>
 
       <div class="settings_div">
+        <label style="float: left" tooltip="Set whether the visualizer should resize automatically based on the screen size">Responsive</label>
+        <div class="input-group" style="padding-top: 10px;">
+          <label class="responsiveCheckboxLabel">
+            <input type="checkbox" ng-model="user.settings.visualizer.size.responsive" style="margin-top: 0px; vertical-align: middle;" /> Responsive Visualizer
+          </label>
+        </div>
+      </div>
+
+      <div class="settings_div">
         <label style="float: left" tooltip="Set the width of the Visualizer (in Pixels)">Width</label>
         <div class="input-group">
           <input class="form-control" type="text" ng-model="user.settings.visualizer.size.width">

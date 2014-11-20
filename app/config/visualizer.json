@@ -8,6 +8,7 @@
     "text": "000000"
   },
   "size": {
+    "responsive": true,
     "width": 1000,
     "height": 400,
     "padding": 20

@@ -14,7 +14,7 @@ angular.module('openhimWebui2App')
     // initialize global variables
     var registries = [];
     var endpoints = [];
-    var himRect, himText, visW, visH, pad, himX, himY, himW, himH, inactiveColor, activeColor, errorColor, textColor;
+    var himRect, himText, visResponsive, visW, visH, pad, himX, himY, himW, himH, inactiveColor, activeColor, errorColor, textColor;
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, speed, maxSpeed, maxTimeout, vis;
 
 
@@ -56,6 +56,7 @@ angular.module('openhimWebui2App')
 
 
       /********** Size Management **********/
+      visResponsive = visSettings.size.responsive;
       visW = parseInt( visSettings.size.width );
       visH = parseInt( visSettings.size.height );
       pad = parseInt( visSettings.size.padding );
@@ -115,10 +116,24 @@ angular.module('openhimWebui2App')
         $scope.loadingVisualizer = false;
 
         /* execute the visualizer code */
-        vis = d3.select('#visualizer')
-          .append('svg:svg')
-          .attr('width', visW)
-          .attr('height', visH);
+
+        // setup responsive visualizer
+        if ( visResponsive === true ){
+          vis = d3.select('#visualizer')
+            .append('svg:svg')
+            .attr('viewBox', '0 0 ' + visW + ' ' + visH )
+            .attr('preserveAspectRatio', 'xMinYMin');
+
+          vis.append('svg:rect')
+            .attr('width', visW)
+            .attr('height', visH);
+        }else{
+          // setup fixed size visualizer
+          vis = d3.select('#visualizer')
+            .append('svg:svg')
+            .attr('width', visW)
+            .attr('height', visH);
+        }
 
         setupHIM(vis);
         setupRegistries(vis);
