@@ -14,6 +14,8 @@ describe('Controller: ContactGroupsCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
       {group: 'Group 1', users: [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }]},
       {group: 'Group 2', users: [{ user: 'User 22', method: 'email', maxAlerts: 'no max' }]},

@@ -14,6 +14,8 @@ describe('Controller: TransactionDetailsCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0')).respond({'_id':'5322fe9d8b6add4b2b059ff5','name':'Transaction 1','urlPattern':'sample/api', 'channelID':'5322fe9d8b6add4b2b059dd8', 'clientID':'5344fe7d8b6add4b2b069dd7'});
     $httpBackend.when('GET', new RegExp('.*/transactions?.*parentID=.+')).respond([{'name':'Transaction 5','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2basd979', 'parentID': '5322fe9d8b6add4b2b059ff5'}]);
 

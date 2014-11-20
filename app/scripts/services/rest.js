@@ -1,44 +1,55 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .factory('Api', function ($resource, HOST, PORT) {
+  .factory('Api', function ($rootScope, $resource) {
+
+    // fetch API server details
+    var protocol = angular.copy( $rootScope.protocol );
+    var host = angular.copy( $rootScope.host );
+    var port = angular.copy( $rootScope.port );
+    var server = protocol + '://' + host + ':' + port;
+
+    // delete API server details from rootScope
+    delete $rootScope.protocol;
+    delete $rootScope.host;
+    delete $rootScope.port;
 
     return {
-      Authenticate: $resource('https://' + HOST + ':' + PORT + '/authenticate/:email'),
+      Authenticate: $resource( server + '/authenticate/:email' ),
 
-      Channels: $resource('https://' + HOST + ':' + PORT + '/channels/:channelId', { channelId: '@_id' }, {
+      Channels: $resource( server + '/channels/:channelId', { channelId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 
-      Users: $resource('https://' + HOST + ':' + PORT + '/users/:email', { email: '@email' }, {
+      Users: $resource( server + '/users/:email', { email: '@email' }, {
         update: { method: 'PUT' }
       }),
 
-      Clients: $resource('https://' + HOST + ':' + PORT + '/clients/:clientId', { clientId: '@_id' }, {
+      Clients: $resource( server + '/clients/:clientId', { clientId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 
-      Transactions: $resource('https://' + HOST + ':' + PORT + '/transactions/:transactionId', { transactionId: '@_id' }),
+      Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
-      Mediators: $resource('https://' + HOST + ':' + PORT + '/mediators/:urn', { urn: '@urn' }),
+      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }),
 
       // add the metric endpoints
-      Metrics: $resource('https://' + HOST + ':' + PORT + '/metrics/:type/:channelId', {}),
-      MetricsStatus: $resource('https://' + HOST + ':' + PORT + '/metrics/status', {}),
+      Metrics: $resource( server + '/metrics/:type/:channelId', {}),
+      MetricsStatus: $resource( server + '/metrics/status', {}),
 
-      Tasks: $resource('https://' + HOST + ':' + PORT + '/tasks/:taskId', { taskId: '@_id' }, {
+      Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 
-      ContactGroups: $resource('https://' + HOST + ':' + PORT + '/groups/:groupId', { groupId: '@_id' }, {
+      ContactGroups: $resource( server + '/groups/:groupId', { groupId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 
-      VisualizerEvents: $resource('https://' + HOST + ':' + PORT + '/visualizer/events/:receivedTime'),
-      VisualizerSync: $resource('https://' + HOST + ':' + PORT + '/visualizer/sync'),
+      VisualizerEvents: $resource( server + '/visualizer/events/:receivedTime'),
+      VisualizerSync: $resource( server + '/visualizer/sync'),
 
       // endpoint to restart the core server
-      Restart: $resource('https://' + HOST + ':' + PORT + '/restart', {})
+      Restart: $resource( server + '/restart', {})
 
     };
   });

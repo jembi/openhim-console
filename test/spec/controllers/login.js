@@ -20,6 +20,8 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({
       salt: 'test-salt',
       ts: 'test-ts'
@@ -64,6 +66,8 @@ describe('Controller: LoginCtrl', function () {
       scope.loginPassword = '';
       scope.validateLogin();
       scope.alerts.login.length.should.equal(1);
+
+      httpBackend.flush();
     });
 
 
@@ -193,6 +197,8 @@ describe('Controller: LoginCtrl', function () {
       // create the session object to store session data
       var sessionResult = scope.createUserSession('');
       sessionResult.should.equal('No Email supplied!');
+
+      httpBackend.flush();
       
     });
 
@@ -209,6 +215,8 @@ describe('Controller: LoginCtrl', function () {
       var user = login.getLoggedInUser();
       user.should.exist;
       user.should.be.empty;
+
+      httpBackend.flush();
       
     });
 

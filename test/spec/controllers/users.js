@@ -13,6 +13,8 @@ describe('Controller: UsersCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
     httpBackend = $httpBackend;
 
+    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
       'components': [],
       'endpoints': [],

@@ -14,6 +14,8 @@ describe('Service: login', function () {
     httpBackend = $httpBackend;
     Authinterceptor = _Authinterceptor_;
 
+    httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
       salt: 'test-salt',
       ts: new Date(new Date().getTime() + 3600000).toISOString() // 1 hour ahead
@@ -58,6 +60,7 @@ describe('Service: login', function () {
     login.logout();
     var user = login.getLoggedInUser();
     (user === null).should.be.true;
+    httpBackend.flush();
   });
 
   it('should have a timediff', function(){
