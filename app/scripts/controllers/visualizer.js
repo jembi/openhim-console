@@ -12,8 +12,8 @@ angular.module('openhimWebui2App')
     // initialize global variables
     var components = [];
     var endpoints = [];
-    var visResponsive, visW, visH, pad, himX, himY, himW, himH, inactiveColor, activeColor, errorColor, textColor;
-    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, speed, maxSpeed, maxTimeout;
+    var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
+    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
 
 
     var consoleSession = localStorage.getItem('consoleSession');
@@ -59,11 +59,6 @@ angular.module('openhimWebui2App')
       visH = parseInt( visSettings.size.height );
       pad = parseInt( visSettings.size.padding );
 
-      himX = 0 + pad;
-      himY = visH/2.0;
-      himW = visW - 2.0*pad;
-      himH = visH/4.0 - 2.0*pad;
-
       // check if config not empty
       if ( !visW || !visH || !pad ){
         $scope.loadingVisualizerError = true;
@@ -93,7 +88,7 @@ angular.module('openhimWebui2App')
       updatePeriod = parseInt( visSettings.time.updatePeriod );
 
       //play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
-      speed = 0;
+      $scope.visualizerSpeed = 0;
       maxSpeed = parseInt( visSettings.time.maxSpeed );
       maxTimeout = parseInt( visSettings.time.maxTimeout );
 
@@ -120,7 +115,7 @@ angular.module('openhimWebui2App')
         errorColor: errorColor,
         textColor: textColor,
         updatePeriod: updatePeriod,
-        speed: speed,
+        speed: $scope.visualizerSpeed,
         maxSpeed: maxSpeed,
         maxTimeout: maxTimeout
       };
@@ -185,28 +180,28 @@ angular.module('openhimWebui2App')
 
     // funcntion to slow down animate
     $scope.slowDown = function slowDown() {
-      if (speed>-1*maxSpeed+1) {
-        speed--;
+      if ($scope.visualizerSpeed>-1*maxSpeed+1) {
+        $scope.visualizerSpeed--;
       }
       $scope.speedText = $scope.setSpeedText();
     };
 
     // function to speed up animate
     $scope.speedUp = function speedUp() {
-      if (speed<maxSpeed-1) {
-        speed++;
+      if ($scope.visualizerSpeed<maxSpeed-1) {
+        $scope.visualizerSpeed++;
       }
       $scope.speedText = $scope.setSpeedText();
     };
 
     // function to set the animate speed
     $scope.setSpeedText = function setSpeedText() {
-      if (speed === 0) {
+      if ($scope.visualizerSpeed === 0) {
         return '';
-      } else if (speed<0) {
-        return (-1*speed+1) + 'X Slower';
-      } else if (speed>0) {
-        return (speed+1) + 'X Faster';
+      } else if ($scope.visualizerSpeed<0) {
+        return (-1*$scope.visualizerSpeed+1) + 'X Slower';
+      } else if ($scope.visualizerSpeed>0) {
+        return ($scope.visualizerSpeed+1) + 'X Faster';
       }
     };
 

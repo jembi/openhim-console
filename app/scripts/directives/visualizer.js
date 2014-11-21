@@ -24,7 +24,7 @@ angular.module('openhimWebui2App')
         // watcher to update the speed of the visualizer
         scope.$watchCollection(speedVal, function(newSpeed){
           // check if data object exist before processing
-          if ( newSpeed ){
+          if ( newSpeed !== undefined ){
             speed = newSpeed;
           }
         });
