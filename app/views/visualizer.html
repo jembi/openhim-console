@@ -33,22 +33,22 @@
         <div class="panel-body" ng-show="!loadingVisualizer && !loadingVisualizerError">
 
           <div class="btn-group">
-            <button class="btn btn-default" ng-click="slowDown();" title="Process Slower"><i class="glyphicon glyphicon-backward"></i></button>
+            <button class="btn btn-default" ng-click="slowDown();" title="Animate Slower"><i class="glyphicon glyphicon-backward"></i></button>
             <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
             <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
-            <button class="btn btn-default" ng-click="speedUp();" title="Process Faster"><i class="glyphicon glyphicon-forward"></i></button>
+            <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
           </div>
           <div class="visualizerSpeed">{{speedText}}</div>
 
 
-          <div id="visualizer"></div>
+          <div visualizer vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
 
 
           <div class="btn-group">
-            <button class="btn btn-default" ng-click="slowDown();" title="Process Slower"><i class="glyphicon glyphicon-backward"></i></button>
+            <button class="btn btn-default" ng-click="slowDown();" title="Animate Slower"><i class="glyphicon glyphicon-backward"></i></button>
             <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
             <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
-            <button class="btn btn-default" ng-click="speedUp();" title="Process Faster"><i class="glyphicon glyphicon-forward"></i></button>
+            <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
           </div>
           <div class="visualizerSpeed">{{speedText}}</div>
 
