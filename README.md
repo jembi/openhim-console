@@ -41,9 +41,9 @@ This will compile the entire webapp into the `dist/` folder. Copy the contents o
 Configuring the console
 -----------------------
 
-To configure the consle to connect to a particular [OpenHIM-core](https://github.com/jembi/openhim-core-js) instance all you need to do is edit the configuration file found here: https://github.com/jembi/openhim-console/blob/master/app/scripts/appConfig.js
+To configure the consle to connect to a particular [OpenHIM-core](https://github.com/jembi/openhim-core-js) instance all you need to do is edit the configuration file found here: https://github.com/jembi/openhim-console/blob/master/app/config/default.json
 
-Set the `HOST` and `PORT` constants to values that point to your OpenHIM server. Note: this OpenHIM server MUST be acessible to client computer that displays the OpenHIM console as a connection is made directly from the clinet to the OpenHIM server.
+Set the `PROTOCOL`, `HOST` and `PORT` constants to values that point to your OpenHIM server. Note: this OpenHIM server MUST be acessible to client computer that displays the OpenHIM console as a connection is made directly from the client to the OpenHIM server.
 
 Using this config file you can also configure the title for the console as well as various footer information. 
 
