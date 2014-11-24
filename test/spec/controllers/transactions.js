@@ -14,6 +14,8 @@ describe('Controller: TransactionsCtrl', function () {
 
     httpBackend = $httpBackend;
 
+    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+
     $httpBackend.when('GET', new RegExp('.*/transactions')).respond([
       {'name':'Transaction 1','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2b059ff5'},
       {'name':'Transaction 2','urlPattern':'sample/api','_id':'5322fe9d8b6add4b2b059ff6'}
