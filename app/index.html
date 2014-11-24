@@ -68,6 +68,7 @@
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
@@ -170,13 +171,14 @@
     <!-- endUtils -->
     <!-- Custom Directives -->
     <script src="scripts/directives/autofocus.js"></script>
+    <script src="scripts/directives/graph-directives-morris.js"></script>
+    <script src="scripts/directives/visualizer.js"></script>
     <!-- Custom Directives -->
     <script src="scripts/services/rest.js"></script>
     <script src="scripts/services/notify.js"></script>
     <script src="scripts/services/authinterceptor.js"></script>
     <script src="scripts/services/login.js"></script>    
     <script src="scripts/services/alerting.js"></script>
-    <script src="scripts/services/graph-directives-morris.js"></script>
     <!-- endbuild -->
     
   </body>

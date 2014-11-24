@@ -245,19 +245,11 @@ angular.module('openhimWebui2App')
         $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
 
-          // if admin user then all reruns allowed
-          if ( $scope.rerunAllowedAdmin === true ){
-            $scope.transactionsSelected.push(transaction._id);
+          // first check if transaction can be rerun
+          if ( transaction.canRerun ){
 
-            // check if transaction is a rerun
-            if (transaction.childIDs){
-              if (transaction.childIDs.length > 0){
-                $scope.rerunTransactionsSelected++;
-              }
-            }
-          }else{
-            // only add transaction if channel Rerun is allowed
-            if ( $scope.channelsMap[transaction.channelID].rerun ){
+            // if admin user then all reruns allowed
+            if ( $scope.rerunAllowedAdmin === true ){
               $scope.transactionsSelected.push(transaction._id);
 
               // check if transaction is a rerun
@@ -266,8 +258,22 @@ angular.module('openhimWebui2App')
                   $scope.rerunTransactionsSelected++;
                 }
               }
+            }else{
+              // only add transaction if channel Rerun is allowed
+              if ( $scope.channelsMap[transaction.channelID].rerun ){
+                $scope.transactionsSelected.push(transaction._id);
+
+                // check if transaction is a rerun
+                if (transaction.childIDs){
+                  if (transaction.childIDs.length > 0){
+                    $scope.rerunTransactionsSelected++;
+                  }
+                }
+              }
             }
+            
           }
+
         });
       }else{
         $scope.transactionsSelected = [];
