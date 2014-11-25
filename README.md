@@ -45,7 +45,11 @@ To configure the consle to connect to a particular [OpenHIM-core](https://github
 
 Set the `PROTOCOL`, `HOST` and `PORT` constants to values that point to your OpenHIM server. Note: this OpenHIM server MUST be acessible to client computer that displays the OpenHIM console as a connection is made directly from the client to the OpenHIM server.
 
-Using this config file you can also configure the title for the console as well as various footer information. 
+Using this config file you can also configure the title for the console as well as various footer information.
+
+**If you get a server error when trying to login**, it could be becasue your the OpenHIM-core server uses a self-signed certificate for it's API by default. To get around this, try the following to accept the certificate (**Note**: the proper way to fix this is to install a proper signed certificatge on the OpenHIM-core, good for production but costs money if just testing):
+
+Visit the following link: https://localhost:8080/authenticate/root@openhim.org in Chrome. Make sure you are visiting this link from the system that is running the OpenHIM-core. Otherwise, replace `localhost` with the appropriate server address. You should see a message saying "Your connection is not private". Click "Advanced" and then click "Proceed". Once you have done this, you should see some JSON, you can ignore this and close the page. Ths will ignore the fact that the certificate is self-signed. Now, you should be able to go back to the Console login page and login.
 
 Login Credentials
 ---------------
