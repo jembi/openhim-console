@@ -33,7 +33,7 @@ angular.module('openhimWebui2App')
       }, function(){ /* server error - could not connect to API to get user details */ });
 
       // get the client object for the transactions details page
-      $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID });
+      $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
 
     };
 
