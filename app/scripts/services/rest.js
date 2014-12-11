@@ -25,7 +25,7 @@ angular.module('openhimWebui2App')
         update: { method: 'PUT' }
       }),
 
-      Clients: $resource( server + '/clients/:clientId', { clientId: '@_id' }, {
+      Clients: $resource( server + '/clients/:clientId/:property', { clientId: '@_id', property: '@property' }, {
         update: { method: 'PUT' }
       }),
 
