@@ -729,6 +729,41 @@ body {
 .default-labels-box{ margin: 0 20px 0 0; float: left; font-size: 14px; padding: 5px 10px; background: #2c3742; color: #fff; text-align: center; }
 .default-labels-box strong { font-size: 18px; }
 
+
+
+.newUserContainer { width: 60% !important; margin: 0 20%; }
+
+.addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
+.addUrlRegexDelimiterDiv label { margin: 25px 0px 0px 15px; float: left; }
+.addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
+
+/*ng-cloak style to force no display at first load*/
+[ng-cloak]{ display: none !important; }
+
+.primaryRoute { background: #428bca; color: #fff; }
+.editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
+.editable-error { margin-top: 0px; }
+
+.scollNavAnchor { display: none; position: fixed; }
+.row .col-md-10 { float: right; }
+.transaction_settings_tabset { margin-bottom: 20px; background-color: #eee }
+.transaction_settings_tabset ul { background-color: #fff; }
+.transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
+.transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
+
+.usersChannelsMatrixTD { text-align: center; }
+.usersChannelsMatrixDiv { overflow-x: auto; }
+.usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
+.usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
+.usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }
+
+.components_div { width: 48%; float: left; margin: 0px; }
+.endpoints_div { width: 48%; float: right; margin: 0px; }
+.visualizerSpeed { margin-left: 20px; font-weight: bold; display: inline-block; font-size: 16px; }
+#visualizer rect { fill: #fff; }
+.responsiveCheckboxLabel:hover { cursor: pointer; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
@@ -751,6 +786,8 @@ body {
 
 /* Desktop */
 @media (max-width: 991px){
+
+  .newUserContainer { width: 100% !important; margin: 0; }
 
   .col-md-2{ width: 100%; }
   .col-md-10{ width: 100%; }
@@ -926,34 +963,3 @@ body {
   }
 }
 
-
-.addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
-.addUrlRegexDelimiterDiv label { margin: 25px 0px 0px 15px; float: left; }
-.addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
-
-/*ng-cloak style to force no display at first load*/
-[ng-cloak]{ display: none !important; }
-
-.primaryRoute { background: #428bca; color: #fff; }
-.editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
-.editable-error { margin-top: 0px; }
-
-.scollNavAnchor { display: none; position: fixed; }
-.row .col-md-10 { float: right; }
-.transaction_settings_tabset { margin-bottom: 20px; background-color: #eee }
-.transaction_settings_tabset ul { background-color: #fff; }
-.transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
-.transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
-
-.usersChannelsMatrixTD { text-align: center; }
-.usersChannelsMatrixDiv { overflow-x: auto; }
-.usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
-.usersChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
-.usersChannelsMatrixLegendDiv { margin-bottom: 10px; }
-.usersChannelsMatrixLegendDiv title { display: block; font-weight: bold; font-size: 16px; }
-
-.components_div { width: 48%; float: left; margin: 0px; }
-.endpoints_div { width: 48%; float: right; margin: 0px; }
-.visualizerSpeed { margin-left: 20px; font-weight: bold; display: inline-block; font-size: 16px; }
-#visualizer rect { fill: #fff; }
-.responsiveCheckboxLabel:hover { cursor: pointer; }

@@ -99,7 +99,10 @@
               <tbody>
                 <tr ng-repeat="user in users">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="Email"><a href="" ng-click="editUser(user)">{{ user.email }}</a></td>
+                  <td data-title="Email">
+                    <a href="" ng-click="editUser(user)">{{ user.email }}</a>
+                    <span ng-if="user.locked" style="color: #d9534f" tooltip-html-unsafe="This user is currently locked<br />They will need to set their password or admin needs to set it for them"><i class="glyphicon glyphicon-lock"></i></span>
+                  </td>
                   <td data-title="First Name">{{ user.firstname }}</td>
                   <td data-title="Surname">{{ user.surname }}</td>
                   <td data-title="Group"><span ng-repeat="group in user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>

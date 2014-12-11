@@ -84,6 +84,10 @@ angular
         templateUrl: 'views/visualizer.html',
         controller: 'VisualizerCtrl'
       })
+      .when('/set-password/:token', {
+        templateUrl: 'views/setPassword.html',
+        controller: 'SetPasswordCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -179,8 +183,13 @@ angular
         }
 
       }else{
-        //No session - user needs to log in
-        $window.location = '#/login';
+
+        //if not 'set-password' page
+        if ( $location.path().indexOf('set-password') !== 1 ){
+          //No session - user needs to log in
+          $window.location = '#/login';
+        }
+
       }
 
     });
