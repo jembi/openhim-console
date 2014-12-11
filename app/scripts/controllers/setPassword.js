@@ -9,7 +9,7 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
-    // object to store temp values like password (not associated with schema object)
+    // object to store temp values like password
     $scope.temp = {};
 
     $scope.passwordSetSuccessful = false;
@@ -29,10 +29,9 @@ angular.module('openhimWebui2App')
       }else{
         Alerting.AlertAddServerMsg(err.status);
       }
-      
     };
 
-    //get the Data for the supplied ID and store in 'transactionsDetails' object
+    //get the Data for the supplied token
     Api.NewUser.get({ token: $routeParams.token }, setPassSuccess, setPassError);
 
     /***************************************************/
@@ -62,7 +61,6 @@ angular.module('openhimWebui2App')
       }
     };
 
-
     var saveUser = function (user) {
       user.$update({}, function(){
         success();
@@ -84,7 +82,6 @@ angular.module('openhimWebui2App')
       if (password) {
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
-
         setHashAndSave(user, h.hash, h.salt, password);
       }
     };
