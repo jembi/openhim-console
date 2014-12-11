@@ -49,7 +49,12 @@ angular.module('openhimWebui2App')
       VisualizerSync: $resource( server + '/visualizer/sync'),
 
       // endpoint to restart the core server
-      Restart: $resource( server + '/restart', {})
+      Restart: $resource( server + '/restart', {}),
+
+      // New User
+      NewUser: $resource( server + '/new-user/:token', { token: '@token' }, {
+        update: { method: 'PUT' }
+      }),
 
     };
   });

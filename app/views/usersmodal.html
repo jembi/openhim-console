@@ -47,7 +47,8 @@
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
-      <div class="form-group-2columns">
+      <!-- Password fields - only on update -->
+      <div class="form-group-2columns" ng-show="update" >
         <div class="form-group" style="float: left;">
           <label>Password</label>
           <input class="form-control" type="password" ng-model="temp.password" ng-required='!update' />
@@ -58,6 +59,15 @@
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
         </div>
       </div>
+      <!-- Password fields - must be set by user on new user add -->
+      <div class="form-group" ng-show="!update" >
+        <label>Password</label>
+        <p>An email will be sent to the user for them to set their password. <br />
+        Their account will be locked until the password has been set</p>
+      </div>
+
+
+
       <div class="form-group">
         <label>Reports</label>
         <div class="checkbox" style="margin-top: 0px;">
