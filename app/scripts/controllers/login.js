@@ -1,7 +1,10 @@
 'use strict';
+/* global getHashAndSalt: false */
 
 angular.module('openhimWebui2App')
-  .controller('LoginCtrl', function ($scope, login, $window, $rootScope, Alerting) {
+  .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api) {
+
+    $scope.rootPasswordReset = false;
 
     //if url "#/logout" is returned then destroy the session
     if( $window.location.hash === '#/logout' ){
@@ -36,11 +39,19 @@ angular.module('openhimWebui2App')
         // reset alert object
         Alerting.AlertReset();
         if (result === 'Authentication Success') {
-          //Create the session for the logged in user
-          $scope.createUserSession(loginEmail);
 
-          //redirect user to landing page (Channels)
-          $window.location = '#/transactions';
+          // check if root and default root password
+          if ( loginEmail === 'root@openhim.org' && loginPassword === 'openhim-password' ){
+            // reset root password
+            $scope.rootPasswordReset = true;
+          }else{
+            //Create the session for the logged in user
+            $scope.createUserSession(loginEmail);
+
+            //redirect user to landing page (Channels)
+            $window.location = '#/transactions';
+          }
+
         }else{
           if ( result === 'Internal Server Error' ){
             Alerting.AlertAddServerMsg();
@@ -50,6 +61,73 @@ angular.module('openhimWebui2App')
         }
       });
     };
+
+    $scope.resetRootPassword = function(){
+      Alerting.AlertReset();
+
+      // validate not empty fields
+      if(!$scope.password || !$scope.passwordConfirm){
+        Alerting.AlertAddMsg('login', 'danger', 'Please provide both password fields');
+        return;
+      }else{
+        // validate passwords match
+        if ( $scope.password !== $scope.passwordConfirm ){
+          Alerting.AlertAddMsg('login', 'danger', 'The supplied passwords do not match');
+          return;
+        }
+
+        // check password isnt same as the current one
+        if ( $scope.password === 'openhim-password' ){
+          Alerting.AlertAddMsg('login', 'danger', 'The supplied password is the same as the current one');
+          return;
+        }
+      }
+
+      var password = angular.copy($scope.password);
+
+      // do the initial request
+      Api.Users.get({ email: 'root@openhim.org' }, function(user){
+
+        var h = getHashAndSalt(password);
+        user.passwordAlgorithm = h.algorithm;
+        
+        if (typeof h.salt !== 'undefined' && h.salt !== null) {
+          user.passwordSalt = h.salt;
+        }
+        user.passwordHash = h.hash;
+
+        // save the new root password
+        user.$update({}, function(){
+          //re-login with new credentials
+          login.login('root@openhim.org', password, function (loggedIn) {
+            if (loggedIn) {
+              //Create the session for the logged in user
+              $scope.createUserSession('root@openhim.org');
+
+              $scope.password = '';
+              $scope.passwordConfirm = '';
+
+              Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.');
+              Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.');
+              $timeout(function(){
+                //redirect user to landing page (transactions)
+                $window.location = '#/transactions';
+              }, 5000);
+
+            } else {
+              // add the error message
+              Alerting.AlertAddServerMsg();
+            }
+          });
+        }, function(){
+          Alerting.AlertAddServerMsg();
+        });
+      }, function(){
+        Alerting.AlertAddServerMsg();
+      });
+
+    };
+  
 
     $scope.createUserSession = function(loginEmail){
 

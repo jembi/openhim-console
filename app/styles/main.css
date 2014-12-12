@@ -19,7 +19,8 @@ h2 { word-wrap: break-word; }
 
 footer{
    background-color:#2c3742;
-   box-shadow:inset 0px 0px 3px #111;
+   /*box-shadow:inset 0px 0px 3px #111;*/
+   box-shadow: 0px -5px 15px #888;
    color:#fff;
    font-size:14px;
    line-height:25px;
@@ -56,6 +57,7 @@ footer .copy{
 .header{
    height:50px;
    background-color: #2c3742;
+   box-shadow: 0px 5px 15px #888;
 }
 
 .header .container{ width: 100% !important; }
@@ -238,6 +240,7 @@ footer .copy{
    border-top:1px solid #eee;
    border-right:2px solid #eee;
    border-bottom:2px solid #eee; 
+   box-shadow: 1px 1px 10px #888;
 }
 
 .content-box-large {

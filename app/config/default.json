@@ -1,8 +1,9 @@
 {
   "protocol": "https",
-  "host": "openhim-preprod.jembi.org",
+  "host": "localhost",
   "port": 8080,
   "title": "OpenHIM Admin Console",
   "footerTitle": "OpenHIM Administration Console",
-  "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>"
+  "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
+  "loginBanner": "<strong>Login Credentials:</strong> <br />Email: root@openhim.org <br /> Password: WhatsTheNewPassword"
 }

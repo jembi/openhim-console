@@ -2,7 +2,7 @@
   <div class="row">
     <div class="login-wrapper">
       <div class="box">
-        <div class="content-wrap">
+        <div class="content-wrap" ng-show="!rootPasswordReset">
           <h6>Sign In</h6>
           <form ng-submit="validateLogin()">
             <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="true">
@@ -21,7 +21,32 @@
             </div>
           </form>
         </div>
+
+
+        <div class="content-wrap" ng-show="rootPasswordReset">
+          <h6>Root Password Reset</h6>
+          <p><u><strong>Please change your default root password!</strong></u></p>
+          <form ng-submit="resetRootPassword()">
+            <input class="form-control" type="password" ng-model="password" placeholder="New Password" focus="true">
+            <input class="form-control" type="password" ng-model="passwordConfirm" placeholder="Confirm Password">
+
+            <!-- Login Alerts -->
+            <alert ng-repeat="alert in alerts.login" type="alert.type">{{alert.msg}}</alert>
+            <!-- Login Alerts -->
+
+            <!-- Server Alerts -->
+            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <!-- Server Alerts -->
+
+            <div class="action">
+              <input type="submit" class="btn btn-primary signup" value="RESET" />
+            </div>
+          </form>
+        </div>
       </div>
+
+      <div ng-if="loginBanner" class="box" ng-bind-html="loginBanner" style="padding: 10px; margin: 15px 10%;"></div>
+
     </div>
   </div>
 </div>

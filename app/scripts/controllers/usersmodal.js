@@ -191,6 +191,10 @@ angular.module('openhimWebui2App')
 
     // setup visualizer object
     $scope.visualizer = {};
+    $scope.visualizer.addSelectComponent = {};
+    $scope.visualizer.addSelectEndpoint = {};
+    $scope.visualizer.addComponent = {};
+    $scope.visualizer.addEndpoint = {};
 
     $scope.addSelectComponentEndpoint = function(type){
       // check type and add to correct object
@@ -206,13 +210,17 @@ angular.module('openhimWebui2App')
     $scope.addComponentEndpoint = function(type){
       // check type and add to correct object
       if ( type === 'component' ){
-        $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addComponent.event, desc: $scope.visualizer.addComponent.desc });
-        $scope.visualizer.addComponent.event = '';
-        $scope.visualizer.addComponent.desc = '';
+        if( $scope.visualizer.addComponent.event ){
+          $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addComponent.event, desc: $scope.visualizer.addComponent.desc });
+          $scope.visualizer.addComponent.event = '';
+          $scope.visualizer.addComponent.desc = '';
+        }
       }else if( type === 'endpoint' ){
-        $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addEndpoint.event, desc: $scope.visualizer.addEndpoint.desc });
-        $scope.visualizer.addEndpoint.event = '';
-        $scope.visualizer.addEndpoint.desc = '';
+        if( $scope.visualizer.addEndpoint.event ){
+          $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addEndpoint.event, desc: $scope.visualizer.addEndpoint.desc });
+          $scope.visualizer.addEndpoint.event = '';
+          $scope.visualizer.addEndpoint.desc = '';
+        }
       }
     };
 
