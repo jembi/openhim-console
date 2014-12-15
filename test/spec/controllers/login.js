@@ -22,10 +22,7 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({
-      salt: 'test-salt',
-      ts: 'test-ts'
-    });
+    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
 
     httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
 
@@ -216,7 +213,6 @@ describe('Controller: LoginCtrl', function () {
       scope.alerts.login[0].type.should.equal('danger');
       scope.alerts.login[0].msg.should.equal('The supplied passwords do not match');
 
-      //httpBackend.flush();
     });
 
     it('should run the resetRootPassword() function return error for new password being same as default one', function () {
@@ -252,7 +248,6 @@ describe('Controller: LoginCtrl', function () {
       scope.alerts.login[0].type.should.equal('danger');
       scope.alerts.login[0].msg.should.equal('The supplied password is the same as the current one');
 
-      //httpBackend.flush();
     });
 
     it('should run the resetRootPassword() function and update the root users password', function () {
@@ -279,17 +274,11 @@ describe('Controller: LoginCtrl', function () {
 
       scope.rootPasswordReset.should.equal(true);
 
-
-
       scope.password = 'openhim-newpassword';
       scope.passwordConfirm = 'openhim-newpassword';
-      //httpBackend.flush();
       scope.resetRootPassword();
 
       httpBackend.flush();
-
-      // One error should exist - 'Supply all fields'
-      //scope.alerts.should.exist;
 
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession.should.exist;
@@ -300,7 +289,6 @@ describe('Controller: LoginCtrl', function () {
       scope.alerts.login[1].type.should.equal('success');
       scope.alerts.login[1].msg.should.equal('You will be redirected to the \'Transactions\' page shortly.');
 
-      
     });
 
   });
