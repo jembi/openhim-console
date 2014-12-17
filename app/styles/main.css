@@ -19,7 +19,7 @@ h2 { word-wrap: break-word; }
 
 footer{
    background-color:#2c3742;
-   box-shadow:inset 0px 0px 3px #111;
+   box-shadow: 0px -5px 15px #888;
    color:#fff;
    font-size:14px;
    line-height:25px;
@@ -56,6 +56,7 @@ footer .copy{
 .header{
    height:50px;
    background-color: #2c3742;
+   box-shadow: 0px 5px 15px #888;
 }
 
 .header .container{ width: 100% !important; }
@@ -238,6 +239,7 @@ footer .copy{
    border-top:1px solid #eee;
    border-right:2px solid #eee;
    border-bottom:2px solid #eee; 
+   box-shadow: 1px 1px 10px #888;
 }
 
 .content-box-large {
@@ -414,7 +416,7 @@ body {
   -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 3px, rgba(0, 0, 0, 0.35) 0 0 1px;
   -ms-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 3px, rgba(0, 0, 0, 0.35) 0 0 1px;
   -o-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 3px, rgba(0, 0, 0, 0.35) 0 0 1px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0 1px 3px, rgba(0, 0, 0, 0.35) 0 0 1px;
+  box-shadow: 1px 1px 10px #888;
   background: #fff;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -723,7 +725,7 @@ body {
 .progress { margin: 0px; width: 90%; }
 
 #transaction-status-graph:hover { cursor: pointer; }
-.dashboard-info-box{ margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
+.dashboard-info-box{ box-shadow: none; margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
 .dashboard-info-box strong { font-size: 30px; }
 
 .default-labels-box{ margin: 0 20px 0 0; float: left; font-size: 14px; padding: 5px 10px; background: #2c3742; color: #fff; text-align: center; }

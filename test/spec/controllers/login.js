@@ -22,10 +22,9 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({
-      salt: 'test-salt',
-      ts: 'test-ts'
-    });
+    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
+
+    httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
 
     httpBackend.when('GET', new RegExp('.*/authenticate/incorrect@user.org')).respond({});
 
@@ -41,7 +40,20 @@ describe('Controller: LoginCtrl', function () {
       'groups': [ 'admin' ],
       'settings': { 'filter': { 'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
                     'list': { 'tabview': 'new'} }
+    }, {
+      '_id': '349274c136f2eb682aodye4c',
+      'email': 'root@openhim.org',
+      'firstname': 'Super',
+      'surname': 'User',
+      'passwordAlgorithm': 'sha512',
+      'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
+      'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
+      'groups': [ 'admin' ],
+      'settings': { 'filter': { 'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
+                    'list': { 'tabview': 'new'} }
     });
+
+    httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated');
 
     createController = function() {
       scope = $rootScope.$new();
@@ -126,6 +138,157 @@ describe('Controller: LoginCtrl', function () {
       user.should.exist;
       user.should.have.property('email', 'test@user.org');
       user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160');
+    });
+
+  });
+
+
+
+  describe('*resetRootPassword() tests', function () {
+
+    it('should run the resetRootPassword() function return error for not all fields being supplied', function () {
+      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'));
+      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'));
+
+      createController();
+      scope.rootPasswordReset.should.equal(false);
+
+      // user should be empty before valid login
+      var user = login.getLoggedInUser();
+      user.should.be.empty;
+
+      scope.loginEmail = 'root@openhim.org';
+      scope.loginPassword = 'openhim-password';
+      scope.validateLogin();
+
+      // One error should exist - 'Busy checking login credentials'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
+      
+      httpBackend.flush();
+
+      scope.rootPasswordReset.should.equal(true);
+
+      scope.password = 'newpassword';
+      scope.passwordConfirm = '';
+      scope.resetRootPassword();
+
+      // One error should exist - 'Supply all fields'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('danger');
+      scope.alerts.login[0].msg.should.equal('Please provide both password fields');
+    });
+
+    it('should run the resetRootPassword() function return error for password not matching', function () {
+      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'));
+      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'));
+
+      createController();
+      scope.rootPasswordReset.should.equal(false);
+
+      // user should be empty before valid login
+      var user = login.getLoggedInUser();
+      user.should.be.empty;
+
+      scope.loginEmail = 'root@openhim.org';
+      scope.loginPassword = 'openhim-password';
+      scope.validateLogin();
+
+      // One error should exist - 'Busy checking login credentials'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
+      
+      httpBackend.flush();
+
+      scope.rootPasswordReset.should.equal(true);
+
+      scope.password = 'newpassword';
+      scope.passwordConfirm = 'newpasswordnewpassword';
+      scope.resetRootPassword();
+
+      // One error should exist - 'Supply all fields'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('danger');
+      scope.alerts.login[0].msg.should.equal('The supplied passwords do not match');
+
+    });
+
+    it('should run the resetRootPassword() function return error for new password being same as default one', function () {
+      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'));
+      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'));
+
+      createController();
+      scope.rootPasswordReset.should.equal(false);
+
+      // user should be empty before valid login
+      var user = login.getLoggedInUser();
+      user.should.be.empty;
+
+      scope.loginEmail = 'root@openhim.org';
+      scope.loginPassword = 'openhim-password';
+      scope.validateLogin();
+
+      // One error should exist - 'Busy checking login credentials'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
+      
+      httpBackend.flush();
+
+      scope.rootPasswordReset.should.equal(true);
+
+      scope.password = 'openhim-password';
+      scope.passwordConfirm = 'openhim-password';
+      scope.resetRootPassword();
+
+      // One error should exist - 'Supply all fields'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('danger');
+      scope.alerts.login[0].msg.should.equal('The supplied password is the same as the current one');
+
+    });
+
+    it('should run the resetRootPassword() function and update the root users password', function () {
+      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'));
+      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'));
+
+      createController();
+      scope.rootPasswordReset.should.equal(false);
+
+      // user should be empty before valid login
+      var user = login.getLoggedInUser();
+      user.should.be.empty;
+
+      scope.loginEmail = 'root@openhim.org';
+      scope.loginPassword = 'openhim-password';
+      scope.validateLogin();
+
+      // One error should exist - 'Busy checking login credentials'
+      scope.alerts.login.length.should.equal(1);
+      scope.alerts.login[0].type.should.equal('warning');
+      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...');
+
+      httpBackend.flush();
+
+      scope.rootPasswordReset.should.equal(true);
+
+      scope.password = 'openhim-newpassword';
+      scope.passwordConfirm = 'openhim-newpassword';
+      scope.resetRootPassword();
+
+      httpBackend.flush();
+
+      var consoleSession = localStorage.getItem('consoleSession');
+      consoleSession.should.exist;
+
+      scope.alerts.login.length.should.equal(2);
+      scope.alerts.login[0].type.should.equal('success');
+      scope.alerts.login[0].msg.should.equal('Root Password Successfully Reset.');
+      scope.alerts.login[1].type.should.equal('success');
+      scope.alerts.login[1].msg.should.equal('You will be redirected to the \'Transactions\' page shortly.');
+
     });
 
   });

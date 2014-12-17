@@ -108,6 +108,7 @@ angular
       $rootScope.appTitle = config.title;
       $rootScope.appFooterTitle = config.footerTitle;
       $rootScope.appFooterPoweredBy = config.footerPoweredBy;
+      $rootScope.loginBanner = config.loginBanner;
 
     });
 
