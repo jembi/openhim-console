@@ -5,6 +5,7 @@ angular.module('openhimWebui2App')
   .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api) {
 
     $scope.rootPasswordReset = false;
+    $scope.resetSuccess = false;
 
     //if url "#/logout" is returned then destroy the session
     if( $window.location.hash === '#/logout' ){
@@ -106,6 +107,8 @@ angular.module('openhimWebui2App')
 
               $scope.password = '';
               $scope.passwordConfirm = '';
+
+              $scope.resetSuccess = true;
 
               Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.');
               Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.');
