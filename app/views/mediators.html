@@ -10,6 +10,11 @@
             <h2><i class="glyphicon glyphicon-link"></i>&nbsp;&nbsp;Mediators</h2>
           </div>
         </div>
+
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+        
         <div class="panel-body">
 
           <div id="no-more-tables">
@@ -23,6 +28,7 @@
                   <th>Name</th>
                   <th>Description</th>
                   <th>Version</th>
+                  <th width="80"></th>
                 </tr>
               </thead>
               <tbody>
@@ -34,6 +40,9 @@
                   <td data-title="Name">{{ mediator.name }}</td>
                   <td data-title="Description">{{ mediator.description }}</td>
                   <td data-title="Version">{{ mediator.version }}</td>
+                  <td>
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(mediator)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
                 </tr>
               </tbody>
             </table>

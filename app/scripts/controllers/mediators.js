@@ -36,5 +36,52 @@ angular.module('openhimWebui2App')
         $location.path(path);
       }
     };
+
+
+    /***********************************/
+    /**   Delete Mediator Functions   **/
+    /***********************************/
+
+    $scope.confirmDelete = function(mediator){
+      Alerting.AlertReset();
+
+      var deleteObject = {
+        title: 'Delete Mediator',
+        message: 'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/deleteConfirmModal.html',
+        controller: 'DeleteConfirmModalCtrl',
+        resolve: {
+          deleteObject: function () {
+            return deleteObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // Delete confirmed - delete the user
+        mediator.$remove(deleteSuccess, deleteError);
+      }, function () {
+        // delete cancelled - do nothing
+      });
+
+    };
+
+    var deleteSuccess = function () {
+      // On success
+      $scope.mediators = Api.Mediators.query(querySuccess, queryError);
+      Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data);
+    };
+    
+    /***********************************/
+    /**   Delete Mediator Functions   **/
+    /***********************************/
     
   });
