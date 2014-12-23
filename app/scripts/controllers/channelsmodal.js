@@ -557,12 +557,14 @@ angular.module('openhimWebui2App')
       // name validation
       if( !$scope.channel.name ){
         $scope.ngError.name = true;
+        $scope.ngError.accessBasicInfoTab = true;
         $scope.ngError.hasErrors = true;
       }
 
       // urlPattern validation
       if( !$scope.channel.urlPattern ){
         $scope.ngError.urlPattern = true;
+        $scope.ngError.accessBasicInfoTab = true;
         $scope.ngError.hasErrors = true;
       }
 
