@@ -53,6 +53,46 @@
         <span>View Full Response Body</span>
       </button>
     </div>
+
+    <label ng-show="record.orchestrations">Orchestrations: </label>
+    <div ng-show="record.orchestrations" id="no-more-tables" class="data-group left-indent">
+      <div class="data-value">
+        <!-- Table with all the orchestrations -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Method</th>
+              <th>Path</th>                      
+              <th>Request Params</th>
+              <th>Status</th>
+              <th>Response Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-list" ng-repeat="orchestration in record.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
+              <td data-title="Name">{{ orchestration.name }}</td>
+              <td data-title="Method">{{ orchestration.request.method }}</td>
+              <td data-title="Path">{{ orchestration.request.path }}</td>
+              <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
+              <td data-title="Status">{{ orchestration.response.status }}</td>
+              <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <label ng-show="record.properties">Properties: </label>
+    <div class="data-group left-indent">
+      <div class="data-value">
+        <div class="content-box-large default-labels-box" ng-repeat="(key, property) in record.properties">
+          {{key}}: <strong>{{property}}</strong>
+        </div>  
+      </div>
+    </div>
+    
   </div>
 
 
