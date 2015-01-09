@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modalInstance, record) {
+  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record) {
 
     $scope.record = record;
     $scope.viewFullBody = false;
@@ -25,5 +25,25 @@ angular.module('openhimWebui2App')
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
+
+    /*********************************************************************/
+    /**               Transactions View Route Functions                 **/
+    /*********************************************************************/
+
+    $scope.viewAddReqResDetails = function(record){
+      $modal.open({
+        templateUrl: 'views/transactionsAddReqResModal.html',
+        controller: 'TransactionsAddReqResModalCtrl',
+        resolve: {
+          record: function () {
+            return record;
+          }
+        }
+      });
+    };
+
+    /*********************************************************************/
+    /**               Transactions View Route Functions                 **/
+    /*********************************************************************/
 
   });
