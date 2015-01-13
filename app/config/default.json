@@ -1,6 +1,6 @@
 {
   "protocol": "https",
-  "host": "192.168.1.170",
+  "host": "localhost",
   "port": 8080,
   "title": "OpenHIM Admin Console",
   "footerTitle": "OpenHIM Administration Console",
