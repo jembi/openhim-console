@@ -27,8 +27,8 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]});
-    $httpBackend.when('GET', new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );
-    $httpBackend.when('GET', new RegExp('.*/metrics/day/5322fe9d8b6add4b2b059dd8?.*.')).respond( timeLoadData );
+    $httpBackend.when('GET', new RegExp('.*/stats/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );
+    $httpBackend.when('GET', new RegExp('.*/stats/day/5322fe9d8b6add4b2b059dd8?.*.')).respond( timeLoadData );
 
 
     createController = function() {
@@ -70,7 +70,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.statusDonutData.data[1].should.have.property('value', '9.52');
     scope.statusDonutData.data[2].should.have.property('label', 'Successful');
     scope.statusDonutData.data[2].should.have.property('value', '76.19');
-    
+
 
     scope.statusBarData.should.have.property('data');
     scope.statusBarData.data.length.should.equal(3);
@@ -85,7 +85,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.statusBarData.data[1].should.have.property('value', 2);
     scope.statusBarData.data[2].should.have.property('label', 'Successful');
     scope.statusBarData.data[2].should.have.property('value', 16);
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
@@ -119,12 +119,12 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionLoadData.data[6].should.have.property('date');
     scope.transactionLoadData.data[6].should.have.property('value', 4);
 
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
   it('should run getLoadMetrics() and set the transactionTimeData graph object', function () {
-    httpBackend.expectGET(new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8'));
+    httpBackend.expectGET(new RegExp('.*/stats/status/5322fe9d8b6add4b2b059dd8'));
     createController();
     scope.getLoadMetrics();
     httpBackend.flush();
@@ -153,7 +153,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionTimeData.data[6].should.have.property('date');
     scope.transactionTimeData.data[6].should.have.property('value', '3553.34');
 
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 

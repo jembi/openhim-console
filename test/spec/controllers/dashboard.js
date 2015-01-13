@@ -33,8 +33,8 @@ describe('Controller: DashboardCtrl', function () {
     $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([{'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]}]);
-    $httpBackend.when('GET', new RegExp('.*/metrics/status?.*.')).respond( statusData );
-    $httpBackend.when('GET', new RegExp('.*/metrics?.*.')).respond( timeLoadData );
+    $httpBackend.when('GET', new RegExp('.*/stats/status?.*.')).respond( statusData );
+    $httpBackend.when('GET', new RegExp('.*/stats?.*.')).respond( timeLoadData );
 
 
     createController = function() {
@@ -91,7 +91,7 @@ describe('Controller: DashboardCtrl', function () {
 
   });
 
-  
+
   it('should run getStatusMetrics() and create statusData scope object', function () {
     createController();
     scope.getStatusMetrics();
