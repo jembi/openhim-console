@@ -1,5 +1,6 @@
 'use strict';
 /* global beautifyIndent:false */
+/* global returnContentType:false */
 
 angular.module('openhimWebui2App')
   .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record) {
@@ -12,8 +13,8 @@ angular.module('openhimWebui2App')
     
     // transform request body with indentation/formatting
     if( record.request && record.request.body ){
-      if( record.request.headers && record.request.headers['content-type'] ){
-        var requestTransform = beautifyIndent(record.request.headers['content-type'], record.request.body);
+      if( record.request.headers && returnContentType( record.request.headers ) ){
+        var requestTransform = beautifyIndent(returnContentType( record.request.headers ), record.request.body);
         $scope.record.request.body = requestTransform.content;
         $scope.requestTransformLang = requestTransform.lang;
       }
@@ -21,8 +22,8 @@ angular.module('openhimWebui2App')
 
     // transform response body with indentation/formatting
     if( record.response && record.response.body ){
-      if ( record.response.headers && record.response.headers['content-type'] ){
-        var responseTransform = beautifyIndent(record.response.headers['content-type'], record.response.body);
+      if ( record.response.headers && returnContentType( record.response.headers ) ){
+        var responseTransform = beautifyIndent(returnContentType( record.response.headers ), record.response.body);
         $scope.record.response.body = responseTransform.content;
         $scope.responseTransformLang = responseTransform.lang;
       }

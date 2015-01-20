@@ -4,6 +4,7 @@
 /* exported getHashAndSalt */
 /* exported viewPage */
 /* exported isValidMSISDN */
+/* exported returnContentType */
 /* exported beautifyIndent */
 
 function getHashAndSalt(stringToBeHashed) {
@@ -38,6 +39,20 @@ function isValidMSISDN(inputtxt){
 }
 
 
+
+function returnContentType( objectHeaders ){
+
+  var contentType = '';
+
+  if ( objectHeaders['Content-Type'] ){
+    contentType = objectHeaders['Content-Type'];
+  }else if ( objectHeaders['content-type'] ){
+    contentType = objectHeaders['content-type'];
+  }
+
+  return contentType;
+
+}
 
 function beautifyIndent(type, content){
 

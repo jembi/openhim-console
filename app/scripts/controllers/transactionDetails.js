@@ -1,5 +1,6 @@
 'use strict';
 /* global beautifyIndent:false */
+/* global returnContentType:false */
 
 angular.module('openhimWebui2App')
   .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
@@ -14,8 +15,8 @@ angular.module('openhimWebui2App')
       
       // transform request body with indentation/formatting
       if( transactionDetails.request && transactionDetails.request.body ){
-        if ( transactionDetails.request.headers && transactionDetails.request.headers['content-type'] ){
-          var requestTransform = beautifyIndent(transactionDetails.request.headers['content-type'], transactionDetails.request.body);
+        if ( transactionDetails.request.headers && returnContentType( transactionDetails.request.headers ) ){
+          var requestTransform = beautifyIndent(returnContentType( transactionDetails.request.headers ), transactionDetails.request.body);
           $scope.transactionDetails.request.body = requestTransform.content;
           $scope.requestTransformLang = requestTransform.lang;
         }
@@ -23,8 +24,8 @@ angular.module('openhimWebui2App')
 
       // transform response body with indentation/formatting
       if( transactionDetails.response && transactionDetails.response.body ){
-        if ( transactionDetails.response.headers && transactionDetails.response.headers['content-type'] ){
-          var responseTransform = beautifyIndent(transactionDetails.response.headers['content-type'], transactionDetails.response.body);
+        if ( transactionDetails.response.headers && returnContentType( transactionDetails.response.headers ) ){
+          var responseTransform = beautifyIndent(returnContentType( transactionDetails.response.headers ), transactionDetails.response.body);
           $scope.transactionDetails.response.body = responseTransform.content;
           $scope.responseTransformLang = responseTransform.lang;
         }
@@ -175,13 +176,13 @@ angular.module('openhimWebui2App')
     /**               Transactions View Body Functions                 **/
     /********************************************************************/
 
-    $scope.viewBodyDetails = function(type, content, contentType){
+    $scope.viewBodyDetails = function(type, content, headers){
       $modal.open({
         templateUrl: 'views/transactionsBodyModal.html',
         controller: 'TransactionsBodyModalCtrl',
         resolve: {
           bodyData: function () {
-            return {type: type, content: content, contentType: contentType};
+            return {type: type, content: content, headers: headers};
           }
         }
       });
