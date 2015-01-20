@@ -53,6 +53,10 @@ function beautifyIndent(type, content){
     return { lang: 'html', content: vkbeautify.xml(content, 2 ) };
   }
 
+  if ( type.indexOf('application/soap+xml') >= 0 || type.indexOf('application/xop+xml') >= 0 ){
+    return { lang: 'xml', content: vkbeautify.xml(content, 2 ) };
+  }
+
   // if not applicable then return as is
   return { lang: '', content: content};
 

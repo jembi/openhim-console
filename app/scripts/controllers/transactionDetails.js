@@ -14,7 +14,7 @@ angular.module('openhimWebui2App')
       
       // transform request body with indentation/formatting
       if( transactionDetails.request && transactionDetails.request.body ){
-        if ( transactionDetails.request.headers ){
+        if ( transactionDetails.request.headers && transactionDetails.request.headers['content-type'] ){
           var requestTransform = beautifyIndent(transactionDetails.request.headers['content-type'], transactionDetails.request.body);
           $scope.transactionDetails.request.body = requestTransform.content;
           $scope.requestTransformLang = requestTransform.lang;
@@ -23,7 +23,7 @@ angular.module('openhimWebui2App')
 
       // transform response body with indentation/formatting
       if( transactionDetails.response && transactionDetails.response.body ){
-        if ( transactionDetails.response.headers ){
+        if ( transactionDetails.response.headers && transactionDetails.response.headers['content-type'] ){
           var responseTransform = beautifyIndent(transactionDetails.response.headers['content-type'], transactionDetails.response.body);
           $scope.transactionDetails.response.body = responseTransform.content;
           $scope.responseTransformLang = responseTransform.lang;
