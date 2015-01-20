@@ -1,8 +1,10 @@
 'use strict';
 /* global CryptoJS:false */
+/* global vkbeautify:false */
 /* exported getHashAndSalt */
 /* exported viewPage */
 /* exported isValidMSISDN */
+/* exported beautifyIndent */
 
 function getHashAndSalt(stringToBeHashed) {
   var salt = CryptoJS.lib.WordArray.random(16).toString();
@@ -33,4 +35,25 @@ function isValidMSISDN(inputtxt){
       return false;
     }
   }
+}
+
+
+
+function beautifyIndent(type, content){
+  
+  if ( type.indexOf('text/xml') >= 0 || type.indexOf('application/xml') >= 0 ){
+    return { lang: 'xml', content: vkbeautify.xml(content, 2 ) };
+  }
+
+  if ( type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0 ){
+    return { lang: 'json', content: vkbeautify.json(content, 2 ) };
+  }
+
+  if ( type.indexOf('text/html') >= 0 || type.indexOf('application/html') >= 0 ){
+    return { lang: 'html', content: vkbeautify.xml(content, 2 ) };
+  }
+
+  // if not applicable then return as is
+  return { lang: '', content: content};
+
 }

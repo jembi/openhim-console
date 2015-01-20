@@ -26,10 +26,11 @@
     <div class="data-group left-indent" ng-if="record.request.body"><label>Body:</label></div>
     <div class="data-group left-indent" ng-if="record.request.body">
       <div class="data-value">
-        <textarea rows="5">{{record.request.body}}</textarea>
+        <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}"></div>
+        <div ng-if="!requestTransformLang" class="hljsFormatNone">{{record.request.body}}</div>
       </div>
       <!-- show only if record has request body -->
-      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body)" style="float: right; margin-top: 10px;">
+      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body, requestTransformLang)" style="float: right; margin-top: 10px;">
         <span ng-show="!viewFullBody">View Full Request Body</span>
       </button>
     </div>
@@ -46,10 +47,12 @@
     <div class="data-group left-indent" ng-if="record.response.body"><label>Body:</label></div>
     <div class="data-group left-indent" ng-if="record.response.body">
       <div class="data-value">
-        <textarea rows="5">{{record.response.body}}</textarea>
+      {{responseTransformLang}}
+        <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}"></div>
+        <div ng-if="!responseTransformLang" class="hljsFormatNone">{{record.response.body}}</div>
       </div>
       <!-- show only if record has response body -->
-      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body)" style="float: right; margin-top: 10px;">
+      <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body, responseTransformLang)" style="float: right; margin-top: 10px;">
         <span>View Full Response Body</span>
       </button>
     </div>
@@ -92,7 +95,6 @@
         </div>  
       </div>
     </div>
-    
   </div>
 
 
@@ -100,7 +102,8 @@
   <div class="route-detail-container" ng-show="viewFullBody">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <textarea rows="25">{{viewFullBodyContent}}</textarea>
+        <div ng-if="fullBodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent" language="{{fullBodyTransformLang}}"></div>
+        <div ng-if="!fullBodyTransformLang" class="hljsFormatNone hljsFormatNoneFull">{{viewFullBodyContent}}</div>
       </div>
     </div>
     <!-- show only if full body is show -->
