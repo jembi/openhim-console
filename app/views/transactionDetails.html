@@ -97,8 +97,9 @@
             <div class="data-group left-indent" ng-if="transactionDetails.request.body"><label>Body: </label></div>
             <div class="data-group left-indent" ng-if="transactionDetails.request.body">
               <div class="data-value">
-                <textarea rows="5">{{transactionDetails.request.body}}</textarea>
-                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Request', transactionDetails.request.body);">View Full Request Body</button>
+                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="transactionDetails.request.body" language="{{requestTransformLang}}"></div>
+                <div ng-if="!requestTransformLang" class="hljsFormatNone">{{transactionDetails.request.body}}</div>
+                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);">View Full Request Body</button>
               </div>
             </div>
 
@@ -114,8 +115,9 @@
             <div class="data-group left-indent" ng-if="transactionDetails.response.body"><label>Body:</label></div>
             <div class="data-group left-indent" ng-if="transactionDetails.response.body">
               <div class="data-value">
-                <textarea rows="5">{{transactionDetails.response.body}}</textarea>
-                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Response', transactionDetails.response.body);">View Full Response Body</button>
+                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="transactionDetails.response.body" language="{{responseTransformLang}}"></div>
+                <div ng-if="!responseTransformLang" class="hljsFormatNone">{{transactionDetails.response.body}}</div>
+                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);">View Full Response Body</button>
               </div>
             </div>
 

@@ -8,7 +8,8 @@ angular
     'ngRoute',
     'ui.bootstrap',
     'angular_taglist_directive',
-    'xeditable'
+    'xeditable',
+    'hljs'
   ])
   .config(function ($routeProvider) {
     $routeProvider
