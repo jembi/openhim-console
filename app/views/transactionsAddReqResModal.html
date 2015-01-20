@@ -47,7 +47,6 @@
     <div class="data-group left-indent" ng-if="record.response.body"><label>Body:</label></div>
     <div class="data-group left-indent" ng-if="record.response.body">
       <div class="data-value">
-      {{responseTransformLang}}
         <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}"></div>
         <div ng-if="!responseTransformLang" class="hljsFormatNone">{{record.response.body}}</div>
       </div>
