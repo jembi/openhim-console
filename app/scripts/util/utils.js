@@ -40,7 +40,7 @@ function isValidMSISDN(inputtxt){
 
 
 function beautifyIndent(type, content){
-  
+
   if ( type.indexOf('text/xml') >= 0 || type.indexOf('application/xml') >= 0 ){
     return { lang: 'xml', content: vkbeautify.xml(content, 2 ) };
   }
@@ -53,7 +53,8 @@ function beautifyIndent(type, content){
     return { lang: 'html', content: vkbeautify.xml(content, 2 ) };
   }
 
-  if ( type.indexOf('application/soap+xml') >= 0 || type.indexOf('application/xop+xml') >= 0 ){
+  // {anything}application/{word characters}+xml{anything}.
+  if( /.*application\/\w+\+xml.*/.test(type) ){
     return { lang: 'xml', content: vkbeautify.xml(content, 2 ) };
   }
 
