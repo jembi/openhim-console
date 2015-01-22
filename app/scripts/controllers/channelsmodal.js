@@ -102,6 +102,7 @@ angular.module('openhimWebui2App')
       $scope.channel.routes = [];
       $scope.channel.requestBody = true;
       $scope.channel.responseBody = true;
+      $scope.channel.status = 'enabled';
     }
 
     /****************************************************************/
