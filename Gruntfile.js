@@ -368,6 +368,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'newer:jshint',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -392,7 +393,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
     'test',
     'build'
   ]);
