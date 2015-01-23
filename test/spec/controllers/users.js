@@ -72,7 +72,7 @@ describe('Controller: UsersCtrl', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
     scope.confirmDelete(scope.users[0]);
     modalSpy.should.be.calledOnce;
     httpBackend.flush();

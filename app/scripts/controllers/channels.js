@@ -62,14 +62,15 @@ angular.module('openhimWebui2App')
 
       var deleteObject = {
         title: 'Delete Channel',
+        button: 'Delete',
         message: 'Are you sure you wish to delete the channel "' + channel.name + '"?'
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/deleteConfirmModal.html',
-        controller: 'DeleteConfirmModalCtrl',
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
         resolve: {
-          deleteObject: function () {
+          confirmObject: function () {
             return deleteObject;
           }
         }
@@ -96,4 +97,44 @@ angular.module('openhimWebui2App')
     };
     /*---------------------------Delete Confirm----------------------------*/
     
+    /*--------------------------Restore Confirm----------------------------*/
+    $scope.confirmRestore = function(channel){
+      Alerting.AlertReset();
+
+      var restoreObject = {
+        title: 'Restore Channel',
+        button: 'Restore',
+        message: 'Are you sure you want to restore the deleted channel "' + channel.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return restoreObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // restore confirmed
+        channel.status = 'enabled';
+        channel.$update(restoreSuccess, restoreError);
+      }, function () {
+        // restore cancelled - do nothing
+      });
+
+    };
+
+    var restoreSuccess = function () {
+      // On success
+      $scope.channels = Api.Channels.query();
+      Alerting.AlertAddMsg('top', 'success', 'The channel has been successfully restored');
+    };
+
+    var restoreError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data);
+    };
   });

@@ -59,14 +59,16 @@ angular.module('openhimWebui2App')
           $scope.channelsMap[channel._id] = {};
           $scope.channelsMap[channel._id].name = channel.name;
 
-          if ( user.groups.indexOf('admin') >= 0 ){
-            $scope.rerunAllowedAdmin = true;
-          }else{
-            angular.forEach(user.groups, function(role){
-              if ( channel.txRerunAcl.indexOf(role) >= 0 ){
-                $scope.channelsMap[channel._id].rerun = true;
-              }
-            });
+          if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
+            if ( user.groups.indexOf('admin') >= 0 ){
+              $scope.rerunAllowedAdmin = true;
+            }else{
+              angular.forEach(user.groups, function(role){
+                if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+                  $scope.channelsMap[channel._id].rerun = true;
+                }
+              });
+            }
           }
         });
       }, function(){ /* server error - could not connect to API to get channels */ });
