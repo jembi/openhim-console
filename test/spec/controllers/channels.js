@@ -96,7 +96,7 @@ describe('Controller: ChannelsCtrl', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
     scope.confirmDelete(scope.channels[0]);
     modalSpy.should.be.calledOnce;
     httpBackend.flush();
