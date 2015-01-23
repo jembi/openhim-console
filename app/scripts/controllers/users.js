@@ -21,7 +21,9 @@ angular.module('openhimWebui2App')
 
         // loop through channels to create channels map
         angular.forEach(channels, function(channnel){
-          channelsArray.push({ 'id': channnel._id, 'name':channnel.name });
+          if (typeof channnel.status === 'undefined' || channnel.status !== 'deleted') {
+            channelsArray.push({ 'id': channnel._id, 'name':channnel.name });
+          }
         });
 
         // loop through all users

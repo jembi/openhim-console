@@ -42,14 +42,16 @@ angular.module('openhimWebui2App')
         Api.Channels.get({ channelId: transactionDetails.channelID }, function(channel){
           $scope.channel = channel;
 
-          if ( user.groups.indexOf('admin') >= 0 ){
-            $scope.rerunAllowed = true;
-          }else{
-            angular.forEach(user.groups, function(role){
-              if ( channel.txRerunAcl.indexOf(role) >= 0 ){
-                $scope.rerunAllowed = true;
-              }
-            });
+          if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
+            if ( user.groups.indexOf('admin') >= 0 ){
+              $scope.rerunAllowed = true;
+            }else{
+              angular.forEach(user.groups, function(role){
+                if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+                  $scope.rerunAllowed = true;
+                }
+              });
+            }
           }
         }, function(){ /* server error - could not connect to API to get channels */ });
       }, function(){ /* server error - could not connect to API to get user details */ });
