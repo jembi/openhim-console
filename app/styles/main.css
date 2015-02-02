@@ -773,6 +773,9 @@ body {
 .hljsFormatNone { height: 100px; overflow:auto; border: 1px solid #cccccc; background: #eff0f3; border-radius: 4px; padding: 0; margin: 0; }
 .hljsFormatNoneFull pre { height: auto; max-height: 400px; }
 
+.showHideHeadersBtn:hover { cursor: pointer; }
+.showHideNoPadding { padding: 0px !important; float: left; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
