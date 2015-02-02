@@ -99,7 +99,7 @@
               <div class="data-value showHideNoPadding">
                 <table class=" collapse" id="requestHeaders{{transactionDetails._id}}">
                   <tr ng-repeat="(key, property) in transactionDetails.request.headers">
-                    <td style="padding-right: 30px;">{{key}}: </td>
+                    <td class="headerDetailsTD">{{key}}: </td>
                     <td><strong>{{property}}</strong></td>
                   </tr>
                 </table>
@@ -129,7 +129,7 @@
               <div class="data-value showHideNoPadding">
                 <table class=" collapse" id="responseHeaders{{transactionDetails._id}}">
                   <tr ng-repeat="(key, property) in transactionDetails.response.headers">
-                    <td style="padding-right: 30px;">{{key}}: </td>
+                    <td class="headerDetailsTD">{{key}}: </td>
                     <td><strong>{{property}}</strong></td>
                   </tr>
                 </table>

@@ -775,6 +775,7 @@ body {
 
 .showHideHeadersBtn:hover { cursor: pointer; }
 .showHideNoPadding { padding: 0px !important; float: left; }
+.headerDetailsTD { padding-right: 30px; }
 
 /*------- Custom CSS Changes ----*/
 
