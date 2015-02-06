@@ -766,6 +766,17 @@ body {
 #visualizer rect { fill: #fff; }
 .responsiveCheckboxLabel:hover { cursor: pointer; }
 
+
+.hljsFormat pre { height: 100px; overflow:auto; border: 1px solid #cccccc; background: #eff0f3; border-radius: 4px; padding: 0; margin: 0; }
+.hljsFormatFull pre { height: auto; max-height: 400px; }
+
+.hljsFormatNone { height: 100px; overflow:auto; border: 1px solid #cccccc; background: #eff0f3; border-radius: 4px; padding: 0; margin: 0; }
+.hljsFormatNoneFull pre { height: auto; max-height: 400px; }
+
+.showHideHeadersBtn:hover { cursor: pointer; }
+.showHideNoPadding { padding: 0px !important; float: left; }
+.headerDetailsTD { padding-right: 30px; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */

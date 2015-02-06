@@ -16,10 +16,12 @@
     <link rel="stylesheet" href="bower_components/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" href="bower_components/morris.js/morris.css" />
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
+    <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="bower_components/highlightjs/styles/github.css" />
     <!-- endbuild -->
   </head>
   <body ng-cloak>
@@ -133,8 +135,11 @@
     <script src="bower_components/morris.js/morris.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/highlightjs/highlight.pack.js"></script>
+    <script src="bower_components/angular-highlightjs/angular-highlightjs.js"></script>
     <!-- endbower -->
     <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
+    <script src="bower_components/vkBeautify/vkbeautify.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -163,7 +168,7 @@
     <script src="scripts/controllers/mediators.js"></script>
     <script src="scripts/controllers/mediatorDetails.js"></script>
     <script src="scripts/controllers/sidebar.js"></script>
-    <script src="scripts/controllers/deleteConfirmModal.js"></script>
+    <script src="scripts/controllers/confirmModal.js"></script>
     <script src="scripts/controllers/visualizer.js"></script>
     <script src="scripts/controllers/setPassword.js"></script>
     <!--- This is for utility functions -->

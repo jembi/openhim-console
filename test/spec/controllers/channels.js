@@ -18,7 +18,8 @@ describe('Controller: ChannelsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
       {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
-      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'}
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'},
+      {'name':'Sample JsonStub Channel 3','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b33333333','status':'deleted'}
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
@@ -89,15 +90,25 @@ describe('Controller: ChannelsCtrl', function () {
     httpBackend.expectGET(new RegExp('.*/channels'));
     createController();
     httpBackend.flush();
-    scope.channels.length.should.equal(2);
+    scope.channels.length.should.equal(3);
   });
 
   it('should open a modal to confirm deletion of a channel', function () {
     createController();
     httpBackend.flush();
 
-    httpBackend.expectGET('views/deleteConfirmModal.html').respond(200, '');
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
     scope.confirmDelete(scope.channels[0]);
+    modalSpy.should.be.calledOnce;
+    httpBackend.flush();
+  });
+
+  it('should open a modal to confirm restoration of a deleted channel', function () {
+    createController();
+    httpBackend.flush();
+
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
+    scope.confirmRestore(scope.channels[2]);
     modalSpy.should.be.calledOnce;
     httpBackend.flush();
   });

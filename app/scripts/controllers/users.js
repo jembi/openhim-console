@@ -21,7 +21,9 @@ angular.module('openhimWebui2App')
 
         // loop through channels to create channels map
         angular.forEach(channels, function(channnel){
-          channelsArray.push({ 'id': channnel._id, 'name':channnel.name });
+          if (typeof channnel.status === 'undefined' || channnel.status !== 'deleted') {
+            channelsArray.push({ 'id': channnel._id, 'name':channnel.name });
+          }
         });
 
         // loop through all users
@@ -129,14 +131,15 @@ angular.module('openhimWebui2App')
 
       var deleteObject = {
         title: 'Delete User',
+        button: 'Delete',
         message: 'Are you sure you wish to delete the user "' + user.firstname + ' ' + user.surname + '"?'
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/deleteConfirmModal.html',
-        controller: 'DeleteConfirmModalCtrl',
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
         resolve: {
-          deleteObject: function () {
+          confirmObject: function () {
             return deleteObject;
           }
         }

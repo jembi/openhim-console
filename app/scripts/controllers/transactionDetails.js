@@ -1,4 +1,6 @@
 'use strict';
+/* global beautifyIndent:false */
+/* global returnContentType:false */
 
 angular.module('openhimWebui2App')
   .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
@@ -8,7 +10,27 @@ angular.module('openhimWebui2App')
     /***************************************************/
 
     var querySuccess = function(transactionDetails){
+
       $scope.transactionDetails = transactionDetails;
+      
+      // transform request body with indentation/formatting
+      if( transactionDetails.request && transactionDetails.request.body ){
+        if ( transactionDetails.request.headers && returnContentType( transactionDetails.request.headers ) ){
+          var requestTransform = beautifyIndent(returnContentType( transactionDetails.request.headers ), transactionDetails.request.body);
+          $scope.transactionDetails.request.body = requestTransform.content;
+          $scope.requestTransformLang = requestTransform.lang;
+        }
+      }
+
+      // transform response body with indentation/formatting
+      if( transactionDetails.response && transactionDetails.response.body ){
+        if ( transactionDetails.response.headers && returnContentType( transactionDetails.response.headers ) ){
+          var responseTransform = beautifyIndent(returnContentType( transactionDetails.response.headers ), transactionDetails.response.body);
+          $scope.transactionDetails.response.body = responseTransform.content;
+          $scope.responseTransformLang = responseTransform.lang;
+        }
+      }
+
       
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
@@ -20,14 +42,16 @@ angular.module('openhimWebui2App')
         Api.Channels.get({ channelId: transactionDetails.channelID }, function(channel){
           $scope.channel = channel;
 
-          if ( user.groups.indexOf('admin') >= 0 ){
-            $scope.rerunAllowed = true;
-          }else{
-            angular.forEach(user.groups, function(role){
-              if ( channel.txRerunAcl.indexOf(role) >= 0 ){
-                $scope.rerunAllowed = true;
-              }
-            });
+          if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
+            if ( user.groups.indexOf('admin') >= 0 ){
+              $scope.rerunAllowed = true;
+            }else{
+              angular.forEach(user.groups, function(role){
+                if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+                  $scope.rerunAllowed = true;
+                }
+              });
+            }
           }
         }, function(){ /* server error - could not connect to API to get channels */ });
       }, function(){ /* server error - could not connect to API to get user details */ });
@@ -154,13 +178,13 @@ angular.module('openhimWebui2App')
     /**               Transactions View Body Functions                 **/
     /********************************************************************/
 
-    $scope.viewBodyDetails = function(type, content){
+    $scope.viewBodyDetails = function(type, content, headers){
       $modal.open({
         templateUrl: 'views/transactionsBodyModal.html',
         controller: 'TransactionsBodyModalCtrl',
         resolve: {
           bodyData: function () {
-            return {type: type, content: content};
+            return {type: type, content: content, headers: headers};
           }
         }
       });

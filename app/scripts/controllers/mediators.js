@@ -47,14 +47,15 @@ angular.module('openhimWebui2App')
 
       var deleteObject = {
         title: 'Delete Mediator',
+        button: 'Delete',
         message: 'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/deleteConfirmModal.html',
-        controller: 'DeleteConfirmModalCtrl',
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
         resolve: {
-          deleteObject: function () {
+          confirmObject: function () {
             return deleteObject;
           }
         }

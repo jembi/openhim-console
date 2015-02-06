@@ -8,7 +8,9 @@
   <div class="route-detail-container">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <textarea rows="25">{{bodyData.content}}</textarea>
+        <div ng-if="bodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="bodyData.content" language="{{bodyTransformLang}}"></div>
+        <div ng-if="!bodyTransformLang" class="hljsFormatNone hljsFormatNoneFull">{{bodyData.content}}</div>
+        <!--<textarea rows="25">{{bodyData.content}}</textarea>-->
       </div>
     </div>
   </div>
