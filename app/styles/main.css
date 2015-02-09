@@ -777,6 +777,65 @@ body {
 .showHideNoPadding { padding: 0px !important; float: left; }
 .headerDetailsTD { padding-right: 30px; }
 
+.failedImportsLink { color: red; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Import features css */
+.button {
+    -moz-appearance: button;
+    /* Firefox */
+    -webkit-appearance: button;
+    /* Safari and Chrome */
+    padding: 10px;
+    margin: 10px;
+    width: 70px;
+}
+.drop-box {
+    background: #F8F8F8;
+    border: 5px dashed #DDD;
+    width: 200px;
+    height: 65px;
+    text-align: center;
+    padding-top: 25px;
+    margin: 10px;
+}
+.dragover {
+    border: 5px dashed #428bca;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
