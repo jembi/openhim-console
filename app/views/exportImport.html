@@ -13,21 +13,8 @@
         <!-- Top Alerts -->
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
-
-        <style>
-        .exportModelTitle { font-size: 20px; text-decoration: underline; margin-bottom: 10px; }
-        .exportModelTitle:hover { cursor: pointer; }
-
-        .exportRecordTitle {}
-        .exportRecordTitle:hover { cursor: pointer; }
-
-        .exportCollectionsDiv { border: 1px solid #ccc; float: left; margin: 0px 20px 20px 0px; padding: 10px; border-radius: 5px; }
-        .exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 0px 0px 5px; }
-
-        .drop-box { width: 100%; height: auto; padding: 30px; margin: 0px; font-size: 18px; }
-        </style>
         
-        <div style="display: inline-block; width: 100%">
+        <div class="exportSectionDiv">
 
           <h3><strong>Export your configurations</strong></h3>
           <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
@@ -69,7 +56,7 @@
         
 
 
-        <div style="display: inline-block; width: 100%; margin-top: 50px; padding-top: 20px; border-top: 5px dashed #ccc;">
+        <div class="importSectionDiv">
           <h3><strong>Import your configurations</strong></h3>
           
           <div class="importCollectionsDiv" >

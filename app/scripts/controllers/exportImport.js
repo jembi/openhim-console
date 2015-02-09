@@ -48,9 +48,6 @@ angular.module('openhimWebui2App')
     $scope.resetExportOptions();
     
 
-    
-
-
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
@@ -136,8 +133,6 @@ angular.module('openhimWebui2App')
     };
 
     $scope.downloadExportFile = function(){
-      //$scope.resetExportOptions();
-
       var link = document.getElementById('downloadlink');
       link.style.display = 'none';
     };
@@ -260,14 +255,12 @@ angular.module('openhimWebui2App')
       if (files && files.length) {
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
-          
-         
+                   
           // when the file is read it triggers the onload event above.
           reader.readAsText(file);
         }
       }
     };
-
 
 
     /****************************************/

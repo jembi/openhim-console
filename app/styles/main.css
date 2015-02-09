@@ -777,17 +777,21 @@ body {
 .showHideNoPadding { padding: 0px !important; float: left; }
 .headerDetailsTD { padding-right: 30px; }
 
+
+
 .failedImportsLink { color: red; }
 
+.exportModelTitle { font-size: 20px; text-decoration: underline; margin-bottom: 10px; }
+.exportModelTitle:hover { cursor: pointer; }
 
+.exportRecordTitle {}
+.exportRecordTitle:hover { cursor: pointer; }
 
+.exportCollectionsDiv { border: 1px solid #ccc; float: left; margin: 0px 20px 20px 0px; padding: 10px; border-radius: 5px; }
+.exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 0px 0px 5px; }
 
-
-
-
-
-
-
+.importSectionDiv{ display: inline-block; width: 100%; margin-top: 50px; padding-top: 20px; border-top: 5px dashed #ccc; }
+.exportSectionDiv{ display: inline-block; width: 100% }
 
 
 
@@ -803,13 +807,14 @@ body {
     width: 70px;
 }
 .drop-box {
+    width: 100%; 
+    height: auto; 
+    padding: 30px; 
+    margin: 0px; 
+    font-size: 18px;
     background: #F8F8F8;
     border: 5px dashed #DDD;
-    width: 200px;
-    height: 65px;
     text-align: center;
-    padding-top: 25px;
-    margin: 10px;
 }
 .dragover {
     border: 5px dashed #428bca;
