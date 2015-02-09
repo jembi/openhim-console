@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api, Import, Alerting) {
+  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api, Import) {
 
 
     /***************************************************/
@@ -101,7 +101,7 @@ angular.module('openhimWebui2App')
       }
 
       return obj;
-    }
+    };
 
     $scope.createExportFile = function(){
       
@@ -127,7 +127,7 @@ angular.module('openhimWebui2App')
       }else{
         exportData = JSON.stringify( $scope.removeProperties( exportData ), null, 2 );
         $scope.importScriptName = 'openhim-insert.json';
-      }      
+      }
       
       var link = document.getElementById('downloadlink');
       link.href = makeTextFile( exportData );
@@ -140,7 +140,7 @@ angular.module('openhimWebui2App')
 
       var link = document.getElementById('downloadlink');
       link.style.display = 'none';
-    }
+    };
 
     /****************************************/
     /**         Export Functions           **/
@@ -179,15 +179,12 @@ angular.module('openhimWebui2App')
       totalRecords += data.Users.length;
       totalRecords += data.Mediators.length;
 
-      console.log( totalRecords )
-      /*var perRecordPercValue = 100 / totalRecords;
-      console.log( perRecordPercValue )*/
       var doneItems = 0;
 
       //loop through each collection in object
       angular.forEach(data, function(modelRecords, model) {
 
-        angular.forEach(modelRecords, function(value, key) {
+        angular.forEach(modelRecords, function(value) {
 
           var record;
 
@@ -217,7 +214,6 @@ angular.module('openhimWebui2App')
 
           // if record has _id then do update
           if ( record._id ){
-            console.log( 'test' )
             record.$update(function(){
               importSuccess();
             }, function(err){
@@ -231,13 +227,8 @@ angular.module('openhimWebui2App')
             });
           }
 
-          // update importProgressStatus
-
           doneItems++;
-
-          $scope.importProgressStatus = Math.floor( doneItems / totalRecords ); 
-
-          //$scope.importProgressStatus = Math.floor( $scope.importProgressStatus );
+          $scope.importProgressStatus = Math.floor( doneItems / totalRecords );
 
           if( doneItems === totalRecords ){
             $scope.importProgressStatus = 100;
@@ -257,18 +248,19 @@ angular.module('openhimWebui2App')
       $scope.upload($scope.files);
     });
 
+    var reader = new FileReader();
+    // inject an image with the src url
+    reader.onload = function(event) {
+      var data = event.target.result;
+      // read the import script data and process
+      $scope.runImportFile(data);
+    };
+
     $scope.upload = function (files) {
       if (files && files.length) {
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
-          var reader = new FileReader();
-
-          // inject an image with the src url
-          reader.onload = function(event) {
-            var data = event.target.result;
-            // read the import script data and process
-            $scope.runImportFile(data);
-          };
+          
          
           // when the file is read it triggers the onload event above.
           reader.readAsText(file);
