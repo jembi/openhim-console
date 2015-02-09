@@ -48,7 +48,6 @@
 
             <a download="{{importScriptName}}" id="downloadlink" class="btn btn-primary" style="display: none;" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
           </div>
-
         </div>
 
 
@@ -61,7 +60,7 @@
           
           <div class="importCollectionsDiv" >
           
-            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your export file here or click to upload to import your configurations</div>
+            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your export file here or click to import your configurations</div>
             <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
             <div ng-if="files">
@@ -104,24 +103,12 @@
                   </tbody>
                 </table>
               </div>
-
             </div>
           </div>
-          
-          
-        
-
-          <!--<div class="panel-body">
-            <button class="btn btn-primary" ng-click="runImportFile()" ng-show="!alerts.server"><i class="glyphicon glyphicon-export"></i> Import Script</button>
-          </div>-->
-
         </div>
-
-        
 
 
         <div class="panel-body">
-
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(exportCollections || alerts.server)">
@@ -136,7 +123,6 @@
           <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
           <!-- Bottom Alerts -->
 
-          
         </div>
       </div>
     </div>

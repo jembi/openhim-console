@@ -794,8 +794,6 @@ body {
 .exportSectionDiv{ display: inline-block; width: 100% }
 
 
-
-
 /* Import features css */
 .button {
     -moz-appearance: button;
@@ -819,25 +817,6 @@ body {
 .dragover {
     border: 5px dashed #428bca;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -8,6 +8,7 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // function to reset export options to default
     $scope.resetExportOptions = function(){
       // assign all collections to select exports object
       $scope.selectedExports = {};
@@ -33,6 +34,7 @@ angular.module('openhimWebui2App')
     var Mediators = Api.Mediators.query();
     var ContactGroups = Api.ContactGroups.query();
 
+    // set up settings object
     $scope.exportSettings = {};
     $scope.exportSettings.removeIds = true;
 
@@ -59,6 +61,7 @@ angular.module('openhimWebui2App')
     /**         Export Functions           **/
     /****************************************/
       
+    // function to toggle entire collection
     $scope.toggleCollectionExportSelection = function(model, collection) {
       if ( $scope.selectedExports[model] === collection) {
         $scope.selectedExports[model] = [];
@@ -69,7 +72,7 @@ angular.module('openhimWebui2App')
       }
     };
 
-
+    // function to toggle specific records
     $scope.toggleRecordExportSelection = function(model, record) {
 
       var idx = $scope.selectedExports[model].indexOf(record);
@@ -83,7 +86,7 @@ angular.module('openhimWebui2App')
       }
     };
 
-
+    // function to remove certain properties from export object
     $scope.removeProperties = function(obj) {
 
       var propertyID = '_id';
@@ -100,10 +103,13 @@ angular.module('openhimWebui2App')
       return obj;
     };
 
+    // function to create the export file object
     $scope.createExportFile = function(){
       
       var exportData = angular.copy( $scope.selectedExports );
       var textFile = null;
+
+      // create the export script as a blob file
       var makeTextFile = function (text) {
         var data = new Blob([text], {type: 'application/json'});
 
@@ -126,12 +132,14 @@ angular.module('openhimWebui2App')
         $scope.importScriptName = 'openhim-insert.json';
       }
       
+      // get element for download link and inject href blob file for download
       var link = document.getElementById('downloadlink');
       link.href = makeTextFile( exportData );
       link.style.display = 'inline-block';
       
     };
 
+    // function for when the download button is clicked
     $scope.downloadExportFile = function(){
       var link = document.getElementById('downloadlink');
       link.style.display = 'none';
@@ -147,17 +155,21 @@ angular.module('openhimWebui2App')
     /**         Import Functions           **/
     /****************************************/
 
+    // import failed function
     var importFail = function(model, value, err){
       $scope.failedImports.push({ model:model, record: value, error: err.data, status: err.status });
       $scope.importFail++;
     };
 
+    // import success function
     var importSuccess = function(){
       $scope.importSuccess++;
     };
 
+    // function to run import file
     $scope.runImportFile = function(data){
 
+      // set counter variables
       $scope.importFail = 0;
       $scope.importSuccess = 0;
       $scope.failedImports = [];
@@ -179,10 +191,12 @@ angular.module('openhimWebui2App')
       //loop through each collection in object
       angular.forEach(data, function(modelRecords, model) {
 
+        // loop through each record
         angular.forEach(modelRecords, function(value) {
 
           var record;
 
+          // check model to determine which API to call
           switch(model) {
             case 'Clients':
               record = new Import.Clients( value );
@@ -225,6 +239,7 @@ angular.module('openhimWebui2App')
           doneItems++;
           $scope.importProgressStatus = Math.floor( doneItems / totalRecords );
 
+          // update progress bar too 100%
           if( doneItems === totalRecords ){
             $scope.importProgressStatus = 100;
             $scope.importProgressType = 'success';
@@ -238,25 +253,29 @@ angular.module('openhimWebui2App')
 
     };
 
-
+    // watch if files have been dropped
     $scope.$watch('files', function () {
       $scope.upload($scope.files);
     });
 
+
     var reader = new FileReader();
-    // inject an image with the src url
+
+    // onload function used by the reader
     reader.onload = function(event) {
       var data = event.target.result;
       // read the import script data and process
       $scope.runImportFile(data);
     };
 
+    // function to upload the file
     $scope.upload = function (files) {
       if (files && files.length) {
+        // foreach uploaded file
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
                    
-          // when the file is read it triggers the onload event above.
+          // when the file is read it triggers the onload event function above.
           reader.readAsText(file);
         }
       }

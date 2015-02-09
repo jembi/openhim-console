@@ -27,7 +27,6 @@ angular.module('openhimWebui2App')
       Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
       Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }),
-      MediatorsImport: $resource( server + '/mediators'),
 
       // add the metric endpoints
       Metrics: $resource( server + '/metrics/:type/:channelId', {}),
