@@ -21,7 +21,8 @@
     "moment": "~2.8.1",
     "angular-xeditable": "~0.1.8",
     "vkBeautify": "https://github.com/vkiryukhin/vkBeautify.git",
-    "angular-highlightjs": "~0.3.3"
+    "angular-highlightjs": "~0.3.3",
+    "ng-file-upload": "~3.0.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.15",

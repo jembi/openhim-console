@@ -9,7 +9,8 @@ angular
     'ui.bootstrap',
     'angular_taglist_directive',
     'xeditable',
-    'hljs'
+    'hljs',
+    'angularFileUpload'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -88,6 +89,10 @@ angular
       .when('/set-password/:token', {
         templateUrl: 'views/setPassword.html',
         controller: 'SetPasswordCtrl'
+      })
+      .when('/certificates', {
+        templateUrl: 'views/certificates.html',
+        controller: 'CertificatesCtrl'
       })
       .otherwise({
         redirectTo: '/'
