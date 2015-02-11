@@ -8,6 +8,8 @@ angular.module('openhimWebui2App')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    $scope.downloadLink = '';
+
     // function to reset export options to default
     $scope.resetExportOptions = function(){
       // assign all collections to select exports object
@@ -103,6 +105,41 @@ angular.module('openhimWebui2App')
       return obj;
     };
 
+
+
+
+
+
+    var NewBlob = function(data, datatype){
+      var out;
+      try {
+        out = new Blob([data], {type: datatype});
+      }
+      catch (e) {
+
+        var BlobBuilder = function(){
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
+        };
+        
+        if (e.name === 'TypeError' && window.BlobBuilder) {
+          var bb = new BlobBuilder();
+          bb.append(data);
+          out = bb.getBlob(datatype);
+        }
+        else if (e.name === 'InvalidStateError') {
+          // InvalidStateError (tested on FF13 WinXP)
+          out = new Blob([data], {type: datatype});
+        }
+        else {
+          out = { error: 'Browser not supported for Blob creation' };
+          // We're screwed, blob constructor unsupported entirely
+        }
+      }
+      return out;
+    };
+
+
+
     // function to create the export file object
     $scope.createExportFile = function(){
       
@@ -111,17 +148,22 @@ angular.module('openhimWebui2App')
 
       // create the export script as a blob file
       var makeTextFile = function (text) {
-        var data = new Blob([text], {type: 'application/json'});
+        //var data = new Blob([text], {type: 'application/json'});
+        var data = new NewBlob(text, 'application/json');
 
-        // If we are replacing a previously generated file we need to
-        // manually revoke the object URL to avoid memory leaks.
-        if (textFile !== null) {
-          window.URL.revokeObjectURL(textFile);
+        // if blob error exist
+        if ( data.error ){
+          return;
+        }else{
+          // If we are replacing a previously generated file we need to
+          // manually revoke the object URL to avoid memory leaks.
+          if (textFile !== null) {
+            window.URL.revokeObjectURL(textFile);
+          }
+
+          textFile = window.URL.createObjectURL(data);
+          return textFile;
         }
-
-        textFile = window.URL.createObjectURL(data);
-
-        return textFile;
       };
 
       if ( $scope.exportSettings.removeIds === false ){
@@ -132,17 +174,18 @@ angular.module('openhimWebui2App')
         $scope.importScriptName = 'openhim-insert.json';
       }
       
-      // get element for download link and inject href blob file for download
-      var link = document.getElementById('downloadlink');
-      link.href = makeTextFile( exportData );
-      link.style.display = 'inline-block';
+      // assign download link and show download button
+      var blobLink = makeTextFile( exportData );
+      if ( blobLink ){
+        $scope.downloadLink = blobLink;
+      }
       
     };
 
     // function for when the download button is clicked
     $scope.downloadExportFile = function(){
-      var link = document.getElementById('downloadlink');
-      link.style.display = 'none';
+      //reset download link and remove download button
+      $scope.downloadLink = '';
     };
 
     /****************************************/
@@ -208,10 +251,6 @@ angular.module('openhimWebui2App')
               record = new Import.ContactGroups( value );
               break;
             case 'Mediators':
-              // remove medaitor _id if exists
-              if( value._id ){
-                delete value._id;
-              }
               record = new Import.Mediators( value );
               break;
             case 'Users':
@@ -245,8 +284,6 @@ angular.module('openhimWebui2App')
             $scope.importProgressType = 'success';
           }
 
-          $scope.$apply();
-
         });
 
       });
@@ -259,18 +296,21 @@ angular.module('openhimWebui2App')
     });
 
 
-    var reader = new FileReader();
-
-    // onload function used by the reader
-    reader.onload = function(event) {
-      var data = event.target.result;
-      // read the import script data and process
-      $scope.runImportFile(data);
-    };
+    
 
     // function to upload the file
     $scope.upload = function (files) {
       if (files && files.length) {
+
+        var reader = new FileReader();
+
+        // onload function used by the reader
+        reader.onload = function(event) {
+          var data = event.target.result;
+          // read the import script data and process
+          $scope.runImportFile(data);
+        };
+
         // foreach uploaded file
         for (var i = 0; i < files.length; i++) {
           var file = files[i];

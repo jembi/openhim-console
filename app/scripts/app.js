@@ -12,6 +12,9 @@ angular
     'hljs',
     'angularFileUpload'
   ])
+  .config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/);
+  }])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {

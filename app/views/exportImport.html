@@ -16,10 +16,9 @@
         
         <div class="exportSectionDiv">
 
-          <h3><strong>Export your configurations</strong></h3>
+          <h3><strong>Export Data</strong></h3>
           <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
             <label tooltip="For a 'Insert Script' all '_id' properties will be removed and re-created on import">Will this export file be used as an Insert or Update?</label><br />
-
             <div class="btn-group" style="margin-bottom: 10px;">
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="true"><strong>Insert</strong> Script</label>
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="false"><strong>Update</strong> Script</label>
@@ -29,15 +28,14 @@
           
           <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
           
-            <label class="exportModelTitle">All {{model}} <input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" /></label>
+            <label class="exportModelTitle"><input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" /> All {{model}}</label>
             <div ng-if="showRecordOptions[model]">
               <div ng-repeat="record in collectionData">
                 <label class="exportRecordTitle">
+                  <input type="checkbox" ng-model="checkBox" value="{{record}}" ng-change="toggleRecordExportSelection(model, record)" />
                   <span ng-if="model=='Users'">{{record.firstname}} {{record.surname}} </span>
                   <span ng-if="model=='ContactGroups'">{{record.group}} </span>
                   <span ng-if="model=='Channels' || model=='Clients' || model=='Mediators'">{{record.name}} </span>
-
-                  <input type="checkbox" ng-model="checkBox" value="{{record}}" ng-change="toggleRecordExportSelection(model, record)" />
                 </label>
               </div>
             </div>
@@ -46,7 +44,7 @@
           <div class="panel-body">
             <button class="btn btn-primary" ng-click="createExportFile()" ng-show="!alerts.server"><i class="glyphicon glyphicon-export"></i> Generate Export Script</button>
 
-            <a download="{{importScriptName}}" id="downloadlink" class="btn btn-primary" style="display: none;" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
+            <a ng-if="downloadLink" download="{{importScriptName}}" class="btn btn-primary" ng-href="{{downloadLink}}" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
           </div>
         </div>
 
@@ -56,11 +54,11 @@
 
 
         <div class="importSectionDiv">
-          <h3><strong>Import your configurations</strong></h3>
+          <h3><strong>Import Data</strong></h3>
           
           <div class="importCollectionsDiv" >
           
-            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your export file here or click to import your configurations</div>
+            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
             <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
             <div ng-if="files">
