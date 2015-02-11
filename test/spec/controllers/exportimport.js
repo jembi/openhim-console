@@ -64,7 +64,7 @@ describe('Controller: ExportImportCtrl', function () {
         'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
       }
     ]);
-    httpBackend.when('PUT', new RegExp('.*/mediators')).respond('Mediator has been successfully updated');
+    httpBackend.when('POST', new RegExp('.*/mediators')).respond('Mediator has been successfully updated');
 
     createController = function() {
       scope = $rootScope.$new();
