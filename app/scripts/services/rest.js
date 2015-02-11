@@ -26,7 +26,9 @@ angular.module('openhimWebui2App')
 
       Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
-      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }),
+      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }, {
+        update: { method: 'PUT' }
+      }),
 
       // add the metric endpoints
       Metrics: $resource( server + '/metrics/:type/:channelId', {}),
@@ -48,37 +50,6 @@ angular.module('openhimWebui2App')
 
       // New User
       NewUser: $resource( server + '/new-user/:token', { token: '@token' }, {
-        update: { method: 'PUT' }
-      }),
-
-    };
-  })
-  .factory('Import', function ($rootScope, $resource) {
-
-    // fetch API server details
-    var protocol = angular.copy( $rootScope.protocol );
-    var host = angular.copy( $rootScope.host );
-    var port = angular.copy( $rootScope.port );
-    var server = protocol + '://' + host + ':' + port;
-
-    return {
-      Channels: $resource( server + '/channels/:channelId', { channelId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
-
-      Users: $resource( server + '/users/:userId', { userId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
-
-      Clients: $resource( server + '/clients/:clientId/', { clientId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
-
-      Mediators: $resource( server + '/mediators:mediatorId/', { mediatorId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
-
-      ContactGroups: $resource( server + '/groups/:groupId', { groupId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 

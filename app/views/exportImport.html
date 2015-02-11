@@ -28,7 +28,7 @@
           
           <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
           
-            <label class="exportModelTitle"><input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" /> All {{model}}</label>
+            <label class="exportModelTitle"><input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" />All {{model}}</label>
             <div ng-if="showRecordOptions[model]">
               <div ng-repeat="record in collectionData">
                 <label class="exportRecordTitle">

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api, Import) {
+  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api) {
 
 
     /***************************************************/
@@ -238,23 +238,29 @@ angular.module('openhimWebui2App')
         angular.forEach(modelRecords, function(value) {
 
           var record;
+          var insertParams = {};
 
           // check model to determine which API to call
           switch(model) {
             case 'Clients':
-              record = new Import.Clients( value );
+              record = new Api.Clients( value );
               break;
             case 'Channels':
-              record = new Import.Channels( value );
+              record = new Api.Channels( value );
               break;
             case 'ContactGroups':
-              record = new Import.ContactGroups( value );
+              record = new Api.ContactGroups( value );
               break;
             case 'Mediators':
-              record = new Import.Mediators( value );
+              if ( value._id ){
+                delete value._id;
+              }
+              record = new Api.Mediators( value );
+              insertParams.urn = '';
               break;
             case 'Users':
-              record = new Import.Users( value );
+              record = new Api.Users( value );
+              insertParams.email = '';
               break;
             default:
               // no default yet
@@ -268,7 +274,7 @@ angular.module('openhimWebui2App')
               importFail(model, value, err);
             });
           }else{
-            record.$save( function(){
+            record.$save(insertParams, function(){
               importSuccess();
             }, function(err){
               importFail(model, value, err);
