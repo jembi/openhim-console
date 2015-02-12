@@ -9,8 +9,12 @@ angular
     'ui.bootstrap',
     'angular_taglist_directive',
     'xeditable',
-    'hljs'
+    'hljs',
+    'angularFileUpload'
   ])
+  .config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/);
+  }])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -88,6 +92,10 @@ angular
       .when('/set-password/:token', {
         templateUrl: 'views/setPassword.html',
         controller: 'SetPasswordCtrl'
+      })
+      .when('/export-import', {
+        templateUrl: 'views/exportImport.html',
+        controller: 'ExportImportCtrl'
       })
       .otherwise({
         redirectTo: '/'
