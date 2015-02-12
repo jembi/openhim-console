@@ -40,20 +40,26 @@ angular.module('openhimWebui2App')
     /****************************************/
 
     // import failed function
-    var uploadFail = function(err, location){
-      Alerting.AlertAddMsg(location, 'danger', 'An upload error occured: #' + err.status + ' - ' + err.data);
+    var uploadFail = function(err, location, fileName){
+      
+      if ( location === 'trustedCerts' ){
+        $scope.failedImports.push({ filename: fileName, error: err.data, status: err.status });  
+      }else{
+        Alerting.AlertAddMsg(location, 'danger', 'Upload error occured: [ File: '+fileName+' ] #' + err.status + ' - ' + err.data);  
+      }
+      
       $scope.importFail++;
     };
 
     // import success function
-    var uploadSuccess = function(location){
-      Alerting.AlertAddMsg(location, 'success', 'Uploaded Successfully');
+    var uploadSuccess = function(location, fileName){
+      Alerting.AlertAddMsg(location, 'success', 'Newly Uploaded File: '+fileName);
       $scope.importSuccess++;
       $scope.resetCertificates();
     };
 
     // execute the certificate upload
-    $scope.uploadCertificate = function(data, totalFiles){
+    $scope.uploadCertificate = function(data, totalFiles, fileName){
 
       Alerting.AlertReset();
 
@@ -70,25 +76,25 @@ angular.module('openhimWebui2App')
         case 'serverCert':
           certificateObject.cert = data;
           certificateObject.$save({ type: 'cert' }, function(){
-            uploadSuccess('serverCert');
+            uploadSuccess('serverCert', fileName);
           }, function(err){
-            uploadFail(err, 'serverCert');
+            uploadFail(err, 'serverCert', fileName);
           });
           break;
         case 'serverKey':
           certificateObject.key = data;
           certificateObject.$save({ type: 'key' }, function(){
-            uploadSuccess('serverKey');
+            uploadSuccess('serverKey', fileName);
           }, function(err){
-            uploadFail(err, 'serverKey');
+            uploadFail(err, 'serverKey', fileName);
           });
           break;
         case 'trustedCerts':
           certificateObject.cert = data;
           certificateObject.$save({ type: 'ca', property: 'cert' }, function(){
-            uploadSuccess('trustedCerts');
+            uploadSuccess('trustedCerts', fileName);
           }, function(err){
-            uploadFail(err, 'trustedCerts');
+            uploadFail(err, 'trustedCerts', fileName);
           });
           break;
       }
@@ -133,11 +139,14 @@ angular.module('openhimWebui2App')
     $scope.upload = function (files) {
       if (files && files.length) {
 
-        var importRead = function(event) {
-          var data = event.target.result;
-          // read the import script data and process
-          $scope.uploadCertificate(data, files.length);
-        };
+
+        var fileWrappedImportread = function( file ){
+          return function(event) {
+            var data = event.target.result;
+            // read the import script data and process
+            $scope.uploadCertificate(data, files.length, file.name);
+          };
+        }
 
         $scope.showImportResults = false;
 
@@ -147,7 +156,7 @@ angular.module('openhimWebui2App')
 
           var reader = new FileReader();
           // onload function used by the reader
-          reader.onload = importRead;
+          reader.onload = fileWrappedImportread( file );
 
           if ( $scope.uploadType === 'trustedCerts' ){
             $scope.showImportResults = true;
