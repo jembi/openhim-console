@@ -34,9 +34,9 @@ angular.module('openhimWebui2App')
       Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }),
 
       // add the metric endpoints
-      Metrics: $resource( server + '/stats/:type/:channelId', {}),
-      MetricsStatus: $resource( server + '/stats/status', {}),
-      MetricsLoadTime: $resource( server + '/stats/load-time', {}),
+      Metrics: $resource( server + '/metrics/:type/:channelId', {}),
+      MetricsStatus: $resource( server + '/metrics/status', {}),
+      MetricsLoadTime: $resource( server + '/metrics/load-time', {}),
 
       Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
