@@ -18,7 +18,7 @@
 
           <h3><strong>Export Data</strong></h3>
           <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
-            <label tooltip="For a 'Insert Script' all '_id' properties will be removed and re-created on import">Will this export file be used as an Insert or Update?</label><br />
+            <label tooltip="For an 'Insert Script' the exported data will always add new elements, however, an 'Update Script' will attempt to update existing elements if possible">Will this export file be used as an Insert or Update?</label><br />
             <div class="btn-group" style="margin-bottom: 10px;">
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="true"><strong>Insert</strong> Script</label>
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="false"><strong>Update</strong> Script</label>
