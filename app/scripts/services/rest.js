@@ -33,6 +33,7 @@ angular.module('openhimWebui2App')
       // add the metric endpoints
       Metrics: $resource( server + '/metrics/:type/:channelId', {}),
       MetricsStatus: $resource( server + '/metrics/status', {}),
+      MetricsLoadTime: $resource( server + '/metrics/load-time', {}),
 
       Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }

@@ -91,7 +91,7 @@ describe('Controller: DashboardCtrl', function () {
 
   });
 
-  
+
   it('should run getStatusMetrics() and create statusData scope object', function () {
     createController();
     scope.getStatusMetrics();

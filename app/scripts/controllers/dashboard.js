@@ -145,7 +145,7 @@ angular.module('openhimWebui2App')
       var endDate = moment().startOf('hour').add(1, 'hours').toDate();
 
       // do API call here to pull load metrics
-      Api.Metrics.query({
+      Api.MetricsLoadTime.query({
         startDate: startDate,
         endDate: endDate
       }, $scope.timeMetricsSuccess, $scope.timeMetricsError);
