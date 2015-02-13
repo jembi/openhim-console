@@ -12,6 +12,9 @@ angular
     'hljs',
     'angularFileUpload'
   ])
+  .config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/);
+  }])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -93,6 +96,10 @@ angular
       .when('/certificates', {
         templateUrl: 'views/certificates.html',
         controller: 'CertificatesCtrl'
+      })
+      .when('/export-import', {
+        templateUrl: 'views/exportImport.html',
+        controller: 'ExportImportCtrl'
       })
       .otherwise({
         redirectTo: '/'

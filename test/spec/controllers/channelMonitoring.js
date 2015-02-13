@@ -70,7 +70,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.statusDonutData.data[1].should.have.property('value', '9.52');
     scope.statusDonutData.data[2].should.have.property('label', 'Successful');
     scope.statusDonutData.data[2].should.have.property('value', '76.19');
-    
+
 
     scope.statusBarData.should.have.property('data');
     scope.statusBarData.data.length.should.equal(3);
@@ -85,7 +85,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.statusBarData.data[1].should.have.property('value', 2);
     scope.statusBarData.data[2].should.have.property('label', 'Successful');
     scope.statusBarData.data[2].should.have.property('value', 16);
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
@@ -119,7 +119,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionLoadData.data[6].should.have.property('date');
     scope.transactionLoadData.data[6].should.have.property('value', 4);
 
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
@@ -153,7 +153,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionTimeData.data[6].should.have.property('date');
     scope.transactionTimeData.data[6].should.have.property('value', '3553.34');
 
-    
+
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 

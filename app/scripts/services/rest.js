@@ -9,11 +9,6 @@ angular.module('openhimWebui2App')
     var port = angular.copy( $rootScope.port );
     var server = protocol + '://' + host + ':' + port;
 
-    // delete API server details from rootScope
-    delete $rootScope.protocol;
-    delete $rootScope.host;
-    delete $rootScope.port;
-
     return {
       Authenticate: $resource( server + '/authenticate/:email' ),
 
@@ -31,11 +26,14 @@ angular.module('openhimWebui2App')
 
       Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
-      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }),
+      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }, {
+        update: { method: 'PUT' }
+      }),
 
       // add the metric endpoints
       Metrics: $resource( server + '/metrics/:type/:channelId', {}),
       MetricsStatus: $resource( server + '/metrics/status', {}),
+      MetricsLoadTime: $resource( server + '/metrics/load-time', {}),
 
       Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
