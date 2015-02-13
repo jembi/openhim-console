@@ -16,6 +16,22 @@
 
             <table class="table table-striped transactionTable">
               <tbody>
+                <tr>                  
+                  <td colspan="2" data-title="Server Status" align="center">
+                    <!--<h4 style="font-size: 35px;">Certificate Status: </h4>-->
+                    <div ng-show="!certValidity">
+                      <i class="glyphicon glyphicon-remove-circle" style="float: left; color: #d9534f; font-size: 50px;"></i>
+                      <span style="color: #d9534f; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> do not match</span>
+                      <i class="glyphicon glyphicon-remove-circle" style="float: right; color: #d9534f; font-size: 50px;"></i>
+                    </div>
+                    
+                    <div ng-show="certValidity">
+                      <i class="glyphicon glyphicon-ok-circle" style="float: left; color: #3c763d; font-size: 50px;"></i>
+                      <span style="color: #3c763d; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> Match!</span>
+                      <i class="glyphicon glyphicon-ok-circle" style="float: right; color: #3c763d; font-size: 50px;"></i>
+                    </div>
+                  </td>
+                </tr>
                 <tr>
                   <td width="120">Comman Name: </td>
                   <td data-title="Comman Name">{{currentServerCert.commonName}}</td>
@@ -94,7 +110,7 @@
             <!-- Server Certificate Alerts -->
 
             <div id="no-more-tables">
-              <table class="table table-striped transactionTable">
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -108,7 +124,7 @@
                 </thead>
                 <tbody>
                   <tr class="table-list" ng-repeat="cert in trustedCerts">
-                    <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                    <td data-title="# {{ $index +1 }}"><span>{{ $index +1 }}</span></td>
                     <td data-title="Common Name">{{ cert.commonName }}</td>
                     <td data-title="Organization">{{ cert.organization }}</td>
                     <td data-title="Organization Unit">{{ cert.organizationUnit }}</td>

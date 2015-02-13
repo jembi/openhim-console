@@ -20,6 +20,11 @@ angular.module('openhimWebui2App')
       // get trusted certificates array
       $scope.trustedCerts = Api.Keystore.query({ type: 'ca' });
 
+      // get current certificate validity
+      // Api functions needs to be updated to return correct response
+      //$scope.certValidity = Api.Keystore.query({ type: 'validity' });
+      $scope.certValidity = false;
+
     };
 
     // set inital certs
@@ -40,19 +45,18 @@ angular.module('openhimWebui2App')
     /****************************************/
 
     // import failed function
-    var uploadFail = function(err, location, fileName){
-      
+    $scope.uploadFail = function(err, location, fileName){
       if ( location === 'trustedCerts' ){
-        $scope.failedImports.push({ filename: fileName, error: err.data, status: err.status });  
+        $scope.failedImports.push({ filename: fileName, error: err.data, status: err.status });
       }else{
-        Alerting.AlertAddMsg(location, 'danger', 'Upload error occured: [ File: '+fileName+' ] #' + err.status + ' - ' + err.data);  
+        Alerting.AlertAddMsg(location, 'danger', 'Upload error occured: [ File: '+fileName+' ] #' + err.status + ' - ' + err.data);
       }
       
       $scope.importFail++;
     };
 
     // import success function
-    var uploadSuccess = function(location, fileName){
+    $scope.uploadSuccess = function(location, fileName){
       Alerting.AlertAddMsg(location, 'success', 'Newly Uploaded File: '+fileName);
       $scope.importSuccess++;
       $scope.resetCertificates();
@@ -70,31 +74,31 @@ angular.module('openhimWebui2App')
       $scope.importProgressType = '';
 
       var doneItems = 0;
-      var certificateObject = new Api.Keystore();
+      $scope.certificateObject = new Api.Keystore();
 
       switch ( $scope.uploadType ){
         case 'serverCert':
-          certificateObject.cert = data;
-          certificateObject.$save({ type: 'cert' }, function(){
-            uploadSuccess('serverCert', fileName);
+          $scope.certificateObject.cert = data;
+          $scope.certificateObject.$save({ type: 'cert' }, function(){
+            $scope.uploadSuccess('serverCert', fileName);
           }, function(err){
-            uploadFail(err, 'serverCert', fileName);
+            $scope.uploadFail(err, 'serverCert', fileName);
           });
           break;
         case 'serverKey':
-          certificateObject.key = data;
-          certificateObject.$save({ type: 'key' }, function(){
-            uploadSuccess('serverKey', fileName);
+          $scope.certificateObject.key = data;
+          $scope.certificateObject.$save({ type: 'key' }, function(){
+            $scope.uploadSuccess('serverKey', fileName);
           }, function(err){
-            uploadFail(err, 'serverKey', fileName);
+            $scope.uploadFail(err, 'serverKey', fileName);
           });
           break;
         case 'trustedCerts':
-          certificateObject.cert = data;
-          certificateObject.$save({ type: 'ca', property: 'cert' }, function(){
-            uploadSuccess('trustedCerts', fileName);
+          $scope.certificateObject.cert = data;
+          $scope.certificateObject.$save({ type: 'ca', property: 'cert' }, function(){
+            $scope.uploadSuccess('trustedCerts', fileName);
           }, function(err){
-            uploadFail(err, 'trustedCerts', fileName);
+            $scope.uploadFail(err, 'trustedCerts', fileName);
           });
           break;
       }
@@ -146,7 +150,7 @@ angular.module('openhimWebui2App')
             // read the import script data and process
             $scope.uploadCertificate(data, files.length, file.name);
           };
-        }
+        };
 
         $scope.showImportResults = false;
 
