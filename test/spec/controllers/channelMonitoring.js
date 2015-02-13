@@ -27,8 +27,8 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]});
-    $httpBackend.when('GET', new RegExp('.*/stats/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );
-    $httpBackend.when('GET', new RegExp('.*/stats/day/5322fe9d8b6add4b2b059dd8?.*.')).respond( timeLoadData );
+    $httpBackend.when('GET', new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );
+    $httpBackend.when('GET', new RegExp('.*/metrics/day/5322fe9d8b6add4b2b059dd8?.*.')).respond( timeLoadData );
 
 
     createController = function() {
@@ -124,7 +124,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
   });
 
   it('should run getLoadMetrics() and set the transactionTimeData graph object', function () {
-    httpBackend.expectGET(new RegExp('.*/stats/status/5322fe9d8b6add4b2b059dd8'));
+    httpBackend.expectGET(new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8'));
     createController();
     scope.getLoadMetrics();
     httpBackend.flush();
