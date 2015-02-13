@@ -788,7 +788,11 @@ body {
 .exportRecordTitle:hover { cursor: pointer; }
 
 .exportCollectionsDiv { border: 1px solid #ccc; float: left; margin: 0px 20px 20px 0px; padding: 10px; border-radius: 5px; }
+<<<<<<< HEAD
+.exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 0px 0px 5px; }
+=======
 .exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 5px 0px 0px; }
+>>>>>>> 09bdd295ab0c20005f623f27443c9e7212c13803
 
 .importSectionDiv{ display: inline-block; width: 100%; margin-top: 50px; padding-top: 20px; border-top: 5px dashed #ccc; }
 .exportSectionDiv{ display: inline-block; width: 100% }
@@ -1018,4 +1022,3 @@ body {
     width: 850px;
   }
 }
-

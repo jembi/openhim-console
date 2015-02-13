@@ -1,0 +1,210 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-certificate"></i>&nbsp;&nbsp;Certificates</h2>
+          </div>
+        </div>
+        
+        <div class="exportSectionDiv" ng-show="currentServerCert && trustedCerts && certValidity && !alerts.server">
+          <div style="float: left; width: 100%">
+            <h3><strong>Server Certificate</strong></h3>
+
+            <table class="table table-striped transactionTable">
+              <tbody>
+                <tr>                  
+                  <td colspan="2" data-title="Server Status" align="center">
+                    <!--<h4 style="font-size: 35px;">Certificate Status: </h4>-->
+                    <div ng-if="certValidity.valid === false">
+                      <i class="glyphicon glyphicon-remove-circle" style="float: left; color: #d9534f; font-size: 50px;"></i>
+                      <span style="color: #d9534f; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> do not match</span>
+                      <i class="glyphicon glyphicon-remove-circle" style="float: right; color: #d9534f; font-size: 50px;"></i>
+                    </div>
+                    
+                    <div ng-if="certValidity.valid === true">
+                      <i class="glyphicon glyphicon-ok-circle" style="float: left; color: #3c763d; font-size: 50px;"></i>
+                      <span style="color: #3c763d; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> Match!</span>
+                      <i class="glyphicon glyphicon-ok-circle" style="float: right; color: #3c763d; font-size: 50px;"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="120">Comman Name: </td>
+                  <td data-title="Comman Name">{{currentServerCert.commonName}}</td>
+                </tr>
+                <tr>
+                  <td>Organization</td>
+                  <td data-title="Organization">{{currentServerCert.organization}}</td>
+                </tr>
+                <tr>
+                  <td>Organization Unit</td>
+                  <td data-title="Organization Unit">{{currentServerCert.organizationUnit}}</td>
+                </tr>
+                <tr>
+                  <td>Country</td>
+                  <td data-title="Country">{{currentServerCert.country}}</td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td data-title="State">{{currentServerCert.state}}</td>
+                </tr>
+                <tr>
+                  <td>Locality</td>
+                  <td data-title="Locality">{{currentServerCert.locality}}</td>
+                </tr>
+                <tr>
+                  <td>Email Address</td>
+                  <td data-title="Email Address">{{currentServerCert.emailAddress}}</td>
+                </tr>
+                <tr>
+                  <td>Validity</td>
+                  <td data-title="Validity">
+                    Start: <strong>{{ currentServerCert.validity.start | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong><br />
+                    End: <strong>{{ currentServerCert.validity.end | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong></td>
+                </tr>
+                <tr>
+                  <td>Certificate</td>
+                  <td data-title="Certificate">
+                    <textarea readonly="readonly" style="width: 100%; min-height: 150px;">{{currentServerCert.data}}</textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="float: left; width: 48%">
+              <h4><strong>Upload Server Certificate</strong></h4>
+
+              <div ng-file-drop ng-file-select ng-model="serverCert" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate file here or click to upload</div>
+              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+              <!-- Server Certificate Alerts -->
+              <alert ng-repeat="alert in alerts.serverCert" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <!-- Server Certificate Alerts -->
+            </div>
+
+            <div style="float: right; width: 48%">
+              
+              <h4><strong>Upload Server Key</strong></h4>
+
+              <div ng-file-drop ng-file-select ng-model="serverKey" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate key file here or click to upload</div>
+              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+              <!-- Server Certificate Alerts -->
+              <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <!-- Server Certificate Alerts -->
+
+            </div>
+
+          </div>
+
+          <div style="float: right; width: 100%; margin" class="importSectionDiv">
+            
+            <h3><strong>Trusted Certificates</strong></h3>
+
+            <!-- Server Certificate Alerts -->
+            <alert ng-repeat="alert in alerts.trustedCertDelete" type="alert.type">{{alert.msg}}</alert>
+            <!-- Server Certificate Alerts -->
+
+            <div id="no-more-tables">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Common Name</th>
+                    <th>Organization</th>
+                    <th>Organization Unit</th>
+                    <th>Country / State / Locality</th>
+                    <th>Email Address</th>
+                    <th>Validity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-list" ng-repeat="cert in trustedCerts">
+                    <td data-title="# {{ $index +1 }}"><span>{{ $index +1 }}</span></td>
+                    <td data-title="Common Name">{{ cert.commonName }}</td>
+                    <td data-title="Organization">{{ cert.organization }}</td>
+                    <td data-title="Organization Unit">{{ cert.organizationUnit }}</td>
+                    <td data-title="Country/State/Locality">
+                      {{ cert.country }} / {{ cert.state }} / {{ cert.locality }}
+                    </td>
+                    <td data-title="Email Address">{{ cert.emailAddress }}</td>
+                    <td data-title="Validity">
+                      Start: <strong>{{ cert.validity.start | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong><br />
+                      End: <strong>{{ cert.validity.end | date:'yyyy-MM-dd HH:mm:ss Z' }}</strong>
+                    </td>
+                    <td>
+                      <button class="btn btn-danger btn-xs" ng-click="confirmDelete(cert)"><i class="glyphicon glyphicon-remove"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            
+            <div class="importCollectionsDiv" >
+            
+              <div ng-file-drop ng-file-select ng-model="trustedCerts" class="drop-box" style="padding: 10px" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your certificate file here or click to upload</div>
+              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+            </div>
+            
+            <div ng-show="showImportResults">
+              <h3>Import Results: </h3>
+              <progressbar ng-if="importProgressStatus" style="width: 100%; margin-bottom: 15px;" class="progress-striped active" max="100" value="importProgressStatus" type="{{importProgressType}}"><i>{{importProgressStatus}} %</i></progressbar>
+              <div>
+                <label>Successfull Imports ( {{importSuccess}} )</label>
+              </div>
+              <div>
+                <label class="failedImportsLink">Failed Imports ( {{importFail}} )</label>
+
+                <div id="no-more-tables" ng-if="importFail">
+                  <table class="table table-bordered" style="100%">
+                    <thead>
+                      <tr>
+                        <th width="50">#</th>
+                        <th>File</th>
+                        <th>Status</th>
+                        <th>Error</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="import in failedImports">
+                        <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                        <td data-title="File">{{ import.filename }}</td>
+                        <td data-title="Status">{{ import.status }}</td>
+                        <td data-title="Error">{{ import.error }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+
+        <div class="panel-body">
+
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <!--<div class="loadingContainer" ng-show="!(currentServerCert || trustedCerts || certValidity || alerts.server)">-->
+          <div class="loadingContainer" ng-show="!currentServerCert || !trustedCerts || !certValidity || alerts.server">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <!-- Server Alerts -->
+          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <!-- Server Alerts -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

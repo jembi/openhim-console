@@ -93,6 +93,10 @@ angular
         templateUrl: 'views/setPassword.html',
         controller: 'SetPasswordCtrl'
       })
+      .when('/certificates', {
+        templateUrl: 'views/certificates.html',
+        controller: 'CertificatesCtrl'
+      })
       .when('/export-import', {
         templateUrl: 'views/exportImport.html',
         controller: 'ExportImportCtrl'

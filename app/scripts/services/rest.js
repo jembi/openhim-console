@@ -54,5 +54,9 @@ angular.module('openhimWebui2App')
         update: { method: 'PUT' }
       }),
 
+      Keystore: $resource( server + '/keystore/:type/:property', { type: '@type', property: '@property' }, {
+        update: { method: 'PUT' }
+      }),
+
     };
   });

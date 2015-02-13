@@ -27,7 +27,6 @@ module.exports = function(config) {
       'app/bower_components/vkBeautify/vkbeautify.js',
       'app/bower_components/angular-highlightjs/angular-highlightjs.min.js',
       'app/bower_components/ng-file-upload/angular-file-upload.js',
-      
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
