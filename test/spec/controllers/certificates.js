@@ -16,6 +16,8 @@ describe('Controller: CertificatesCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
+    $httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
+
     $httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
       'validity': {
         'end': '2024-03-16T13:46:48.000Z',
@@ -89,6 +91,7 @@ describe('Controller: CertificatesCtrl', function () {
 
     scope.currentServerCert.should.have.property( 'commonName', 'test-client.jembi.org' );
     scope.trustedCerts.length.should.equal( 2 );
+    scope.certValidity.should.have.property( 'valid', true );
   });
 
 

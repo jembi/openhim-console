@@ -9,6 +9,7 @@ angular.module('openhimWebui2App')
     /***************************************************/
 
     $scope.showImportResults = false;
+    $scope.certValidity = {};
 
     
     // function to reset certs
@@ -21,9 +22,11 @@ angular.module('openhimWebui2App')
       $scope.trustedCerts = Api.Keystore.query({ type: 'ca' });
 
       // get current certificate validity
-      // Api functions needs to be updated to return correct response
-      //$scope.certValidity = Api.Keystore.query({ type: 'validity' });
-      $scope.certValidity = false;
+      Api.Keystore.get({ type: 'validity' }, function(result){
+        $scope.certValidity = result;
+      }, function(){
+        $scope.certValidity.valid = false;
+      });
 
     };
 

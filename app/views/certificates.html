@@ -10,7 +10,7 @@
           </div>
         </div>
         
-        <div class="exportSectionDiv">
+        <div class="exportSectionDiv" ng-show="currentServerCert && trustedCerts && certValidity && !alerts.server">
           <div style="float: left; width: 100%">
             <h3><strong>Server Certificate</strong></h3>
 
@@ -19,13 +19,13 @@
                 <tr>                  
                   <td colspan="2" data-title="Server Status" align="center">
                     <!--<h4 style="font-size: 35px;">Certificate Status: </h4>-->
-                    <div ng-show="!certValidity">
+                    <div ng-if="certValidity.valid === false">
                       <i class="glyphicon glyphicon-remove-circle" style="float: left; color: #d9534f; font-size: 50px;"></i>
                       <span style="color: #d9534f; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> do not match</span>
                       <i class="glyphicon glyphicon-remove-circle" style="float: right; color: #d9534f; font-size: 50px;"></i>
                     </div>
                     
-                    <div ng-show="certValidity">
+                    <div ng-if="certValidity.valid === true">
                       <i class="glyphicon glyphicon-ok-circle" style="float: left; color: #3c763d; font-size: 50px;"></i>
                       <span style="color: #3c763d; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> Match!</span>
                       <i class="glyphicon glyphicon-ok-circle" style="float: right; color: #3c763d; font-size: 50px;"></i>
@@ -192,6 +192,12 @@
 
 
         <div class="panel-body">
+
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <!--<div class="loadingContainer" ng-show="!(currentServerCert || trustedCerts || certValidity || alerts.server)">-->
+          <div class="loadingContainer" ng-show="!currentServerCert || !trustedCerts || !certValidity || alerts.server">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
 
           <!-- Server Alerts -->
           <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
