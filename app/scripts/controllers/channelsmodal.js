@@ -70,6 +70,14 @@ angular.module('openhimWebui2App')
     },
     function(){ /* server error - could not connect to API to get Alert Groups */ });
 
+
+    // get the Trusted Certificates for the Channel routes cert dropdown
+    Api.Keystore.query({ type: 'ca' }, function(result){
+      $scope.trustedCerts = result;
+    },
+    function(){ /* server error - could not connect to API to get Trusted Certificates */ });
+    
+
     // get/set the users scope whether new or update
     $scope.matching = {};
     $scope.matching.contentMatching = 'No matching';

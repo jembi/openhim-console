@@ -1,0 +1,44 @@
+<div class="form-group">
+  <label>Match Content Types</label>
+  <taglist tag-data="channel.matchContentTypes"><input class="form-control" placeholder="Enter a content type and press enter..." type="text" /></taglist>
+</div>
+
+<div class="btn-group" style="margin-bottom: 10px">
+  <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'No matching'">No matching</label>
+  <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'RegEx matching'">RegEx matching</label>
+  <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'XML matching'">XML matching</label>
+  <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'JSON matching'">JSON matching</label>
+</div>
+<div class="form-group-2columns" ng-show="matching.contentMatching == 'RegEx matching'">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentRegex }">
+    <label><span>*</span> Match Content Regex</label>
+    <input ng-model="channel.matchContentRegex" class="form-control" placeholder="Enter a regular expression" type="text" ng-required="matching.contentMatching=='RegEx Matching'" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+
+<div class="form-group-2columns" ng-show="matching.contentMatching == 'XML matching'">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentXpath }">
+    <label><span>*</span> Match Content X Path</label>
+    <input ng-model="channel.matchContentXpath" class="form-control" placeholder="Enter a X path" type="text" ng-required="matching.contentMatching=='XML matching'" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+    <label><span>*</span> Match Content Value</label>
+    <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='XML matching'" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+
+<div class="form-group-2columns" ng-show="matching.contentMatching == 'JSON matching'">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentJson }">
+    <label><span>*</span> Match Content JSON</label>
+    <input ng-model="channel.matchContentJson" class="form-control" placeholder="Enter content JSON..." type="text" ng-required="matching.contentMatching=='JSON matching'" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+    <label><span>*</span> Match Content Value</label>
+    <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a content value" type="text" ng-required="matching.contentMatching=='JSON matching'" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
