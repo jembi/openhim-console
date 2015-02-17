@@ -1,0 +1,67 @@
+
+
+<div class="form-group" ng-class="{ 'has-error' : ngError.name }">
+  <label><span>*</span> Channel name</label>
+  <input class="form-control" type="text" ng-model="channel.name" focus="{{!update}}" />
+  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+</div>
+
+
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left; width: 75%" ng-class="{ 'has-error' : ngError.urlPattern }">
+    <label><span>*</span> URL Pattern</label>
+    <div class="input-group" style="width: 100%;">
+      <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
+      <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-style="{ false: {'border-radius': '4px'}, true: {}}[urlPattern.regex];" />
+      <div ng-show="urlPattern.regex" class="input-group-addon">$</div>
+    </div>
+  </div>
+  <div class="addUrlRegexDelimiterDiv">
+    <label tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want.">
+      <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
+    </label>
+  </div>
+  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+</div>
+
+
+<div class="form-group" ng-class="{ 'has-error' : ngError.description }">
+  <label><span></span> Description</label>
+  <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
+  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+</div>
+<div class="form-group-2columns">
+  <label style="display: block;">Channel Type</label>
+  <div class="btn-group" style="margin-bottom: 10px">
+    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'http'">HTTP</label>
+    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tcp'">TCP</label>
+    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tls'">TLS</label>
+    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'polling'">Polling</label>
+  </div>
+</div>
+<div class="form-group-2columns" ng-show="channel.type == 'tcp' || channel.type == 'tls'">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
+    <label><span>*</span> TCP Host</label>
+    <input ng-model="channel.tcpHost" class="form-control" type="text" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.tcpPort }">
+    <label><span>*</span> TCP Port</label>
+    <input ng-model="channel.tcpPort" class="form-control" type="text" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+<div class="form-group-2columns" ng-show="channel.type == 'polling'">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.pollingSchedule }">
+    <label tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'"><span>*</span> Polling Schedule</label>
+    <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+<div class="form-group-2columns">
+  <label style="display: block;">Status</label>
+  <div class="btn-group" style="margin-bottom: 10px">
+    <label class="btn btn-primary" ng-model="channel.status" btn-radio="'enabled'">Enabled</label>
+    <label class="btn btn-primary" ng-model="channel.status" btn-radio="'disabled'">Disabled</label>
+  </div>
+</div>
