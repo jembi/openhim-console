@@ -1,25 +1,37 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .controller('CertificatesCtrl', function ($upload, $scope, $modal, Api, Alerting) {
+  .controller('CertificatesCtrl', function ($upload, $scope, $interval, $modal, Api, Alerting) {
 
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // set variables for server restart
+    $scope.serverRestarting = false;
+    $scope.restartTimeout = 0;
+    $scope.serverRestartRequired = false;
     $scope.showImportResults = false;
     $scope.certValidity = {};
-
     
     // function to reset certs
     $scope.resetCertificates = function(){
             
       // get server certificate data
-      $scope.currentServerCert = Api.Keystore.get({ type: 'cert' });
+      Api.Keystore.get({ type: 'cert' }, function(result){
+        $scope.currentServerCert = result;
+      }, function(err){
+        Alerting.AlertAddServerMsg(err.status);
+      });
 
       // get trusted certificates array
-      $scope.trustedCerts = Api.Keystore.query({ type: 'ca' });
+      $scope.trustedCertificates = Api.Keystore.query({ type: 'ca' });
+      Api.Keystore.query({ type: 'ca' }, function(result){
+        $scope.trustedCertificates = result;
+      }, function(err){
+        Alerting.AlertAddServerMsg(err.status);
+      });
 
       // get current certificate validity
       Api.Keystore.get({ type: 'validity' }, function(result){
@@ -32,7 +44,6 @@ angular.module('openhimWebui2App')
 
     // set inital certs
     $scope.resetCertificates();
-    
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -62,6 +73,7 @@ angular.module('openhimWebui2App')
     $scope.uploadSuccess = function(location, fileName){
       Alerting.AlertAddMsg(location, 'success', 'Newly Uploaded File: '+fileName);
       $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
       $scope.resetCertificates();
     };
 
@@ -210,10 +222,8 @@ angular.module('openhimWebui2App')
       });
 
       modalInstance.result.then(function () {
-
         var certToDelete = new Api.Keystore();
         certToDelete.$remove({ type: 'ca', property: cert._id }, deleteSuccess, deleteError);
-
       }, function () {
         // delete cancelled - do nothing
       });
@@ -234,6 +244,50 @@ angular.module('openhimWebui2App')
     /****************************************/
     /**         Delete Functions           **/
     /****************************************/
+
+
+
+
+    /************************************************/
+    /**         Restart Server Functions           **/
+    /************************************************/
+
+    // server restart later function
+    $scope.restartServerLater = function(){
+      $scope.serverRestartRequired = false;
+    };
+
+    // server restart confirm function
+    $scope.restartServer = function(){
+
+      var restartServer = new Api.Restart();
+      restartServer.$save({}, function(){
+        // restart request sent successfully
+
+        // update restart variables
+        $scope.serverRestarting = true;
+        $scope.serverRestartRequired = false;
+
+        // set estimate time for server restart - 120 seconds
+        $scope.restartTimeout = 10;
+        var restartInterval = $interval(function() {
+          // decrement the timer
+          $scope.restartTimeout--;
+
+          // if timer is finshed - cancel interval - update display variable
+          if ($scope.restartTimeout === 0){
+            $scope.serverRestarting = false;
+            $scope.resetCertificates();
+            $interval.cancel(restartInterval);
+          }
+        }, 1000);
+      }, function(){ /* server error - could not connect to API send restart request */ });
+
+    };
+
+    /************************************************/
+    /**         Restart Server Functions           **/
+    /************************************************/
 
 
   });

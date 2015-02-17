@@ -26,6 +26,15 @@ angular.module('openhimWebui2App')
     },
     function(){ /* server error - could not connect to API to get clients */  });
 
+
+    // get the Trusted Certificates for the Channel routes cert dropdown
+    Api.Keystore.query({ type: 'ca' }, function(result){
+      $scope.trustedCerts = result;
+    },
+    function(){ /* server error - could not connect to API to get Trusted Certificates */ });
+
+
+    // if client exist then update true
     if (client) {
       $scope.update = true;
       $scope.client = angular.copy(client);
@@ -33,10 +42,6 @@ angular.module('openhimWebui2App')
       $scope.update = false;
       $scope.client = new Api.Clients();
     }
-
-    // backup original client certifcate
-    $scope.originalCertificate = angular.copy($scope.client.cert);
-    $rootScope.serverRestartRequired = false;
 
     /***************************************************************/
     /**   These are the functions for the Client initial load     **/
@@ -49,11 +54,6 @@ angular.module('openhimWebui2App')
     /**************************************************************/
 
     var success = function () {
-
-      // if client certificate has changed - display restart message
-      if ( $scope.originalCertificate !== $scope.clientBackup.cert ){
-        $rootScope.serverRestartRequired = true;
-      }
 
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The client has been saved successfully');

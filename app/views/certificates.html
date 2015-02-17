@@ -9,8 +9,28 @@
             <h2><i class="glyphicon glyphicon-certificate"></i>&nbsp;&nbsp;Certificates</h2>
           </div>
         </div>
+
+
+        <!-- Server Alerts -->
+        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
         
-        <div class="exportSectionDiv" ng-show="currentServerCert && trustedCerts && certValidity && !alerts.server">
+          
+        <!-- Restart the server message -->
+        <alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+          <div style="margin-bottom: 10px;">When adding/updating a certificate, a server restart is required for it to be applied.</div>
+          <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button><span> - Or manually restart it later.</span>
+          <button class="btn btn-danger btn-lg" ng-click="restartServerLater()">I'll manually restart later</button>
+        </alert>
+
+        <!-- Server busy restarting -->
+        <alert ng-if="serverRestarting" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+          <div style="margin-bottom: 10px;">The server is currently being restarted.</div>
+          <div>Roughly <u>{{restartTimeout}}</u> seconds remain before the server will have restarted.</div> 
+        </alert>
+
+        
+        <div class="exportSectionDiv" ng-show="!alerts.server">
           <div style="float: left; width: 100%">
             <h3><strong>Server Certificate</strong></h3>
 
@@ -18,7 +38,6 @@
               <tbody>
                 <tr>                  
                   <td colspan="2" data-title="Server Status" align="center">
-                    <!--<h4 style="font-size: 35px;">Certificate Status: </h4>-->
                     <div ng-if="certValidity.valid === false">
                       <i class="glyphicon glyphicon-remove-circle" style="float: left; color: #d9534f; font-size: 50px;"></i>
                       <span style="color: #d9534f; font-size: 35px;">Your <strong>Server Certificate</strong> and <strong>Server Key</strong> do not match</span>
@@ -183,12 +202,12 @@
                 </div>
               </div>
             </div>
-
           </div>
-
-
-
         </div>
+        
+
+
+        
 
 
         <div class="panel-body">
@@ -199,9 +218,7 @@
             <img src="images/loading.gif" alt="Loading..." />
           </div>
 
-          <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
-          <!-- Server Alerts -->
+          
 
         </div>
       </div>
