@@ -330,9 +330,7 @@ module.exports = function (grunt) {
 
     uglify: {
       options: {
-        mangle: {
-          except: ['$super', 'jQuery']
-        }
+        mangle: false
       }
     },
 
