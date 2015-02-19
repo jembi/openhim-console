@@ -282,7 +282,7 @@ angular.module('openhimWebui2App')
             $interval.cancel(restartInterval);
           }
         }, 1000);
-      }, function(){ 
+      }, function(){
         $scope.serverRestartRequired = false;
         $scope.serverRestartError = true;
       });
