@@ -12,6 +12,7 @@ angular.module('openhimWebui2App')
     $scope.serverRestarting = false;
     $scope.restartTimeout = 0;
     $scope.serverRestartRequired = false;
+    $scope.serverRestartError = false;
     $scope.showImportResults = false;
     $scope.certValidity = {};
     
@@ -157,7 +158,7 @@ angular.module('openhimWebui2App')
     // function to upload the file
     $scope.upload = function (files) {
       if (files && files.length) {
-
+        $scope.serverRestartError = false;
 
         var fileWrappedImportread = function( file ){
           return function(event) {
@@ -281,7 +282,10 @@ angular.module('openhimWebui2App')
             $interval.cancel(restartInterval);
           }
         }, 1000);
-      }, function(){ /* server error - could not connect to API send restart request */ });
+      }, function(){ 
+        $scope.serverRestartRequired = false;
+        $scope.serverRestartError = true;
+      });
 
     };
 

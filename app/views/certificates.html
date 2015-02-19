@@ -23,6 +23,10 @@
           <button class="btn btn-danger btn-lg" ng-click="restartServerLater()">I'll manually restart later</button>
         </alert>
 
+        <alert ng-if="serverRestartError" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 40px;">
+          <div>Unable to restart the server. <br />Server Certificate and Server Key need to match</div>
+        </alert>
+
         <!-- Server busy restarting -->
         <alert ng-if="serverRestarting" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
           <div style="margin-bottom: 10px;">The server is currently being restarted.</div>
@@ -214,7 +218,7 @@
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <!--<div class="loadingContainer" ng-show="!(currentServerCert || trustedCerts || certValidity || alerts.server)">-->
-          <div class="loadingContainer" ng-show="!currentServerCert || !trustedCerts || !certValidity || alerts.server">
+          <div class="loadingContainer" ng-show="!currentServerCert || !trustedCertificates || !certValidity || alerts.server">
             <img src="images/loading.gif" alt="Loading..." />
           </div>
 
