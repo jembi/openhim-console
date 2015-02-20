@@ -1,0 +1,23 @@
+#!/bin/bash
+set -x
+
+
+USERNAME=openhim
+HOME=/home/$USERNAME
+SH=/bin/sh
+NPM=/usr/bin/npm
+CURL=/usr/bin/curl
+
+COREDIR=$HOME/openhim-console
+
+
+chown  $USERNAME:$USERNAME $HOME/bin/install_console.sh
+chown -R  $USERNAME:$USERNAME $COREDIR
+
+cd $HOME
+
+sudo -u $USERNAME $SH $HOME/bin/install_console.sh
+
+start openhim-console
+
+exit 0
