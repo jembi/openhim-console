@@ -6,3 +6,12 @@ dist
 app/bower_components
 openhim-webapp-2.sublime-project
 openhim-webapp-2.sublime-workspace
+packaging/.gnupg
+packaging/.npm
+packaging/builds/*
+packaging/.gitconfig
+\#*
+*~
+.#*
+\#*\#
+
