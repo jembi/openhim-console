@@ -4,8 +4,8 @@ set -e
 set -x
 
 PPA=mhero
-CPDIRS=("bin" "config" "infrastructure"  "resources" "src" "tests" "tls")
-CPFILES=("coffeelint.json" "Gruntfile.coffee" "LICENSE" "package.json" "README.md")
+CPDIRS=("app" "infrastructure" "test")       
+CPFILES=( ".bowerrc" ".gitattributes" "Gruntfile.js" "karma.conf.js" "LICENSE" "README.md" "bower.json" ".editorconfig"  ".gitignore"      ".jshintrc"     "karma-e2e.conf.js"  "package.json"  ".travis.yml")
 
 #Don't edit below
 
