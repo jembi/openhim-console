@@ -40,9 +40,7 @@ CONFIG="
 "
 echo $CONFIG > $CONSOLEDIR/app/config/default.json
 
-if [ "$action" = "configure" ]; then
-    sudo -u $USERNAME $SH $HOME/bin/install_console.sh
-fi
+sudo -u $USERNAME $SH $HOME/bin/install_console.sh
 
 
 
