@@ -3,7 +3,6 @@ Type: string
 Default: localhost
 Description: What is the hostname that the OpenHIM core server is running on?
 
-
 Template: openhim-console/selectport
 Type: string
 Default: 5002
