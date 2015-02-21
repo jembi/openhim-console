@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 action="$1"
 cur_version="$2"
@@ -8,7 +8,8 @@ cur_version="$2"
 . /usr/share/debconf/confmodule 
 
 db_input high openhim-console/selecthost || true
+
 db_input high openhim-console/selectport || true
-db_go
 
 
+db_go || true
