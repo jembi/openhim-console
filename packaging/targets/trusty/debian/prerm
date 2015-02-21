@@ -1,3 +1,7 @@
 #!/bin/bash
 
 service openhim-console stop || true
+
+. /usr/share/debconf/confmodule 
+
+db_purge || true
