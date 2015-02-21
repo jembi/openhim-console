@@ -1,0 +1,3 @@
+#!/bin/bash
+
+service openhim-console stop || true
