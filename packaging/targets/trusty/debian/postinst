@@ -2,6 +2,11 @@
 set -x
 set -e
 
+
+action="$1"
+cur_version="$2"
+
+
 USERNAME=openhim
 HOME=/home/$USERNAME
 SH=/bin/sh
@@ -35,8 +40,11 @@ CONFIG="
 "
 echo $CONFIG > $CONSOLEDIR/app/config/default.json
 
+if [ "$action" = "configure" ]; then
+    sudo -u $USERNAME $SH $HOME/bin/install_console.sh
+fi
 
-sudo -u $USERNAME $SH $HOME/bin/install_console.sh
+
 
 service openhim-console start || true
 

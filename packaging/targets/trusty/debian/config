@@ -13,8 +13,8 @@ if [ "$action" = "reconfigure" ]; then
 fi
 
 
-db_input critical openhim-console/selecthost || true
-db_input critical openhim-console/selectport || true
+db_input high openhim-console/selecthost || true
+db_input high openhim-console/selectport || true
 db_go
 
 
