@@ -38,6 +38,6 @@ echo $CONFIG > $CONSOLEDIR/app/config/default.json
 
 sudo -u $USERNAME $SH $HOME/bin/install_console.sh
 
-start openhim-console
+service openhim-console start || true
 
 exit 0
