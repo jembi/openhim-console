@@ -1,3 +1,9 @@
+openhim-console (1.0.0-12~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-12
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:36:47 -0500
+
 openhim-console (1.0.0-11~trusty) trusty; urgency=medium
 
   * Release Version 1.0.0-11

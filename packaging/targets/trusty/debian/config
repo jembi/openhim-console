@@ -2,8 +2,8 @@
 set -e
 
 . /usr/share/debconf/confmodule
-db_input critical openhim-console/selecthost 
-db_input critical openhim-console/selectport 
+db_input critical openhim-console/selecthost || true
+db_input critical openhim-console/selectport || true
 db_go
 
 
