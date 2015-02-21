@@ -27,17 +27,17 @@ HOST=$RET
 db_get openhim-console/selectport
 PORT=$RET
 
-CONFIG="
+CONFIG='
 {
-  'protocol': 'https',
-  'host': '$HOST',
-  'port': $PORT,
-  'title': 'OpenHIM Admin Console',
-  'footerTitle': 'OpenHIM Administration Console',
-  'footerPoweredBy': '<a href="'"http://openhim.org/" target="_blank">Powered by OpenHIM</a>'"',
-  'loginBanner': ''
+  "protocol": "https",
+  "host": "'$HOST'",
+  "port": '$PORT',
+  "title": "OpenHIM Admin Console",
+  "footerTitle": "OpenHIM Administration Console",
+  "footerPoweredBy": "<a href='"'http://openhim.org/' target='_blank'>Powered by OpenHIM</a>"'",
+  "loginBanner": ""
 }
-"
+'
 echo $CONFIG > $CONSOLEDIR/app/config/default.json
 
 sudo -u $USERNAME $SH $HOME/bin/install_console.sh
