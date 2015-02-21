@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-
+set -e
 
 USERNAME=openhim
 HOME=/home/$USERNAME
@@ -8,15 +8,34 @@ SH=/bin/sh
 NPM=/usr/bin/npm
 CURL=/usr/bin/curl
 
-COREDIR=$HOME/openhim-console
+CONSOLEDIR=$HOME/openhim-console
 
 
 chown  $USERNAME:$USERNAME $HOME/bin/install_console.sh
-chown -R  $USERNAME:$USERNAME $COREDIR
+chown -R  $USERNAME:$USERNAME $CONSOLEDIR
 
 cd $HOME
 
 sudo -u $USERNAME $SH $HOME/bin/install_console.sh
+
+. /usr/share/debconf/confmodule
+db_get openhim-console/selecthost
+HOST=$RET
+db_get openhim-console/selectport
+PORT=$RET
+
+CONFIG="
+{
+  'protocol': 'https',
+  'host': '$HOST',
+  'port': $PORT,
+  'title': 'OpenHIM Admin Console',
+  'footerTitle': 'OpenHIM Administration Console',
+  'footerPoweredBy': '<a href="'"http://openhim.org/" target="_blank">Powered by OpenHIM</a>'"',
+  'loginBanner': ''
+}
+"
+echo $CONFIG > $CONSOLEDIR/app/config/default.json
 
 start openhim-console
 

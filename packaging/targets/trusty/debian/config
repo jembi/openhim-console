@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+. /usr/share/debconf/confmodule
+db_input high openhim-console/selecthost || true
+db_input high openhim-console/selectport || true
+
