@@ -1,8 +1,9 @@
 #!/bin/bash
-#set -e
+set -e
+
 . /usr/share/debconf/confmodule
 db_input critical openhim-console/selecthost 
-db_input criticalopenhim-console/selectport 
+db_input critical openhim-console/selectport 
 db_go
 
 
