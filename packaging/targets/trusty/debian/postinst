@@ -27,7 +27,7 @@ CONFIG="
   'protocol': 'https',
   'host': '$HOST',
   'port': $PORT,
-  'title': 'OpenHIM Admin Console (Carl)',
+  'title': 'OpenHIM Admin Console',
   'footerTitle': 'OpenHIM Administration Console',
   'footerPoweredBy': '<a href="'"http://openhim.org/" target="_blank">Powered by OpenHIM</a>'"',
   'loginBanner': ''
