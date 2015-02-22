@@ -23,5 +23,4 @@ $NPM install
 $NPM install  grunt-cli grunt bower
 
 $BOWER install
-$GRUNT build
 
