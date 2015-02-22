@@ -22,5 +22,5 @@ cd $CONSOLEDIR
 $NPM install
 $NPM install  grunt-cli grunt bower
 
-$BOWER install
+$BOWER --config.interactive=false install
 
