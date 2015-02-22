@@ -9,7 +9,7 @@ Homepage: https://github.com/openhie/openhim-console
 
 Package: openhim-console
 Architecture: all
-Depends: build-essential,  libssl-dev, curl,  mongodb, openhim-core-js
+Depends: build-essential,  libssl-dev, curl,  mongodb, openhim-core-js, git
 Recommends: 
 Description: The OpenHIM Console provides a web application to configure and manage the OpenHIM Core component. It provides the following features:
    -Configure and manage OpenHIM channels
