@@ -73,7 +73,10 @@ angular.module('openhimWebui2App')
 
     // get the Trusted Certificates for the Channel routes cert dropdown
     Api.Keystore.query({ type: 'ca' }, function(result){
-      $scope.trustedCerts = result;
+      $scope.trustedCerts = [];
+      angular.forEach(result, function(cert){
+        $scope.trustedCerts.push({ _id: cert._id, commonName: 'cn='+cert.commonName });
+      });
     },
     function(){ /* server error - could not connect to API to get Trusted Certificates */ });
     

@@ -3,48 +3,6 @@
 angular.module('openhimWebui2App')
   .controller('ClientsCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting) {
 
-    // set varaibles for server restart
-    $scope.serverRestarting = false;
-    $scope.restartTimeout = 0;
-
-    // server restart later function
-    $scope.restartServerLater = function(){
-      $rootScope.serverRestartRequired = false;
-    };
-
-    // server restart confirm function
-    $scope.restartServer = function(){
-
-      var restartServer = new Api.Restart();
-      restartServer.$save({}, function(){
-        // restart request sent successfully
-
-        // update restart variables
-        $scope.serverRestarting = true;
-        $rootScope.serverRestartRequired = false;
-
-        // set estimate time for server restart - 120 seconds
-        $scope.restartTimeout = 120;
-        var restartInterval = $interval(function() {
-          // decrement the timer
-          $scope.restartTimeout--;
-
-          // if timer is finshed - cancel interval - update display varaible
-          if ($scope.restartTimeout === 0){
-            $scope.serverRestarting = false;
-            $interval.cancel(restartInterval);
-          }
-        }, 1000);
-      }, function(){ /* server error - could not connect to API send restart request */ });
-
-
-      //Api.Restart.get(function(){
-        
-
-
-      //}, function(){ /* server error - could not connect to API send restart request */ });
-    };
-
 
     /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function(clients){
