@@ -19,7 +19,7 @@ See [the documentation](https://github.com/jembi/openhim-console/wiki) for more 
 Getting started with the OpenHIM Console
 ----------------------------------------
 
-First ensure that you have the OpenHIM-core server up and running. The console communicates with the OpenHIM-core via it's API to pull and display data. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md).
+First ensure that you have the OpenHIM-core server up and running. The console communicates with the OpenHIM-core via its API to pull and display data. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md).
 
 Next, you need to pull down the latest release of the web app and deploy it to a web server (replace the X's in the below command to the latest release):
 
