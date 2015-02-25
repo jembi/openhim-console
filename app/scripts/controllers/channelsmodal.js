@@ -110,6 +110,7 @@ angular.module('openhimWebui2App')
       $scope.update = false;
       $scope.channel = new Api.Channels();
       $scope.channel.type = 'http';
+      $scope.channel.authType = 'private';
       $scope.channel.routes = [];
       $scope.channel.requestBody = true;
       $scope.channel.responseBody = true;
