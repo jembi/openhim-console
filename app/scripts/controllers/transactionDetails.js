@@ -56,8 +56,12 @@ angular.module('openhimWebui2App')
         }, function(){ /* server error - could not connect to API to get channels */ });
       }, function(){ /* server error - could not connect to API to get user details */ });
 
-      // get the client object for the transactions details page
-      $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
+      // if clientID exist - fetch details
+      if ( transactionDetails.clientID ){
+        // get the client object for the transactions details page
+        $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
+      }
+      
 
     };
 
