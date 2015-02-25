@@ -38,9 +38,9 @@ angular.module('openhimWebui2App')
       if ( userSettings.filter ){
         
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0){
-          $scope.settings.filter.limit = userSettings.filter.limit;  
+          $scope.settings.filter.limit = userSettings.filter.limit;
         }else{
-          $scope.settings.filter.limit = 100;  
+          $scope.settings.filter.limit = 100;
         }
 
         $scope.settings.filter.status = userSettings.filter.status;
