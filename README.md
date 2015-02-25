@@ -16,6 +16,8 @@ See the [development roadmap](https://github.com/jembi/openhim-console/wiki/Open
 
 See [the documentation](https://github.com/jembi/openhim-console/wiki) for more details to get started.
 
+For additional information and tutorials see [openhim.org](http://openhim.org).
+
 Getting started with the OpenHIM Console
 ----------------------------------------
 
@@ -33,7 +35,7 @@ Next, and this step is _vital_, you need to configure the console to point to yo
 ```
 {
   "protocol": "https",
-  "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publically acessible)
+  "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publically accessible)
   "port": 8080, // change this to the API port of the OpenHIM-core server, default is 8080
   "title": "OpenHIM Admin Console", // You may change this to customise the title of the OpenHIM-console instance
   "footerTitle": "OpenHIM Administration Console", // You may change this to customise the footer of the OpenHIM-console instance
@@ -75,6 +77,6 @@ This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular gene
 Contributing
 ------------
 
-You may view/add issue here: https://github.com/jembi/openhim-console/issues
+You may view/add issues here: https://github.com/jembi/openhim-console/issues
 
 To contibute code, please fork the repository and submit a pull request. The maintainers will review the code and merge it in if all is well.
