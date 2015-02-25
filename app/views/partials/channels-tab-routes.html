@@ -62,10 +62,10 @@
               <span editable-text="route.username" e-name="username" e-form="rowform" e-placeholder="Auth Username" e-title="Basic Auth Username"></span>
               <span editable-text="route.password" e-name="password" e-form="rowform" e-placeholder="Auth Password" e-title="Basic Auth Password"></span>  
             </div>
-            <div style="width: 50%; float: left;">
-              <p style="margin: 10px 0 0;"><strong>Trusted Certificate</strong></p>
+            <div style="width: 50%; float: left;" ng-if="rowform.$data.secured==true">
+              <p style="margin: 10px 0 0;"><strong>Host certificate authority</strong></p>
               <select class="form-control editable-input" style="width: auto;" ng-model="route.cert" ng-options="cert._id as cert.commonName for cert in trustedCerts">
-                <option value="">Select Certificate</option>
+                <option value="">Use default CAs</option>
               </select>
             </div>
           </div>
