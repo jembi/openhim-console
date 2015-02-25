@@ -64,7 +64,7 @@
             </div>
             <div style="width: 50%; float: left;" ng-if="rowform.$data.secured==true">
               <p style="margin: 10px 0 0;"><strong>Host certificate authority</strong></p>
-              <select class="form-control editable-input" style="width: auto;" e-form="rowform" editable-select="route.cert" ng-model="route.cert" e-ng-options="cert._id as cert.commonName for cert in trustedCerts">
+              <select class="form-control editable-input" style="width: auto;" ng-model="route.cert" ng-options="cert._id as cert.commonName for cert in trustedCerts">
                 <option value="">Use default CAs</option>
               </select>
             </div>
