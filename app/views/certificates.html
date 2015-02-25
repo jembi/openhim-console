@@ -18,8 +18,11 @@
           
         <!-- Restart the server message -->
         <alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
-          <div style="margin-bottom: 10px;">When adding/updating a certificate, a server restart is required for it to be applied.</div>
-          <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button><span> - Or manually restart it later.</span>
+          <div style="margin-bottom: 10px;">
+            When adding/updating a certificate, a server restart is required for it to be applied.<br />
+            Please ensure that no critical transactions are running through the OpenHIM while restarting as these may be lost.<br><br>
+          </div>
+          <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button>
           <button class="btn btn-danger btn-lg" ng-click="restartServerLater()">I'll manually restart later</button>
         </alert>
 

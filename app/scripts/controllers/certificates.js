@@ -269,7 +269,7 @@ angular.module('openhimWebui2App')
         $scope.serverRestarting = true;
         $scope.serverRestartRequired = false;
 
-        // set estimate time for server restart - 120 seconds
+        // set estimate time for server restart - 10 seconds
         $scope.restartTimeout = 10;
         var restartInterval = $interval(function() {
           // decrement the timer
