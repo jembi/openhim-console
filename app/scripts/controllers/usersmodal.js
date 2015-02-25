@@ -77,6 +77,7 @@ angular.module('openhimWebui2App')
       $scope.user.settings = {};
       $scope.user.settings.list = {};
       $scope.user.settings.filter = {};
+      $scope.user.settings.filter.limit = 100;
       $scope.user.settings.visualizer = {};
 
       // load default visualizer config for new user
