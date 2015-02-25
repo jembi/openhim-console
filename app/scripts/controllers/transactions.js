@@ -36,7 +36,13 @@ angular.module('openhimWebui2App')
 
     if ( userSettings ){
       if ( userSettings.filter ){
-        $scope.settings.filter.limit = userSettings.filter.limit;
+        
+        if ( userSettings.filter.limit && userSettings.filter.limit !== 0){
+          $scope.settings.filter.limit = userSettings.filter.limit;  
+        }else{
+          $scope.settings.filter.limit = 100;  
+        }
+
         $scope.settings.filter.status = userSettings.filter.status;
         $scope.settings.filter.channel = userSettings.filter.channel;
         $scope.settings.filter.dateStart = '';
