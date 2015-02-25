@@ -14,6 +14,8 @@ This application provides a web application to configure and manage the [OpenHIM
 
 See the [development roadmap](https://github.com/jembi/openhim-console/wiki/OpenHIM-console-Development-Roadmap) for more details on what is to come!
 
+See [the documentation](https://github.com/jembi/openhim-console/wiki) for more details to get started.
+
 Getting started with the OpenHIM Console
 ----------------------------------------
 
