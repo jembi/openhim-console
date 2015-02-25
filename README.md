@@ -9,8 +9,8 @@ This application provides a web application to configure and manage the [OpenHIM
 * View logged transactions
 * Configure clients that can access particular routes
 * Monitor the operations of the OpenHIM application
-* Manage the security infrastructure
-* Import and export OpenHIM server configuration
+* Managing the security infrastructure
+* Importing and exporting OpenHIM server configuration
 
 See the [development roadmap](https://github.com/jembi/openhim-console/wiki/OpenHIM-console-Development-Roadmap) for more details on what is to come!
 
