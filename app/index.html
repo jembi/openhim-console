@@ -33,12 +33,38 @@
     <div class="header">
       <div class="container">
         <div class="row">
-           <div class="col-md-5 titleDiv">
-              <!-- Logo -->
-              <div class="logo">
-                 <h1><a href="#/transactions"><i class="glyphicon glyphicon-cloud"></i>{{appTitle}}</a></h1>
-              </div>
-           </div>
+          <div class="col-md-5 titleDiv">
+            <!-- Logo -->
+            <div class="logo">
+              <h1><a href="#/transactions"><img src="images/openhim-logo-green.png" alt="Logo" style="width: 140px; margin-right: 20px;" />{{appTitle}}</a></h1>
+              <!--<h1><a href="#/transactions"><i class="glyphicon glyphicon-cloud"></i>{{appTitle}}</a></h1>-->
+            </div>
+          </div>
+
+          <style>
+            .header .logo h1 {
+              padding: 5px 0px;
+            }
+            .header .logo h1 a, .header .logo h1 a:hover {
+              color: #3c3c3c;
+            }
+            .header {
+              background: #eff0f3;
+              color: #3c3c3c;
+            }
+
+            .header .navbar .nav > li > a{
+              color: #3c3c3c !important;
+            }
+
+            footer {
+              background: #eff0f3;
+              color: #3c3c3c;
+            }
+            footer a {
+              color: #3c3c3c;
+            }
+          </style>
 
           <div ng-show="navMenuVisible === true">
             <div class="" style="float: right">
