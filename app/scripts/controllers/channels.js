@@ -26,9 +26,10 @@ angular.module('openhimWebui2App')
             var channelTotal = 0;
             // loop through day results to add up total load results
             angular.forEach(dayResults, function(dayResult){
+              // check to make sure date is past 7days
               if ( moment().subtract(6,'days').startOf('day').utc().format() <= dayResult.timestamp ){
                 channelTotal += dayResult.load;
-              }              
+              }
             });
             // add load property
             channel.load = channelTotal;
