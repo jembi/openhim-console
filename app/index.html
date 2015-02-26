@@ -24,131 +24,203 @@
     <link rel="stylesheet" href="bower_components/highlightjs/styles/github.css" />
     <!-- endbuild -->
   </head>
+
+
+
+  <style>
+
+    html,
+    body {
+       margin:0;
+       padding:0;
+       height:100%;
+    }
+    #container {
+       min-height:100%;
+       position:relative;
+    }
+    #header {
+       
+    }
+    #body {
+       padding-bottom:125px;   /* Height of the footer */
+    }
+    #footer {
+       position:absolute;
+       bottom:0;
+       width:100%;
+       height:125px;   /* Height of the footer */
+    }
+
+
+
+
+    .header .logo h1 {
+      padding: 5px 0px;
+    }
+    .header .logo h1 a, .header .logo h1 a:hover {
+      color: #3c3c3c;
+    }
+    .header {
+      background: #eff0f3;
+      color: #3c3c3c;
+    }
+
+    .header .navbar .nav > li > a{
+      color: #3c3c3c !important;
+    }
+
+    footer {
+      background: #eff0f3;
+      color: #3c3c3c;
+    }
+    footer a {
+      color: #3c3c3c;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+      background-color: #036633 !important;
+      border-color: #028A3B !important;
+    }
+
+    .btn-primary {
+      background-color: #036633; 
+      border-color: #028A3B;
+    }
+
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+      background-color: #028A3B; 
+      border-color: #036633;
+    }
+
+    .table-list:hover td {
+      background-color: #036633 !important;
+    }
+
+    .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
+      background-color: #036633; 
+      border-color: #028A3B;
+    }
+
+    .form-control:focus {
+      border-color: #028A3B;
+      box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
+    }
+
+  </style>
+
+
+
+
   <body ng-cloak>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Header -->
-    <div class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-5 titleDiv">
-            <!-- Logo -->
-            <div class="logo">
-              <h1><a href="#/transactions"><img src="images/openhim-logo-green.png" alt="Logo" style="width: 140px; margin-right: 20px;" />{{appTitle}}</a></h1>
-              <!--<h1><a href="#/transactions"><i class="glyphicon glyphicon-cloud"></i>{{appTitle}}</a></h1>-->
-            </div>
-          </div>
 
-          <style>
-            .header .logo h1 {
-              padding: 5px 0px;
-            }
-            .header .logo h1 a, .header .logo h1 a:hover {
-              color: #3c3c3c;
-            }
-            .header {
-              background: #eff0f3;
-              color: #3c3c3c;
-            }
 
-            .header .navbar .nav > li > a{
-              color: #3c3c3c !important;
-            }
 
-            footer {
-              background: #eff0f3;
-              color: #3c3c3c;
-            }
-            footer a {
-              color: #3c3c3c;
-            }
 
-            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
-              background-color: #036633 !important;
-              border-color: #028A3B !important;
-            }
 
-            .btn-primary {
-              background-color: #036633; 
-              border-color: #028A3B;
-            }
+    <div id="container">
+      <div id="header">
 
-            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
-              background-color: #028A3B; 
-              border-color: #036633;
-            }
-
-            .table-list:hover td {
-              background-color: #036633 !important;
-            }
-
-            .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
-              background-color: #036633; 
-              border-color: #028A3B;
-            }
-
-          </style>
-
-          <div ng-show="navMenuVisible === true">
-            <div class="" style="float: right">
-              <div class="navbar navbar-inverse" role="banner">
-                  <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                    <ul class="nav navbar-nav">
-                      <li class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
-                        <ul class="dropdown-menu animated fadeInUp">
-                          <li><a href="#/profile">Profile</a></li>
-                          <li><a href="#/logout">Logout</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </nav>
+        <!-- Header -->
+        <div class="header">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-5 titleDiv">
+                <!-- Logo -->
+                <div class="logo">
+                  <h1><a href="#/transactions"><img src="images/openhim-logo-green.png" alt="Logo" style="width: 140px; margin-right: 20px;" />{{appTitle}}</a></h1>
+                  <!--<h1><a href="#/transactions"><i class="glyphicon glyphicon-cloud"></i>{{appTitle}}</a></h1>-->
+                </div>
               </div>
-            </div>
 
-            <div class="topMenu" style="float: right">
-              <div class="navbar navbar-inverse" role="banner">
-                <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                  <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                      <a href="" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
-                      <ul class="dropdown-menu animated fadeInUp">
-                        <li ng-class="{current: isCurrent('/')}"><a href="#"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
-                        <li ng-class="{current: isCurrent('/transactions')}"><a href="#/transactions"><i class="glyphicon glyphicon-list-alt"></i> Transaction log</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificate</a></li>
-                        <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
+              <div ng-show="navMenuVisible === true">
+                <div class="" style="float: right">
+                  <div class="navbar navbar-inverse" role="banner">
+                      <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                        <ul class="nav navbar-nav">
+                          <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
+                            <ul class="dropdown-menu animated fadeInUp">
+                              <li><a href="#/profile">Profile</a></li>
+                              <li><a href="#/logout">Logout</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </nav>
+                  </div>
+                </div>
+
+                <div class="topMenu" style="float: right">
+                  <div class="navbar navbar-inverse" role="banner">
+                    <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                      <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                          <a href="" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
+                          <ul class="dropdown-menu animated fadeInUp">
+                            <li ng-class="{current: isCurrent('/')}"><a href="#"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+                            <li ng-class="{current: isCurrent('/transactions')}"><a href="#/transactions"><i class="glyphicon glyphicon-list-alt"></i> Transaction log</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Groups</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificate</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
+                          </ul>
+                        </li>
                       </ul>
-                    </li>
-                  </ul>
-                </nav>
+                    </nav>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+      </div>
+
+      <div id="body">
+
+        <!-- Add your site or application content here -->
+        <div ng-view="" style="min-height: 460px;"></div>
+
+      </div>
+
+      <div id="footer">
+
+        <footer>
+          <div class="container">
+            <div class="copy text-center">
+              {{appFooterTitle}}<br />
+              Copyright 2014 <a href='http://jembi.org'>Jembi Health Systems NPC</a><br />
+              <div ng-bind-html="appFooterPoweredBy"></div>
+            </div>        
+          </div>      
+        </footer>
+
       </div>
     </div>
 
-    <!-- Add your site or application content here -->
-    <div ng-view="" style="min-height: 460px;"></div>
 
-    <footer>
-      <div class="container">
-        <div class="copy text-center">
-          {{appFooterTitle}}<br />
-          Copyright 2014 <a href='http://jembi.org'>Jembi Health Systems NPC</a><br />
-          <div ng-bind-html="appFooterPoweredBy"></div>
-        </div>        
-      </div>      
-    </footer>
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
