@@ -39,7 +39,7 @@
                     <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.description }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.description }}</span>
                   </td>
-                  <td data-title="Channel Load"><a href="">0</a></td>
+                  <td data-title="Channel Load"><a href="#/channels/{{channel._id}}">{{channel.load}}</a></td>
                   <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">
 
