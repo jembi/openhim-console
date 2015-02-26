@@ -1,5 +1,4 @@
 'use strict';
-/* global moment:false */
 
 angular.module('openhimWebui2App')
   .controller('ChannelsCtrl', function ($scope, $modal, Api, Alerting) {
@@ -7,32 +6,9 @@ angular.module('openhimWebui2App')
 
     /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function(channels){
-      
+      $scope.channels = channels;
       if( channels.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created');
-      }else{
-        $scope.channels = [];
-        angular.forEach(channels, function(channel){
-
-          // do API call here to pull channel load metrics
-          Api.Metrics.query({
-            type: 'day',
-            channelId : channel._id,
-            startDate: moment().subtract(6,'days').toDate(),
-            endDate: moment().toDate()
-          }, function(dayResults){
-
-            var channelTotal = 0;
-            // loop through day results to add up total load results
-            angular.forEach(dayResults, function(dayResult){
-              channelTotal += dayResult.load;
-            });
-            // add load property
-            channel.load = channelTotal;
-            // push to channels scope
-            $scope.channels.push(channel);
-          }, function(){ /* error loading past load results */ });
-        });
       }
     };
 
