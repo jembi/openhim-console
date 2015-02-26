@@ -1,3 +1,11 @@
+
+html,
+body {
+   margin:0;
+   padding:0;
+   height:100%;
+}
+
 body {
   font-family: 'Open Sans', sans-serif;
   background-color: #f7f7f7;
@@ -15,6 +23,14 @@ h2 { word-wrap: break-word; }
   margin-top: 30px;
 }
 
+#container {
+   min-height:100%;
+   position:relative;
+}
+#body {
+   padding-bottom:125px;   /* Height of the footer */
+}
+
 /* Footer */
 
 footer{
@@ -25,6 +41,11 @@ footer{
    line-height:25px;
    padding:10px 0px 10px 0px;
    bottom: 0px;
+
+   position:absolute;
+   bottom:0;
+   width:100%;
+   height:125px;   /* Height of the footer */
 }
 
 footer a{
@@ -65,7 +86,7 @@ footer .copy{
 .header .logo h1{
    font-size:30px;
    margin:0px;
-   padding:7px 0px;
+   padding:5px 0px;
 }
 
 .header .logo h1 i{
