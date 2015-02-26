@@ -1,6 +1,7 @@
 'use strict';
 /* jshint expr: true */
 /* global sinon: false */
+/* global moment: false */
 
 describe('Controller: ChannelsCtrl', function () {
 
@@ -76,6 +77,15 @@ describe('Controller: ChannelsCtrl', function () {
       { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
       { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ]);
+
+    var timeLoadData = [{ 'load': 34, 'avgResp': 2881.91, 'timestamp': moment().subtract(6, 'd').format('YYYY-MM-DD') },
+                        { 'load': 73, 'avgResp': 1313.57, 'timestamp': moment().subtract(5, 'd').format('YYYY-MM-DD') },
+                        { 'load': 17, 'avgResp': 3761.57, 'timestamp': moment().subtract(4, 'd').format('YYYY-MM-DD') },
+                        { 'load': 72, 'avgResp': 3545.57, 'timestamp': moment().subtract(3, 'd').format('YYYY-MM-DD') },
+                        { 'load': 45, 'avgResp': 1233.57, 'timestamp': moment().subtract(2, 'd').format('YYYY-MM-DD') },
+                        { 'load': 47, 'avgResp': 4564.57, 'timestamp': moment().subtract(1, 'd').format('YYYY-MM-DD') },
+                        { 'load': 4, 'avgResp': 3553.34, 'timestamp': moment().format('YYYY-MM-DD') }];
+    $httpBackend.when('GET', new RegExp('.*/metrics/day/.*.')).respond( timeLoadData );
 
     modalSpy = sinon.spy($modal, 'open');
 
