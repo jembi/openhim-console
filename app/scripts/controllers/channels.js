@@ -12,26 +12,35 @@ angular.module('openhimWebui2App')
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created');
       }else{
         $scope.channels = [];
+        var startDate = moment().subtract(6,'days').toDate();
+        var endDate = moment().toDate();
         angular.forEach(channels, function(channel){
 
           // do API call here to pull channel load metrics
           Api.Metrics.query({
             type: 'day',
             channelId : channel._id,
-            startDate: moment().subtract(6,'days').toDate(),
-            endDate: moment().toDate()
+            startDate: startDate,
+            endDate: endDate
           }, function(dayResults){
-
             var channelTotal = 0;
             // loop through day results to add up total load results
             angular.forEach(dayResults, function(dayResult){
-              channelTotal += dayResult.load;
+              // check to make sure date is past 7days
+              if ( moment().subtract(6,'days').startOf('day').utc().format() <= dayResult.timestamp ){
+                channelTotal += dayResult.load;
+              }
             });
             // add load property
             channel.load = channelTotal;
             // push to channels scope
             $scope.channels.push(channel);
-          }, function(){ /* error loading past load results */ });
+          }, function(){
+            // add load property
+            channel.load = '-';
+            // push to channels scope
+            $scope.channels.push(channel);
+          });
         });
       }
     };
