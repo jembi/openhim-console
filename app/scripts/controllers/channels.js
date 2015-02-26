@@ -162,7 +162,4 @@ angular.module('openhimWebui2App')
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data);
     };
 
-
-
-
   });
