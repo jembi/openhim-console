@@ -137,27 +137,8 @@ app.config(function ($routeProvider) {
 
 app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting) {
 
-
-  /*--------------------------LOAD APP CONFIG VARIABLES--------------------------*/
-  // load default config settings
-  /*$http.get('config/default.json').success(function( config ) {
-
-    // setup server config
-    $rootScope.protocol = config.protocol;
-    $rootScope.host = config.host;
-    $rootScope.port = config.port;
-
-    // setup title and links config
-    $rootScope.appTitle = config.title;
-    $rootScope.appFooterTitle = config.footerTitle;
-    $rootScope.appFooterPoweredBy = config.footerPoweredBy;
-    $rootScope.loginBanner = config.loginBanner;
-
-  });*/
-
   // invoke Alerting factory to create all alert messages
   Alerting.AlertValidationMsgs();
-  /*--------------------------LOAD APP CONFIG VARIABLES--------------------------*/
 
 
   $rootScope.goToTop = function() {
