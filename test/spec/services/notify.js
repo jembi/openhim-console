@@ -7,6 +7,13 @@ describe('Service: Notify', function () {
   // load the service's module
   beforeEach(module('openhimWebui2App'));
 
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimWebui2App', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
+
   // instantiate service
   var Notify;
   var rootScope;

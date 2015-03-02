@@ -7,14 +7,19 @@ describe('Controller: MediatorsCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimWebui2App', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
+
   var scope, createController, httpBackend, modalSpy;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
       {

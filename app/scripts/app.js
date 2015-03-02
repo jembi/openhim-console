@@ -140,7 +140,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
 
   /*--------------------------LOAD APP CONFIG VARIABLES--------------------------*/
   // load default config settings
-  $http.get('config/default.json').success(function( config ) {
+  /*$http.get('config/default.json').success(function( config ) {
 
     // setup server config
     $rootScope.protocol = config.protocol;
@@ -153,7 +153,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
     $rootScope.appFooterPoweredBy = config.footerPoweredBy;
     $rootScope.loginBanner = config.loginBanner;
 
-  });
+  });*/
 
   // invoke Alerting factory to create all alert messages
   Alerting.AlertValidationMsgs();

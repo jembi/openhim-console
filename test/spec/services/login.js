@@ -6,6 +6,13 @@ describe('Service: login', function () {
   // load the service's module
   beforeEach(module('openhimWebui2App'));
 
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimWebui2App', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
+
   // instantiate service
   var login, httpBackend,Authinterceptor;
   beforeEach(inject(function (_login_, $httpBackend,_Authinterceptor_) {
@@ -13,8 +20,6 @@ describe('Service: login', function () {
 
     httpBackend = $httpBackend;
     Authinterceptor = _Authinterceptor_;
-
-    httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
       salt: 'test-salt',
@@ -60,7 +65,6 @@ describe('Service: login', function () {
     login.logout();
     var user = login.getLoggedInUser();
     (user === null).should.be.true;
-    httpBackend.flush();
   });
 
   it('should have a timediff', function(){

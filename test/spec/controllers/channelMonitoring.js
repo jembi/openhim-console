@@ -7,6 +7,13 @@ describe('Controller: ChannelMonitoringCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimWebui2App', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
+
   var scope, createController, httpBackend;
 
   // Initialize the controller and a mock scope
@@ -23,8 +30,6 @@ describe('Controller: ChannelMonitoringCtrl', function () {
                         { 'load': 45, 'avgResp': 1233.57, 'timestamp': moment().subtract(2, 'd').format('YYYY-MM-DD') },
                         { 'load': 47, 'avgResp': 4564.57, 'timestamp': moment().subtract(1, 'd').format('YYYY-MM-DD') },
                         { 'load': 4, 'avgResp': 3553.34, 'timestamp': moment().format('YYYY-MM-DD') }];
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]});
     $httpBackend.when('GET', new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );

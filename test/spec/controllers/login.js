@@ -6,6 +6,13 @@ describe('Controller: LoginCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimWebui2App'));
 
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimWebui2App', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
+
   // instantiate service
   //var login, httpBackend;
   var scope, login, createController, httpBackend;
@@ -19,8 +26,6 @@ describe('Controller: LoginCtrl', function () {
     login = _login_;
 
     httpBackend = $httpBackend;
-
-    httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
 
@@ -78,8 +83,6 @@ describe('Controller: LoginCtrl', function () {
       scope.loginPassword = '';
       scope.validateLogin();
       scope.alerts.login.length.should.equal(1);
-
-      httpBackend.flush();
     });
 
 
@@ -355,19 +358,14 @@ describe('Controller: LoginCtrl', function () {
 
     // process the createUserSession() function and throw email if not supplied error
     it('should run the createUserSession() function and throw error if email not supplied', function () {
-
       createController();
       // create the session object to store session data
       var sessionResult = scope.createUserSession('');
       sessionResult.should.equal('No Email supplied!');
-
-      httpBackend.flush();
-      
     });
 
     // process the createUserSession() function and throw no user profile found error
     it('should run the createUserSession() function and throw error if user profile not found', function () {
-
       createController();
 
       // creeate the session object to store session data
@@ -378,9 +376,6 @@ describe('Controller: LoginCtrl', function () {
       var user = login.getLoggedInUser();
       user.should.exist;
       user.should.be.empty;
-
-      httpBackend.flush();
-      
     });
 
     // process the createUserSession() function and create user session successfully
