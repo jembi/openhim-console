@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('openhimWebui2App')
-  .factory('Api', function ($rootScope, $resource) {
+  .factory('Api', function ($rootScope, $resource, config) {
 
     // fetch API server details
-    var protocol = angular.copy( $rootScope.protocol );
-    var host = angular.copy( $rootScope.host );
-    var port = angular.copy( $rootScope.port );
+    var protocol = config.protocol;
+    var host = config.host;
+    var port = config.port;
     var server = protocol + '://' + host + ':' + port;
 
     return {
