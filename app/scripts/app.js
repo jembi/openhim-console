@@ -137,7 +137,6 @@ app.config(function ($routeProvider) {
 
 app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting, config) {
 
-  console.log( config )
   $rootScope.appTitle = config.title;
   $rootScope.appFooterTitle = config.footerTitle;
   $rootScope.appFooterPoweredBy = config.footerPoweredBy;
