@@ -2,7 +2,7 @@
 /* global beautifyIndent:false */
 /* global returnContentType:false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('TransactionsBodyModalCtrl', function ($scope, $modalInstance, bodyData) {
 
     $scope.bodyData = bodyData;

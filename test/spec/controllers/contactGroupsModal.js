@@ -4,7 +4,14 @@
 
 describe('Controller: ContactGroupsModalCtrl', function () {
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
+
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimConsoleApp', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
 
   var scope, createController;
 

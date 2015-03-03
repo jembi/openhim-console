@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('CertificatesCtrl', function ($upload, $scope, $interval, $modal, Api, Alerting) {
 
 

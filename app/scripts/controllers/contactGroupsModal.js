@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('ContactGroupsModalCtrl', function ($scope, $modalInstance, $timeout, Api, login, Notify, Alerting, contactGroup) {
 
     /*********************************************************************/

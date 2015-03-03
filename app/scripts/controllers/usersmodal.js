@@ -2,7 +2,7 @@
 /* global getHashAndSalt: false */
 /* global isValidMSISDN: false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('UsersModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, login, Notify, Alerting, user) {
 
     /*************************************************************/

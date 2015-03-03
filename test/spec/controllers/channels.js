@@ -5,7 +5,14 @@
 describe('Controller: ChannelsCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
+
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimConsoleApp', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
 
   var scope, createController, httpBackend, modalSpy;
 
@@ -13,8 +20,6 @@ describe('Controller: ChannelsCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
       {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},

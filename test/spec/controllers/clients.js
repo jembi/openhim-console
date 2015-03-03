@@ -5,7 +5,14 @@
 describe('Controller: ClientsCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
+
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimConsoleApp', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
 
   var scope, createController, httpBackend, modalSpy;
 
@@ -13,8 +20,6 @@ describe('Controller: ClientsCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
       {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},

@@ -5,7 +5,14 @@
 describe('Controller: DashboardCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
+
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimConsoleApp', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
 
   var scope, createController, httpBackend;
   var fourHoursAgo, threeHoursAgo, twoHoursAgo, oneHourAgo, nowHour;
@@ -29,8 +36,6 @@ describe('Controller: DashboardCtrl', function () {
                         { 'load': 32, 'avgResp': 11249.94, 'timestamp': twoHoursAgo },
                         { 'load': 13, 'avgResp': 54668.97, 'timestamp': oneHourAgo },
                         { 'load': 56, 'avgResp': 34769.91, 'timestamp': nowHour }];
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([{'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]}]);
     $httpBackend.when('GET', new RegExp('.*/metrics/status?.*.')).respond( statusData );

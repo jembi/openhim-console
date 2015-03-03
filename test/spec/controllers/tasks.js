@@ -4,7 +4,14 @@
 describe('Controller: TasksCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
+
+  // setup config constant to be used for API server details
+  beforeEach(function(){
+    module('openhimConsoleApp', function($provide){
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+    });
+  });
 
   var scope, createController, httpBackend;
 
@@ -12,8 +19,6 @@ describe('Controller: TasksCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('config/default.json')).respond({ 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
 
     $httpBackend.when('GET', new RegExp('.*/tasks')).respond([
       { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' },

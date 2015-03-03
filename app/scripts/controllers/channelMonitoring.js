@@ -2,7 +2,7 @@
 /* global moment:false */
 
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('ChannelMonitoringCtrl', function ($scope, $modal, $interval, $location, $routeParams, Api, Alerting) {
 
     /***************************************************/

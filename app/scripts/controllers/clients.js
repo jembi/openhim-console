@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('ClientsCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting) {
 
 

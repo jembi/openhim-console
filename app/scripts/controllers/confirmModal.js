@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('ConfirmModalCtrl', function ($scope, $modalInstance, confirmObject) {
 
     $scope.confirmObject = confirmObject;

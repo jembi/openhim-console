@@ -3,7 +3,7 @@
 /* NB! remember to include the factory (Alerting) into your Controllers */
 /* <alert ng-repeat="alert in alerts.top" type="alert.type" close="closeAlert('top', $index)">{{alert.msg}}</alert> */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .factory('Alerting', function ($rootScope) {
 
     $rootScope.alerts = {};

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
 

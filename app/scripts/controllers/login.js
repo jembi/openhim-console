@@ -1,7 +1,7 @@
 'use strict';
 /* global getHashAndSalt: false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api) {
 
     $scope.rootPasswordReset = false;
