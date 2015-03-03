@@ -25,6 +25,7 @@ var app = angular
       app.constant('config', response.data);
     }, function() {
       // Handle error case
+      app.constant('config', 'No Config Loaded');
     });
   }
 
