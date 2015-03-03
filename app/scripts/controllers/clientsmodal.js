@@ -1,7 +1,7 @@
 'use strict';
 /* global CryptoJS: false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('ClientsModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, client) {
     
     /***************************************************************/

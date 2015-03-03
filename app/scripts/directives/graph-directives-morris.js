@@ -2,7 +2,7 @@
 /* global viewPage: false */
 /* global Morris:false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .directive('morrisLineChart', function($parse){
     return{
       restrict:'EA',

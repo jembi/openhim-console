@@ -2,7 +2,7 @@
 
 // Common directive for Focus
 
-angular.module('openhimWebui2App').directive('focus', function($timeout) {
+angular.module('openhimConsoleApp').directive('focus', function($timeout) {
     return {
       scope : {
         trigger : '@focus'

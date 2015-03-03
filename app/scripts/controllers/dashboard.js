@@ -2,7 +2,7 @@
 /* global moment:false */
 
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting) {
 
     /***************************************************/

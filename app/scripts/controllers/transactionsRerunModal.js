@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('TransactionsRerunModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, transactionsSelected, rerunTransactionsSelected) {
 
     $scope.rerunSuccess = false;

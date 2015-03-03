@@ -2,7 +2,7 @@
 /* global jQuery:false */
 /* global moment:false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
 
     /***************************************************/

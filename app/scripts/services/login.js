@@ -1,7 +1,7 @@
 'use strict';
 /* global CryptoJS: false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .factory('login', function (Api, Authinterceptor) {
 
     var userProfile = {};

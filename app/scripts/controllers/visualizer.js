@@ -1,7 +1,7 @@
 'use strict';
 /* global moment: false */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api, Alerting) {
 
     $scope.loadingVisualizer = true;

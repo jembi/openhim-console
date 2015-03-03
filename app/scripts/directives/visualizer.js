@@ -2,7 +2,7 @@
 /* global d3: false */
 // Visualizer Directive
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .directive('visualizer', function($parse){
     return{
       restrict:'EA',

@@ -1,7 +1,7 @@
 'use strict';
 
 var app = angular
-  .module('openhimWebui2App', [
+  .module('openhimConsoleApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -30,7 +30,7 @@ var app = angular
 
   function bootstrapApplication() {
     angular.element(document).ready(function() {
-      angular.bootstrap(document, ['openhimWebui2App']);
+      angular.bootstrap(document, ['openhimConsoleApp']);
     });
   }
 

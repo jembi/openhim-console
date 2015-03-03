@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .factory('Notify', function Notify($rootScope) {
     var notifyService = {};
 

@@ -1,7 +1,7 @@
 'use strict';
 /* global CryptoJS: true */
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .factory('Authinterceptor', function () {
 
     var user = localStorage.getItem('loggedOnUser');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openhimWebui2App')
+angular.module('openhimConsoleApp')
   .factory('Api', function ($rootScope, $resource, config) {
 
     // fetch API server details

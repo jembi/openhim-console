@@ -3,7 +3,7 @@
 describe('Controller: ConfigCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('openhimWebui2App'));
+  beforeEach(module('openhimConsoleApp'));
 
   var ConfigCtrl,
     scope;
