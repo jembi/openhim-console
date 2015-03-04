@@ -3,7 +3,7 @@
 set -e
 set -x
 
-PPA=mhero
+PPA=release
 CPDIRS=("app" "infrastructure" "test")       
 CPFILES=( ".bowerrc" ".gitattributes" "Gruntfile.js" "karma.conf.js" "LICENSE" "README.md" "bower.json" ".editorconfig"  ".gitignore"      ".jshintrc"     "karma-e2e.conf.js"  "package.json"  ".travis.yml")
 
