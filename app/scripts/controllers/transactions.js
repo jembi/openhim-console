@@ -122,7 +122,7 @@ angular.module('openhimConsoleApp')
       $scope.transactions = transactions;
 
       if( transactions.length < $scope.showlimit ){
-        jQuery('#loadMoreTransactions').hide();
+        jQuery('#loadMoreBtn').hide();
 
         if( transactions.length === 0 ){
           Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
@@ -130,7 +130,7 @@ angular.module('openhimConsoleApp')
 
       }else{
         //Show the load more button
-        jQuery('#loadMoreTransactions').show();
+        jQuery('#loadMoreBtn').show();
       }
 
       //make sure newly added transactions are checked as well
@@ -139,7 +139,7 @@ angular.module('openhimConsoleApp')
 
     var refreshError = function(err){
       // on error - Hide load more button and show error message
-      jQuery('#loadMoreTransactions').hide();
+      jQuery('#loadMoreBtn').hide();
       Alerting.AlertAddServerMsg(err.status);
     };
 
@@ -174,7 +174,7 @@ angular.module('openhimConsoleApp')
       $scope.transactions = jQuery.unique($scope.transactions);
 
       if( transactions.length < $scope.showlimit ){
-        jQuery('#loadMoreTransactions').hide();
+        jQuery('#loadMoreBtn').hide();
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
       }
 
@@ -185,7 +185,7 @@ angular.module('openhimConsoleApp')
 
     var loadMoreError = function(err){
       // on error - Hide load more button and show error message
-      jQuery('#loadMoreTransactions').hide();
+      jQuery('#loadMoreBtn').hide();
       Alerting.AlertAddServerMsg(err.status);
     };
 

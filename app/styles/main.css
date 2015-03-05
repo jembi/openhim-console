@@ -714,7 +714,7 @@ body {
 .panel-body { padding: 0; }
 
 .responsiveTransactionIndexCheckbox label { display: none; }
-#loadMoreTransactions { float: right; display: none; }
+#loadMoreBtn { float: right; display: none; }
 #no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
 .transactionsFilterRefreshDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
@@ -751,8 +751,6 @@ body {
 
 .default-labels-box{ margin: 0 20px 0 0; float: left; font-size: 14px; padding: 5px 10px; background: #2c3742; color: #fff; text-align: center; }
 .default-labels-box strong { font-size: 18px; }
-
-
 
 .newUserContainer { width: 60% !important; margin: 0 20%; }
 
@@ -809,11 +807,7 @@ body {
 .exportRecordTitle:hover { cursor: pointer; }
 
 .exportCollectionsDiv { border: 1px solid #ccc; float: left; margin: 0px 20px 20px 0px; padding: 10px; border-radius: 5px; }
-<<<<<<< HEAD
-.exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 0px 0px 5px; }
-=======
 .exportCollectionsDiv input[type='checkbox'] { vertical-align: middle; margin: 0px 5px 0px 0px; }
->>>>>>> 09bdd295ab0c20005f623f27443c9e7212c13803
 
 .importSectionDiv{ display: inline-block; width: 100%; margin-top: 50px; padding-top: 20px; border-top: 5px dashed #ccc; }
 .exportSectionDiv{ display: inline-block; width: 100% }
@@ -843,6 +837,47 @@ body {
     border: 5px dashed #428bca;
 }
 
+
+.audit-info-box{ word-break: break-all; border-radius: 5px; box-shadow: none; margin: 0 10px 10px 10px; float: left; font-size: 16px; background: #2c3742; color: #fff; text-align: center; padding: 5px 15px; }
+.audit-info-box strong { font-size: 18px; }
+
+.auditRepeatBox{
+  margin-bottom: 10px;
+  width: 100%;
+  display: inline-block;
+}
+
+.panel-primary .auditRepeatBox{ border-bottom: 1px solid #428bca; }
+.panel-primary .auditRepeatBox:last-child { border: none; margin: 0; }
+.panel-primary .audit-info-box{
+  color: #ffffff;
+  background-color: #428bca;
+  border: 1px solid #428bca;
+}
+
+.panel-warning .auditRepeatBox{ border-bottom: 1px solid #faebcc; }
+.panel-warning .auditRepeatBox:last-child { border: none; margin: 0; }
+.panel-warning .audit-info-box{
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border: 1px solid #faebcc;
+}
+
+.panel-info .auditRepeatBox{ border-bottom: 1px solid #bce8f1; }
+.panel-info .auditRepeatBox:last-child { border: none; margin: 0; }
+.panel-info .audit-info-box{
+  color: #31708f;
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+}
+
+.panel-success .auditRepeatBox{ border-bottom: 1px solid #d6e9c6; }
+.panel-success .auditRepeatBox:last-child { border: none; margin: 0; }
+.panel-success .audit-info-box{
+  color: #3c763d;
+  background-color: #dff0d8;
+  border: 1px solid #d6e9c6;
+}
 
 
 /*------- Custom CSS Changes ----*/
@@ -1021,7 +1056,7 @@ body {
 }
 
 @media (max-width: 500px) {
-    #loadMoreTransactions { float: left; clear: both; margin-top: 15px; }
+    #loadMoreBtn { float: left; clear: both; margin-top: 15px; }
     .task-detail-container .data-group>label { width: 40%; }
     .transaction-detail-container .data-group>label { width: 40%; }
 }

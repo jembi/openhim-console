@@ -7,7 +7,7 @@
       <div class="content-box-large">
         <div class="panel-heading">
           <div class="panel-title">
-            <h2><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;Transactions Log</h2>
+            <h2><i class="glyphicon glyphicon-book"></i>&nbsp;&nbsp;Audit Log</h2>
           </div>
         </div>
         <div class="panel-body">
@@ -19,23 +19,17 @@
               <tab>
                 <tab-heading>Filter Settings</tab-heading>
                 <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by their status">Status: </label>
-                  <!--<select class="form-control" ng-model="filterStatus">-->
-                  <select class="form-control" ng-model="settings.filter.status">
+                  <label tooltip="Select an option to filter transactions by their event action">Event Action: </label>
+                  <select class="form-control" ng-model="settings.filter.eventAction" ng-options="k as v for (k,v) in eventActionMap">
                     <option value="">Don't filter</option>
-                    <option value="Failed">Show Failed</option>
-                    <option value="Processing">Show Processing</option>
-                    <option value="Completed">Show Completed</option>
-                    <option value="Completed with error(s)">Show Completed with error(s)</option>
-                    <option value="Successful">Show Successful</option>
                   </select>
                 </div>
                 <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
-                  <select class="form-control" ng-model="settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
+                  <label tooltip="Select an option to filter transactions by their event outcome">Event Outcome: </label>
+                  <select class="form-control" ng-model="settings.filter.eventOutcome" ng-options="k as v for (k,v) in eventOutcomeMap">
                     <option value="">Don't filter</option>
                   </select>
-                </div>
+                </div>                
                 <div class="settings_div">
                   <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>                    
                   <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
@@ -66,7 +60,7 @@
                 </div>
 
                 <div class="transactionsFilterRefreshDiv">
-                  <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+                  <button class="btn btn-primary" ng-click="refreshAuditsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
                   <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
                 </div>
               </tab>
@@ -87,47 +81,35 @@
           <div id="no-more-tables">
             <!-- Table with all the transaction logs -->
 
-            <table class="table table-striped transactionTable">
+            <table class="table table-striped ">
               <thead>
                 <tr>
-                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
                   <th>#</th>
-                  <th>HTTP Method</th>
-                  <th>Path</th>
-                  <th>Request Params</th>
-                  <th>Channel</th>
-                  <th>Status</th>
-                  <th>Request Time</th>
+                  <th>Event Action / Outcome</th>
+
+                  <th>Event Type</th>
+                  <th>Event ID</th>
+                  <th>Source ID</th>
+
+                  <th>Event Time</th>
+
                 </tr>
               </thead>
               <tbody>
-                <tr class="table-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("transactions/" + transaction._id, $event)'>
-                  <td class="transactionsCheckboxTD">
-                    <label>
-                      <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="( channelsMap[transaction.channelID].rerun || rerunAllowedAdmin ) && transaction.canRerun" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                      <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
-                    </label>
-                  </td>
-                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
-                    <span>{{ $index +1 }}</span>
-                    <label>
-                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
-                      <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
-                    </label>
-                  </td>
-                  <td data-title="HTTP Method">{{ transaction.request.method }}</td>
-                  <td data-title="Path">{{ transaction.request.path }}</td>
-                  <td data-title="Request Params">{{ transaction.request.querystring }}</td>
-                  <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
-                  <td data-title="Status">{{ transaction.status }}</td>
-                  <td data-title="Request Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                <tr class="table-list" ng-repeat="audit in audits" ng-click='viewAuditDetails("audits/" + audit._id, $event)'>
+                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                  <td data-title="Event Action / Outcome">{{ eventActionMap[audit.eventIdentification.eventActionCode] }} / {{ eventOutcomeMap[audit.eventIdentification.eventOutcomeIndicator] }}</td>
+                  <td data-title="Event Type">{{ audit.eventIdentification.eventTypeCode.code }} ( {{audit.eventIdentification.eventTypeCode.codeSystemName}} ) - {{audit.eventIdentification.eventTypeCode.displayName}}</td>
+                  <td data-title="Event ID">{{ audit.eventIdentification.eventID.code }} ( {{audit.eventIdentification.eventID.codeSystemName}} ) - {{audit.eventIdentification.eventID.displayName}}</td>
+                  <td data-title="Source ID">{{ audit.auditSourceIdentification.auditSourceID }}</td>
+                  <td data-title="Event Time">{{ audit.eventIdentification.eventDateTime | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>
               </tbody>
             </table>
 
             <div>
               <!-- show loading gif when scope object empty and no server errors exist -->
-              <div class="loadingContainer" ng-show="!(transactions || alerts.server) || busyLoadingMore">
+              <div class="loadingContainer" ng-show="!(audits || alerts.server) || busyLoadingMore">
                 <img src="images/loading.gif" alt="Loading..." />
               </div>
 
@@ -139,10 +121,8 @@
               <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
               <!-- Server Alerts -->
 
-              <div class="transactionsButtonsDiv" ng-show="transactions.length > 0">
-                <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();"><i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions</button>
-
-                <button id="loadMoreBtn" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+              <div class="transactionsButtonsDiv" ng-show="audits.length > 0">
+                <button id="loadMoreBtn" class="btn btn-primary" ng-click="loadMoreAudits();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
               </div>                        
             </div>
           </div>
