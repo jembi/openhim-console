@@ -1,47 +1,18 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('AuditDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('AuditDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting, AuditLookups) {
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
 
-    $scope.eventActionMap = {};
-    $scope.eventActionMap.C = 'Create (C)';
-    $scope.eventActionMap.R = 'Read (R)';
-    $scope.eventActionMap.U = 'Update (U)';
-    $scope.eventActionMap.D = 'Delete (D)';
-    $scope.eventActionMap.E = 'Execute (E)';
-
-    $scope.eventOutcomeMap = {};
-    $scope.eventOutcomeMap[0] = 'Success (0)';
-    $scope.eventOutcomeMap[4] = 'Minor Failure (4)';
-    $scope.eventOutcomeMap[8] = 'Serious Failure (8)';
-    $scope.eventOutcomeMap[12] = 'Major Failure (12)';
+    // setup audit lookup objects
+    $scope.eventActionMap = AuditLookups.eventActionMap();
+    $scope.eventOutcomeMap = AuditLookups.eventOutcomeMap();
 
     var querySuccess = function(auditDetails){
-
       $scope.auditDetails = auditDetails;
-      
-      // transform request body with indentation/formatting
-      /*if( auditDetails.request && auditDetails.request.body ){
-        if ( auditDetails.request.headers && returnContentType( auditDetails.request.headers ) ){
-          var requestTransform = beautifyIndent(returnContentType( auditDetails.request.headers ), auditDetails.request.body);
-          $scope.auditDetails.request.body = requestTransform.content;
-          $scope.requestTransformLang = requestTransform.lang;
-        }
-      }
-
-      // transform response body with indentation/formatting
-      if( auditDetails.response && auditDetails.response.body ){
-        if ( auditDetails.response.headers && returnContentType( auditDetails.response.headers ) ){
-          var responseTransform = beautifyIndent(returnContentType( auditDetails.response.headers ), auditDetails.response.body);
-          $scope.auditDetails.response.body = responseTransform.content;
-          $scope.responseTransformLang = responseTransform.lang;
-        }
-      }*/
-
     };
 
     var queryError = function(err){

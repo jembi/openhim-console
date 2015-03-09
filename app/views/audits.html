@@ -18,51 +18,7 @@
             <tabset class="transaction_settings_tabset" justified="false">
               <tab>
                 <tab-heading>Filter Settings</tab-heading>
-                <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by their event action">Event Action: </label>
-                  <select class="form-control" ng-model="settings.filter.eventAction" ng-options="k as v for (k,v) in eventActionMap">
-                    <option value="">Don't filter</option>
-                  </select>
-                </div>
-                <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by their event outcome">Event Outcome: </label>
-                  <select class="form-control" ng-model="settings.filter.eventOutcome" ng-options="k as v for (k,v) in eventOutcomeMap">
-                    <option value="">Don't filter</option>
-                  </select>
-                </div>                
-                <div class="settings_div">
-                  <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>                    
-                  <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-                    <input ng-model="settings.filter.dateStart" type="text" class="form-control" name="start" />
-                    <span class="input-group-addon">to</span>
-                    <input ng-model="settings.filter.dateEnd" type="text" class="form-control" name="end" />
-                  </div>                            
-                  <!-- Date range picker functionality -->
-                  <script type="text/javascript">
-                    // When the document is ready
-                    $(document).ready(function () {
-                      $('.input-daterange').datepicker({
-                        todayBtn: "linked",
-                        format: 'yyyy-mm-dd'
-                      });
-                    });
-                  </script>
-                </div>
-                <div class="settings_div">
-                  <label tooltip="Set the limit of how many records to display">Limit: </label>
-                  <select class="form-control" ng-model="settings.filter.limit">
-                    <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="500">500</option>
-                  </select>
-                </div>
-
-                <div class="transactionsFilterRefreshDiv">
-                  <button class="btn btn-primary" ng-click="refreshAuditsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
-                  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
-                </div>
+                <div ng-include="'views/partials/audit-filter-settings.html'"></div>
               </tab>
 
               <tab>
@@ -86,13 +42,10 @@
                 <tr>
                   <th>#</th>
                   <th>Event Action / Outcome</th>
-
                   <th>Event Type</th>
                   <th>Event ID</th>
                   <th>Source ID</th>
-
                   <th>Event Time</th>
-
                 </tr>
               </thead>
               <tbody>

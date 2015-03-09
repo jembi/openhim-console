@@ -17,6 +17,10 @@
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
 
+        <!-- Transaction Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Server Alerts -->
+
         <div class="panel-body" ng-show="auditDetails">
 
           <div style="  display: inline-block; width: 100%;">
@@ -58,7 +62,7 @@
 
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Active Participant </h3>  
+              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Active Participant </h3>
             </div>
 
             <div class="panel-body">
@@ -70,7 +74,7 @@
                 <div class="audit-info-box" ng-if="activeParticipant.alternativeUserID">
                   Alt. User ID <br /><strong>{{ activeParticipant.alternativeUserID }}</strong>
                 </div>
-                <div class="audit-info-box" ng-if="activeParticipant.userIsRequestor">
+                <div class="audit-info-box" ng-if="activeParticipant.userIsRequestor!==''">
                   Is Requestor <br /><strong>{{ activeParticipant.userIsRequestor }}</strong>
                 </div>
                 <div class="audit-info-box" ng-if="activeParticipant.networkAccessPointID">
