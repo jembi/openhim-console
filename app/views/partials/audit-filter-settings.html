@@ -1,52 +1,10 @@
-<style>
-  .well {
-    min-height: 20px;
-    padding: 0px;
-    margin-bottom: 0px;
-    background: none;
-    border: none;
-    border-radius: 0px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    width: 100%;
-  }
-
-  .auditFilterDiv {
-    border: 1px solid #ccc;
-    padding: 15px 10px 0px 10px;
-    float: left;
-    margin: 10px 15px 10px 0px;
-    position: relative;
-  }
-
-  .auditFilterDivLabel {
-    top: -10px;
-    position: absolute;
-    left: -1px;
-    background: #eee;
-    padding: 5px 10px 0px 10px;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-  }
-
-  .auditFilterDiv .settings_div{
-    float: none;
-    margin-right: 0;
-  }
-
-  
-</style>
-
-
-
 <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed" style="margin-bottom: 10px;">Toggle Advanced Filtering</button>
 
 <div collapse="isCollapsed">
-  <div class="well well-lg auditFilterDiv" style="padding-top: 20px;">
+  <div class="well well-lg auditFilterDiv" style="padding-top: 20px; margin-right: 0px;">
     <label class="auditFilterDivLabel">Advanced Filtering: </label>
 
-    <div class="auditFilterDiv">
+    <div class="auditFilterDiv filterBoxSizing">
       <label class="auditFilterDivLabel">Filter by Event: </label>
       <div class="settings_div">
         <label tooltip="Select an option to filter transactions by their event outcome">Event Type: </label>
@@ -76,7 +34,7 @@
       </div>
     </div>
 
-    <div class="auditFilterDiv">
+    <div class="auditFilterDiv filterBoxSizing">
       <label class="auditFilterDivLabel">Filter by Active Participant: </label>
       <div class="settings_div" style="width: 48%; float: left;">
         <label tooltip="Select an option to filter transactions by their event outcome">User ID: </label>
@@ -100,7 +58,7 @@
       </div>
     </div>
 
-    <div class="auditFilterDiv">
+    <div class="auditFilterDiv filterBoxSizing">
       <label class="auditFilterDivLabel">Filter by Participant Object: </label>
       <div class="settings_div">
         <label tooltip="Select an option to filter transactions by their event outcome">Object ID: </label>
@@ -121,6 +79,16 @@
           <label tooltip="Select an option to filter transactions by their event outcome">Object Detail Value: </label>
           <input type="text" class="form-control" ng-model="filters.participantObjectIdentification.participantObjectDetail.value">
         </div>
+      </div>
+    </div>
+
+    <div class="auditFilterDiv filterBoxSizing filterBoxSizingLast">
+      <label class="auditFilterDivLabel">Filter by Audit Source: </label>
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Audit Source ID: </label>
+        <select class="form-control" ng-model="filters.auditSourceIdentification.auditSourceID" ng-options="auditSourceID for auditSourceID in auditsFilterOptions.auditSourceID">
+          <option value="">Don't filter</option>
+        </select>
       </div>
     </div>
 

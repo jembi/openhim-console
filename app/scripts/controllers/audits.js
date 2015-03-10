@@ -28,6 +28,8 @@ angular.module('openhimConsoleApp')
       $scope.filters.participantObjectIdentification.participantObjectDetail = {};
 
       $scope.filters.activeParticipant = {};
+
+      $scope.filters.auditSourceIdentification = {};
     };
     setupAuditFilters();
 
@@ -189,6 +191,12 @@ angular.module('openhimConsoleApp')
       var objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value;
       if ( objectDetailValue !== null && objectDetailValue !== undefined && objectDetailValue !== '' ) { filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue; }
       /* ----- filter by Participant Object ----- */
+
+      /* ----- filter by Audit Source ----- */
+      // add auditSource filter
+      var auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID;
+      if ( auditSourceID !== null && auditSourceID !== undefined ) { filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID; }
+      /* ----- filter by Audit Source ----- */
 
       /* ##### construct filters ##### */
 

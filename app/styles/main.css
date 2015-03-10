@@ -880,6 +880,49 @@ body {
 }
 
 
+.well {
+    min-height: 20px;
+    padding: 0px;
+    margin-bottom: 0px;
+    background: none;
+    border: none;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  .auditFilterDiv {
+    border: 1px solid #ccc;
+    padding: 15px 10px 0px 10px;
+    float: left;
+    margin: 10px 15px 1% 0px;
+    position: relative;
+  }
+
+  .auditFilterDivLabel {
+    top: -10px;
+    position: absolute;
+    left: -1px;
+    background: #eee;
+    padding: 5px 10px 0px 10px;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
+
+  .auditFilterDiv .settings_div{
+    float: none;
+    margin-right: 0;
+  }
+
+  .filterBoxSizing{
+    width: 23.5%
+  }
+  .filterBoxSizingLast{
+    margin-right: 0px;
+  }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
@@ -891,6 +934,11 @@ body {
 }
 
 @media (max-width: 1325px){
+
+  .filterBoxSizing{
+    width: 47.5%;
+  }
+
   .col-md-2{ width: 25%; }
   .col-md-10{ width: 75%; }
 }
@@ -954,6 +1002,13 @@ body {
 
 /* Tablets */
 @media (max-width: 767px){
+
+    .filterBoxSizing{
+      width: 100%;
+      margin-right: 0px;
+    }
+
+
    .header .logo{
       text-align:center;
    }

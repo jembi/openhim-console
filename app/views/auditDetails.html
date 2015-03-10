@@ -13,13 +13,13 @@
           </div>
         </div>
 
-        <!-- Transaction Alerts -->
+        <!-- server Alerts -->
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
 
-        <!-- Transaction Alerts -->
+        <!-- audit Alerts -->
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
-        <!-- Server Alerts -->
+        <!-- audit Alerts -->
 
         <div class="panel-body" ng-show="auditDetails">
 
@@ -29,7 +29,7 @@
           
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Event </h3>  
+              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Event </h3>
             </div>
             <div class="panel-body">
               <div class="audit-info-box" ng-if="auditDetails.eventIdentification.eventDateTime">
@@ -56,6 +56,12 @@
             <div class="panel-body">
               <div class="audit-info-box" ng-if="auditDetails.auditSourceIdentification.auditSourceID">
                 Audit Source ID <br /><strong>{{auditDetails.auditSourceIdentification.auditSourceID}}</strong>
+              </div>
+              <div class="audit-info-box" ng-if="auditDetails.auditSourceIdentification.auditEnterpriseSiteID">
+                Audit Source ID <br /><strong>{{auditDetails.auditSourceIdentification.auditEnterpriseSiteID}}</strong>
+              </div>
+              <div class="audit-info-box" ng-if="auditDetails.auditSourceIdentification.auditSourceTypeCode">
+                Audit Source ID <br /><strong>{{auditDetails.auditSourceIdentification.auditSourceTypeCode.code}} ( {{auditDetails.auditSourceIdentification.auditSourceTypeCode.displayName}} ) - {{auditDetails.auditSourceIdentification.auditSourceTypeCode.codeSystemName}}</strong>
               </div>
             </div>
           </div>
