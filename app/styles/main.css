@@ -1191,3 +1191,8 @@ footer a {
   border-color: #028A3B;
   box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
 }
+
+.formControlNotEmpty {
+  border-color: #028A3B;
+  box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
+}

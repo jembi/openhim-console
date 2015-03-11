@@ -20,16 +20,55 @@ angular.module('openhimConsoleApp')
 
     /* setup default filter options */
     var setupAuditFilters = function(){
+
+
+      //return results for the first page (10 results)
+      $scope.showpage = 0;
+      $scope.showlimit = 10;
+
+      // setup audit lookup objects
+      $scope.eventActionMap = AuditLookups.eventActionMap();
+      $scope.eventOutcomeMap = AuditLookups.eventOutcomeMap();
+
+      // setup default audits settings
+      $scope.settings = {};
+      $scope.settings.filter = {};
+      if ( $location.search().limit ){ $scope.settings.filter.limit = $location.search().limit; }else{ $scope.settings.filter.limit = 10; }
+      if ( $location.search().dateStart ){ $scope.settings.filter.dateStart = $location.search().dateStart; }else{ $scope.settings.filter.dateStart = ''; }
+      if ( $location.search().dateEnd ){ $scope.settings.filter.dateEnd = $location.search().dateEnd; }else{ $scope.settings.filter.dateEnd = ''; }
+      $scope.settings.list = {};
+      $scope.settings.list.tabview = 'same';
+
+
       $scope.filters = {};
       $scope.filters.eventIdentification = {};
+      if ( $location.search().eventID ){ $scope.filters.eventIdentification.eventID = $location.search().eventID; }
+      if ( $location.search().eventTypeCode ){ $scope.filters.eventIdentification.eventTypeCode = $location.search().eventTypeCode; }
+      if ( $location.search().eventActionCode ){ $scope.filters.eventIdentification.eventActionCode = $location.search().eventActionCode; }
+      if ( $location.search().eventOutcomeIndicator ){ $scope.filters.eventIdentification.eventOutcomeIndicator = $location.search().eventOutcomeIndicator; }
 
       $scope.filters.participantObjectIdentification = {};
       $scope.filters.participantObjectIdentification.patientID = {};
+      if ( $location.search().patientID ){ $scope.filters.participantObjectIdentification.patientID.patientID = $location.search().patientID; }
+      if ( $location.search().assigningAuth ){ $scope.filters.participantObjectIdentification.patientID.assigningAuth = $location.search().assigningAuth; }
+      if ( $location.search().assigningAuthID ){ $scope.filters.participantObjectIdentification.patientID.assigningAuthID = $location.search().assigningAuthID; }
+
+      if ( $location.search().participantObjectID ){ $scope.filters.participantObjectIdentification.participantObjectID = $location.search().participantObjectID; }
+      if ( $location.search().participantObjectIDTypeCode ){ $scope.filters.participantObjectIdentification.participantObjectIDTypeCode = $location.search().participantObjectIDTypeCode; }
       $scope.filters.participantObjectIdentification.participantObjectDetail = {};
+      if ( $location.search().participantObjectDetailType ){ $scope.filters.participantObjectIdentification.participantObjectDetail.type = $location.search().participantObjectDetailType; }
+      if ( $location.search().participantObjectDetailValue ){ $scope.filters.participantObjectIdentification.participantObjectDetail.value = $location.search().participantObjectDetailValue; }
 
       $scope.filters.activeParticipant = {};
-
+      if ( $location.search().userID ){ $scope.filters.activeParticipant.userID = $location.search().userID; }
+      if ( $location.search().roleIDCode ){ $scope.filters.activeParticipant.roleIDCode = $location.search().roleIDCode; }
+      if ( $location.search().alternativeUserID ){ $scope.filters.activeParticipant.alternativeUserID = $location.search().alternativeUserID; }
+      if ( $location.search().networkAccessPointID ){ $scope.filters.activeParticipant.networkAccessPointID = $location.search().networkAccessPointID; }
+      
       $scope.filters.auditSourceIdentification = {};
+      if ( $location.search().auditSourceID ){ $scope.filters.auditSourceIdentification.auditSourceID = $location.search().auditSourceID; }
+
+
     };
     setupAuditFilters();
 
@@ -40,22 +79,7 @@ angular.module('openhimConsoleApp')
     var userSettings = consoleSession.sessionUserSettings;
 
 
-    //return results for the first page (10 results)
-    $scope.showpage = 0;
-    $scope.showlimit = 10;
-
-    // setup audit lookup objects
-    $scope.eventActionMap = AuditLookups.eventActionMap();
-    $scope.eventOutcomeMap = AuditLookups.eventOutcomeMap();
-
-    // setup default audits settings
-    $scope.settings = {};
-    $scope.settings.filter = {};
-    $scope.settings.filter.limit = 10;
-    $scope.settings.filter.dateStart = '';
-    $scope.settings.filter.dateEnd = '';
-    $scope.settings.list = {};
-    $scope.settings.list.tabview = 'same';
+    
 
     if ( userSettings ){
       if ( userSettings.filter ){
@@ -64,8 +88,8 @@ angular.module('openhimConsoleApp')
           $scope.settings.filter.limit = userSettings.filter.limit;
         }
 
-        $scope.settings.filter.dateStart = '';
-        $scope.settings.filter.dateEnd = '';
+        //$scope.settings.filter.dateStart = '';
+        //$scope.settings.filter.dateEnd = '';
       }
       
       if ( userSettings.list ){
@@ -83,13 +107,22 @@ angular.module('openhimConsoleApp')
     /**         Audits List and Detail view functions           **/
     /*************************************************************/
 
+    var valeNotEmpty = function(value){
+      if ( value !== null && value !== undefined && value !== '' ) {
+        return true;
+      }
+      return false;
+    };
+
     //setup filter options
-    $scope.returnFilterObject = function(){
+    $scope.returnFilters = function(type){
       var filtersObject = {};
+      var filterUrlParams = '';
       var filterDateStart, filterDateEnd;
 
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
+      filterUrlParams += '&limit='+$scope.settings.filter.limit;
 
 
       /* ##### construct filters ##### */
@@ -102,6 +135,8 @@ angular.module('openhimConsoleApp')
         var startDate = moment(filterDateStart).format();
         var endDate = moment(filterDateEnd).endOf('day').format();
         filtersObject.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$gte': startDate, '$lte': endDate } );
+        filterUrlParams += '&dateStart='+startDate;
+        filterUrlParams += '&dateEnd='+endDate;
       }
 
 
@@ -121,57 +156,93 @@ angular.module('openhimConsoleApp')
       
       // add patientID filter
       var participantPatientID = patientID+'\\^\\^\\^'+assigningAuth+'&'+assigningAuthID+'&.*';
-      if ( patientID !== null && patientID !== undefined && patientID !== '' ) { filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify( participantPatientID); }
+      if ( valeNotEmpty(patientID) === true ) {
+        filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify( participantPatientID);
+        filterUrlParams += '&patientID='+patientID;
+      }
       /* ----- filter by Patient ----- */
 
 
       /* ----- filter by Event ----- */
-      // eventActionCode filter
-
       // add eventID filter
       var eventTypeCode = $scope.filters.eventIdentification.eventTypeCode;
-      if ( eventTypeCode !== null && eventTypeCode !== undefined ) { filtersObject.filters['eventIdentification.eventTypeCode'] = eventTypeCode; }
+      if ( valeNotEmpty(eventTypeCode) === true ) {
+        // construct object to query in mongo
+        var eventTypeArray = eventTypeCode.split('---');
+        filtersObject.filters['eventIdentification.eventTypeCode.code'] = eventTypeArray[0];
+        filtersObject.filters['eventIdentification.eventTypeCode.codeSystemName'] = eventTypeArray[1];
+        filtersObject.filters['eventIdentification.eventTypeCode.displayName'] = eventTypeArray[2];
+        filterUrlParams += '&eventTypeCode='+eventTypeCode;
+      }
 
       // add eventID filter
       var eventID = $scope.filters.eventIdentification.eventID;
-      if ( eventID !== null && eventID !== undefined ) { filtersObject.filters['eventIdentification.eventID'] = eventID; }
+      if ( valeNotEmpty(eventID) === true ) {
+        var eventIDArray = eventID.split('---');
+        filtersObject.filters['eventIdentification.eventID.code'] = eventIDArray[0];
+        filtersObject.filters['eventIdentification.eventID.codeSystemName'] = eventIDArray[1];
+        filtersObject.filters['eventIdentification.eventID.displayName'] = eventIDArray[2];
+        filterUrlParams += '&eventID='+eventID;
+      }
 
       // add eventActionCode filter
       var eventActionCode = $scope.filters.eventIdentification.eventActionCode;
-      if ( eventActionCode !== null && eventActionCode !== undefined ) { filtersObject.filters['eventIdentification.eventActionCode'] = eventActionCode; }
+      if ( valeNotEmpty(eventActionCode) === true ) {
+        filtersObject.filters['eventIdentification.eventActionCode'] = eventActionCode;
+        filterUrlParams += '&eventActionCode='+eventActionCode;
+      }
 
       // add eventOutcomeIndicator filter
       var eventOutcomeIndicator = $scope.filters.eventIdentification.eventOutcomeIndicator;
-      if ( eventOutcomeIndicator !== null && eventOutcomeIndicator !== undefined ) { filtersObject.filters['eventIdentification.eventOutcomeIndicator'] = eventOutcomeIndicator; }
+      if ( valeNotEmpty(eventOutcomeIndicator) === true ) {
+        filtersObject.filters['eventIdentification.eventOutcomeIndicator'] = eventOutcomeIndicator;
+        filterUrlParams += '&eventOutcomeIndicator='+eventOutcomeIndicator;
+      }
       /* ----- filter by Event ----- */
 
 
       /* ----- filter by Active Participant ----- */
       // add userID filter
       var userID = $scope.filters.activeParticipant.userID;
-      if ( userID !== null && userID !== undefined && userID !== '' ) { filtersObject.filters['activeParticipant.userID'] = userID; }
+      if ( valeNotEmpty(userID) === true ) {
+        filtersObject.filters['activeParticipant.userID'] = userID;
+        filterUrlParams += '&userID='+userID;
+      }
 
       // add alternativeUserID filter
       var alternativeUserID = $scope.filters.activeParticipant.alternativeUserID;
-      if ( alternativeUserID !== null && alternativeUserID !== undefined && alternativeUserID !== '' ) { filtersObject.filters['activeParticipant.alternativeUserID'] = alternativeUserID; }
+      if ( valeNotEmpty(alternativeUserID) === true ) {
+        filtersObject.filters['activeParticipant.alternativeUserID'] = alternativeUserID;
+        filterUrlParams += '&alternativeUserID='+alternativeUserID;
+      }
 
       // add networkAccessPointID filter
       var networkAccessPointID = $scope.filters.activeParticipant.networkAccessPointID;
-      if ( networkAccessPointID !== null && networkAccessPointID !== undefined && networkAccessPointID !== '' ) { filtersObject.filters['activeParticipant.networkAccessPointID'] = networkAccessPointID; }
+      if ( valeNotEmpty(networkAccessPointID) === true ) {
+        filtersObject.filters['activeParticipant.networkAccessPointID'] = networkAccessPointID;
+        filterUrlParams += '&networkAccessPointID='+networkAccessPointID;
+      }
 
       // add eventID filter
       var roleIDCode = $scope.filters.activeParticipant.roleIDCode;
-      if ( roleIDCode !== null && roleIDCode !== undefined ) { filtersObject.filters['activeParticipant.roleIDCode'] = roleIDCode; }
+      if ( valeNotEmpty(roleIDCode) === true ) {
+        var roleIDCodeArray = roleIDCode.split('---');
+        filtersObject.filters['activeParticipant.roleIDCode.code'] = roleIDCodeArray[0];
+        filtersObject.filters['activeParticipant.roleIDCode.codeSystemName'] = roleIDCodeArray[1];
+        filtersObject.filters['activeParticipant.roleIDCode.displayName'] = roleIDCodeArray[2];
+        filterUrlParams += '&roleIDCode='+roleIDCode;
+      }
       /* ----- filter by Active Participant ----- */
 
 
       /* ----- filter by Participant Object ----- */
       // add objectID filter
       var objectID = $scope.filters.participantObjectIdentification.participantObjectID;
-      if ( objectID !== null && objectID !== undefined && objectID !== '' ) {
+      if ( valeNotEmpty(objectID) === true ) {
+        filterUrlParams += '&participantObjectID='+objectID;
 
         // if patientID set then update query to include 'AND' operator
-        if ( patientID !== null && patientID !== undefined && patientID !== '' ) {
+        if ( valeNotEmpty(patientID) === true ) {
           filtersObject.filters['participantObjectIdentification.participantObjectID'] = { type: 'AND', patientID: participantPatientID, objectID: objectID };
         }else{
           filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify( objectID );
@@ -181,26 +252,46 @@ angular.module('openhimConsoleApp')
 
       // add objectIDTypeCode filter
       var participantObjectIDTypeCode = $scope.filters.participantObjectIdentification.participantObjectIDTypeCode;
-      if ( participantObjectIDTypeCode !== null && participantObjectIDTypeCode !== undefined ) { filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode'] = participantObjectIDTypeCode; }
+      if ( valeNotEmpty(participantObjectIDTypeCode) === true ) {
+        var participantObjectIDTypeCodeArray = participantObjectIDTypeCode.split('---');
+        filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.code'] = participantObjectIDTypeCodeArray[0];
+        filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.codeSystemName'] = participantObjectIDTypeCodeArray[1];
+        filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.displayName'] = participantObjectIDTypeCodeArray[2];
+        filterUrlParams += '&participantObjectIDTypeCode='+participantObjectIDTypeCode;
+      }
 
       // add objectDetailType filter
       var objectDetailType = $scope.filters.participantObjectIdentification.participantObjectDetail.type;
-      if ( objectDetailType !== null && objectDetailType !== undefined && objectDetailType !== '' ) { filtersObject.filters['participantObjectIdentification.participantObjectDetail.type'] = objectDetailType; }
+      if ( valeNotEmpty(objectDetailType) === true ) {
+        filtersObject.filters['participantObjectIdentification.participantObjectDetail.type'] = objectDetailType;
+        filterUrlParams += '&participantObjectDetailType='+objectDetailType;
+      }
 
       // add objectDetailValue filter
       var objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value;
-      if ( objectDetailValue !== null && objectDetailValue !== undefined && objectDetailValue !== '' ) { filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue; }
+      if ( valeNotEmpty(objectDetailValue) === true ) {
+        filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue;
+        filterUrlParams += '&participantObjectDetailValue='+objectDetailValue;
+      }
       /* ----- filter by Participant Object ----- */
 
       /* ----- filter by Audit Source ----- */
       // add auditSource filter
       var auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID;
-      if ( auditSourceID !== null && auditSourceID !== undefined ) { filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID; }
+      if ( valeNotEmpty(auditSourceID) === true ) {
+        filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID;
+        filterUrlParams += '&auditSourceID='+auditSourceID;
+      }
       /* ----- filter by Audit Source ----- */
 
       /* ##### construct filters ##### */
 
-      return filtersObject;
+      if ( type === 'urlParams' ){
+        return filterUrlParams;
+      }else if (type === 'filtersObject'){
+        return filtersObject;
+      }
+      
     };
 
     var refreshSuccess = function (audits){
@@ -226,8 +317,18 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
 
+
+    $scope.applyFiltersToUrl = function(){
+      var filters = $scope.returnFilters('urlParams');
+      var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
+      //$scope.refreshAuditsList()
+      var path = 'audits?'+filters.substring(1);
+      window.location = baseUrl + path;
+    };
+
     //Refresh audits list
     $scope.refreshAuditsList = function () {
+
       $scope.audits = null;
       Alerting.AlertReset();
 
@@ -235,10 +336,10 @@ angular.module('openhimConsoleApp')
       $scope.showpage = 0;
       $scope.showlimit = $scope.settings.filter.limit;
 
-      Api.Audits.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
+      Api.Audits.query( $scope.returnFilters('filtersObject'), refreshSuccess, refreshError);
 
     };
-    //run the transaction list view for the first time
+    //run the audit list view for the first time
     $scope.refreshAuditsList();
 
     //Refresh audits list
@@ -247,7 +348,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
-      Api.Audits.query( $scope.returnFilterObject(), loadMoreSuccess, loadMoreError);
+      Api.Audits.query( $scope.returnFilters('filtersObject'), loadMoreSuccess, loadMoreError);
     };
 
     var loadMoreSuccess = function (audits){
@@ -292,10 +393,13 @@ angular.module('openhimConsoleApp')
       $scope.settings.list.tabview = 'same';
 
       // reset audit filters
-      setupAuditFilters();
+      /*setupAuditFilters();
 
       //run the transaction list view after filters been cleared
-      $scope.refreshAuditsList();
+      $scope.refreshAuditsList();*/
+      var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
+      var path = 'audits';
+      window.location = baseUrl + path;
     };
 
     /*************************************************************/
