@@ -76,7 +76,6 @@ angular.module('openhimConsoleApp')
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
-    console.log( consoleSession );
     var userSettings = consoleSession.sessionUserSettings;
 
 
