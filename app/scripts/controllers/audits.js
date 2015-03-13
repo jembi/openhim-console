@@ -76,6 +76,7 @@ angular.module('openhimConsoleApp')
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
+    console.log( consoleSession );
     var userSettings = consoleSession.sessionUserSettings;
 
 
@@ -87,9 +88,6 @@ angular.module('openhimConsoleApp')
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0 && userSettings.filter.limit === ''){
           $scope.settings.filter.limit = userSettings.filter.limit;
         }
-
-        //$scope.settings.filter.dateStart = '';
-        //$scope.settings.filter.dateEnd = '';
       }
       
       if ( userSettings.list ){
@@ -107,7 +105,7 @@ angular.module('openhimConsoleApp')
     /**         Audits List and Detail view functions           **/
     /*************************************************************/
 
-    var valeNotEmpty = function(value){
+    var valueNotEmpty = function(value){
       if ( value !== null && value !== undefined && value !== '' ) {
         return true;
       }
@@ -156,7 +154,7 @@ angular.module('openhimConsoleApp')
       
       // add patientID filter
       var participantPatientID = patientID+'\\^\\^\\^'+assigningAuth+'&'+assigningAuthID+'&.*';
-      if ( valeNotEmpty(patientID) === true ) {
+      if ( valueNotEmpty(patientID) === true ) {
         filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify( participantPatientID);
         filterUrlParams += '&patientID='+patientID;
       }
@@ -166,7 +164,7 @@ angular.module('openhimConsoleApp')
       /* ----- filter by Event ----- */
       // add eventID filter
       var eventTypeCode = $scope.filters.eventIdentification.eventTypeCode;
-      if ( valeNotEmpty(eventTypeCode) === true ) {
+      if ( valueNotEmpty(eventTypeCode) === true ) {
         // construct object to query in mongo
         var eventTypeArray = eventTypeCode.split('---');
         filtersObject.filters['eventIdentification.eventTypeCode.code'] = eventTypeArray[0];
@@ -177,7 +175,7 @@ angular.module('openhimConsoleApp')
 
       // add eventID filter
       var eventID = $scope.filters.eventIdentification.eventID;
-      if ( valeNotEmpty(eventID) === true ) {
+      if ( valueNotEmpty(eventID) === true ) {
         var eventIDArray = eventID.split('---');
         filtersObject.filters['eventIdentification.eventID.code'] = eventIDArray[0];
         filtersObject.filters['eventIdentification.eventID.codeSystemName'] = eventIDArray[1];
@@ -187,14 +185,14 @@ angular.module('openhimConsoleApp')
 
       // add eventActionCode filter
       var eventActionCode = $scope.filters.eventIdentification.eventActionCode;
-      if ( valeNotEmpty(eventActionCode) === true ) {
+      if ( valueNotEmpty(eventActionCode) === true ) {
         filtersObject.filters['eventIdentification.eventActionCode'] = eventActionCode;
         filterUrlParams += '&eventActionCode='+eventActionCode;
       }
 
       // add eventOutcomeIndicator filter
       var eventOutcomeIndicator = $scope.filters.eventIdentification.eventOutcomeIndicator;
-      if ( valeNotEmpty(eventOutcomeIndicator) === true ) {
+      if ( valueNotEmpty(eventOutcomeIndicator) === true ) {
         filtersObject.filters['eventIdentification.eventOutcomeIndicator'] = eventOutcomeIndicator;
         filterUrlParams += '&eventOutcomeIndicator='+eventOutcomeIndicator;
       }
@@ -204,28 +202,28 @@ angular.module('openhimConsoleApp')
       /* ----- filter by Active Participant ----- */
       // add userID filter
       var userID = $scope.filters.activeParticipant.userID;
-      if ( valeNotEmpty(userID) === true ) {
+      if ( valueNotEmpty(userID) === true ) {
         filtersObject.filters['activeParticipant.userID'] = userID;
         filterUrlParams += '&userID='+userID;
       }
 
       // add alternativeUserID filter
       var alternativeUserID = $scope.filters.activeParticipant.alternativeUserID;
-      if ( valeNotEmpty(alternativeUserID) === true ) {
+      if ( valueNotEmpty(alternativeUserID) === true ) {
         filtersObject.filters['activeParticipant.alternativeUserID'] = alternativeUserID;
         filterUrlParams += '&alternativeUserID='+alternativeUserID;
       }
 
       // add networkAccessPointID filter
       var networkAccessPointID = $scope.filters.activeParticipant.networkAccessPointID;
-      if ( valeNotEmpty(networkAccessPointID) === true ) {
+      if ( valueNotEmpty(networkAccessPointID) === true ) {
         filtersObject.filters['activeParticipant.networkAccessPointID'] = networkAccessPointID;
         filterUrlParams += '&networkAccessPointID='+networkAccessPointID;
       }
 
       // add eventID filter
       var roleIDCode = $scope.filters.activeParticipant.roleIDCode;
-      if ( valeNotEmpty(roleIDCode) === true ) {
+      if ( valueNotEmpty(roleIDCode) === true ) {
         var roleIDCodeArray = roleIDCode.split('---');
         filtersObject.filters['activeParticipant.roleIDCode.code'] = roleIDCodeArray[0];
         filtersObject.filters['activeParticipant.roleIDCode.codeSystemName'] = roleIDCodeArray[1];
@@ -238,11 +236,11 @@ angular.module('openhimConsoleApp')
       /* ----- filter by Participant Object ----- */
       // add objectID filter
       var objectID = $scope.filters.participantObjectIdentification.participantObjectID;
-      if ( valeNotEmpty(objectID) === true ) {
+      if ( valueNotEmpty(objectID) === true ) {
         filterUrlParams += '&participantObjectID='+objectID;
 
         // if patientID set then update query to include 'AND' operator
-        if ( valeNotEmpty(patientID) === true ) {
+        if ( valueNotEmpty(patientID) === true ) {
           filtersObject.filters['participantObjectIdentification.participantObjectID'] = { type: 'AND', patientID: participantPatientID, objectID: objectID };
         }else{
           filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify( objectID );
@@ -252,7 +250,7 @@ angular.module('openhimConsoleApp')
 
       // add objectIDTypeCode filter
       var participantObjectIDTypeCode = $scope.filters.participantObjectIdentification.participantObjectIDTypeCode;
-      if ( valeNotEmpty(participantObjectIDTypeCode) === true ) {
+      if ( valueNotEmpty(participantObjectIDTypeCode) === true ) {
         var participantObjectIDTypeCodeArray = participantObjectIDTypeCode.split('---');
         filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.code'] = participantObjectIDTypeCodeArray[0];
         filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.codeSystemName'] = participantObjectIDTypeCodeArray[1];
@@ -262,14 +260,14 @@ angular.module('openhimConsoleApp')
 
       // add objectDetailType filter
       var objectDetailType = $scope.filters.participantObjectIdentification.participantObjectDetail.type;
-      if ( valeNotEmpty(objectDetailType) === true ) {
+      if ( valueNotEmpty(objectDetailType) === true ) {
         filtersObject.filters['participantObjectIdentification.participantObjectDetail.type'] = objectDetailType;
         filterUrlParams += '&participantObjectDetailType='+objectDetailType;
       }
 
       // add objectDetailValue filter
       var objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value;
-      if ( valeNotEmpty(objectDetailValue) === true ) {
+      if ( valueNotEmpty(objectDetailValue) === true ) {
         filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue;
         filterUrlParams += '&participantObjectDetailValue='+objectDetailValue;
       }
@@ -278,7 +276,7 @@ angular.module('openhimConsoleApp')
       /* ----- filter by Audit Source ----- */
       // add auditSource filter
       var auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID;
-      if ( valeNotEmpty(auditSourceID) === true ) {
+      if ( valueNotEmpty(auditSourceID) === true ) {
         filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID;
         filterUrlParams += '&auditSourceID='+auditSourceID;
       }
@@ -319,11 +317,17 @@ angular.module('openhimConsoleApp')
 
 
     $scope.applyFiltersToUrl = function(){
+      var curHashParams = window.location.hash;
       var filters = $scope.returnFilters('urlParams');
-      var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
-      //$scope.refreshAuditsList()
-      var path = 'audits?'+filters.substring(1);
-      window.location = baseUrl + path;
+      var newHash = '#/audits?'+filters.substring(1);
+
+      // just refresh audits list - no new params
+      if ( curHashParams ===  newHash ){
+        $scope.refreshAuditsList();
+      }else{
+        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/';
+        window.location = baseUrl + newHash;
+      }
     };
 
     //Refresh audits list
@@ -337,7 +341,6 @@ angular.module('openhimConsoleApp')
       $scope.showlimit = $scope.settings.filter.limit;
 
       Api.Audits.query( $scope.returnFilters('filtersObject'), refreshSuccess, refreshError);
-
     };
     //run the audit list view for the first time
     $scope.refreshAuditsList();
@@ -371,7 +374,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
 
-    //location provider - load transaction details
+    //location provider - load audit details
     $scope.viewAuditDetails = function (path, $event) {
       //do audits details redirection when clicked on TD
       if( $event.target.tagName === 'TD' ){
@@ -392,11 +395,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.dateEnd = '';
       $scope.settings.list.tabview = 'same';
 
-      // reset audit filters
-      /*setupAuditFilters();
-
-      //run the transaction list view after filters been cleared
-      $scope.refreshAuditsList();*/
+      // clear filters by loading audits page again with no filters
       var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
       var path = 'audits';
       window.location = baseUrl + path;
