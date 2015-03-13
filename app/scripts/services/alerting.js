@@ -30,6 +30,9 @@ angular.module('openhimConsoleApp')
           case 403:
             alertMsg = 'The request has been forbidden by the server. Please contact the server administrator';
             break;
+          case 404:
+            alertMsg = 'The request resource could not be found';
+            break;
           default:
             alertMsg = 'A server-side error has occurred. Please contact the server administrator';
         }

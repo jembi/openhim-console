@@ -13,7 +13,6 @@ var app = angular
     'angularFileUpload'
   ]);
 
-
 // function to boostrap the app manually - used to first get config data before angular initializes
 (function() {
 
@@ -130,6 +129,14 @@ app.config(function ($routeProvider) {
     .when('/export-import', {
       templateUrl: 'views/exportImport.html',
       controller: 'ExportImportCtrl'
+    })
+    .when('/audits', {
+      templateUrl: 'views/audits.html',
+      controller: 'AuditsCtrl'
+    })
+    .when('/audits/:auditId', {
+      templateUrl: 'views/auditDetails.html',
+      controller: 'AuditDetailsCtrl'
     })
     .otherwise({
       redirectTo: '/'

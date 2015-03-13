@@ -1,11 +1,29 @@
 'use strict';
 /* global CryptoJS:false */
 /* global vkbeautify:false */
+/* exported isBase64String */
+/* exported decodeBase64 */
 /* exported getHashAndSalt */
 /* exported viewPage */
 /* exported isValidMSISDN */
 /* exported returnContentType */
 /* exported beautifyIndent */
+
+
+
+
+function isBase64String(string){
+  var base64Matcher = new RegExp('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})([=]{1,2})?$');
+  return base64Matcher.test( string);
+}
+
+function decodeBase64(stringToBeDecoded) {
+  //decrypt
+  var base64Value = CryptoJS.enc.Base64.parse( stringToBeDecoded );
+  var decodeBase64Value = base64Value.toString( CryptoJS.enc.Utf8 );
+  return decodeBase64Value;
+}
+
 
 function getHashAndSalt(stringToBeHashed) {
   var salt = CryptoJS.lib.WordArray.random(16).toString();

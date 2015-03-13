@@ -58,5 +58,9 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
 
+      // ATNA Audit log endpoint
+      Audits: $resource( server + '/audits/:auditId', { auditId: '@_id' }),
+      AuditsFilterOptions: $resource( server + '/audits-filter-options/', {}),
+
     };
   });
