@@ -89,14 +89,6 @@ describe('Controller: AuditsCtrl', function () {
       }
     ]);
 
-
-    
-
-    $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'txRerunAcl':['test'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059dd8'},
-      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'txRerunAcl':['testing'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059aa3'}
-    ]);
-
     modalSpy = sinon.spy($modal, 'open');
 
     createController = function() {
@@ -111,7 +103,7 @@ describe('Controller: AuditsCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should attach a list of transactions to the scope', function () {
+  it('should attach a list of audits to the scope', function () {
     createController();
     httpBackend.flush();
     scope.audits.length.should.equal(2);
@@ -129,6 +121,42 @@ describe('Controller: AuditsCtrl', function () {
     // the consoleSession object is setup with user profile in 'login.js'
     scope.settings.filter.limit.should.equal(10);
     scope.settings.list.tabview.should.equal('new');
+  });
+
+  it('should check filters are sent to the API', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.settings.filter.limit = 10;
+    scope.settings.filter.dateStart = '2015-03-10T00:00:00+02:00';
+    scope.settings.filter.dateEnd = '2015-03-10T00:00:00+02:00';
+    scope.filters.eventIdentification.eventID = '222---Read---DCM';
+    scope.filters.eventIdentification.eventTypeCode = 'ITI-9---PIX Read---IHE Transactions';
+    scope.filters.eventIdentification.eventActionCode = 'R';
+    scope.filters.eventIdentification.eventOutcomeIndicator = '0';
+    scope.filters.participantObjectIdentification.patientID.patientID = '975cac30-68e5-11e4-bf2a-04012ce65b02';
+    scope.filters.auditSourceIdentification.auditSourceID = 'openhim';
+
+    var filters = scope.returnFilters('filtersObject');
+    var urlParams = scope.returnFilters('urlParams');
+
+    // filter object that gets sent through the API for query filtering
+    filters.filterLimit.should.equal(10);
+    filters.filters['eventIdentification.eventDateTime'].should.equal('{"$gte":"2015-03-09T22:00:00+00:00","$lte":"2015-03-09T23:59:59+00:00"}');
+    filters.filters['participantObjectIdentification.participantObjectID'].should.equal('"975cac30-68e5-11e4-bf2a-04012ce65b02\\\\^\\\\^\\\\^.*&.*&.*"');
+    filters.filters['eventIdentification.eventTypeCode.code'].should.equal('ITI-9');
+    filters.filters['eventIdentification.eventTypeCode.codeSystemName'].should.equal('PIX Read');
+    filters.filters['eventIdentification.eventTypeCode.displayName'].should.equal('IHE Transactions');
+    filters.filters['eventIdentification.eventID.code'].should.equal('222');
+    filters.filters['eventIdentification.eventID.codeSystemName'].should.equal('Read');
+    filters.filters['eventIdentification.eventID.displayName'].should.equal('DCM');
+    filters.filters['eventIdentification.eventActionCode'].should.equal('R');
+    filters.filters['eventIdentification.eventOutcomeIndicator'].should.equal('0');
+    filters.filters['auditSourceIdentification.auditSourceID'].should.equal('openhim');
+    
+    // url params string that gets used to reload the audits URL with selected paramaters
+    urlParams.should.equal('&limit=10&dateStart=2015-03-09T22:00:00+00:00&dateEnd=2015-03-09T23:59:59+00:00&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
+    
   });
 
 });
