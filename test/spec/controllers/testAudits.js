@@ -1,6 +1,7 @@
 'use strict';
 /* jshint expr: true */
 /* global sinon: false */
+/* global moment:false */
 
 describe('Controller: AuditsCtrl', function () {
 
@@ -127,9 +128,14 @@ describe('Controller: AuditsCtrl', function () {
     createController();
     httpBackend.flush();
 
+
+    var startDate = '2015-03-09T00:00:00+00:00';
+    var endDate = '2015-03-09T00:00:00+00:00';
+
+
     scope.settings.filter.limit = 10;
-    scope.settings.filter.dateStart = '2015-03-10T00:00:00+02:00';
-    scope.settings.filter.dateEnd = '2015-03-10T00:00:00+02:00';
+    scope.settings.filter.dateStart = moment(startDate).format();
+    scope.settings.filter.dateEnd = moment(endDate).format();
     scope.filters.eventIdentification.eventID = '222---Read---DCM';
     scope.filters.eventIdentification.eventTypeCode = 'ITI-9---PIX Read---IHE Transactions';
     scope.filters.eventIdentification.eventActionCode = 'R';
@@ -142,7 +148,7 @@ describe('Controller: AuditsCtrl', function () {
 
     // filter object that gets sent through the API for query filtering
     filters.filterLimit.should.equal(10);
-    filters.filters['eventIdentification.eventDateTime'].should.equal('{"$gte":"2015-03-09T22:00:00+00:00","$lte":"2015-03-09T23:59:59+00:00"}');
+    filters.filters['eventIdentification.eventDateTime'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).endOf('day').format()+'"}');
     filters.filters['participantObjectIdentification.participantObjectID'].should.equal('"975cac30-68e5-11e4-bf2a-04012ce65b02\\\\^\\\\^\\\\^.*&.*&.*"');
     filters.filters['eventIdentification.eventTypeCode.code'].should.equal('ITI-9');
     filters.filters['eventIdentification.eventTypeCode.codeSystemName'].should.equal('PIX Read');
@@ -155,7 +161,7 @@ describe('Controller: AuditsCtrl', function () {
     filters.filters['auditSourceIdentification.auditSourceID'].should.equal('openhim');
     
     // url params string that gets used to reload the audits URL with selected paramaters
-    urlParams.should.equal('&limit=10&dateStart=2015-03-09T22:00:00+00:00&dateEnd=2015-03-09T23:59:59+00:00&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
+    urlParams.should.equal('&limit=10&dateStart='+moment(startDate).format()+'&dateEnd='+moment(endDate).endOf('day').format()+'&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
     
   });
 
