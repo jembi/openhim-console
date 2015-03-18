@@ -28,7 +28,19 @@
 
   </div>
   <div class="modal-footer">
+    <div ng-show="transactionsSelected.length > 1" ng-if="rerunSuccess != true" style="float: left;">
+      <label style="float: left; margin: 10px 10px 0px 0px;" tooltip="The number of transactions that the task processor should run concurrently">Batch size</label>
+      <select style="float: left; width: auto;" class="form-control" ng-model="taskSetup.batchSize">
+        <option value="1">One at a time</option>
+        <option ng-if="transactionsSelected.length >= 2" value="2">2</option>
+        <option ng-if="transactionsSelected.length >= 4" value="4">4</option>
+        <option ng-if="transactionsSelected.length >= 8" value="8">8</option>
+        <option ng-if="transactionsSelected.length >= 16" value="16">16</option>
+        <option ng-if="transactionsSelected.length >= 32" value="32">32</option>
+      </select>
+    </div>
+
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="confirmRerun()" ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true">Confirm Batch Rerun</button>
+    <button type="button" class="btn btn-primary" ng-click="confirmRerun(batchSize)" ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true">Confirm Batch Rerun</button>
   </div>
 </form>
