@@ -50,25 +50,41 @@
                     <th>User</th>
                     <th>Execution Time</th>
                     <th>Created Date</th>
+                    <th width="80"></th>
                   </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="task in tasks | filter:filter | orderBy:'created':true" class="table-list" ng-click="viewTaskDetails('/tasks/' + task._id)">
-                  <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
-                  <td data-title="Status">
+                <tr ng-repeat="task in tasks | filter:filter | orderBy:'created':true" class="table-list">
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="Status">
 
                     <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
                     <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
-                    <span ng-if="task.status === 'NotStarted'" class="label label-info">Not Started</span>
+                    <span ng-if="task.status === 'Queued'" class="label label-info">Queued</span>
+                    <span ng-if="task.status === 'Paused'" class="label label-primary">Paused</span>
+                    <span ng-if="task.status === 'Cancelled'" class="label label-danger">Cancelled</span>
 
                   </td>
-                  <td data-title="Progress">
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="Progress">
                     <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="success"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Processing'" class="progress-striped active" max="task.transactions.length" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.transactions.length" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="default"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
                   </td>
-                  <td data-title="User">{{task.user}}</td>
-                  <td data-title="Execution Time">{{getExecutionTime(task)}} s</td>
-                  <td data-title="Created Date">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="User">{{task.user}}</td>
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="Execution Time">{{getExecutionTime(task)}} s</td>
+                  <td ng-click="viewTaskDetails('/tasks/' + task._id)" data-title="Created Date">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                  <td>
+                    <div ng-if="task.status=='Processing' || task.status=='Queued'">
+                      <button title="Pause" class="btn btn-warning btn-xs" ng-click="pauseTask(task)"><i class="glyphicon glyphicon-pause"></i></button>
+                      <button title="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                    <div ng-if="task.status=='Paused'">
+                      <button title="Resume" class="btn btn-success btn-xs" ng-click="resumeTask(task)"><i class="glyphicon glyphicon-play"></i></button>
+                      <button title="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+
+                  </td>
                 </tr>
               </tbody>
             </table>
