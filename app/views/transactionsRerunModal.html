@@ -40,6 +40,11 @@
         <option ng-if="transactionsSelected.length >= 64" value="64">64</option>
       </select>
     </div>
+    <div ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true" style="float: left;">
+      <input style="float: left; margin: 10px 10px 0px 0px" type="checkbox" ng-model="taskSetup.paused">
+        <label style="float: left; margin: 10px 10px 0px 0px;" tooltip="Do not start processing the task immediately">Paused</label>
+      </input>
+    </div>
 
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
     <button type="button" class="btn btn-primary" ng-click="confirmRerun()" ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true">Confirm Batch Rerun</button>

@@ -8,6 +8,7 @@ angular.module('openhimConsoleApp')
     $scope.rerunTransactionsSelected = rerunTransactionsSelected;
     $scope.taskSetup = {};
     $scope.taskSetup.batchSize = 1;
+    $scope.taskSetup.paused = false;
 
     if ( rerunTransactionsSelected === 1 && transactionsSelected.length === 1 ){
       Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun');
@@ -19,7 +20,7 @@ angular.module('openhimConsoleApp')
       console.log($scope.taskSetup);
 
       var tIds = $scope.transactionsSelected;
-      $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize });
+      $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused });
       $scope.task.$save({}, onSuccess);
 
     };
