@@ -116,18 +116,11 @@ describe('Controller: TransactionsCtrl', function () {
     createController();
     httpBackend.flush();
 
-
     var startDate = '2015-03-09T00:00:00+00:00';
     var endDate = '2015-03-09T00:00:00+00:00';
 
-
-    scope.settings.filter.limit = 100;
-    scope.settings.filter.dateStart = moment(startDate).format();
-    scope.settings.filter.dateEnd = moment(endDate).format();
-
-
-
-
+    scope.settings.filter.startDate = moment(startDate).format();
+    scope.settings.filter.endDate = moment(endDate).format();
 
     // search for transaction filters
     scope.filters.transaction.status = 'Successful';
@@ -138,12 +131,9 @@ describe('Controller: TransactionsCtrl', function () {
     scope.filters.route.statusCode = '2xx';
     scope.filters.orchestration.statusCode = '2xx';
 
-
     var filters = scope.returnFilters();
-    console.log( filters );
 
     // filter object that gets sent through the API for query filtering
-    filters.filterLimit.should.equal('200');
     filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).endOf('day').format()+'"}');
     filters.filters.status.should.equal('Successful');
     filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8');

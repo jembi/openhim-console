@@ -54,8 +54,8 @@ angular.module('openhimConsoleApp')
 
         $scope.filters.transaction.status = userSettings.filter.status;
         $scope.filters.transaction.channel = userSettings.filter.channel;
-        $scope.settings.filter.dateStart = '';
-        $scope.settings.filter.dateEnd = '';
+        $scope.settings.filter.startDate = '';
+        $scope.settings.filter.endDate = '';
       }
       
       if ( userSettings.list ){
@@ -65,8 +65,8 @@ angular.module('openhimConsoleApp')
 
     // setup default transaction settings      
     if ( $location.search().limit ){ $scope.settings.filter.limit = $location.search().limit; }
-    if ( $location.search().dateStart ){ $scope.settings.filter.dateStart = $location.search().dateStart; }
-    if ( $location.search().dateEnd ){ $scope.settings.filter.dateEnd = $location.search().dateEnd; }
+    if ( $location.search().startDate ){ $scope.settings.filter.startDate = $location.search().startDate; }
+    if ( $location.search().endDate ){ $scope.settings.filter.endDate = $location.search().endDate; }
 
     // search for transaction filters
     if ( $location.search().txStatus ){ $scope.filters.transaction.status = $location.search().txStatus; }
@@ -146,8 +146,8 @@ angular.module('openhimConsoleApp')
       filtersObject.filters = {};
 
       // date filter
-      filterDateStart = $scope.settings.filter.dateStart;
-      filterDateEnd = $scope.settings.filter.dateEnd;
+      filterDateStart = $scope.settings.filter.startDate;
+      filterDateEnd = $scope.settings.filter.endDate;
       if(filterDateStart && filterDateEnd){
         var startDate = moment(filterDateStart).format();
         var endDate = moment(filterDateEnd).endOf('day').format();
@@ -186,7 +186,7 @@ angular.module('openhimConsoleApp')
 
         if ( valueNotEmpty(txParamValue) === true ){
           filtersObject.filters['request.querystring'] += '=' + txParamValue;
-        }       
+        }
       }
 
       var txClient = $scope.filters.transaction.client;
@@ -305,8 +305,8 @@ angular.module('openhimConsoleApp')
       clearUrlParams();
 
       if ( $scope.settings.filter.limit ){ $location.search( 'limit', $scope.settings.filter.limit ); }
-      if ( $scope.settings.filter.dateStart ){ $location.search( 'startDate', $scope.settings.filter.dateStart ); }
-      if ( $scope.settings.filter.dateEnd ){ $location.search( 'endDate', $scope.settings.filter.dateEnd ); }
+      if ( $scope.settings.filter.startDate ){ $location.search( 'startDate', $scope.settings.filter.startDate ); }
+      if ( $scope.settings.filter.endDate ){ $location.search( 'endDate', $scope.settings.filter.endDate ); }
 
       // search for transaction filters
       if ( $scope.filters.transaction.status ){ $location.search( 'txStatus', $scope.filters.transaction.status ); }
@@ -343,7 +343,7 @@ angular.module('openhimConsoleApp')
       $scope.showpage = 0;
       $scope.showlimit = $scope.settings.filter.limit;
 
-      Api.Transactions.query( $scope.returnFilters('filtersObject'), refreshSuccess, refreshError);
+      Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
 
     };
     //run the transaction list view for the first time
@@ -355,7 +355,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
-      Api.Transactions.query( $scope.returnFilters('filtersObject'), loadMoreSuccess, loadMoreError);
+      Api.Transactions.query( $scope.returnFilters(), loadMoreSuccess, loadMoreError);
     };
 
     var loadMoreSuccess = function (transactions){
@@ -409,8 +409,8 @@ angular.module('openhimConsoleApp')
 
       // reset default filters
       $scope.settings.filter.limit = 100;
-      $scope.settings.filter.dateStart = '';
-      $scope.settings.filter.dateEnd = '';
+      $scope.settings.filter.startDate = '';
+      $scope.settings.filter.endDate = '';
       $scope.settings.list.tabview = 'same';
       $scope.filters.transaction.status = '';
       $scope.filters.transaction.channel = '';
