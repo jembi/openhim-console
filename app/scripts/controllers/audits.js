@@ -1,6 +1,7 @@
 'use strict';
 /* global jQuery:false */
 /* global moment:false */
+/* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
   .controller('AuditsCtrl', function ($scope, $modal, $location, Api, Alerting, AuditLookups) {
@@ -103,13 +104,6 @@ angular.module('openhimConsoleApp')
     /*************************************************************/
     /**         Audits List and Detail view functions           **/
     /*************************************************************/
-
-    var valueNotEmpty = function(value){
-      if ( value !== null && value !== undefined && value !== '' ) {
-        return true;
-      }
-      return false;
-    };
 
     //setup filter options
     $scope.returnFilters = function(type){

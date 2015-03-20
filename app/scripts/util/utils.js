@@ -8,8 +8,15 @@
 /* exported isValidMSISDN */
 /* exported returnContentType */
 /* exported beautifyIndent */
+/* exported valueNotEmpty */
 
 
+var valueNotEmpty = function(value){
+  if ( value !== null && value !== undefined && value !== '' ) {
+    return true;
+  }
+  return false;
+};
 
 
 function isBase64String(string){
