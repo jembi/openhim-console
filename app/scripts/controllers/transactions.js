@@ -4,7 +4,7 @@
 /* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
+  .controller('TransactionsCtrl', function ($scope, $modal, $location, $timeout, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -340,6 +340,45 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
 
+    $scope.validateFormFilters = function(){
+
+      // reset hasErrors alert object
+      Alerting.AlertReset('hasErrors');
+
+      // clear timeout if it has been set
+      $timeout.cancel( $scope.clearValidation );
+
+      $scope.ngError = {};
+      $scope.ngError.hasErrors = false;
+
+      // transaction status code validation
+      if( $scope.filters.transaction.statusCode && /^\d(\d\d|xx)$/.test($scope.filters.transaction.statusCode) === false ){
+        $scope.ngError.txStatusCode = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      // route status code validation
+      if( $scope.filters.route.statusCode && /^\d(\d\d|xx)$/.test($scope.filters.route.statusCode) === false ){
+        $scope.ngError.routeStatusCode = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      // orchestration status code validation
+      if( $scope.filters.orchestration.statusCode && /^\d(\d\d|xx)$/.test($scope.filters.orchestration.statusCode) === false ){
+        $scope.ngError.orchStatusCode = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      if ( $scope.ngError.hasErrors ){
+        $scope.clearValidation = $timeout(function(){
+          // clear errors after 5 seconds
+          $scope.ngError = {};
+        }, 5000);
+        Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg);
+      }
+
+    };
+
     $scope.applyFiltersToUrl = function(){
 
       // get the filter params object before clearing them
@@ -377,8 +416,6 @@ angular.module('openhimConsoleApp')
       if ( $scope.filters.orchestration.requestParamKey ){ $location.search( 'orchParamKey', $scope.filters.orchestration.requestParamKey ); }
       if ( $scope.filters.orchestration.requestParamValue ){ $location.search( 'orchParamValue', $scope.filters.orchestration.requestParamValue ); }
 
-
-
       // get the filter params object after clearing them
       var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
 
@@ -392,14 +429,26 @@ angular.module('openhimConsoleApp')
 
     //Refresh transactions list
     $scope.refreshTransactionsList = function () {
-      $scope.transactions = null;
+
       Alerting.AlertReset();
 
-      //reset the showpage filter to start at 0
-      $scope.showpage = 0;
-      $scope.showlimit = $scope.settings.filter.limit;
+      // validate the form first to check for any errors
+      $scope.validateFormFilters();
 
-      Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+      // execute refresh if no errors
+      if ( $scope.ngError.hasErrors === false ){
+        
+        $scope.transactions = null;
+
+        //reset the showpage filter to start at 0
+        $scope.showpage = 0;
+        $scope.showlimit = $scope.settings.filter.limit;
+
+        Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+
+      }else{
+        Alerting.AlertAddMsg('server', 'danger', 'You appear to have errors in your filter query. Please correct and try again');
+      }
 
     };
     //run the transaction list view for the first time
