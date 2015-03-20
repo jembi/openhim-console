@@ -10,12 +10,8 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
-    // if no parameters
-    if ( angular.equals({}, $location.search()) ){
-      $scope.isCollapsed = true;
-    }else{
-      $scope.isCollapsed = false;
-    }
+    // filters collapsed by default
+    $scope.isCollapsed = true;
 
     /* setup default filter options */
 
@@ -71,35 +67,81 @@ angular.module('openhimConsoleApp')
     // search for transaction filters
     if ( $location.search().txStatus ){ $scope.filters.transaction.status = $location.search().txStatus; }
     if ( $location.search().txChannel ){ $scope.filters.transaction.channel = $location.search().txChannel; }
-    if ( $location.search().txStatusCode ){ $scope.filters.transaction.statusCode = $location.search().txStatusCode; }
-    if ( $location.search().txPath ){ $scope.filters.transaction.path = $location.search().txPath; }
-    if ( $location.search().txParamKey ){ $scope.filters.transaction.requestParamKey = $location.search().txParamKey; }
-    if ( $location.search().txParamValue ){ $scope.filters.transaction.requestParamValue = $location.search().txParamValue; }
-    if ( $location.search().txClient ){ $scope.filters.transaction.client = $location.search().txClient; }
-    if ( $location.search().txWasRerun ){ $scope.filters.transaction.wasRerun = $location.search().txWasRerun; }
-    if ( $location.search().txPropertyKey ){ $scope.filters.transaction.propertyKey = $location.search().txPropertyKey; }
-    if ( $location.search().txPropertyValue ){ $scope.filters.transaction.propertyValue = $location.search().txPropertyValue; }
+
+    if ( $location.search().txStatusCode ){ 
+      $scope.filters.transaction.statusCode = $location.search().txStatusCode; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txPath ){ 
+      $scope.filters.transaction.path = $location.search().txPath;
+      $scope.isCollapsed = false; 
+    }
+    if ( $location.search().txParamKey ){ 
+      $scope.filters.transaction.requestParamKey = $location.search().txParamKey; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txParamValue ){ 
+      $scope.filters.transaction.requestParamValue = $location.search().txParamValue; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txClient ){ 
+      $scope.filters.transaction.client = $location.search().txClient; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txWasRerun ){ 
+      $scope.filters.transaction.wasRerun = $location.search().txWasRerun; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txPropertyKey ){ 
+      $scope.filters.transaction.propertyKey = $location.search().txPropertyKey; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().txPropertyValue ){ 
+      $scope.filters.transaction.propertyValue = $location.search().txPropertyValue; 
+      $scope.isCollapsed = false;
+    }
 
     // search for route filters
-    if ( $location.search().routeStatusCode ){ $scope.filters.route.statusCode = $location.search().routeStatusCode; }
-    if ( $location.search().routePath ){ $scope.filters.route.path = $location.search().routePath; }
-    if ( $location.search().routeParamKey ){ $scope.filters.route.requestParamKey = $location.search().routeParamKey; }
-    if ( $location.search().routeParamValue ){ $scope.filters.route.requestParamValue = $location.search().routeParamValue; }
+    if ( $location.search().routeStatusCode ){ 
+      $scope.filters.route.statusCode = $location.search().routeStatusCode; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().routePath ){ 
+      $scope.filters.route.path = $location.search().routePath; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().routeParamKey ){ 
+      $scope.filters.route.requestParamKey = $location.search().routeParamKey; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().routeParamValue ){ 
+      $scope.filters.route.requestParamValue = $location.search().routeParamValue; 
+      $scope.isCollapsed = false;
+    }
 
     // search for orchestration filters
-    if ( $location.search().orchStatusCode ){ $scope.filters.orchestration.statusCode = $location.search().orchStatusCode; }
-    if ( $location.search().orchPath ){ $scope.filters.orchestration.path = $location.search().orchPath; }
-    if ( $location.search().orchParamKey ){ $scope.filters.orchestration.requestParamKey = $location.search().orchParamKey; }
-    if ( $location.search().orchParamValue ){ $scope.filters.orchestration.requestParamValue = $location.search().orchParamValue; }
+    if ( $location.search().orchStatusCode ){ 
+      $scope.filters.orchestration.statusCode = $location.search().orchStatusCode; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().orchPath ){ 
+      $scope.filters.orchestration.path = $location.search().orchPath; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().orchParamKey ){ 
+      $scope.filters.orchestration.requestParamKey = $location.search().orchParamKey; 
+      $scope.isCollapsed = false;
+    }
+    if ( $location.search().orchParamValue ){ 
+      $scope.filters.orchestration.requestParamValue = $location.search().orchParamValue; 
+      $scope.isCollapsed = false;
+    }
 
-    // get all filters needed for dropdowns
-    Api.TransactionsFilterOptions.get(function(transactionsFilterOptions){
 
-      $scope.channels = transactionsFilterOptions.channels;
-      $scope.clients = transactionsFilterOptions.clients;
+    var userGroups = $scope.consoleSession.sessionUserGroups;
 
-      var userGroups = $scope.consoleSession.sessionUserGroups;
-
+    // get the channels for the transactions filter dropdown
+    $scope.channels = Api.Channels.query(function(){
       $scope.channelsMap = {};
       angular.forEach($scope.channels, function(channel){
         $scope.channelsMap[channel._id] = {};
@@ -117,10 +159,9 @@ angular.module('openhimConsoleApp')
           }
         }
       });
+    }, function(){ /* server error - could not connect to API to get channels */ });
 
-    }, function(err){
-      Alerting.AlertAddServerMsg(err.status);
-    });
+    $scope.clients = Api.Clients.query();
     
     /***************************************************/
     /**         Initial page load functions           **/
@@ -301,14 +342,18 @@ angular.module('openhimConsoleApp')
 
     $scope.applyFiltersToUrl = function(){
 
+      // get the filter params object before clearing them
+      var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
+
       // first clear existing filters
       clearUrlParams();
 
+      // Add filters to url
       if ( $scope.settings.filter.limit ){ $location.search( 'limit', $scope.settings.filter.limit ); }
       if ( $scope.settings.filter.startDate ){ $location.search( 'startDate', $scope.settings.filter.startDate ); }
       if ( $scope.settings.filter.endDate ){ $location.search( 'endDate', $scope.settings.filter.endDate ); }
 
-      // search for transaction filters
+      // add transaction filters
       if ( $scope.filters.transaction.status ){ $location.search( 'txStatus', $scope.filters.transaction.status ); }
       if ( $scope.filters.transaction.channel ){ $location.search( 'txChannel', $scope.filters.transaction.channel ); }
       if ( $scope.filters.transaction.statusCode ){ $location.search( 'txStatusCode', $scope.filters.transaction.statusCode ); }
@@ -320,17 +365,28 @@ angular.module('openhimConsoleApp')
       if ( $scope.filters.transaction.propertyKey ){ $location.search( 'txPropertyKey', $scope.filters.transaction.propertyKey ); }
       if ( $scope.filters.transaction.propertyValue ){ $location.search( 'txPropertyValue', $scope.filters.transaction.propertyValue ); }
 
-      // search for route filters
+      // add route filters
       if ( $scope.filters.route.statusCode ){ $location.search( 'routeStatusCode', $scope.filters.route.statusCode ); }
       if ( $scope.filters.route.path ){ $location.search( 'routePath', $scope.filters.route.path ); }
       if ( $scope.filters.route.requestParamKey ){ $location.search( 'routeParamKey', $scope.filters.route.requestParamKey ); }
       if ( $scope.filters.route.requestParamValue ){ $location.search( 'routeParamValue', $scope.filters.route.requestParamValue ); }
 
-      // search for orchestration filters
+      // add orchestration filters
       if ( $scope.filters.orchestration.statusCode ){ $location.search( 'orchStatusCode', $scope.filters.orchestration.statusCode ); }
       if ( $scope.filters.orchestration.path ){ $location.search( 'orchPath', $scope.filters.orchestration.path ); }
       if ( $scope.filters.orchestration.requestParamKey ){ $location.search( 'orchParamKey', $scope.filters.orchestration.requestParamKey ); }
       if ( $scope.filters.orchestration.requestParamValue ){ $location.search( 'orchParamValue', $scope.filters.orchestration.requestParamValue ); }
+
+
+
+      // get the filter params object after clearing them
+      var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
+
+      // if the filters object stays the same then call refresh function
+      // if filters object not the same then angular changes route and loads controller ( refresh )
+      if ( filterParamsBeforeClear === filterParamsAfterClear ){
+        $scope.refreshTransactionsList();
+      }
 
     };
 
@@ -415,9 +471,21 @@ angular.module('openhimConsoleApp')
       $scope.filters.transaction.status = '';
       $scope.filters.transaction.channel = '';
 
+      // get the filter params object before clearing them
+      var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
+
+      // clear all filter parameters
       clearUrlParams();
 
-      $scope.refreshTransactionsList();
+      // get the filter params object after clearing them
+      var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
+
+      // if the filters object stays the same then call refresh function
+      // if filters object not the same then angular changes route and loads controller ( refresh )
+      if ( filterParamsBeforeClear === filterParamsAfterClear ){
+        $scope.refreshTransactionsList();
+      }
+
     };
 
     /*******************************************************************/
