@@ -103,19 +103,19 @@ angular.module('openhimConsoleApp')
     };
 
     var deleteError = function (err) {
-      if (err.status == 409) {
-        var warningMessage = "Could not delete the group because it is associtated with the following channels: "
+      if (err.status === 409) {
+        var warningMessage = 'Could not delete the group because it is associtated with the following channels: ';
         for (var i = 0; i < err.data.length; i++) {
           if (i > 0 ) {
             warningMessage += ',';
           }
-          warningMessage += err.data[i].name + " ";
+          warningMessage += err.data[i].name + ' ';
         }
         Alerting.AlertAddMsg('top', 'warning', warningMessage);
       } else {
         // add the error message
         Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the contact group: #' + err.status + ' - ' + err.data);
-      };
+      }
     };
 
     /*******************************************/
