@@ -37,34 +37,34 @@ describe('Controller: TransactionsCtrl', function () {
     
 
     $httpBackend.when('GET', new RegExp('.*/transactions')).respond([
-      { 
-        '_id' : '550936d307756ef72b525111', 
-        'status' : 'Successful', 
-        'clientID' : '5506aed5348ac60d23840a9e', 
-        'channelID' : '550933dbbc9814c82b12fd16', 
-        'request' : { 'path' : '/path/successful', 'headers' : { }, 'querystring' : 'test=testing', 'body' : 'Successful', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' }, 
-        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 200 } 
-      }, { 
-        '_id' : '660936d307756ef72b525222', 
-        'status' : 'Successful', 
-        'clientID' : '5506aed5348ac60d23840a9e', 
-        'channelID' : '550933dbbc9814c82b12fd16', 
-        'request' : { 'path' : '/path/successful/successful', 'headers' : { }, 'querystring' : '', 'body' : 'Successful Successful', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' }, 
-        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 200 } 
-      }, { 
-        '_id' : '770936d307756ef72b525333', 
-        'status' : 'Failed', 
-        'clientID' : '5506aed5348ac60d23840a9e', 
-        'channelID' : '550933dbbc9814c82b12fd16', 
-        'request' : { 'path' : '/path/failed', 'headers' : { }, 'querystring' : 'test=world', 'body' : 'Failed', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' }, 
-        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 500 } 
-      }, { 
-        '_id' : '880936d307756ef72b525444', 
-        'status' : 'Failed', 
-        'clientID' : '5506aed5348ac60d23840a9e', 
-        'channelID' : '550933dbbc9814c82b12fd16', 
-        'request' : { 'path' : '/path/failed', 'headers' : { }, 'querystring' : '', 'body' : 'Failed', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' }, 
-        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 500 } 
+      {
+        '_id' : '550936d307756ef72b525111',
+        'status' : 'Successful',
+        'clientID' : '5506aed5348ac60d23840a9e',
+        'channelID' : '550933dbbc9814c82b12fd16',
+        'request' : { 'path' : '/path/successful', 'headers' : { }, 'querystring' : 'test=testing', 'body' : 'Successful', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' },
+        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 200 }
+      }, {
+        '_id' : '660936d307756ef72b525222',
+        'status' : 'Successful',
+        'clientID' : '5506aed5348ac60d23840a9e',
+        'channelID' : '550933dbbc9814c82b12fd16',
+        'request' : { 'path' : '/path/successful/successful', 'headers' : { }, 'querystring' : '', 'body' : 'Successful Successful', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' },
+        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 200 }
+      }, {
+        '_id' : '770936d307756ef72b525333',
+        'status' : 'Failed',
+        'clientID' : '5506aed5348ac60d23840a9e',
+        'channelID' : '550933dbbc9814c82b12fd16',
+        'request' : { 'path' : '/path/failed', 'headers' : { }, 'querystring' : 'test=world', 'body' : 'Failed', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' },
+        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 500 }
+      }, {
+        '_id' : '880936d307756ef72b525444',
+        'status' : 'Failed',
+        'clientID' : '5506aed5348ac60d23840a9e',
+        'channelID' : '550933dbbc9814c82b12fd16',
+        'request' : { 'path' : '/path/failed', 'headers' : { }, 'querystring' : '', 'body' : 'Failed', 'method' : 'GET', 'timestamp' : '2015-03-18T08:26:59.417Z' },
+        'response' : { 'timestamp' : '2015-03-18T08:26:59.430Z', 'body' : 'Body', 'headers' : {  }, 'status' : 500 }
       }
     ]);
 

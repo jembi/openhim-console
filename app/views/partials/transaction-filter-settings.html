@@ -19,7 +19,7 @@
             ng-class="{formControlNotEmpty: filters.transaction.statusCode}">
         </div>
         <div class="settings_div">
-          <label tooltip="Path">Path: </label>
+          <label>Path: </label>
           <input type="text" 
             class="form-control" 
             ng-model="filters.transaction.path" 
@@ -27,14 +27,14 @@
         </div>
         <div class="settings_div">
           <div class="settings_div" style="width: 48%; float: left;">
-            <label tooltip="Request Parameter Key">Request Param Key: </label>
+            <label>Request Param Key: </label>
             <input type="text" 
               class="form-control" 
               ng-model="filters.transaction.requestParamKey" 
               ng-class="{formControlNotEmpty: filters.transaction.requestParamKey}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-            <label tooltip="Request Parameter Value">Request Param Value: </label>
+            <label>Request Param Value: </label>
             <input type="text" 
               class="form-control" 
               ng-disabled="!filters.transaction.requestParamKey" 
@@ -47,7 +47,7 @@
       <div style="float: left; width: 49%">
         <div class="settings_div">
           <div class="settings_div" style="width: 48%; float: left;">
-            <label tooltip="Client">Client: </label>
+            <label>Client: </label>
             <select class="form-control" 
               ng-model="filters.transaction.client" 
               ng-options="client._id as client.name for client in clients" 
@@ -56,7 +56,7 @@
             </select>
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-            <label tooltip="Was Rerun?">Was Rerun: </label>
+            <label>Was Rerun: </label>
             <select class="form-control" 
               ng-model="filters.transaction.wasRerun" 
               ng-class="{formControlNotEmpty: filters.transaction.wasRerun}">
@@ -68,14 +68,14 @@
         </div>
         <div class="settings_div">
           <div class="settings_div" style="width: 48%; float: left;">
-            <label tooltip="Property Key">Property Key: </label>
+            <label>Property Key: </label>
             <input type="text" 
               class="form-control" 
               ng-model="filters.transaction.propertyKey" 
               ng-class="{formControlNotEmpty: filters.transaction.propertyKey}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-            <label tooltip="Property Value">Property Value: </label>
+            <label>Property Value: </label>
             <input type="text" 
               class="form-control" 
               ng-disabled="!filters.transaction.propertyKey" 
@@ -93,14 +93,14 @@
     <div class="auditFilterDiv filterBoxSizing">
       <label class="auditFilterDivLabel">Filter by Route: </label>
       <div class="settings_div">
-        <label tooltip="Status Code">Status Code: </label>
+        <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
         <input type="text" 
           class="form-control" 
           ng-model="filters.route.statusCode" 
           ng-class="{formControlNotEmpty: filters.route.statusCode}">
       </div>
       <div class="settings_div">
-        <label tooltip="Path">Path: </label>
+        <label>Path: </label>
         <input type="text" 
           class="form-control" 
           ng-model="filters.route.path" 
@@ -108,14 +108,14 @@
       </div>
       <div class="settings_div">
         <div class="settings_div" style="width: 48%; float: left;">
-          <label tooltip="Request Parameter Key">Request Param Key: </label>
+          <label>Request Param Key: </label>
           <input type="text" 
             class="form-control" 
             ng-model="filters.route.requestParamKey" 
             ng-class="{formControlNotEmpty: filters.route.requestParamKey}">
         </div>
         <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-          <label tooltip="Request Parameter Value">Request Param Value: </label>
+          <label>Request Param Value: </label>
           <input type="text" 
             class="form-control" 
             ng-disabled="!filters.route.requestParamKey" 
@@ -128,14 +128,14 @@
     <div class="auditFilterDiv filterBoxSizing" style="margin-right: 0px;">
       <label class="auditFilterDivLabel">Filter by Orchestration: </label>
       <div class="settings_div">
-        <label tooltip="Status Code">Status Code: </label>
+        <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
         <input type="text" 
           class="form-control" 
           ng-model="filters.orchestration.statusCode" 
           ng-class="{formControlNotEmpty: filters.orchestration.statusCode}">
       </div>
       <div class="settings_div">
-        <label tooltip="Path">Path: </label>
+        <label>Path: </label>
         <input type="text" 
           class="form-control" 
           ng-model="filters.orchestration.path" 
@@ -143,14 +143,14 @@
       </div>
       <div class="settings_div">
         <div class="settings_div" style="width: 48%; float: left;">
-          <label tooltip="Request Parameter Key">Request Param Key: </label>
+          <label>Request Param Key: </label>
           <input type="text" 
             class="form-control" 
             ng-model="filters.orchestration.requestParamKey" 
             ng-class="{formControlNotEmpty: filters.orchestration.requestParamKey}">
         </div>
         <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-          <label tooltip="Request Parameter Value">Request Param Value: </label>
+          <label>Request Param Value: </label>
           <input type="text" 
             class="form-control" 
             ng-disabled="!filters.orchestration.requestParamKey" 
