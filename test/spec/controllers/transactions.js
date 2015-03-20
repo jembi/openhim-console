@@ -149,7 +149,7 @@ describe('Controller: TransactionsCtrl', function () {
     filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8');
     filters.filters['response.status'].should.equal('2xx');
     filters.filters['request.path'].should.equal('/path');
-    filters.filters['childIDs.0'].should.equal('{"$exists": true}');
+    filters.filters['childIDs.0'].should.equal('{"$exists":true}');
     filters.filters['routes.response.status'].should.equal('2xx');
     filters.filters['orchestrations.response.status'].should.equal('2xx');
 
