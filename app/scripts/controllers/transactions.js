@@ -1,6 +1,7 @@
 'use strict';
 /* global jQuery:false */
 /* global moment:false */
+/* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
   .controller('TransactionsCtrl', function ($scope, $modal, $location, Api, Alerting) {
@@ -9,32 +10,40 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // if no parameters
+    if ( angular.equals({}, $location.search()) ){
+      $scope.isCollapsed = true;
+    }else{
+      $scope.isCollapsed = false;
+    }
+
+    /* setup default filter options */
+
+    $scope.showpage = 0;
+    $scope.showlimit = 10;
+    $scope.checkAll = false;
+    $scope.transactionsSelected = [];
+    $scope.rerunTransactionsSelected = 0;
+
+    // default settings
+    $scope.settings = {};
+    $scope.settings.list = {};
+    $scope.settings.list.tabview = 'same';
+    $scope.settings.filter = {};
+    $scope.settings.filter.limit = 10;
+
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
     var userSettings = consoleSession.sessionUserSettings;
 
-    $scope.checkAll = false;
-    $scope.transactionsSelected = [];
-    $scope.rerunTransactionsSelected = 0;
+    $scope.filters = {};
+    $scope.filters.transaction = {};
+    $scope.filters.route = {};
+    $scope.filters.orchestration = {};
 
-    //return results for the first page (10 results)
-    $scope.showpage = 0;
-    $scope.showlimit = 10;
-
-
-    // setup default transactions settings
-    $scope.settings = {};
-    $scope.settings.filter = {};
-    $scope.settings.filter.limit = 10;
-    $scope.settings.filter.status = '';
-    $scope.settings.filter.channel = '';
-    $scope.settings.filter.dateStart = '';
-    $scope.settings.filter.dateEnd = '';
-    $scope.settings.list = {};
-    $scope.settings.list.tabview = 'same';
-
-    if ( userSettings ){
+    // check if no parameters exist and user has settings defined
+    if ( angular.equals({}, $location.search()) && userSettings ){
       if ( userSettings.filter ){
         
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0){
@@ -43,8 +52,8 @@ angular.module('openhimConsoleApp')
           $scope.settings.filter.limit = 100;
         }
 
-        $scope.settings.filter.status = userSettings.filter.status;
-        $scope.settings.filter.channel = userSettings.filter.channel;
+        $scope.filters.transaction.status = userSettings.filter.status;
+        $scope.filters.transaction.channel = userSettings.filter.channel;
         $scope.settings.filter.dateStart = '';
         $scope.settings.filter.dateEnd = '';
       }
@@ -53,36 +62,69 @@ angular.module('openhimConsoleApp')
         $scope.settings.list.tabview = userSettings.list.tabview;
       }
     }
-    // setup default transactions settings
-    
 
-    // get the user to find user roles
-    Api.Users.get({ email: $scope.consoleSession.sessionUser } , function(user){
-      // get the channels for the transactions filter dropdown
-      $scope.channels = Api.Channels.query(function(){
-        $scope.channelsMap = {};
-        angular.forEach($scope.channels, function(channel){
-          $scope.channelsMap[channel._id] = {};
-          $scope.channelsMap[channel._id].name = channel.name;
+    // setup default transaction settings      
+    if ( $location.search().limit ){ $scope.settings.filter.limit = $location.search().limit; }
+    if ( $location.search().dateStart ){ $scope.settings.filter.dateStart = $location.search().dateStart; }
+    if ( $location.search().dateEnd ){ $scope.settings.filter.dateEnd = $location.search().dateEnd; }
 
-          if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
-            if ( user.groups.indexOf('admin') >= 0 ){
-              $scope.rerunAllowedAdmin = true;
-            }else{
-              angular.forEach(user.groups, function(role){
-                if ( channel.txRerunAcl.indexOf(role) >= 0 ){
-                  $scope.channelsMap[channel._id].rerun = true;
-                }
-              });
-            }
+    // search for transaction filters
+    if ( $location.search().txStatus ){ $scope.filters.transaction.status = $location.search().txStatus; }
+    if ( $location.search().txChannel ){ $scope.filters.transaction.channel = $location.search().txChannel; }
+    if ( $location.search().txStatusCode ){ $scope.filters.transaction.statusCode = $location.search().txStatusCode; }
+    if ( $location.search().txPath ){ $scope.filters.transaction.path = $location.search().txPath; }
+    if ( $location.search().txParamKey ){ $scope.filters.transaction.requestParamKey = $location.search().txParamKey; }
+    if ( $location.search().txParamValue ){ $scope.filters.transaction.requestParamValue = $location.search().txParamValue; }
+    if ( $location.search().txClient ){ $scope.filters.transaction.client = $location.search().txClient; }
+    if ( $location.search().txWasRerun ){ $scope.filters.transaction.wasRerun = $location.search().txWasRerun; }
+    if ( $location.search().txPropertyKey ){ $scope.filters.transaction.propertyKey = $location.search().txPropertyKey; }
+    if ( $location.search().txPropertyValue ){ $scope.filters.transaction.propertyValue = $location.search().txPropertyValue; }
+
+    // search for route filters
+    if ( $location.search().routeStatusCode ){ $scope.filters.route.statusCode = $location.search().routeStatusCode; }
+    if ( $location.search().routePath ){ $scope.filters.route.path = $location.search().routePath; }
+    if ( $location.search().routeParamKey ){ $scope.filters.route.requestParamKey = $location.search().routeParamKey; }
+    if ( $location.search().routeParamValue ){ $scope.filters.route.requestParamValue = $location.search().routeParamValue; }
+
+    // search for orchestration filters
+    if ( $location.search().orchStatusCode ){ $scope.filters.orchestration.statusCode = $location.search().orchStatusCode; }
+    if ( $location.search().orchPath ){ $scope.filters.orchestration.path = $location.search().orchPath; }
+    if ( $location.search().orchParamKey ){ $scope.filters.orchestration.requestParamKey = $location.search().orchParamKey; }
+    if ( $location.search().orchParamValue ){ $scope.filters.orchestration.requestParamValue = $location.search().orchParamValue; }
+
+    // get all filters needed for dropdowns
+    Api.TransactionsFilterOptions.get(function(transactionsFilterOptions){
+
+      $scope.channels = transactionsFilterOptions.channels;
+      $scope.clients = transactionsFilterOptions.clients;
+
+      var userGroups = $scope.consoleSession.sessionUserGroups;
+
+      $scope.channelsMap = {};
+      angular.forEach($scope.channels, function(channel){
+        $scope.channelsMap[channel._id] = {};
+        $scope.channelsMap[channel._id].name = channel.name;
+
+        if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
+          if ( userGroups.indexOf('admin') >= 0 ){
+            $scope.rerunAllowedAdmin = true;
+          }else{
+            angular.forEach(userGroups, function(role){
+              if ( channel.txRerunAcl.indexOf(role) >= 0 ){
+                $scope.channelsMap[channel._id].rerun = true;
+              }
+            });
           }
-        });
-      }, function(){ /* server error - could not connect to API to get channels */ });
-    }, function(){ /* server error - could not connect to API to get user details */ });
+        }
+      });
 
+    }, function(err){
+      Alerting.AlertAddServerMsg(err.status);
+    });
+    
     /***************************************************/
     /**         Initial page load functions           **/
-    /***************************************************/
+    /***************************************************/   
 
 
 
@@ -90,32 +132,146 @@ angular.module('openhimConsoleApp')
     /**         Transactions List and Detail view functions           **/
     /*******************************************************************/
 
+
     //setup filter options
-    $scope.returnFilterObject = function(){
+    $scope.returnFilters = function(){
+
       var filtersObject = {};
-      var startDate, endDate;
-      var filterStatus, filterChannel, filterDateStart, filterDateEnd;
+      var filterDateStart, filterDateEnd;
 
-      filterStatus = $scope.settings.filter.status;
-      filterChannel = $scope.settings.filter.channel;
-      filterDateStart = $scope.settings.filter.dateStart;
-      filterDateEnd = $scope.settings.filter.dateEnd;
-      
-
-      if(filterStatus){ filtersObject.status = filterStatus; }
-      if(filterChannel){ filtersObject.channelID = filterChannel; }
-      if(filterDateStart && filterDateEnd){
-        startDate = moment(filterDateStart).format();
-        endDate = moment(filterDateEnd).endOf('day').format();
-
-        filtersObject.startDate = startDate;
-        filtersObject.endDate = endDate;
-      }
       filtersObject.filterPage = $scope.showpage;
       filtersObject.filterLimit = $scope.showlimit;
 
-      return filtersObject;
+      /* ##### construct filters ##### */
+      filtersObject.filters = {};
+
+      // date filter
+      filterDateStart = $scope.settings.filter.dateStart;
+      filterDateEnd = $scope.settings.filter.dateEnd;
+      if(filterDateStart && filterDateEnd){
+        var startDate = moment(filterDateStart).format();
+        var endDate = moment(filterDateEnd).endOf('day').format();
+        filtersObject.filters['request.timestamp'] = JSON.stringify( { '$gte': startDate, '$lte': endDate } );
+      }
+
+      /* ----- filter by transaction (basic) ----- */
+      // add transaction status filter
+      var txStatus = $scope.filters.transaction.status;
+      if ( valueNotEmpty(txStatus) === true ) {
+        filtersObject.filters.status = txStatus;
+      }
+
+      var txChannel = $scope.filters.transaction.channel;
+      if ( valueNotEmpty(txChannel) === true ) {
+        filtersObject.filters.channelID = txChannel;
+      }
+      /* ----- filter by transaction (basic) ----- */
+
+      /* ----- filter by transaction (advanced) ----- */
+      // add transaction status filter
+      var txStatusCode = $scope.filters.transaction.statusCode;
+      if ( valueNotEmpty(txStatusCode) === true ) {
+        filtersObject.filters['response.status'] = txStatusCode;
+      }
+
+      var txPath = $scope.filters.transaction.path;
+      if ( valueNotEmpty(txPath) === true ) {
+        filtersObject.filters['request.path'] = txPath;
+      }
+
+      var txParamKey = $scope.filters.transaction.requestParamKey;
+      var txParamValue = $scope.filters.transaction.requestParamValue;
+      if ( valueNotEmpty(txParamKey) === true ) {
+        filtersObject.filters['request.querystring'] = txParamKey;
+
+        if ( valueNotEmpty(txParamValue) === true ){
+          filtersObject.filters['request.querystring'] += '=' + txParamValue;
+        }       
+      }
+
+      var txClient = $scope.filters.transaction.client;
+      if ( valueNotEmpty(txClient) === true ) {
+        filtersObject.filters.clientID = txClient;
+      }
+
+      var txWasRerun = $scope.filters.transaction.wasRerun;
+      if ( valueNotEmpty(txWasRerun) === true ) {
+
+        // if wasRerun is 'yes' - query all transactions that have child IDs
+        if ( txWasRerun === 'yes' ){
+          filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': true } );
+        }else if ( txWasRerun === 'no' ){
+          filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': false } );
+        }        
+      }
+
+      var txPropertyKey = $scope.filters.transaction.propertyKey;
+      var txPropertyValue = $scope.filters.transaction.propertyValue;
+      if ( valueNotEmpty(txPropertyKey) === true ) {
+        filtersObject.filters.properties = {};
+        filtersObject.filters.properties[txPropertyKey] = null;
+
+        if ( valueNotEmpty(txPropertyValue) === true ) {
+          filtersObject.filters.properties[txPropertyKey] = txPropertyValue;
+        }
+      }
+      
+      /* ----- filter by transaction (advanced) ----- */
+
+
+
+      /* ----- filter by route ----- */
+      var routeStatusCode = $scope.filters.route.statusCode;
+      if ( valueNotEmpty(routeStatusCode) === true ) {
+        filtersObject.filters['routes.response.status'] = routeStatusCode;
+      }
+
+      var routePath = $scope.filters.route.path;
+      if ( valueNotEmpty(routePath) === true ) {
+        filtersObject.filters['routes.request.path'] = routePath;
+      }
+
+      var routeParamKey = $scope.filters.route.requestParamKey;
+      var routeParamValue = $scope.filters.route.requestParamValue;
+      if ( valueNotEmpty(routeParamKey) === true ) {
+        filtersObject.filters['routes.request.querystring'] = routeParamKey;
+
+        if ( valueNotEmpty(routeParamValue) === true ){
+          filtersObject.filters['routes.request.querystring'] += '=' + routeParamValue;
+        }       
+      }
+      /* ----- filter by route ----- */
+
+
+
+      /* ----- filter by orchestration ----- */
+      var orchStatusCode = $scope.filters.orchestration.statusCode;
+      if ( valueNotEmpty(orchStatusCode) === true ) {
+        filtersObject.filters['orchestrations.response.status'] = orchStatusCode;
+      }
+
+      var orchPath = $scope.filters.orchestration.path;
+      if ( valueNotEmpty(orchPath) === true ) {
+        filtersObject.filters['orchestrations.request.path'] = orchPath;
+      }
+
+      var orchParamKey = $scope.filters.orchestration.requestParamKey;
+      var orchParamValue = $scope.filters.orchestration.requestParamValue;
+      if ( valueNotEmpty(orchParamKey) === true ) {
+        filtersObject.filters['orchestrations.request.querystring'] = orchParamKey;
+
+        if ( valueNotEmpty(orchParamValue) === true ){
+          filtersObject.filters['orchestrations.request.querystring'] += '=' + orchParamValue;
+        }       
+      }
+      /* ----- filter by orchestration ----- */
+
+      
+      /* ##### construct filters ##### */
+        return filtersObject;
+      
     };
+
 
     var refreshSuccess = function (transactions){
       // on success
@@ -143,6 +299,41 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
 
+    $scope.applyFiltersToUrl = function(){
+
+      // first clear existing filters
+      clearUrlParams();
+
+      if ( $scope.settings.filter.limit ){ $location.search( 'limit', $scope.settings.filter.limit ); }
+      if ( $scope.settings.filter.dateStart ){ $location.search( 'startDate', $scope.settings.filter.dateStart ); }
+      if ( $scope.settings.filter.dateEnd ){ $location.search( 'endDate', $scope.settings.filter.dateEnd ); }
+
+      // search for transaction filters
+      if ( $scope.filters.transaction.status ){ $location.search( 'txStatus', $scope.filters.transaction.status ); }
+      if ( $scope.filters.transaction.channel ){ $location.search( 'txChannel', $scope.filters.transaction.channel ); }
+      if ( $scope.filters.transaction.statusCode ){ $location.search( 'txStatusCode', $scope.filters.transaction.statusCode ); }
+      if ( $scope.filters.transaction.path ){ $location.search( 'txPath', $scope.filters.transaction.path ); }
+      if ( $scope.filters.transaction.requestParamKey ){ $location.search( 'txParamKey', $scope.filters.transaction.requestParamKey ); }
+      if ( $scope.filters.transaction.requestParamValue ){ $location.search( 'txParamValue', $scope.filters.transaction.requestParamValue ); }
+      if ( $scope.filters.transaction.client ){ $location.search( 'txClient', $scope.filters.transaction.client ); }
+      if ( $scope.filters.transaction.wasRerun ){ $location.search( 'txWasRerun', $scope.filters.transaction.wasRerun ); }
+      if ( $scope.filters.transaction.propertyKey ){ $location.search( 'txPropertyKey', $scope.filters.transaction.propertyKey ); }
+      if ( $scope.filters.transaction.propertyValue ){ $location.search( 'txPropertyValue', $scope.filters.transaction.propertyValue ); }
+
+      // search for route filters
+      if ( $scope.filters.route.statusCode ){ $location.search( 'routeStatusCode', $scope.filters.route.statusCode ); }
+      if ( $scope.filters.route.path ){ $location.search( 'routePath', $scope.filters.route.path ); }
+      if ( $scope.filters.route.requestParamKey ){ $location.search( 'routeParamKey', $scope.filters.route.requestParamKey ); }
+      if ( $scope.filters.route.requestParamValue ){ $location.search( 'routeParamValue', $scope.filters.route.requestParamValue ); }
+
+      // search for orchestration filters
+      if ( $scope.filters.orchestration.statusCode ){ $location.search( 'orchStatusCode', $scope.filters.orchestration.statusCode ); }
+      if ( $scope.filters.orchestration.path ){ $location.search( 'orchPath', $scope.filters.orchestration.path ); }
+      if ( $scope.filters.orchestration.requestParamKey ){ $location.search( 'orchParamKey', $scope.filters.orchestration.requestParamKey ); }
+      if ( $scope.filters.orchestration.requestParamValue ){ $location.search( 'orchParamValue', $scope.filters.orchestration.requestParamValue ); }
+
+    };
+
     //Refresh transactions list
     $scope.refreshTransactionsList = function () {
       $scope.transactions = null;
@@ -152,7 +343,7 @@ angular.module('openhimConsoleApp')
       $scope.showpage = 0;
       $scope.showlimit = $scope.settings.filter.limit;
 
-      Api.Transactions.query( $scope.returnFilterObject(), refreshSuccess, refreshError);
+      Api.Transactions.query( $scope.returnFilters('filtersObject'), refreshSuccess, refreshError);
 
     };
     //run the transaction list view for the first time
@@ -164,7 +355,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
-      Api.Transactions.query( $scope.returnFilterObject(), loadMoreSuccess, loadMoreError);
+      Api.Transactions.query( $scope.returnFilters('filtersObject'), loadMoreSuccess, loadMoreError);
     };
 
     var loadMoreSuccess = function (transactions){
@@ -202,17 +393,30 @@ angular.module('openhimConsoleApp')
         }
       }
     };
+
+    var clearUrlParams =  function(){
+      // loop through all parameters
+      for (var property in $location.search()) {
+        if ($location.search().hasOwnProperty(property)) {
+          // set parameter to null to remove
+          $location.search(property, null);
+        }
+      }
+    };
     
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
-      $scope.settings.filter.limit = 10;
-      $scope.settings.filter.status = '';
-      $scope.settings.filter.channel = '';
+
+      // reset default filters
+      $scope.settings.filter.limit = 100;
       $scope.settings.filter.dateStart = '';
       $scope.settings.filter.dateEnd = '';
       $scope.settings.list.tabview = 'same';
+      $scope.filters.transaction.status = '';
+      $scope.filters.transaction.channel = '';
 
-      //run the transaction list view after filters been cleared
+      clearUrlParams();
+
       $scope.refreshTransactionsList();
     };
 

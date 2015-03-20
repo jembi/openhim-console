@@ -18,57 +18,7 @@
             <tabset class="transaction_settings_tabset" justified="false">
               <tab>
                 <tab-heading>Filter Settings</tab-heading>
-                <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by their status">Status: </label>
-                  <!--<select class="form-control" ng-model="filterStatus">-->
-                  <select class="form-control" ng-model="settings.filter.status">
-                    <option value="">Don't filter</option>
-                    <option value="Failed">Show Failed</option>
-                    <option value="Processing">Show Processing</option>
-                    <option value="Completed">Show Completed</option>
-                    <option value="Completed with error(s)">Show Completed with error(s)</option>
-                    <option value="Successful">Show Successful</option>
-                  </select>
-                </div>
-                <div class="settings_div">
-                  <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
-                  <select class="form-control" ng-model="settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
-                    <option value="">Don't filter</option>
-                  </select>
-                </div>
-                <div class="settings_div">
-                  <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>                    
-                  <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-                    <input ng-model="settings.filter.dateStart" type="text" class="form-control" name="start" />
-                    <span class="input-group-addon">to</span>
-                    <input ng-model="settings.filter.dateEnd" type="text" class="form-control" name="end" />
-                  </div>                            
-                  <!-- Date range picker functionality -->
-                  <script type="text/javascript">
-                    // When the document is ready
-                    $(document).ready(function () {
-                      $('.input-daterange').datepicker({
-                        todayBtn: "linked",
-                        format: 'yyyy-mm-dd'
-                      });
-                    });
-                  </script>
-                </div>
-                <div class="settings_div">
-                  <label tooltip="Set the limit of how many records to display">Limit: </label>
-                  <select class="form-control" ng-model="settings.filter.limit">
-                    <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="500">500</option>
-                  </select>
-                </div>
-
-                <div class="transactionsFilterRefreshDiv">
-                  <button class="btn btn-primary" ng-click="refreshTransactionsList();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
-                  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
-                </div>
+                <div ng-include="'views/partials/transaction-filter-settings.html'"></div>
               </tab>
 
               <tab>

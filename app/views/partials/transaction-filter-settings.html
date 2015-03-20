@@ -1,0 +1,223 @@
+<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed" style="margin-bottom: 10px;">Toggle Advanced Filtering</button>
+
+<div collapse="isCollapsed">
+  <div class="well well-lg auditFilterDiv" style="padding-top: 20px; margin-right: 0px;">
+    <label class="auditFilterDivLabel">Advanced Filtering: </label>
+
+    <div class="auditFilterDiv filterBoxSizing" style="width: 50%">
+      <label class="auditFilterDivLabel">Filter by Transaction: </label>
+
+      <div style="float: left; border-right: 1px solid #ccc; padding: 0px 10px 0px 0px; margin: 0px 10px 0px 0px; width: 49%;">
+        
+        <div class="settings_div">
+          <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.transaction.statusCode" 
+            ng-class="{formControlNotEmpty: filters.transaction.statusCode}">
+        </div>
+        <div class="settings_div">
+          <label tooltip="Path">Path: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.transaction.path" 
+            ng-class="{formControlNotEmpty: filters.transaction.path}">
+        </div>
+        <div class="settings_div">
+          <div class="settings_div" style="width: 48%; float: left;">
+            <label tooltip="Request Parameter Key">Request Param Key: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.transaction.requestParamKey" 
+              ng-class="{formControlNotEmpty: filters.transaction.requestParamKey}">
+          </div>
+          <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+            <label tooltip="Request Parameter Value">Request Param Value: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-disabled="!filters.transaction.requestParamKey" 
+              ng-model="filters.transaction.requestParamValue" 
+              ng-class="{formControlNotEmpty: filters.transaction.requestParamValue}">
+          </div>
+        </div>
+      </div>
+
+      <div style="float: left; width: 49%">
+        <div class="settings_div">
+          <div class="settings_div" style="width: 48%; float: left;">
+            <label tooltip="Client">Client: </label>
+            <select class="form-control" 
+              ng-model="filters.transaction.client" 
+              ng-options="client._id as client.name for client in clients" 
+              ng-class="{formControlNotEmpty: filters.transaction.client}">
+              <option value="">Don't filter</option>
+            </select>
+          </div>
+          <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+            <label tooltip="Was Rerun?">Was Rerun: </label>
+            <select class="form-control" 
+              ng-model="filters.transaction.wasRerun" 
+              ng-class="{formControlNotEmpty: filters.transaction.wasRerun}">
+              <option value="">Don't filter</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings_div">
+          <div class="settings_div" style="width: 48%; float: left;">
+            <label tooltip="Property Key">Property Key: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.transaction.propertyKey" 
+              ng-class="{formControlNotEmpty: filters.transaction.propertyKey}">
+          </div>
+          <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+            <label tooltip="Property Value">Property Value: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-disabled="!filters.transaction.propertyKey" 
+              ng-model="filters.transaction.propertyValue" 
+              ng-class="{formControlNotEmpty: filters.transaction.propertyValue}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="auditFilterDiv filterBoxSizing">
+      <label class="auditFilterDivLabel">Filter by Route: </label>
+      <div class="settings_div">
+        <label tooltip="Status Code">Status Code: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.route.statusCode" 
+          ng-class="{formControlNotEmpty: filters.route.statusCode}">
+      </div>
+      <div class="settings_div">
+        <label tooltip="Path">Path: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.route.path" 
+          ng-class="{formControlNotEmpty: filters.route.path}">
+      </div>
+      <div class="settings_div">
+        <div class="settings_div" style="width: 48%; float: left;">
+          <label tooltip="Request Parameter Key">Request Param Key: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.route.requestParamKey" 
+            ng-class="{formControlNotEmpty: filters.route.requestParamKey}">
+        </div>
+        <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+          <label tooltip="Request Parameter Value">Request Param Value: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-disabled="!filters.route.requestParamKey" 
+            ng-model="filters.route.requestParamValue" 
+            ng-class="{formControlNotEmpty: filters.route.requestParamValue}">
+        </div>
+      </div>
+    </div>
+
+    <div class="auditFilterDiv filterBoxSizing" style="margin-right: 0px;">
+      <label class="auditFilterDivLabel">Filter by Orchestration: </label>
+      <div class="settings_div">
+        <label tooltip="Status Code">Status Code: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.orchestration.statusCode" 
+          ng-class="{formControlNotEmpty: filters.orchestration.statusCode}">
+      </div>
+      <div class="settings_div">
+        <label tooltip="Path">Path: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.orchestration.path" 
+          ng-class="{formControlNotEmpty: filters.orchestration.path}">
+      </div>
+      <div class="settings_div">
+        <div class="settings_div" style="width: 48%; float: left;">
+          <label tooltip="Request Parameter Key">Request Param Key: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.orchestration.requestParamKey" 
+            ng-class="{formControlNotEmpty: filters.orchestration.requestParamKey}">
+        </div>
+        <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+          <label tooltip="Request Parameter Value">Request Param Value: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-disabled="!filters.orchestration.requestParamKey" 
+            ng-model="filters.orchestration.requestParamValue" 
+            ng-class="{formControlNotEmpty: filters.orchestration.requestParamValue}">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="auditFilterDiv">
+  <label class="auditFilterDivLabel">Basic Filters: </label>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter transactions by their status">Status: </label>
+    <!--<select class="form-control" ng-model="filterStatus">-->
+    <select class="form-control" 
+      ng-model="filters.transaction.status" 
+      ng-class="{formControlNotEmpty: filters.transaction.status}">
+      <option value="">Don't filter</option>
+      <option value="Failed">Show Failed</option>
+      <option value="Processing">Show Processing</option>
+      <option value="Completed">Show Completed</option>
+      <option value="Completed with error(s)">Show Completed with error(s)</option>
+      <option value="Successful">Show Successful</option>
+    </select>
+  </div>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
+    <select class="form-control" 
+      ng-model="filters.transaction.channel" 
+      ng-options="channel._id as channel.name for channel in channels" 
+      ng-class="{formControlNotEmpty: filters.transaction.channel}">
+      <option value="">Don't filter</option>
+    </select>
+  </div>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
+    <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
+      <input ng-model="settings.filter.dateStart" type="text" class="form-control" name="start" ng-class="{formControlNotEmpty: settings.filter.dateStart}" />
+      <span class="input-group-addon">to</span>
+      <input ng-model="settings.filter.dateEnd" type="text" class="form-control" name="end" ng-class="{formControlNotEmpty: settings.filter.dateEnd}" />
+    </div>
+    <!-- Date range picker functionality -->
+    <script type="text/javascript">
+      // When the document is ready
+      $(document).ready(function () {
+        $('.input-daterange').datepicker({
+          todayBtn: "linked",
+          format: 'yyyy-mm-dd'
+        });
+      });
+    </script>
+  </div>
+  <div class="settings_div" style="float: left;">
+    <label tooltip="Set the limit of how many records to display">Limit: </label>
+    <select class="form-control" ng-model="settings.filter.limit">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="200">200</option>
+      <option value="500">500</option>
+    </select>
+  </div>
+
+</div>
+
+<div class="transactionsFilterRefreshDiv">
+  <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+</div>

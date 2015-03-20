@@ -89,7 +89,9 @@ angular.module('openhimConsoleApp')
       
       filtersObject.filterPage = 0;
       filtersObject.filterLimit = 0;
-      filtersObject.parentID = $routeParams.transactionId;
+      filtersObject.filters = {};
+      filtersObject.filters.parentID = $routeParams.transactionId;
+
       return filtersObject;
     };
 
@@ -101,7 +103,7 @@ angular.module('openhimConsoleApp')
         $scope.childTransactions = values;
       },
       function (err) {
-        $scope.returnError(err.status);
+        Alerting.AlertAddServerMsg(err.status);
       });
 
     };

@@ -25,6 +25,7 @@ angular.module('openhimConsoleApp')
       }),
 
       Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
+      TransactionsFilterOptions: $resource( server + '/transactions-filter-options/', {}),
 
       Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }, {
         update: { method: 'PUT' }
