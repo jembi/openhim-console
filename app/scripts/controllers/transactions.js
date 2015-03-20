@@ -124,7 +124,7 @@ angular.module('openhimConsoleApp')
     
     /***************************************************/
     /**         Initial page load functions           **/
-    /***************************************************/   
+    /***************************************************/
 
 
 
@@ -202,7 +202,7 @@ angular.module('openhimConsoleApp')
           filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': true } );
         }else if ( txWasRerun === 'no' ){
           filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': false } );
-        }        
+        }
       }
 
       var txPropertyKey = $scope.filters.transaction.propertyKey;
@@ -238,7 +238,7 @@ angular.module('openhimConsoleApp')
 
         if ( valueNotEmpty(routeParamValue) === true ){
           filtersObject.filters['routes.request.querystring'] += '=' + routeParamValue;
-        }       
+        }
       }
       /* ----- filter by route ----- */
 
@@ -262,13 +262,13 @@ angular.module('openhimConsoleApp')
 
         if ( valueNotEmpty(orchParamValue) === true ){
           filtersObject.filters['orchestrations.request.querystring'] += '=' + orchParamValue;
-        }       
+        }
       }
       /* ----- filter by orchestration ----- */
 
       
       /* ##### construct filters ##### */
-        return filtersObject;
+      return filtersObject;
       
     };
 
