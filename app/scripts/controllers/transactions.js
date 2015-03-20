@@ -74,7 +74,7 @@ angular.module('openhimConsoleApp')
     }
     if ( $location.search().txPath ){
       $scope.filters.transaction.path = $location.search().txPath;
-      $scope.isCollapsed = false; 
+      $scope.isCollapsed = false;
     }
     if ( $location.search().txParamKey ){
       $scope.filters.transaction.requestParamKey = $location.search().txParamKey;
