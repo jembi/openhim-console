@@ -1,5 +1,6 @@
 'use strict';
 /* jshint expr: true */
+/* global sinon:false */
 
 describe('Controller: TasksCtrl', function () {
 
@@ -32,7 +33,10 @@ describe('Controller: TasksCtrl', function () {
 
     createController = function() {
       scope = $rootScope.$new();
-      return $controller('TasksCtrl', { $scope: scope });
+      var route = {
+        reload: sinon.spy()
+      };
+      return $controller('TasksCtrl', { $scope: scope, $route: route });
     };
 
   }));
@@ -119,4 +123,39 @@ describe('Controller: TasksCtrl', function () {
     scope.alerts.bottom[0].should.have.property('msg', 'There are currently no tasks created');
   });
 
+  it('should send a correct update after pausing a task', function () {
+    createController();
+
+    var task = [
+      { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Processing' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Queued' }], 'status': 'Processing' }
+    ];
+
+    httpBackend.expectPUT(new RegExp('.*/tasks'), { status: 'Paused' }).respond(200, '');
+    scope.pauseTask(task);
+    httpBackend.flush();
+  });
+
+  it('should send a correct update after resuming a task', function () {
+    createController();
+
+    var task = [
+      { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Processing' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Queued' }], 'status': 'Processing' }
+    ];
+
+    httpBackend.expectPUT(new RegExp('.*/tasks'), { status: 'Queued' }).respond(200, '');
+    scope.resumeTask(task);
+    httpBackend.flush();
+  });
+
+  it('should open a modal to confirm cancellation of a task', function () {
+    createController();
+
+    var task = [
+      { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Processing' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Queued' }], 'status': 'Processing' }
+    ];
+
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
+    scope.cancelTask(task);
+    httpBackend.flush();
+  });
 });
