@@ -107,9 +107,9 @@ angular.module('openhimConsoleApp')
         var warningMessage = 'Could not delete the group because it is associtated with the following channels: ';
         for (var i = 0; i < err.data.length; i++) {
           if (i > 0 ) {
-            warningMessage += ',';
+            warningMessage += ', ';
           }
-          warningMessage += err.data[i].name + ' ';
+          warningMessage += err.data[i].name;
         }
         Alerting.AlertAddMsg('top', 'warning', warningMessage);
       } else {
