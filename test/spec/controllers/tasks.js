@@ -22,8 +22,8 @@ describe('Controller: TasksCtrl', function () {
     httpBackend = $httpBackend;
 
     $httpBackend.when('GET', new RegExp('.*/tasks')).respond([
-      { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' },
-      { '_id': '52e1eac5e807b57711509854', 'completedDate': '2014-08-11T11:53:46.483Z', 'remainingTransactions': 1, 'user': 'testuser', 'created': '2014-08-11T11:53:39.971Z', 'transactions': [{ 'tid': '54e072e1ccbb302937ffb772', 'tstatus': 'Processing' }], 'status': 'Processing' }
+      { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'totalTransactions': 2, 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' },
+      { '_id': '52e1eac5e807b57711509854', 'completedDate': '2014-08-11T11:53:46.483Z', 'totalTransactions': 1, 'remainingTransactions': 1, 'user': 'testuser', 'created': '2014-08-11T11:53:39.971Z', 'transactions': [{ 'tid': '54e072e1ccbb302937ffb772', 'tstatus': 'Processing' }], 'status': 'Processing' }
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
@@ -65,15 +65,19 @@ describe('Controller: TasksCtrl', function () {
     createController();
     httpBackend.flush();
 
-    scope.filter.status = 'Completed';
-    scope.filter.user = 'super@openhim.org';
-    scope.filter.created = '2014-08-06';
+    scope.filters.limit = 100;
+    scope.filters.status = 'Completed';
+    scope.filters.user = 'super@openhim.org';
+    scope.filters.date = '2014-08-06';
     
     scope.clearFilters();
 
-    scope.filter.should.not.have.property('status');
-    scope.filter.should.not.have.property('user');
-    scope.filter.should.not.have.property('created');
+    scope.filters.should.have.property('limit', 100);
+    scope.filters.should.have.property('status', '');
+    scope.filters.should.have.property('user', '');
+    scope.filters.should.have.property('date', '');
+
+    httpBackend.flush();
   });
 
   it('should get the execution time', function () {
@@ -107,7 +111,7 @@ describe('Controller: TasksCtrl', function () {
       { '_id': '52e1eac5e807b57711509854', 'completedDate': '2014-08-11T11:53:46.483Z', 'remainingTransactions': 1, 'user': 'testuser', 'created': '2014-08-11T11:53:39.971Z', 'transactions': [{ 'tid': '54e072e1ccbb302937ffb772', 'tstatus': 'Processing' }], 'status': 'Processing' }
     ];
 
-    scope.querySuccess(tasks);
+    scope.refreshSuccess(tasks);
     scope.tasks.length.should.equal(2);
   });
 
@@ -117,10 +121,10 @@ describe('Controller: TasksCtrl', function () {
 
     var tasks = [];
 
-    scope.querySuccess(tasks);
+    scope.refreshSuccess(tasks);
     scope.tasks.length.should.equal(0);
     scope.alerts.bottom.length.should.equal(1);
-    scope.alerts.bottom[0].should.have.property('msg', 'There are currently no tasks created');
+    scope.alerts.bottom[0].should.have.property('msg', 'There are no tasks for the current filters');
   });
 
   it('should send a correct update after pausing a task', function () {
