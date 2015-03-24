@@ -15,7 +15,7 @@ angular.module('openhimConsoleApp')
     $scope.showlimit = 10;
     $scope.filters = {};
     $scope.filters.limit = 10;
-    $scope.settings = {};    
+    $scope.settings = {};
     $scope.settings.list = {};
     $scope.settings.list.tabview = 'same';
 

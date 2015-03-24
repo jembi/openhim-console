@@ -13,7 +13,7 @@ angular.module('openhimConsoleApp')
     $scope.showlimit = 100;
     $scope.filters = {};
     $scope.filters.limit = 100;
-    $scope.settings = {};    
+    $scope.settings = {};
     $scope.settings.list = {};
     $scope.settings.list.tabview = 'same';
 
@@ -43,11 +43,9 @@ angular.module('openhimConsoleApp')
 
       // if page not set AND all transactions in the list - no filtering
       if ( $scope.getProcessedPercentage(task) !== '100%' && task.totalFilteredTransactions > showlimit && !$location.search().page && task.totalTransactions === task.totalFilteredTransactions ){
-
-          // set pagination to current transaction being processed
-          var currentProcessed = $scope.getProcessedTotal(task);
-          $scope.setPagination( Math.ceil( currentProcessed / showlimit ) );
-
+        // set pagination to current transaction being processed
+        var currentProcessed = $scope.getProcessedTotal(task);
+        $scope.setPagination( Math.ceil( currentProcessed / showlimit ) );
       }
 
       $scope.pageIndexBase = (showpage - 1) * showlimit;
@@ -188,18 +186,6 @@ angular.module('openhimConsoleApp')
     };
 
 
-
-
-
-
-
-
-
-
-
-    
-
-
     /**************************************************/
     /**         Task Calculation Functions           **/
     /**************************************************/
@@ -209,7 +195,7 @@ angular.module('openhimConsoleApp')
         var totalTransactions = task.totalTransactions;
         var remainingTransactions = task.remainingTransactions;
         return parseInt( totalTransactions - remainingTransactions );
-      }      
+      }
     };
 
     $scope.getProcessedPercentage = function(task){
