@@ -161,6 +161,17 @@
                   </table>
                 </div>
               </div>
+
+              <div ng-if="totalFilteredTransactions > showlimit" style="display: inline-block; margin-bottom: 5px;">
+                <h4>Pagination: </h4>
+                <div ng-repeat="page in pagesArray" 
+                  class="paginationBtn" 
+                  ng-class="{paginationBtnActive: page.status}"
+                  ng-click="setPagination( page.pageNum )">
+                  {{page.pageNum}}
+                </div>
+              </div>
+              
             </div>
           </div>
         </div>
