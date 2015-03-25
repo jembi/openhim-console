@@ -18,11 +18,11 @@
     <select class="form-control" 
       ng-model="filters.rerunStatus" 
       ng-class="{formControlNotEmpty: filters.rerunStatus}">
-      <option value="">Don't filter</option>
-      <option value="Queued">Show Queued</option>
-      <option value="Processing">Show Processing</option>
       <option value="Failed">Show Failed</option>
+      <option value="Processing">Show Processing</option>
       <option value="Completed">Show Completed</option>
+      <option value="Completed with error(s)">Show Completed with error(s)</option>
+      <option value="Successful">Show Successful</option>
     </select>
   </div>
   <div class="settings_div" style="float: left; margin-right: 15px;">
