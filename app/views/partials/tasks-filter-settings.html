@@ -1,0 +1,57 @@
+
+<div class="auditFilterDiv">
+  <label class="auditFilterDivLabel">Basic Filters: </label>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter rerun tasks by their status">Status: </label>
+    <select class="form-control" 
+      ng-model="filters.status" 
+      ng-class="{formControlNotEmpty: filters.status}">
+      <option value="">Don't filter</option>
+      <option value="Queued">Show Queued</option>
+      <option value="Processing">Show Processing</option>
+      <option value="Paused">Show Paused</option>
+      <option value="Cancelled">Show Cancelled</option>
+      <option value="Completed">Show Completed</option>
+    </select>
+  </div>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter rerun tasks by user">User: </label>
+    <select class="form-control" 
+      ng-model="filters.user"
+      ng-options="user.email as (user.firstname+' '+user.surname+' ('+user.email+')') for user in users"
+      ng-class="{formControlNotEmpty: filters.user}">
+      <option value="">Don't filter</option>                            
+      <!--<option ng-repeat="user in users" ng-value="user.email">{{user.firstname}} {{user.surname}} ({{user.email}})</option>-->
+    </select>
+  </div>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Pick a date to filter rerun tasks by">Date: </label>
+    <input type="text" class="form-control input-date" ng-model="filters.date" ng-class="{formControlNotEmpty: filters.date}">
+
+    <!-- Date picker functionality -->
+    <script type="text/javascript">
+      // When the document is ready
+      $(document).ready(function () {
+        $('.input-date').datepicker({
+          todayBtn: "linked",
+          format: 'yyyy-mm-dd'
+        });
+      });
+    </script>
+  </div>
+  <div class="settings_div" style="float: left;">
+    <label tooltip="Set the limit of how many records to display">Limit: </label>
+    <select class="form-control" ng-model="filters.limit">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="200">200</option>
+      <option value="500">500</option>
+    </select>
+  </div>
+</div>
+
+<div class="transactionsFilterRefreshDiv">
+  <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+</div>
