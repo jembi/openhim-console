@@ -18,6 +18,7 @@
     <select class="form-control" 
       ng-model="filters.rerunStatus" 
       ng-class="{formControlNotEmpty: filters.rerunStatus}">
+      <option value="">Don't filter</option>
       <option value="Failed">Show Failed</option>
       <option value="Processing">Show Processing</option>
       <option value="Completed">Show Completed</option>
