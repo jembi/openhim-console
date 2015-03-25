@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('TaskDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('TaskDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting, $route) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -56,5 +56,47 @@ angular.module('openhimConsoleApp')
     /**************************************************/
     /**         Task Calculation Functions           **/
     /**************************************************/
+
+    function updateTaskWithStatus(task, status) {
+      var updated = new Api.Tasks();
+      updated._id = task._id;
+      updated.status = status;
+      updated.$update({}, function(){
+        $route.reload();
+      });
+    }
+
+    $scope.pauseTask = function(task){
+      updateTaskWithStatus(task, 'Paused');
+    };
+
+    $scope.resumeTask = function(task){
+      updateTaskWithStatus(task, 'Queued');
+    };
+
+    $scope.cancelTask = function(task){
+      var cancelObject = {
+        title: 'Cancel Task',
+        button: 'Yes',
+        message: 'Are you sure you want to cancel this task?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return cancelObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // cancel confirmed
+        updateTaskWithStatus(task, 'Cancelled');
+      }, function () {
+        // cancel cancelled
+      });
+    };
 
   });

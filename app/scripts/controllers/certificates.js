@@ -76,6 +76,7 @@ angular.module('openhimConsoleApp')
       $scope.importSuccess++;
       $scope.serverRestartRequired = true;
       $scope.resetCertificates();
+      $scope.goToTop();
     };
 
     // execute the certificate upload
@@ -234,6 +235,8 @@ angular.module('openhimConsoleApp')
     var deleteSuccess = function () {
       // On success
       $scope.resetCertificates();
+      $scope.serverRestartRequired = true;
+      $scope.goToTop();
       Alerting.AlertAddMsg('trustedCertDelete', 'success', 'The Trusted Certificate has been deleted successfully');
     };
 
