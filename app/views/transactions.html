@@ -34,7 +34,21 @@
             </tabset>            
           </div>
 
-          <div id="no-more-tables">
+          <!-- Restart the server message -->
+          <alert ng-if="bulkRerunActive" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+            <div style="margin-bottom: 10px;">
+              <h2 style="margin: 5px;">You have opted to do a Bulk Rerun!</h2>
+              <h3 style="margin: 5px;">Your filters returned a total of <strong><u>{{transactions.length}}</u></strong> transactions</h3>
+              <h4>Click '<strong>Continue...</strong>' to setup you rerun procedure <br />
+              or '<strong>Clear Everything!</strong>' if you do not wish to proceed.</h4>
+            </div>
+            <button class="btn btn-danger btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
+            <button class="btn btn-danger btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Clear Everything!</button>
+          </alert>
+
+
+          <!-- down show tables if bulkRerunActive -->
+          <div id="no-more-tables" ng-if="!bulkRerunActive">
             <!-- Table with all the transaction logs -->
 
             <table class="table table-striped transactionTable">

@@ -26,7 +26,7 @@ angular.module('openhimConsoleApp')
     $scope.settings.list = {};
     $scope.settings.list.tabview = 'same';
     $scope.settings.filter = {};
-    $scope.settings.filter.limit = 10;
+    $scope.settings.filter.limit = 100;
 
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
@@ -161,6 +161,7 @@ angular.module('openhimConsoleApp')
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
 
+    // clients used for advanced filter dropdown
     $scope.clients = Api.Clients.query();
     
     /***************************************************/
@@ -379,7 +380,7 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.applyFiltersToUrl = function(){
+    $scope.applyFiltersToUrl = function( optionalParam ){
 
       // get the filter params object before clearing them
       var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
@@ -387,8 +388,14 @@ angular.module('openhimConsoleApp')
       // first clear existing filters
       clearUrlParams();
 
+      // if optionalParam param = bulkrerun
+      if ( optionalParam === 'bulkrerun' ){
+        $location.search( 'bulkRerun', 'true' );
+      }
+
       // Add filters to url
-      if ( $scope.settings.filter.limit ){ $location.search( 'limit', $scope.settings.filter.limit ); }
+      // set filter limit only if url parameter set and NOT a bulkrerun (limit not used for bulkrerun so not needed in url)
+      if ( $scope.settings.filter.limit && optionalParam !== 'bulkrerun' ){ $location.search( 'limit', $scope.settings.filter.limit ); }
       if ( $scope.settings.filter.startDate ){ $location.search( 'startDate', $scope.settings.filter.startDate ); }
       if ( $scope.settings.filter.endDate ){ $location.search( 'endDate', $scope.settings.filter.endDate ); }
 
@@ -444,7 +451,24 @@ angular.module('openhimConsoleApp')
         $scope.showpage = 0;
         $scope.showlimit = $scope.settings.filter.limit;
 
-        Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+        // if bulkRerun param true
+        if ( $location.search().bulkRerun === 'true' ){
+          // do API call only for 'bulkrerun' properties
+          var returnFilters = $scope.returnFilters();
+          // add filterRepresentation to only return bulkrerun properties
+          returnFilters.filterRepresentation = 'bulkrerun';
+
+          // remove filter limit and page because all records need to be returned
+          delete returnFilters.filterLimit;
+          delete returnFilters.filterPage;
+          
+          $scope.bulkRerunActive = true;
+
+          Api.Transactions.query( returnFilters, refreshSuccess, refreshError);
+        }else{
+          //  do normal transaction API call for transactions
+          Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+        }
 
       }else{
         Alerting.AlertAddMsg('server', 'danger', 'You appear to have errors in your filter query. Please correct and try again');
@@ -546,6 +570,17 @@ angular.module('openhimConsoleApp')
     /****************************************************/
     /**         Transactions ReRun Functions           **/
     /****************************************************/
+
+    $scope.bulkRerunContinue = function(){
+      // set checkAll to true - used to add transactions in toggleCheckedAll function
+      $scope.checkAll = true;
+
+      // do the checkAll function to add the transactions to the transactionsSelected object
+      $scope.toggleCheckedAll();
+
+      // display confirmation popup modal to complete the rerun procedure
+      $scope.confirmRerunTransactions();
+    };
     
     $scope.confirmRerunTransactions = function(){
       Alerting.AlertReset();
@@ -599,8 +634,7 @@ angular.module('openhimConsoleApp')
                   }
                 }
               }
-            }
-            
+            }            
           }
 
         });
