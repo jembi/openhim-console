@@ -15,14 +15,19 @@
 
     <fieldset>
 
-      <div class="form-group-2columns">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
-          <label><span>*</span> Country Name (2 letter code) [AU]</label>
-          <input class="form-control" type="text" ng-model="cert.countryName" ng-disabled="update" focus="{{!update}}" >
+      <div class="form-group-3columns">
+        <div class="form-group col-sm-4"  ng-class="{ 'has-error' : ngError.clientID }">
+          <label><span>*</span> Validity in days [365]</label>
+          <input class="form-control" type="number" ng-model="cert.days" ng-disabled="update" focus="{{!update}}" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
-          <label><span>*</span> State or Province Name (full name) [Some-State]</label>
+        <div class="form-group col-sm-4" ng-class="{ 'has-error' : ngError.clientID }">
+          <label><span>*</span> Country Name (2 letter code) [ZA]</label>
+          <input class="form-control" type="text" ng-model="cert.country" ng-disabled="update" focus="{{!update}}" >
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        </div>
+        <div class="form-group col-sm-4"  ng-class="{ 'has-error' : ngError.name }">
+          <label><span>*</span> State or Province Name [Some-State]</label>
           <input class="form-control" type="text" ng-model="cert.state" name="name" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
@@ -34,16 +39,16 @@
           <input class="form-control" type="text" ng-model="cert.locality" ng-disabled="update" focus="{{!update}}" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.email }">
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.emailAddress }">
           <label><span>*</span> Email Address</label>
-          <input class="form-control" type="text" ng-model="cert.email" name="email" >
+          <input class="form-control" type="text" ng-model="cert.emailAddress" name="emailAddress" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
         <label><span>*</span> Organization Name (eg, company) [Internet Widgits Pty Ltd] </label>
-        <input class="form-control" type="text" ng-model="cert.orgName" ng-disabled="update" focus="{{!update}}" >
+        <input class="form-control" type="text" ng-model="cert.organization" ng-disabled="update" focus="{{!update}}" >
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
@@ -54,29 +59,14 @@
           </label>
 
           <label><span>**</span> Organizational Unit Name (eg, section)</label>
-          <input class="form-control" placeholder="Set/change password..." type="text" ng-model="cert.orgUnitName">
+          <input class="form-control" placeholder="" type="text" ng-model="cert.organizationUnit">
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Common Name (e.g. server FQDN or YOUR name)</label>
-          <input class="form-control" placeholder="Confirm password..." type="password" ng-model="cert.commonName">
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
+          <input class="form-control" placeholder="" type="text" ng-model="cert.commonName">
         </div>
       </div>
-
-      <div class="form-group-2columns" ng-class="{ 'has-error' : ngError.clientDomain }">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
-          <label> A challenge password </label>
-          <input class="form-control" type="text" ng-model="cert.password" ng-disabled="update" focus="{{!update}}" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-        </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
-          <label> An optional company name </label>
-          <input class="form-control" type="text" ng-model="cert.optionalCompanyName" name="name" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-        </div>
-      </div>
-
     </fieldset>
   </div>
   <div class="modal-footer">
