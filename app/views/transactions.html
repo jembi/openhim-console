@@ -34,16 +34,17 @@
             </tabset>            
           </div>
 
-          <!-- Restart the server message -->
-          <alert ng-if="bulkRerunActive" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+          <!-- Bulk Rerun the server message -->
+          <alert ng-if="bulkRerunActive" type="'success'" class="alert ng-isolate-scope alert-success" style="font-weight: bold; text-align: center; font-size: 16px;">
             <div style="margin-bottom: 10px;">
               <h2 style="margin: 5px;">You have opted to do a Bulk Rerun!</h2>
-              <h3 style="margin: 20px;">Your filters returned a total of <strong><u>{{transactions.length}}</u></strong> transactions</h3>
-              <h4>Click '<strong>Continue...</strong>' to setup you rerun procedure <br />
-              or '<strong>Clear Everything!</strong>' if you do not wish to proceed.</h4>
+              <h3 ng-show="NoDateRange" style="margin: 20px;">No date range has been supplied, querying all transactions with the defined filters.</h3>
+              <h3 style="margin: 20px;">Your filters returned a total of <strong><u>{{transactionsSelected.length}}</u></strong> transactions that can be re-run</h3>
             </div>
-            <button class="btn btn-danger btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
-            <button class="btn btn-danger btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Clear Everything!</button>
+            <div ng-if="transactionsSelected.length > 0">
+              <button class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
+              <button class="btn btn-primary btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Cancel</button>
+            </div>
           </alert>
 
 
@@ -54,7 +55,7 @@
             <table class="table table-striped transactionTable">
               <thead>
                 <tr>
-                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-model="checkAll" ng-change="toggleCheckedAll()" /></label></th>
+                  <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-model="checkbox.checkAll" ng-change="toggleCheckedAll()" /></label></th>
                   <th>#</th>
                   <th>HTTP Method</th>
                   <th>Path</th>
@@ -68,14 +69,14 @@
                 <tr class="table-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("transactions/" + transaction._id, $event)'>
                   <td class="transactionsCheckboxTD">
                     <label>
-                      <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="( channelsMap[transaction.channelID].rerun || rerunAllowedAdmin ) && transaction.canRerun" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                      <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="( channelsMap[transaction.channelID].rerun || rerunAllowedAdmin ) && transaction.canRerun" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
                       <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                     </label>
                   </td>
                   <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
                     <span>{{ $index +1 }}</span>
                     <label>
-                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkAll" ng-model="checkBox" value="transaction._id"/>
+                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
                       <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                     </label>
                   </td>
@@ -106,7 +107,7 @@
               <div class="transactionsButtonsDiv" ng-show="transactions.length > 0">
                 <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();"><i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions</button>
 
-                <button id="loadMoreBtn" class="btn btn-primary" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+                <button ng-if="loadMoreBtn" class="btn btn-primary loadMoreBtn" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{settings.filter.limit}} more results</button>
               </div>                        
             </div>
           </div>

@@ -17,8 +17,6 @@ angular.module('openhimConsoleApp')
     }
 
     $scope.confirmRerun = function() {
-      console.log($scope.taskSetup);
-
       var tIds = $scope.transactionsSelected;
       $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused });
       $scope.task.$save({}, onSuccess);

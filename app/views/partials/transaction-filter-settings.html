@@ -210,9 +210,10 @@
       </script>
     </div>
     <div class="settings_div" style="float: left;">
-      <label tooltip="Set the limit of how many records to display">Limit: </label>
+      <label tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile">Limit: </label>
       <select class="form-control" ng-model="settings.filter.limit">
         <option value="10">10</option>
+        <option value="20">20</option>
         <option value="50">50</option>
         <option value="100">100</option>
         <option value="200">200</option>
@@ -229,6 +230,8 @@
     </div>
 
     <div style="">
-      <button class="btn btn-primary" ng-click="applyFiltersToUrl('bulkrerun');" style="float: right;"><i class="glyphicon glyphicon-repeat"></i> Apply filters for Bulk Rerun ( Find all Transactions )</button>
+      <button class="btn btn-primary" ng-click="applyFiltersToUrl('bulkrerun');" style="float: right;">
+        <i class="glyphicon glyphicon-repeat"></i> Re-run all transaction that match current filters
+      </button>
     </div>
   </div>
