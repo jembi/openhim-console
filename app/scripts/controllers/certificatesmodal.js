@@ -114,8 +114,7 @@ angular.module('openhimConsoleApp')
 
     $scope.cert = new Api.Certificates();
     $scope.cert.type = 'client';
-    $scope.keyName = $scope.cert.commonName + '.key.pem';
-    $scope.certName = $scope.cert.commonName + '.cert.pem';
+
 
     $scope.save = function (cert) {
       saveCert(cert);
@@ -123,6 +122,8 @@ angular.module('openhimConsoleApp')
 
     var saveCert = function (cert) {
       // set backup client object to check if cert has changed
+      $scope.keyName = cert.commonName + '.key.pem';
+      $scope.certName = cert.commonName + '.cert.pem';
       $scope.certBackup = angular.copy(cert);
       if ($scope.update) {
         cert.$update(success, error);
