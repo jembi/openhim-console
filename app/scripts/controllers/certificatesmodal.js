@@ -98,7 +98,7 @@ angular.module('openhimConsoleApp')
         if (textFile !== null) {
           window.URL.revokeObjectURL(textFile);
         }
-       return window.URL.createObjectURL(data);
+        return window.URL.createObjectURL(data);
       }
     };
 
