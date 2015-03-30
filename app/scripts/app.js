@@ -163,6 +163,8 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
   // register listener to watch route changes
   $rootScope.$on( '$routeChangeStart', function() {
 
+    /* ----- Set Referring URL ----- */
+
     var paramsString = '';
     var curRoute;
 
@@ -187,11 +189,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
       $rootScope.referringURL = curRoute + paramsString;
     }
     
-
-
-
-
-
+    /* ----- Set Referring URL ----- */
 
 
     // scroll page to top - start fresh
@@ -256,7 +254,6 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
       //if not 'set-password' page
       if ( $location.path().indexOf('set-password') !== 1 ){
         //No session - user needs to log in
-        // $window.location = '#/login';
         $window.location = '#/login';
       }
 
