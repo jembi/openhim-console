@@ -1,6 +1,6 @@
 {
   "protocol": "https",
-  "host": "localhost",
+  "host": "openhim-preprod.jembi.org",
   "port": 8080,
   "title": "Admin Console",
   "footerTitle": "OpenHIM Administration Console",
