@@ -10,23 +10,28 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // set default limit
+    var defaultLimit = 20;
+    var defaultTabView = 'same';
+    $scope.defaultBulkRerunLimit = 10000;
+    $scope.loadMoreBtn = false;
+
     // filters collapsed by default
     $scope.isCollapsed = true;
 
     /* setup default filter options */
-
     $scope.showpage = 0;
-    $scope.showlimit = 10;
-    $scope.checkAll = false;
+    $scope.checkbox = {};
+    $scope.checkbox.checkAll = false;
     $scope.transactionsSelected = [];
     $scope.rerunTransactionsSelected = 0;
 
     // default settings
     $scope.settings = {};
     $scope.settings.list = {};
-    $scope.settings.list.tabview = 'same';
+    $scope.settings.list.tabview = defaultTabView;
     $scope.settings.filter = {};
-    $scope.settings.filter.limit = 10;
+    $scope.settings.filter.limit = defaultLimit;
 
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
@@ -44,8 +49,6 @@ angular.module('openhimConsoleApp')
         
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0){
           $scope.settings.filter.limit = userSettings.filter.limit;
-        }else{
-          $scope.settings.filter.limit = 100;
         }
 
         $scope.filters.transaction.status = userSettings.filter.status;
@@ -161,6 +164,7 @@ angular.module('openhimConsoleApp')
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
 
+    // clients used for advanced filter dropdown
     $scope.clients = Api.Clients.query();
     
     /***************************************************/
@@ -181,7 +185,7 @@ angular.module('openhimConsoleApp')
       var filterDateStart, filterDateEnd;
 
       filtersObject.filterPage = $scope.showpage;
-      filtersObject.filterLimit = $scope.showlimit;
+      filtersObject.filterLimit = $scope.settings.filter.limit;
 
       /* ##### construct filters ##### */
       filtersObject.filters = {};
@@ -318,8 +322,8 @@ angular.module('openhimConsoleApp')
       // on success
       $scope.transactions = transactions;
 
-      if( transactions.length < $scope.showlimit ){
-        jQuery('#loadMoreBtn').hide();
+      if( transactions.length < $scope.settings.filter.limit ){
+        $scope.loadMoreBtn = false;
 
         if( transactions.length === 0 ){
           Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters');
@@ -327,16 +331,32 @@ angular.module('openhimConsoleApp')
 
       }else{
         //Show the load more button
-        jQuery('#loadMoreBtn').show();
+        $scope.loadMoreBtn = true;
       }
 
-      //make sure newly added transactions are checked as well
-      $scope.resetCheckedItems();
+
+      // if bulkRerun param true
+      if ( $location.search().bulkRerun === 'true' ){
+        // set checkAll to true - used to add transactions in toggleCheckedAll function
+        $scope.checkbox.checkAll = true;
+
+        // do the checkAll function to add the transactions to the transactionsSelected object
+        $scope.toggleCheckedAll();
+
+        if ( !$scope.settings.filter.startDate || !$scope.settings.filter.endDate ){
+          $scope.NoDateRange = true;
+        }
+      }else{
+        // normal transaction success
+        // make sure newly added transactions are checked as well
+        $scope.resetCheckedItems();
+      }
+
     };
 
     var refreshError = function(err){
       // on error - Hide load more button and show error message
-      jQuery('#loadMoreBtn').hide();
+      $scope.loadMoreBtn = false;
       Alerting.AlertAddServerMsg(err.status);
     };
 
@@ -379,7 +399,7 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.applyFiltersToUrl = function(){
+    $scope.applyFiltersToUrl = function( optionalParam ){
 
       // get the filter params object before clearing them
       var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
@@ -387,8 +407,14 @@ angular.module('openhimConsoleApp')
       // first clear existing filters
       clearUrlParams();
 
+      // if optionalParam param = bulkrerun
+      if ( optionalParam === 'bulkrerun' ){
+        $location.search( 'bulkRerun', 'true' );
+      }
+
       // Add filters to url
-      if ( $scope.settings.filter.limit ){ $location.search( 'limit', $scope.settings.filter.limit ); }
+      // set filter limit only if url parameter set and NOT a bulkrerun (using default defaultBulkRerunLimit)
+      if ( $scope.settings.filter.limit && optionalParam !== 'bulkrerun' ){ $location.search( 'limit', $scope.settings.filter.limit ); }
       if ( $scope.settings.filter.startDate ){ $location.search( 'startDate', $scope.settings.filter.startDate ); }
       if ( $scope.settings.filter.endDate ){ $location.search( 'endDate', $scope.settings.filter.endDate ); }
 
@@ -442,9 +468,28 @@ angular.module('openhimConsoleApp')
 
         //reset the showpage filter to start at 0
         $scope.showpage = 0;
-        $scope.showlimit = $scope.settings.filter.limit;
 
-        Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+        // if bulkRerun param true
+        if ( $location.search().bulkRerun === 'true' ){
+          // do API call only for 'bulkrerun' properties
+          var returnFilters = $scope.returnFilters();
+          // add filterRepresentation to only return bulkrerun properties
+          returnFilters.filterRepresentation = 'bulkrerun';
+
+          // set filter limit to default defaultBulkRerunLimit
+          returnFilters.filterLimit = $scope.defaultBulkRerunLimit;
+
+          // remove filterPage because no pagination needed
+          delete returnFilters.filterPage;
+          
+          // set bulkrerunActive true to show rerun information
+          $scope.bulkRerunActive = true;
+
+          Api.Transactions.query( returnFilters, refreshSuccess, refreshError);
+        }else{
+          //  do normal transaction API call for transactions
+          Api.Transactions.query( $scope.returnFilters(), refreshSuccess, refreshError);
+        }
 
       }else{
         Alerting.AlertAddMsg('server', 'danger', 'You appear to have errors in your filter query. Please correct and try again');
@@ -469,8 +514,8 @@ angular.module('openhimConsoleApp')
       //remove any duplicates objects found in the transactions scope
       $scope.transactions = jQuery.unique($scope.transactions);
 
-      if( transactions.length < $scope.showlimit ){
-        jQuery('#loadMoreBtn').hide();
+      if( transactions.length < $scope.settings.filter.limit ){
+        $scope.loadMoreBtn = false;
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve');
       }
 
@@ -481,7 +526,7 @@ angular.module('openhimConsoleApp')
 
     var loadMoreError = function(err){
       // on error - Hide load more button and show error message
-      jQuery('#loadMoreBtn').hide();
+      $scope.loadMoreBtn = false;
       Alerting.AlertAddServerMsg(err.status);
     };
 
@@ -513,10 +558,10 @@ angular.module('openhimConsoleApp')
     $scope.clearFilters = function () {
 
       // reset default filters
-      $scope.settings.filter.limit = 100;
+      $scope.settings.filter.limit = defaultLimit;
       $scope.settings.filter.startDate = '';
       $scope.settings.filter.endDate = '';
-      $scope.settings.list.tabview = 'same';
+      $scope.settings.list.tabview = defaultTabView;
       $scope.filters.transaction.status = '';
       $scope.filters.transaction.channel = '';
 
@@ -546,6 +591,17 @@ angular.module('openhimConsoleApp')
     /****************************************************/
     /**         Transactions ReRun Functions           **/
     /****************************************************/
+
+    $scope.bulkRerunContinue = function(){
+      // set checkAll to true - used to add transactions in toggleCheckedAll function
+      $scope.checkbox.checkAll = true;
+
+      // do the checkAll function to add the transactions to the transactionsSelected object
+      $scope.toggleCheckedAll();
+
+      // display confirmation popup modal to complete the rerun procedure
+      $scope.confirmRerunTransactions();
+    };
     
     $scope.confirmRerunTransactions = function(){
       Alerting.AlertReset();
@@ -569,7 +625,8 @@ angular.module('openhimConsoleApp')
     
     $scope.toggleCheckedAll = function () {
       //if checked for all
-      if( $scope.checkAll === true ){
+      if( $scope.checkbox.checkAll === true ){
+
         $scope.transactionsSelected = [];
         $scope.rerunTransactionsSelected = 0;
         angular.forEach($scope.transactions, function(transaction){
@@ -599,8 +656,7 @@ angular.module('openhimConsoleApp')
                   }
                 }
               }
-            }
-            
+            }            
           }
 
         });
@@ -649,7 +705,7 @@ angular.module('openhimConsoleApp')
     $scope.resetCheckedItems = function(){
       $scope.transactionsSelected = [];
       $scope.rerunTransactionsSelected = 0;
-      $scope.checkAll = false;
+      $scope.checkbox.checkAll = false;
     };
 
     $scope.$on('transactionRerunSuccess', function() {

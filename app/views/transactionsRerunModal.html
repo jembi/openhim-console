@@ -41,8 +41,8 @@
       </select>
     </div>
     <div ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true" style="float: left;">
-      <input style="float: left; margin: 10px 10px 0px 20px" type="checkbox" ng-model="taskSetup.paused"/>
-      <label style="float: left; margin: 10px 10px 0px 0px;" tooltip="Do not start processing the task immediately">Paused</label>
+      <input style="float: left; margin: 10px 10px 0px 20px" id="taskSetupPaused" type="checkbox" ng-model="taskSetup.paused"/>
+      <label style="float: left; margin: 10px 10px 0px 0px;" for="taskSetupPaused" tooltip="Do not start processing the task immediately">Paused</label>
     </div>
 
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
