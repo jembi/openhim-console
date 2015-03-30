@@ -12,6 +12,8 @@ angular.module('openhimConsoleApp')
 
     // set default limit
     var defaultLimit = 20;
+    var defaultTabView = 'same';
+    $scope.defaultBulkRerunLimit = 10000;
     $scope.loadMoreBtn = false;
 
     // filters collapsed by default
@@ -27,7 +29,7 @@ angular.module('openhimConsoleApp')
     // default settings
     $scope.settings = {};
     $scope.settings.list = {};
-    $scope.settings.list.tabview = 'same';
+    $scope.settings.list.tabview = defaultTabView;
     $scope.settings.filter = {};
     $scope.settings.filter.limit = defaultLimit;
 
@@ -411,7 +413,7 @@ angular.module('openhimConsoleApp')
       }
 
       // Add filters to url
-      // set filter limit only if url parameter set and NOT a bulkrerun (limit not used for bulkrerun so not needed in url)
+      // set filter limit only if url parameter set and NOT a bulkrerun (using default defaultBulkRerunLimit)
       if ( $scope.settings.filter.limit && optionalParam !== 'bulkrerun' ){ $location.search( 'limit', $scope.settings.filter.limit ); }
       if ( $scope.settings.filter.startDate ){ $location.search( 'startDate', $scope.settings.filter.startDate ); }
       if ( $scope.settings.filter.endDate ){ $location.search( 'endDate', $scope.settings.filter.endDate ); }
@@ -474,8 +476,12 @@ angular.module('openhimConsoleApp')
           // add filterRepresentation to only return bulkrerun properties
           returnFilters.filterRepresentation = 'bulkrerun';
 
+          // set filter limit to default defaultBulkRerunLimit
+          returnFilters.filterLimit = $scope.defaultBulkRerunLimit;
+
+
           // remove filter limit and page because all records need to be returned
-          delete returnFilters.filterLimit;
+          // delete returnFilters.filterLimit;
           delete returnFilters.filterPage;
           
           // set bulkrerunActive true to show rerun information
@@ -557,7 +563,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.limit = defaultLimit;
       $scope.settings.filter.startDate = '';
       $scope.settings.filter.endDate = '';
-      $scope.settings.list.tabview = 'same';
+      $scope.settings.list.tabview = defaultTabView;
       $scope.filters.transaction.status = '';
       $scope.filters.transaction.channel = '';
 

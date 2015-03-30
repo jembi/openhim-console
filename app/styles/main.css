@@ -931,6 +931,12 @@ body {
 .taskTransactionLink { color: #428bca;}
 .taskTransactionLink:hover { cursor: pointer;}
 
+
+
+.bulkRerunAlert {
+  font-weight: bold; text-align: center; font-size: 16px;
+}
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */
