@@ -479,9 +479,7 @@ angular.module('openhimConsoleApp')
           // set filter limit to default defaultBulkRerunLimit
           returnFilters.filterLimit = $scope.defaultBulkRerunLimit;
 
-
-          // remove filter limit and page because all records need to be returned
-          // delete returnFilters.filterLimit;
+          // remove filterPage because no pagination needed
           delete returnFilters.filterPage;
           
           // set bulkrerunActive true to show rerun information

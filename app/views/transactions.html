@@ -99,13 +99,9 @@
 
             <div class="transactionsButtonsDiv" ng-show="transactions.length > 0">
               <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();"><i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions</button>
-
               <button ng-if="loadMoreBtn" class="btn btn-primary loadMoreBtn" ng-click="loadMoreTransactions();"><i class="glyphicon glyphicon-refresh"></i> Load {{settings.filter.limit}} more results</button>
-            </div>                        
-            
+            </div>
           </div>
-
-
 
           <div>
             <!-- show loading gif when scope object empty and no server errors exist -->
@@ -121,8 +117,6 @@
             <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
             <!-- transaction Alerts -->
           </div>
-
-
 
         </div>
       </div>
