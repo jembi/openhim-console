@@ -340,8 +340,8 @@ angular.module('openhimConsoleApp')
       // reset the alert object
       $scope.newAlert.status = null;
       $scope.newAlert.failureRate = null;
-      $scope.newAlert.groups = null;
-      $scope.newAlert.users = null;
+      $scope.newAlert.groups = [];
+      $scope.newAlert.users = [];
     };
 
     $scope.editAlert = function (alertIndex, alert) {

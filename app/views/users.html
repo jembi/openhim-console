@@ -51,7 +51,7 @@
               <tbody>
                 <tr ng-repeat="user in usersChannelsMatrix.users">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="User">{{ user.user }}</td>
+                  <td data-title="User" style="max-width: none;">{{ user.user }}</td>
                   
                   <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
 
