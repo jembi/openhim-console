@@ -285,11 +285,14 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
-      // password validation
-      if( $scope.temp.password ){
-        if( !$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm ){
-          $scope.ngError.passwordConfirm = true;
-          $scope.ngError.hasErrors = true;
+      // ensure password check only happens on update
+      if( $scope.update === true ){
+        // password validation
+        if( $scope.temp.password ){
+          if( !$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm ){
+            $scope.ngError.passwordConfirm = true;
+            $scope.ngError.hasErrors = true;
+          }
         }
       }
 
