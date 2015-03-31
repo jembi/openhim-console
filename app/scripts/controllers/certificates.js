@@ -79,6 +79,18 @@ angular.module('openhimConsoleApp')
       $scope.goToTop();
     };
 
+    $scope.createCertificateSuccess = function () {
+
+      $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+      $scope.goToTop();
+    };
+
+    $scope.$on('certificatesChanged', function () {
+      $scope.createCertificateSuccess();
+    });
+
     // execute the certificate upload
     $scope.uploadCertificate = function(data, totalFiles, fileName){
 
@@ -113,7 +125,7 @@ angular.module('openhimConsoleApp')
         case 'trustedCerts':
           $scope.certificateObject.cert = data;
           $scope.certificateObject.$save({ type: 'ca', property: 'cert' }, function(){
-            $scope.uploadSuccess('trustedCerts', fileName);
+            $scope.$on('trustedCerts', fileName);
           }, function(err){
             $scope.uploadFail(err, 'trustedCerts', fileName);
           });
