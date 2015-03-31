@@ -15,10 +15,10 @@ angular.module('openhimConsoleApp')
     $scope.serverRestartError = false;
     $scope.showImportResults = false;
     $scope.certValidity = {};
-    
+
     // function to reset certs
     $scope.resetCertificates = function(){
-            
+
       // get server certificate data
       Api.Keystore.get({ type: 'cert' }, function(result){
         $scope.currentServerCert = result;
@@ -66,7 +66,7 @@ angular.module('openhimConsoleApp')
       }else{
         Alerting.AlertAddMsg(location, 'danger', 'Upload error occured: [ File: '+fileName+' ] #' + err.status + ' - ' + err.data);
       }
-      
+
       $scope.importFail++;
     };
 
@@ -128,7 +128,7 @@ angular.module('openhimConsoleApp')
         $scope.importProgressStatus = 100;
         $scope.importProgressType = 'success';
       }
-      
+
     };
 
     /* ----- Watcher to look for dropped files ----- */
@@ -154,7 +154,7 @@ angular.module('openhimConsoleApp')
     /* ----- Watcher to look for dropped files ----- */
 
 
-    
+
 
     // function to upload the file
     $scope.upload = function (files) {
@@ -197,7 +197,7 @@ angular.module('openhimConsoleApp')
 
 
 
-    
+
 
 
     /****************************************/
@@ -296,5 +296,18 @@ angular.module('openhimConsoleApp')
     /**         Restart Server Functions           **/
     /************************************************/
 
+
+    $scope.addCert = function() {
+      Alerting.AlertReset();
+      $scope.serverRestarting = false;
+
+      $modal.open({
+        templateUrl: 'views/certificateModal.html',
+        controller: 'CertificatesModalCtrl',
+        resolve: {
+          cert: function () {}
+        }
+      });
+    };
 
   });
