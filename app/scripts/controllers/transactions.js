@@ -17,7 +17,8 @@ angular.module('openhimConsoleApp')
     $scope.loadMoreBtn = false;
 
     // filters collapsed by default
-    $scope.isCollapsed = true;
+    $scope.advancedFilters = {};
+    $scope.advancedFilters.isCollapsed = true;
 
     /* setup default filter options */
     $scope.showpage = 0;
@@ -73,71 +74,71 @@ angular.module('openhimConsoleApp')
 
     if ( $location.search().txStatusCode ){
       $scope.filters.transaction.statusCode = $location.search().txStatusCode;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txPath ){
       $scope.filters.transaction.path = $location.search().txPath;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txParamKey ){
       $scope.filters.transaction.requestParamKey = $location.search().txParamKey;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txParamValue ){
       $scope.filters.transaction.requestParamValue = $location.search().txParamValue;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txClient ){
       $scope.filters.transaction.client = $location.search().txClient;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txWasRerun ){
       $scope.filters.transaction.wasRerun = $location.search().txWasRerun;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txPropertyKey ){
       $scope.filters.transaction.propertyKey = $location.search().txPropertyKey;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txPropertyValue ){
       $scope.filters.transaction.propertyValue = $location.search().txPropertyValue;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
 
     // search for route filters
     if ( $location.search().routeStatusCode ){
       $scope.filters.route.statusCode = $location.search().routeStatusCode;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().routePath ){
       $scope.filters.route.path = $location.search().routePath;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().routeParamKey ){
       $scope.filters.route.requestParamKey = $location.search().routeParamKey;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().routeParamValue ){
       $scope.filters.route.requestParamValue = $location.search().routeParamValue;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
 
     // search for orchestration filters
     if ( $location.search().orchStatusCode ){
       $scope.filters.orchestration.statusCode = $location.search().orchStatusCode;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().orchPath ){
       $scope.filters.orchestration.path = $location.search().orchPath;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().orchParamKey ){
       $scope.filters.orchestration.requestParamKey = $location.search().orchParamKey;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().orchParamValue ){
       $scope.filters.orchestration.requestParamValue = $location.search().orchParamValue;
-      $scope.isCollapsed = false;
+      $scope.advancedFilters.isCollapsed = false;
     }
 
 

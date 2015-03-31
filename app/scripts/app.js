@@ -163,6 +163,35 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
   // register listener to watch route changes
   $rootScope.$on( '$routeChangeStart', function() {
 
+    /* ----- Set Referring URL ----- */
+
+    var paramsString = '';
+    var curRoute;
+
+    // set previous route value
+    curRoute = $location.path();
+
+    // check if parameters exist
+    if ( Object.keys( $location.search() ).length > 0 ){
+      angular.forEach($location.search(), function(value, key) {
+        paramsString += '&'+key+'='+value;
+      });
+
+      // remove first &amp from string
+      paramsString = paramsString.substring(1);
+
+      // add start of query params ( ? )
+      paramsString = '?' + paramsString;
+    }
+
+    // success redirect happens on login.js controller - ignore current login route
+    if ( curRoute !== '/login' && curRoute !== '/logout' ){
+      $rootScope.referringURL = curRoute + paramsString;
+    }
+    
+    /* ----- Set Referring URL ----- */
+
+
     // scroll page to top - start fresh
     $anchorScroll();
 
