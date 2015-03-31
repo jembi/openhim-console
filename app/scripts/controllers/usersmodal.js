@@ -9,6 +9,9 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the User initial load     **/
     /*************************************************************/
 
+    // default - update is false
+    $scope.update = false;
+
     // object for the taglist roles
     $scope.taglistUserRoleOptions = [];
 
@@ -70,7 +73,6 @@ angular.module('openhimConsoleApp')
       }
 
     }else{
-      $scope.update = false;
       $scope.user = new Api.Users();
 
       // create visualizer settings properties
@@ -285,11 +287,14 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
-      // password validation
-      if( $scope.temp.password ){
-        if( !$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm ){
-          $scope.ngError.passwordConfirm = true;
-          $scope.ngError.hasErrors = true;
+      // ensure password check only happens on update
+      if( $scope.update ){
+        // password validation
+        if( $scope.temp.password ){
+          if( !$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm ){
+            $scope.ngError.passwordConfirm = true;
+            $scope.ngError.hasErrors = true;
+          }
         }
       }
 
