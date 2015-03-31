@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <div class="form-group-2columns" ng-class="{ 'has-error' : ngError.clientDomain }">
+      <div class="form-group-2columns" ng-class="{ 'has-error' : ngError.locality }">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.locality }">
           <label><span>*</span> Locality Name (eg, city)</label>
           <input class="form-control" type="text" ng-model="cert.locality" ng-disabled="update" focus="{{!update}}" >
@@ -64,17 +64,17 @@
       </div>
 
       <div class="form-group-3columns">
-        <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
+        <div class="form-group" ng-class="{ 'has-error' : ngError.organization }">
           <label><span>*</span> Organization Name (eg, company) [Internet Widgits Pty Ltd] </label>
           <input class="form-control" type="text" ng-model="cert.organization" ng-disabled="update" focus="{{!update}}" >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
+        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.organizationUnit }">
           <label><span>**</span> Organizational Unit Name (eg, section)</label>
           <input class="form-control" placeholder="" type="text" ng-model="cert.organizationUnit">
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
+        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.commonName }">
           <label>Common Name (e.g. server FQDN or YOUR name)</label>
           <input class="form-control" placeholder="" type="text" ng-model="cert.commonName">
         </div>

@@ -58,7 +58,7 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
 
-      Certificates: $resource ( server + '/certificates/:certificateId' ,{certificateId: '@_id'}),
+      Certificates: $resource ( server + '/certificates' ,{}),
 
       // ATNA Audit log endpoint
       Audits: $resource( server + '/audits/:auditId', { auditId: '@_id' }),

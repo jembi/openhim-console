@@ -3,6 +3,7 @@ angular.module('openhimConsoleApp')
   .controller('CertificatesModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting) {
 
     var success = function (data) {
+
       Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.');
       var keyLink = makeTextFile(data.key);
       $scope.downloadKeyLink = angular.copy(keyLink);
@@ -15,6 +16,7 @@ angular.module('openhimConsoleApp')
 
       notifyUser();
     };
+
 
     $scope.downloadKeyFile = function(){
       //reset download link and remove download button
@@ -55,6 +57,11 @@ angular.module('openhimConsoleApp')
       // certificate validity validation
       if( !$scope.cert.days){
         $scope.ngError.days = true;
+        $scope.ngError.hasErrors = true;
+      }
+      // commonName validation
+      if( !$scope.cert.commonName){
+        $scope.ngError.commonName = true;
         $scope.ngError.hasErrors = true;
       }
     };
@@ -104,8 +111,6 @@ angular.module('openhimConsoleApp')
 
     $scope.submitFormCertificate = function () {
       $scope.validateFormCertificates();
-      console.log($scope.cert);
-
       // save the client object if no errors are present
       if ( $scope.ngError.hasErrors === false ){
         $scope.save($scope.cert);
@@ -116,6 +121,7 @@ angular.module('openhimConsoleApp')
     $scope.cert.type = 'client';
 
 
+
     $scope.save = function (cert) {
       saveCert(cert);
     };
@@ -123,7 +129,7 @@ angular.module('openhimConsoleApp')
     var saveCert = function (cert) {
       // set backup client object to check if cert has changed
       $scope.keyName = cert.commonName + '.key.pem';
-      $scope.certName = cert.commonName + '.cert.pem';
+      $scope.certName = cert.commonName + '.cert.crt';
       $scope.certBackup = angular.copy(cert);
       if ($scope.update) {
         cert.$update(success, error);
