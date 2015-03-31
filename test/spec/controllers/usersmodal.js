@@ -66,6 +66,9 @@ describe('Controller: UsersModalCtrl', function () {
     createController();
     httpBackend.flush();
 
+    // set update true - test password confirmation
+    scope.update = true;
+
     scope.user.firstname = '';
     scope.user.surname = '';
     scope.user.msisdn = '2712';
@@ -84,6 +87,9 @@ describe('Controller: UsersModalCtrl', function () {
   it('should run validateFormUsers() for any validation errors - ngErrors.hasErrors -> FALSE', function () {
     createController();
     httpBackend.flush();
+
+    // set update true - test password confirmation
+    scope.update = true;
 
     scope.user.email = 'new@user.com';
     scope.user.firstname = 'John';
@@ -105,7 +111,6 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.surname = '';
     scope.user.msisdn = '2712';
     scope.user.groups = [];
-    scope.temp.password = 'password';
 
     scope.submitFormUsers();
     scope.ngError.should.have.property('hasErrors', true);
@@ -113,7 +118,6 @@ describe('Controller: UsersModalCtrl', function () {
     scope.ngError.should.have.property('surname', true);
     scope.ngError.should.have.property('msisdn', true);
     scope.ngError.should.have.property('groups', true);
-    scope.ngError.should.have.property('passwordConfirm', true);
   });
 
   it('should run submitFormUsers() and check any validation errors - TRUE - Should save the record', function () {
@@ -130,8 +134,6 @@ describe('Controller: UsersModalCtrl', function () {
     scope.user.surname = 'Doe';
     scope.user.msisdn = '27123456789';
     scope.user.groups = ['group1', 'group2'];
-    scope.temp.password = 'password';
-    scope.temp.passwordConfirm = 'password';
     scope.user.dailyReport = true;
     scope.user.weeklyReport = true;
 
