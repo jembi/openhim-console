@@ -125,7 +125,7 @@ angular.module('openhimConsoleApp')
         case 'trustedCerts':
           $scope.certificateObject.cert = data;
           $scope.certificateObject.$save({ type: 'ca', property: 'cert' }, function(){
-            $scope.$on('trustedCerts', fileName);
+            $scope.uploadSuccess('trustedCerts', fileName);
           }, function(err){
             $scope.uploadFail(err, 'trustedCerts', fileName);
           });
