@@ -47,7 +47,7 @@ angular.module('openhimConsoleApp')
     // check if no parameters exist and user has settings defined
     if ( angular.equals({}, $location.search()) && userSettings ){
       if ( userSettings.filter ){
-        
+
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0){
           $scope.settings.filter.limit = userSettings.filter.limit;
         }
@@ -57,13 +57,13 @@ angular.module('openhimConsoleApp')
         $scope.settings.filter.startDate = '';
         $scope.settings.filter.endDate = '';
       }
-      
+
       if ( userSettings.list ){
         $scope.settings.list.tabview = userSettings.list.tabview;
       }
     }
 
-    // setup default transaction settings      
+    // setup default transaction settings
     if ( $location.search().limit ){ $scope.settings.filter.limit = $location.search().limit; }
     if ( $location.search().startDate ){ $scope.settings.filter.startDate = $location.search().startDate; }
     if ( $location.search().endDate ){ $scope.settings.filter.endDate = $location.search().endDate; }
@@ -167,7 +167,7 @@ angular.module('openhimConsoleApp')
 
     // clients used for advanced filter dropdown
     $scope.clients = Api.Clients.query();
-    
+
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
@@ -261,7 +261,7 @@ angular.module('openhimConsoleApp')
           filtersObject.filters.properties[txPropertyKey] = txPropertyValue;
         }
       }
-      
+
       /* ----- filter by transaction (advanced) ----- */
 
 
@@ -312,10 +312,10 @@ angular.module('openhimConsoleApp')
       }
       /* ----- filter by orchestration ----- */
 
-      
+
       /* ##### construct filters ##### */
       return filtersObject;
-      
+
     };
 
 
@@ -464,7 +464,7 @@ angular.module('openhimConsoleApp')
 
       // execute refresh if no errors
       if ( $scope.ngError.hasErrors === false ){
-        
+
         $scope.transactions = null;
 
         //reset the showpage filter to start at 0
@@ -482,7 +482,7 @@ angular.module('openhimConsoleApp')
 
           // remove filterPage because no pagination needed
           delete returnFilters.filterPage;
-          
+
           // set bulkrerunActive true to show rerun information
           $scope.bulkRerunActive = true;
 
@@ -554,7 +554,7 @@ angular.module('openhimConsoleApp')
         }
       }
     };
-    
+
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
 
@@ -603,10 +603,10 @@ angular.module('openhimConsoleApp')
       // display confirmation popup modal to complete the rerun procedure
       $scope.confirmRerunTransactions();
     };
-    
+
     $scope.confirmRerunTransactions = function(){
       Alerting.AlertReset();
-      
+
       var transactionsSelected = $scope.transactionsSelected;
       var rerunTransactionsSelected = $scope.rerunTransactionsSelected;
       $modal.open({
@@ -623,7 +623,7 @@ angular.module('openhimConsoleApp')
         }
       });
     };
-    
+
     $scope.toggleCheckedAll = function () {
       //if checked for all
       if( $scope.checkbox.checkAll === true ){
@@ -657,7 +657,7 @@ angular.module('openhimConsoleApp')
                   }
                 }
               }
-            }            
+            }
           }
 
         });
@@ -712,7 +712,7 @@ angular.module('openhimConsoleApp')
     $scope.$on('transactionRerunSuccess', function() {
       $scope.refreshTransactionsList();
     });
-    
+
     /****************************************************/
     /**         Transactions ReRun Functions           **/
     /****************************************************/
