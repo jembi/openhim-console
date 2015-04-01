@@ -79,6 +79,18 @@ angular.module('openhimConsoleApp')
       $scope.goToTop();
     };
 
+    $scope.createCertificateSuccess = function () {
+
+      $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+      $scope.goToTop();
+    };
+
+    $scope.$on('certificatesChanged', function () {
+      $scope.createCertificateSuccess();
+    });
+
     // execute the certificate upload
     $scope.uploadCertificate = function(data, totalFiles, fileName){
 

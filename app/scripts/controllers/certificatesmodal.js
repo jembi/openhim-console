@@ -35,7 +35,7 @@ angular.module('openhimConsoleApp')
 
     var notifyUser = function(){
       // reset backing object and refresh clients list
-      Notify.notify('clientsChanged');
+      Notify.notify('certificatesChanged');
       //$modalInstance.close();
     };
 
