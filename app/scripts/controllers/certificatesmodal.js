@@ -34,9 +34,9 @@ angular.module('openhimConsoleApp')
     };
 
     var notifyUser = function(){
-      // reset backing object and refresh clients list
+      // reset backing object and refresh certificate list
       Notify.notify('certificatesChanged');
-      //$modalInstance.close();
+
     };
 
     $scope.cancel = function () {
