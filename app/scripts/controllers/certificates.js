@@ -309,7 +309,7 @@ angular.module('openhimConsoleApp')
     /************************************************/
 
 
-    $scope.addCert = function() {
+    $scope.addCert = function(certType) {
       Alerting.AlertReset();
       $scope.serverRestarting = false;
 
@@ -317,7 +317,10 @@ angular.module('openhimConsoleApp')
         templateUrl: 'views/certificateModal.html',
         controller: 'CertificatesModalCtrl',
         resolve: {
-          cert: function () {}
+          cert: function () {},
+          certType: function () {
+            return certType;
+          }
         }
       });
     };
