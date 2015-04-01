@@ -33,13 +33,13 @@ describe('Controller: CertificatesModalCtrl', function () {
     createController = function () {
       var cert;
       cert = {
-        $save: sinon.spy(),
-        $update: sinon.spy()
+        $save: sinon.spy()
       };
       return $controller('CertificatesModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        cert: cert
+        cert: cert,
+        certType: 'client'
       });
     };
   }));
@@ -49,15 +49,13 @@ describe('Controller: CertificatesModalCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should create a new certificate if this is not an update', function () {
-    createController();
-    scope.cert.should.be.ok;
-  });
+
 
   it('should run validateFormCertificates() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
     createController();
     scope.cert.commonName = '';
     scope.cert.days = '';
+    scope.cert.country = '';
     // run the validate
     scope.validateFormCertificates();
     scope.ngError.should.have.property('commonName', true);
@@ -68,15 +66,18 @@ describe('Controller: CertificatesModalCtrl', function () {
     createController();
     scope.cert.commonName = 'testCommonName';
     scope.cert.days = '';
+    scope.cert.country = 'south africa';
     // run the
     scope.submitFormCertificate();
     scope.ngError.should.have.property('days', true);
+    scope.ngError.should.have.property('country', true); // more than 2 letters
   });
 
   it('should generate the download links', function () {
     createController();
     scope.cert.commonName = 'testCommonName';
     scope.cert.days = '365';
+    scope.cert.country = 'ZA';
     // submit the form
     scope.submitFormCertificate();
     //Generate the file Names

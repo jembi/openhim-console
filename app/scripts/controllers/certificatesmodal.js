@@ -1,6 +1,6 @@
 'use strict';
 angular.module('openhimConsoleApp')
-  .controller('CertificatesModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting) {
+  .controller('CertificatesModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, certType) {
 
     var success = function (data) {
 
@@ -64,6 +64,13 @@ angular.module('openhimConsoleApp')
         $scope.ngError.commonName = true;
         $scope.ngError.hasErrors = true;
       }
+
+      // country validation
+      if(($scope.cert.country.length === 2) === false){
+        $scope.ngError.country = true;
+        $scope.ngError.hasErrors = true;
+      }
+      $scope.cert.country = angular.uppercase($scope.cert.country);
     };
 
     var NewBlob = function(data, datatype){
@@ -118,7 +125,7 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.cert = new Api.Certificates();
-    $scope.cert.type = 'client';
+    $scope.cert.type = certType;
 
 
 

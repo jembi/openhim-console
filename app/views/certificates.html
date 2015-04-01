@@ -8,7 +8,7 @@
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-certificate"></i>&nbsp;&nbsp;Certificates</h2>
           </div>
-          <button class="btn btn-primary pull-right" ng-click="addCert()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Certificate</button>
+          <button class="btn btn-primary pull-right" ng-click="addCert('server')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Server Certificate</button>
         </div>
 
 
@@ -128,9 +128,10 @@
 
           </div>
 
-          <div style="float: right; width: 100%; margin" class="importSectionDiv">
+          <div style="float: right; width: 100%;" class="importSectionDiv">
 
             <h3><strong>Trusted Certificates</strong></h3>
+            <button class="btn btn-primary pull-right" ng-click="addCert('client')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Client Certificate</button>
 
             <!-- Server Certificate Alerts -->
             <alert ng-repeat="alert in alerts.trustedCertDelete" type="alert.type">{{alert.msg}}</alert>
