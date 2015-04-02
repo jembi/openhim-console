@@ -28,7 +28,7 @@
                   </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="channel in channels">
+                <tr ng-repeat="channel in channels | orderBy:['-status','name']">
                   <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
                   <td data-title="Channel Name">
                     <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
