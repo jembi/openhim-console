@@ -156,7 +156,6 @@ angular.module('openhimConsoleApp')
 
         if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
           if ( userGroups.indexOf('admin') >= 0 ){
-            // $scope.rerunAllowedAdmin = true;
             $scope.channelsMap[channel._id].rerun = true;
           }else{
             angular.forEach(userGroups, function(role){
