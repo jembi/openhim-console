@@ -18,7 +18,7 @@
     <label tooltip="Select an option to filter rerun tasks by user">User: </label>
     <select class="form-control" 
       ng-model="filters.user"
-      ng-options="user.email as (user.firstname+' '+user.surname+' ('+user.email+')') for user in users"
+      ng-options="user.email as (user.firstname+' '+user.surname+' ('+user.email+')') for user in users | orderBy:['firstname']"
       ng-class="{formControlNotEmpty: filters.user}">
       <option value="">Don't filter</option>                            
       <!--<option ng-repeat="user in users" ng-value="user.email">{{user.firstname}} {{user.surname}} ({{user.email}})</option>-->

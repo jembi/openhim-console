@@ -186,7 +186,7 @@
       <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
       <select class="form-control" 
         ng-model="filters.transaction.channel" 
-        ng-options="channel._id as channel.name for channel in channels" 
+        ng-options="channel._id as channel.name for channel in channels | orderBy:['name']" 
         ng-class="{formControlNotEmpty: filters.transaction.channel}">
         <option value="">Don't filter</option>
       </select>
