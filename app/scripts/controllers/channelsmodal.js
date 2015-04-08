@@ -395,14 +395,11 @@ var app = angular.module('openhimConsoleApp');
       // check for route form errors
       $scope.validateFormRoutes();
 
-      console.log( 'ERRORS' )
-      console.log( $scope.ngErrorRoute )
-
       // push the route object to channel.routes if no errors exist
       if ( $scope.ngErrorRoute.hasErrors === false ){
         
         // if index then this is an update - delete old route based on idex
-        if ( typeof( index ) !== undefined && index !== null ){
+        if ( typeof( index ) !== 'undefined' && index !== null ){
           // remove old route from array
           $scope.channel.routes.splice( index, 1 );
         }
