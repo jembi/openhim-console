@@ -248,7 +248,7 @@ var app = angular.module('openhimConsoleApp');
     };
 
     $scope.submitFormChannels = function(){
-      // check channel errors that might be old and check fresh
+      // clear channel errors that might be old and check fresh validate
       $scope.ngError = {};
       Alerting.AlertReset('hasErrors');
 
@@ -437,11 +437,11 @@ var app = angular.module('openhimConsoleApp');
       // reset route errors
       $scope.resetRouteErrors();
 
-      // show add/edit box
-      $scope.routeAddEdit = true;
-
       // create new route object
       if ( type === 'new' ){
+        // show add/edit box
+        $scope.routeAddEdit = true;
+
         $scope.newRoute = {
           name: '',
           secured: false,
@@ -455,23 +455,56 @@ var app = angular.module('openhimConsoleApp');
           type : 'http'
         };
       }else if ( type === 'edit' ){
+        // show add/edit box
+        $scope.routeAddEdit = true;
+
         // set new/edit route to supplied object
         $scope.newRoute = angular.copy( object );
         $scope.oldRouteIndex = index;
       }else if ( type === 'mediator' ){
-        // create mediator route object
-        $scope.newRoute = {
-          name: $scope.mediator.route.route.name,
-          secured: false,
-          host: $scope.mediator.route.route.host,
-          port: $scope.mediator.route.route.port,
-          path: '',
-          pathTransform: '',
-          primary: false,
-          username: '',
-          password: '',
-          type : $scope.mediator.route.route.type
-        };
+        // dont show add/edit box for mediator add - push directly to channel routes
+        $scope.routeAddEdit = false;
+        
+        // set defaults
+        var name = '';
+        var secured = false;
+        var host = '';
+        var port = '';
+        var path = '';
+        var pathTransform = '';
+        var primary = false;
+        var username = '';
+        var password = '';
+        var routeType = 'http';
+
+        if ($scope.mediator.route.route.name){ name = $scope.mediator.route.route.name; }
+        if ($scope.mediator.route.route.secured){ secured = $scope.mediator.route.route.secured; }
+        if ($scope.mediator.route.route.host){ host = $scope.mediator.route.route.host; }
+        if ($scope.mediator.route.route.port){ port = $scope.mediator.route.route.port; }
+        if ($scope.mediator.route.route.path){ path = $scope.mediator.route.route.path; }
+        if ($scope.mediator.route.route.pathTransform){ pathTransform = $scope.mediator.route.route.pathTransform; }
+        if ($scope.mediator.route.route.username){ username = $scope.mediator.route.route.username; }
+        if ($scope.mediator.route.route.password){ password = $scope.mediator.route.route.password; }
+        if ($scope.mediator.route.route.type){ routeType = $scope.mediator.route.route.type; }
+
+        // if no routes exist yet then make mediator primary
+        if ( $scope.channel.routes.length === 0 ){
+          primary = true;
+        }
+
+        // add mediator to channel.routes array
+        $scope.channel.routes.push({
+          name: name,
+          secured: secured,
+          host: host,
+          port: port,
+          path: path,
+          pathTransform: pathTransform,
+          primary: primary,
+          username: username,
+          password: password,
+          type : routeType
+        });
         // reset selected mediator option
         $scope.mediator.route = null;
       }
