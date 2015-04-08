@@ -395,6 +395,9 @@ var app = angular.module('openhimConsoleApp');
       // check for route form errors
       $scope.validateFormRoutes();
 
+      console.log( 'ERRORS' )
+      console.log( $scope.ngErrorRoute )
+
       // push the route object to channel.routes if no errors exist
       if ( $scope.ngErrorRoute.hasErrors === false ){
         
@@ -413,7 +416,10 @@ var app = angular.module('openhimConsoleApp');
         // check for route warnings
         $scope.checkRouteWarnings();
 
-      }      
+      }else{
+        // inform parent controller of route errors
+        $scope.$parent.ngError.hasRouteWarnings = true;
+      }
     };
 
     // remove route
