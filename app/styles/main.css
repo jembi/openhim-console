@@ -1208,3 +1208,34 @@ footer a {
   border-color: #028A3B;
   box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
 }
+
+
+
+
+
+
+/* ------------- */
+.logo img { width: 140px; margin-left: 20px; margin-right: 20px; }
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12{ padding: 0px; }
+.content-box { border-radius: 0px; padding: 0px;  }
+.content-box-large { margin: 0px; border-radius: 0px; }
+.page-content > .row { margin-top: 0px; }
+.btn { border-radius: 0px; }
+.sidebar { margin-bottom: 0px; }
+.modal-content { border-radius: 0px; }
+.alert{   padding: 10px; border-radius: 0px; margin-bottom: 10px; }
+.nav-tabs.nav-justified > li > a { border-radius: 0px; }
+.nav-tabs > li > a { border-radius: 0px; }
+.form-control { border-radius: 0px; }
+.input-group-addon { border-radius: 0px; }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { background-color: #95AE32; }
+.login-wrapper .box{ border-radius: 0px; }
+.login-wrapper{ margin: 100px auto 30px auto; }
+.login-wrapper .box .signup{ border-radius: 0px; }
+.hljsFormatNone{ border-radius: 0px; }
+.exportCollectionsDiv{ border-radius: 0px; }
+.header .dropdown-menu{ border-radius: 0px; }
+
+#header{  position: absolute; top: 0px; width: 100%; z-index: 99;}
+#body {  padding-top: 52px; z-index: -9999;}
+/* ------------- */ 
