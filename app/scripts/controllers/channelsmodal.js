@@ -399,7 +399,7 @@ var app = angular.module('openhimConsoleApp');
       if ( $scope.ngErrorRoute.hasErrors === false ){
         
         // if index then this is an update - delete old route based on idex
-        if ( index ){
+        if ( typeof( index ) !== undefined && index !== null ){
           // remove old route from array
           $scope.channel.routes.splice( index, 1 );
         }
