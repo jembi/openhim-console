@@ -1,17 +1,104 @@
 <!-- Route Alerts -->
-<alert ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
+<alert ng-if="!routeAddEdit" ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
 <!-- Route Alerts -->
 
-<div >
-  <table class="table table-striped">
+<div ng-if="routeAddEdit" class="addEditRoutes">
+  <h3>Set Route</h3>
+
+  <div class="form-group-2columns">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorRoute.name }">
+      <label><span style="color: #a94442;">*</span> Route Name</label>
+      <input ng-model="newRoute.name" class="form-control" placeholder="Descriptive Route Name" type="text" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label>Primary Route</label><br />
+      <div class="btn-group" style="clear: both;">
+        <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="true">True</label>
+        <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="false">False</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group" style="display: inline-block; width: 100%">
+    <div class="form-group" style="float: left;">
+      <label>Route Type</label><br />
+      <div class="btn-group" style="clear: both;">
+        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'http'">HTTP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'tcp'">TCP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'mllp'">MLLP</label>
+      </div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label>Route Secured</label><br />
+      <div class="btn-group" style="clear: both;">
+        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="true">True</label>
+        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="false">False</label>
+      </div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;" ng-if="newRoute.secured==true">
+      <label>Host certificate authority</label><br />
+      <select class="form-control" style="width: auto;" ng-model="newRoute.cert" ng-options="cert._id as cert.commonName for cert in trustedCerts">
+        <option value="">Use default CAs</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group-2columns">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorRoute.host }">
+      <label><span style="color: #a94442;">*</span> Host</label>
+      <input ng-model="newRoute.host" class="form-control" placeholder="Route Host" type="text" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;" ng-class="{ 'has-error' : ngErrorRoute.port }">
+      <label><span style="color: #a94442;">*</span> Port</label><br />
+      <input ng-model="newRoute.port" class="form-control" placeholder="Route Port" type="text" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.portError}}</div>
+    </div>
+  </div>
+  <div class="form-group-2columns" ng-class="{ 'has-error' : ngErrorRoute.pathTransform }">
+    <div class="form-group" style="float: left;">
+      <label><span style="color: #a94442;">**</span> Route Path</label>
+      <input ng-model="newRoute.path" class="form-control" placeholder="Route Path" type="text" />
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label><span style="color: #a94442;">**</span> Route Path Transform</label><br />
+      <input ng-model="newRoute.pathTransform" class="form-control" placeholder="Path Transform" type="text" />
+    </div>
+    <div class="has-error-msg" style="clear: both; margin-bottom: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.pathTransformError}}</div>
+  </div>
+  <div class="form-group-2columns">
+    <div class="form-group" style="float: left;">
+      <label>Basic Authentication Username</label>
+      <input ng-model="newRoute.username" class="form-control" placeholder="Basic Authentication Username" type="text" />
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label>Basic Authentication Password</label><br />
+      <input ng-model="newRoute.password" class="form-control" placeholder="Basic Authentication Password" type="text" />
+    </div>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <button type="button" class="btn btn-default" ng-click="cancelRouteAddEdit()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="saveRoute( oldRouteIndex )" style="margin-left: 5px;">Set Route</button>
+
+    <!-- hasErrors Alerts -->
+    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsRoute" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
+    <!-- hasErrors Alerts -->
+  </div>
+</div>
+
+
+<div ng-if="!routeAddEdit">
+  <table class="table table-striped" ng-if="channel.routes.length > 0">
     <thead>
       <tr style="font-weight: bold">
         <th>
-          <div style="width: 8%; float: right; display: block;"></div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;"><span style="color: #a94442;">*</span> Name | Primary</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Primary</div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured</div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;"><span style="color: #a94442;">*</span> Host | Port</div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;"><span style="color: #a94442;">**</span> Path/Transform</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform</div>
+          <div style="width: 8%; float: right; display: block;"></div>
         </th>
       </tr>
     <thead>
@@ -19,63 +106,42 @@
       <tr ng-repeat="route in channel.routes">
 
         <td colspan="6">
-          <div style="width: 8%; float: right; display: block;">
-            <form editable-form name="rowform" onbeforesave="saveRoute($data, route.name)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="newRoute == route">
-              <button class="btn btn-success btn-xs" ng-disabled="rowform.$waiting" type="submit"><i class="glyphicon glyphicon-ok"></i></button> 
-              <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
-            </form>
-            <div class="buttons" ng-show="!rowform.$visible">
-              <button class="btn btn-warning btn-xs" ng-click="rowform.$show()"><i class="glyphicon glyphicon-pencil"></i></button> 
-              <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
-            </div>
-          </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
-            <span editable-text="route.name" e-name="name" e-form="rowform" e-placeholder="Route Name" e-title="Route Name" onaftersave="checkRequiredField($data)" e-required>{{ route.name || "Name Required!" }}</span>
-            <span editable-select="route.primary" e-name="primary" e-form="rowform" e-title="Primary Route?" e-ng-options="option.key as option.value for option in primaryOptions"></span>
+            <span>{{ route.name }}</span>
             <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
               <i ng-if="route.primary" class="glyphicon glyphicon-star" style="color: #428bca"></i>
             </label>
           </div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">
-            <span editable-select="route.type" e-name="type" e-form="rowform" e-title="Route Type?" e-ng-options="option.key as option.value for option in typeOptions">
-              <span ng-if="route.type=='http'" class="btn-info btn-xs">HTTP</span> 
-              <span ng-if="route.type=='tcp'" class="btn-warning btn-xs">TCP</span>
-              <span ng-if="route.type=='mllp'" class="btn-primary btn-xs">MLLP</span>
-            </span>
-            <span editable-select="route.secured" e-name="secured" e-form="rowform" e-title="Route Secured?" e-ng-options="option.key as option.value for option in securedOptions">
-              <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span> 
-              <span ng-if="route.secured==false" class="btn-danger btn-xs">Unsecured</span>
-            </span>
+            <span ng-if="route.type=='http'" class="btn-info btn-xs">HTTP</span> 
+            <span ng-if="route.type=='tcp'" class="btn-warning btn-xs">TCP</span>
+            <span ng-if="route.type=='mllp'" class="btn-primary btn-xs">MLLP</span>
+            
+            <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span> 
+            <span ng-if="route.secured==false" class="btn-danger btn-xs">Unsecured</span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
-            <span editable-text="route.host" e-name="host" e-form="rowform" e-placeholder="Host" e-title="Route Host" onaftersave="checkRequiredField($data)" e-required style="float: left;">{{ route.host || "Host Required!" }}</span>
-            <span editable-text="route.port" e-name="port" e-form="rowform" e-placeholder="Port" e-title="Route Port" onaftersave="checkIsPortValid($data)" e-required>:{{ route.port || "Port Required!" }}</span>
+            <span>{{ route.host }}</span>
+            <span>{{ route.port }}</span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
-            <span editable-text="route.path" e-name="path" e-form="rowform" e-placeholder="Path" e-title="Route Path" onaftersave="checkPathTransformPathSet(route, 'path')">{{ route.path }}</span>
-            <span editable-text="route.pathTransform" e-name="pathTransform" e-form="rowform" e-placeholder="Path Transform" e-title="Route Path Transform" onaftersave="checkPathTransformPathSet(route, 'pathTransform')">{{ route.pathTransform }}</span>
+            <span>{{ route.path }}</span>
+            <span>{{ route.pathTransform }}</span>
           </div>
 
-          <div style="width: 100%; float: left; display: block;" ng-show="rowform.$visible">
-            <div style="width: 23%; float: left; margin-right: 1%;">
-              <p style="margin: 10px 0 0;"><strong>Basic Auth</strong></p>
-              <span editable-text="route.username" e-name="username" e-form="rowform" e-placeholder="Auth Username" e-title="Basic Auth Username"></span>
-              <span editable-text="route.password" e-name="password" e-form="rowform" e-placeholder="Auth Password" e-title="Basic Auth Password"></span>  
-            </div>
-            <div style="width: 50%; float: left;" ng-if="rowform.$data.secured==true">
-              <p style="margin: 10px 0 0;"><strong>Host certificate authority</strong></p>
-              <select class="form-control editable-input" style="width: auto;" ng-model="route.cert" ng-options="cert._id as cert.commonName for cert in trustedCerts">
-                <option value="">Use default CAs</option>
-              </select>
-            </div>
+          
+          <div style="width: 8%; float: right; display: block;">
+            <button class="btn btn-warning btn-xs" ng-click="addEditRoute('edit', route, $index)"><i class="glyphicon glyphicon-pencil"></i></button> 
+            <button class="btn btn-danger btn-xs" ng-click="removeRoute($index)"><i class="glyphicon glyphicon-remove"></i></button>
           </div>
         </td>
 
       </tr>
     <tbody>
   </table>
+
+  <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditRoute('new', null, null)">Add New Route</button>
+  <select style="float: left; width: auto;" class="form-control" ng-model="mediator.route" ng-change="addEditRoute('mediator', null, null)" ng-options="route as route.name for route in mediators">
+    <option value="">Add Mediator Route</option>
+  </select>
 </div>
-<button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addRoute()">Add New Route</button>
-<select style="float: left; width: auto;" class="form-control" ng-model="mediator.route" ng-change="addRoute('mediator')" ng-options="route as route.name for route in mediators">
-  <option value="">Add Mediator Route</option>
-</select>

@@ -16,11 +16,9 @@
   </div>
 
   <fieldset>
-       
-
     <tabset justified="true">
       <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
-      <tab class="{{ngError.accessBasicInfoTab === true ? 'has-error-tab' : ''}}">
+      <tab ng-controller="channelBasicInfoCtrl" class="{{ngError.accessBasicInfoTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Basic Info</tab-heading>
         <h3>Basic Info</h3>
         <div ng-include="'views/partials/channels-tab-basic-info.html'"></div>
@@ -29,7 +27,7 @@
 
 
       <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
-      <tab class="{{ngError.accessControlTab === true ? 'has-error-tab' : ''}}">
+      <tab ng-controller="channelAccessControlCtrl" class="{{ngError.accessControlTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Access Control</tab-heading>
         <h3>Access Control</h3>
         <div ng-include="'views/partials/channels-tab-access-control.html'"></div>        
@@ -38,7 +36,7 @@
 
 
       <!-- ************* TAB FOR CHANNEL CONTENT MATCHING ************** -->
-      <tab class="{{ngError.contentMatchingTab === true ? 'has-error-tab' : ''}}">
+      <tab ng-controller="channelContentMatchingCtrl" class="{{ngError.contentMatchingTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Content Matching</tab-heading>
         <h3>Content Matching</h3>
         <div ng-include="'views/partials/channels-tab-content-matching.html'"></div>
@@ -47,7 +45,7 @@
 
 
       <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
-      <tab class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}">
+      <tab ng-controller="channelRoutesCtrl" class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Routes</tab-heading>
         <h3>Routes</h3>
         <div ng-include="'views/partials/channels-tab-routes.html'"></div>
@@ -56,7 +54,7 @@
 
 
       <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
-      <tab>
+      <tab ng-controller="channelAlersCtrl">
         <tab-heading>Alerts</tab-heading>
         <h3>Alerts</h3>
         <div ng-include="'views/partials/channels-tab-alerts.html'"></div>
@@ -65,7 +63,7 @@
 
 
       <!-- ************* TAB FOR GENERAL CHANNEL SETTINGS ************** -->
-      <tab class="{{ngError.contentSettingsTab === true ? 'has-error-tab' : ''}}">
+      <tab ng-controller="channelSettingsCtrl" class="{{ngError.contentSettingsTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Settings</tab-heading>
         <h3>Settings</h3>
         <div ng-include="'views/partials/channels-tab-settings.html'"></div>
@@ -80,7 +78,7 @@
 <div class="modal-footer">
 
   <!-- hasErrors Alerts -->
-  <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+  <alert style="width: auto; float: left; text-align: left; margin: 0; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
     <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
   </alert>
   <!-- hasErrors Alerts -->
