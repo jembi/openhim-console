@@ -248,6 +248,10 @@ var app = angular.module('openhimConsoleApp');
     };
 
     $scope.submitFormChannels = function(){
+      // check channel errors that might be old and check fresh
+      $scope.ngError = {};
+      Alerting.AlertReset('hasErrors');
+
       // validate the form first to check for any errors
       $scope.validateFormChannels();
 
@@ -616,6 +620,7 @@ var app = angular.module('openhimConsoleApp');
 
     // listen for broadcast from parent controller to check route warnings on save
     $scope.$on('parentSaveRouteAndCheckRouteWarnings', function() {
+
       // if route add/edit true then save route and check for warning
       if ( $scope.routeAddEdit === true ){
         $scope.saveRoute( $scope.oldRouteIndex );
