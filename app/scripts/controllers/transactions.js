@@ -143,6 +143,9 @@ angular.module('openhimConsoleApp')
 
 
     var userGroups = $scope.consoleSession.sessionUserGroups;
+    if ( userGroups.indexOf('admin') >= 0 ){
+      $scope.rerunAllowedAdmin = true;
+    }
 
     // get the channels for the transactions filter dropdown
     $scope.channels = Api.Channels.query(function(){
@@ -153,14 +156,18 @@ angular.module('openhimConsoleApp')
 
         if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
           if ( userGroups.indexOf('admin') >= 0 ){
-            $scope.rerunAllowedAdmin = true;
+            $scope.channelsMap[channel._id].rerun = true;
           }else{
             angular.forEach(userGroups, function(role){
               if ( channel.txRerunAcl.indexOf(role) >= 0 ){
                 $scope.channelsMap[channel._id].rerun = true;
+              }else{
+                $scope.channelsMap[channel._id].rerun = false;
               }
             });
           }
+        }else{
+          $scope.channelsMap[channel._id].rerun = false;
         }
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
@@ -630,31 +637,19 @@ angular.module('openhimConsoleApp')
 
         $scope.transactionsSelected = [];
         $scope.rerunTransactionsSelected = 0;
+
         angular.forEach($scope.transactions, function(transaction){
 
           // first check if transaction can be rerun
           if ( transaction.canRerun ){
-
-            // if admin user then all reruns allowed
-            if ( $scope.rerunAllowedAdmin === true ){
+            // only add transaction if channel Rerun is allowed
+            if ( $scope.channelsMap[transaction.channelID].rerun ){
               $scope.transactionsSelected.push(transaction._id);
 
               // check if transaction is a rerun
               if (transaction.childIDs){
                 if (transaction.childIDs.length > 0){
                   $scope.rerunTransactionsSelected++;
-                }
-              }
-            }else{
-              // only add transaction if channel Rerun is allowed
-              if ( $scope.channelsMap[transaction.channelID].rerun ){
-                $scope.transactionsSelected.push(transaction._id);
-
-                // check if transaction is a rerun
-                if (transaction.childIDs){
-                  if (transaction.childIDs.length > 0){
-                    $scope.rerunTransactionsSelected++;
-                  }
                 }
               }
             }
