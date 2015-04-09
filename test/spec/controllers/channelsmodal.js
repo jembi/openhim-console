@@ -595,7 +595,7 @@ describe('Controller: channelRoutesCtrl', function () {
 
   });
 
-it('should run addEditRoute("mediator") to add a mediator to the channel.routes', function () {
+  it('should run addEditRoute("mediator") to add a mediator to the channel.routes', function () {
     createControllerParent();
     createController();
     httpBackend.flush();
@@ -733,7 +733,7 @@ describe('Controller: channelAlersCtrl', function () {
     createControllerParent();
     createController();
     scope.channel.should.be.ok;
-    /* STILL NEEDED */ 
+    /* STILL NEEDED */
   });
 });
 
