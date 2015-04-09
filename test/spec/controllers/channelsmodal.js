@@ -13,17 +13,12 @@ describe('Controller: ChannelsModalCtrl', function () {
     });
   });
 
-  var scope, createController, httpBackend;
+  var scope, createController, createControllerRoutes, httpBackend;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
-    ]);
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
       { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
@@ -35,6 +30,7 @@ describe('Controller: ChannelsModalCtrl', function () {
       { 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] },
     ]);
 
+    // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
       {
         'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
@@ -57,6 +53,7 @@ describe('Controller: ChannelsModalCtrl', function () {
       }
     ]);
 
+  // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
       { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
       { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
@@ -68,6 +65,13 @@ describe('Controller: ChannelsModalCtrl', function () {
 
     createController = function () {
       return $controller('ChannelsModalCtrl', {
+        $scope: scope,
+        $modalInstance: modalInstance,
+        channel: null
+      });
+    };
+    createControllerRoutes = function () {
+      return $controller('channelRoutesCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null
@@ -86,6 +90,153 @@ describe('Controller: ChannelsModalCtrl', function () {
     httpBackend.flush();
 
     scope.channel.should.be.ok;
+  });
+
+  it('should run validateFormChannels() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
+    createController();
+    // set child route controller for broadcast response
+    createControllerRoutes();
+    httpBackend.flush();
+
+    scope.channel.name = '';
+    scope.channel.urlPattern = '';
+    scope.channel.allow = [];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = '';
+    scope.channel.matchContentValue = '';
+    scope.channel.routes = [];
+
+    // run the validate
+    scope.validateFormChannels();
+
+    scope.ngError.should.have.property('name', true);
+    scope.ngError.should.have.property('urlPattern', true);
+    scope.ngError.should.have.property('allow', true);
+    scope.ngError.should.have.property('matchContentXpath', true);
+    scope.ngError.should.have.property('matchContentXpath', true);
+    scope.ngError.should.have.property('hasRouteWarnings', true);
+  });
+
+  it('should run validateFormChannels() for any validation errors - ngErrors.hasErrors -> FALSE', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.channel.name = 'ChannelName';
+    scope.channel.urlPattern = 'sample/api';
+    scope.channel.allow = ['allow1', 'allow2'];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = 'XPath';
+    scope.channel.matchContentValue = 'Value';
+    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}];
+
+    // run the validate
+    scope.validateFormChannels();
+    scope.ngError.should.have.property('hasErrors', false);
+  });
+
+  it('should run submitFormChannels() and check any validation errors - FALSE - should not save the record', function () {
+    createController();
+    // set child route controller for broadcast response
+    createControllerRoutes();
+    httpBackend.flush();
+
+    scope.channel.name = '';
+    scope.channel.urlPattern = '';
+    scope.channel.allow = [];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = '';
+    scope.channel.matchContentValue = '';
+    scope.channel.routes = [];
+
+    // run the submit
+    scope.submitFormChannels();
+    scope.ngError.should.have.property('name', true);
+    scope.ngError.should.have.property('urlPattern', true);
+    scope.ngError.should.have.property('allow', true);
+    scope.ngError.should.have.property('matchContentXpath', true);
+    scope.ngError.should.have.property('matchContentXpath', true);
+    scope.ngError.should.have.property('hasRouteWarnings', true);
+  });
+
+  it('should run submitFormChannels() and check any validation errors - TRUE - Should save the record', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.channel.$save = sinon.spy();
+
+    // update is false so create new channel
+    scope.update = false;
+
+    scope.channel.name = 'ChannelName';
+    scope.channel.urlPattern = 'sample/api';
+    scope.channel.allow = ['allow1', 'allow2'];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = 'XPath';
+    scope.channel.matchContentValue = 'Value';
+    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}];
+    // run the submit
+    scope.submitFormChannels();
+    scope.ngError.should.have.property('hasErrors', false);
+
+    scope.channel.$save.should.be.called;
+  });
+
+
+  it('should run submitFormChannels() and add the regex delimiters to the URL Pattern', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.channel.$save = sinon.spy();
+
+    // update is false so create new channel
+    scope.update = false;
+
+    scope.channel.name = 'ChannelName';
+    scope.channel.urlPattern = 'sample/api';
+    scope.urlPattern.regex = true;
+    scope.channel.allow = ['allow1', 'allow2'];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = 'XPath';
+    scope.channel.matchContentValue = 'Value';
+    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}];
+    // run the submit
+    scope.submitFormChannels();
+    scope.ngError.should.have.property('hasErrors', false);
+    scope.channel.should.have.property('urlPattern', '^sample/api$');
+    scope.channel.$save.should.be.called;
+  });
+
+
+  it('should run submitFormChannels() and check any validation errors - TRUE - Should update the record', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.channel.$update = sinon.spy();
+
+    // update is false so create new channel
+    scope.update = true;
+
+    scope.channel.name = 'ChannelName';
+    scope.channel.urlPattern = 'sample/api';
+    scope.urlPattern.regex = false;
+    scope.channel.allow = ['allow1', 'allow2'];
+    scope.matching.contentMatching = 'XML matching';
+    scope.channel.matchContentXpath = 'XPath';
+    scope.channel.matchContentValue = 'Value';
+    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}];
+
+    // run the submit
+    scope.submitFormChannels();
+    scope.ngError.should.have.property('hasErrors', false);
+    scope.channel.$update.should.be.called;
+    
+
+    scope.channel.should.have.property('name', 'ChannelName');
+    scope.channel.should.have.property('urlPattern', 'sample/api');
+    scope.channel.should.have.property('matchContentXpath', 'XPath');
+    scope.channel.should.have.property('matchContentValue', 'Value');
+    scope.channel.allow.should.have.length(2);
+    scope.channel.routes.should.have.length(1);
   });
 
 });
@@ -128,21 +279,53 @@ describe('Controller: channelBasicInfoCtrl', function () {
 
   }));
 
-  it('should create a new channel if this is not an update', function () {
+  it('should set default Basic Info variables - Update is False', function () {
     createControllerParent();
+    scope.update = false;
+
     createController();
     scope.channel.should.be.ok;
+
+    scope.channel.type.should.equal('http');
+    scope.channel.authType.should.equal('private');
+    scope.channel.status.should.equal('enabled');
+  });
+
+  it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
+    createControllerParent();
+    scope.update = true;
+    scope.channel.urlPattern = '^/example/path$';
+
+    createController();
+    scope.channel.should.be.ok;
+
+    scope.channel.urlPattern.should.equal('/example/path');
   });
 });
+
+
+
+
 
 
 describe('Controller: channelAccessControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
+
+    httpBackend = $httpBackend;
+    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited', 'tester'] }
+    ]);
+    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
+      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
+      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+    ]);
+
     scope = $rootScope.$new();
 
     var modalInstance = sinon.spy();
@@ -160,12 +343,30 @@ describe('Controller: channelAccessControlCtrl', function () {
     };
   }));
 
-  it('should create a new channel if this is not an update', function () {
+  afterEach(function() {
+    httpBackend.verifyNoOutstandingExpectation();
+    httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should create a taglist array for Client and User Roles', function () {
     createControllerParent();
     createController();
+    httpBackend.flush();
+
     scope.channel.should.be.ok;
+
+    // client ID as well as each unique role
+    scope.taglistClientRoleOptions.length.should.equal(5);
+    scope.taglistUserRoleOptions.length.should.equal(3);
   });
 });
+
+
+
+
+
+
+
 
 
 describe('Controller: channelContentMatchingCtrl', function () {
@@ -175,6 +376,7 @@ describe('Controller: channelContentMatchingCtrl', function () {
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
+
     scope = $rootScope.$new();
 
     var modalInstance = sinon.spy();
@@ -192,21 +394,65 @@ describe('Controller: channelContentMatchingCtrl', function () {
     };
   }));
 
-  it('should create a new channel if this is not an update', function () {
+  it('should set default radio button for Content Matching ( JSON matching ) - Update is True', function () {
     createControllerParent();
+    scope.update = true;
+    // set macthContentJson variable to enable JSON matching radio button
+    scope.channel.matchContentJson = 'JSONMatchingVar';
+    scope.channel.matchContentValue = 'JSONMatchingValue';
     createController();
+
     scope.channel.should.be.ok;
+    scope.matching.contentMatching.should.equal('JSON matching');
   });
 });
+
+
+
 
 
 describe('Controller: channelRoutesCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
+
+    httpBackend = $httpBackend;
+    // http request used in main parent controller
+    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+    ]);
+
+    $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
+      {
+        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+        'version': '0.0.1',
+        'name': 'Test 1 Mediator',
+        'description': 'Test 1 Description',
+        'defaultChannelConfig': [
+          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+        ],
+        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': 1111, 'primary': false, 'type': 'http' }]
+      }, {
+        'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
+        'version': '0.1.2',
+        'name': 'Test 2 Mediator',
+        'description': 'Test 2 Description',
+        'defaultChannelConfig': [
+          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+        ],
+        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': false, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
+      }
+    ]);
+
+    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
+      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
+      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+    ]);
+
     scope = $rootScope.$new();
 
     var modalInstance = sinon.spy();
@@ -224,12 +470,239 @@ describe('Controller: channelRoutesCtrl', function () {
     };
   }));
 
-  it('should create a new channel if this is not an update', function () {
+  afterEach(function() {
+    httpBackend.verifyNoOutstandingExpectation();
+    httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should create Mediators and TrustedCerts objects', function () {
     createControllerParent();
     createController();
+    httpBackend.flush();
+
     scope.channel.should.be.ok;
+    
+    scope.mediators.length.should.equal(3);
+    scope.trustedCerts.length.should.equal(2);
   });
+
+  it('should reset route errors', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.ngErrorRoute = { hasErrors: true, name: true, host: true };
+
+    // reset route erros
+    scope.resetRouteErrors();
+    
+    scope.ngErrorRoute.should.not.have.property('hasErrors');
+    scope.ngErrorRoute.should.not.have.property('name');
+    scope.ngErrorRoute.should.not.have.property('host');
+  });
+
+  it('should validateFormRoutes() and return errors - FAILED', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.newRoute = {};
+    scope.newRoute.name = '';
+    scope.newRoute.host = '';
+    scope.newRoute.port = 'qwerty';
+
+    // reset route erros
+    scope.validateFormRoutes();
+    
+    scope.ngErrorRoute.should.have.property('hasErrors', true);
+    scope.ngErrorRoute.should.have.property('name', true);
+    scope.ngErrorRoute.should.have.property('host', true);
+    scope.ngErrorRoute.should.have.property('port', true);
+    scope.ngErrorRoute.should.have.property('portError', 'Only numbers allowed!');
+  });
+
+  it('should saveRoute() and return errors - FAILED', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.newRoute = {};
+    scope.newRoute.name = '';
+    scope.newRoute.host = '';
+    scope.newRoute.port = 'qwerty';
+
+    // reset route erros
+    scope.saveRoute();
+    
+    scope.ngErrorRoute.should.have.property('hasErrors', true);
+    scope.ngErrorRoute.should.have.property('name', true);
+    scope.ngErrorRoute.should.have.property('host', true);
+    scope.ngErrorRoute.should.have.property('port', true);
+    scope.ngErrorRoute.should.have.property('portError', 'Only numbers allowed!');
+  });
+
+  it('should saveRoute() and return NO errors - SUCCESS', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes.length.should.equal(0);
+
+    scope.newRoute = {};
+    scope.newRoute.name = 'New Route';
+    scope.newRoute.host = 'localhost';
+    scope.newRoute.port = '1234';
+
+    // reset route erros
+    scope.saveRoute();
+    scope.channel.routes.length.should.equal(1);
+  });
+
+
+  it('should run addEditRoute() to edit an existing route', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    
+    var route = [{
+      name: 'Test Route',
+      secured: false,
+      host: 'localhost',
+      port: '1234',
+      path: '/path',
+      pathTransform: '',
+      primary: false,
+      username: '',
+      password: '',
+      type : 'http'
+    }];
+    scope.channel.routes.push(route);
+    scope.channel.routes.should.have.length(1);
+
+    scope.addEditRoute('edit', route, 0);
+
+    scope.newRoute[0].should.have.property('name', 'Test Route');
+    scope.newRoute[0].should.have.property('secured', false);
+    scope.newRoute[0].should.have.property('host', 'localhost');
+    scope.newRoute[0].should.have.property('port', '1234');
+    scope.newRoute[0].should.have.property('path', '/path');
+    scope.newRoute[0].should.have.property('pathTransform', '');
+    scope.newRoute[0].should.have.property('primary', false);
+    scope.newRoute[0].should.have.property('username', '');
+    scope.newRoute[0].should.have.property('password', '');
+    scope.newRoute[0].should.have.property('type', 'http');
+
+  });
+
+it('should run addEditRoute("mediator") to add a mediator to the channel.routes', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes.should.have.length(0);
+    scope.mediator.route = scope.mediators[0];
+
+    scope.addEditRoute('mediator', null, null);
+
+    scope.channel.routes.should.have.length(1);
+    scope.channel.routes[0].should.have.property('name', 'Route 1');
+    scope.channel.routes[0].should.have.property('host', 'localhost');
+    scope.channel.routes[0].should.have.property('port', 1111);
+    // orginally route primary set to false - First mediator channel.route option automatically set primary = true
+    scope.channel.routes[0].should.have.property('primary', true);
+    scope.channel.routes[0].should.have.property('type', 'http');
+  });
+
+  it('should remove an existing route', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999'
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      }
+    ];
+
+    scope.removeRoute(1);
+    scope.channel.routes.should.have.length(1);
+    scope.channel.routes[0].should.have.property('name', 'Test Route 1');
+  });
+
+  it('should return true if there are multiple primary routes', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999',
+        primary: true
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      },
+      {
+        name: 'Test Route 3',
+        path: '/test/path3',
+        host: 'localhost',
+        port: '9988',
+        primary: true
+      }
+    ];
+    scope.multiplePrimaries().should.be.true;
+  });
+
+  it('should return false if there is only one primary route', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999'
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      },
+      {
+        name: 'Test Route 3',
+        path: '/test/path3',
+        host: 'localhost',
+        port: '9988',
+        primary: true
+      }
+    ];
+    scope.multiplePrimaries().should.be.false;
+  });
+
 });
+
+
+
+
 
 
 describe('Controller: channelAlersCtrl', function () {
@@ -260,6 +733,7 @@ describe('Controller: channelAlersCtrl', function () {
     createControllerParent();
     createController();
     scope.channel.should.be.ok;
+    /* STILL NEEDED */ 
   });
 });
 
@@ -288,10 +762,14 @@ describe('Controller: channelSettingsCtrl', function () {
     };
   }));
 
-  it('should create a new channel if this is not an update', function () {
+  it('should set default request/reponse body settings - Update is false', function () {
     createControllerParent();
+    scope.update = false;
     createController();
+
     scope.channel.should.be.ok;
+    scope.channel.requestBody.should.equal(true);
+    scope.channel.responseBody.should.equal(true);
   });
 });
 

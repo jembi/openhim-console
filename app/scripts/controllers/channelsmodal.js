@@ -298,7 +298,7 @@ app.controller('channelAccessControlCtrl', function ($scope, Api) {
   $scope.taglistUserRoleOptions = [];
 
   // watch parent scope for 'users' change
-  $scope.$parent.$watch( 'users', function(){
+  $scope.$watch( 'users', function(){
     // setup user groups taglist options
     angular.forEach($scope.users, function(user){
       angular.forEach(user.groups, function(group){
@@ -331,11 +331,9 @@ app.controller('channelContentMatchingCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
-
     if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
     if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
     if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
-
   }
 
 });
@@ -652,7 +650,6 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
   // listen for broadcast from parent controller to check route warnings on save
   $scope.$on('parentSaveRouteAndCheckRouteWarnings', function() {
-
     // if route add/edit true then save route and check for warning
     if ( $scope.routeAddEdit === true ){
       $scope.saveRoute( $scope.oldRouteIndex );
@@ -691,7 +688,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 app.controller('channelAlersCtrl', function ($scope, Api) {
 
   // watch parent scope for 'users' change
-  $scope.$parent.$watch( 'users', function(){
+  $scope.$watch( 'users', function(){
     // setup usersMap options object
     $scope.usersMap = {};
     angular.forEach($scope.users, function(user){
