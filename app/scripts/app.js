@@ -8,7 +8,6 @@ var app = angular
     'ngRoute',
     'ui.bootstrap',
     'angular_taglist_directive',
-    'xeditable',
     'hljs',
     'angularFileUpload'
   ]);
