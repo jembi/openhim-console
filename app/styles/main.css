@@ -1238,4 +1238,7 @@ footer a {
 
 #header{  position: absolute; top: 0px; width: 100%; z-index: 99;}
 #body {  padding-top: 52px; z-index: -9999;}
+
+.load-metrics-line-graph { width: 50%; }
+.response-time-metrics-line-graph { width: 50%; }
 /* ------------- */ 
