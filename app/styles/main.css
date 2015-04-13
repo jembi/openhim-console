@@ -288,7 +288,7 @@ footer .copy{
 .content-box-header:after {
   clear:both;
 }
-
+.sidebar { display: block; margin-bottom: 15px; }
 .sidebar ul.nav, .sidebar ul.nav ul{
   list-style: none;
   padding: 0px;
@@ -459,18 +459,7 @@ body {
   font-size: 15px;
   height: 40px;
   margin-bottom: 10px;
-  border-color: #b2bfc7;
   padding-left: 12px;
-}
-.login-wrapper .box input[type="text"]:focus,
-.login-wrapper .box input[type="password"]:focus {
-  border: 1px solid #28a0e5;
-  outline: none;
-  -webkit-box-shadow: inset 0 1px 2px #ddd,0px 0 5px #28a0e5;
-  -moz-box-shadow: inset 0 1px 2px #ddd,0px 0 5px #28a0e5;
-  -ms-box-shadow: inset 0 1px 2px #ddd,0px 0 5px #28a0e5;
-  -o-box-shadow: inset 0 1px 2px #ddd,0px 0 5px #28a0e5;
-  box-shadow: inset 0 1px 2px #dddddd, 0px 0 5px #28a0e5;
 }
 .login-wrapper .box input[type="password"] {
   margin-bottom: 10px;
@@ -690,6 +679,11 @@ body {
 
 /*------- Custom CSS Changes ----*/
 
+.addEditRoutes{ padding: 0px 10px 10px 10px; border: 1px solid #ccc; }
+.addEditRoutes .form-group{
+  margin-bottom: 5px;
+}
+
 .form-group label span { color: #a94442; }
 .has-error-msg { display: none; }
 .has-error { color: #a94442; }
@@ -721,6 +715,8 @@ body {
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
 .form-group-2columns .form-group { width: 47%; }
+.form-group-3columns { clear: both; display: inline-block; width: 100%; }
+.form-group-3columns .form-group { width: 30%; }
 .loadingContainer { width: 100%; text-align: center; margin-bottom: 15px; }
 .allowedRolesStaticDiv { clear: both; border-left: 1px solid #ccc; padding-left: 10px; }
 .allowedRolesStaticDiv span { border-right: 1px solid #ccc; margin-right: 10px; padding-right: 10px; }
@@ -754,7 +750,7 @@ body {
 
 .newUserContainer { width: 60% !important; margin: 0 20%; }
 
-.addUrlRegexDelimiterDiv { font-size: 10px; padding: 4px 8px; }
+.addUrlRegexDelimiterDiv { font-size: 10px; display: inline-block; }
 .addUrlRegexDelimiterDiv label { margin: 25px 0px 0px 15px; float: left; }
 .addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
 
@@ -1208,7 +1204,6 @@ footer a {
   border-color: #028A3B;
   box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
 }
-
 
 
 

@@ -80,7 +80,7 @@
       <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
         <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.user" style="max-width: 170px;">
           <option value="">User</option>
-          <option ng-repeat="user in alertUsers" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
+          <option ng-repeat="user in users" value="{{user.email}}">{{user.firstname}} {{user.surname}} ({{user.email}})</option>
         </select>
 
         <select class="form-control channelAlertUserDropDown" ng-model="newAlertUser.method">
