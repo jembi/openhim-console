@@ -1238,4 +1238,13 @@ footer { box-shadow: 0px 0px 10px #888; }
 
 .load-metrics-line-graph { width: 50%; }
 .response-time-metrics-line-graph { width: 50%; }
+
+/* NO BOX-SHADOW CSS */
+.content-box{ box-shadow: none; }
+.content-box-large{ box-shadow: none; }
+.header{ box-shadow: none; }
+footer{ box-shadow: none; }
+.modal-content{ box-shadow: none; }
+/* NO BOX-SHADOW CSS */
+
 /* ------------- */ 
