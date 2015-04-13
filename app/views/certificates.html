@@ -60,8 +60,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="120">Comman Name: </td>
-                  <td data-title="Comman Name">{{currentServerCert.commonName}}</td>
+                  <td width="120">Common Name: </td>
+                  <td data-title="Common Name">{{currentServerCert.commonName}}</td>
                 </tr>
                 <tr>
                   <td>Organization</td>
@@ -122,8 +122,13 @@
 
               <!-- Server Certificate Alerts -->
               <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <h4><strong>Enter a passphrase (Optional)</strong></h4>
+              <input class="form-control" placeholder="Enter a passphrase here if the key requires one." type="text" ng-model="serverPassphrase" />
               <!-- Server Certificate Alerts -->
 
+            </div>
+            <div>
+              <
             </div>
 
           </div>

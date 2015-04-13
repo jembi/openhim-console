@@ -108,6 +108,8 @@ angular.module('openhimConsoleApp')
       switch ( $scope.uploadType ){
         case 'serverCert':
           $scope.certificateObject.cert = data;
+          $scope.certificateObject.passphrase = $scope.serverPassphrase;
+
           $scope.certificateObject.$save({ type: 'cert' }, function(){
             $scope.uploadSuccess('serverCert', fileName);
           }, function(err){
@@ -116,6 +118,8 @@ angular.module('openhimConsoleApp')
           break;
         case 'serverKey':
           $scope.certificateObject.key = data;
+          $scope.certificateObject.passphrase = $scope.serverPassphrase;
+
           $scope.certificateObject.$save({ type: 'key' }, function(){
             $scope.uploadSuccess('serverKey', fileName);
           }, function(err){
@@ -323,6 +327,10 @@ angular.module('openhimConsoleApp')
           }
         }
       });
+    };
+
+    $scope.addServerPassphrase = function() {
+
     };
 
   });
