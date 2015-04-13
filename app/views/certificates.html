@@ -123,7 +123,7 @@
               <!-- Server Certificate Alerts -->
               <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
               <h4><strong>Enter a passphrase (Optional)</strong></h4>
-              <input class="form-control" placeholder="Enter a passphrase here if the key requires one." type="text" ng-model="serverPassphrase" />
+              <input class="form-control" placeholder="Enter a passphrase here if the key requires one." type="password" ng-model="serverPassphrase" />
               <!-- Server Certificate Alerts -->
 
             </div>
