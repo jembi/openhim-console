@@ -329,8 +329,4 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    $scope.addServerPassphrase = function() {
-
-    };
-
   });
