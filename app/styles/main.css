@@ -1234,8 +1234,8 @@ footer a {
 .login-wrapper .box .signup{ border-radius: 0px; }
 .hljsFormatNone{ border-radius: 0px; }
 .exportCollectionsDiv{ border-radius: 0px; }
-footer { box-shadow: 0px -1px 10px #888; }
-.header{ box-shadow: 0px 1px 10px #888; }
+footer { box-shadow: 0px 0px 10px #888; }
+.header{ box-shadow: 0px 0px 10px #888; }
 .header .dropdown-menu{ border-radius: 0px; }
 
 #header{  position: absolute; top: 0px; width: 100%; z-index: 99;}
