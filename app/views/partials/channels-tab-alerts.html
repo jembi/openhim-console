@@ -101,11 +101,11 @@
     </div>
   </tab>
 
-  <tab heading="Add Groups">
+  <tab heading="Add Contact Lists">
     <!-- ************* NEW GROUP FOR CHANNNEL ALERT ************** -->
     <div class="form-group" style="margin-top: 15px;">
-      <label><span>**</span> Add a new group</label>
-      <alert ng-show="newAlert.groups.length==0" type="warning">There are currently no Groups added for this Channel Alert</alert>
+      <label><span>**</span> Add a new Contact List</label>
+      <alert ng-show="newAlert.groups.length==0" type="warning">There are currently no Contact Lists added for this Channel Alert</alert>
       <div ng-show="newAlert.groups.length > 0">
         <div id="no-more-tables">
           <table class="table table-striped">
@@ -131,7 +131,7 @@
 
       <div class="form-group" style="display: inline-block; width: 100%; margin-bottom: 0px;">
         <select class="form-control channelAlertUserDropDown" ng-model="newAlertGroup.group" style="max-width: 170px;">
-          <option value="">Group</option>
+          <option value="">Contact List</option>
           <option ng-repeat="group in alertGroups" value="{{group._id}}">{{group.group}}</option>
         </select>
         <button class="btn btn-sm btn-primary channelAlertUserDropDown" ng-click="addAlertGroup(newAlertGroup)" ng-disabled="!(isAlertGroupValid())" style="height: 34px;"><i class="glyphicon glyphicon-plus"></i> Group</button>
