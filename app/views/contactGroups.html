@@ -6,7 +6,7 @@
       <div class="content-box-large">
         <div class="panel-heading">
           <div class="panel-title">
-            <h2><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Groups</h2>
+            <h2><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Lists</h2>
           </div>
         </div>
 
@@ -20,7 +20,7 @@
               <thead>
                 <tr>
                   <th width="50">#</th>
-                  <th>Group</th>
+                  <th>List</th>
                   <th>Users</th>
                   <th width="80"></th>
                 </tr>
@@ -52,7 +52,7 @@
           <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
           <!-- Bottom Alerts -->
 
-          <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Group</button>
+          <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Contact List</button>
         </div>
       </div>
     </div>

@@ -42,13 +42,13 @@ angular.module('openhimConsoleApp')
 
     var success = function () {
       // add the success message
-      Alerting.AlertAddMsg('top', 'success', 'The contact group has been saved successfully');
+      Alerting.AlertAddMsg('top', 'success', 'The contact list has been saved successfully');
       notifyContactGroup();
     };
 
     var error = function (err) {
       // add the success message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact groups\' details: #' + err.status + ' - ' + err.data);
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact lists\' details: #' + err.status + ' - ' + err.data);
       notifyContactGroup();
     };
 
