@@ -1,3 +1,49 @@
+openhim-console (1.1.0-3~trusty) trusty; urgency=medium
+
+  * Release Version 1.1.0-3
+    -e74fff1 Merge remote-tracking branch 'origin/master' into debian-p
+    --https://github.com/jembi/openhim-console/commmit/e74fff1
+    -4ff558b Merge pull request #292 from jembi/contact-group-label-cha
+    --https://github.com/jembi/openhim-console/commmit/4ff558b
+    -46d2fc5 Corrected label change value from "group -> list"
+    --https://github.com/jembi/openhim-console/commmit/46d2fc5
+    -156709e Changed contact groups label to lists
+    --https://github.com/jembi/openhim-console/commmit/156709e
+    -8c5de03 Updated contact groups label text
+    --https://github.com/jembi/openhim-console/commmit/8c5de03
+    -5110e1a Merge pull request #288 from jembi/refactoring-ui-channels
+    --https://github.com/jembi/openhim-console/commmit/5110e1a
+    -d0c46cf Fixed JSHint errors
+    --https://github.com/jembi/openhim-console/commmit/d0c46cf
+    -039241a OHM-140: updated channelsmodal tests and added additional
+    --https://github.com/jembi/openhim-console/commmit/039241a
+    -906cf32 Tooltip text change - remove $parent ref for variable upda
+    --https://github.com/jembi/openhim-console/commmit/906cf32
+    -bcbc41c Adding mediator directly to channel.routes instead of goin
+    --https://github.com/jembi/openhim-console/commmit/bcbc41c
+    -b398e2c Bug fix: clear old errors on new validate check
+    --https://github.com/jembi/openhim-console/commmit/b398e2c
+    -308acf2 Hardned edit index check
+    --https://github.com/jembi/openhim-console/commmit/308acf2
+    -1a8d249 Bug fix - Empty route skips validations and saves channel
+    --https://github.com/jembi/openhim-console/commmit/1a8d249
+    -f58e89b Added better checking for index value on delete
+    --https://github.com/jembi/openhim-console/commmit/f58e89b
+    -fcfbeee Merge pull request #287 from jembi/remove-transaction-reru
+    --https://github.com/jembi/openhim-console/commmit/fcfbeee
+    -63023d5 Removed unnecessary "true" check
+    --https://github.com/jembi/openhim-console/commmit/63023d5
+    -d59912c Reverted back styling change
+    --https://github.com/jembi/openhim-console/commmit/d59912c
+    -e79f96f OHM-140: Refactored the channelsmodal - how routes are add
+    --https://github.com/jembi/openhim-console/commmit/e79f96f
+    -c3f7742 Removed commented out code
+    --https://github.com/jembi/openhim-console/commmit/c3f7742
+    -92e2166 Fixed: rerun transactions bug - deleted/disabled channels
+    --https://github.com/jembi/openhim-console/commmit/92e2166
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Wed, 22 Apr 2015 17:44:06 +0000
+
 openhim-console (1.1.0-2~trusty) trusty; urgency=medium
 
   * Release Version 1.1.0-2
