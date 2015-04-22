@@ -40,25 +40,31 @@
                 <!-- Logo -->
                 <div class="logo">
                   <h1><a href="#/transactions"><img src="images/openhim-logo-green.png" alt="Logo" />{{appTitle}}</a></h1>
-                  <!--<h1><a href="#/transactions"><i class="glyphicon glyphicon-cloud"></i>{{appTitle}}</a></h1>-->
                 </div>
               </div>
 
               <div ng-show="navMenuVisible === true">
                 <div class="" style="float: right">
-                  <div class="navbar navbar-inverse" role="banner">
-                      <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                        <ul class="nav navbar-nav">
-                          <li class="dropdown">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
-                            <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="#/profile">Profile</a></li>
-                              <li><a href="#/logout">Logout</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </nav>
+                  <div class="navbar navbar-inverse" role=" banner" style="float: right;">
+                    <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                      <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                          <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
+                          <ul class="dropdown-menu animated fadeInUp">
+                            <li><a href="#/profile">Profile</a></li>
+                            <li><a href="#/logout">Logout</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
+
+                  <div class="btn-group" style="float: right;">
+                    <label style="display: block; margin: 0px;">Tooltips?</label>
+                    <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" onclick="updateShowTooltips('showTooltips', true)" ng-model="uiSettings.showTooltips" btn-radio="'true'">Yes</label>
+                    <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" onclick="updateShowTooltips('showTooltips', false)" ng-model="uiSettings.showTooltips" btn-radio="'false'">No</label>
+                  </div>
+
                 </div>
 
                 <div class="topMenu" style="float: right">
@@ -93,7 +99,7 @@
       </div>
 
       <!-- Add your site or application content here -->
-      <div id="body" ng-view="" style="min-height: 460px;"></div>
+      <div id="body" ng-view=""></div>
 
       <footer>
         <div class="container">

@@ -1,6 +1,4 @@
-<div style="width: 100%">
-  <button class="btn btn-default" ng-click="advancedFilters.isCollapsed = !advancedFilters.isCollapsed" style="margin-bottom: 10px;">Toggle Advanced Filters</button>  
-</div>
+  <button class="btn btn-default" ng-click="advancedFilters.isCollapsed = !advancedFilters.isCollapsed" style="margin-bottom: 10px; clear: both; display: block;">Toggle Advanced Filters</button>  
 
   <div collapse="advancedFilters.isCollapsed">
     <div class="well well-lg auditFilterDiv" style="padding-top: 20px; margin-right: 0px;">
@@ -12,7 +10,10 @@
         <div style="float: left; border-right: 1px solid #ccc; padding: 0px 10px 0px 0px; margin: 0px 10px 0px 0px; width: 49%;">
           
           <div class="settings_div" ng-class="{ 'has-error' : ngError.txStatusCode }">
-            <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
+            <label>
+              Status Code: 
+              <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Filter via status Code. This can be a range value in the following format: 2xx" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+            </label>
             <input type="text" 
               class="form-control" 
               ng-model="filters.transaction.statusCode" 
@@ -94,7 +95,10 @@
       <div class="auditFilterDiv filterBoxSizing">
         <label class="auditFilterDivLabel">Filter by Route: </label>
         <div class="settings_div" ng-class="{ 'has-error' : ngError.routeStatusCode }">
-          <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
+          <label>
+            Status Code: 
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Filter via status Code. This can be a range value in the following format: 2xx" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          </label>
           <input type="text" 
             class="form-control" 
             ng-model="filters.route.statusCode" 
@@ -130,7 +134,10 @@
       <div class="auditFilterDiv filterBoxSizing" style="margin-right: 0px;">
         <label class="auditFilterDivLabel">Filter by Orchestration: </label>
         <div class="settings_div" ng-class="{ 'has-error' : ngError.orchStatusCode }">
-          <label tooltip="Filter via status Code. This can be a range value in the following format: 2xx">Status Code: </label>
+          <label>
+            Status Code: 
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Filter via status Code. This can be a range value in the following format: 2xx" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          </label>
           <input type="text" 
             class="form-control" 
             ng-model="filters.orchestration.statusCode" 
@@ -169,7 +176,10 @@
   <div class="auditFilterDiv">
     <label class="auditFilterDivLabel">Basic Filters: </label>
     <div class="settings_div" style="float: left; margin-right: 15px;">
-      <label tooltip="Select an option to filter transactions by their status">Status: </label>
+      <label>
+        Status: 
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by their status" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+      </label>
       <!--<select class="form-control" ng-model="filterStatus">-->
       <select class="form-control" 
         ng-model="filters.transaction.status" 
@@ -183,7 +193,10 @@
       </select>
     </div>
     <div class="settings_div" style="float: left; margin-right: 15px;">
-      <label tooltip="Select an option to filter transactions by Channel">Channel: </label>
+      <label>
+        Channel: 
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by Channel" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+      </label>
       <select class="form-control" 
         ng-model="filters.transaction.channel" 
         ng-options="channel._id as channel.name for channel in channels | orderBy:['name']" 
@@ -192,7 +205,10 @@
       </select>
     </div>
     <div class="settings_div" style="float: left; margin-right: 15px;">
-      <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
+      <label>
+        Date Range: 
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select a start and end date to filter transactions be date" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+      </label>
       <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
         <input ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-class="{formControlNotEmpty: settings.filter.startDate}" />
         <span class="input-group-addon">to</span>
@@ -210,7 +226,10 @@
       </script>
     </div>
     <div class="settings_div" style="float: left;">
-      <label tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile">Limit: </label>
+      <label>
+        Limit: 
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+      </label>
       <select class="form-control" ng-model="settings.filter.limit">
         <option value="10">10</option>
         <option value="20">20</option>

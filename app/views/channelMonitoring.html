@@ -17,7 +17,7 @@
 
         <div class="panel-body" ng-show="!alerts.server">
 
-          <div class="content-box-large" ng-if="loadTotal || avgResponseTime">
+          <div style="margin-bottom: 20px;" ng-if="loadTotal || avgResponseTime">
             <div class="panel-body">
               <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
                 Total Transactions (Past Week): <br /><strong>{{loadTotal}}</strong>
@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <div class="content-box-large load-metrics-line-graph">
+          <div class="content-box-large load-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
               <div class="panel-title">Transaction Load (Past Week)</div>
               <div class="panel-options">
@@ -50,7 +50,7 @@
 
           </div>
 
-          <div class="content-box-large response-time-metrics-line-graph">
+          <div class="content-box-large response-time-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
               <div class="panel-title">Average Response Time (Past Week)</div>
               
@@ -72,7 +72,7 @@
             </div>
           </div>
 
-          <div class="content-box-large" style="clear: both">
+          <div class="content-box-large" style="clear: both; border: 1px solid #ccc;">
             <div class="panel-heading">
               <div class="panel-title">Transaction Status (Past Week)</div>
               

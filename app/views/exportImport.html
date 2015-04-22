@@ -18,16 +18,22 @@
 
           <h3><strong>Export Data</strong></h3>
           <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
-            <label tooltip="For an 'Insert Script' the exported data will always add new elements, however, an 'Update Script' will attempt to update existing elements if possible">Will this export file be used as an Insert or Update?</label><br />
+            <label>
+              Will this export file be used as an Insert or Update?
+              <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="For an 'Insert Script' the exported data will always add new elements, however, an 'Update Script' will attempt to update existing elements if possible" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+            </label><br />
             <div class="btn-group" style="margin-bottom: 10px;">
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="true"><strong>Insert</strong> Script</label>
               <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="false"><strong>Update</strong> Script</label>
             </div>
           </div>
           
-          
           <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
-            <label class="exportModelTitle"><input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" />All {{model}}</label>
+            <label class="exportModelTitle">
+              <input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" />All {{model}}
+              <i ng-if="showRecordOptions[model]" class="glyphicon glyphicon-chevron-up"></i>
+              <i ng-if="!showRecordOptions[model]" class="glyphicon glyphicon-chevron-down"></i>
+            </label>
             <div ng-if="showRecordOptions[model]">
               <div ng-repeat="record in collectionData | orderBy:['name','firstname','group']">
                 <label class="exportRecordTitle">
@@ -47,14 +53,8 @@
           </div>
         </div>
 
-
-
-        
-
-
         <div class="importSectionDiv">
           <h3><strong>Import Data</strong></h3>
-          
           <div class="importCollectionsDiv" >
           
             <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>

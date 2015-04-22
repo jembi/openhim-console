@@ -1,7 +1,7 @@
 <!-- $rooScope.userGroupAdmin is configured in scripts/app.js -->
 
 <div class="scollNavAnchor"></div>
-<div ng-controller="SidebarCtrl" class="col-md-2 col-xs-6 col-sm-3 scollNav" role="navigation" >
+<div ng-controller="SidebarCtrl" class="scollNav sidebar-div" role="navigation" >
   <div class="sidebar content-box">
     <ul class="nav">
       <!-- Main menu -->
@@ -22,7 +22,7 @@
     </ul>
   </div>
 
-  <button class="btn btn-primary" ng-click="goToTop()" id="scrollToTop" style="display: none; width: 100%">
+  <button class="btn btn-default" ng-click="goToTop()" id="scrollToTop">
     <i class="glyphicon glyphicon-chevron-up"></i>&nbsp;&nbsp;&nbsp;Jump To Top&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-up"></i>
   </button>
 
@@ -34,15 +34,10 @@
   $(window).scroll(function(e) {
     // Get the position of the location where the scroller starts.
     var scroller_anchor = $(".scollNavAnchor").offset().top;
-    if ( scroller_anchor >= 60 ){
-      $(".scollNav").css("position", "fixed");
-      $(".scollNav").css("top", "0px");
-
+    if ( scroller_anchor >= 50 ){
       // show the scroll to button
       $("#scrollToTop").css("display", "block");
     }else{
-      $(".scollNav").removeAttr( 'style' );
-
       // hide the scroll to button
       $("#scrollToTop").css("display", "none");
     }

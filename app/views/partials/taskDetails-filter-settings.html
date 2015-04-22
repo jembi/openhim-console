@@ -37,7 +37,10 @@
     </select>
   </div>
   <div class="settings_div" style="float: left;">
-    <label tooltip="Set the limit of how many records to display">Limit: </label>
+    <label>
+      Limit: 
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-info-sign"></i>
+    </label>
     <select class="form-control" ng-model="filters.limit">
       <option value="10">10</option>
       <option value="50">50</option>

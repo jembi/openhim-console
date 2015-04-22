@@ -26,9 +26,10 @@ h2 { word-wrap: break-word; }
 #container {
    min-height:100%;
    position:relative;
+   background: #fff;
 }
 #body {
-   padding-bottom:125px;   /* Height of the footer */
+   padding-bottom:85px;   /* Height of the footer */ /* should be same as footer height */
 }
 
 /* Footer */
@@ -38,14 +39,14 @@ footer{
    box-shadow: 0px -5px 15px #888;
    color:#fff;
    font-size:14px;
-   line-height:25px;
-   padding:10px 0px 10px 0px;
+   line-height:18px;
+   padding:0px;
    bottom: 0px;
 
    position:absolute;
    bottom:0;
    width:100%;
-   height:125px;   /* Height of the footer */
+   height:85px;   /* Height of the footer */ /* should be same as #body height */
 }
 
 footer a{
@@ -68,8 +69,8 @@ footer hr{
 }
 
 footer .copy{
-   font-size:13px;
-   margin:15px 0px;
+  font-size:12px;
+  margin:15px 0px;
 }
 
 /* Logo & Navigation */
@@ -178,7 +179,7 @@ footer .copy{
 
 .header .dropdown-menu li{
    font-size:13px;
-   padding:6px 15px;
+   padding:0px 15px;
    border-bottom:1px dashed #f3f3f3;
 }
 
@@ -256,10 +257,10 @@ footer .copy{
    background:#fff;
    border-radius:10px;
    padding:10px;
-   border-left:1px solid #eee;
+   /*border-left:1px solid #eee;
    border-top:1px solid #eee;
-   border-right:2px solid #eee;
-   border-bottom:2px solid #eee; 
+   border-right:1px solid #eee;
+   border-bottom:1px solid #eee; */
    box-shadow: 1px 1px 10px #888;
 }
 
@@ -336,7 +337,7 @@ footer .copy{
 }
 
 .sidebar .nav > li > a > i{
-   margin-right:5px;
+   margin-right:10px;
 }
 
 .sidebar .nav > li > ul > li > a {
@@ -364,9 +365,9 @@ footer .copy{
 }
 
 .sidebar .nav li a:hover, .sidebar .nav li.current > a {
-  background: #fff;
+  background: #eff0f3;
   color: #555;
-   border-bottom:0px;
+  border-bottom:0px;
 }
 
 .sidebar .nav li.open > a {
@@ -742,8 +743,12 @@ body {
 .progress { margin: 0px; width: 90%; }
 
 #transaction-status-graph:hover { cursor: pointer; }
-.dashboard-info-box{ box-shadow: none; margin: 0 20px 0 0; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
+.dashboard-info-box{ box-shadow: none; margin: 0 20px 0 0 !important; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
 .dashboard-info-box strong { font-size: 30px; }
+.dashboard-metrics-box { margin-bottom: 20px !important; border: 1px solid #ccc; }
+.dashboard-metrics-box:last-child {
+  margin-bottom: 0px !important;
+}
 
 .default-labels-box{ margin: 0 20px 0 0; float: left; font-size: 14px; padding: 5px 10px; background: #2c3742; color: #fff; text-align: center; }
 .default-labels-box strong { font-size: 18px; }
@@ -761,8 +766,9 @@ body {
 .editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
 .editable-error { margin-top: 0px; }
 
+.scollNav { position: fixed; }
 .scollNavAnchor { display: none; position: fixed; }
-.row .col-md-10 { float: right; }
+.row .col-md-10 { float: right; width: 87%; }
 .transaction_settings_tabset { margin-bottom: 20px; background-color: #eee }
 .transaction_settings_tabset ul { background-color: #fff; }
 .transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
@@ -930,6 +936,10 @@ body {
 .bulkRerunAlert {
   font-weight: bold; text-align: center; font-size: 16px;
 }
+
+.sidebar-div{ float: left; width: 13%; height: 100%; border-right: 1px solid #ccc; }
+#scrollToTop { display: none; width: auto; margin: 15px auto; }
+.exportModelTitle i { top: 3px; left: 3px; }
 
 /*------- Custom CSS Changes ----*/
 
@@ -1233,11 +1243,8 @@ footer { box-shadow: 0px 0px 10px #888; }
 .header{ box-shadow: 0px 0px 10px #888; }
 .header .dropdown-menu{ border-radius: 0px; }
 
-#header{  position: absolute; top: 0px; width: 100%; z-index: 99;}
-#body {  padding-top: 52px; z-index: -9999;}
-
-.load-metrics-line-graph { width: 50%; }
-.response-time-metrics-line-graph { width: 50%; }
+#header{  position: fixed; top: 0px; width: 100%; z-index: 1001;}
+#body {  padding-top: 50px; z-index: -9999;}
 
 /* NO BOX-SHADOW CSS */
 .content-box{ box-shadow: none; }
@@ -1247,4 +1254,8 @@ footer{ box-shadow: none; }
 .modal-content{ box-shadow: none; }
 /* NO BOX-SHADOW CSS */
 
+label { position: relative; }
+.glyphicon-info-sign{ color: #5bc0de; font-size: 15px; position: absolute; right: -25px; top: 0px; }
+.glyphicon-info-sign:hover{ cursor: pointer; }
+.tooltip-inner{ min-width: 200px !important; }
 /* ------------- */ 

@@ -4,11 +4,19 @@
 /* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TasksCtrl', function ($scope, $modal, $location, Api, Alerting, $route) {
+  .controller('TasksCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, $route) {
 
     /**********************************************/
     /**         Initial load functions           **/
     /**********************************************/
+
+
+
+    var tasksInterval = $interval(function() {
+      $scope.refreshTasksList();
+    }, 5000);
+
+
 
     // default settings
     $scope.showpage = 0;
@@ -295,5 +303,16 @@ angular.module('openhimConsoleApp')
         // cancel cancelled
       });
     };
+
+
+
+    $scope.$on('$destroy', function() {
+      // Make sure that the interval is destroyed too
+      if (angular.isDefined(tasksInterval)) {
+        $interval.cancel(tasksInterval);
+        tasksInterval = undefined;
+      }
+    });
+
 
   });

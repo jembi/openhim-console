@@ -42,8 +42,8 @@
 
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
-          <label ng-if="client.passwordHash" tooltip="A password has been set for this client" style="float: right">
-            <i class="glyphicon glyphicon-lock"></i>
+          <label ng-if="client.passwordHash" style="float: right">
+            <i tooltip-placement="top" tooltip="A password has been set for this client" class="glyphicon glyphicon-lock"></i>
           </label>
 
           <label><span>**</span> Basic Auth Password</label>

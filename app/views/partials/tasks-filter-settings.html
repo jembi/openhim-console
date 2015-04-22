@@ -2,7 +2,10 @@
 <div class="auditFilterDiv">
   <label class="auditFilterDivLabel">Basic Filters: </label>
   <div class="settings_div" style="float: left; margin-right: 15px;">
-    <label tooltip="Select an option to filter rerun tasks by their status">Status: </label>
+    <label>
+      Status: 
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter rerun tasks by their status" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+    </label>
     <select class="form-control" 
       ng-model="filters.status" 
       ng-class="{formControlNotEmpty: filters.status}">
@@ -15,7 +18,10 @@
     </select>
   </div>
   <div class="settings_div" style="float: left; margin-right: 15px;">
-    <label tooltip="Select an option to filter rerun tasks by user">User: </label>
+    <label>
+      User: 
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter rerun tasks by user" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+    </label>
     <select class="form-control" 
       ng-model="filters.user"
       ng-options="user.email as (user.firstname+' '+user.surname+' ('+user.email+')') for user in users | orderBy:['firstname']"
@@ -25,7 +31,10 @@
     </select>
   </div>
   <div class="settings_div" style="float: left; margin-right: 15px;">
-    <label tooltip="Pick a date to filter rerun tasks by">Date: </label>
+    <label>
+      Date: 
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Pick a date to filter rerun tasks by" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+    </label>
     <input type="text" class="form-control input-date" ng-model="filters.date" ng-class="{formControlNotEmpty: filters.date}">
 
     <!-- Date picker functionality -->
@@ -40,7 +49,10 @@
     </script>
   </div>
   <div class="settings_div" style="float: left;">
-    <label tooltip="Set the limit of how many records to display">Limit: </label>
+    <label>
+      Limit: 
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+    </label>
     <select class="form-control" ng-model="filters.limit">
       <option value="10">10</option>
       <option value="50">50</option>

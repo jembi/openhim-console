@@ -609,7 +609,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
   $scope.noRoutes = function () {
     //no routes found - return true
     if (!$scope.channel.routes || $scope.channel.routes.length === 0) {
-      Alerting.AlertAddMsg('route', 'danger', 'You must supply atleast one route.');
+      Alerting.AlertAddMsg('route', 'warning', 'You must supply atleast one route.');
       return true;
     }
     return false;
@@ -625,7 +625,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       }
     }
     // return true if no primary routes found
-    Alerting.AlertAddMsg('route', 'danger', 'Atleast one of your routes must be set to the primary.');
+    Alerting.AlertAddMsg('route', 'warning', 'Atleast one of your routes must be set to the primary.');
     return true;
   };
 
@@ -639,7 +639,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         }
 
         if (count > 1) {
-          Alerting.AlertAddMsg('route', 'danger', 'You cannot have multiple primary routes.');
+          Alerting.AlertAddMsg('route', 'warning', 'You cannot have multiple primary routes.');
           return true;
         }
       }
