@@ -10,12 +10,11 @@ angular.module('openhimConsoleApp')
     consoleSession = JSON.parse(consoleSession);
 
     var generalSettings = {};
-    if ( consoleSession ){
-      generalSettings.showTooltips = consoleSession.sessionUserSettings.general;
+    if ( consoleSession && consoleSession.sessionUserSettings.general ){
+      generalSettings.showTooltips = consoleSession.sessionUserSettings.general.showTooltips;
     }else{
       generalSettings.showTooltips = true;
     }
-    
 
     // set default ui settings
     $rootScope.uiSettings = {};

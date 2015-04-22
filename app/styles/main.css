@@ -970,10 +970,12 @@ body {
 @media (max-width: 991px){
 
   .newUserContainer { width: 100% !important; margin: 0; }
+  #body{ padding-top: 100px !important; }
 
   .col-md-2{ width: 100%; }
-  .col-md-10{ width: 100%; }
+  .col-md-10{ width: 100% !important; }
   .sidebar{ display: none !important; }
+  .sidebar-div{ display: none !important; }
   .topMenu{ display: block; }
   #scrollToTop { display: none !important; }
 
