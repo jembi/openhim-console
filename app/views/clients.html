@@ -28,7 +28,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="client in clients">
+                <tr ng-repeat="client in clients | orderBy:['name']">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                   <td data-title="ID"><a href="" ng-click="editClient(client)">{{ client.clientID }}</a></td>
                   <td data-title="Name"><a href="" ng-click="editClient(client)">{{ client.name }}</a></td>

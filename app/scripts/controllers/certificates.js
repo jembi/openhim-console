@@ -15,10 +15,10 @@ angular.module('openhimConsoleApp')
     $scope.serverRestartError = false;
     $scope.showImportResults = false;
     $scope.certValidity = {};
-    
+
     // function to reset certs
     $scope.resetCertificates = function(){
-            
+
       // get server certificate data
       Api.Keystore.get({ type: 'cert' }, function(result){
         $scope.currentServerCert = result;
@@ -66,7 +66,7 @@ angular.module('openhimConsoleApp')
       }else{
         Alerting.AlertAddMsg(location, 'danger', 'Upload error occured: [ File: '+fileName+' ] #' + err.status + ' - ' + err.data);
       }
-      
+
       $scope.importFail++;
     };
 
@@ -76,7 +76,20 @@ angular.module('openhimConsoleApp')
       $scope.importSuccess++;
       $scope.serverRestartRequired = true;
       $scope.resetCertificates();
+      $scope.goToTop();
     };
+
+    $scope.createCertificateSuccess = function () {
+
+      $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+      $scope.goToTop();
+    };
+
+    $scope.$on('certificatesChanged', function () {
+      $scope.createCertificateSuccess();
+    });
 
     // execute the certificate upload
     $scope.uploadCertificate = function(data, totalFiles, fileName){
@@ -127,7 +140,7 @@ angular.module('openhimConsoleApp')
         $scope.importProgressStatus = 100;
         $scope.importProgressType = 'success';
       }
-      
+
     };
 
     /* ----- Watcher to look for dropped files ----- */
@@ -153,7 +166,7 @@ angular.module('openhimConsoleApp')
     /* ----- Watcher to look for dropped files ----- */
 
 
-    
+
 
     // function to upload the file
     $scope.upload = function (files) {
@@ -196,7 +209,7 @@ angular.module('openhimConsoleApp')
 
 
 
-    
+
 
 
     /****************************************/
@@ -234,6 +247,8 @@ angular.module('openhimConsoleApp')
     var deleteSuccess = function () {
       // On success
       $scope.resetCertificates();
+      $scope.serverRestartRequired = true;
+      $scope.goToTop();
       Alerting.AlertAddMsg('trustedCertDelete', 'success', 'The Trusted Certificate has been deleted successfully');
     };
 
@@ -293,5 +308,21 @@ angular.module('openhimConsoleApp')
     /**         Restart Server Functions           **/
     /************************************************/
 
+
+    $scope.addCert = function(certType) {
+      Alerting.AlertReset();
+      $scope.serverRestarting = false;
+
+      $modal.open({
+        templateUrl: 'views/certificateModal.html',
+        controller: 'CertificatesModalCtrl',
+        resolve: {
+          cert: function () {},
+          certType: function () {
+            return certType;
+          }
+        }
+      });
+    };
 
   });

@@ -11,8 +11,6 @@
           </div>
         </div>
 
-        
-
         <!-- Transaction Alerts -->
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
@@ -27,21 +25,33 @@
             <div class="data-group">
               <label>Status: </label>
               <div class="data-value">
-	              <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
-	              <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
-	              <span ng-if="task.status === 'NotStarted'" class="label label-danger">Not Started</span>
+                <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
+                <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
+                <span ng-if="task.status === 'Queued'" class="label label-info">Queued</span>
+                <span ng-if="task.status === 'Paused'" class="label label-primary">Paused</span>
+                <span ng-if="task.status === 'Cancelled'" class="label label-danger">Cancelled</span>
               </div>
             </div>
             <div class="data-group">
               <label>Progress: </label>
               <div class="data-value">
-	              <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.transactions.length" value="getProcessedTotal(task)" type="success"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
-                <progressbar ng-if="task.status === 'Processing'" class="progress-striped active" max="task.transactions.length" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedTotal(task)}} / {{task.transactions.length}}</i></progressbar>
+                <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></progressbar>
               </div>
+            </div>
+            <div class="data-group">
+              <label>Transactions: </label>
+              <div class="data-value">{{getProcessedTotal(task)}} / {{task.totalTransactions}}</div>
             </div>
             <div class="data-group">
               <label>User: </label>
               <div class="data-value">{{task.user}}</div>
+            </div>
+            <div class="data-group">
+              <label>Batch Size: </label>
+              <div class="data-value">{{task.batchSize}}</div>
             </div>
             <div class="data-group">
               <label>Created Date: </label>
@@ -55,50 +65,115 @@
               <label>Execution Time: </label>
               <div class="data-value">{{getExecutionTime(task)}} s</div>
             </div>
+            <div class="data-group">
+              <label>Control Task: </label>
+              <div class="data-value">
+                <div ng-if="task.status=='Processing' || task.status=='Queued'">
+                  <button tooltip="Pause" class="btn btn-warning btn-xs" ng-click="pauseTask(task)"><i class="glyphicon glyphicon-pause"></i></button>
+                  <button tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+                <div ng-if="task.status=='Paused'">
+                  <button tooltip="Resume" class="btn btn-success btn-xs" ng-click="resumeTask(task)"><i class="glyphicon glyphicon-play"></i></button>
+                  <button tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+              </div>
+            </div>
             
 
           
             <div class="data-group">
               <label>Original Transactions: </label>
+
+              <!-- Filter options -->
+              <div class="transaction-filter-options">
+
+                <tabset class="transaction_settings_tabset" justified="false">
+                  <tab>
+                    <tab-heading>Filter Settings</tab-heading>
+                    <div ng-include="'views/partials/taskDetails-filter-settings.html'"></div>
+                  </tab>
+
+                  <tab>
+                    <tab-heading>List Settings</tab-heading>
+                    <div class="settings_div">
+                      <label style="float: left" tooltip="Set whether a task transaction opens in the 'Same Tab' or in a 'New Tab'">Transaction View</label>
+                      <div class="btn-group" style="float: left; clear: both;">
+                        <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
+                        <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'new'">New Tab</label>
+                      </div>
+                    </div>
+                  </tab>
+                </tabset>
+              </div>
+              
+
+              <div ng-if="totalFilteredTransactions > showlimit" style="display: inline-block; margin-bottom: 5px;">
+                <h4>Pagination: </h4>
+                <div ng-repeat="page in pagesArray" 
+                  class="paginationBtn" 
+                  ng-class="{paginationBtnActive: page.status}"
+                  ng-click="setPagination( page.pageNum )">
+                  {{page.pageNum}}
+                </div>
+              </div>
+
+
+
               <div class="data-value">
                 <div id="no-more-tables">
                   <!-- Table with all the transaction logs -->
-                  <table class="table table-striped">
+                    
+                  <!-- If no transactions for the current filters - totalFilteredTransactions doesnt exist -->
+                  <alert ng-if="!totalFilteredTransactions" type="Warning">No transactions for your current filters</alert>
+
+                  <table class="table table-striped" ng-if="totalFilteredTransactions">
                     <thead>
                       <tr>
                         <th>#</th>
                         <th>ID</th>
-                        <th>Status</th>
+                        <th>Processing Status</th>
+                        <th>Error</th>
                         <th>Rerun ID</th>
                         <th>Rerun Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr ng-repeat="transaction in task.transactions">
-                      	<td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
-                        <td data-title="ID"><a href="#/transactions/{{transaction.tid}}">{{ transaction.tid }}</a></td>
+                      	<td data-title="#{{ $index + pageIndexBase + 1 }}">{{ $index + pageIndexBase + 1 }}</td>
+                        <td data-title="ID"><span class="taskTransactionLink" ng-click='viewTransactionDetails("transactions/" + transaction.tid)'>{{ transaction.tid }}</span></td>
                         <td data-title="Status">
-                        	<span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
-    				              <span ng-if="transaction.tstatus === 'Processing'" class="label label-warning">Processing</span>
-    				              <span ng-if="transaction.tstatus === 'NotStarted'" class="label label-info">Not Started</span>
-    				              <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
-    				            </td>
-                        <td data-title="Rerun ID"><a href="#/transactions/{{transaction.rerunID}}">{{ transaction.rerunID }}</a></td>
-                        <td data-title="Status">
-                          <span ng-if="transaction.tstatus === 'Successful'" class="label label-success">Successful</span>
                           <span ng-if="transaction.tstatus === 'Completed'" class="label label-success">Completed</span>
-                          <span ng-if="transaction.tstatus === 'Processing'" class="label label-info">Processing</span>
-                          <span ng-if="transaction.tstatus === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                          <span ng-if="transaction.tstatus === 'Processing'" class="label label-warning">Processing</span>
+                          <span ng-if="transaction.tstatus === 'Queued'" class="label label-info">Queued</span>
                           <span ng-if="transaction.tstatus === 'Failed'" class="label label-danger">Failed</span>
+    				            </td>
+                        <td data-title="Error">{{ transaction.error }}</td>
+                        <td data-title="Rerun ID"><span class="taskTransactionLink" ng-click='viewTransactionDetails("transactions/" + transaction.rerunID)'>{{ transaction.rerunID }}</span></td>
+                        <td data-title="Status">
+                          <span ng-if="transaction.rerunStatus === 'Successful'" class="label label-success">Successful</span>
+                          <span ng-if="transaction.rerunStatus === 'Completed'" class="label label-success">Completed</span>
+                          <span ng-if="transaction.rerunStatus === 'Processing'" class="label label-info">Processing</span>
+                          <span ng-if="transaction.rerunStatus === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                          <span ng-if="transaction.rerunStatus === 'Failed'" class="label label-danger">Failed</span>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
+
+              <div ng-if="totalFilteredTransactions > showlimit" style="display: inline-block; margin-bottom: 5px;">
+                <h4>Pagination: </h4>
+                <div ng-repeat="page in pagesArray" 
+                  class="paginationBtn" 
+                  ng-class="{paginationBtnActive: page.status}"
+                  ng-click="setPagination( page.pageNum )">
+                  {{page.pageNum}}
+                </div>
+              </div>
+              
             </div>
           </div>
-          
         </div>
       </div>
     </div>

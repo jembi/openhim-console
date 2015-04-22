@@ -1,0 +1,204 @@
+<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed" style="margin-bottom: 10px;">Toggle Advanced Filtering</button>
+
+<div collapse="isCollapsed">
+  <div class="well well-lg auditFilterDiv" style="padding-top: 20px; margin-right: 0px;">
+    <label class="auditFilterDivLabel">Advanced Filtering: </label>
+
+    <div class="auditFilterDiv filterBoxSizing">
+      <label class="auditFilterDivLabel">Filter by Event: </label>
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Event Type: </label>
+        <select class="form-control" 
+          ng-model="filters.eventIdentification.eventTypeCode" 
+          ng-options="(eventType.code+'---'+eventType.codeSystemName+'---'+eventType.displayName) as (eventType.code+' ( '+eventType.codeSystemName+' ) - '+eventType.displayName) for eventType in auditsFilterOptions.eventType" 
+          ng-class="{formControlNotEmpty: filters.eventIdentification.eventTypeCode}">
+          <option value="">Don't filter</option>
+        </select>
+      </div>
+      
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Event ID: </label>
+        <select class="form-control" 
+          ng-model="filters.eventIdentification.eventID" 
+          ng-options="(eventID.code+'---'+eventID.codeSystemName+'---'+eventID.displayName) as (eventID.code+' ( '+eventID.codeSystemName+' ) - '+eventID.displayName) for eventID in auditsFilterOptions.eventID" 
+          ng-class="{formControlNotEmpty: filters.eventIdentification.eventID}">
+          <option value="">Don't filter</option>
+        </select>
+      </div>
+      <div class="settings_div">
+        <div class="settings_div" style="width: 48%; float: left;">
+          <label tooltip="Select an option to filter transactions by their event action">Event Action: </label>
+          <select class="form-control" 
+            ng-model="filters.eventIdentification.eventActionCode" 
+            ng-options="k as v for (k,v) in eventActionMap" 
+            ng-class="{formControlNotEmpty: filters.eventIdentification.eventActionCode}">
+            <option value="">Don't filter</option>
+          </select>
+        </div>
+        <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+          <label tooltip="Select an option to filter transactions by their event outcome">Event Outcome: </label>
+          <select class="form-control" 
+            ng-model="filters.eventIdentification.eventOutcomeIndicator" 
+            ng-options="k as v for (k,v) in eventOutcomeMap" 
+            ng-class="{formControlNotEmpty: filters.eventIdentification.eventOutcomeIndicator}">
+            <option value="">Don't filter</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="auditFilterDiv filterBoxSizing">
+      <label class="auditFilterDivLabel">Filter by Active Participant: </label>
+      <div class="settings_div" style="width: 48%; float: left;">
+        <label tooltip="Select an option to filter transactions by their event outcome">User ID: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.activeParticipant.userID" 
+          ng-class="{formControlNotEmpty: filters.activeParticipant.userID}">
+      </div>
+      <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+        <label tooltip="Select an option to filter transactions by their event outcome">Alt. User ID: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.activeParticipant.alternativeUserID" 
+          ng-class="{formControlNotEmpty: filters.activeParticipant.alternativeUserID}">
+      </div>
+      <div class="settings_div">
+        <div class="settings_div">
+          <label tooltip="Select an option to filter transactions by their event action">Network Access Point: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.activeParticipant.networkAccessPointID" 
+            ng-class="{formControlNotEmpty: filters.activeParticipant.networkAccessPointID}">
+        </div>
+        <div class="settings_div">
+          <label tooltip="Select an option to filter transactions by their event outcome">Role ID: </label>
+          <select class="form-control" 
+            ng-model="filters.activeParticipant.roleIDCode" 
+            ng-options="(roleID.code+'---'+roleID.codeSystemName+'---'+roleID.displayName) as (roleID.code+' ( '+roleID.codeSystemName+' ) - '+roleID.displayName) for roleID in auditsFilterOptions.activeParticipantRoleID" 
+            ng-class="{formControlNotEmpty: filters.activeParticipant.roleIDCode}">
+            <option value="">Don't filter</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="auditFilterDiv filterBoxSizing">
+      <label class="auditFilterDivLabel">Filter by Participant Object: </label>
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Object ID: </label>
+        <input type="text" 
+          class="form-control" 
+          ng-model="filters.participantObjectIdentification.participantObjectID" 
+          ng-class="{formControlNotEmpty: filters.participantObjectIdentification.participantObjectID}">
+      </div>
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Object ID Type Code: </label>
+        <select class="form-control" 
+          ng-model="filters.participantObjectIdentification.participantObjectIDTypeCode" 
+          ng-options="(objectIDTypeCode.code+'---'+objectIDTypeCode.codeSystemName+'---'+objectIDTypeCode.displayName) as (objectIDTypeCode.code+' ( '+objectIDTypeCode.codeSystemName+' ) - '+objectIDTypeCode.displayName) for objectIDTypeCode in auditsFilterOptions.participantObjectIDTypeCode" 
+          ng-class="{formControlNotEmpty: filters.participantObjectIdentification.participantObjectIDTypeCode}">
+          <option value="">Don't filter</option>
+        </select>
+      </div>
+      <div class="settings_div">
+        <div class="settings_div" style="width: 48%; float: left;">
+          <label tooltip="Select an option to filter transactions by their event action">Object Detail Type: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.participantObjectIdentification.participantObjectDetail.type" 
+            ng-class="{formControlNotEmpty: filters.participantObjectIdentification.participantObjectDetail.type}">
+        </div>
+        <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+          <label tooltip="Select an option to filter transactions by their event outcome">Object Detail Value: </label>
+          <input type="text" 
+            class="form-control" 
+            ng-model="filters.participantObjectIdentification.participantObjectDetail.value" 
+            ng-class="{formControlNotEmpty: filters.participantObjectIdentification.participantObjectDetail.value}">
+        </div>
+      </div>
+    </div>
+
+    <div class="auditFilterDiv filterBoxSizing filterBoxSizingLast">
+      <label class="auditFilterDivLabel">Filter by Audit Source: </label>
+      <div class="settings_div">
+        <label tooltip="Select an option to filter transactions by their event outcome">Audit Source ID: </label>
+        <select class="form-control" 
+          ng-model="filters.auditSourceIdentification.auditSourceID" 
+          ng-options="auditSourceID for auditSourceID in auditsFilterOptions.auditSourceID" 
+          ng-class="{formControlNotEmpty: filters.auditSourceIdentification.auditSourceID}">
+          <option value="">Don't filter</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="auditFilterDiv">
+
+  <label class="auditFilterDivLabel">Filter by Patient: </label>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter transactions by their event outcome">Patient ID: </label>
+    <input type="text" 
+      class="form-control" 
+      ng-model="filters.participantObjectIdentification.patientID.patientID" 
+      ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.patientID}">
+  </div>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select an option to filter transactions by their event outcome">Assigning Authority: </label>
+    <input type="text" 
+      class="form-control" 
+      ng-model="filters.participantObjectIdentification.patientID.assigningAuth" 
+      ng-disabled="!filters.participantObjectIdentification.patientID.patientID" 
+      ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.assigningAuth}">
+  </div>
+  <div class="settings_div" style="float: left;">
+    <label tooltip="Select an option to filter transactions by their event outcome">Assigning Authority ID: </label>
+    <input type="text" 
+      class="form-control" 
+      ng-model="filters.participantObjectIdentification.patientID.assigningAuthID" 
+      ng-disabled="!filters.participantObjectIdentification.patientID.patientID" 
+      ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.assigningAuthID}">
+  </div>
+</div>
+
+<div class="auditFilterDiv">
+  <label class="auditFilterDivLabel">Basic Filters: </label>
+  <div class="settings_div" style="float: left; margin-right: 15px;">
+    <label tooltip="Select a start and end date to filter transactions be date">Date Range: </label>
+    <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
+      <input ng-model="settings.filter.dateStart" type="text" class="form-control" name="start" ng-class="{formControlNotEmpty: settings.filter.dateStart}" />
+      <span class="input-group-addon">to</span>
+      <input ng-model="settings.filter.dateEnd" type="text" class="form-control" name="end" ng-class="{formControlNotEmpty: settings.filter.dateEnd}" />
+    </div>                            
+    <!-- Date range picker functionality -->
+    <script type="text/javascript">
+      // When the document is ready
+      $(document).ready(function () {
+        $('.input-daterange').datepicker({
+          todayBtn: "linked",
+          format: 'yyyy-mm-dd'
+        });
+      });
+    </script>
+  </div>
+  <div class="settings_div" style="float: left;">
+    <label tooltip="Set the limit of how many records to display">Limit: </label>
+    <select class="form-control" ng-model="settings.filter.limit">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="200">200</option>
+      <option value="500">500</option>
+    </select>
+  </div>
+
+</div>
+
+<div class="transactionsFilterRefreshDiv">
+  <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+</div>

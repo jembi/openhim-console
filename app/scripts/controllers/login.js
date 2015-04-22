@@ -49,8 +49,13 @@ angular.module('openhimConsoleApp')
             //Create the session for the logged in user
             $scope.createUserSession(loginEmail);
 
-            //redirect user to landing page (Channels)
-            $window.location = '#/transactions';
+            // redirect user to referringURL
+            if ( $rootScope.referringURL ){
+              $window.location = '#' + $rootScope.referringURL;
+            }else{ // default redirect to transactions page
+              $window.location = '#/transactions';
+            }
+            
           }
 
         }else{

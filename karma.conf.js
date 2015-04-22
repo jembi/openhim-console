@@ -19,7 +19,6 @@ module.exports = function(config) {
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
       'app/bower_components/d3/d3.js',
-      'app/bower_components/rickshaw/rickshaw.js',
       'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/angular-taglist/js/angular-taglist-directive.js',
@@ -31,8 +30,7 @@ module.exports = function(config) {
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
       'app/bower_components/moment/moment.js',
-      'app/bower_components/morris.js/morris.js',
-      'app/bower_components/angular-xeditable/dist/js/xeditable.js'
+      'app/bower_components/morris.js/morris.js'
     ],
 
     // list of files / patterns to exclude

@@ -45,15 +45,15 @@
                 <tr>
                   <th width="50">#</th>
                   <th>User</th>
-                  <th ng-repeat="channel in usersChannelsMatrix.channels" style="text-align: center;">{{channel.name}}</th>
+                  <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" style="text-align: center;">{{channel.name}}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="user in usersChannelsMatrix.users">
+                <tr ng-repeat="user in usersChannelsMatrix.users | orderBy:['user']">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="User">{{ user.user }}</td>
+                  <td data-title="User" style="max-width: none;">{{ user.user }}</td>
                   
-                  <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
+                  <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
 
                     <!-- show if channel is allowed -->
                     <i ng-show="isAllowedChannel(channel.id, user.allowedChannels)" class="isAllowed glyphicon glyphicon-eye-open"></i>
@@ -97,7 +97,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="user in users">
+                <tr ng-repeat="user in users | orderBy:['email']">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                   <td data-title="Email">
                     <a href="" ng-click="editUser(user)">{{ user.email }}</a>
