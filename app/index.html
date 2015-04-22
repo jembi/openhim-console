@@ -58,13 +58,6 @@
                       </ul>
                     </nav>
                   </div>
-
-                  <div class="btn-group" style="float: right;">
-                    <label style="display: block; margin: 0px;">Tooltips?</label>
-                    <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" onclick="updateShowTooltips('showTooltips', true)" ng-model="uiSettings.showTooltips" btn-radio="'true'">Yes</label>
-                    <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" onclick="updateShowTooltips('showTooltips', false)" ng-model="uiSettings.showTooltips" btn-radio="'false'">No</label>
-                  </div>
-
                 </div>
 
                 <div class="topMenu" style="float: right">
@@ -92,6 +85,20 @@
                     </nav>
                   </div>
                 </div>
+
+                <div style="float: right; margin-top: 8px; background: #eff0f3;">
+                  <button class="btn btn-default" data-toggle="collapse" data-target="#ui-settings" style="float: left;">
+                    <i class="glyphicon glyphicon-eye-open"></i> Toggle UI Settings
+                  </button>
+                  <div id="ui-settings" class="panel-body collapse" style="padding: 6px; border: 1px solid #ccc">
+                    <div class="btn-group" style="float: right;">
+                      <label style="display: block; margin: 0px;">Tooltips?</label>
+                      <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" ng-click="updateUISetting('showTooltips', true)" ng-model="uiSettings.showTooltips" btn-radio="true">Yes</label>
+                      <label class="btn btn-primary" style="padding: 2px 5px; font-size: 12px;" ng-click="updateUISetting('showTooltips', false)" ng-model="uiSettings.showTooltips" btn-radio="false">No</label>
+                    </div>
+                  </div>
+                </div>                
+
               </div>
             </div>
           </div>
@@ -206,6 +213,7 @@
     <script src="scripts/services/login.js"></script>
     <script src="scripts/services/alerting.js"></script>
     <script src="scripts/services/auditLookupMap.js"></script>
+    <script src="scripts/services/uiSettings.js"></script>
     <!-- endbuild -->
 
   </body>

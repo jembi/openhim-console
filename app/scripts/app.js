@@ -142,12 +142,10 @@ app.config(function ($routeProvider) {
     });
 });
 
-app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting, config) {
+app.run( function($rootScope, $http, $location, $window, $anchorScroll, uiSettings, Alerting, config) {
 
-  // by default show all tooltips
-  //$rootScope.uiSettings = {}
-  //$rootScope.uiSettings.showTooltips = true;
-  //$rootScope.updateShowTooltips = uiSettings.update;
+  // set uiSettings function to update the 'showTooltips' variable
+  $rootScope.updateUISetting = uiSettings.update;
 
   $rootScope.appTitle = config.title;
   $rootScope.appFooterTitle = config.footerTitle;
@@ -166,14 +164,6 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
   /*------------------------------CHECK USER SESSION---------------------------------*/
   // register listener to watch route changes
   $rootScope.$on( '$routeChangeStart', function() {
-
-    $rootScope.$watch('uiSettings.showTooltips', function(val) {
-
-      alert( val )
-      $rootScope.uiSettings.showTooltips = val;
-
-      $rootScope.$apply();
-    });
 
     /* ----- Set Referring URL ----- */
 
@@ -250,13 +240,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
         // Put updated object into storage
         localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
         $rootScope.sessionUser = sessionUser;
-        $rootScope.passwordHash = $rootScope.passwordHash || false;
-
-        if ( sessionUserSettings.general.showTooltips ){
-          // user set value for tooltips
-          $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips;
-        }
-        
+        $rootScope.passwordHash = $rootScope.passwordHash || false;        
 
         // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
         if (sessionUserGroups.indexOf('admin') >= 0) {

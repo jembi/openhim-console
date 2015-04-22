@@ -1,15 +1,28 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .factory('uiSettings', function () {
+  .factory('uiSettings', function ($rootScope) {
 
-    var uiSettings = {};
     var uiSettingsManager = {};
 
+    // get user session settings
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+
+    var generalSettings = {};
+    if ( consoleSession ){
+      generalSettings.showTooltips = consoleSession.sessionUserSettings.general;
+    }else{
+      generalSettings.showTooltips = true;
+    }
+    
+
+    // set default ui settings
+    $rootScope.uiSettings = {};
+    $rootScope.uiSettings.showTooltips = generalSettings.showTooltips;
+
     uiSettingsManager.update = function( property, value ) {
-      console.log( property )
-      console.log( value )
-      uiSettings[property] = value;
+      $rootScope.uiSettings[property] = value;
     };
 
     return uiSettingsManager;
