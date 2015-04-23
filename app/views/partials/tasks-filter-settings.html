@@ -8,7 +8,8 @@
     </label>
     <select class="form-control" 
       ng-model="filters.status" 
-      ng-class="{formControlNotEmpty: filters.status}">
+      ng-class="{formControlNotEmpty: filters.status}"
+      ng-change="applyFiltersToUrl()">
       <option value="">Don't filter</option>
       <option value="Queued">Show Queued</option>
       <option value="Processing">Show Processing</option>
@@ -25,7 +26,8 @@
     <select class="form-control" 
       ng-model="filters.user"
       ng-options="user.email as (user.firstname+' '+user.surname+' ('+user.email+')') for user in users | orderBy:['firstname']"
-      ng-class="{formControlNotEmpty: filters.user}">
+      ng-class="{formControlNotEmpty: filters.user}"
+      ng-change="applyFiltersToUrl()">
       <option value="">Don't filter</option>                            
       <!--<option ng-repeat="user in users" ng-value="user.email">{{user.firstname}} {{user.surname}} ({{user.email}})</option>-->
     </select>
@@ -35,7 +37,7 @@
       Date: 
       <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Pick a date to filter rerun tasks by" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
     </label>
-    <input type="text" class="form-control input-date" ng-model="filters.date" ng-class="{formControlNotEmpty: filters.date}">
+    <input type="text" class="form-control input-date" ng-model="filters.date" ng-class="{formControlNotEmpty: filters.date}" ng-change="applyFiltersToUrl()">
 
     <!-- Date picker functionality -->
     <script type="text/javascript">
@@ -53,7 +55,7 @@
       Limit: 
       <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
     </label>
-    <select class="form-control" ng-model="filters.limit">
+    <select class="form-control" ng-model="filters.limit" ng-change="applyFiltersToUrl()">
       <option value="10">10</option>
       <option value="50">50</option>
       <option value="100">100</option>
@@ -64,6 +66,5 @@
 </div>
 
 <div class="transactionsFilterRefreshDiv">
-  <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
   <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
 </div>

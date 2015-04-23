@@ -77,142 +77,191 @@
               <div class="data-value">{{client.name}}</div>
             </div>
 
-            <label>Request: </label>
-            <div class="data-group left-indent">
-              <label>Path: </label>
-              <div class="data-value">{{transactionDetails.request.path}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>Parameters: </label>
-              <div class="data-value">{{transactionDetails.request.querystring}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>HTTP Method: </label>
-              <div class="data-value">{{transactionDetails.request.method}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>Timestamp: </label>
-              <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>Headers: </label>
-              <div class="data-value showHideNoPadding">
-                <table class=" collapse" id="requestHeaders{{transactionDetails._id}}">
-                  <tr ng-repeat="(key, property) in transactionDetails.request.headers">
-                    <td class="headerDetailsTD">{{key}}: </td>
-                    <td><strong>{{property}}</strong></td>
-                  </tr>
-                </table>
-                <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{transactionDetails._id}}">Show/Hide Headers</a>            
-              </div>
-            </div>
-            <div class="data-group left-indent" ng-if="transactionDetails.request.body"><label>Body: </label></div>
-            <div class="data-group left-indent" ng-if="transactionDetails.request.body">
-              <div class="data-value">
-                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="transactionDetails.request.body" language="{{requestTransformLang}}"></div>
-                <div ng-if="!requestTransformLang" class="hljsFormatNone">{{transactionDetails.request.body}}</div>
-                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);">View Full Request Body</button>
-              </div>
-            </div>
-
-            <label>Response: </label>
-            <div class="data-group left-indent">
-              <label>Status: </label>
-              <div class="data-value">{{transactionDetails.response.status}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>Timestamp: </label>
-              <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
-            </div>
-            <div class="data-group left-indent">
-              <label>Headers: </label>
-              <div class="data-value showHideNoPadding">
-                <table class=" collapse" id="responseHeaders{{transactionDetails._id}}">
-                  <tr ng-repeat="(key, property) in transactionDetails.response.headers">
-                    <td class="headerDetailsTD">{{key}}: </td>
-                    <td><strong>{{property}}</strong></td>
-                  </tr>
-                </table>
-                <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{transactionDetails._id}}">Show/Hide Headers</a>            
-              </div>
-            </div>
-            <div class="data-group left-indent" ng-if="transactionDetails.response.body"><label>Body:</label></div>
-            <div class="data-group left-indent" ng-if="transactionDetails.response.body">
-              <div class="data-value">
-                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="transactionDetails.response.body" language="{{responseTransformLang}}"></div>
-                <div ng-if="!responseTransformLang" class="hljsFormatNone">{{transactionDetails.response.body}}</div>
-                <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);">View Full Response Body</button>
-              </div>
-            </div>
-
-            <label ng-show="transactionDetails.routes">Routes: </label>
-            <div ng-show="transactionDetails.routes" id="no-more-tables" class="data-group left-indent">
-              <div class="data-value">
-                <!-- Table with all the Routes logs -->
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Route</th>
-                      <th>Method</th>
-                      <th>Path</th>                      
-                      <th>Request Params</th>
-                      <th>Status</th>
-                      <th>Response Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewAddReqResDetails(route)'>
-                      <td data-title="Route">{{ route.name }}</td>
-                      <td data-title="Method">{{ route.request.method }}</td>
-                      <td data-title="Path">{{ route.request.path }}</td>
-                      <td data-title="Request Params">{{ route.request.querystring }}</td>
-                      <td data-title="Status">{{ route.response.status }}</td>
-                      <td data-title="Response Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
 
 
-            <label ng-show="transactionDetails.orchestrations">Orchestrations: </label>
-            <div ng-show="transactionDetails.orchestrations" id="no-more-tables" class="data-group left-indent">
-              <div class="data-value">
-                <!-- Table with all the orchestrations -->
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Method</th>
-                      <th>Path</th>                      
-                      <th>Request Params</th>
-                      <th>Status</th>
-                      <th>Response Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
-                      <td data-title="Name">{{ orchestration.name }}</td>
-                      <td data-title="Method">{{ orchestration.request.method }}</td>
-                      <td data-title="Path">{{ orchestration.request.path }}</td>
-                      <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
-                      <td data-title="Status">{{ orchestration.response.status }}</td>
-                      <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
 
 
-            <label ng-show="transactionDetails.properties">Properties: </label>
-            <div class="data-group left-indent">
-              <div class="data-value">
-                <div class="content-box-large default-labels-box" ng-repeat="(key, property) in transactionDetails.properties">
-                  {{key}}: <strong>{{property}}</strong>
-                </div>  
-              </div>
-            </div>
+
+
+            <tabset class="transaction_details_tabset" justified="false" style="  margin: 20px 0px 0px 0px; display: inline-block; width: 100%;">
+              <tab>
+                <tab-heading>Request</tab-heading>
+
+                <div style="width: 100%">
+                  <div class="col-md-tableformat" ng-if="transactionDetails.request.path">
+                    <label>Path: </label>
+                    <div>{{transactionDetails.request.path}}</div>
+                  </div>
+                  
+                  <div class="col-md-tableformat" ng-if="transactionDetails.request.querystring">
+                    <label>Parameters: </label>
+                    <div>{{transactionDetails.request.querystring}}</div>
+                  </div>
+
+                  <div class="col-md-tableformat" ng-if="transactionDetails.request.method">
+                    <label>HTTP Method: </label>
+                    <div>{{transactionDetails.request.method}}</div>
+                  </div>
+
+                  <div class="col-md-tableformat" ng-if="transactionDetails.request.timestamp">
+                    <label>Timestamp: </label>
+                    <div>{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+                  </div>
+
+                  <div class="col-md-tableformat" ng-if="transactionDetails.request.headers">
+                    <label>Headers: </label>
+                    <div>
+                      <table class="collapse" id="requestHeaders{{transactionDetails._id}}">
+                        <tr ng-repeat="(key, property) in transactionDetails.request.headers">
+                          <td class="headerDetailsTD">{{key}}: </td>
+                          <td><strong>{{property}}</strong></td>
+                        </tr>
+                      </table>
+                      <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{transactionDetails._id}}">Show/Hide Headers</a> 
+                    </div>
+                  </div>
+
+
+                  <div ng-if="transactionDetails.request.body" style="display: inline-block; width: 100%">
+                    <label class="data-group"><label>Body: </label></label>
+                    <div class="data-group">
+                      <div class="data-value">
+                        <div ng-if="requestTransformLang" class="hljsFormat" hljs source="transactionDetails.request.body" language="{{requestTransformLang}}"></div>
+                        <div ng-if="!requestTransformLang" class="hljsFormatNone">{{transactionDetails.request.body}}</div>
+                        <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);">View Full Request Body</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </tab>
+
+              <tab>
+                <tab-heading>Response</tab-heading>
+                <div>
+
+
+                  <div style="width: 100%">
+                    <div class="col-md-tableformat" ng-if="transactionDetails.response.status">
+                      <label>Status: </label>
+                      <div>{{transactionDetails.response.status}}</div>
+                    </div>
+                    
+                    <div class="col-md-tableformat" ng-if="transactionDetails.response.timestamp">
+                      <label>Timestamp: </label>
+                      <div>{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+                    </div>
+
+                    <div class="col-md-tableformat" ng-if="transactionDetails.response.headers">
+                      <label>Headers: </label>
+                      <div>
+                        <table class=" collapse" id="responseHeaders{{transactionDetails._id}}">
+                          <tr ng-repeat="(key, property) in transactionDetails.response.headers">
+                            <td class="headerDetailsTD">{{key}}: </td>
+                            <td><strong>{{property}}</strong></td>
+                          </tr>
+                        </table>
+                        <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{transactionDetails._id}}">Show/Hide Headers</a>
+                      </div>
+                    </div>
+
+
+                    <div ng-if="transactionDetails.response.body" style="display: inline-block; width: 100%">
+                      <label>Body:</label>
+                      <div class="data-group">
+                        <div class="data-value">
+                          <div ng-if="responseTransformLang" class="hljsFormat" hljs source="transactionDetails.response.body" language="{{responseTransformLang}}"></div>
+                          <div ng-if="!responseTransformLang" class="hljsFormatNone">{{transactionDetails.response.body}}</div>
+                          <button style="float: right; margin-top: 10px;" class="btn btn-primary" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);">View Full Response Body</button>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div ng-show="transactionDetails.routes" style="display: inline-block; width: 100%">
+                      <label>Routes: </label>
+                      <div id="no-more-tables" class="data-group">
+                        <div class="data-value">
+                          <!-- Table with all the Routes logs -->
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>Route</th>
+                                <th>Method</th>
+                                <th>Path</th>                      
+                                <th>Request Params</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewAddReqResDetails(route)'>
+                                <td data-title="Route">{{ route.name }}</td>
+                                <td data-title="Method">{{ route.request.method }}</td>
+                                <td data-title="Path">{{ route.request.path }}</td>
+                                <td data-title="Request Params">{{ route.request.querystring }}</td>
+                                <td data-title="Status">{{ route.response.status }}</td>
+                                <td data-title="Response Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-show="transactionDetails.orchestrations" style="display: inline-block; width: 100%">
+                      <label>Orchestrations: </label>
+                      <div id="no-more-tables" class="data-group">
+                        <div class="data-value">
+                          <!-- Table with all the orchestrations -->
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Method</th>
+                                <th>Path</th>                      
+                                <th>Request Params</th>
+                                <th>Status</th>
+                                <th>Response Time</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
+                                <td data-title="Name">{{ orchestration.name }}</td>
+                                <td data-title="Method">{{ orchestration.request.method }}</td>
+                                <td data-title="Path">{{ orchestration.request.path }}</td>
+                                <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
+                                <td data-title="Status">{{ orchestration.response.status }}</td>
+                                <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div ng-show="transactionDetails.properties" style="display: inline-block; width: 100%">
+                      <label>Properties: </label>
+                      <div class="data-group">
+                        <div class="data-value">
+                          <div class="content-box-large default-labels-box" style="margin-right: 10px;" ng-repeat="(key, property) in transactionDetails.properties">
+                            {{key}}: <strong>{{property}}</strong>
+                          </div>  
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+
+                </div>
+              </tab>
+            </tabset>
+            
           </div>          
         </div>
       </div>

@@ -630,13 +630,13 @@ body {
 .task-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
 .task-detail-container .progress { width: auto; }
 
-.transaction-detail-container { float: left; width: 100%; }
+.transaction-detail-container { float: left; width: 100%; font-size: 13px; }
 .transaction-detail-container>label { float: left; width: 100%; margin-top: 20px; }
 .transaction-detail-container .data-group { float: left; clear: both; width: 100%; }
 .transaction-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
 .transaction-detail-container .data-group .data-value>textarea { width: 100%; }
 
-.route-detail-container { display: inline-block; width: 100%; }
+.route-detail-container { display: inline-block; width: 100%; font-size: 13px; }
 .route-detail-container>label { float: left; width: 100%; margin-top: 20px; }
 .route-detail-container .data-group { float: left; clear: both; width: 100%; }
 .route-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
@@ -712,6 +712,7 @@ body {
 .loadMoreBtn { float: right; }
 #no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
 .transactionsFilterRefreshDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
+.transactionsFilterRefreshDiv button i{ font-size: 30px; display: block; width: 100% !important; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 #no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
@@ -774,6 +775,11 @@ body {
 .transaction_settings_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
 .transaction_settings_tabset div.tab-content { padding: 10px 10px 0px 10px; display: inline-block; width: 100%; }
 
+.transaction_details_tabset { margin-bottom: 20px; background-color: #eee }
+.transaction_details_tabset ul { background-color: #fff; }
+.transaction_details_tabset .settings_div { float: left; margin-right: 3%; margin-bottom: 10px; }
+.transaction_details_tabset div.tab-content { padding: 10px; display: inline-block; width: 100%; }
+
 .usersChannelsMatrixTD { text-align: center; }
 .usersChannelsMatrixDiv { overflow-x: auto; }
 .usersChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
@@ -788,10 +794,10 @@ body {
 .responsiveCheckboxLabel:hover { cursor: pointer; }
 
 
-.hljsFormat pre { height: 100px; overflow:auto; border: 1px solid #cccccc; background: #eff0f3; border-radius: 4px; padding: 0; margin: 0; }
+.hljsFormat pre { height: 400px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 0; margin: 0; }
 .hljsFormatFull pre { height: auto; max-height: 400px; }
 
-.hljsFormatNone { height: 100px; overflow:auto; border: 1px solid #cccccc; background: #eff0f3; border-radius: 4px; padding: 0; margin: 0; }
+.hljsFormatNone { height: 400px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 0; margin: 0; }
 .hljsFormatNoneFull pre { height: auto; max-height: 400px; }
 
 .showHideHeadersBtn:hover { cursor: pointer; }
@@ -1258,8 +1264,13 @@ footer{ box-shadow: none; }
 .modal-content{ box-shadow: none; }
 /* NO BOX-SHADOW CSS */
 
+select:hover { cursor: pointer; }
 label { position: relative; }
 .glyphicon-info-sign{ color: #5bc0de; font-size: 15px; position: absolute; right: -25px; top: 0px; }
 .glyphicon-info-sign:hover{ cursor: pointer; }
 .tooltip-inner{ min-width: 200px !important; }
+
+.col-md-tableformat{ border: 1px solid #dddddd; background: #fff; float: left; margin: 5px 15px 5px 0px;}
+.col-md-tableformat label{ border-bottom: 1px solid #dddddd; width: 100%; padding: 5px 10px; margin: 0px; }
+.col-md-tableformat div{ padding: 5px 10px; }
 /* ------------- */ 

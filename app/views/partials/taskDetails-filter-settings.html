@@ -5,7 +5,8 @@
     <label>Processing Status: </label>
     <select class="form-control" 
       ng-model="filters.tstatus" 
-      ng-class="{formControlNotEmpty: filters.tstatus}">
+      ng-class="{formControlNotEmpty: filters.tstatus}"
+      ng-change="applyFiltersToUrl()">
       <option value="">Don't filter</option>
       <option value="Queued">Show Queued</option>
       <option value="Processing">Show Processing</option>
@@ -17,7 +18,8 @@
     <label>Rerun Status: </label>
     <select class="form-control" 
       ng-model="filters.rerunStatus" 
-      ng-class="{formControlNotEmpty: filters.rerunStatus}">
+      ng-class="{formControlNotEmpty: filters.rerunStatus}"
+      ng-change="applyFiltersToUrl()">
       <option value="">Don't filter</option>
       <option value="Failed">Show Failed</option>
       <option value="Processing">Show Processing</option>
@@ -30,7 +32,8 @@
     <label>Has Errors: </label>
     <select class="form-control" 
       ng-model="filters.hasErrors" 
-      ng-class="{formControlNotEmpty: filters.hasErrors}">
+      ng-class="{formControlNotEmpty: filters.hasErrors}"
+      ng-change="applyFiltersToUrl()">
       <option value="">Don't filter</option>
       <option value="yes">Yes</option>
       <option value="no">No</option>
@@ -41,7 +44,7 @@
       Limit: 
       <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-info-sign"></i>
     </label>
-    <select class="form-control" ng-model="filters.limit">
+    <select class="form-control" ng-model="filters.limit" ng-change="applyFiltersToUrl()">
       <option value="10">10</option>
       <option value="50">50</option>
       <option value="100">100</option>
@@ -52,6 +55,5 @@
 </div>
 
 <div class="transactionsFilterRefreshDiv">
-  <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
   <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
 </div>

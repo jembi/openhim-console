@@ -1,4 +1,7 @@
-  <button class="btn btn-default" ng-click="advancedFilters.isCollapsed = !advancedFilters.isCollapsed" style="margin-bottom: 10px; clear: both; display: block;">Toggle Advanced Filters</button>  
+  <div style="margin-bottom: 10px; clear: both; display: block;">
+    <button class="btn btn-default" ng-click="advancedFilters.isCollapsed = !advancedFilters.isCollapsed">Toggle Advanced Filters</button>
+    <button class="btn btn-primary" ng-click="applyFiltersToUrl();" ng-if="!advancedFilters.isCollapsed" style="float: right;"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
+  </div>
 
   <div collapse="advancedFilters.isCollapsed">
     <div class="well well-lg auditFilterDiv" style="padding-top: 20px; margin-right: 0px;">
@@ -183,7 +186,8 @@
       <!--<select class="form-control" ng-model="filterStatus">-->
       <select class="form-control" 
         ng-model="filters.transaction.status" 
-        ng-class="{formControlNotEmpty: filters.transaction.status}">
+        ng-class="{formControlNotEmpty: filters.transaction.status}"
+        ng-change="applyFiltersToUrl()">
         <option value="">Don't filter</option>
         <option value="Failed">Show Failed</option>
         <option value="Processing">Show Processing</option>
@@ -200,19 +204,20 @@
       <select class="form-control" 
         ng-model="filters.transaction.channel" 
         ng-options="channel._id as channel.name for channel in channels | orderBy:['name']" 
-        ng-class="{formControlNotEmpty: filters.transaction.channel}">
+        ng-class="{formControlNotEmpty: filters.transaction.channel}"
+        ng-change="applyFiltersToUrl()">
         <option value="">Don't filter</option>
       </select>
     </div>
     <div class="settings_div" style="float: left; margin-right: 15px;">
       <label>
         Date Range: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select a start and end date to filter transactions be date" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Select a start and end date to filter transactions by date.<br />( both dates are required )" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
       </label>
       <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-        <input ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-class="{formControlNotEmpty: settings.filter.startDate}" />
+        <input ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-class="{formControlNotEmpty: settings.filter.startDate}" ng-change="applyFiltersToUrl()" />
         <span class="input-group-addon">to</span>
-        <input ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-class="{formControlNotEmpty: settings.filter.endDate}" />
+        <input ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-class="{formControlNotEmpty: settings.filter.endDate}" ng-change="applyFiltersToUrl()" />
       </div>
       <!-- Date range picker functionality -->
       <script type="text/javascript">
@@ -230,7 +235,7 @@
         Limit: 
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
       </label>
-      <select class="form-control" ng-model="settings.filter.limit">
+      <select class="form-control" ng-model="settings.filter.limit" ng-change="applyFiltersToUrl()">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
@@ -243,14 +248,7 @@
   </div>
 
   <div class="transactionsFilterRefreshDiv">
-    <div style="float: right; margin-bottom: 5px;">
-      <button class="btn btn-primary" ng-click="applyFiltersToUrl();"><i class="glyphicon glyphicon-refresh"></i> Apply Filters</button>
-      <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
-    </div>
-
-    <div style="">
-      <button class="btn btn-primary" ng-click="applyFiltersToUrl('bulkrerun');" style="float: right;">
-        <i class="glyphicon glyphicon-repeat"></i> Re-run all transaction that match current filters
-      </button>
-    </div>
+    <button class="btn btn-warning" ng-click="clearFilters();">
+      <i class="glyphicon glyphicon-remove"></i> Clear Filters
+    </button>
   </div>

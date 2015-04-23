@@ -1,5 +1,19 @@
+<style>
+  .modal-dialog{ width: 98%; height: 98%; margin: 1% 1% 0% 1%; }
+  .modal-content{ height: 98%; }
+  .hljsFormatFull pre {
+    max-height: none;
+    height: 100%;
+  }
+  .modal-header{ height: 65px; }
+  .modal-body{ height: 88%; overflow-y: scroll; }
+  .route-detail-container div{ height: 100%; }
+  .route-detail-container .data-group{ height: 100%; }
+  .route-detail-container .data-group .data-value { height: 100%; }
+</style>
+
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
   <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body</h3>
 </div>
 
@@ -15,8 +29,4 @@
     </div>
   </div>
 
-</div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
 </div>

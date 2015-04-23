@@ -54,15 +54,24 @@
             </div>
             <div ng-if="transactionsSelected.length > 0">
               <button class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
-              <button class="btn btn-primary btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Cancel</button>
+              <button class="btn btn-danger btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Cancel</button>
             </div>
           </alert>
 
           <!-- down show tables if bulkRerunActive -->
           <div id="no-more-tables" ng-if="!bulkRerunActive">
 
-            <!-- Table with all the transaction logs -->
+            <div  ng-show="transactions.length > 0" style="display: inline-block; width: 100%; margin-bottom: 10px;">
+              <button style="float: left;" class="btn btn-primary" ng-click="confirmRerunTransactions();">
+                <i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions
+              </button>
 
+              <button class="btn btn-primary" ng-click="applyFiltersToUrl('bulkrerun');" style="float: left; margin-left: 15px;">
+                <i class="glyphicon glyphicon-repeat"></i> Re-run all transaction that match current filters
+              </button>
+            </div>
+
+            <!-- Table with all the transaction logs -->
             <table class="table table-striped transactionTable">
               <thead>
                 <tr>
