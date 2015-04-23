@@ -26,6 +26,8 @@ describe('Controller: ClientsCtrl', function () {
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([]);
+
     modalSpy = sinon.spy($modal, 'open');
 
     createController = function() {
