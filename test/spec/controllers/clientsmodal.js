@@ -76,7 +76,6 @@ describe('Controller: ClientsmodalCtrl', function () {
 
     // run the validate
     scope.validateFormClients();
-    console.log(scope.ngError);
     scope.ngError.should.have.property('hasErrors', true);
     scope.ngError.should.have.property('clientID', true);
     scope.ngError.should.have.property('name', true);
@@ -97,7 +96,6 @@ describe('Controller: ClientsmodalCtrl', function () {
 
     // run the validate
     scope.validateFormClients();
-    console.log(scope.ngError);
     scope.ngError.should.have.property('hasErrors', true);
     scope.ngError.should.have.property('passwordConfirm', true);
   });
