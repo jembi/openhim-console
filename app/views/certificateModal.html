@@ -25,29 +25,29 @@
       <div class="form-group-2columns">
         <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.days }">
           <label><span>*</span> Validity in days [365]</label>
-          <input class="form-control" type="number" ng-model="cert.days" ng-disabled="update" focus="{{!update}}" />
+          <input class="form-control" type="number" ng-model="cert.days" ng-disabled="update" focus="true" />
         </div>
         <div class="form-group pull-right"  ng-class="{ 'has-error' : ngError.commonName }">
-          <label><span>*</span>Common Name (e.g. server FQDN or YOUR name)</label>
+          <label><span>*</span> Common Name (e.g. server FQDN or YOUR name)</label>
           <input class="form-control" placeholder="" type="text" ng-model="cert.commonName">
         </div>
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group pull-right" ng-class="{ 'has-error' : ngError.country }">
-          <label><span>*</span> Country Name (2 letter code) [ZA]</label>
-          <input class="form-control" type="text" ng-model="cert.country" ng-disabled="update" focus="{{!update}}" >
-        </div>
-        <div class="form-group "  ng-class="{ 'has-error' : ngError.state }">
+        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.state }">
           <label> State or Province Name [Some-State]</label>
           <input class="form-control" type="text" ng-model="cert.state" name="state" >
+        </div>
+        <div class="form-group pull-right" ng-class="{ 'has-error' : ngError.country }">
+          <label>Country Name (2 letter code) [ZA]</label>
+          <input class="form-control" type="text" ng-model="cert.country" ng-disabled="update"  >
         </div>
       </div>
 
       <div class="form-group-2columns" ng-class="{ 'has-error' : ngError.locality }">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.locality }">
           <label> Locality Name (eg, city)</label>
-          <input class="form-control" type="text" ng-model="cert.locality" ng-disabled="update" focus="{{!update}}" >
+          <input class="form-control" type="text" ng-model="cert.locality" ng-disabled="update"  >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.emailAddress }">
@@ -60,7 +60,7 @@
       <div class="form-group-2columns">
         <div class="form-group pull-left" ng-class="{ 'has-error' : ngError.organization }">
           <label> Organization Name (eg, company) [Internet Widgits Pty Ltd] </label>
-          <input class="form-control" type="text" ng-model="cert.organization" ng-disabled="update" focus="{{!update}}" >
+          <input class="form-control" type="text" ng-model="cert.organization" ng-disabled="update"  >
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group pull-right" ng-class="{ 'has-error' : ngError.organizationUnit }">

@@ -205,6 +205,16 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.addPassphrase = function () {
+      $scope.certificateObject = new Api.Keystore();
+      $scope.certificateObject.passphrase = $scope.serverPassphrase;
+      $scope.certificateObject.$save({ type: 'passphrase' }, function(){
+        $scope.uploadSuccess('serverKey', '');
+      }, function(err){
+        $scope.uploadFail(err, 'serverKey', '');
+      });
+    };
+
 
     /****************************************/
     /**         Import Functions           **/
