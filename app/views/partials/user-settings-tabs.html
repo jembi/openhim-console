@@ -5,7 +5,7 @@
     <div class="settings_div">
       <label>
         Status: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by their status" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by their status" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <!--<select class="form-control" ng-model="filterStatus">-->
       <select class="form-control" ng-model="user.settings.filter.status">
@@ -20,7 +20,7 @@
     <div class="settings_div">
       <label>
         Channel: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by Channel" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by Channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <select class="form-control" ng-model="user.settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
         <option value="">Don't filter</option>
@@ -29,7 +29,7 @@
     <div class="settings_div">
       <label>
         Limit: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <select class="form-control" ng-model="user.settings.filter.limit">
         <option value="">Default</option>
@@ -50,7 +50,7 @@
     <div class="settings_div">
       <label style="float: left">
         Transaction View
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
         <label class="btn btn-primary" ng-model="user.settings.list.tabview" btn-radio="'same'">Same Tab</label>
@@ -70,7 +70,7 @@
       <div class="components_div">
         <label style="float: left">
           Components
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
           <select class="form-control" ng-options="component.key as component.event for component in components" ng-model="visualizer.addSelectComponent" ng-change="addSelectComponentEndpoint('component')">
@@ -111,7 +111,7 @@
       <div class="endpoints_div">
         <label style="float: left">
           Endpoints
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the endpoints you wish to add to the visualizer" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the endpoints you wish to add to the visualizer" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
           <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectEndpoint" ng-change="addSelectComponentEndpoint('endpoint')">
@@ -153,7 +153,7 @@
       <div class="settings_div">
         <label style="float: left">
           Inactive Event Color
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <span class="input-group-addon">#</span>
@@ -164,7 +164,7 @@
       <div class="settings_div">
         <label style="float: left">
           Active Event Color
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <span class="input-group-addon">#</span>
@@ -175,7 +175,7 @@
       <div class="settings_div">
         <label style="float: left">
           Error Event Color
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <span class="input-group-addon">#</span>
@@ -186,7 +186,7 @@
       <div class="settings_div">
         <label style="float: left">
           Event Text Color
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <span class="input-group-addon">#</span>
@@ -201,7 +201,7 @@
       <div class="settings_div">
         <label style="float: left">
           Responsive
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether the visualizer should resize automatically based on the screen size" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether the visualizer should resize automatically based on the screen size" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group" style="padding-top: 10px;">
           <label class="responsiveCheckboxLabel">
@@ -213,7 +213,7 @@
       <div class="settings_div">
         <label style="float: left">
           Width
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="text" ng-model="user.settings.visualizer.size.width">
@@ -224,7 +224,7 @@
       <div class="settings_div">
         <label style="float: left">
           Height
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="text" ng-model="user.settings.visualizer.size.height">
@@ -235,7 +235,7 @@
       <div class="settings_div">
         <label style="float: left">
           Padding
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="text" ng-model="user.settings.visualizer.size.padding">
@@ -250,7 +250,7 @@
       <div class="settings_div">
         <label style="float: left">
           Update Period
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="How often to fetch events from the server <br /> (min: 50ms, max: 5000ms)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="How often to fetch events from the server <br /> (min: 50ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="number" ng-model="user.settings.visualizer.time.updatePeriod" min="50" max="5000">
@@ -261,7 +261,7 @@
       <div class="settings_div">
         <label style="float: left">
           Max Speed
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both; width: 100%">
           <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxSpeed" min="1" max="10">
@@ -271,7 +271,7 @@
       <div class="settings_div">
         <label style="float: left">
           Max Timeout
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxTimeout" min="1000" max="10000">
@@ -287,11 +287,11 @@
     <div class="settings_div">
       <label style="float: left">
         Show Tooltips
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether to show tooltips, like this one" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether to show tooltips, like this one" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
-        <label class="btn btn-primary" ng-click="updateUISetting('showTooltips', true)" ng-model="user.settings.general.showTooltips" btn-radio="true">True</label>
-        <label class="btn btn-primary" ng-click="updateUISetting('showTooltips', false)" ng-model="user.settings.general.showTooltips" btn-radio="false">False</label>
+        <label class="btn btn-primary" ng-model="user.settings.general.showTooltips" btn-radio="true">True</label>
+        <label class="btn btn-primary"ng-model="user.settings.general.showTooltips" btn-radio="false">False</label>
       </div>
     </div>
   </tab>

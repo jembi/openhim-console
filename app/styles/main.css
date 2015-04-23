@@ -173,8 +173,9 @@ footer .copy{
 }
 
 .header .dropdown-menu{
-   border-radius:6px !important;
-   background:#fff !important;
+  border-top: none;
+  border-radius:0px !important;
+  background:#fff !important;
 }
 
 .header .dropdown-menu li{
@@ -365,8 +366,8 @@ footer .copy{
 }
 
 .sidebar .nav li a:hover, .sidebar .nav li.current > a {
-  background: #eff0f3;
-  color: #555;
+  /*background: #eff0f3;*/
+  color: #036633;
   border-bottom:0px;
 }
 
@@ -1266,8 +1267,8 @@ footer{ box-shadow: none; }
 
 select:hover { cursor: pointer; }
 label { position: relative; }
-.glyphicon-info-sign{ color: #5bc0de; font-size: 15px; position: absolute; right: -25px; top: 0px; }
-.glyphicon-info-sign:hover{ cursor: pointer; }
+.glyphicon-question-sign{ color: #333333; font-size: 15px; position: absolute; right: -25px; top: 0px; }
+.glyphicon-question-sign:hover{ cursor: pointer; }
 .tooltip-inner{ min-width: 200px !important; }
 
 .col-md-tableformat{ border: 1px solid #dddddd; background: #fff; float: left; margin: 5px 15px 5px 0px;}

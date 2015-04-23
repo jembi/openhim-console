@@ -31,7 +31,7 @@
     <div ng-show="transactionsSelected.length > 1" ng-if="rerunSuccess != true" style="float: left;">
       <label style="float: left; margin: 10px 10px 0px 0px;">
         Batch size
-        <i style="right: -20px;" ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="The number of transactions that the task processor should run concurrently" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i style="right: -20px;" ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="The number of transactions that the task processor should run concurrently" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <select style="float: left; width: auto; margin-left: 15px;" class="form-control" ng-model="taskSetup.batchSize">
         <option value="1">One at a time</option>
@@ -47,7 +47,7 @@
       <input style="float: left; margin: 10px 10px 0px 20px" id="taskSetupPaused" type="checkbox" ng-model="taskSetup.paused"/>
       <label style="float: left; margin: 10px 10px 0px 0px;" for="taskSetupPaused">
         Paused
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Do not start processing the task immediately" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Do not start processing the task immediately" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
     </div>
 

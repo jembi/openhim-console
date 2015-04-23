@@ -434,10 +434,19 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     // reset route errors
     $scope.resetRouteErrors();
 
+    // declare variable for primary route
+    var primary;
+
     // create new route object
     if ( type === 'new' ){
       // show add/edit box
       $scope.routeAddEdit = true;
+
+      // if no routes exist yet then make mediator primary
+      primary = false;
+      if ( $scope.channel.routes.length === 0 ){
+        primary = true;
+      }
 
       $scope.newRoute = {
         name: '',
@@ -446,7 +455,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         port: '',
         path: '',
         pathTransform: '',
-        primary: false,
+        primary: primary,
         username: '',
         password: '',
         type : 'http'
@@ -463,13 +472,13 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       $scope.routeAddEdit = false;
       
       // set defaults
+      primary = false;
       var name = '';
       var secured = false;
       var host = '';
       var port = '';
       var path = '';
       var pathTransform = '';
-      var primary = false;
       var username = '';
       var password = '';
       var routeType = 'http';

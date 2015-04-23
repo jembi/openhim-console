@@ -48,7 +48,7 @@
               <div class="form-group" ng-class="{ 'has-error' : ngError.msisdn }">
                 <label>
                   MSISDN
-                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Accepted format: <br />27123456789 <br />( 5 - 15 digits )" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Accepted format: <br />27123456789 <br />( 5 - 15 digits )" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                 </label>
                 <input class="form-control" type="text" ng-model="user.msisdn" />
                 <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
@@ -86,13 +86,13 @@
                 <div class="checkbox" style="margin-top: 0px;">
                   <label>
                     <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive Daily Channel Reports" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive Daily Channel Reports" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive Weekly Channel Reports" class="glyphicon glyphicon-info-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive Weekly Channel Reports" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                 </div>
               </div>
