@@ -56,7 +56,7 @@ describe('Controller: ClientsmodalCtrl', function () {
     scope.client.should.be.ok;
   });
 
-  it('should query and attach cert to scope', function () {
+  it('should query and attach certs to scope', function () {
     createController();
     httpBackend.flush();
 
