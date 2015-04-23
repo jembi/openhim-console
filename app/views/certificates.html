@@ -132,8 +132,8 @@
 
           <div style="float: right; width: 100%;" class="importSectionDiv">
 
-            <h3><strong>Trusted Certificates</strong></h3>
-            <button class="btn btn-primary pull-right" ng-click="addCert('client')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Client Certificate</button>
+            <h3><strong>Trusted Certificates</strong> <button class="btn btn-primary pull-right" ng-click="addCert('client')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Client Certificate</button></h3>
+
 
             <!-- Server Certificate Alerts -->
             <alert ng-repeat="alert in alerts.trustedCertDelete" type="alert.type">{{alert.msg}}</alert>
