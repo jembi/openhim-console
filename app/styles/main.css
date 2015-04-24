@@ -258,10 +258,6 @@ footer .copy{
    background:#fff;
    border-radius:10px;
    padding:10px;
-   /*border-left:1px solid #eee;
-   border-top:1px solid #eee;
-   border-right:1px solid #eee;
-   border-bottom:1px solid #eee; */
    box-shadow: 1px 1px 10px #888;
 }
 
@@ -366,7 +362,6 @@ footer .copy{
 }
 
 .sidebar .nav li a:hover, .sidebar .nav li.current > a {
-  /*background: #eff0f3;*/
   color: #036633;
   border-bottom:0px;
 }
@@ -1274,4 +1269,22 @@ label { position: relative; }
 .col-md-tableformat{ border: 1px solid #dddddd; background: #fff; float: left; margin: 5px 15px 5px 0px;}
 .col-md-tableformat label{ border-bottom: 1px solid #dddddd; width: 100%; padding: 5px 10px; margin: 0px; }
 .col-md-tableformat div{ padding: 5px 10px; }
-/* ------------- */ 
+
+
+.float-right { float: right; }
+.float-left { float: left; }
+.clear-both { clear: both; }
+
+/* modal box custom styles override */
+.modal-fullview .modal-dialog{ width: 98%; height: 98%; margin: 1% 1% 0% 1%; }
+.modal-fullview .modal-content{ height: 98%; }
+.modal-fullview .hljsFormatFull pre {
+  max-height: none;
+  height: 100%;
+}
+.modal-fullview .modal-header{ height: 65px; }
+.modal-fullview .modal-body{ height: 88%; overflow-y: scroll; }
+.modal-fullview .route-detail-container div{ height: 100%; }
+.modal-fullview .route-detail-container .data-group{ height: 100%; }
+.modal-fullview .route-detail-container .data-group .data-value { height: 100%; }
+/* modal box custom styles override */

@@ -65,10 +65,10 @@
 
                   </td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Progress">
-                    <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                    <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></progressbar>
                   </td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="transactions">{{getProcessedTotal(task)}} / {{task.totalTransactions}}</td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="User">{{task.user}}</td>

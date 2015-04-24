@@ -13,7 +13,7 @@ angular.module('openhimConsoleApp')
 
 
     var tasksInterval = $interval(function() {
-      $scope.refreshTasksList();
+      $scope.refreshTasksList(true);
     }, 5000);
 
 
@@ -123,11 +123,15 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.refreshTasksList = function(){
+    $scope.refreshTasksList = function(optionalParamTimeoutRefresh){
 
       Alerting.AlertReset();
 
-      $scope.tasks = null;
+      // only run if its not a timeout refresh call
+      if ( !optionalParamTimeoutRefresh ){
+        $scope.tasks = null;
+      }
+      
 
       //reset the showpage filter to start at 0
       $scope.showpage = 0;

@@ -166,6 +166,7 @@ angular.module('openhimConsoleApp')
       $modal.open({
         templateUrl: 'views/transactionsAddReqResModal.html',
         controller: 'TransactionsAddReqResModalCtrl',
+        windowClass: 'modal-fullview',
         resolve: {
           record: function () {
             return record;
@@ -188,6 +189,7 @@ angular.module('openhimConsoleApp')
       $modal.open({
         templateUrl: 'views/transactionsBodyModal.html',
         controller: 'TransactionsBodyModalCtrl',
+        windowClass: 'modal-fullview',
         resolve: {
           bodyData: function () {
             return {type: type, content: content, headers: headers};

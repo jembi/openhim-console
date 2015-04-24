@@ -1,32 +1,15 @@
-<style>
-  .modal-dialog{ width: 98%; height: 98%; margin: 1% 1% 0% 1%; }
-  .modal-content{ height: 98%; }
-  .hljsFormatFull pre {
-    max-height: none;
-    height: 100%;
-  }
-  .modal-header{ height: 65px; }
-  .modal-body{ height: 88%; overflow-y: scroll; }
-  .route-detail-container div{ height: 100%; }
-  .route-detail-container .data-group{ height: 100%; }
-  .route-detail-container .data-group .data-value { height: 100%; }
-</style>
-
 <div class="modal-header">
   <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
   <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body</h3>
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
-  
   <div class="route-detail-container">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
         <div ng-if="bodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="bodyData.content" language="{{bodyTransformLang}}"></div>
         <div ng-if="!bodyTransformLang" class="hljsFormatNone hljsFormatNoneFull">{{bodyData.content}}</div>
-        <!--<textarea rows="25">{{bodyData.content}}</textarea>-->
       </div>
     </div>
   </div>
-
 </div>

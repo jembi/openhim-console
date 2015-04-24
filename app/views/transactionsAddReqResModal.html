@@ -1,17 +1,3 @@
-<style>
-  .modal-dialog{ width: 98%; height: 98%; margin: 1% 1% 0% 1%; }
-  .modal-content{ height: 98%; }
-  .hljsFormatFull pre {
-    max-height: none;
-    height: 100%;
-  }
-  .modal-header{ height: 65px; }
-  .modal-body{ height: 88%; overflow-y: scroll; }
-  .route-detail-container div{ height: 100%; }
-  .route-detail-container .data-group{ height: 100%; }
-  .route-detail-container .data-group .data-value { height: 100%; }
-</style>
-
 <div class="modal-header">
   <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
   <h3 class="modal-title" ng-show="!viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}</h3>
@@ -19,13 +5,9 @@
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
-
-
-
   <tabset ng-show="!viewFullBody" class="transaction_details_tabset route-detail-container" justified="false" style="  margin: 0px; display: inline-block; width: 100%;">
     <tab>
       <tab-heading>Request</tab-heading>
-
       <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
         <div class="data-group left-indent">
           <label>Path: </label>
@@ -61,8 +43,8 @@
           <div class="data-group">
             <div class="data-value">
               <div class="data-value">
-                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}" style="height: 350px;"></div>
-                <div ng-if="!requestTransformLang" class="hljsFormatNone" style="height: 350px;">{{record.request.body}}</div>
+                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}" style="max-height: 350px;"></div>
+                <div ng-if="!requestTransformLang" class="hljsFormatNone" style="max-height: 350px;">{{record.request.body}}</div>
               </div>
               <!-- show only if record has request body -->
               <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body, requestTransformLang)" style="float: right; margin-top: 10px;">
@@ -77,9 +59,7 @@
     <tab>
       <tab-heading>Response</tab-heading>
       <div>
-
         <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
-
           <div class="data-group left-indent">
             <label>Status: </label>
             <div class="data-value">{{record.response.status}}</div>
@@ -101,13 +81,12 @@
             </div>
           </div>
 
-
           <div ng-if="record.response.body" style="display: inline-block; width: 100%">
             <label>Body:</label>
             <div class="data-group">
               <div class="data-value">
-                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}" style="height: 350px;"></div>
-                <div ng-if="!responseTransformLang" class="hljsFormatNone" style="height: 350px;">{{record.response.body}}</div>
+                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}" style="max-height: 350px;"></div>
+                <div ng-if="!responseTransformLang" class="hljsFormatNone" style="max-height: 350px;">{{record.response.body}}</div>
               </div>
               <!-- show only if record has response body -->
               <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body, responseTransformLang)" style="float: right; margin-top: 10px;">
@@ -115,8 +94,6 @@
               </button>
             </div>
           </div>
-
-
 
           <div ng-show="record.orchestrations" style="display: inline-block; width: 100%">
             <label>Orchestrations: </label>
@@ -149,7 +126,6 @@
             </div>
           </div>
 
-
           <div ng-show="record.properties" style="display: inline-block; width: 100%">
             <label>Properties: </label>
             <div class="data-group">
@@ -160,15 +136,10 @@
               </div>
             </div>
           </div>
-
-
-
         </div>
-
       </div>
     </tab>
   </tabset>
-
 
   <div class="route-detail-container" ng-show="viewFullBody">
     <div class="data-group left-indent">
