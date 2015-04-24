@@ -794,11 +794,11 @@ body {
 #visualizer rect { fill: #fff; }
 .responsiveCheckboxLabel:hover { cursor: pointer; }
 
-
-.hljsFormat pre { height: 400px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 0; margin: 0; }
+.hljs{ background: #fff !important; }
+.hljsFormat pre { height: 350px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 5px; margin: 0; }
 .hljsFormatFull pre { height: auto; max-height: 400px; }
 
-.hljsFormatNone { height: 400px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 0; margin: 0; }
+.hljsFormatNone { height: 350px; overflow:auto; border: 1px solid #cccccc; background: #fff; border-radius: 4px; padding: 5px; margin: 0; }
 .hljsFormatNoneFull pre { height: auto; max-height: 400px; }
 
 .showHideHeadersBtn:hover { cursor: pointer; }

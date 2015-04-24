@@ -21,8 +21,8 @@
         <div class="panel-body" ng-show="transactionDetails">
           <!-- div to hold any child transactions if any -->
           <div class="rerunTransactionsDiv">
+            <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button> 
             <button ng-if="transactionDetails.parentID" class="btn btn-primary" ng-click='viewTransactionDetails("/transactions/" + transactionDetails.parentID)'>View Original Transaction</button>
-            <button ng-if="childTransactions.length >= 1" class="btn btn-primary" data-toggle="collapse" data-target="#no-more-tables">View all rerun transactions</button>            
           </div>
 
           <div class="buttons-container">
@@ -60,32 +60,30 @@
           </div>
 
           <div class="transaction-detail-container">
-            <div class="data-group">
-              <label>ID: </label>
-              <div class="data-value">{{transactionDetails._id}}</div>
+
+
+            <div style="margin: 15px 0px 0px 0px; display: inline-block; width: 100%;">
+              <div class="col-md-tableformat">
+                <label>ID: </label>
+                <div>{{transactionDetails._id}}</div>
+              </div>
+              <div class="col-md-tableformat">
+                <label>Status: </label>
+                <div>{{transactionDetails.status}}</div>
+              </div>
+              <div class="col-md-tableformat">
+                <label>Channel: </label>
+                <div>{{channel.name}}<img ng-if="!channel.name" style="width: 17px;" src="images/loading.gif" alt="Loading..." /></div>
+              </div>
+              <div class="col-md-tableformat">
+                <label>Authorized Client: </label>
+                <div>{{client.name}}<img ng-if="!client.name" style="width: 17px;" src="images/loading.gif" alt="Loading..." /></div>
+              </div>
             </div>
-            <div class="data-group">
-              <label>Status: </label>
-              <div class="data-value">{{transactionDetails.status}}</div>
-            </div>
-            <div class="data-group">
-              <label>Channel: </label>
-              <div class="data-value">{{channel.name}}</div>
-            </div>
-            <div class="data-group" ng-if="client">
-              <label>Authorized Client: </label>
-              <div class="data-value">{{client.name}}</div>
-            </div>
-
-
-
-
-
-
 
             <tabset class="transaction_details_tabset" justified="false" style="  margin: 20px 0px 0px 0px; display: inline-block; width: 100%;">
               <tab>
-                <tab-heading>Request</tab-heading>
+                <tab-heading style="font-weight: bold;">Request</tab-heading>
 
                 <div style="width: 100%">
                   <div class="col-md-tableformat" ng-if="transactionDetails.request.path">
@@ -122,8 +120,8 @@
                   </div>
 
 
-                  <div ng-if="transactionDetails.request.body" style="display: inline-block; width: 100%">
-                    <label class="data-group"><label>Body: </label></label>
+                  <div ng-if="transactionDetails.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
+                    <label>Body: </label>
                     <div class="data-group">
                       <div class="data-value">
                         <div ng-if="requestTransformLang" class="hljsFormat" hljs source="transactionDetails.request.body" language="{{requestTransformLang}}"></div>
@@ -138,7 +136,7 @@
               </tab>
 
               <tab>
-                <tab-heading>Response</tab-heading>
+                <tab-heading style="font-weight: bold;">Response</tab-heading>
                 <div>
 
 
@@ -167,7 +165,7 @@
                     </div>
 
 
-                    <div ng-if="transactionDetails.response.body" style="display: inline-block; width: 100%">
+                    <div ng-if="transactionDetails.response.body" style="display: inline-block; width: 100%; margin-top: 15px;">
                       <label>Body:</label>
                       <div class="data-group">
                         <div class="data-value">
