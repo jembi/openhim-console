@@ -60,65 +60,57 @@
           </div>
 
           <div class="transaction-detail-container">
-
-
-            <div style="margin: 15px 0px 0px 0px; display: inline-block; width: 100%;">
-              <div class="col-md-tableformat">
-                <label>ID: </label>
-                <div>{{transactionDetails._id}}</div>
-              </div>
-              <div class="col-md-tableformat">
-                <label>Status: </label>
-                <div>{{transactionDetails.status}}</div>
-              </div>
-              <div class="col-md-tableformat">
-                <label>Channel: </label>
-                <div>{{channel.name}}<img ng-if="!channel.name" style="width: 17px;" src="images/loading.gif" alt="Loading..." /></div>
-              </div>
-              <div class="col-md-tableformat">
-                <label>Authorized Client: </label>
-                <div>{{client.name}}<img ng-if="!client.name" style="width: 17px;" src="images/loading.gif" alt="Loading..." /></div>
-              </div>
+            <div class="data-group">
+              <label>ID: </label>
+              <div class="data-value">{{transactionDetails._id}}</div>
+            </div>
+            <div class="data-group">
+              <label>Status: </label>
+              <div class="data-value">{{transactionDetails.status}}</div>
+            </div>
+            <div class="data-group">
+              <label>Channel: </label>
+              <div class="data-value">{{channel.name}}</div>
+            </div>
+            <div class="data-group" ng-if="client">
+              <label>Authorized Client: </label>
+              <div class="data-value">{{client.name}}</div>
             </div>
 
             <tabset class="transaction_details_tabset" justified="false" style="  margin: 20px 0px 0px 0px; display: inline-block; width: 100%;">
               <tab>
                 <tab-heading style="font-weight: bold;">Request</tab-heading>
 
-                <div style="width: 100%">
-                  <div class="col-md-tableformat" ng-if="transactionDetails.request.path">
-                    <label>Path: </label>
-                    <div>{{transactionDetails.request.path}}</div>
-                  </div>
+                <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
                   
-                  <div class="col-md-tableformat" ng-if="transactionDetails.request.querystring">
+                  <div class="data-group left-indent">
+                    <label>Path: </label>
+                    <div class="data-value">{{transactionDetails.request.path}}</div>
+                  </div>
+                  <div class="data-group left-indent">
                     <label>Parameters: </label>
-                    <div>{{transactionDetails.request.querystring}}</div>
+                    <div class="data-value">{{transactionDetails.request.querystring}}</div>
                   </div>
-
-                  <div class="col-md-tableformat" ng-if="transactionDetails.request.method">
+                  <div class="data-group left-indent">
                     <label>HTTP Method: </label>
-                    <div>{{transactionDetails.request.method}}</div>
+                    <div class="data-value">{{transactionDetails.request.method}}</div>
                   </div>
-
-                  <div class="col-md-tableformat" ng-if="transactionDetails.request.timestamp">
+                  <div class="data-group left-indent">
                     <label>Timestamp: </label>
-                    <div>{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+                    <div class="data-value">{{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
                   </div>
-
-                  <div class="col-md-tableformat" ng-if="transactionDetails.request.headers">
+                  <div class="data-group left-indent">
                     <label>Headers: </label>
-                    <div>
-                      <table class="collapse" id="requestHeaders{{transactionDetails._id}}">
+                    <div class="data-value showHideNoPadding">
+                      <table class=" collapse" id="requestHeaders{{transactionDetails._id}}">
                         <tr ng-repeat="(key, property) in transactionDetails.request.headers">
                           <td class="headerDetailsTD">{{key}}: </td>
                           <td><strong>{{property}}</strong></td>
                         </tr>
                       </table>
-                      <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{transactionDetails._id}}">Show/Hide Headers</a> 
+                      <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{transactionDetails._id}}">Show/Hide Headers</a>            
                     </div>
                   </div>
-
 
                   <div ng-if="transactionDetails.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
                     <label>Body: </label>
@@ -130,40 +122,34 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
-
               </tab>
 
               <tab>
                 <tab-heading style="font-weight: bold;">Response</tab-heading>
                 <div>
 
-
-                  <div style="width: 100%">
-                    <div class="col-md-tableformat" ng-if="transactionDetails.response.status">
+                  <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
+                    <div class="data-group left-indent">
                       <label>Status: </label>
-                      <div>{{transactionDetails.response.status}}</div>
+                      <div class="data-value">{{transactionDetails.response.status}}</div>
                     </div>
-                    
-                    <div class="col-md-tableformat" ng-if="transactionDetails.response.timestamp">
+                    <div class="data-group left-indent">
                       <label>Timestamp: </label>
-                      <div>{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+                      <div class="data-value">{{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
                     </div>
-
-                    <div class="col-md-tableformat" ng-if="transactionDetails.response.headers">
+                    <div class="data-group left-indent">
                       <label>Headers: </label>
-                      <div>
+                      <div class="data-value showHideNoPadding">
                         <table class=" collapse" id="responseHeaders{{transactionDetails._id}}">
                           <tr ng-repeat="(key, property) in transactionDetails.response.headers">
                             <td class="headerDetailsTD">{{key}}: </td>
                             <td><strong>{{property}}</strong></td>
                           </tr>
                         </table>
-                        <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{transactionDetails._id}}">Show/Hide Headers</a>
+                        <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{transactionDetails._id}}">Show/Hide Headers</a>            
                       </div>
                     </div>
-
 
                     <div ng-if="transactionDetails.response.body" style="display: inline-block; width: 100%; margin-top: 15px;">
                       <label>Body:</label>

@@ -22,41 +22,37 @@
 
 
 
-  <tabset ng-show="!viewFullBody" class="transaction_details_tabset" justified="false" style="  margin: 0px; display: inline-block; width: 100%;">
+  <tabset ng-show="!viewFullBody" class="transaction_details_tabset route-detail-container" justified="false" style="  margin: 0px; display: inline-block; width: 100%;">
     <tab>
       <tab-heading>Request</tab-heading>
 
-      <div style="width: 100%">
-        <div class="col-md-tableformat" ng-if="record.request.path">
+      <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
+        <div class="data-group left-indent">
           <label>Path: </label>
-          <div>{{record.request.path}}</div>
+          <div class="data-value">{{record.request.path}}</div>
         </div>
-        
-        <div class="col-md-tableformat" ng-if="record.request.querystring">
+        <div class="data-group left-indent">
           <label>Parameters: </label>
-          <div>{{record.request.querystring}}</div>
+          <div class="data-value">{{record.request.querystring}}</div>
         </div>
-
-        <div class="col-md-tableformat" ng-if="record.request.method">
+        <div class="data-group left-indent">
           <label>HTTP Method: </label>
-          <div>{{record.request.method}}</div>
+          <div class="data-value">{{record.request.method}}</div>
         </div>
-
-        <div class="col-md-tableformat" ng-if="record.request.timestamp">
+        <div class="data-group left-indent">
           <label>Timestamp: </label>
-          <div>{{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+          <div class="data-value">{{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
         </div>
-
-        <div class="col-md-tableformat" ng-if="record.request.headers">
+        <div class="data-group left-indent">
           <label>Headers: </label>
-          <div>
-            <table class="collapse" id="requestHeaders{{record._id}}">
+          <div class="data-value showHideNoPadding">
+            <table class=" collapse" id="requestHeaders{{record._id}}">
               <tr ng-repeat="(key, property) in record.request.headers">
                 <td class="headerDetailsTD">{{key}}: </td>
                 <td><strong>{{property}}</strong></td>
               </tr>
             </table>
-            <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{record._id}}">Show/Hide Headers</a> 
+            <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{record._id}}">Show/Hide Headers</a>            
           </div>
         </div>
 
@@ -65,8 +61,8 @@
           <div class="data-group">
             <div class="data-value">
               <div class="data-value">
-                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}"></div>
-                <div ng-if="!requestTransformLang" class="hljsFormatNone">{{record.request.body}}</div>
+                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}" style="height: 350px;"></div>
+                <div ng-if="!requestTransformLang" class="hljsFormatNone" style="height: 350px;">{{record.request.body}}</div>
               </div>
               <!-- show only if record has request body -->
               <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body, requestTransformLang)" style="float: right; margin-top: 10px;">
@@ -82,27 +78,26 @@
       <tab-heading>Response</tab-heading>
       <div>
 
-        <div style="width: 100%">
-          <div class="col-md-tableformat" ng-if="record.response.status">
-            <label>Status: </label>
-            <div>{{record.response.status}}</div>
-          </div>
-          
-          <div class="col-md-tableformat" ng-if="record.response.timestamp">
-            <label>Timestamp: </label>
-            <div>{{record.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
-          </div>
+        <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
 
-          <div class="col-md-tableformat" ng-if="record.response.headers">
+          <div class="data-group left-indent">
+            <label>Status: </label>
+            <div class="data-value">{{record.response.status}}</div>
+          </div>
+          <div class="data-group left-indent">
+            <label>Timestamp: </label>
+            <div class="data-value">{{record.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+          </div>
+          <div class="data-group left-indent">
             <label>Headers: </label>
-            <div>
+            <div class="data-value showHideNoPadding">
               <table class=" collapse" id="responseHeaders{{record._id}}">
                 <tr ng-repeat="(key, property) in record.response.headers">
                   <td class="headerDetailsTD">{{key}}: </td>
                   <td><strong>{{property}}</strong></td>
                 </tr>
               </table>
-              <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{record._id}}">Show/Hide Headers</a>
+              <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{record._id}}">Show/Hide Headers</a>            
             </div>
           </div>
 
@@ -111,8 +106,8 @@
             <label>Body:</label>
             <div class="data-group">
               <div class="data-value">
-                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}"></div>
-                <div ng-if="!responseTransformLang" class="hljsFormatNone">{{record.response.body}}</div>
+                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}" style="height: 350px;"></div>
+                <div ng-if="!responseTransformLang" class="hljsFormatNone" style="height: 350px;">{{record.response.body}}</div>
               </div>
               <!-- show only if record has response body -->
               <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body, responseTransformLang)" style="float: right; margin-top: 10px;">

@@ -631,20 +631,20 @@ body {
 .task-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
 .task-detail-container .progress { width: auto; }
 
-.transaction-detail-container { float: left; width: 100%; font-size: 13px; }
+.transaction-detail-container { float: left; width: 100%; font-size: 14px; }
 .transaction-detail-container>label { float: left; width: 100%; margin-top: 20px; }
 .transaction-detail-container .data-group { float: left; clear: both; width: 100%; }
 .transaction-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
 .transaction-detail-container .data-group .data-value>textarea { width: 100%; }
 
-.route-detail-container { display: inline-block; width: 100%; font-size: 13px; }
+.route-detail-container { display: inline-block; width: 100%; font-size: 14px; }
 .route-detail-container>label { float: left; width: 100%; margin-top: 20px; }
 .route-detail-container .data-group { float: left; clear: both; width: 100%; }
 .route-detail-container .data-group>label { float: left; width: 25%; font-weight: normal; }
 .route-detail-container .data-group .data-value>textarea { width: 100%; }
 
 .left-indent>label, .left-indent>div{
-  padding-left: 3%;
+  padding-left: 0%;
 }
 
 .transactionsCheckboxTD{
