@@ -48,7 +48,8 @@ angular.module('openhimConsoleApp')
     // get/set the users scope whether new or update
     if (user) {
       $scope.update = true;
-      $scope.user = angular.copy(user);
+      $scope.user = Api.Users.get({ email: user.email });
+      //$scope.user = angular.copy(user);
 
       // check visualizer settings properties exist
       if ( !$scope.user.settings ){

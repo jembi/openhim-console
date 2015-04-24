@@ -27,7 +27,8 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   
   if (channel) {
     $scope.update = true;
-    $scope.channel = angular.copy(channel);
+    //$scope.channel = angular.copy(channel);
+    $scope.channel = Api.Channels.get({ channelId: channel._id });
   }else{
     $scope.update = false;
     $scope.channel = new Api.Channels();
