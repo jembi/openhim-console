@@ -1,13 +1,19 @@
 <div class="form-group-2columns">
   <div style="float: left; margin-right: 50px;">
-    <label tooltip="Set whether the transaction request body should be saved" style="display: block;">Store Request Body</label>
+    <label style="display: block;">
+      Store Request Body
+      <i ng-show="uiSettings.showTooltips" tooltip="Set whether the transaction request body should be saved" class="glyphicon glyphicon-question-sign"></i>
+    </label>
     <div class="btn-group" style="margin-bottom: 10px; clear: both;">
       <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="false">False</label>
     </div>
   </div>
   <div style="float: left;">
-    <label tooltip="Set whether the transaction response body should be saved" style="display: block;">Store Response Body</label>
+    <label style="display: block;">
+      Store Response Body
+      <i ng-show="uiSettings.showTooltips" tooltip="Set whether the transaction response body should be saved" class="glyphicon glyphicon-question-sign"></i>
+    </label>
     <div class="btn-group" style="margin-bottom: 10px: clear: both;">
       <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="false">False</label>

@@ -17,7 +17,7 @@
 
         <div class="panel-body" ng-show="!alerts.server">
 
-          <div class="content-box-large" ng-if="activeChannels || loadTotal || avgResponseTime">
+          <div style="margin: 20px 0px;" ng-if="activeChannels || loadTotal || avgResponseTime">
             <div class="panel-body">
               <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
                 Active Channels (Today): <br /><strong>{{activeChannels}}</strong>
@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large dashboard-metrics-box">
             <div class="panel-heading">
               <div class="panel-title">Transaction Load (Today - Per Hour)</div>
               <div class="panel-options">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large dashboard-metrics-box">
             <div class="panel-heading">
               <div class="panel-title">Average Response Time (Today - Per Hour)</div>
               <div class="panel-options">
@@ -73,7 +73,7 @@
             </div>
           </div>
 
-          <div class="content-box-large">
+          <div class="content-box-large dashboard-metrics-box">
             <div class="panel-heading">
               <div class="panel-title">Transaction Statuses (Today - Per Channel)</div>
               <div class="panel-options">
