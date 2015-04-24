@@ -10,14 +10,6 @@ angular.module('openhimConsoleApp')
     /**         Initial load functions           **/
     /**********************************************/
 
-
-
-    var tasksInterval = $interval(function() {
-      $scope.refreshTasksList(true);
-    }, 5000);
-
-
-
     // default settings
     $scope.showpage = 0;
     $scope.showlimit = 10;
@@ -123,15 +115,11 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.refreshTasksList = function(optionalParamTimeoutRefresh){
+    $scope.refreshTasksList = function(){
 
       Alerting.AlertReset();
 
-      // only run if its not a timeout refresh call
-      if ( !optionalParamTimeoutRefresh ){
-        $scope.tasks = null;
-      }
-      
+      $scope.tasks = null;
 
       //reset the showpage filter to start at 0
       $scope.showpage = 0;
@@ -307,16 +295,5 @@ angular.module('openhimConsoleApp')
         // cancel cancelled
       });
     };
-
-
-
-    $scope.$on('$destroy', function() {
-      // Make sure that the interval is destroyed too
-      if (angular.isDefined(tasksInterval)) {
-        $interval.cancel(tasksInterval);
-        tasksInterval = undefined;
-      }
-    });
-
 
   });
