@@ -88,6 +88,17 @@
                 ng-class="{formControlNotEmpty: filters.transaction.propertyValue}">
             </div>
           </div>
+          <div class="settings_div">
+            <label>Method: </label>
+            <select class="form-control" 
+                ng-model="filters.transaction.method" 
+                ng-class="{formControlNotEmpty: filters.transaction.method}">
+                <option value="">Don't filter</option>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+              </select>
+          </div>
         </div>
       </div>
 
