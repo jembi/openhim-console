@@ -25,7 +25,6 @@ angular.module('openhimConsoleApp')
     if (contactGroup) {
       $scope.update = true;
       $scope.contactGroup = Api.ContactGroups.get({ groupId: contactGroup._id });
-      //$scope.contactGroup = angular.copy(contactGroup);
     }else{
       $scope.update = false;
       $scope.contactGroup = new Api.ContactGroups();

@@ -27,8 +27,9 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   
   if (channel) {
     $scope.update = true;
-    //$scope.channel = angular.copy(channel);
-    $scope.channel = Api.Channels.get({ channelId: channel._id });
+    $scope.channel = Api.Channels.get({ channelId: channel._id }, function () {
+
+    });
   }else{
     $scope.update = false;
     $scope.channel = new Api.Channels();
@@ -272,16 +273,18 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
-    // check if urlPattern has regex delimiters
-    var urlPatternLength = $scope.channel.urlPattern.length;
-    if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
-      var urlPattern = $scope.channel.urlPattern;
-      // remove delimiters
-      $scope.channel.urlPattern = urlPattern.slice(1,-1);
-    }else{
-      // update checkbox if no regex delimiters
-      $scope.urlPattern.regex = false;
-    }
+    $scope.channel.$promise.then(function () {
+      // check if urlPattern has regex delimiters
+      var urlPatternLength = $scope.channel.urlPattern.length;
+      if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
+        var urlPattern = $scope.channel.urlPattern;
+        // remove delimiters
+        $scope.channel.urlPattern = urlPattern.slice(1,-1);
+      }else{
+        // update checkbox if no regex delimiters
+        $scope.urlPattern.regex = false;
+      }
+    });
   }else{
     // set default options if new channel
     $scope.channel.type = 'http';
@@ -332,9 +335,11 @@ app.controller('channelContentMatchingCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
-    if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
-    if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
-    if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+    $scope.channel.$promise.then(function () {
+      if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
+      if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
+      if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+    });
   }
 
 });

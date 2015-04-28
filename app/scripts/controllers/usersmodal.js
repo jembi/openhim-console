@@ -48,30 +48,29 @@ angular.module('openhimConsoleApp')
     // get/set the users scope whether new or update
     if (user) {
       $scope.update = true;
-      $scope.user = Api.Users.get({ email: user.email });
-      //$scope.user = angular.copy(user);
+      $scope.user = Api.Users.get({ email: user.email }, function () {
+        // check visualizer settings properties exist
+        if ( !$scope.user.settings ){
+          $scope.user.settings = {};
+        }
 
-      // check visualizer settings properties exist
-      if ( !$scope.user.settings ){
-        $scope.user.settings = {};
-      }
+        if ( !$scope.user.settings.list ){
+          $scope.user.settings.list = {};
+        }
 
-      if ( !$scope.user.settings.list ){
-        $scope.user.settings.list = {};
-      }
+        if ( !$scope.user.settings.filter ){
+          $scope.user.settings.filter = {};
+        }
 
-      if ( !$scope.user.settings.filter ){
-        $scope.user.settings.filter = {};
-      }
+        if ( !$scope.user.settings.visualizer ){
+          $scope.user.settings.visualizer = {};
 
-      if ( !$scope.user.settings.visualizer ){
-        $scope.user.settings.visualizer = {};
-
-        // load default visualizer config for user with no visualizer settings
-        $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-          angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
-        });
-      }
+          // load default visualizer config for user with no visualizer settings
+          $http.get('config/visualizer.json').success(function( visualizerConfig ) {
+            angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
+          });
+        }
+      });
 
     }else{
       $scope.user = new Api.Users();

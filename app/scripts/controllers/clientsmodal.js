@@ -33,7 +33,6 @@ angular.module('openhimConsoleApp')
 
     // if client exist then update true
     if (client) {
-      console.log( client );
       $scope.update = true;
       $scope.client = Api.Clients.get({ clientId: client._id });
       //$scope.client = angular.copy(client);

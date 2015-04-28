@@ -245,7 +245,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
 
         if ( sessionUserSettings.general ){
           $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips;
-        }        
+        }
 
         // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
         if (sessionUserGroups.indexOf('admin') >= 0) {

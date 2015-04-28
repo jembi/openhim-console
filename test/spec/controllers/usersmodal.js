@@ -28,7 +28,7 @@ describe('Controller: UsersModalCtrl', function () {
       'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
     });
 
-    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+    $httpBackend.when('GET', new RegExp('.*/users$')).respond([
       { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'], 'settings': {} },
       { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'], 'settings': {} }
     ]);
@@ -38,14 +38,16 @@ describe('Controller: UsersModalCtrl', function () {
       {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'txRerunAcl':['testing'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059aa3'}
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/users/.+')).respond({});
+
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
-    createController = function () {
+    createController = function (user) {
       return $controller('UsersModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        user: null
+        user: user
       });
     };
   }));
@@ -53,6 +55,12 @@ describe('Controller: UsersModalCtrl', function () {
   afterEach(function() {
     httpBackend.verifyNoOutstandingExpectation();
     httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should fetch user data from the API when updating', function () {
+    httpBackend.expect('GET', new RegExp('.*/users/.+'));
+    createController({ email: 'test@ing.org' });
+    httpBackend.flush();
   });
 
   it('should create a new user if this is not an update', function () {
