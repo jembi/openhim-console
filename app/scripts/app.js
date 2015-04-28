@@ -243,7 +243,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
         $rootScope.sessionUser = sessionUser;
         $rootScope.passwordHash = $rootScope.passwordHash || false;
 
-        if ( sessionUserSettings.general ){
+        if ( sessionUserSettings && sessionUserSettings.general ){
           $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips;
         }        
 
