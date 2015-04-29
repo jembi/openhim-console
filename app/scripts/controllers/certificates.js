@@ -213,7 +213,8 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    $scope.passphraseSuccess = function(){
+    $scope.passphraseSuccess = function(location){
+      Alerting.AlertAddMsg(location, 'success', 'Passphrase submitted');
       $scope.importSuccess++;
       $scope.serverRestartRequired = true;
       $scope.resetCertificates();
