@@ -209,10 +209,25 @@ angular.module('openhimConsoleApp')
       $scope.certificateObject = new Api.Keystore();
       $scope.certificateObject.passphrase = $scope.serverPassphrase;
       $scope.certificateObject.$save({ type: 'passphrase' }, function(){
-        $scope.uploadSuccess('serverKey', '');
+        $scope.passphraseSuccess('serverKey', '');
       }, function(err){
-        $scope.uploadFail(err, 'serverKey', '');
+        $scope.passphraseFail(err, 'serverKey', '');
       });
+    };
+
+    $scope.passphraseSuccess = function(){
+      $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+      $scope.goToTop();
+    };
+
+    $scope.passphraseFail = function(location){
+      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');
+      $scope.importSuccess++;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+      $scope.goToTop();
     };
 
 
