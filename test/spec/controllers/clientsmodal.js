@@ -20,7 +20,7 @@ describe('Controller: ClientsmodalCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
+    $httpBackend.when('GET', new RegExp('.*/clients$')).respond([
       {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ]);
@@ -31,11 +31,14 @@ describe('Controller: ClientsmodalCtrl', function () {
     var modalInstance = sinon.spy();
 
     createController = function () {
-      var client;
-      client = {
+      var client = {
         $save: sinon.spy(),
-        $update: sinon.spy()
+        $update: sinon.spy(),
+        _id: '553516b69fdbfc281db58efd'
       };
+
+      $httpBackend.when('GET', new RegExp('.*/clients/.*')).respond(client);
+
       return $controller('ClientsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
@@ -72,15 +75,17 @@ describe('Controller: ClientsmodalCtrl', function () {
     scope.client.name = '';
     scope.client.clientDomain = '';
     scope.client.roles = [];
+    scope.client.passwordHash = '';
+    scope.client.certFingerprint = '';
     scope.temp.password = '';
 
     // run the validate
+    
     scope.validateFormClients();
     scope.ngError.should.have.property('hasErrors', true);
     scope.ngError.should.have.property('clientID', true);
     scope.ngError.should.have.property('name', true);
     scope.ngError.should.have.property('roles', true);
-    scope.ngError.should.have.property('password', true);
     scope.ngError.should.have.property('certFingerprint', true);
   });
 

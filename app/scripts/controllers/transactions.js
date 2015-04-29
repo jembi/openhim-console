@@ -104,6 +104,10 @@ angular.module('openhimConsoleApp')
       $scope.filters.transaction.propertyValue = $location.search().txPropertyValue;
       $scope.advancedFilters.isCollapsed = false;
     }
+    if ( $location.search().txHttpMethod ){
+      $scope.filters.transaction.method = $location.search().txHttpMethod;
+      $scope.advancedFilters.isCollapsed = false;
+    }
 
     // search for route filters
     if ( $location.search().routeStatusCode ){
@@ -267,6 +271,11 @@ angular.module('openhimConsoleApp')
         if ( valueNotEmpty(txPropertyValue) === true ) {
           filtersObject.filters.properties[txPropertyKey] = txPropertyValue;
         }
+      }
+
+      var txHttpMethod = $scope.filters.transaction.method;
+      if ( valueNotEmpty(txHttpMethod) === true ) {
+        filtersObject.filters['request.method'] = txHttpMethod;
       }
 
       /* ----- filter by transaction (advanced) ----- */
@@ -437,6 +446,7 @@ angular.module('openhimConsoleApp')
       if ( $scope.filters.transaction.wasRerun ){ $location.search( 'txWasRerun', $scope.filters.transaction.wasRerun ); }
       if ( $scope.filters.transaction.propertyKey ){ $location.search( 'txPropertyKey', $scope.filters.transaction.propertyKey ); }
       if ( $scope.filters.transaction.propertyValue ){ $location.search( 'txPropertyValue', $scope.filters.transaction.propertyValue ); }
+      if ( $scope.filters.transaction.method ){ $location.search( 'txHttpMethod', $scope.filters.transaction.method ); }
 
       // add route filters
       if ( $scope.filters.route.statusCode ){ $location.search( 'routeStatusCode', $scope.filters.route.statusCode ); }
