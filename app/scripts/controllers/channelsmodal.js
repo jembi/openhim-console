@@ -27,7 +27,9 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   
   if (channel) {
     $scope.update = true;
-    $scope.channel = angular.copy(channel);
+    $scope.channel = Api.Channels.get({ channelId: channel._id }, function () {
+
+    });
   }else{
     $scope.update = false;
     $scope.channel = new Api.Channels();
@@ -271,16 +273,18 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
-    // check if urlPattern has regex delimiters
-    var urlPatternLength = $scope.channel.urlPattern.length;
-    if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
-      var urlPattern = $scope.channel.urlPattern;
-      // remove delimiters
-      $scope.channel.urlPattern = urlPattern.slice(1,-1);
-    }else{
-      // update checkbox if no regex delimiters
-      $scope.urlPattern.regex = false;
-    }
+    $scope.channel.$promise.then(function () {
+      // check if urlPattern has regex delimiters
+      var urlPatternLength = $scope.channel.urlPattern.length;
+      if ( $scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength-1 ){
+        var urlPattern = $scope.channel.urlPattern;
+        // remove delimiters
+        $scope.channel.urlPattern = urlPattern.slice(1,-1);
+      }else{
+        // update checkbox if no regex delimiters
+        $scope.urlPattern.regex = false;
+      }
+    });
   }else{
     // set default options if new channel
     $scope.channel.type = 'http';
@@ -331,9 +335,11 @@ app.controller('channelContentMatchingCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
-    if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
-    if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
-    if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+    $scope.channel.$promise.then(function () {
+      if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
+      if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
+      if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+    });
   }
 
 });
@@ -434,10 +440,19 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     // reset route errors
     $scope.resetRouteErrors();
 
+    // declare variable for primary route
+    var primary;
+
     // create new route object
     if ( type === 'new' ){
       // show add/edit box
       $scope.routeAddEdit = true;
+
+      // if no routes exist yet then make mediator primary
+      primary = false;
+      if ( $scope.channel.routes.length === 0 ){
+        primary = true;
+      }
 
       $scope.newRoute = {
         name: '',
@@ -446,7 +461,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         port: '',
         path: '',
         pathTransform: '',
-        primary: false,
+        primary: primary,
         username: '',
         password: '',
         type : 'http'
@@ -463,13 +478,13 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       $scope.routeAddEdit = false;
       
       // set defaults
+      primary = false;
       var name = '';
       var secured = false;
       var host = '';
       var port = '';
       var path = '';
       var pathTransform = '';
-      var primary = false;
       var username = '';
       var password = '';
       var routeType = 'http';
@@ -609,7 +624,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
   $scope.noRoutes = function () {
     //no routes found - return true
     if (!$scope.channel.routes || $scope.channel.routes.length === 0) {
-      Alerting.AlertAddMsg('route', 'danger', 'You must supply atleast one route.');
+      Alerting.AlertAddMsg('route', 'warning', 'You must supply atleast one route.');
       return true;
     }
     return false;
@@ -625,7 +640,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       }
     }
     // return true if no primary routes found
-    Alerting.AlertAddMsg('route', 'danger', 'Atleast one of your routes must be set to the primary.');
+    Alerting.AlertAddMsg('route', 'warning', 'Atleast one of your routes must be set to the primary.');
     return true;
   };
 
@@ -639,7 +654,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         }
 
         if (count > 1) {
-          Alerting.AlertAddMsg('route', 'danger', 'You cannot have multiple primary routes.');
+          Alerting.AlertAddMsg('route', 'warning', 'You cannot have multiple primary routes.');
           return true;
         }
       }

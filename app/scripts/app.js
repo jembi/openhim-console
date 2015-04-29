@@ -144,6 +144,10 @@ app.config(function ($routeProvider) {
 
 app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting, config) {
 
+  // set uiSettings function to update the 'showTooltips' variable
+  $rootScope.uiSettings = {};
+  $rootScope.uiSettings.showTooltips = true;
+
   $rootScope.appTitle = config.title;
   $rootScope.appFooterTitle = config.footerTitle;
   $rootScope.appFooterPoweredBy = config.footerPoweredBy;
@@ -238,6 +242,10 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
         localStorage.setItem('consoleSession', JSON.stringify( consoleSessionObject ));
         $rootScope.sessionUser = sessionUser;
         $rootScope.passwordHash = $rootScope.passwordHash || false;
+
+        if ( sessionUserSettings && sessionUserSettings.general ){
+          $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips;
+        }
 
         // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
         if (sessionUserGroups.indexOf('admin') >= 0) {

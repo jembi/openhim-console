@@ -30,7 +30,7 @@
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
-        <label><span>*</span> Domain</label>
+        <label>Domain</label>
         <input class="form-control" type="text" ng-model="client.clientDomain" >
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
@@ -42,8 +42,8 @@
 
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
-          <label ng-if="client.passwordHash" tooltip="A password has been set for this client" style="float: right">
-            <i class="glyphicon glyphicon-lock"></i>
+          <label ng-if="client.passwordHash" style="float: right">
+            <i tooltip-placement="top" tooltip="A password has been set for this client" class="glyphicon glyphicon-lock"></i>
           </label>
 
           <label><span>**</span> Basic Auth Password</label>
@@ -55,6 +55,14 @@
           <input class="form-control" placeholder="Confirm password..." type="password" ng-model="temp.passwordConfirm">
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
         </div>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-error' : ngError.certFingerprint }">
+        <label><span>**</span> Client certificate</label>
+        <select class="form-control" ng-options="cert.fingerprint as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs" ng-model="client.certFingerprint">
+          <option value="" label="No client certificate"></option>
+        </select>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Certificate</strong>' or '<strong>Password</strong>' is required!</div>
       </div>
 
     </fieldset>

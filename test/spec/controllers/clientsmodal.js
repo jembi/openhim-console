@@ -20,20 +20,25 @@ describe('Controller: ClientsmodalCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
+    $httpBackend.when('GET', new RegExp('.*/clients$')).respond([
       {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ]);
+
+    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([{commonName: 'test1'},{commonName: 'test2'}]);
 
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
     createController = function () {
-      var client;
-      client = {
+      var client = {
         $save: sinon.spy(),
-        $update: sinon.spy()
+        $update: sinon.spy(),
+        _id: '553516b69fdbfc281db58efd'
       };
+
+      $httpBackend.when('GET', new RegExp('.*/clients/.*')).respond(client);
+
       return $controller('ClientsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
@@ -54,7 +59,37 @@ describe('Controller: ClientsmodalCtrl', function () {
     scope.client.should.be.ok;
   });
 
+  it('should query and attach certs to scope', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.certs.should.be.ok;
+    scope.certs.should.have.length(2);
+  });
+
   it('should run validateFormClients() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.client.clientID = '';
+    scope.client.name = '';
+    scope.client.clientDomain = '';
+    scope.client.roles = [];
+    scope.client.passwordHash = '';
+    scope.client.certFingerprint = '';
+    scope.temp.password = '';
+
+    // run the validate
+    
+    scope.validateFormClients();
+    scope.ngError.should.have.property('hasErrors', true);
+    scope.ngError.should.have.property('clientID', true);
+    scope.ngError.should.have.property('name', true);
+    scope.ngError.should.have.property('roles', true);
+    scope.ngError.should.have.property('certFingerprint', true);
+  });
+
+  it('should run validateFormClients() for any validation errors - confirm user password', function () {
     createController();
     httpBackend.flush();
 
@@ -67,10 +102,6 @@ describe('Controller: ClientsmodalCtrl', function () {
     // run the validate
     scope.validateFormClients();
     scope.ngError.should.have.property('hasErrors', true);
-    scope.ngError.should.have.property('clientID', true);
-    scope.ngError.should.have.property('name', true);
-    scope.ngError.should.have.property('clientDomain', true);
-    scope.ngError.should.have.property('roles', true);
     scope.ngError.should.have.property('passwordConfirm', true);
   });
 
@@ -105,7 +136,6 @@ describe('Controller: ClientsmodalCtrl', function () {
     scope.ngError.should.have.property('hasErrors', true);
     scope.ngError.should.have.property('clientID', true);
     scope.ngError.should.have.property('name', true);
-    scope.ngError.should.have.property('clientDomain', true);
     scope.ngError.should.have.property('roles', true);
     scope.ngError.should.have.property('passwordConfirm', true);
   });

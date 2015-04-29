@@ -26,10 +26,16 @@ angular.module('openhimConsoleApp')
     },
     function(){ /* server error - could not connect to API to get clients */  });
 
+    // fetch the keystore for cert dropdown
+    Api.Keystore.query({ type: 'ca' }, function (certs) {
+      $scope.certs = certs;
+    });
+
     // if client exist then update true
     if (client) {
       $scope.update = true;
-      $scope.client = angular.copy(client);
+      $scope.client = Api.Clients.get({ clientId: client._id });
+      //$scope.client = angular.copy(client);
     }else{
       $scope.update = false;
       $scope.client = new Api.Clients();
@@ -138,34 +144,26 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
-      // domain validation
-      if( !$scope.client.clientDomain ){
-        $scope.ngError.clientDomain = true;
-        $scope.ngError.hasErrors = true;
-      }
-
       // roles validation
       if( !$scope.client.roles || $scope.client.roles.length===0 ){
         $scope.ngError.roles = true;
         $scope.ngError.hasErrors = true;
       }
 
-
       // password/certificate validation (new user)
       if ( $scope.update === false ){
-        if( !$scope.client.cert && !$scope.temp.password ){
-          $scope.ngError.cert = true;
+        if( !$scope.client.certFingerprint && !$scope.temp.password ){
+          $scope.ngError.certFingerprint = true;
           $scope.ngError.password = true;
           $scope.ngError.hasErrors = true;
         }
       }else{
-        if( !$scope.client.cert && !$scope.temp.password && !$scope.client.passwordHash ){
-          $scope.ngError.cert = true;
+        if( !$scope.client.certFingerprint && !$scope.temp.password && !$scope.client.passwordHash ){
+          $scope.ngError.certFingerprint = true;
           $scope.ngError.password = true;
           $scope.ngError.hasErrors = true;
         }
       }
-
 
       // password validation
       if( $scope.temp.password ){

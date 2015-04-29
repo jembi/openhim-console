@@ -4,7 +4,7 @@
 /* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TasksCtrl', function ($scope, $modal, $location, Api, Alerting, $route) {
+  .controller('TasksCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, $route) {
 
     /**********************************************/
     /**         Initial load functions           **/

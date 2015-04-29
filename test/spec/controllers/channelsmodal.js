@@ -53,21 +53,23 @@ describe('Controller: ChannelsModalCtrl', function () {
       }
     ]);
 
-  // http request used in routes controller
+    // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
       { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
       { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/channels/.+')).respond({});
+
     scope = $rootScope.$new();
     var modalInstance = sinon.spy();
 
 
-    createController = function () {
+    createController = function (channel) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: channel
       });
     };
     createControllerRoutes = function () {
@@ -83,6 +85,12 @@ describe('Controller: ChannelsModalCtrl', function () {
   afterEach(function() {
     httpBackend.verifyNoOutstandingExpectation();
     httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should fetch channel data from the API when updating', function () {
+    httpBackend.expect('GET', new RegExp('.*/channels/.+'));
+    createController({ _id: 'test' });
+    httpBackend.flush();
   });
 
   it('should create a new channel if this is not an update', function () {
@@ -257,18 +265,19 @@ describe('Controller: ChannelsModalCtrl', function () {
 describe('Controller: channelBasicInfoCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, q;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new();
+    q = $q;
 
     var modalInstance = sinon.spy();
-    createControllerParent = function () {
+    createControllerParent = function (channel) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: channel
       });
     };
     createController = function () {
@@ -292,14 +301,18 @@ describe('Controller: channelBasicInfoCtrl', function () {
   });
 
   it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
-    createControllerParent();
-    scope.update = true;
-    scope.channel.urlPattern = '^/example/path$';
+    var defer = q.defer();
+    defer.resolve();
+    createControllerParent({ _id: 'test', $promise: defer.promise });
 
-    createController();
-    scope.channel.should.be.ok;
+    defer.promise.then(function () {
+      scope.channel.urlPattern = '^/example/path$';
 
-    scope.channel.urlPattern.should.equal('/example/path');
+      createController();
+      scope.channel.should.be.ok;
+
+      scope.channel.urlPattern.should.equal('/example/path');
+    });
   });
 });
 
@@ -372,19 +385,20 @@ describe('Controller: channelAccessControlCtrl', function () {
 describe('Controller: channelContentMatchingCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, q;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $q) {
 
     scope = $rootScope.$new();
+    q = $q;
 
     var modalInstance = sinon.spy();
-    createControllerParent = function () {
+    createControllerParent = function (channel) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: channel
       });
     };
     createController = function () {
@@ -394,16 +408,20 @@ describe('Controller: channelContentMatchingCtrl', function () {
     };
   }));
 
-  it('should set default radio button for Content Matching ( JSON matching ) - Update is True', function () {
-    createControllerParent();
-    scope.update = true;
-    // set macthContentJson variable to enable JSON matching radio button
-    scope.channel.matchContentJson = 'JSONMatchingVar';
-    scope.channel.matchContentValue = 'JSONMatchingValue';
-    createController();
+  it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
+    var defer = q.defer();
+    defer.resolve();
+    createControllerParent({ _id: 'test', $promise: defer.promise });
 
-    scope.channel.should.be.ok;
-    scope.matching.contentMatching.should.equal('JSON matching');
+    defer.promise.then(function () {
+      // set macthContentJson variable to enable JSON matching radio button
+      scope.channel.matchContentJson = 'JSONMatchingVar';
+      scope.channel.matchContentValue = 'JSONMatchingValue';
+      createController();
+
+      scope.channel.should.be.ok;
+      scope.matching.contentMatching.should.equal('JSON matching');
+    });
   });
 });
 
