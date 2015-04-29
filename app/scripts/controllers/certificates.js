@@ -217,6 +217,7 @@ angular.module('openhimConsoleApp')
       $scope.importSuccess++;
       $scope.serverRestartRequired = true;
       $scope.resetCertificates();
+      $scope.serverPassphrase = null;
       $scope.goToTop();
     };
 
