@@ -108,8 +108,6 @@ angular.module('openhimConsoleApp')
       switch ( $scope.uploadType ){
         case 'serverCert':
           $scope.certificateObject.cert = data;
-          $scope.certificateObject.passphrase = $scope.serverPassphrase;
-
           $scope.certificateObject.$save({ type: 'cert' }, function(){
             $scope.uploadSuccess('serverCert', fileName);
           }, function(err){
