@@ -21,9 +21,9 @@ describe('Controller: CertificatesCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
+//    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
 
-    $httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
+    httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
       'validity': {
         'end': '2024-03-16T13:46:48.000Z',
         'start': '2014-03-19T13:46:48.000Z'
@@ -40,7 +40,7 @@ describe('Controller: CertificatesCtrl', function () {
     httpBackend.when('PUT', new RegExp('.*/channels')).respond('Channel has been successfully updated');
 
 
-    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
+    httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
       {
         'country': 'ZA',
         'state': 'KZN',
@@ -78,7 +78,6 @@ describe('Controller: CertificatesCtrl', function () {
     httpBackend.when('POST', new RegExp('.*/keystore/passphrase')).respond('Current Server Password updated');
 
     modalSpy = sinon.spy($modal, 'open');
-
     createController = function() {
       scope = $rootScope.$new();
       return $controller('CertificatesCtrl', { $scope: scope });
@@ -92,6 +91,7 @@ describe('Controller: CertificatesCtrl', function () {
   });
 
   it('should execute add a scope object for Current Certs and for Trusted Certs', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
     createController();
     httpBackend.flush();
 
@@ -103,6 +103,7 @@ describe('Controller: CertificatesCtrl', function () {
 
 
   it('should execute uploadCertificate() and import the certificate', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
     createController();
     httpBackend.flush();
 
@@ -124,6 +125,7 @@ describe('Controller: CertificatesCtrl', function () {
   });
 
   it('should open a modal to confirm deletion of a Trusted Certificate', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
     createController();
     httpBackend.flush();
 
@@ -134,23 +136,25 @@ describe('Controller: CertificatesCtrl', function () {
   });
   
   it('should add a passphrase', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
     createController();
     httpBackend.flush();
     scope.serverPassphrase = 'password';
     scope.addPassphrase();
+    scope.certificateObject.should.have.property('passphrase');
     httpBackend.flush();
   });
   
   it('should alert when the password is wrong', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': false});
     createController();
     httpBackend.flush();
-
+    scope.serverPassphrase = 'password';
+    scope.addPassphrase();
+    scope.certValidity.should.have.property( 'valid', false );
+    httpBackend.flush();
   });
   
-  it('should alert when the password has been submitted', function () {
-    createController();
-    httpBackend.flush();
-
-  });
+  
 
 });

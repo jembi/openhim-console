@@ -116,8 +116,6 @@ angular.module('openhimConsoleApp')
           break;
         case 'serverKey':
           $scope.certificateObject.key = data;
-          $scope.certificateObject.passphrase = $scope.serverPassphrase;
-
           $scope.certificateObject.$save({ type: 'key' }, function(){
             $scope.uploadSuccess('serverKey', fileName);
           }, function(err){
@@ -217,7 +215,8 @@ angular.module('openhimConsoleApp')
     $scope.passphraseSuccess = function(location){
       Api.Keystore.get({ type: 'validity' }, function(result){
         $scope.certValidity = result;
-        Alerting.AlertAddMsg(location, 'success', 'Passphrase submitted');
+        $scope.passPhraseValid = true;
+        Alerting.AlertAddMsg(location, 'success', 'Passphrase matches supplied key');
         $scope.importSuccess++;
         $scope.serverRestartRequired = true;
         $scope.resetCertificates();
@@ -230,6 +229,7 @@ angular.module('openhimConsoleApp')
 
     $scope.passphraseFail = function(location){
       Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');
+      $scope.passPhraseValid = false;
       $scope.serverRestartRequired = true;
       $scope.resetCertificates();
     };
