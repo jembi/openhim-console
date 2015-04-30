@@ -60,8 +60,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="120">Comman Name: </td>
-                  <td data-title="Comman Name">{{currentServerCert.commonName}}</td>
+                  <td width="120">Common Name: </td>
+                  <td data-title="Common Name">{{currentServerCert.commonName}}</td>
                 </tr>
                 <tr>
                   <td>Organization</td>
@@ -122,6 +122,14 @@
 
               <!-- Server Certificate Alerts -->
               <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
+                <label><strong>Enter a passphrase (If required)</strong></label>
+                <label ng-if="currentServerCert.passphrase" style="float: right">
+                  <i tooltip-placement="top" tooltip="A password has been set for this key" class="glyphicon glyphicon-lock"></i>
+                </label>               
+                <input class="form-control pull-left" placeholder="Enter a passphrase here if the key requires one." type="password" ng-model="serverPassphrase" style="width: 70%;" />
+                <button class="btn btn-primary pull-right" ng-click="addPassphrase()" > Submit Passphrase</button>
+              </div>
               <!-- Server Certificate Alerts -->
 
             </div>
@@ -130,8 +138,8 @@
 
           <div style="float: right; width: 100%;" class="importSectionDiv">
 
-            <h3><strong>Trusted Certificates</strong></h3>
-            <button class="btn btn-primary pull-right" ng-click="addCert('client')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Client Certificate</button>
+            <h3><strong>Trusted Certificates</strong> <button class="btn btn-primary pull-right" ng-click="addCert('client')" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Client Certificate</button></h3>
+
 
             <!-- Server Certificate Alerts -->
             <alert ng-repeat="alert in alerts.trustedCertDelete" type="alert.type">{{alert.msg}}</alert>

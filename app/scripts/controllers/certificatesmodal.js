@@ -66,9 +66,11 @@ angular.module('openhimConsoleApp')
       }
 
       // country validation
-      if(($scope.cert.country.length === 2) === false){
-        $scope.ngError.country = true;
-        $scope.ngError.hasErrors = true;
+      if ($scope.cert.country) {
+        if($scope.cert.country.length !== 2){
+          $scope.ngError.country = true;
+          $scope.ngError.hasErrors = true;
+        }
       }
       $scope.cert.country = angular.uppercase($scope.cert.country);
     };

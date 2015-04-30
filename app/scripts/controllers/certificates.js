@@ -201,6 +201,39 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.addPassphrase = function () {
+      Alerting.AlertReset();
+      $scope.certificateObject = new Api.Keystore();
+      $scope.certificateObject.passphrase = $scope.serverPassphrase;
+      $scope.certificateObject.$save({ type: 'passphrase' }, function(){
+        $scope.passphraseSuccess('serverKey', '');
+      }, function(err){
+        $scope.passphraseFail(err, 'serverKey', '');
+      });
+    };
+
+    $scope.passphraseSuccess = function(location){
+      Api.Keystore.get({ type: 'validity' }, function(result){
+        $scope.certValidity = result;
+        $scope.passPhraseValid = true;
+        Alerting.AlertAddMsg(location, 'success', 'Passphrase matches supplied key');
+        $scope.importSuccess++;
+        $scope.serverRestartRequired = true;
+        $scope.resetCertificates();
+        $scope.goToTop();
+      }, function(){
+        $scope.passphraseFail(location);
+      });
+      $scope.serverPassphrase = null;
+    };
+
+    $scope.passphraseFail = function(location){
+      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');
+      $scope.passPhraseValid = false;
+      $scope.serverRestartRequired = true;
+      $scope.resetCertificates();
+    };
+
 
     /****************************************/
     /**         Import Functions           **/
