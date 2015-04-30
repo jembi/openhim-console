@@ -21,8 +21,6 @@ describe('Controller: CertificatesCtrl', function () {
 
     httpBackend = $httpBackend;
 
-//    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
-
     httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
       'validity': {
         'end': '2024-03-16T13:46:48.000Z',
