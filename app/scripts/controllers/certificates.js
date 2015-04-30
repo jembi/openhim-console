@@ -204,6 +204,7 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.addPassphrase = function () {
+      Alerting.AlertReset();
       $scope.certificateObject = new Api.Keystore();
       $scope.certificateObject.passphrase = $scope.serverPassphrase;
       $scope.certificateObject.$save({ type: 'passphrase' }, function(){
@@ -213,21 +214,24 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    $scope.passphraseSuccess = function(location){
-      Alerting.AlertAddMsg(location, 'success', 'Passphrase submitted');
-      $scope.importSuccess++;
-      $scope.serverRestartRequired = true;
-      $scope.resetCertificates();
+    $scope.passphraseSuccess = function(location){    
+      
+      Api.Keystore.get({ type: 'validity' }, function(result){
+        $scope.certValidity = result;
+        Alerting.AlertAddMsg(location, 'success', 'Passphrase submitted');
+        $scope.importSuccess++;
+        $scope.serverRestartRequired = true;
+        $scope.resetCertificates();
+      }, function(){
+        $scope.passphraseFail(location);
+      });
       $scope.serverPassphrase = null;
-      $scope.goToTop();
     };
 
     $scope.passphraseFail = function(location){
-      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');
-      $scope.importSuccess++;
+      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');      
       $scope.serverRestartRequired = true;
-      $scope.resetCertificates();
-      $scope.goToTop();
+      $scope.resetCertificates();      
     };
 
 

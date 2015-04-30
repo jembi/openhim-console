@@ -67,7 +67,7 @@ angular.module('openhimConsoleApp')
 
       // country validation
       if ($scope.cert.country) {
-        if(($scope.cert.country.length === 2) === false){
+        if($scope.cert.country.length !== 2){
           $scope.ngError.country = true;
           $scope.ngError.hasErrors = true;
         }

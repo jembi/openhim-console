@@ -75,6 +75,7 @@ describe('Controller: CertificatesCtrl', function () {
     httpBackend.when('POST', new RegExp('.*/keystore/key')).respond('Current Server Certificate updated');
     httpBackend.when('POST', new RegExp('.*/keystore/cert')).respond('Current Server Key updated');
     httpBackend.when('POST', new RegExp('.*/keystore/ca/cert')).respond('Trusted Certificate Added');
+    httpBackend.when('POST', new RegExp('.*/keystore/passphrase')).respond('Current Server Password updated');
 
     modalSpy = sinon.spy($modal, 'open');
 
@@ -122,9 +123,6 @@ describe('Controller: CertificatesCtrl', function () {
 
   });
 
-
-
-
   it('should open a modal to confirm deletion of a Trusted Certificate', function () {
     createController();
     httpBackend.flush();
@@ -133,6 +131,26 @@ describe('Controller: CertificatesCtrl', function () {
     scope.confirmDelete(scope.trustedCertificates[0]);
     modalSpy.should.be.calledOnce;
     httpBackend.flush();
+  });
+  
+  it('should add a passphrase', function () {
+    createController();
+    httpBackend.flush();
+    scope.serverPassphrase = 'password';
+    scope.addPassphrase();
+    httpBackend.flush();
+  });
+  
+  it('should alert when the password is wrong', function () {
+    createController();
+    httpBackend.flush();
+
+  });
+  
+  it('should alert when the password has been submitted', function () {
+    createController();
+    httpBackend.flush();
+
   });
 
 });

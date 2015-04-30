@@ -122,7 +122,7 @@
 
               <!-- Server Certificate Alerts -->
               <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
-              <h4><strong>Enter a passphrase (Optional)</strong></h4>
+              <h4><strong>Enter a passphrase (If required)</strong></h4>
               <input class="form-control pull-left" placeholder="Enter a passphrase here if the key requires one." type="password" ng-model="serverPassphrase" style="width: 70%;" />
               <button class="btn btn-primary pull-right" ng-click="addPassphrase()" > Submit Passphrase</button>
               <!-- Server Certificate Alerts -->
