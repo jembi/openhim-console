@@ -214,14 +214,14 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    $scope.passphraseSuccess = function(location){    
-      
+    $scope.passphraseSuccess = function(location){
       Api.Keystore.get({ type: 'validity' }, function(result){
         $scope.certValidity = result;
         Alerting.AlertAddMsg(location, 'success', 'Passphrase submitted');
         $scope.importSuccess++;
         $scope.serverRestartRequired = true;
         $scope.resetCertificates();
+        $scope.goToTop();
       }, function(){
         $scope.passphraseFail(location);
       });
@@ -229,9 +229,9 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.passphraseFail = function(location){
-      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');      
+      Alerting.AlertAddMsg(location, 'danger', 'The passphrase does not match the key');
       $scope.serverRestartRequired = true;
-      $scope.resetCertificates();      
+      $scope.resetCertificates();
     };
 
 
