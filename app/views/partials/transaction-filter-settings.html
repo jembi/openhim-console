@@ -24,6 +24,22 @@
               <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
           </div>
           <div class="settings_div">
+            <div class="settings_div" style="width: 48%; float: left;">
+              <label>Host: </label>
+              <input type="text" 
+                class="form-control" 
+                ng-model="filters.transaction.host" 
+                ng-class="{formControlNotEmpty: filters.transaction.host}">
+            </div>
+            <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+              <label>Port: </label>
+              <input type="text" 
+                class="form-control" 
+                ng-model="filters.transaction.port" 
+                ng-class="{formControlNotEmpty: filters.transaction.port}">
+            </div>
+          </div>
+          <div class="settings_div">
             <label>Path: </label>
             <input type="text" 
               class="form-control" 
@@ -120,6 +136,22 @@
             <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
         </div>
         <div class="settings_div">
+          <div class="settings_div" style="width: 48%; float: left;">
+            <label>Host: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.route.host" 
+              ng-class="{formControlNotEmpty: filters.route.host}">
+          </div>
+          <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+            <label>Port: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.route.port" 
+              ng-class="{formControlNotEmpty: filters.route.port}">
+          </div>
+        </div>
+        <div class="settings_div">
           <label>Path: </label>
           <input type="text" 
             class="form-control" 
@@ -157,6 +189,22 @@
             ng-model="filters.orchestration.statusCode" 
             ng-class="{formControlNotEmpty: filters.orchestration.statusCode}">
             <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
+        </div>
+        <div class="settings_div">
+          <div class="settings_div" style="width: 48%; float: left;">
+            <label>Host: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.orchestration.host" 
+              ng-class="{formControlNotEmpty: filters.orchestration.host}">
+          </div>
+          <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
+            <label>Port: </label>
+            <input type="text" 
+              class="form-control" 
+              ng-model="filters.orchestration.port" 
+              ng-class="{formControlNotEmpty: filters.orchestration.port}">
+          </div>
         </div>
         <div class="settings_div">
           <label>Path: </label>

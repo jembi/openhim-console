@@ -78,6 +78,8 @@
                   <th class="transactionsCheckboxTD"><label><input type="checkbox" ng-model="checkbox.checkAll" ng-change="toggleCheckedAll()" /></label></th>
                   <th>#</th>
                   <th>HTTP Method</th>
+                  <th>Host</th>
+                  <th>Port</th>
                   <th>Path</th>
                   <th>Request Params</th>
                   <th>Channel</th>
@@ -101,6 +103,8 @@
                     </label>
                   </td>
                   <td data-title="HTTP Method">{{ transaction.request.method }}</td>
+                  <td data-title="Host">{{ transaction.request.host }}</td>
+                  <td data-title="Port">{{ transaction.request.port }}</td>
                   <td data-title="Path">{{ transaction.request.path }}</td>
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
                   <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
