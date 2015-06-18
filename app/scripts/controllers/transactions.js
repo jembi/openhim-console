@@ -76,6 +76,14 @@ angular.module('openhimConsoleApp')
       $scope.filters.transaction.statusCode = $location.search().txStatusCode;
       $scope.advancedFilters.isCollapsed = false;
     }
+    if ( $location.search().txHost ){
+      $scope.filters.transaction.host = $location.search().txHost;
+      $scope.advancedFilters.isCollapsed = false;
+    }
+    if ( $location.search().txPort ){
+      $scope.filters.transaction.port = $location.search().txPort;
+      $scope.advancedFilters.isCollapsed = false;
+    }
     if ( $location.search().txPath ){
       $scope.filters.transaction.path = $location.search().txPath;
       $scope.advancedFilters.isCollapsed = false;
@@ -114,6 +122,14 @@ angular.module('openhimConsoleApp')
       $scope.filters.route.statusCode = $location.search().routeStatusCode;
       $scope.advancedFilters.isCollapsed = false;
     }
+    if ( $location.search().routeHost ){
+      $scope.filters.route.host = $location.search().routeHost;
+      $scope.advancedFilters.isCollapsed = false;
+    }
+    if ( $location.search().routePort ){
+      $scope.filters.route.port = $location.search().routePort;
+      $scope.advancedFilters.isCollapsed = false;
+    }
     if ( $location.search().routePath ){
       $scope.filters.route.path = $location.search().routePath;
       $scope.advancedFilters.isCollapsed = false;
@@ -130,6 +146,14 @@ angular.module('openhimConsoleApp')
     // search for orchestration filters
     if ( $location.search().orchStatusCode ){
       $scope.filters.orchestration.statusCode = $location.search().orchStatusCode;
+      $scope.advancedFilters.isCollapsed = false;
+    }
+    if ( $location.search().orchHost ){
+      $scope.filters.orchestration.host = $location.search().orchHost;
+      $scope.advancedFilters.isCollapsed = false;
+    }
+    if ( $location.search().orchPort ){
+      $scope.filters.orchestration.port = $location.search().orchPort;
       $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().orchPath ){
@@ -231,6 +255,16 @@ angular.module('openhimConsoleApp')
         filtersObject.filters['response.status'] = txStatusCode;
       }
 
+      var txHost = $scope.filters.transaction.host;
+      if ( valueNotEmpty(txHost) === true ) {
+        filtersObject.filters['request.host'] = txHost;
+      }
+
+      var txPort = $scope.filters.transaction.port;
+      if ( valueNotEmpty(txPort) === true ) {
+        filtersObject.filters['request.port'] = txPort;
+      }
+
       var txPath = $scope.filters.transaction.path;
       if ( valueNotEmpty(txPath) === true ) {
         filtersObject.filters['request.path'] = txPath;
@@ -288,6 +322,16 @@ angular.module('openhimConsoleApp')
         filtersObject.filters['routes.response.status'] = routeStatusCode;
       }
 
+      var routeHost = $scope.filters.route.host;
+      if ( valueNotEmpty(routeHost) === true ) {
+        filtersObject.filters['routes.request.host'] = routeHost;
+      }
+
+      var routePort = $scope.filters.route.port;
+      if ( valueNotEmpty(routePort) === true ) {
+        filtersObject.filters['routes.request.port'] = routePort;
+      }
+
       var routePath = $scope.filters.route.path;
       if ( valueNotEmpty(routePath) === true ) {
         filtersObject.filters['routes.request.path'] = routePath;
@@ -310,6 +354,16 @@ angular.module('openhimConsoleApp')
       var orchStatusCode = $scope.filters.orchestration.statusCode;
       if ( valueNotEmpty(orchStatusCode) === true ) {
         filtersObject.filters['orchestrations.response.status'] = orchStatusCode;
+      }
+
+      var orchHost = $scope.filters.orchestration.host;
+      if ( valueNotEmpty(orchHost) === true ) {
+        filtersObject.filters['orchestrations.request.host'] = orchHost;
+      }
+
+      var orchPort = $scope.filters.orchestration.port;
+      if ( valueNotEmpty(orchPort) === true ) {
+        filtersObject.filters['orchestrations.request.port'] = orchPort;
       }
 
       var orchPath = $scope.filters.orchestration.path;
@@ -439,6 +493,8 @@ angular.module('openhimConsoleApp')
       if ( $scope.filters.transaction.status ){ $location.search( 'txStatus', $scope.filters.transaction.status ); }
       if ( $scope.filters.transaction.channel ){ $location.search( 'txChannel', $scope.filters.transaction.channel ); }
       if ( $scope.filters.transaction.statusCode ){ $location.search( 'txStatusCode', $scope.filters.transaction.statusCode ); }
+      if ( $scope.filters.transaction.host ){ $location.search( 'txHost', $scope.filters.transaction.host ); }
+      if ( $scope.filters.transaction.port ){ $location.search( 'txPort', $scope.filters.transaction.port ); }
       if ( $scope.filters.transaction.path ){ $location.search( 'txPath', $scope.filters.transaction.path ); }
       if ( $scope.filters.transaction.requestParamKey ){ $location.search( 'txParamKey', $scope.filters.transaction.requestParamKey ); }
       if ( $scope.filters.transaction.requestParamValue ){ $location.search( 'txParamValue', $scope.filters.transaction.requestParamValue ); }
@@ -450,12 +506,16 @@ angular.module('openhimConsoleApp')
 
       // add route filters
       if ( $scope.filters.route.statusCode ){ $location.search( 'routeStatusCode', $scope.filters.route.statusCode ); }
+      if ( $scope.filters.route.host ){ $location.search( 'routeHost', $scope.filters.route.host ); }
+      if ( $scope.filters.route.port ){ $location.search( 'routePort', $scope.filters.route.port ); }
       if ( $scope.filters.route.path ){ $location.search( 'routePath', $scope.filters.route.path ); }
       if ( $scope.filters.route.requestParamKey ){ $location.search( 'routeParamKey', $scope.filters.route.requestParamKey ); }
       if ( $scope.filters.route.requestParamValue ){ $location.search( 'routeParamValue', $scope.filters.route.requestParamValue ); }
 
       // add orchestration filters
       if ( $scope.filters.orchestration.statusCode ){ $location.search( 'orchStatusCode', $scope.filters.orchestration.statusCode ); }
+      if ( $scope.filters.orchestration.host ){ $location.search( 'orchHost', $scope.filters.orchestration.host ); }
+      if ( $scope.filters.orchestration.port ){ $location.search( 'orchPort', $scope.filters.orchestration.port ); }
       if ( $scope.filters.orchestration.path ){ $location.search( 'orchPath', $scope.filters.orchestration.path ); }
       if ( $scope.filters.orchestration.requestParamKey ){ $location.search( 'orchParamKey', $scope.filters.orchestration.requestParamKey ); }
       if ( $scope.filters.orchestration.requestParamValue ){ $location.search( 'orchParamValue', $scope.filters.orchestration.requestParamValue ); }

@@ -40,6 +40,8 @@
                 <tr>
                   <th>#</th>
                   <th>HTTP Method</th>
+                  <th>Host</th>
+                  <th>Port</th>
                   <th>Path</th>
                   <th>Request Params</th>
                   <th>Status</th>
@@ -50,6 +52,8 @@
                 <tr class="table-list" ng-repeat="childTransaction in childTransactions" ng-click='viewTransactionDetails("/transactions/" + childTransaction._id, $event)'>
                   <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
                   <td data-title="HTTP Method">{{ childTransaction.request.method }}</td>
+                  <td data-title="Host">{{ childTransaction.request.host }}</td>
+                  <td data-title="Port">{{ childTransaction.request.port }}</td>
                   <td data-title="Path">{{ childTransaction.request.path }}</td>
                   <td data-title="Request Params">{{ childTransaction.request.querystring }}</td>
                   <td data-title="Status">{{ childTransaction.status }}</td>
@@ -83,6 +87,14 @@
 
                 <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
                   
+                  <div class="data-group left-indent">
+                    <label>Host: </label>
+                    <div class="data-value">{{transactionDetails.request.host}}</div>
+                  </div>
+                  <div class="data-group left-indent">
+                    <label>Port: </label>
+                    <div class="data-value">{{transactionDetails.request.port}}</div>
+                  </div>
                   <div class="data-group left-indent">
                     <label>Path: </label>
                     <div class="data-value">{{transactionDetails.request.path}}</div>
@@ -174,6 +186,8 @@
                               <tr>
                                 <th>Route</th>
                                 <th>Method</th>
+                                <th>Host</th>                      
+                                <th>Port</th>                      
                                 <th>Path</th>                      
                                 <th>Request Params</th>
                                 <th>Status</th>
@@ -184,6 +198,8 @@
                               <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click='viewAddReqResDetails(route)'>
                                 <td data-title="Route">{{ route.name }}</td>
                                 <td data-title="Method">{{ route.request.method }}</td>
+                                <td data-title="Host">{{ route.request.host }}</td>
+                                <td data-title="Port">{{ route.request.port }}</td>
                                 <td data-title="Path">{{ route.request.path }}</td>
                                 <td data-title="Request Params">{{ route.request.querystring }}</td>
                                 <td data-title="Status">{{ route.response.status }}</td>
@@ -205,6 +221,8 @@
                               <tr>
                                 <th>Name</th>
                                 <th>Method</th>
+                                <th>Host</th>                      
+                                <th>Port</th>                      
                                 <th>Path</th>                      
                                 <th>Request Params</th>
                                 <th>Status</th>
@@ -215,6 +233,8 @@
                               <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
                                 <td data-title="Name">{{ orchestration.name }}</td>
                                 <td data-title="Method">{{ orchestration.request.method }}</td>
+                                <td data-title="Host">{{ orchestration.request.host }}</td>
+                                <td data-title="Port">{{ orchestration.request.port }}</td>
                                 <td data-title="Path">{{ orchestration.request.path }}</td>
                                 <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
                                 <td data-title="Status">{{ orchestration.response.status }}</td>
