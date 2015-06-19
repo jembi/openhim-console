@@ -723,7 +723,7 @@ describe('Controller: channelRoutesCtrl', function () {
 
 
 
-describe('Controller: channelAlersCtrl', function () {
+describe('Controller: channelAlertsCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
   var scope, createController, createControllerParent;
@@ -741,7 +741,7 @@ describe('Controller: channelAlersCtrl', function () {
       });
     };
     createController = function () {
-      return $controller('channelAlersCtrl', {
+      return $controller('channelAlertsCtrl', {
         $scope: scope
       });
     };
