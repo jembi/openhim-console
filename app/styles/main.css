@@ -1156,6 +1156,8 @@ body {
   }
 }
 
+.nav > li > a { padding: 10px 5px; }
+
 
 
 /* Color-Green custom styles */

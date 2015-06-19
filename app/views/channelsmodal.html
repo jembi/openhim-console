@@ -53,8 +53,17 @@
 
 
 
+      <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
+      <tab ng-controller="channelUrlRewritingCtrl" class="{{ngError.urlRewritesTab === true ? 'has-error-tab' : ''}}">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>URL Rewriting</tab-heading>
+        <h3>URL Rewriting</h3>
+        <div ng-include="'views/partials/channels-tab-url-rewriting.html'"></div>
+      </tab>
+
+
+
       <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
-      <tab ng-controller="channelAlersCtrl">
+      <tab ng-controller="channelAlertsCtrl">
         <tab-heading>Alerts</tab-heading>
         <h3>Alerts</h3>
         <div ng-include="'views/partials/channels-tab-alerts.html'"></div>
