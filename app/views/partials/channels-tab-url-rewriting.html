@@ -42,7 +42,7 @@
 
   <div style="margin-top: 10px;">
     <button type="button" class="btn btn-default" ng-click="cancelUrlRewriteAddEdit()">Cancel</button>
-    <button type="button" class="btn btn-primary" ng-click="saveUrlRewrite( oldUrlRewriteIndex )" style="margin-left: 5px;">Set URL Rewrite</button>
+    <button type="button" class="btn btn-primary" ng-click="saveUrlRewrite( oldUrlRewriteIndex )" style="margin-left: 5px;">Set Rewrite Rule</button>
 
     <!-- hasErrors Alerts -->
     <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsUrlRewrite" type="alert.type">
@@ -57,12 +57,18 @@
 
   <div class="form-group-2columns">
     <div class="form-group" style="float: left;">
-      <label>URL Rewriting enabled?</label><br />
+      <label>
+        URL Rewriting enabled?
+        <i ng-show="uiSettings.showTooltips" tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign"></i>
+      </label><br />
       <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="false">False</label>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
-      <label>Add Auto Rewrite Rules?</label><br />
+      <label>
+        Add Auto Rewrite Rules?
+        <i ng-show="uiSettings.showTooltips" tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign"></i>
+      </label><br />
       <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="false">False</label>
     </div>
