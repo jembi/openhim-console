@@ -3,7 +3,7 @@
 <!-- Route Alerts -->
 
 <div ng-if="urlRewriteAddEdit" class="addEditRoutes">
-  <h3>Set URL Rewrite</h3>
+  <h3>Set URL Rewrite Rule</h3>
 
   <div class="form-group-2columns">
     <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorUrlRewrite.fromHost }">
@@ -74,7 +74,7 @@
     </div>
   </div>
 
-  <alert ng-if="channel.rewriteUrlsConfig.length == 0" type="'warning'">No URL Rewrites have been added</alert>
+  <alert ng-if="channel.rewriteUrlsConfig.length == 0" type="'warning'">No URL Rewrite Rules have been added</alert>
 
   <table class="table table-striped" ng-if="channel.rewriteUrlsConfig.length > 0">
     <thead>
@@ -111,5 +111,5 @@
     <tbody>
   </table>
 
-  <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditUrlRewrite('new', null, null)">Add New URL Rewrite</button>
+  <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditUrlRewrite('new', null, null)">Add New URL Rewrite Rule</button>
 </div>
