@@ -722,9 +722,9 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 // nested controller for the channel routes tab
 app.controller('channelUrlRewritingCtrl', function ($scope, $timeout, Api, Alerting) {
 
-  /*******************************************************/
-  /**   Default Channel URL Rewrites configurations     **/
-  /*******************************************************/
+  /***********************************************************/
+  /**   Default Channel URL Rewrite Rule configurations     **/
+  /***********************************************************/
 
   // if channel update is false
   if (!$scope.update ) {
@@ -748,15 +748,15 @@ app.controller('channelUrlRewritingCtrl', function ($scope, $timeout, Api, Alert
 
   
 
-  /*******************************************************/
-  /**   Default Channel URL Rewrites configurations     **/
-  /*******************************************************/
+  /***********************************************************/
+  /**   Default Channel URL Rewrite Rule configurations     **/
+  /***********************************************************/
 
 
 
-  /**********************************************/
-  /**   Functions for Channel URL Rewrites     **/
-  /**********************************************/
+  /**************************************************/
+  /**   Functions for Channel URL Rewrite Rule     **/
+  /**************************************************/
 
   $scope.resetUrlRewriteErrors = function(){
     $scope.ngErrorUrlRewrite = {};
