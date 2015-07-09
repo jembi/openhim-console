@@ -37,7 +37,7 @@ angular.module('openhimConsoleApp')
         ( transactionDetails.response && transactionDetails.response.timestamp ) ) {
           var diff = moment(transactionDetails.response.timestamp)-moment(transactionDetails.request.timestamp);
 
-          if (diff>1000) {
+          if (diff>=1000) {
             //display in seconds
             var round = function(value, decimalPlaces) {
               return +(Math.round(value + 'e+' + decimalPlaces)  + 'e-' + decimalPlaces);
