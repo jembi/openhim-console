@@ -31,6 +31,8 @@ describe('Controller: TasksCtrl', function () {
       { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openhim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
     ]);
 
+    $httpBackend.when('GET', new RegExp('.*/visualizer/sync')).respond({ 'now': Date.now() });
+
     createController = function() {
       scope = $rootScope.$new();
       var route = {
