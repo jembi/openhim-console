@@ -1,20 +1,23 @@
 'use strict';
-/* global jQuery:false */
 /* global moment:false */
 /* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TransactionsCtrl', function ($scope, $modal, $location, $timeout, Api, Alerting) {
+  .controller('TransactionsCtrl', function ($scope, $modal, $location, $timeout, $interval, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
+
+    // remember when we loaded the page...
+    var pageLoadDate = moment();
 
     // set default limit
     var defaultLimit = 20;
     var defaultTabView = 'same';
     $scope.defaultBulkRerunLimit = 10000;
     $scope.loadMoreBtn = false;
+    var defaultAutoUpdate = true;
 
     // filters collapsed by default
     $scope.advancedFilters = {};
@@ -31,6 +34,7 @@ angular.module('openhimConsoleApp')
     $scope.settings = {};
     $scope.settings.list = {};
     $scope.settings.list.tabview = defaultTabView;
+    $scope.settings.list.autoupdate = defaultAutoUpdate;
     $scope.settings.filter = {};
     $scope.settings.filter.limit = defaultLimit;
 
@@ -38,6 +42,12 @@ angular.module('openhimConsoleApp')
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
     var userSettings = consoleSession.sessionUserSettings;
+
+    //polling
+    var lastUpdated;
+    var serverDiffTime = 0;
+    $scope.baseIndex = 0;
+    var pollPeriod = 5000;
 
     $scope.filters = {};
     $scope.filters.transaction = {};
@@ -60,6 +70,9 @@ angular.module('openhimConsoleApp')
 
       if ( userSettings.list ){
         $scope.settings.list.tabview = userSettings.list.tabview;
+        if ( angular.isDefined(userSettings.list.autoupdate) ){
+          $scope.settings.list.autoupdate = userSettings.list.autoupdate;
+        }
       }
     }
 
@@ -539,6 +552,8 @@ angular.module('openhimConsoleApp')
       // validate the form first to check for any errors
       $scope.validateFormFilters();
 
+      lastUpdated = moment() - serverDiffTime;
+
       // execute refresh if no errors
       if ( $scope.ngError.hasErrors === false ){
 
@@ -583,14 +598,21 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
-      Api.Transactions.query( $scope.returnFilters(), loadMoreSuccess, loadMoreError);
+
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters['request.timestamp']) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new transactions come in, breaking the pages
+        filters.filters['request.timestamp'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
+      }
+
+      Api.Transactions.query(filters, loadMoreSuccess, loadMoreError);
     };
 
     var loadMoreSuccess = function (transactions){
       //on success
       $scope.transactions = $scope.transactions.concat(transactions);
-      //remove any duplicates objects found in the transactions scope
-      $scope.transactions = jQuery.unique($scope.transactions);
 
       if( transactions.length < $scope.settings.filter.limit ){
         $scope.loadMoreBtn = false;
@@ -640,6 +662,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.startDate = '';
       $scope.settings.filter.endDate = '';
       $scope.settings.list.tabview = defaultTabView;
+      $scope.settings.list.autoupdate = defaultAutoUpdate;
       $scope.filters.transaction.status = '';
       $scope.filters.transaction.channel = '';
 
@@ -780,6 +803,61 @@ angular.module('openhimConsoleApp')
 
     /****************************************************/
     /**         Transactions ReRun Functions           **/
+    /****************************************************/
+
+
+    /****************************************************/
+    /**         Poll for latest transactions           **/
+    /****************************************************/
+
+    var pollingInterval;
+
+    $scope.startPolling = function() {
+      if (!pollingInterval) {
+        pollingInterval = $interval( function() {
+          var filters = $scope.returnFilters();
+          if (!filters.filters['request.timestamp']) {
+            //only poll for latest if date filters are OFF
+
+            filters.filters['request.timestamp'] = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
+
+            delete filters.filterPage;
+            delete filters.filterLimit;
+
+            Api.Transactions.query(filters, pollMoreSuccess);
+            lastUpdated = moment() - serverDiffTime;
+          }
+        }, pollPeriod);
+      }
+    };
+
+    $scope.stopPolling = function() {
+      if (angular.isDefined(pollingInterval)) {
+        $interval.cancel(pollingInterval);
+        pollingInterval = undefined;
+      }
+    };
+
+    //sync time with server
+    Api.VisualizerSync.get(function (startVisualizer) {
+      serverDiffTime = moment() - moment(startVisualizer.now);
+      lastUpdated = moment() - serverDiffTime;
+      if ($scope.settings.list.autoupdate) {
+        $scope.startPolling();
+      }
+    });
+
+    var pollMoreSuccess = function (transactions){
+      if (transactions.length > 0) {
+        transactions.forEach(function(trx) {
+          $scope.transactions.unshift(trx);
+          $scope.baseIndex--;
+        });
+      }
+    };
+
+    /****************************************************/
+    /**         Poll for latest transactions           **/
     /****************************************************/
 
   });

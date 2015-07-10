@@ -57,6 +57,16 @@
         <label class="btn btn-primary" ng-model="user.settings.list.tabview" btn-radio="'new'">New Tab</label>
       </div>
     </div>
+    <div class="settings_div">
+      <label style="float: left">
+        Auto-Update Transaction List
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="float: left; clear: both">
+        <label class="btn btn-primary" ng-model="user.settings.list.autoupdate" btn-radio="true">Enabled</label>
+        <label class="btn btn-primary" ng-model="user.settings.list.autoupdate" btn-radio="false">Disabled</label>
+      </div>
+    </div>
   </tab>
 
 

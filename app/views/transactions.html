@@ -33,6 +33,16 @@
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'new'">New Tab</label>
                   </div>
                 </div>
+                <div class="settings_div">
+                  <label style="float: left">
+                    Auto-Update Transaction List
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                  </label>
+                  <div class="btn-group" style="float: left; clear: both;">
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="false" ng-click="stopPolling()">Disabled</label>
+                  </div>
+                </div>
               </tab>
             </tabset>            
           </div>
@@ -88,27 +98,34 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="table-list" ng-repeat="transaction in transactions" ng-click='viewTransactionDetails("transactions/" + transaction._id, $event)'>
+                <tr class="table-list" ng-repeat="transaction in transactions" ng-style="baseIndex + $index < 0 && {'color': '#036633', 'font-weight': 'bold'}" ng-click='viewTransactionDetails("transactions/" + transaction._id, $event)'>
                   <td class="transactionsCheckboxTD">
                     <label>
                       <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="channelsMap[transaction.channelID].rerun && transaction.canRerun" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
                       <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                     </label>
                   </td>
-                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
-                    <span>{{ $index +1 }}</span>
+                  <td data-title="# {{ baseIndex + $index +1 }}" class="responsiveTransactionIndexCheckbox">
+                    <span ng-if="baseIndex + $index < 0">-</span>
+                    <span ng-if="baseIndex + $index >= 0">{{ baseIndex + $index +1 }}</span>
                     <label>
                       <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
                       <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
                     </label>
                   </td>
-                  <td data-title="HTTP Method">{{ transaction.request.method }}</td>
+                  <td data-title="HTTP Method" >{{ transaction.request.method }}</td>
                   <td data-title="Host">{{ transaction.request.host }}</td>
                   <td data-title="Port">{{ transaction.request.port }}</td>
                   <td data-title="Path">{{ transaction.request.path }}</td>
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
                   <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
-                  <td data-title="Status">{{ transaction.status }}</td>
+                  <td data-title="Status">
+                    <span ng-if="transaction.status === 'Successful'" class="label label-success">Successful</span>
+                    <span ng-if="transaction.status === 'Completed'" class="label label-success">Completed</span>
+                    <span ng-if="transaction.status === 'Processing'" class="label label-info">Processing</span>
+                    <span ng-if="transaction.status === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                    <span ng-if="transaction.status === 'Failed'" class="label label-danger">Failed</span>
+                  </td>
                   <td data-title="Request Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                 </tr>
               </tbody>
