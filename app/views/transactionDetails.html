@@ -70,7 +70,13 @@
             </div>
             <div class="data-group">
               <label>Status: </label>
-              <div class="data-value">{{transactionDetails.status}}</div>
+              <div class="data-value">
+                <span ng-if="transactionDetails.status === 'Successful'" class="label label-success">Successful</span>
+                <span ng-if="transactionDetails.status === 'Completed'" class="label label-success">Completed</span>
+                <span ng-if="transactionDetails.status === 'Processing'" class="label label-info">Processing</span>
+                <span ng-if="transactionDetails.status === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                <span ng-if="transactionDetails.status === 'Failed'" class="label label-danger">Failed</span>
+              </div>
             </div>
             <div class="data-group">
               <label>Channel: </label>

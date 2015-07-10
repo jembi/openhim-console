@@ -856,6 +856,8 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.$on('$destroy', $scope.stopPolling);
+
     /****************************************************/
     /**         Poll for latest transactions           **/
     /****************************************************/
