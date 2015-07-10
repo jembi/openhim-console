@@ -812,21 +812,58 @@ angular.module('openhimConsoleApp')
 
     var pollingInterval;
 
+    var pollForLatest = function() {
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters['request.timestamp']) {
+        //only poll for latest if date filters are OFF
+
+        filters.filters['request.timestamp'] = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
+        lastUpdated = moment() - serverDiffTime;
+
+        delete filters.filterPage;
+        delete filters.filterLimit;
+
+        Api.Transactions.query(filters, function(transactions) {
+          transactions.forEach(function(trx) {
+            $scope.transactions.unshift(trx);
+            $scope.baseIndex--;
+          });
+        });
+      }
+    };
+
+    //poll for updates for any transactions that are marked as 'Processing'
+    //TODO improve performance
+    //TODO need an endpoint in core to lookup a several transactions by _id at once
+    var pollForProcessingUpdates = function() {
+      var inProcessing = [];
+
+      $scope.transactions.forEach(function(trx){
+        if (trx.status === 'Processing') {
+          inProcessing.push(trx._id);
+        }
+      });
+
+      if (inProcessing.length > 0) {
+        inProcessing.forEach(function(_id){
+          Api.Transactions.get({ transactionId: _id, filterRepresentation: 'simple' }, function(result) {
+            $scope.transactions.forEach(function(scopeTrx) {
+              if (scopeTrx._id === _id) {
+                scopeTrx.status = result.status;
+              }
+            });
+          });
+        });
+
+      }
+    };
+
     $scope.startPolling = function() {
       if (!pollingInterval) {
         pollingInterval = $interval( function() {
-          var filters = $scope.returnFilters();
-          if (!filters.filters['request.timestamp']) {
-            //only poll for latest if date filters are OFF
-
-            filters.filters['request.timestamp'] = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
-
-            delete filters.filterPage;
-            delete filters.filterLimit;
-
-            Api.Transactions.query(filters, pollMoreSuccess);
-            lastUpdated = moment() - serverDiffTime;
-          }
+          pollForLatest();
+          pollForProcessingUpdates();
         }, pollPeriod);
       }
     };
@@ -846,15 +883,6 @@ angular.module('openhimConsoleApp')
         $scope.startPolling();
       }
     });
-
-    var pollMoreSuccess = function (transactions){
-      if (transactions.length > 0) {
-        transactions.forEach(function(trx) {
-          $scope.transactions.unshift(trx);
-          $scope.baseIndex--;
-        });
-      }
-    };
 
     $scope.$on('$destroy', $scope.stopPolling);
 
