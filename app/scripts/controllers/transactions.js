@@ -837,26 +837,17 @@ angular.module('openhimConsoleApp')
     //TODO improve performance
     //TODO need an endpoint in core to lookup a several transactions by _id at once
     var pollForProcessingUpdates = function() {
-      var inProcessing = [];
-
       $scope.transactions.forEach(function(trx){
         if (trx.status === 'Processing') {
-          inProcessing.push(trx._id);
-        }
-      });
-
-      if (inProcessing.length > 0) {
-        inProcessing.forEach(function(_id){
-          Api.Transactions.get({ transactionId: _id, filterRepresentation: 'simple' }, function(result) {
+          Api.Transactions.get({ transactionId: trx._id, filterRepresentation: 'simple' }, function(result) {
             $scope.transactions.forEach(function(scopeTrx) {
-              if (scopeTrx._id === _id) {
+              if (scopeTrx._id === result._id) {
                 scopeTrx.status = result.status;
               }
             });
           });
-        });
-
-      }
+        }
+      });
     };
 
     $scope.startPolling = function() {
