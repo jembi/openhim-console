@@ -68,7 +68,8 @@ describe('Controller: TransactionsCtrl', function () {
       }
     ]);
 
-    //$httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'_id': '539846c240f2eb682ffeca4b', 'email': 'test@user.org', 'firstname': 'test', 'surname': 'test', 'groups': ['admin', 'test', 'other']});
+    $httpBackend.when('GET', new RegExp('.*/visualizer/sync')).respond({ 'now': Date.now() });
+
 
     modalSpy = sinon.spy($modal, 'open');
 
