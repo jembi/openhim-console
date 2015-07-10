@@ -834,7 +834,6 @@ angular.module('openhimConsoleApp')
     };
 
     //poll for updates for any transactions that are marked as 'Processing'
-    //TODO improve performance
     //TODO need an endpoint in core to lookup a several transactions by _id at once
     var pollForProcessingUpdates = function() {
       $scope.transactions.forEach(function(trx){
