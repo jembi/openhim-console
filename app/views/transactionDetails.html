@@ -80,6 +80,10 @@
               <label>Authorized Client: </label>
               <div class="data-value">{{client.name}}</div>
             </div>
+            <div class="data-group" ng-if="transactionDetails.transactionTime">
+              <label>Transaction Time: </label>
+              <div class="data-value">{{transactionDetails.transactionTime}}</div>
+            </div>
 
             <tabset class="transaction_details_tabset" justified="false" style="  margin: 20px 0px 0px 0px; display: inline-block; width: 100%;">
               <tab>

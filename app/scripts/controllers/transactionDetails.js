@@ -1,6 +1,7 @@
 'use strict';
 /* global beautifyIndent:false */
 /* global returnContentType:false */
+/* global moment:false */
 
 angular.module('openhimConsoleApp')
   .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
@@ -29,6 +30,24 @@ angular.module('openhimConsoleApp')
           $scope.transactionDetails.response.body = responseTransform.content;
           $scope.responseTransformLang = responseTransform.lang;
         }
+      }
+
+      // calculate total transaction time
+      if( ( transactionDetails.request && transactionDetails.request.timestamp ) &&
+        ( transactionDetails.response && transactionDetails.response.timestamp ) ) {
+          var diff = moment(transactionDetails.response.timestamp)-moment(transactionDetails.request.timestamp);
+
+          if (diff>=1000) {
+            //display in seconds
+            var round = function(value, decimalPlaces) {
+              return +(Math.round(value + 'e+' + decimalPlaces)  + 'e-' + decimalPlaces);
+            };
+
+            transactionDetails.transactionTime =  round(diff/1000.0, 3) + ' s';
+          } else {
+            //display in milliseconds
+            transactionDetails.transactionTime = diff + ' ms';
+          }
       }
 
       
