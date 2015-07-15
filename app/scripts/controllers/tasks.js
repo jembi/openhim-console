@@ -321,7 +321,7 @@ angular.module('openhimConsoleApp')
 
     var pollingInterval;
 
-    var pollForLatest = function() {
+    $scope.pollForLatest = function() {
       var filters = $scope.returnFilters();
 
       if (!filters.filters.created) {
@@ -344,7 +344,7 @@ angular.module('openhimConsoleApp')
 
     //poll for updates for any tasks that are marked as 'Processing' or 'Queued'
     //TODO need an endpoint in core to lookup a several tasks by _id at once
-    var pollForProcessingUpdates = function() {
+    $scope.pollForProcessingUpdates = function() {
       $scope.tasks.forEach(function(task){
         if (task.status === 'Processing' || task.status === 'Queued') {
 
@@ -370,8 +370,8 @@ angular.module('openhimConsoleApp')
     $scope.startPolling = function() {
       if (!pollingInterval) {
         pollingInterval = $interval( function() {
-          pollForLatest();
-          pollForProcessingUpdates();
+          $scope.pollForLatest();
+          $scope.pollForProcessingUpdates();
         }, pollPeriod);
       }
     };
