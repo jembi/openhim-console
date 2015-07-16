@@ -14,13 +14,12 @@ describe('Controller: TasksCtrl', function () {
     });
   });
 
-  var scope, createController, httpBackend, timeout;
+  var scope, createController, httpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $timeout) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-    timeout = $timeout;
 
     $httpBackend.when('GET', new RegExp('.*/tasks\\?(filterLimit|filterPage)')).respond([
       { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'totalTransactions': 2, 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Completed' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Completed' }], 'status': 'Completed' },
@@ -178,7 +177,6 @@ describe('Controller: TasksCtrl', function () {
 
     scope.pollForLatest();
     httpBackend.flush();
-    timeout.flush();
 
     scope.tasks.length.should.equal(originalLength + 1);
     scope.tasks[0]._id.should.equal('53e1eac5e907b57711509999');
@@ -198,7 +196,6 @@ describe('Controller: TasksCtrl', function () {
 
     scope.pollForProcessingUpdates();
     httpBackend.flush();
-    timeout.flush();
 
     //only status should change, position in array must be the same
     scope.tasks[1]._id.should.equal('52e1eac5e807b57711509854');

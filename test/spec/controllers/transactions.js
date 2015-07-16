@@ -15,13 +15,12 @@ describe('Controller: TransactionsCtrl', function () {
     });
   });
 
-  var scope, createController, httpBackend, modalSpy, timeout;
+  var scope, createController, httpBackend, modalSpy;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal, $timeout) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
-    timeout = $timeout;
 
     
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
@@ -170,7 +169,6 @@ describe('Controller: TransactionsCtrl', function () {
 
     scope.pollForLatest();
     httpBackend.flush();
-    timeout.flush();
 
     scope.transactions.length.should.equal(originalLength + 1);
     scope.transactions[0]._id.should.equal('550936d307756ef72b525555');
@@ -197,7 +195,6 @@ describe('Controller: TransactionsCtrl', function () {
 
     scope.pollForProcessingUpdates();
     httpBackend.flush();
-    timeout.flush();
 
     //only status should change, position in array must be the same
     scope.transactions[2]._id.should.equal('770936d307756ef72b525333');
