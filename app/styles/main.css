@@ -672,6 +672,11 @@ body {
   clear: both; 
   margin-bottom: 20px;
 }
+
+.transactionsNew{
+  color: #036633;
+  font-weight: bold;
+}
 /* ----- Transactions ----- */
 
 /*------- Custom CSS Changes ----*/

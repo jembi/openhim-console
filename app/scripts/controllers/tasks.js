@@ -10,6 +10,9 @@ angular.module('openhimConsoleApp')
     /**         Initial load functions           **/
     /**********************************************/
 
+    // remember when we loaded the page...
+    var pageLoadDate = moment();
+
     // default settings
     $scope.showpage = 0;
     $scope.showlimit = 10;
@@ -18,6 +21,13 @@ angular.module('openhimConsoleApp')
     $scope.settings = {};
     $scope.settings.list = {};
     $scope.settings.list.tabview = 'same';
+    $scope.settings.list.autoupdate = true;
+
+    //polling
+    var lastUpdated;
+    var serverDiffTime = 0;
+    $scope.baseIndex = 0;
+    var pollPeriod = 5000;
 
 
     // setup task filtter settings
@@ -139,6 +149,15 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
+
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters.created) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new tasks come in, breaking the pages
+        filters.filters.created = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
+      }
+
       Api.Tasks.query( $scope.returnFilters(), loadMoreSuccess, loadMoreError);
     };
 
@@ -295,5 +314,88 @@ angular.module('openhimConsoleApp')
         // cancel cancelled
       });
     };
+
+    /****************************************************/
+    /**         Poll for latest tasks                  **/
+    /****************************************************/
+
+    var pollingInterval;
+
+    $scope.pollForLatest = function() {
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters.created) {
+        //only poll for latest if date filters are OFF
+
+        filters.filters.created = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
+        lastUpdated = moment() - serverDiffTime;
+
+        delete filters.filterPage;
+        delete filters.filterLimit;
+
+        Api.Tasks.query(filters, function(tasks) {
+          tasks.forEach(function(task) {
+            $scope.tasks.unshift(task);
+            $scope.baseIndex--;
+          });
+        });
+      }
+    };
+
+    //poll for updates for any tasks that are marked as 'Processing' or 'Queued'
+    //TODO need an endpoint in core to lookup a several tasks by _id at once
+    $scope.pollForProcessingUpdates = function() {
+      $scope.tasks.forEach(function(task){
+        if (task.status === 'Processing' || task.status === 'Queued') {
+
+          var taskFilters = {};
+          taskFilters.taskId = task._id;
+          taskFilters.filterPage = 0;
+          taskFilters.filterLimit = 0;
+          taskFilters.filters = {};
+
+          Api.Tasks.get(taskFilters, function(result) {
+            $scope.tasks.forEach(function(scopeTask) {
+              if (scopeTask._id === result._id) {
+                scopeTask.status = result.status;
+                scopeTask.remainingTransactions = result.remainingTransactions;
+                scopeTask.completedDate = result.completedDate;
+              }
+            });
+          });
+        }
+      });
+    };
+
+    $scope.startPolling = function() {
+      if (!pollingInterval) {
+        pollingInterval = $interval( function() {
+          $scope.pollForLatest();
+          $scope.pollForProcessingUpdates();
+        }, pollPeriod);
+      }
+    };
+
+    $scope.stopPolling = function() {
+      if (angular.isDefined(pollingInterval)) {
+        $interval.cancel(pollingInterval);
+        pollingInterval = undefined;
+      }
+    };
+
+    //sync time with server
+    Api.VisualizerSync.get(function (startVisualizer) {
+      serverDiffTime = moment() - moment(startVisualizer.now);
+      lastUpdated = moment() - serverDiffTime;
+      if ($scope.settings.list.autoupdate) {
+        $scope.startPolling();
+      }
+    });
+
+    $scope.$on('$destroy', $scope.stopPolling);
+
+    /****************************************************/
+    /**         Poll for latest transactions           **/
+    /****************************************************/
 
   });
