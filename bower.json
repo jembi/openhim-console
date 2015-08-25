@@ -17,7 +17,7 @@
     "morris.js": "~0.5.1",
     "moment": "~2.9.0",
     "vkBeautify": "https://github.com/vkiryukhin/vkBeautify.git",
-    "angular-highlightjs": "~0.4.1",
+    "angular-highlightjs": "0.4.1",
     "ng-file-upload": "~3.2.4",
     "ng-file-upload-shim": "~3.2.4"
   },
