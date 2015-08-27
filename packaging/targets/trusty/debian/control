@@ -1,5 +1,5 @@
 Source: openhim-console
-Maintainer: Carl Leitner <litlfred@ibiblio.org>
+Maintainer: Ryan Crichton <ryan@jembi.org>
 Section: web
 Priority: optional
 Standards-Version: 3.9.1
@@ -9,8 +9,8 @@ Homepage: https://github.com/openhie/openhim-console
 
 Package: openhim-console
 Architecture: all
-Depends: build-essential,  libssl-dev, curl,  mongodb, openhim-core-js, git
-Recommends: 
+Depends: nginx, jq
+Recommends: openhim-core-js
 Description: The OpenHIM Console provides a web application to configure and manage the OpenHIM Core component. It provides the following features:
    -Configure and manage OpenHIM channels
    -View logged transactions

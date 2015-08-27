@@ -1,25 +1,9 @@
 #!/bin/bash
-set -x
 set -e
 
-
-action="$1"
-cur_version="$2"
-
-
-USERNAME=openhim
-HOME=/home/$USERNAME
-SH=/bin/sh
-NPM=/usr/bin/npm
-CURL=/usr/bin/curl
-
-CONSOLEDIR=$HOME/openhim-console
-
-
-chown  $USERNAME:$USERNAME $HOME/bin/install_console.sh
-chown -R  $USERNAME:$USERNAME $CONSOLEDIR
-
-cd $HOME
+CONSOLEDIR=/usr/share/nginx/html/openhim
+CONFIGFILE=$CONSOLEDIR/config/default.json
+ETCCONFIGFILE=/etc/openhim/console-config.json
 
 . /usr/share/debconf/confmodule
 db_get openhim-console/selecthost
@@ -27,23 +11,22 @@ HOST=$RET
 db_get openhim-console/selectport
 PORT=$RET
 
-CONFIG='
-{
-  "protocol": "https",
-  "host": "'$HOST'",
-  "port": '$PORT',
-  "title": "OpenHIM Admin Console",
-  "footerTitle": "OpenHIM Administration Console",
-  "footerPoweredBy": "<a href='"'http://openhim.org/' target='_blank'>Powered by OpenHIM</a>"'",
-  "loginBanner": ""
-}
-'
-echo $CONFIG > $CONSOLEDIR/app/config/default.json
+# Keep existing config file if there is one
+mkdir /etc/openhim || true
+if [ ! -f $ETCCONFIGFILE ]; then
+    cp $CONFIGFILE $ETCCONFIGFILE
+else
+    echo "Existing config file found, using that."
+fi
 
-sudo -u $USERNAME $SH $HOME/bin/install_console.sh
+# Replace the config with a link to a config in /etc/openhim/
+rm $CONFIGFILE
+ln -s $ETCCONFIGFILE $CONFIGFILE
 
+# Set host and port of openhim-core
+cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "host" then . + {"value": "'$HOST'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
+cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "port" then . + {"value": "'$PORT'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
 
-
-service openhim-console start || true
+echo "Successfully installed the OpenHIM-console!"
 
 exit 0

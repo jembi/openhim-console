@@ -1,15 +1,8 @@
 #!/bin/bash
-set -x
-
-action="$1"
-cur_version="$2"
-
 
 . /usr/share/debconf/confmodule 
 
 db_input critical openhim-console/selecthost || true
-
 db_input critical openhim-console/selectport || true
-
 
 db_go || true
