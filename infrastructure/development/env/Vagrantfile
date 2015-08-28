@@ -1,22 +1,33 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant::Config.run do |config|
-	config.vm.box = "ubuntu/trusty64"
-	config.vm.box_url = "http://atlas.hashicorp.com/ubuntu/boxes/trusty64"
+VAGRANTFILE_API_VERSION = "2"
 
-	config.vm.network :bridged
-	config.vm.forward_port 9000, 9000
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-	config.vm.share_folder "openhim-console", "/openhim-console", "../../../"
+  # Use trusty64 base box
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--memory", 1024]
+  end
 
-	config.vm.provision :shell do |shell|
-		shell.inline = "mkdir -p /etc/puppet/modules;
-			puppet module install willdurand/nodejs"
-	end
+  # Configure port forwarding
+  config.vm.network "forwarded_port", guest: 9000, host: 9000
 
-	config.vm.provision :puppet do |puppet|
-		puppet.manifests_path = "./"
-		puppet.manifest_file  = "openhim-console.pp"
-	end
+  config.vm.provision :shell do |shell|
+    shell.inline = "mkdir -p /etc/puppet/modules;
+        puppet module install willdurand/nodejs"
+  end
+
+  # Setup LC_ALL locale flag
+  config.vm.provision :shell do |shell|
+    shell.inline = "echo 'LC_ALL=\"en_US.UTF-8\"' >> /etc/default/locale"
+  end
+
+  config.vm.synced_folder "../../../", "/openhim-console"
+
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "./"
+    puppet.manifest_file  = "openhim-console.pp"
+  end
 end
