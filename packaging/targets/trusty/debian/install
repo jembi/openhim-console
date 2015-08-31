@@ -1,1 +1,2 @@
-/usr/share/nginx/html/*
+/usr/share/openhim-console/*
+/etc/nginx/sites-available/*

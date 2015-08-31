@@ -2,7 +2,7 @@
 #Exit on error
 set -e
 
-WEBDIR=/usr/share/nginx/html/openhim
+CONSOLEDIR=/usr/share/openhim-console
 
 HOME=`pwd`
 AWK=/usr/bin/awk
@@ -74,9 +74,9 @@ do
     cp -R $TARGETDIR/* $PKGDIR
 
     # Fetch openhim-console from github releases
-    mkdir -p $PKGDIR$WEBDIR
+    mkdir -p $PKGDIR$CONSOLEDIR
     wget -O /tmp/openhim-console.tar.gz https://github.com/jembi/openhim-console/releases/download/v${OPENHIM_VERSION}/openhim-console-v${OPENHIM_VERSION}.tar.gz
-    tar -vxzf /tmp/openhim-console.tar.gz --directory $PKGDIR$WEBDIR
+    tar -vxzf /tmp/openhim-console.tar.gz --directory $PKGDIR$CONSOLEDIR
 
     cd $PKGDIR  
     if [[ "$UPLOAD" == "y" || "$UPLOAD" == "Y" ]] && [[ -n "${DEB_SIGN_KEYID}" && -n "{$LAUNCHPADLOGIN}" ]]; then

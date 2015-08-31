@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CONSOLEDIR=/usr/share/nginx/html/openhim
+CONSOLEDIR=/usr/share/openhim-console
 CONFIGFILE=$CONSOLEDIR/config/default.json
 ETCCONFIGFILE=/etc/openhim/console-config.json
 
@@ -26,6 +26,13 @@ ln -s $ETCCONFIGFILE $CONFIGFILE
 # Set host and port of openhim-core
 cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "host" then . + {"value": "'$HOST'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
 cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "port" then . + {"value": "'$PORT'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
+
+# Enable the openhim-console site in nginx
+ln -s /etc/nginx/sites-available/openhim-console /etc/nginx/sites-enabled/
+# Disable the default site - can't have two sites on port 80 without server_name config
+rm /etc/nginx/sites-enabled/default
+
+service nginx reload
 
 echo "Successfully installed the OpenHIM-console!"
 
