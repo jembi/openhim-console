@@ -1,0 +1,9 @@
+# Site config for the OpenHIM-console
+server {
+        root /usr/share/openhim-console;
+        index index.html;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}

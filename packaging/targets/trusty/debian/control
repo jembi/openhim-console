@@ -1,0 +1,18 @@
+Source: openhim-console
+Maintainer: Ryan Crichton <ryan@jembi.org>
+Section: web
+Priority: optional
+Standards-Version: 3.9.1
+Build-Depends: debhelper (>= 7)
+Homepage: https://github.com/openhie/openhim-console
+
+
+Package: openhim-console
+Architecture: all
+Depends: nginx, jq
+Recommends: openhim-core-js
+Description: The OpenHIM Console provides a web application to configure and manage the OpenHIM Core component. It provides the following features:
+   -Configure and manage OpenHIM channels
+   -View logged transactions
+   -Configure clients that can access particular routes
+   -Monitor the operations of the OpenHIM application

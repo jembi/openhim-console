@@ -1,0 +1,229 @@
+openhim-console (1.3.0-5~trusty) trusty; urgency=medium
+
+  * Release Debian Build 1.3.0-5. Find v1.3.0 changelog here:
+    https://github.com/jembi/openhim-console/releases
+
+ -- Ryan Crichton <ryan@jembi.org>  Tue, 01 Sep 2015 10:36:03 +0200
+
+openhim-console (1.3.0-4~trusty) trusty; urgency=medium
+
+  * Release Debian Build 1.3.0-4
+
+ -- Ryan Crichton <ryan@jembi.org>  Thu, 27 Aug 2015 11:45:41 +0200
+
+openhim-console (1.1.0-3~trusty) trusty; urgency=medium
+
+  * Release Version 1.1.0-3
+    -e74fff1 Merge remote-tracking branch 'origin/master' into debian-p
+    --https://github.com/jembi/openhim-console/commmit/e74fff1
+    -4ff558b Merge pull request #292 from jembi/contact-group-label-cha
+    --https://github.com/jembi/openhim-console/commmit/4ff558b
+    -46d2fc5 Corrected label change value from "group -> list"
+    --https://github.com/jembi/openhim-console/commmit/46d2fc5
+    -156709e Changed contact groups label to lists
+    --https://github.com/jembi/openhim-console/commmit/156709e
+    -8c5de03 Updated contact groups label text
+    --https://github.com/jembi/openhim-console/commmit/8c5de03
+    -5110e1a Merge pull request #288 from jembi/refactoring-ui-channels
+    --https://github.com/jembi/openhim-console/commmit/5110e1a
+    -d0c46cf Fixed JSHint errors
+    --https://github.com/jembi/openhim-console/commmit/d0c46cf
+    -039241a OHM-140: updated channelsmodal tests and added additional
+    --https://github.com/jembi/openhim-console/commmit/039241a
+    -906cf32 Tooltip text change - remove $parent ref for variable upda
+    --https://github.com/jembi/openhim-console/commmit/906cf32
+    -bcbc41c Adding mediator directly to channel.routes instead of goin
+    --https://github.com/jembi/openhim-console/commmit/bcbc41c
+    -b398e2c Bug fix: clear old errors on new validate check
+    --https://github.com/jembi/openhim-console/commmit/b398e2c
+    -308acf2 Hardned edit index check
+    --https://github.com/jembi/openhim-console/commmit/308acf2
+    -1a8d249 Bug fix - Empty route skips validations and saves channel
+    --https://github.com/jembi/openhim-console/commmit/1a8d249
+    -f58e89b Added better checking for index value on delete
+    --https://github.com/jembi/openhim-console/commmit/f58e89b
+    -fcfbeee Merge pull request #287 from jembi/remove-transaction-reru
+    --https://github.com/jembi/openhim-console/commmit/fcfbeee
+    -63023d5 Removed unnecessary "true" check
+    --https://github.com/jembi/openhim-console/commmit/63023d5
+    -d59912c Reverted back styling change
+    --https://github.com/jembi/openhim-console/commmit/d59912c
+    -e79f96f OHM-140: Refactored the channelsmodal - how routes are add
+    --https://github.com/jembi/openhim-console/commmit/e79f96f
+    -c3f7742 Removed commented out code
+    --https://github.com/jembi/openhim-console/commmit/c3f7742
+    -92e2166 Fixed: rerun transactions bug - deleted/disabled channels
+    --https://github.com/jembi/openhim-console/commmit/92e2166
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Wed, 22 Apr 2015 17:44:06 +0000
+
+openhim-console (1.1.0-2~trusty) trusty; urgency=medium
+
+  * Release Version 1.1.0-2
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Wed, 04 Mar 2015 13:50:45 +0000
+
+openhim-console (1.0.0-25~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-25
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sun, 22 Feb 2015 06:25:09 -0500
+
+openhim-console (1.0.0-24~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-24
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sun, 22 Feb 2015 06:09:36 -0500
+
+openhim-console (1.0.0-23~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-23
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sun, 22 Feb 2015 05:55:02 -0500
+
+openhim-console (1.0.0-22~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-22
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:59:54 -0500
+
+openhim-console (1.0.0-21~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-21
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:56:46 -0500
+
+openhim-console (1.0.0-20~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-20
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:44:43 -0500
+
+openhim-console (1.0.0-19~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-19
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:30:43 -0500
+
+openhim-console (1.0.0-18~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-18
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:19:55 -0500
+
+openhim-console (1.0.0-17~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-17
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Sat, 21 Feb 2015 00:00:57 -0500
+
+openhim-console (1.0.0-16~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-16
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:53:48 -0500
+
+openhim-console (1.0.0-15~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-15
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:52:27 -0500
+
+openhim-console (1.0.0-14~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-14
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:43:33 -0500
+
+openhim-console (1.0.0-13~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-13
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:37:59 -0500
+
+openhim-console (1.0.0-12~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-12
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:36:47 -0500
+
+openhim-console (1.0.0-11~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-11
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:33:54 -0500
+
+openhim-console (1.0.0-10~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-10
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:32:26 -0500
+
+openhim-console (1.0.0-9~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-9
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:30:28 -0500
+
+openhim-console (1.0.0-8~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-8
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:28:25 -0500
+
+openhim-console (1.0.0-7~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-7
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:27:33 -0500
+
+openhim-console (1.0.0-6~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-6
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:25:33 -0500
+
+openhim-console (1.0.0-5~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-5
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 23:08:42 -0500
+
+openhim-console (1.0.0-4~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-4
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 15:48:18 -0500
+
+openhim-console (1.0.0-3~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-3
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 17:48:06 +0000
+
+openhim-console (1.0.0-2~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-2
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 17:42:02 +0000
+
+openhim-console (1.0.0-1~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-1
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 16:22:39 +0000
+
+openhim-console (1.0.0-1~trusty) trusty; urgency=medium
+
+  * Release Version 1.0.0-1
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 20 Feb 2015 15:42:08 +0000
+
+openhim-console (1.0.0-0~trusty) trusty; urgency=low
+
+  [Carl Leitner <litlfred@ibiblio.org>]
+  * Initial Build
+    Fri 2015-02-13 13:55:10 -0500
+
+ -- Carl Leitner <litlfred@ibiblio.org>  Fri, 13 February 2015 13:55:10 -0500  
+

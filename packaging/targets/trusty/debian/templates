@@ -1,0 +1,9 @@
+Template: openhim-console/selecthost
+Type: string
+Default: localhost
+Description: What is the *public* hostname that the OpenHIM core server is running on?
+
+Template: openhim-console/selectport
+Type: string
+Default: 8080
+Description: What is the port that the OpenHIM core server API is running on?

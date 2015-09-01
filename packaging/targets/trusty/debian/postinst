@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+CONSOLEDIR=/usr/share/openhim-console
+CONFIGFILE=$CONSOLEDIR/config/default.json
+ETCCONFIGFILE=/etc/openhim/console-config.json
+
+. /usr/share/debconf/confmodule
+db_get openhim-console/selecthost
+HOST=$RET
+db_get openhim-console/selectport
+PORT=$RET
+
+# Keep existing config file if there is one
+mkdir /etc/openhim || true
+if [ ! -f $ETCCONFIGFILE ]; then
+    cp $CONFIGFILE $ETCCONFIGFILE
+else
+    echo "Existing config file found, using that."
+fi
+
+# Replace the config with a link to a config in /etc/openhim/
+rm $CONFIGFILE
+ln -s $ETCCONFIGFILE $CONFIGFILE
+
+# Set host and port of openhim-core
+cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "host" then . + {"value": "'$HOST'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
+cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "port" then . + {"value": "'$PORT'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
+
+# Enable the openhim-console site in nginx
+ln -s /etc/nginx/sites-available/openhim-console /etc/nginx/sites-enabled/
+# Disable the default site - can't have two sites on port 80 without server_name config
+rm /etc/nginx/sites-enabled/default
+
+service nginx reload
+
+echo "Successfully installed the OpenHIM-console!"
+
+exit 0

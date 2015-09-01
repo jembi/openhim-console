@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. /usr/share/debconf/confmodule 
+
+db_input critical openhim-console/selecthost || true
+db_input critical openhim-console/selectport || true
+
+db_go || true
