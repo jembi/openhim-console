@@ -2,7 +2,7 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting) {
+  .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting, config) {
 
 
     /******************************************************************/
@@ -22,9 +22,9 @@ angular.module('openhimConsoleApp')
           if (!mediator._lastHeartbeat) {
             mediator.lastHeartbeatStatus = 'never';
           } else {
-            if (secondsDiffNow(mediator) < 60) {
+            if (secondsDiffNow(mediator) < config.mediatorLastHeartbeatWarningSeconds) {
               mediator.lastHeartbeatStatus = 'success';
-            } else if (secondsDiffNow(mediator) < 120) {
+            } else if (secondsDiffNow(mediator) < config.mediatorLastHeartbeatDangerSeconds) {
               mediator.lastHeartbeatStatus = 'warning';
             } else {
               mediator.lastHeartbeatStatus = 'danger';
