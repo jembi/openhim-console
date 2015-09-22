@@ -29,11 +29,37 @@
         </div>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
-        <label>Domain</label>
-        <input class="form-control" type="text" ng-model="client.clientDomain" >
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Organization</label>
+          <input class="form-control" type="text" ng-model="client.organization">
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Software Name</label>
+          <input class="form-control" type="text" ng-model="client.softwareName">
+        </div>
       </div>
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Description</label>
+          <input class="form-control" type="text" ng-model="client.description">
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Location</label>
+          <input class="form-control" type="text" ng-model="client.location">
+        </div>
+      </div>
+      <div class="form-group-2columns">
+        <div class="form-group" style="float: left;">
+          <label>Contact Person</label>
+          <input class="form-control" type="text" ng-model="client.contactPerson">
+        </div>
+        <div class="form-group" style="float: right;">
+          <label>Contact Person Email</label>
+          <input class="form-control" type="text" ng-model="client.contactPersonEmail">
+        </div>
+      </div>
+
       <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
         <label><span>*</span> Roles</label>
         <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles" ng-model="roles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
@@ -57,6 +83,11 @@
         </div>
       </div>
 
+      <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
+        <label>Domain</label>
+        <input class="form-control" type="text" ng-model="client.clientDomain" >
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
       <div class="form-group" ng-class="{ 'has-error' : ngError.certFingerprint }">
         <label><span>**</span> Client certificate</label>
         <select class="form-control" ng-options="cert.fingerprint as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs" ng-model="client.certFingerprint">

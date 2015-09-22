@@ -22,6 +22,10 @@
                   <th width="50">#</th>
                   <th>ID</th>
                   <th>Name</th>
+                  <th>Organization</th>
+                  <th>Software Name</th>
+                  <th>Description</th>
+                  <th>Contact Person</th>
                   <th>Domain</th>
                   <th>Roles</th>
                   <th width="80"></th>
@@ -32,6 +36,13 @@
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                   <td data-title="ID"><a href="" ng-click="editClient(client)">{{ client.clientID }}</a></td>
                   <td data-title="Name"><a href="" ng-click="editClient(client)">{{ client.name }}</a></td>
+                  <td data-title="Organization">{{ client.organization }}</td>
+                  <td data-title="SoftwareName">{{ client.softwareName }}</td>
+                  <td data-title="Description">{{ client.description }}</td>
+                  <td data-title="Contact">
+                    <span ng-if="client.contactPersonEmail">{{ client.contactPerson }} ({{client.contactPersonEmail}})</span>
+                    <span ng-if="!client.contactPersonEmail">{{ client.contactPerson }}</span>
+                  </td>
                   <td data-title="clientDomain">{{ client.clientDomain }}</td>
                   <td data-title="Roles">{{ client.roles.join(', ') }}</td>
                   <td>
