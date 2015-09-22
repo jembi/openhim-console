@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" id="addMediatorConfigLabel">
+    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
+    Edit mediator config
+  </h4>
+</div>
+<form name="form" novalidate>
+  <div class="modal-body">
+    <fieldset>
+
+      <div class="form-group-2columns" ng-repeat="def in mediator.configDefs">
+        <div class="form-group" style="float: left;">
+          <label>{{def.param}}</label>
+        </div>
+        <div class="form-group" style="float: right;">
+
+          <div ng-if="def.type === 'string'">
+            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update">
+          </div>
+
+          <div ng-if="def.type === 'bool'">
+            <div class="btn-group" style="margin-bottom: 10px; clear: both;">
+              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="">No Value</label>
+              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="true">True</label>
+              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="false">False</label>
+            </div>
+          </div>
+
+          <div ng-if="def.type === 'number'">
+            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update">
+          </div>
+
+          <div ng-if="def.type === 'option'">
+            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]">
+              <option value="" label="No Value"></option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </fieldset>
+  </div>
+
+  <div class="modal-footer">
+    <div>
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="saveConfig()">Save changes</button>
+    </div>
+  </div>
+</form>

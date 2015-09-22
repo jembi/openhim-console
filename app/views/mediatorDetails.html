@@ -56,6 +56,22 @@
                 </table>
 
               </td>
+            </tr>
+            <tr>            
+              <td><strong>Configuration: </strong></td>
+              <td>
+                <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
+                  <tr>
+                    <th style="border-top: 0px">Setting: </th>
+                    <th style="border-top: 0px">Value: </th>
+                  </tr>
+                  <tr ng-repeat="(k, v) in mediatorDetails.config">
+                    <td style="width: 25%"><strong>{{k}}</strong></td>
+                    <td style="width: 75%">{{v}}</td>
+                  </tr>
+                </table>
+                <button class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
+              </td>
             </tr>            
           </table>
 

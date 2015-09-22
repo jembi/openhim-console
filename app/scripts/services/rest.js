@@ -29,6 +29,9 @@ angular.module('openhimConsoleApp')
       Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }, {
         update: { method: 'PUT' }
       }),
+      MediatorConfig: $resource( server + '/mediators/:urn/config', { urn: '@urn' }, {
+        update: { method: 'PUT' }
+      }),
 
       // add the metric endpoints
       Metrics: $resource( server + '/metrics/:type/:channelId', {}),
