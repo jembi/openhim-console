@@ -39,7 +39,10 @@
                   <td data-title="Organization">{{ client.organization }}</td>
                   <td data-title="SoftwareName">{{ client.softwareName }}</td>
                   <td data-title="Description">{{ client.description }}</td>
-                  <td data-title="Contact">{{ client.contactPerson }} ({{client.contactPersonEmail}})</td>
+                  <td data-title="Contact">
+                    <span ng-if="client.contactPersonEmail">{{ client.contactPerson }} ({{client.contactPersonEmail}})</span>
+                    <span ng-if="!client.contactPersonEmail">{{ client.contactPerson }}</span>
+                  </td>
                   <td data-title="clientDomain">{{ client.clientDomain }}</td>
                   <td data-title="Roles">{{ client.roles.join(', ') }}</td>
                   <td>
