@@ -21,7 +21,6 @@
 
           <div ng-if="def.type === 'bool'">
             <div class="btn-group" style="margin-bottom: 10px; clear: both;">
-              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="">No Value</label>
               <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="true">True</label>
               <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="false">False</label>
             </div>
@@ -32,9 +31,7 @@
           </div>
 
           <div ng-if="def.type === 'option'">
-            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]">
-              <option value="" label="No Value"></option>
-            </select>
+            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]"/>
           </div>
         </div>
       </div>

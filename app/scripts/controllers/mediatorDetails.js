@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('MediatorDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('MediatorDetailsCtrl', function ($rootScope, $scope, $modal, $location, $routeParams, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -24,6 +24,8 @@ angular.module('openhimConsoleApp')
     Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError);
 
     $scope.editMediatorConfig = function() {
+      Alerting.AlertReset();
+
       $modal.open({
         templateUrl: 'views/mediatorConfigModal.html',
         controller: 'MediatorConfigModalCtrl',
