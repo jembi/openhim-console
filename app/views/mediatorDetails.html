@@ -37,6 +37,17 @@
               <td>{{mediatorDetails.version}}</td>
             </tr>
             <tr>
+              <td><strong>Last Heartbeat: </strong></td>
+              <td title="{{mediatorDetails.lastHeartbeatDisplay}}">
+                <span ng-if="mediatorDetails.lastHeartbeatStatus === 'never'" class="label label-default">Never</span>
+                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}">{{mediatorDetails._lastHeartbeat | date:'yyyy-MM-dd HH:mm'}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Uptime at last heartbeat: </strong></td>
+              <td>{{mediatorDetails.uptimeDisplay}}</td>
+            </tr>
+            <tr>
               <td><strong>Endpoints: </strong></td>
               <td style="padding: 0px;">
                 
@@ -70,7 +81,7 @@
                     <td style="width: 75%">{{v}}</td>
                   </tr>
                 </table>
-                <button class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
+                <button ng-hide="!mediatorDetails.configDefs" class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
               </td>
             </tr>            
           </table>

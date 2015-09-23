@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('MediatorDetailsCtrl', function ($rootScope, $scope, $modal, $location, $routeParams, Api, Alerting) {
+  .controller('MediatorDetailsCtrl', function ($rootScope, $scope, $modal, $location, $routeParams, Api, Alerting, MediatorDisplay) {
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
 
     var querySuccess = function(mediatorDetails){
+      MediatorDisplay.formatMediator(mediatorDetails);
       $scope.mediatorDetails = mediatorDetails;
     };
 

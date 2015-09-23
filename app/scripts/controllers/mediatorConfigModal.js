@@ -6,7 +6,7 @@ angular.module('openhimConsoleApp')
     $scope.mediator = Api.Mediators.get({ urn: mediator.urn });
     
     var success = function () {
-      Alerting.AlertAddMsg('top', 'success', 'The mediator config was updated successfully');
+      Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully');
       notifyUser();
     };
 
