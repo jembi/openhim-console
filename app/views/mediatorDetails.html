@@ -81,7 +81,7 @@
                     <td style="width: 75%">{{v}}</td>
                   </tr>
                 </table>
-                <button ng-hide="!mediatorDetails.configDefs" class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
+                <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
               </td>
             </tr>            
           </table>
