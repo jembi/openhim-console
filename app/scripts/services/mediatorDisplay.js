@@ -16,8 +16,10 @@ angular.module('openhimConsoleApp')
           mediator.lastHeartbeatStatus = 'success';
         } else if (secondsDiffNow() < config.mediatorLastHeartbeatDangerSeconds) {
           mediator.lastHeartbeatStatus = 'warning';
+          mediator.lastHeartbeatDisplayExplain = 'No heartbeats received in over ' + config.mediatorLastHeartbeatWarningSeconds + ' s';
         } else {
           mediator.lastHeartbeatStatus = 'danger';
+          mediator.lastHeartbeatDisplayExplain = 'No heartbeats received in over ' + config.mediatorLastHeartbeatDangerSeconds + ' s';
         }
         mediator.lastHeartbeatDisplay = moment(mediator._lastHeartbeat).fromNow();
       }

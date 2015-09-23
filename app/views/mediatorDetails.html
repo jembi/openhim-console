@@ -40,7 +40,7 @@
               <td><strong>Last Heartbeat: </strong></td>
               <td title="{{mediatorDetails.lastHeartbeatDisplay}}">
                 <span ng-if="mediatorDetails.lastHeartbeatStatus === 'never'" class="label label-default">Never</span>
-                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}">{{mediatorDetails._lastHeartbeat | date:'yyyy-MM-dd HH:mm'}}</span>
+                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}" title="{{mediatorDetails.lastHeartbeatDisplayExplain}}">{{mediatorDetails.lastHeartbeatDisplay}}</span>
               </td>
             </tr>
             <tr>
@@ -69,7 +69,10 @@
               </td>
             </tr>
             <tr>            
-              <td><strong>Configuration: </strong></td>
+              <td>
+                <strong>Configuration </strong>
+                <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-info btn-xs" ng-click="editMediatorConfig()" title="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
+              </td>
               <td>
                 <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
                   <tr>
@@ -81,7 +84,7 @@
                     <td style="width: 75%">{{v}}</td>
                   </tr>
                 </table>
-                <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-warning btn-xs" ng-click="editMediatorConfig()"><i class="glyphicon glyphicon-pencil"></i></button>
+                
               </td>
             </tr>            
           </table>

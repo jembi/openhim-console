@@ -86,5 +86,19 @@ angular.module('openhimConsoleApp')
     /***********************************/
     /**   Delete Mediator Functions   **/
     /***********************************/
+
+    $scope.editMediatorConfig = function(mediator) {
+      Alerting.AlertReset();
+
+      $modal.open({
+        templateUrl: 'views/mediatorConfigModal.html',
+        controller: 'MediatorConfigModalCtrl',
+        resolve: {
+          mediator: function () {
+            return mediator;
+          }
+        }
+      });
+    };
     
   });
