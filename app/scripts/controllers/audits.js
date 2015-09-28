@@ -392,6 +392,8 @@ angular.module('openhimConsoleApp')
       var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
       var path = 'audits';
       window.location = baseUrl + path;
+
+      $scope.refreshAuditsList();
     };
 
     /*************************************************************/
