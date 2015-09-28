@@ -43,8 +43,10 @@
                   <td data-title="Description">{{ mediator.description }}</td>
                   <td data-title="Version">{{ mediator.version }}</td>
                   <td data-title="LastHeartbeat">
-                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" class="label label-default" tooltip="{{mediator.lastHeartbeatDisplayExplain}}">Never</span>
-                    <span ng-if="mediator.lastHeartbeatStatus !== 'never'" class="label label-{{mediator.lastHeartbeatStatus}}" tooltip="{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
+                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" tooltip="{{mediator.lastHeartbeatDisplayExplain}}" class="label label-default">Never</span>
+                    <span ng-if="mediator.lastHeartbeatStatus !== 'never'" class="label label-{{mediator.lastHeartbeatStatus}}" tooltip-html-unsafe="{{mediator._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
+                    <div>
+                    </div>
                   </td>
                   <td data-title="Uptime"><span tooltip="{{mediator._uptime}} s">{{ mediator.uptimeDisplay }}</span></td>
                   <td>

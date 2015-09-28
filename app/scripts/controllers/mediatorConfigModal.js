@@ -3,10 +3,12 @@
 angular.module('openhimConsoleApp')
   .controller('MediatorConfigModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, mediator) {
 
-    $scope.mediator = Api.Mediators.get({ urn: mediator.urn });
-    if (!$scope.mediator.config) {
-      $scope.mediator.config = {};
-    }
+    $scope.mediator = Api.Mediators.get({ urn: mediator.urn }, function(){
+      if (!$scope.mediator.config) {
+        $scope.mediator.config = {};
+        console.log("here");
+      }
+    });
     
     var success = function () {
       Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully');

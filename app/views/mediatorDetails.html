@@ -40,7 +40,7 @@
               <td><strong>Last Heartbeat: </strong></td>
               <td>
                 <span ng-if="mediatorDetails.lastHeartbeatStatus === 'never'" class="label label-default" tooltip="{{mediatorDetails.lastHeartbeatDisplayExplain}}">Never</span>
-                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}" tooltip="{{mediatorDetails.lastHeartbeatDisplayExplain}}">{{mediatorDetails.lastHeartbeatDisplay}}</span>
+                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}" tooltip-html-unsafe="{{mediatorDetails._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediatorDetails.lastHeartbeatDisplayExplain}}">{{mediatorDetails.lastHeartbeatDisplay}}</span>
               </td>
             </tr>
             <tr>
