@@ -6,7 +6,6 @@ angular.module('openhimConsoleApp')
     $scope.mediator = Api.Mediators.get({ urn: mediator.urn }, function(){
       if (!$scope.mediator.config) {
         $scope.mediator.config = {};
-        console.log("here");
       }
     });
     
