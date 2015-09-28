@@ -43,12 +43,12 @@
                   <td data-title="Description">{{ mediator.description }}</td>
                   <td data-title="Version">{{ mediator.version }}</td>
                   <td data-title="LastHeartbeat">
-                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" class="label label-default">Never</span>
-                    <span ng-if="mediator.lastHeartbeatStatus !== 'never'" class="label label-{{mediator.lastHeartbeatStatus}}" title="{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
+                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" class="label label-default" tooltip="{{mediator.lastHeartbeatDisplayExplain}}">Never</span>
+                    <span ng-if="mediator.lastHeartbeatStatus !== 'never'" class="label label-{{mediator.lastHeartbeatStatus}}" tooltip="{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
                   </td>
-                  <td data-title="Uptime">{{ mediator.uptimeDisplay }}</td>
+                  <td data-title="Uptime"><span tooltip="{{mediator._uptime}} s">{{ mediator.uptimeDisplay }}</span></td>
                   <td>
-                    <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)" title="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
+                    <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
                     <button class="btn btn-danger btn-xs" ng-click="confirmDelete(mediator)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>

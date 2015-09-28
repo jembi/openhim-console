@@ -10,7 +10,11 @@ describe('Controller: MediatorDetailsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function(){
     module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+      $provide.constant('config', {
+        'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy',
+        'mediatorLastHeartbeatWarningSeconds': 60,
+        'mediatorLastHeartbeatDangerSeconds': 120
+      });
     });
   });
 
@@ -35,7 +39,9 @@ describe('Controller: MediatorDetailsCtrl', function () {
             'type': 'http'
           }
         ],
-        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
+        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
+        '_lastHeartbeat': new Date(),
+        '_uptime': 3600
       });
 
     modalSpy = sinon.spy($modal, 'open');
@@ -64,6 +70,20 @@ describe('Controller: MediatorDetailsCtrl', function () {
     scope.mediatorDetails.endpoints[0].port.should.equal('1111');
     scope.mediatorDetails.endpoints[0].primary.should.equal(true);
     scope.mediatorDetails.endpoints[0].type.should.equal('http');
+  });
+
+  it('should calculate the lastHeartbeatStatus field based on the last heartbeat', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.mediatorDetails.lastHeartbeatStatus.should.equal('success');
+  });
+
+  it('should set the uptimeDisplay field with a human friendly display string', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.mediatorDetails.uptimeDisplay.should.equal('an hour');
   });
 
 });

@@ -16,7 +16,7 @@
         <div class="form-group" style="float: right;">
 
           <div ng-if="def.type === 'string'">
-            <textarea class="form-control" rows="1" ng-model="mediator.config[def.param]" ng-trim="false"></textarea>
+            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update">
           </div>
 
           <div ng-if="def.type === 'bool'">
