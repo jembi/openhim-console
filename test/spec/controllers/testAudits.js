@@ -15,7 +15,7 @@ describe('Controller: AuditsCtrl', function () {
     });
   });
 
-  var scope, createController, httpBackend, modalSpy;
+  var scope, createController, httpBackend, modalSpy, auditsEndpoint;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -30,7 +30,8 @@ describe('Controller: AuditsCtrl', function () {
       'auditSourceID':['openhim']}
     );
 
-    $httpBackend.when('GET', new RegExp('.*/audits')).respond([
+    auditsEndpoint = $httpBackend.when('GET', new RegExp('.*/audits'));
+    auditsEndpoint.respond([
       {
         'rawMessage': 'This will be the raw ATNA message that gets received to be used as a backup reference',
         'eventIdentification': {
@@ -89,6 +90,8 @@ describe('Controller: AuditsCtrl', function () {
         ]
       }
     ]);
+
+    $httpBackend.when('GET', new RegExp('.*/visualizer/sync')).respond({ 'now': Date.now() });
 
     modalSpy = sinon.spy($modal, 'open');
 
@@ -163,6 +166,30 @@ describe('Controller: AuditsCtrl', function () {
     // url params string that gets used to reload the audits URL with selected paramaters
     urlParams.should.equal('&limit=10&dateStart='+moment(startDate).format()+'&dateEnd='+moment(endDate).endOf('day').format()+'&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
     
+  });
+
+  it('should prepend new audits to the scope', function () {
+    createController();
+    httpBackend.flush();
+
+    var originalLength = scope.audits.length;
+
+    auditsEndpoint.respond([
+      {
+        'eventIdentification': {
+          'eventDateTime': new Date(),
+          'eventOutcomeIndicator': '0',
+        },
+        'auditSourceIdentification': { 'auditSourceID': 'test2' },
+        'rawMessage': 'auto-added'
+      }
+    ]);
+
+    scope.pollForLatest();
+    httpBackend.flush();
+
+    scope.audits.length.should.equal(originalLength + 1);
+    scope.audits[0].rawMessage.should.equal('auto-added');
   });
 
 });
