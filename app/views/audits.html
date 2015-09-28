@@ -25,12 +25,22 @@
                 <tab-heading>List Settings</tab-heading>
                 <div class="settings_div">
                   <label class="float-left">
-                    Transaction View
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign"></i>
+                    Audit View
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether an audit opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign"></i>
                   </label>
                   <div class="btn-group float-left clear-both">
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'new'">New Tab</label>
+                  </div>
+                </div>
+                <div class="settings_div">
+                  <label style="float: left">
+                    Auto-Update Audit List
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the audit list will be updated automatically whenever new audit come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                  </label>
+                  <div class="btn-group" style="float: left; clear: both;">
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="false" ng-click="stopPolling()">Disabled</label>
                   </div>
                 </div>
               </tab>
@@ -52,8 +62,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="table-list" ng-repeat="audit in audits" ng-click='viewAuditDetails("audits/" + audit._id, $event)'>
-                  <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
+                <tr class="table-list" ng-repeat="audit in audits" ng-class="{transactionsNew: baseIndex + $index < 0}" ng-click='viewAuditDetails("audits/" + audit._id, $event)'>
+                  <td data-title="# {{ baseIndex + $index +1 }}" class="responsiveTransactionIndexCheckbox">
+                    <span ng-if="baseIndex + $index < 0">-</span>
+                    <span ng-if="baseIndex + $index >= 0">{{ baseIndex + $index +1 }}</span>
+                  </td>
                   <td data-title="Event Action / Outcome">{{ eventActionMap[audit.eventIdentification.eventActionCode] }} / {{ eventOutcomeMap[audit.eventIdentification.eventOutcomeIndicator] }}</td>
                   <td data-title="Event Type">{{ audit.eventIdentification.eventTypeCode.code }} ( {{audit.eventIdentification.eventTypeCode.codeSystemName}} ) - {{audit.eventIdentification.eventTypeCode.displayName}}</td>
                   <td data-title="Event ID">{{ audit.eventIdentification.eventID.code }} ( {{audit.eventIdentification.eventID.codeSystemName}} ) - {{audit.eventIdentification.eventID.displayName}}</td>
@@ -78,7 +91,7 @@
               <!-- Server Alerts -->
 
               <div class="transactionsButtonsDiv" ng-show="audits.length > 0">
-                <button id="loadMoreBtn" class="btn btn-primary" ng-click="loadMoreAudits();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+                <button id="loadMoreBtn" class="btn btn-primary loadMoreBtn" ng-click="loadMoreAudits();"><i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
               </div>                        
             </div>
           </div>
