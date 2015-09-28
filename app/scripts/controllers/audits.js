@@ -4,13 +4,23 @@
 /* global valueNotEmpty:false */
 
 angular.module('openhimConsoleApp')
-  .controller('AuditsCtrl', function ($scope, $modal, $location, Api, Alerting, AuditLookups) {
+  .controller('AuditsCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, AuditLookups) {
 
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
     $scope.isCollapsed = true;
+
+    // remember when we loaded the page...
+    var pageLoadDate = moment();
+
+    //polling
+    var lastUpdated;
+    var serverDiffTime = 0;
+    $scope.baseIndex = 0;
+    var pollPeriod = 5000;
+
 
     Api.AuditsFilterOptions.get(function(auditsFilterOptions){
       $scope.auditsFilterOptions = auditsFilterOptions;
@@ -39,6 +49,7 @@ angular.module('openhimConsoleApp')
       if ( $location.search().dateEnd ){ $scope.settings.filter.dateEnd = $location.search().dateEnd; }else{ $scope.settings.filter.dateEnd = ''; }
       $scope.settings.list = {};
       $scope.settings.list.tabview = 'same';
+      $scope.settings.list.autoupdate = true;
 
 
       $scope.filters = {};
@@ -344,7 +355,16 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
 
       $scope.showpage++;
-      Api.Audits.query( $scope.returnFilters('filtersObject'), loadMoreSuccess, loadMoreError);
+
+      var filters = $scope.returnFilters('filtersObject');
+
+      if (!filters.filters['eventIdentification.eventDateTime']) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new transactions come in, breaking the pages
+        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
+      }
+
+      Api.Audits.query( filters, loadMoreSuccess, loadMoreError);
     };
 
     var loadMoreSuccess = function (audits){
@@ -399,6 +419,63 @@ angular.module('openhimConsoleApp')
     /*************************************************************/
     /**         Audits List and Detail view functions           **/
     /*************************************************************/
+
+    /****************************************************/
+    /**         Poll for latest audits                 **/
+    /****************************************************/
+
+    var pollingInterval;
+
+    $scope.pollForLatest = function() {
+      var filters = $scope.returnFilters('filtersObject');
+
+      if (!filters.filters['eventIdentification.eventDateTime']) {
+        //only poll for latest if date filters are OFF
+
+        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
+        lastUpdated = moment() - serverDiffTime;
+
+        delete filters.filterPage;
+        delete filters.filterLimit;
+
+        Api.Audits.query(filters, function(audits) {
+          audits.forEach(function(audit) {
+            $scope.audits.unshift(audit);
+            $scope.baseIndex--;
+          });
+        });
+      }
+    };
+
+    $scope.startPolling = function() {
+      if (!pollingInterval) {
+        pollingInterval = $interval( function() {
+          $scope.pollForLatest();
+        }, pollPeriod);
+      }
+    };
+
+    $scope.stopPolling = function() {
+      if (angular.isDefined(pollingInterval)) {
+        $interval.cancel(pollingInterval);
+        pollingInterval = undefined;
+      }
+    };
+
+    //sync time with server
+    Api.VisualizerSync.get(function (startVisualizer) {
+      serverDiffTime = moment() - moment(startVisualizer.now);
+      lastUpdated = moment() - serverDiffTime;
+      if ($scope.settings.list.autoupdate) {
+        $scope.startPolling();
+      }
+    });
+
+    $scope.$on('$destroy', $scope.stopPolling);
+
+    /****************************************************/
+    /**         Poll for latest transactions           **/
+    /****************************************************/
 
 
   });
