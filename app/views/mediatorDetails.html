@@ -14,7 +14,7 @@
         </div>
 
         <!-- Server Alerts -->
-        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
 
         <div class="panel-body" ng-show="mediatorDetails">
@@ -37,6 +37,17 @@
               <td>{{mediatorDetails.version}}</td>
             </tr>
             <tr>
+              <td><strong>Last Heartbeat: </strong></td>
+              <td>
+                <span ng-if="mediatorDetails.lastHeartbeatStatus === 'never'" class="label label-default" tooltip="{{mediatorDetails.lastHeartbeatDisplayExplain}}">Never</span>
+                <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'" class="label label-{{mediatorDetails.lastHeartbeatStatus}}" tooltip-html-unsafe="{{mediatorDetails._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediatorDetails.lastHeartbeatDisplayExplain}}">{{mediatorDetails.lastHeartbeatDisplay}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Uptime at last heartbeat: </strong></td>
+              <td><span ng-if="mediatorDetails._uptime" tooltip="{{mediatorDetails._uptime}} s">{{mediatorDetails.uptimeDisplay}}</td>
+            </tr>
+            <tr>
               <td><strong>Endpoints: </strong></td>
               <td style="padding: 0px;">
                 
@@ -55,6 +66,25 @@
                   </tr>
                 </table>
 
+              </td>
+            </tr>
+            <tr>            
+              <td>
+                <strong>Configuration </strong>
+                <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-info btn-xs" ng-click="editMediatorConfig()" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
+              </td>
+              <td>
+                <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
+                  <tr>
+                    <th style="border-top: 0px">Setting: </th>
+                    <th style="border-top: 0px">Value: </th>
+                  </tr>
+                  <tr ng-repeat="(k, v) in mediatorDetails.config">
+                    <td style="width: 25%"><strong>{{k}}</strong></td>
+                    <td style="width: 75%">{{v}}</td>
+                  </tr>
+                </table>
+                
               </td>
             </tr>            
           </table>

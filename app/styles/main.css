@@ -741,7 +741,7 @@ body {
 .load-metrics-line-graph { width: 49%; float: left; }
 .response-time-metrics-line-graph { width: 49%; float: right; }
 
-.label-primary, .label-success, .label-warning, .label-danger, .label-info { font-size: 12px; }
+.label-primary, .label-success, .label-warning, .label-danger, .label-info, .label-default { font-size: 12px; }
 .progress { margin: 0px; width: 90%; }
 
 #transaction-status-graph:hover { cursor: pointer; }

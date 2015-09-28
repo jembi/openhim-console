@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting) {
+  .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting, MediatorDisplay) {
 
 
     /******************************************************************/
@@ -12,6 +12,8 @@ angular.module('openhimConsoleApp')
       $scope.mediators = mediators;
       if( mediators.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no mediators created');
+      } else {
+        MediatorDisplay.formatMediators(mediators);
       }
     };
 
@@ -84,5 +86,19 @@ angular.module('openhimConsoleApp')
     /***********************************/
     /**   Delete Mediator Functions   **/
     /***********************************/
+
+    $scope.editMediatorConfig = function(mediator) {
+      Alerting.AlertReset();
+
+      $modal.open({
+        templateUrl: 'views/mediatorConfigModal.html',
+        controller: 'MediatorConfigModalCtrl',
+        resolve: {
+          mediator: function () {
+            return mediator;
+          }
+        }
+      });
+    };
     
   });

@@ -1,6 +1,7 @@
 'use strict';
 /* jshint expr: true */
 /* global sinon: false */
+/* global moment: false */
 
 describe('Controller: MediatorsCtrl', function () {
 
@@ -10,7 +11,11 @@ describe('Controller: MediatorsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function(){
     module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+      $provide.constant('config', {
+        'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy',
+        'mediatorLastHeartbeatWarningSeconds': 60,
+        'mediatorLastHeartbeatDangerSeconds': 120
+      });
     });
   });
 
@@ -36,7 +41,9 @@ describe('Controller: MediatorsCtrl', function () {
             'type': 'http'
           }
         ],
-        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
+        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
+        '_lastHeartbeat': new Date(),
+        '_uptime': 3600
       },
       {
         'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
@@ -52,7 +59,9 @@ describe('Controller: MediatorsCtrl', function () {
             'type': 'http'
           }
         ],
-        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
+        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }],
+        '_lastHeartbeat': moment().subtract(3, 'minutes').toDate(),
+        '_uptime': 5443200 //over 2 months
       }
     ]);
 
@@ -88,4 +97,19 @@ describe('Controller: MediatorsCtrl', function () {
     scope.mediators[1].endpoints.length.should.equal(2);
   });
 
+  it('should calculate the lastHeartbeatStatus field based on the last heartbeat', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.mediators[0].lastHeartbeatStatus.should.equal('success');
+    scope.mediators[1].lastHeartbeatStatus.should.equal('danger');
+  });
+
+  it('should set the uptimeDisplay field with a human friendly display string', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.mediators[0].uptimeDisplay.should.equal('an hour');
+    scope.mediators[1].uptimeDisplay.should.equal('2 months');
+  });
 });
