@@ -45,7 +45,7 @@
             </tr>
             <tr>
               <td><strong>Uptime at last heartbeat: </strong></td>
-              <td><span ng-if="mediatorDetails._uptime" tooltip="{{mediatorDetails._uptime}} s">{{mediatorDetails.uptimeDisplay}}</td>
+              <td><span ng-if="mediatorDetails._uptime" tooltip-html-unsafe="Startup time<br>{{mediatorDetails.uptimeSince | date:'yyyy-MM-dd HH:mm:ss'}}">{{mediatorDetails.uptimeDisplay}}</span></td>
             </tr>
             <tr>
               <td><strong>Endpoints: </strong></td>

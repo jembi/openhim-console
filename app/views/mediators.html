@@ -48,7 +48,7 @@
                     <div>
                     </div>
                   </td>
-                  <td data-title="Uptime"><span tooltip="{{mediator._uptime}} s">{{ mediator.uptimeDisplay }}</span></td>
+                  <td data-title="Uptime"><span ng-if="mediator._uptime" tooltip-html-unsafe="Startup time<br>{{mediator.uptimeSince | date:'yyyy-MM-dd HH:mm:ss'}}">{{ mediator.uptimeDisplay }}</td>
                   <td>
                     <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
                     <button class="btn btn-danger btn-xs" ng-click="confirmDelete(mediator)"><i class="glyphicon glyphicon-remove"></i></button>
