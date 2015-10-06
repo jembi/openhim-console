@@ -9,11 +9,13 @@ angular.module('openhimConsoleApp')
 
     var createParamDefMap = function (mediator) {
       var map = {};
-      Object.keys(mediator.config).map(function (param) {
-        map[param] = mediator.configDefs.filter(function (def) {
-          return def.param === param;
-        })[0];
-      });
+      if (mediator.config) {
+        Object.keys(mediator.config).map(function (param) {
+          map[param] = mediator.configDefs.filter(function (def) {
+            return def.param === param;
+          })[0];
+        });
+      }
       return map;
     };
 
@@ -21,7 +23,6 @@ angular.module('openhimConsoleApp')
       MediatorDisplay.formatMediator(mediatorDetails);
       $scope.mediatorDetails = mediatorDetails;
       $scope.mediatorDefsMap = createParamDefMap(mediatorDetails);
-      console.log($scope.mediatorDefsMap);
     };
 
     var queryError = function(err){
