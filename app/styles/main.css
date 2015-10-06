@@ -504,8 +504,8 @@ body {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6887c4), color-stop(100%,#4566a9));
   background: -webkit-linear-gradient(top, #6887c4 0%,#4566a9 100%);
   background: -o-linear-gradient(top, #6887c4 0%,#4566a9 100%);
-  background: -ms-linear-gradient(top, #6887c4 0%,#4566a9 100%); 
-  background: linear-gradient(to bottom, #6887c4 0%,#4566a9 100%); 
+  background: -ms-linear-gradient(top, #6887c4 0%,#4566a9 100%);
+  background: linear-gradient(to bottom, #6887c4 0%,#4566a9 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6887c4', endColorstr='#4566a9',GradientType=0 );
   border: 1px solid #3B4868;
     border-radius: 3px 3px 3px 3px;
@@ -522,8 +522,8 @@ body {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6887c4), color-stop(100%,#5773AC));
   background: -webkit-linear-gradient(top, #6887c4 0%,#5773AC 100%);
   background: -o-linear-gradient(top, #6887c4 0%,#5773AC 100%);
-  background: -ms-linear-gradient(top, #6887c4 0%,#5773AC 100%); 
-  background: linear-gradient(to bottom, #6887c4 0%,#5773AC 100%); 
+  background: -ms-linear-gradient(top, #6887c4 0%,#5773AC 100%);
+  background: linear-gradient(to bottom, #6887c4 0%,#5773AC 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6887c4', endColorstr='#5773AC',GradientType=0 );
 }
 .login-wrapper .box .social a.face_login span.face_icon{
@@ -653,9 +653,9 @@ body {
 }
 
 .transactionsCheckboxTD label{
-  margin: 0px; 
-  line-height: 0px; 
-  padding: 10px; 
+  margin: 0px;
+  line-height: 0px;
+  padding: 10px;
   float: left;
 }
 
@@ -664,12 +664,12 @@ body {
 }
 
 .transactionsButtonsDiv{
-  display: inline-block; 
-  width: 100%; 
+  display: inline-block;
+  width: 100%;
 }
 
 .transactionsAlerts{
-  clear: both; 
+  clear: both;
   margin-bottom: 20px;
 }
 
@@ -696,8 +696,8 @@ body {
 .has-error-tab a { color: #a94442 !important; border-left-color: #a94442 !important; border-top-color: #a94442 !important; border-right-color: #a94442 !important; }
 .has-error-tab i { display: block !important; position: absolute; top: 10px; left: 10px; }
 
-.btn-group .btn-primary:hover { text-decoration: underline } 
-.btn-group .btn-primary.active { text-decoration: underline } 
+.btn-group .btn-primary:hover { text-decoration: underline }
+.btn-group .btn-primary.active { text-decoration: underline }
 
 .table-list:hover td{ cursor: pointer; color: #fff; background-color: #428BCA !important; }
 
@@ -735,8 +735,8 @@ body {
 .channelAlertUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 20px; }
 .groupUserDropDown { float: left; width: auto; margin-right: 20px; margin-bottom: 5px; }
 
-.reload-metrics-btn { margin: 5px; } 
-.reload-metrics-btn:hover { cursor: pointer; } 
+.reload-metrics-btn { margin: 5px; }
+.reload-metrics-btn:hover { cursor: pointer; }
 
 .load-metrics-line-graph { width: 49%; float: left; }
 .response-time-metrics-line-graph { width: 49%; float: right; }
@@ -833,10 +833,10 @@ body {
     width: 70px;
 }
 .drop-box {
-    width: 100%; 
-    height: auto; 
-    padding: 30px; 
-    margin: 0px; 
+    width: 100%;
+    height: auto;
+    padding: 30px;
+    margin: 0px;
     font-size: 18px;
     background: #F8F8F8;
     border: 5px dashed #DDD;
@@ -988,7 +988,7 @@ body {
 
    .header{
       height:auto;
-   }  
+   }
    .header .logo{
       text-align:center;
    }
@@ -1000,7 +1000,7 @@ body {
       width:100%;
       float:none;
       position:relative;
-   }  
+   }
    .mainy{
       margin-left: 0px;
    }
@@ -1020,11 +1020,11 @@ body {
       border-bottom:0px;
       box-shadow:0px 0px 1px #0fa6bc;
       border-radius:10px;
-   }  
+   }
 
    .login-wrapper {
       width: 50%;
-    } 
+    }
 }
 
 /* Tablets */
@@ -1063,19 +1063,19 @@ body {
     .endpoints_div { width: 100% !important; float: left; margin: 0px; }
 
     /* Force table to not be like tables anymore */
-    #no-more-tables table, 
-    #no-more-tables thead, 
-    #no-more-tables tbody, 
-    #no-more-tables th, 
-    #no-more-tables td, 
-    #no-more-tables tr { 
-        display: block; 
+    #no-more-tables table,
+    #no-more-tables thead,
+    #no-more-tables tbody,
+    #no-more-tables th,
+    #no-more-tables td,
+    #no-more-tables tr {
+        display: block;
     }
     #counter {
         display: none;
     }
     /* Hide table headers (but not display: none;, for accessibility) */
-    #no-more-tables thead tr { 
+    #no-more-tables thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
@@ -1083,12 +1083,12 @@ body {
 
     #no-more-tables tr { border: 1px solid #ccc; }
 
-    #no-more-tables td { 
+    #no-more-tables td {
         /* Behave  like a "row" */
         border: none;
-        border-bottom: 1px solid #eee; 
+        border-bottom: 1px solid #eee;
         position: relative;
-        padding: 8px 8px 8px 50%; 
+        padding: 8px 8px 8px 50%;
         white-space: normal;
         text-align:left;
         width: 100%;
@@ -1096,14 +1096,14 @@ body {
         line-height: 10px;
     }
 
-    #no-more-tables td:before { 
+    #no-more-tables td:before {
         /* Now like a table header */
         position: absolute;
         /* Top/left values mimic padding */
         top: 8px;
         left: 8px;
-        width: 45%; 
-        padding-right: 10px; 
+        width: 45%;
+        padding-right: 10px;
         white-space: nowrap;
         text-align:left;
         font-weight: bold;
@@ -1124,7 +1124,7 @@ body {
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
     #no-more-tables table tr th, #no-more-tables table tr td { max-width: none; line-height: 12px; }
 
-    .transactionsCheckboxTD { padding: 0px !important; }    
+    .transactionsCheckboxTD { padding: 0px !important; }
     .transactionsCheckboxTD label { padding: 0px; }
     .responsiveTransactionIndexCheckbox span { display: none; }
     .responsiveTransactionIndexCheckbox label { display: block; margin: 0; text-align: right; padding: 5px; }
@@ -1198,12 +1198,12 @@ footer a {
 }
 
 .btn-primary {
-  background-color: #036633; 
+  background-color: #036633;
   border-color: #028A3B;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
-  background-color: #028A3B; 
+  background-color: #028A3B;
   border-color: #036633;
 }
 
@@ -1212,7 +1212,7 @@ footer a {
 }
 
 .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
-  background-color: #036633; 
+  background-color: #036633;
   border-color: #028A3B;
 }
 
@@ -1269,7 +1269,6 @@ footer{ box-shadow: none; }
 
 select:hover { cursor: pointer; }
 label { position: relative; }
-.glyphicon-question-sign{ color: #333333; font-size: 15px; position: absolute; right: -25px; top: 0px; }
 .glyphicon-question-sign:hover{ cursor: pointer; }
 .tooltip-inner{ min-width: 200px !important; }
 

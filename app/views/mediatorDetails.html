@@ -50,7 +50,7 @@
             <tr>
               <td><strong>Endpoints: </strong></td>
               <td style="padding: 0px;">
-                
+
                 <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
                   <tr>
                     <th style="border-top: 0px">Name: </th>
@@ -68,28 +68,33 @@
 
               </td>
             </tr>
-            <tr>            
+            <tr>
               <td>
                 <strong>Configuration </strong>
                 <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-info btn-xs" ng-click="editMediatorConfig()" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
               </td>
               <td>
+
                 <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
                   <tr>
                     <th style="border-top: 0px">Setting: </th>
                     <th style="border-top: 0px">Value: </th>
                   </tr>
                   <tr ng-repeat="(k, v) in mediatorDetails.config">
-                    <td style="width: 25%"><strong>{{k}}</strong></td>
+                    <td style="width: 25%">
+                      <strong>
+                        <span ng-if="mediatorDefsMap[k].displayName">{{mediatorDefsMap[k].displayName}}</span>
+                        <span ng-if="!mediatorDefsMap[k].displayName">{{k}}</span>
+                      </strong>
+                      <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
+                    </td>
                     <td style="width: 75%">{{v}}</td>
                   </tr>
                 </table>
-                
-              </td>
-            </tr>            
-          </table>
 
-          
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>

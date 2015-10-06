@@ -11,7 +11,9 @@
 
       <div class="form-group-2columns" ng-repeat="def in mediator.configDefs">
         <div class="form-group" style="float: left;">
-          <label>{{def.param}}</label>
+          <label ng-if="def.displayName">{{def.displayName}}</label>
+          <label ng-if="!def.displayName">{{def.param}}</label>
+          <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </div>
         <div class="form-group" style="float: right;">
 
