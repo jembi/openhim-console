@@ -28,6 +28,7 @@ angular.module('openhimConsoleApp')
       if (mediator._uptime) {
         //generate human-friendly display string, e.g. 4 days
         mediator.uptimeDisplay = moment().subtract(mediator._uptime, 'seconds').fromNow(true);
+        mediator.uptimeSince = moment(mediator._lastHeartbeat).subtract(mediator._uptime, 'seconds').toDate();
       }
     };
 
