@@ -7,15 +7,29 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    var createParamDefMap = function (mediator) {
+      var map = {};
+      if (mediator.config) {
+        Object.keys(mediator.config).map(function (param) {
+          map[param] = mediator.configDefs.filter(function (def) {
+            return def.param === param;
+          })[0];
+        });
+      }
+      return map;
+    };
+
     var querySuccess = function(mediatorDetails){
       MediatorDisplay.formatMediator(mediatorDetails);
       $scope.mediatorDetails = mediatorDetails;
+      $scope.mediatorDefsMap = createParamDefMap(mediatorDetails);
     };
 
     var queryError = function(err){
       // on error - add server error alert
       Alerting.AlertAddServerMsg(err.status);
     };
+
 
     $scope.$on('mediatorConfigChanged', function () {
       Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError);

@@ -18,7 +18,7 @@
   <div class="addUrlRegexDelimiterDiv">
     <label>
       <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
-      <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign" style="font-size: 12px"></i>
     </label>
   </div>
   <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
@@ -71,8 +71,8 @@
     <div class="btn-group">
       <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'private'">Private</label>
       <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'public'">Public</label>
-    </div>  
-  </div>  
+    </div>
+  </div>
 </div>
 <div class="form-group">
   <label>

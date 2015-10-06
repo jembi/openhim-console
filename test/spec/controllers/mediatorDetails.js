@@ -20,29 +20,31 @@ describe('Controller: MediatorDetailsCtrl', function () {
 
   var scope, createController, httpBackend, modalSpy;
 
+  var testMediator = {
+    'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+    'version': '0.0.1',
+    'name': 'Test 1 Mediator',
+    'description': 'Test 1 Description',
+    'defaultChannelConfig': [
+      {
+        'name': 'Mediator Channel 1',
+        'urlPattern': '/channel1',
+        'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
+        'allow': [ 'xdlab' ],
+        'type': 'http'
+      }
+    ],
+    'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
+    '_lastHeartbeat': new Date(),
+    '_uptime': 3600
+  };
+
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond({
-        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
-        'version': '0.0.1',
-        'name': 'Test 1 Mediator',
-        'description': 'Test 1 Description',
-        'defaultChannelConfig': [
-          {
-            'name': 'Mediator Channel 1',
-            'urlPattern': '/channel1',
-            'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
-            'allow': [ 'xdlab' ],
-            'type': 'http'
-          }
-        ],
-        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
-        '_lastHeartbeat': new Date(),
-        '_uptime': 3600
-      });
+    $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond(testMediator);
 
     modalSpy = sinon.spy($modal, 'open');
 
@@ -84,6 +86,36 @@ describe('Controller: MediatorDetailsCtrl', function () {
     httpBackend.flush();
 
     scope.mediatorDetails.uptimeDisplay.should.equal('an hour');
+  });
+
+  it('should construct a config def map by parameter', function () {
+    testMediator.configDefs = [ {
+      displayName: 'Param 1',
+      description: 'Param 1 description',
+      param: 'param1',
+      type: 'string'
+    } ];
+
+    testMediator.config = {
+      param1: 'val1'
+    };
+
+    createController();
+    httpBackend.flush();
+
+    delete testMediator.config;
+    delete testMediator.configDefs;
+
+    scope.mediatorDefsMap.param1.displayName.should.be.equal('Param 1');
+    scope.mediatorDefsMap.param1.description.should.be.equal('Param 1 description');
+  });
+
+  it('should create an empty map if the mediator has not configDefs', function () {
+    createController();
+    httpBackend.flush();
+
+    // empty object test
+    expect(Object.getOwnPropertyNames(scope.mediatorDefsMap).length).to.be.equal(0);
   });
 
 });
