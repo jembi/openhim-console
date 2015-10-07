@@ -5,6 +5,11 @@
     Edit mediator configuration
   </h4>
 </div>
+<div ng-if="!mediator.configDefs || mediator.configDefs.length === 0" class="med-no-config">
+  <center>
+    <span>This mediator has does not have any config options that can be specified here.</span>
+  </center>
+</div>
 <form name="form" novalidate>
   <div class="modal-body">
     <fieldset>
@@ -18,7 +23,11 @@
         <div class="form-group" style="float: right;">
 
           <div ng-if="def.type === 'string'">
-            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update">
+            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update" />
+          </div>
+
+          <div ng-if="def.type === 'bigstring'">
+            <textarea rows="4" class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update" />
           </div>
 
           <div ng-if="def.type === 'bool'">
@@ -29,7 +38,7 @@
           </div>
 
           <div ng-if="def.type === 'number'">
-            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update">
+            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update" />
           </div>
 
           <div ng-if="def.type === 'option'">

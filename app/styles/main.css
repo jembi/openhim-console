@@ -1294,3 +1294,8 @@ label { position: relative; }
 .modal-fullview .route-detail-container .data-group{ height: 100%; }
 .modal-fullview .route-detail-container .data-group .data-value { height: 100%; }
 /* modal box custom styles override */
+
+.med-no-config {
+  font-size: 20px;
+  margin: 50px 0px;
+}
