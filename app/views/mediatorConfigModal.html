@@ -23,7 +23,7 @@
         <div class="form-group" style="float: right;">
 
           <div ng-if="def.type === 'string'">
-            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update" />
+            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update">
           </div>
 
           <div ng-if="def.type === 'bigstring'">
@@ -38,11 +38,11 @@
           </div>
 
           <div ng-if="def.type === 'number'">
-            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update" />
+            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update">
           </div>
 
           <div ng-if="def.type === 'option'">
-            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]"/>
+            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]">
           </div>
         </div>
       </div>
