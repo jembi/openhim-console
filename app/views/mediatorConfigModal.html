@@ -27,7 +27,7 @@
           </div>
 
           <div ng-if="def.type === 'bigstring'">
-            <textarea rows="4" class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update" />
+            <textarea rows="4" class="form-control" ng-model="mediator.config[def.param]" ng-disabled="update"></textarea>
           </div>
 
           <div ng-if="def.type === 'bool'">
