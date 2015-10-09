@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jembi/openhim-console.svg?branch=master)](https://travis-ci.org/jembi/openhim-console)
+[![Build Status](https://travis-ci.org/jembi/openhim-console.svg?branch=master)](https://travis-ci.org/jembi/openhim-console) [![OpenHIM Core](https://img.shields.io/badge/openhim--core-1.4%2B-brightgreen.svg)](http://www.openhim.org/faqs/openhim-core-versioning-and-compatibility/)
 
 OpenHIM Administration Console
 ==============================
