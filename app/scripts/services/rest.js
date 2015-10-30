@@ -67,5 +67,8 @@ angular.module('openhimConsoleApp')
       Audits: $resource( server + '/audits/:auditId', { auditId: '@_id' }),
       AuditsFilterOptions: $resource( server + '/audits-filter-options/', {}),
 
+      // Logs API
+      Logs: $resource(server + '/logs')
+
     };
   });

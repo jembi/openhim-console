@@ -17,6 +17,7 @@
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificates</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
+      <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/logs')}"><a href="#/logs"><i class="glyphicon glyphicon-cog"></i> Server Logs</a></li>
       <!-- config page doesn't exist yet, uncomment when ready -->
       <!-- <li ng-class="{current: isCurrent('/config')}"><a href="#/config"><i class="glyphicon glyphicon-cog"></i> Config</a></li> -->
     </ul>

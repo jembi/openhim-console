@@ -9,7 +9,8 @@ var app = angular
     'ui.bootstrap',
     'angular_taglist_directive',
     'hljs',
-    'angularFileUpload'
+    'angularFileUpload',
+    'datetimepicker'
   ]);
 
 // function to boostrap the app manually - used to first get config data before angular initializes
@@ -137,6 +138,10 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/auditDetails.html',
       controller: 'AuditDetailsCtrl'
     })
+    .when('/logs', {
+      templateUrl: 'views/logs.html',
+      controller: 'LogsCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });
@@ -191,7 +196,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
     if ( curRoute !== '/login' && curRoute !== '/logout' ){
       $rootScope.referringURL = curRoute + paramsString;
     }
-    
+
     /* ----- Set Referring URL ----- */
 
 
