@@ -55,15 +55,15 @@ describe('Controller: LogsCtrl', function () {
     httpBackend.flush();
 
     var logArr = scope.logs.split('\n');
-    logArr[0].should.equal('2015-10-29 11:40:31.536 - info: [worker1] Some message');
-    logArr[1].should.equal('2015-10-29 11:40:39.128 - info: [worker1] Another message');
+    logArr[0].should.contain(' - info: [worker1] Some message');
+    logArr[1].should.contain(' - info: [worker1] Another message');
   });
 
   it('should send data range in ISO 8601 format', function() {
     location.search({ level: 'debug', from: '2015-11-03 10:50', until: '2015-11-03 11:00' });
     rootScope.$apply();
 
-    httpBackend.expectGET(new RegExp('.*/logs\\?from=2015-11-03T10:50:00%2B02:00&level=debug&until=2015-11-03T11:00:00%2B02:00'));
+    httpBackend.expectGET(new RegExp('.*/logs\\?from=2015-11-03T10:50:00.*&level=debug&until=2015-11-03T11:00:00.*'));
 
     createController();
     httpBackend.flush();
