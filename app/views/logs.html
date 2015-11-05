@@ -25,11 +25,11 @@
             </div>
             <div class="form-group">
               <label class="sr-only">From</label>
-              <input type="text" class="form-control" ng-model="params.from" placeholder="from" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+              <input type="text" class="form-control" ng-model="params.from" placeholder="from" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: 'day' }">
             </div>
             <div class="form-group">
               <label class="sr-only">Until</label>
-              <input type="text" class="form-control" ng-model="params.until" placeholder="until" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+              <input type="text" class="form-control" ng-model="params.until" placeholder="until" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: 'day' }">
             </div>
             <div class="form-group checkbox">
               <label>
@@ -38,7 +38,7 @@
             </div>
             <i tooltip-placement="top" tooltip="Only a maximum of 100 000 log messages will ever be shown at once, queries longer than that will be truncated. Also, note that log messages with the exact same timestamp MAY be displayed out of order." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
             <div class="pull-right">
-              <button class="btn btn-warning" ng-click="reset()">Clear</button>
+              <button class="btn btn-warning" ng-click="reset()">Reset</button>
             </div>
           </form>
 

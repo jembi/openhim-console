@@ -4,13 +4,14 @@
 angular.module('openhimConsoleApp')
   .controller('LogsCtrl', function ($scope, $location, Api) {
     function formatLog(log) {
-      return new moment(log.timestamp).format('YYYY-MM-D HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n';
+      return new moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n';
     }
 
     var lastFetch;
     var locParams = $location.search();
     $scope.params = angular.equals({}, locParams) ? { level: 'info' } : locParams;
     $scope.logs = '';
+    var linesAdded = 0;
 
     if ($scope.params.from || $scope.params.until) {
       $scope.autoupdate = false;
@@ -57,6 +58,11 @@ angular.module('openhimConsoleApp')
       Api.Logs.query(localParam, function (results) {
         results.forEach(function (log) {
           $scope.logs += formatLog(log);
+          linesAdded++;
+          if (linesAdded > 10000) {
+            // Prevent logs string from growing too much, remove from front
+            $scope.logs = $scope.logs.substring($scope.logs.indexOf('\n') + 1);
+          }
         });
       });
     }
