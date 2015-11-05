@@ -1299,3 +1299,37 @@ label { position: relative; }
   font-size: 20px;
   margin: 50px 0px;
 }
+
+.log-viewer {
+  background: #2a2a2a;
+  font-family: monospace;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border: 0;
+}
+
+.logs-filter {
+  background: #444;
+  padding: 10px;
+}
+
+.logs-filter label {
+  color: white;
+  font-size: 1.2em;
+}
+
+.logs-filter i {
+  color: white;
+  font-size: 1.5em;
+  margin: 0px 20px;
+  vertical-align: middle;
+}
+
+.logs-filter input[type=text] {
+  width: 165px;
+}
+
+.logs-filter input[type=checkbox] {
+  width: 20px;
+}

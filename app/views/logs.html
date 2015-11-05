@@ -1,0 +1,54 @@
+<div class="page-content">
+  <div class="row">
+    <!-- include the sidebar -->
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="col-md-10">
+      <div class="content-box-large">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-cog"></i>&nbsp;&nbsp;Server Logs</h2>
+          </div>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- Filter options -->
+          <form class="form-inline logs-filter" role="form">
+            <div class="form-group">
+              <label class="sr-only">Log level</label>
+              <select class="form-control" ng-model="params.level" ng-change="reload()">
+                <option value="info">info</option>
+                <option value="debug">debug</option>
+                <option value="warn">warn</option>
+                <option value="error">error</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="sr-only">From</label>
+              <input type="text" class="form-control" ng-model="params.from" placeholder="from" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: 'day' }">
+            </div>
+            <div class="form-group">
+              <label class="sr-only">Until</label>
+              <input type="text" class="form-control" ng-model="params.until" placeholder="until" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: 'day' }">
+            </div>
+            <div class="form-group checkbox">
+              <label>
+                <input class="form-control" type="checkbox" ng-model="tailLogs"> Tail logs
+              </label>
+            </div>
+            <i tooltip-placement="top" tooltip="Only a maximum of 100 000 log messages will ever be shown at once, queries longer than that will be truncated. Also, note that log messages with the exact same timestamp MAY be displayed out of order." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <div class="pull-right">
+              <button class="btn btn-warning" ng-click="reset()">Clear Filters</button>
+            </div>
+          </form>
+
+          <!-- log viewer -->
+          <div>
+            <textarea id="textarea" class="log-viewer" rows="40" ng-model="logs" ng-style="{'overflow': tailLogs ? 'hidden' : 'auto'}" readonly></textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-datepicker/css/datepicker3.css" />
     <link rel="stylesheet" href="bower_components/morris.js/morris.css" />
     <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
+    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -79,6 +80,7 @@
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificate</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/logs')}"><a href="#/logs"><i class="glyphicon glyphicon-cog"></i> Server Logs</a></li>
                           </ul>
                         </li>
                       </ul>
@@ -144,6 +146,8 @@
     <script src="bower_components/angular-highlightjs/build/angular-highlightjs.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/ng-file-upload-shim/angular-file-upload-shim.js"></script>
+    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="bower_components/angular-bootstrap-datetimepicker-directive/angular-bootstrap-datetimepicker-directive.js"></script>
     <!-- endbower -->
     <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
     <script src="bower_components/cryptojslib/components/enc-base64-min.js"></script>
@@ -185,6 +189,7 @@
     <script src="scripts/controllers/audits.js"></script>
     <script src="scripts/controllers/auditDetails.js"></script>
     <script src="scripts/controllers/auditsContentModal.js"></script>
+    <script src="scripts/controllers/logs.js"></script>
 
     <!--- This is for utility functions -->
     <script src="scripts/util/sidebar.js"></script>
