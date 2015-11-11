@@ -12,7 +12,6 @@ angular.module('openhimConsoleApp')
       if ( bodyData.headers && returnContentType( bodyData.headers ) ){
         var bodyTransform = beautifyIndent(returnContentType( bodyData.headers ), bodyData.content);
         $scope.bodyData.content = bodyTransform.content;
-        $scope.bodyTransformLang = bodyTransform.lang;
       }
     }
 

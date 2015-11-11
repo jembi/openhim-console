@@ -125,8 +125,7 @@
 
                   <div ng-if="transactionDetails.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
                     <h4>Request body</h4>
-                    <div ng-if="requestTransformLang" class="hljsFormat" hljs source="transactionDetails.request.body" language="{{requestTransformLang}}"></div>
-                    <div ng-if="!requestTransformLang" class="hljsFormatNone">{{transactionDetails.request.body}}</div>
+                    <div class="hljsFormat" hljs source="transactionDetails.request.body"></div>
                     <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);">View Full Request Body</button>
                   </div>
                 </div>
@@ -163,8 +162,7 @@
 
                   <div ng-if="transactionDetails.response.body" style="display: inline-block; width: 100%; margin-top: 15px;">
                     <h4>Response body</h4>
-                    <div ng-if="responseTransformLang" class="hljsFormat" hljs source="transactionDetails.response.body" language="{{responseTransformLang}}"></div>
-                    <div ng-if="!responseTransformLang" class="hljsFormatNone">{{transactionDetails.response.body}}</div>
+                    <div class="hljsFormat" hljs source="transactionDetails.response.body"></div>
                     <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);">View Full Response Body</button>
                   </div>
                 </div>
@@ -240,7 +238,7 @@
                 </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>

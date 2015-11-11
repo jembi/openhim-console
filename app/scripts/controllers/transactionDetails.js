@@ -13,13 +13,12 @@ angular.module('openhimConsoleApp')
     var querySuccess = function(transactionDetails){
 
       $scope.transactionDetails = transactionDetails;
-      
+
       // transform request body with indentation/formatting
       if( transactionDetails.request && transactionDetails.request.body ){
         if ( transactionDetails.request.headers && returnContentType( transactionDetails.request.headers ) ){
           var requestTransform = beautifyIndent(returnContentType( transactionDetails.request.headers ), transactionDetails.request.body);
           $scope.transactionDetails.request.body = requestTransform.content;
-          $scope.requestTransformLang = requestTransform.lang;
         }
       }
 
@@ -28,7 +27,6 @@ angular.module('openhimConsoleApp')
         if ( transactionDetails.response.headers && returnContentType( transactionDetails.response.headers ) ){
           var responseTransform = beautifyIndent(returnContentType( transactionDetails.response.headers ), transactionDetails.response.body);
           $scope.transactionDetails.response.body = responseTransform.content;
-          $scope.responseTransformLang = responseTransform.lang;
         }
       }
 
@@ -50,7 +48,7 @@ angular.module('openhimConsoleApp')
           }
       }
 
-      
+
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
       $scope.consoleSession = consoleSession;
@@ -80,7 +78,7 @@ angular.module('openhimConsoleApp')
         // get the client object for the transactions details page
         $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
       }
-      
+
 
     };
 
@@ -105,7 +103,7 @@ angular.module('openhimConsoleApp')
     //setup filter options
     $scope.returnFilterObject = function(){
       var filtersObject = {};
-      
+
       filtersObject.filterPage = 0;
       filtersObject.filterLimit = 0;
       filtersObject.filters = {};
@@ -156,7 +154,7 @@ angular.module('openhimConsoleApp')
           rerunTransactionsSelected = 1;
         }
       }
-      
+
       $modal.open({
         templateUrl: 'views/transactionsRerunModal.html',
         controller: 'TransactionsRerunModalCtrl',
