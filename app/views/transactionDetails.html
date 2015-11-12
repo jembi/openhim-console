@@ -67,12 +67,15 @@
                 </div>
                 <button id="rerun-popover" type="button" ng-show="childTransactions.length >= 1" class="btn btn-default" data-toggle="popover" data-placement="bottom" data-trigger="focus">Show reruns</button>
                 <button ng-show="transactionDetails.parentID" class="btn btn-default" ng-click="viewTransactionDetails('/transactions/' + transactionDetails.parentID)">View Original Transaction</button>
-                <button class="btn btn-danger" ng-if="rerunAllowed && transactionDetails.canRerun" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
+                <button class="btn btn-danger" ng-disabled="!rerunAllowed || !transactionDetails.canRerun" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
               </div>
 
-              <div class="btn-group sml-margin" role="group">
-                <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> Prev</button>
-                <button type="button" class="btn btn-primary">Next <i class="glyphicon glyphicon-arrow-right"></i></button>
+              <div class="sml-margin" ng-show="pagingEnabled === true">
+                <div class="btn-group" role="group">
+                  <a href="/#/transactions/{{prev}}" role="button" class="btn btn-primary" ng-disabled="prev === null"><i class="glyphicon glyphicon-arrow-left"></i> Prev</a>
+                  <a href="/#/transactions/{{next}}" role="button" class="btn btn-primary" ng-disabled="next === null">Next <i class="glyphicon glyphicon-arrow-right"></i></a>
+                </div>
+                <p class="transactionsSummary">Number {{txNumber}} of {{txTotal}} transaction in the <a href="#{{currFilterURL}}">current filter</a>.</p>
               </div>
 
               <div id="rerun-table" class="hide">
@@ -88,8 +91,16 @@
                   </thead>
                   <tbody>
                     <tr class="table-list" ng-repeat="childTransaction in childTransactions" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)">
-                      <td data-title="URL">{{ childTransaction.request.method + ' ' + childTransaction.request.host + ':' + childTransaction.request.port + childTransaction.request.path + childTransaction.request.querystring }}</td>
-                      <td data-title="Status">{{ childTransaction.status }}</td>
+                      <td data-title="URL"><span class="label label-default">{{childTransaction.request.method}}</span>{{ ' ' + childTransaction.request.host + ':' + childTransaction.request.port + childTransaction.request.path + childTransaction.request.querystring }}</td>
+                      <td data-title="Status">
+                        <div>
+                          <span ng-if="childTransaction.status === 'Successful'" class="label label-success">Successful</span>
+                          <span ng-if="childTransaction.status === 'Completed'" class="label label-success">Completed</span>
+                          <span ng-if="childTransaction.status === 'Processing'" class="label label-info">Processing</span>
+                          <span ng-if="childTransaction.status === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                          <span ng-if="childTransaction.status === 'Failed'" class="label label-danger">Failed</span>
+                        </div>
+                      </td>
                       <td data-title="Request Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z' }}</td>
                       <td data-title=""><a href="/#/transactions/{{childTransaction._id}}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a></td>
                     </tr>

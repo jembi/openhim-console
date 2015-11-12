@@ -10,6 +10,36 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // get txList for paging
+    var txList = JSON.parse(sessionStorage.getItem('currTxList'));
+
+    $scope.pagingEnabled = true;
+    if (!txList) {
+      $scope.pagingEnabled = false;
+    } else if (txList.indexOf($routeParams.transactionId) === -1) {
+      $scope.pagingEnabled = false;
+    }
+
+    $scope.next = null;
+    $scope.prev = null;
+    if ($scope.pagingEnabled) {
+      var currTxIndex = txList.indexOf($routeParams.transactionId);
+
+      $scope.txNumber = currTxIndex+1;
+      $scope.txTotal = txList.length;
+      $scope.currFilterURL = sessionStorage.getItem('currFilterURL');
+
+      if (currTxIndex !== 0) {
+        $scope.prev = txList[currTxIndex-1];
+      }
+      if (currTxIndex !== txList.length-1) {
+        $scope.next = txList[currTxIndex+1];
+      }
+    }
+
+    console.log($scope.next);
+    console.log($scope.prev);
+
     var querySuccess = function(transactionDetails){
 
       $scope.transactionDetails = transactionDetails;
