@@ -88,7 +88,22 @@
                       </strong>
                       <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
                     </td>
-                    <td style="width: 75%">{{v}}</td>
+                    <td style="width: 75%">
+                      <div ng-if="mediatorDefsMap[k].type !== 'map'">{{v}}</div>
+                      <div ng-if="mediatorDefsMap[k].type === 'map'">
+                        <a data-toggle="collapse" href="#res-headers-table">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
+                        <div id="res-headers-table" class="panel panel-default collapse">
+                          <div class="panel-body">
+                            <table class="table-condensed table-borderless">
+                              <tr ng-repeat="(mk, mv) in v">
+                                <th>{{mk}}: </th>
+                                <td>{{mv}}</td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                 </table>
 
