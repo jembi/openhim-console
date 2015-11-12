@@ -37,9 +37,6 @@ angular.module('openhimConsoleApp')
       }
     }
 
-    console.log($scope.next);
-    console.log($scope.prev);
-
     var querySuccess = function(transactionDetails){
 
       $scope.transactionDetails = transactionDetails;

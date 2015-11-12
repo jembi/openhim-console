@@ -574,33 +574,6 @@ body {
   margin-bottom: 5px;
 }
 
-/*.panel-heading>.panel-title, .content-box-header .panel-title {
-    float: left;
-    padding-top: 0px;
-}
-
-.panel-heading>.panel-title>*, .content-box-header .panel-title>* {
-    margin: 0;
-}
-
-.panel-heading>.panel-title>span, .content-box-header .panel-title>span {
-    font-weight: normal;
-}
-
-.panel-heading>.panel-options, .content-box-header .panel-options {
-    float: right;
-    padding-right: 15px;
-}
-
-.panel-heading>.panel-options>a, .content-box-header .panel-options>a {
-    margin-top: 10px;
-}
-
-.panel-body {
-  clear:both;
-}*/
-
-
 /* ----- Transactions ----- */
 .transaction-filter-options { width: 100%; display: inline-block; }
 
