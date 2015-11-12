@@ -23,11 +23,11 @@
         <div class="form-group" style="float: right;">
 
           <div ng-if="def.type === 'string'">
-            <input class="form-control" type="text" ng-model="mediator.config[def.param]" ng-disabled="update">
+            <input class="form-control" type="text" ng-model="mediator.config[def.param]">
           </div>
 
           <div ng-if="def.type === 'bigstring'">
-            <textarea rows="4" class="form-control" ng-model="mediator.config[def.param]" ng-disabled="update"></textarea>
+            <textarea rows="4" class="form-control" ng-model="mediator.config[def.param]"></textarea>
           </div>
 
           <div ng-if="def.type === 'bool'">
@@ -38,11 +38,26 @@
           </div>
 
           <div ng-if="def.type === 'number'">
-            <input class="form-control" type="number" ng-model="mediator.config[def.param]" ng-disabled="update">
+            <input class="form-control" type="number" ng-model="mediator.config[def.param]">
           </div>
 
           <div ng-if="def.type === 'option'">
-            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]">
+            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]"/>
+          </div>
+
+          <div ng-if="def.type === 'map'">
+            <table>
+              <tr ng-repeat="(mapping, _v) in mediator.config[def.param]">
+                <td>{{mapping}}</td>
+                <td><input class="form-control" type="text" ng-model="mediator.config[def.param][mapping]"></td>
+                <td><button class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"></td>
+              </tr>
+              <tr>
+                <td><input class="form-control" type="text" ng-model="newMapping.key"></td>
+                <td><input class="form-control" type="text" ng-model="newMapping.value"></td>
+                <td><button class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!newMapping.key"><i class="glyphicon glyphicon-plus"></td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
