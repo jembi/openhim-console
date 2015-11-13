@@ -949,7 +949,7 @@ body {
 .exportModelTitle i { top: 3px; left: 3px; }
 
 .mediator-config-map { width: 100% }
-#mediator-config-form-group { margin-left: 0px; margin-right: 0px; }
+.collapse-side-margins { margin-left: 0px !important; margin-right: 0px !important; }
 
 .mediator-settings-col1 { width: 25%; }
 .mediator-settings-col2 { width: 75%; }

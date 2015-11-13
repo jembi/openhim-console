@@ -15,7 +15,7 @@
     <fieldset>
 
       <div>
-        <div id="mediator-config-form-group" class="form-group" ng-repeat="def in mediator.configDefs">
+        <div class="form-group collapse-side-margins" ng-repeat="def in mediator.configDefs">
           <div class="col-sm-4">
           <label ng-if="def.displayName">{{def.displayName}}</label>
           <label ng-if="!def.displayName">{{def.param}}</label>
