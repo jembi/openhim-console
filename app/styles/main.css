@@ -574,33 +574,6 @@ body {
   margin-bottom: 5px;
 }
 
-.panel-heading>.panel-title, .content-box-header .panel-title {
-    float: left;
-    padding-top: 0px;
-}
-
-.panel-heading>.panel-title>*, .content-box-header .panel-title>* {
-    margin: 0;
-}
-
-.panel-heading>.panel-title>span, .content-box-header .panel-title>span {
-    font-weight: normal;
-}
-
-.panel-heading>.panel-options, .content-box-header .panel-options {
-    float: right;
-    padding-right: 15px;
-}
-
-.panel-heading>.panel-options>a, .content-box-header .panel-options>a {
-    margin-top: 10px;
-}
-
-.panel-body {
-  clear:both;
-}
-
-
 /* ----- Transactions ----- */
 .transaction-filter-options { width: 100%; display: inline-block; }
 
@@ -677,6 +650,10 @@ body {
   color: #036633;
   font-weight: bold;
 }
+
+.transactionsSummary {
+  font-size: 14px;
+}
 /* ----- Transactions ----- */
 
 /*------- Custom CSS Changes ----*/
@@ -706,16 +683,14 @@ body {
 .navbar-nav > li > a { padding-top: 15px; padding-bottom: 15px; }
 .navbar{ margin: 0; min-height: auto; }
 .topMenu{ display: none; }
-.panel-heading { padding: 0; margin-bottom: 10px; display: inline-block; width: 100% ;}
-.panel-body { padding: 0; }
+.dashboard-metrics-box .panel-heading { padding: 0; margin-bottom: 10px; display: inline-block; width: 100% ;}
+.dashboard-metrics-box .panel-body { padding: 0; }
 
 .responsiveTransactionIndexCheckbox label { display: none; }
 .loadMoreBtn { float: right; }
-#no-more-tables table tr th, #no-more-tables table tr td { word-wrap: break-word; max-width: 150px; }
 .transactionsFilterRefreshDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
 .transactionsFilterRefreshDiv button i{ font-size: 30px; display: block; width: 100% !important; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
-#no-more-tables .rerunTransactionsTable { border-bottom: 1px solid #dddddd; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
 .form-group-2columns .form-group { width: 47%; }
 .form-group-3columns { clear: both; display: inline-block; width: 100%; }
@@ -803,8 +778,6 @@ body {
 
 .showHideHeadersBtn:hover { cursor: pointer; }
 .showHideNoPadding { padding: 0px !important; float: left; }
-.headerDetailsTD { padding-right: 30px; }
-
 
 
 .failedImportsLink { color: red; }
@@ -1332,4 +1305,21 @@ label { position: relative; }
 
 .logs-filter input[type=checkbox] {
   width: 20px;
+}
+
+.table-borderless td, .table-borderless th {
+  border: 0 !important;
+}
+
+/* Reset bootstrap popover max width */
+.popover {
+  max-width: none;
+}
+
+.sml-margin {
+  margin: 5px;
+}
+
+.subtitle {
+  color: #999999;
 }

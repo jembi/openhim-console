@@ -3,14 +3,15 @@
 /* global returnContentType:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record) {
+  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record, route) {
 
     $scope.record = record;
+    $scope.route = route; // optional
     $scope.viewFullBody = false;
     $scope.viewFullBodyType = null;
     $scope.viewFullBodyContent = null;
     $scope.fullBodyTransformLang = null;
-    
+
     // transform request body with indentation/formatting
     if( record.request && record.request.body ){
       if( record.request.headers && returnContentType( record.request.headers ) ){
@@ -28,7 +29,7 @@ angular.module('openhimConsoleApp')
         $scope.responseTransformLang = responseTransform.lang;
       }
     }
-    
+
 
     $scope.toggleFullView = function (type, bodyContent, contentType) {
 
@@ -46,22 +47,6 @@ angular.module('openhimConsoleApp')
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
-    };
-
-    /*********************************************************************/
-    /**               Transactions View Route Functions                 **/
-    /*********************************************************************/
-
-    $scope.viewAddReqResDetails = function(record){
-      $modal.open({
-        templateUrl: 'views/transactionsAddReqResModal.html',
-        controller: 'TransactionsAddReqResModalCtrl',
-        resolve: {
-          record: function () {
-            return record;
-          }
-        }
-      });
     };
 
     /*********************************************************************/

@@ -23,13 +23,13 @@
 
         <div class="panel-body" ng-show="auditDetails">
 
-          <div style="  display: inline-block; width: 100%;">
-            <button class="btn btn-primary" style="margin: 0px 0px 20px 0px; float: right;" ng-click="viewContentDetails('Raw Audit Message', auditDetails.rawMessage)">View Raw Audit Message</button>  
+          <div style="display: inline-block; width: 100%;">
+            <button class="btn btn-primary pull-right" style="margin: 0px 0px 20px 0px;" ng-click="viewContentDetails('Raw Audit Message', auditDetails.rawMessage)">View Raw Audit Message</button>
           </div>
-          
+
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Event </h3>
+              <h3 class="panel-title">Event </h3>
             </div>
             <div class="panel-body">
               <div class="audit-info-box" ng-if="auditDetails.eventIdentification.eventDateTime">
@@ -51,7 +51,7 @@
 
           <div class="panel panel-warning">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Audit Source </h3>
+              <h3 class="panel-title">Audit Source </h3>
             </div>
             <div class="panel-body">
               <div class="audit-info-box" ng-if="auditDetails.auditSourceIdentification.auditSourceID">
@@ -68,7 +68,7 @@
 
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Active Participant </h3>
+              <h3 class="panel-title">Active Participant </h3>
             </div>
 
             <div class="panel-body">
@@ -95,7 +95,7 @@
 
           <div class="panel panel-success">
             <div class="panel-heading">
-              <h3 class="panel-title" style="margin: 10px; font-size: 20px;">Participant Object </h3>
+              <h3 class="panel-title">Participant Object </h3>
             </div>
             <div class="panel-body">
               <div class="auditRepeatBox" ng-repeat="participantObjectIdentification in auditDetails.participantObjectIdentification">
@@ -118,7 +118,7 @@
                 </div>
                 <div class="audit-info-box" ng-if="participantObjectIdentification.participantObjectQuery">
                   Object Query <br />
-                  <button class="btn btn-primary" style="  padding: 3px 5px; font-size: 12px;" ng-click="viewContentDetails('Object Query', participantObjectIdentification.participantObjectQuery)">Click to view Object Query</button>
+                  <button class="btn btn-primary" style="padding: 3px 5px; font-size: 12px;" ng-click="viewContentDetails('Object Query', participantObjectIdentification.participantObjectQuery)">Click to view Object Query</button>
                 </div>
               </div>
             </div>

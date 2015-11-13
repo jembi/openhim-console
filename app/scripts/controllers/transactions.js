@@ -406,6 +406,12 @@ angular.module('openhimConsoleApp')
       // on success
       $scope.transactions = transactions;
 
+      // save latest returned transaction to session storage for use in transaction
+      // details paging.
+      var idList = transactions.map(function (tx) { return tx._id; });
+      sessionStorage.setItem('currTxList', angular.toJson(idList));
+      sessionStorage.setItem('currFilterURL', $location.url());
+
       if( transactions.length < $scope.settings.filter.limit ){
         $scope.loadMoreBtn = false;
 
@@ -640,6 +646,7 @@ angular.module('openhimConsoleApp')
           window.open(txUrl, '_blank');
         }else{
           $location.path(path);
+          $location.search({});
         }
       }
     };

@@ -37,7 +37,7 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
 
       scope = $rootScope.$new();
       modalInstance = sinon.spy();
-      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record } );
+      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record, route: null } );
     };
 
   }));

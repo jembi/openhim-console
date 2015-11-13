@@ -10,16 +10,42 @@ angular.module('openhimConsoleApp')
     /**         Initial page load functions           **/
     /***************************************************/
 
+    // get txList for paging
+    var txList = JSON.parse(sessionStorage.getItem('currTxList'));
+
+    $scope.pagingEnabled = true;
+    if (!txList) {
+      $scope.pagingEnabled = false;
+    } else if (txList.indexOf($routeParams.transactionId) === -1) {
+      $scope.pagingEnabled = false;
+    }
+
+    $scope.next = null;
+    $scope.prev = null;
+    if ($scope.pagingEnabled) {
+      var currTxIndex = txList.indexOf($routeParams.transactionId);
+
+      $scope.txNumber = currTxIndex+1;
+      $scope.txTotal = txList.length;
+      $scope.currFilterURL = sessionStorage.getItem('currFilterURL');
+
+      if (currTxIndex !== 0) {
+        $scope.prev = txList[currTxIndex-1];
+      }
+      if (currTxIndex !== txList.length-1) {
+        $scope.next = txList[currTxIndex+1];
+      }
+    }
+
     var querySuccess = function(transactionDetails){
 
       $scope.transactionDetails = transactionDetails;
-      
+
       // transform request body with indentation/formatting
       if( transactionDetails.request && transactionDetails.request.body ){
         if ( transactionDetails.request.headers && returnContentType( transactionDetails.request.headers ) ){
           var requestTransform = beautifyIndent(returnContentType( transactionDetails.request.headers ), transactionDetails.request.body);
           $scope.transactionDetails.request.body = requestTransform.content;
-          $scope.requestTransformLang = requestTransform.lang;
         }
       }
 
@@ -28,7 +54,6 @@ angular.module('openhimConsoleApp')
         if ( transactionDetails.response.headers && returnContentType( transactionDetails.response.headers ) ){
           var responseTransform = beautifyIndent(returnContentType( transactionDetails.response.headers ), transactionDetails.response.body);
           $scope.transactionDetails.response.body = responseTransform.content;
-          $scope.responseTransformLang = responseTransform.lang;
         }
       }
 
@@ -50,7 +75,7 @@ angular.module('openhimConsoleApp')
           }
       }
 
-      
+
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
       $scope.consoleSession = consoleSession;
@@ -60,6 +85,10 @@ angular.module('openhimConsoleApp')
         // get the channels for the transactions filter dropdown
         Api.Channels.get({ channelId: transactionDetails.channelID }, function(channel){
           $scope.channel = channel;
+          $scope.routeDefs = {};
+          channel.routes.forEach(function (route) {
+            $scope.routeDefs[route.name] = route;
+          });
 
           if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
             if ( user.groups.indexOf('admin') >= 0 ){
@@ -80,7 +109,7 @@ angular.module('openhimConsoleApp')
         // get the client object for the transactions details page
         $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
       }
-      
+
 
     };
 
@@ -105,7 +134,7 @@ angular.module('openhimConsoleApp')
     //setup filter options
     $scope.returnFilterObject = function(){
       var filtersObject = {};
-      
+
       filtersObject.filterPage = 0;
       filtersObject.filterLimit = 0;
       filtersObject.filters = {};
@@ -156,7 +185,7 @@ angular.module('openhimConsoleApp')
           rerunTransactionsSelected = 1;
         }
       }
-      
+
       $modal.open({
         templateUrl: 'views/transactionsRerunModal.html',
         controller: 'TransactionsRerunModalCtrl',
@@ -181,7 +210,7 @@ angular.module('openhimConsoleApp')
     /**               Transactions View Route Functions                 **/
     /*********************************************************************/
 
-    $scope.viewAddReqResDetails = function(record){
+    $scope.viewAddReqResDetails = function(record, route){
       $modal.open({
         templateUrl: 'views/transactionsAddReqResModal.html',
         controller: 'TransactionsAddReqResModalCtrl',
@@ -189,6 +218,9 @@ angular.module('openhimConsoleApp')
         resolve: {
           record: function () {
             return record;
+          },
+          route: function () {
+            return route;
           }
         }
       });
