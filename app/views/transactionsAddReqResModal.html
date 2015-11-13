@@ -5,159 +5,106 @@
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
-  <tabset ng-show="!viewFullBody" class="transaction_details_tabset route-detail-container" justified="false" style="  margin: 0px; display: inline-block; width: 100%;">
-    <tab>
-      <tab-heading>Request</tab-heading>
-      <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
-        <div class="data-group left-indent">
-          <label>Host: </label>
-          <div class="data-value">{{record.request.host}}</div>
-        </div>
-        <div class="data-group left-indent">
-          <label>Port: </label>
-          <div class="data-value">{{record.request.port}}</div>
-        </div>
-        <div class="data-group left-indent">
-          <label>Path: </label>
-          <div class="data-value">{{record.request.path}}</div>
-        </div>
-        <div class="data-group left-indent">
-          <label>Parameters: </label>
-          <div class="data-value">{{record.request.querystring}}</div>
-        </div>
-        <div class="data-group left-indent">
-          <label>HTTP Method: </label>
-          <div class="data-value">{{record.request.method}}</div>
-        </div>
-        <div class="data-group left-indent">
-          <label>Timestamp: </label>
-          <div class="data-value">{{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
-        </div>
-        <div class="data-group left-indent" ng-if="record.request.headers">
-          <label>Headers: </label>
-          <div class="data-value showHideNoPadding">
-            <table class=" collapse" id="requestHeaders{{record._id}}">
-              <tr ng-repeat="(key, property) in record.request.headers">
-                <td class="headerDetailsTD">{{key}}: </td>
-                <td><strong>{{property}}</strong></td>
-              </tr>
-            </table>
-            <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#requestHeaders{{record._id}}">Show/Hide Headers</a>            
-          </div>
-        </div>
 
-        <div ng-if="record.request.body" style="display: inline-block; width: 100%">
-          <label class="data-group"><label>Body: </label></label>
-          <div class="data-group">
-            <div class="data-value">
-              <div class="data-value">
-                <div ng-if="requestTransformLang" class="hljsFormat" hljs source="record.request.body" language="{{requestTransformLang}}" style="max-height: 350px;"></div>
-                <div ng-if="!requestTransformLang" class="hljsFormatNone" style="max-height: 350px;">{{record.request.body}}</div>
-              </div>
-              <!-- show only if record has request body -->
-              <button type="button" class="btn btn-primary" ng-click="toggleFullView('Request', record.request.body, requestTransformLang)" style="float: right; margin-top: 10px;">
-                <span ng-show="!viewFullBody">View Full Request Body</span>
-              </button>
+  <div class="row" ng-show="!viewFullBody">
+    <!-- Request, left -->
+    <div class="col-md-6">
+      <div class="panel panel-default sml-margin transaction-req-res-height">
+        <div class="panel-heading">
+          <h3 class="panel-title">Request</h3>
+        </div>
+        <div class="panel-body">
+
+          <h4>
+            <div ng-if="route">
+              <span class="label label-default" ng-if="route.type === 'http'">{{record.request.method}}</span>
+              <span class="label label-danger" ng-if="route.type !== 'http'">{{route.type | uppercase}}</span>
+              <span>{{ record.request.host }}</span><span ng-if="record.request.port">{{ ':' + record.request.port }}</span><span ng-if="route.type === 'http'">{{ record.request.path }}</span><span ng-if="record.request.querystring && route.type === 'http'">{{ '?' + record.request.querystring }}</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </tab>
+            <!-- Assume its HTTP, can't do much else -->
+            <div ng-if="!route">
+              <span class="label label-default">{{record.request.method}}</span>
+              <span>{{ record.request.host }}</span><span ng-if="record.request.port">{{ ':' + record.request.port }}</span><span>{{ record.request.path }}</span><span ng-if="record.request.querystring">{{ '?' + record.request.querystring }}</span>
+            </div>
+          <h6 class="subtitle"><em>Received at {{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
-    <tab>
-      <tab-heading>Response</tab-heading>
-      <div>
-        <div style="width: 100%; display: inline-block; background: #fff; padding: 10px;">
-          <div class="data-group left-indent">
-            <label>Status: </label>
-            <div class="data-value">{{record.response.status}}</div>
-          </div>
-          <div class="data-group left-indent">
-            <label>Timestamp: </label>
-            <div class="data-value">{{record.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
-          </div>
-          <div class="data-group left-indent" ng-if="record.response.headers">
-            <label>Headers: </label>
-            <div class="data-value showHideNoPadding">
-              <table class=" collapse" id="responseHeaders{{record._id}}">
-                <tr ng-repeat="(key, property) in record.response.headers">
-                  <td class="headerDetailsTD">{{key}}: </td>
-                  <td><strong>{{property}}</strong></td>
+          <a data-toggle="collapse" href="#popup-req-headers-table" ng-if="route.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+          <div id="popup-req-headers-table" class="panel panel-default collapse">
+            <div class="panel-body">
+              <table class="table-condensed table-borderless">
+                <tr ng-repeat="(key, property) in record.request.headers">
+                  <th>{{key}}: </th>
+                  <td>{{property}}</td>
                 </tr>
               </table>
-              <a class="showHideHeadersBtn" data-toggle="collapse" data-target="#responseHeaders{{record._id}}">Show/Hide Headers</a>            
             </div>
           </div>
 
-          <div ng-if="record.response.body" style="display: inline-block; width: 100%">
-            <label>Body:</label>
-            <div class="data-group">
-              <div class="data-value">
-                <div ng-if="responseTransformLang" class="hljsFormat" hljs source="record.response.body" language="{{responseTransformLang}}" style="max-height: 350px;"></div>
-                <div ng-if="!responseTransformLang" class="hljsFormatNone" style="max-height: 350px;">{{record.response.body}}</div>
-              </div>
-              <!-- show only if record has response body -->
-              <button type="button" class="btn btn-primary" ng-click="toggleFullView('Response', record.response.body, responseTransformLang)" style="float: right; margin-top: 10px;">
-                <span>View Full Response Body</span>
-              </button>
-            </div>
+          <div ng-if="record.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
+            <h4>Request body</h4>
+            <div class="hljsFormat" hljs source="record.request.body"></div>
+            <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Request', record.request.body, record.request.headers);">View Full Request Body</button>
           </div>
-
-          <div ng-show="record.orchestrations" style="display: inline-block; width: 100%">
-            <label>Orchestrations: </label>
-            <div id="no-more-tables" class="data-group">
-              <div class="data-value">
-              <!-- Table with all the orchestrations -->
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Method</th>
-                    <th>Host</th>                      
-                    <th>Port</th>                      
-                    <th>Path</th>                      
-                    <th>Request Params</th>
-                    <th>Status</th>
-                    <th>Response Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="table-list" ng-repeat="orchestration in record.orchestrations" ng-click='viewAddReqResDetails(orchestration)'>
-                    <td data-title="Name">{{ orchestration.name }}</td>
-                    <td data-title="Method">{{ orchestration.request.method }}</td>
-                    <td data-title="Host">{{ orchestration.request.host }}</td>
-                    <td data-title="Port">{{ orchestration.request.port }}</td>
-                    <td data-title="Path">{{ orchestration.request.path }}</td>
-                    <td data-title="Request Params">{{ orchestration.request.querystring }}</td>
-                    <td data-title="Status">{{ orchestration.response.status }}</td>
-                    <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            </div>
-          </div>
-
-          <div ng-show="record.properties" style="display: inline-block; width: 100%">
-            <label>Properties: </label>
-            <div class="data-group">
-              <div class="data-value">
-                <div class="content-box-large default-labels-box" ng-repeat="(key, property) in record.properties">
-                  {{key}}: <strong>{{property}}</strong>
-                </div>  
-              </div>
-            </div>
+          <div ng-if="route && !record.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
+            <h4>Request body not stored, it is the same as the primary route</h4>
           </div>
         </div>
       </div>
-    </tab>
-  </tabset>
+    </div>
+
+    <!-- Response, right -->
+    <div class="col-md-6" ng-if="record.response">
+      <div class="panel panel-default sml-margin transaction-req-res-height">
+        <div class="panel-heading">
+          <h3 class="panel-title">Response</h3>
+        </div>
+        <div class="panel-body">
+          <div ng-if="route">
+          <span class="label label-danger" ng-if="route.type !== 'http'">{{route.type | uppercase}}</span>
+            <h4 ng-if="route.type === 'http'">Status code
+              <span ng-if="record.response.status >= 200 && record.response.status < 300" class="label label-success">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 300 && record.response.status < 400" class="label label-primary">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 400 && record.response.status < 500" class="label label-warning">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 500 && record.response.status < 600" class="label label-danger">{{record.response.status}}</span>
+            </h4>
+          </div>
+          <!-- Assume its HTTP, can't do much else -->
+          <div ng-if="!route">
+            <h4>Status code
+              <span ng-if="record.response.status >= 200 && record.response.status < 300" class="label label-success">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 300 && record.response.status < 400" class="label label-primary">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 400 && record.response.status < 500" class="label label-warning">{{record.response.status}}</span>
+              <span ng-if="record.response.status >= 500 && record.response.status < 600" class="label label-danger">{{record.response.status}}</span>
+            </h4>
+          </div>
+          <h6 class="subtitle"><em>Received at {{record.response.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
+
+          <a data-toggle="collapse" href="#popup-res-headers-table" ng-if="route.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+          <div id="popup-res-headers-table" class="panel panel-default collapse">
+            <div class="panel-body">
+              <table class="table-condensed table-borderless">
+                <tr ng-repeat="(key, property) in record.response.headers">
+                  <th>{{key}}: </th>
+                  <td>{{property}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div ng-if="record.response.body" style="display: inline-block; width: 100%; margin-top: 15px;">
+            <h4>Response body</h4>
+            <div class="hljsFormat" hljs source="record.response.body"></div>
+            <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Response', record.response.body, record.response.headers);">View Full Response Body</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="route-detail-container" ng-show="viewFullBody">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <div ng-if="fullBodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent" language="{{fullBodyTransformLang}}"></div>
-        <div ng-if="!fullBodyTransformLang" class="hljsFormatNone hljsFormatNoneFull">{{viewFullBodyContent}}</div>
+        <div ng-if="fullBodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent"></div>
       </div>
     </div>
     <!-- show only if full body is show -->

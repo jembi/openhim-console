@@ -119,10 +119,13 @@
                 </div>
                 <div class="panel-body">
 
-                  <h4><span class="label label-default">{{transactionDetails.request.method}}</span>{{ ' ' + transactionDetails.request.host + ':' + transactionDetails.request.port + transactionDetails.request.path + '?' + transactionDetails.request.querystring}}</h4>
+                  <h4>
+                    <span class="label label-default" ng-if="channel.type === 'http'">{{transactionDetails.request.method}}</span>
+                    <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+                    <span>{{ transactionDetails.request.host }}</span><span ng-if="transactionDetails.request.port">{{ ':' + transactionDetails.request.port }}</span><span ng-if="channel.type === 'http'">{{ transactionDetails.request.path }}</span><span ng-if="transactionDetails.request.querystring && channel.type === 'http'">{{ '?' + transactionDetails.request.querystring }}</span>
                   <h6 class="subtitle"><em>Received at {{transactionDetails.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
-                  <a data-toggle="collapse" href="#req-headers-table">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+                  <a data-toggle="collapse" href="#req-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
                   <div id="req-headers-table" class="panel panel-default collapse">
                     <div class="panel-body">
                       <table class="table-condensed table-borderless">
@@ -151,7 +154,8 @@
                 </div>
                 <div class="panel-body">
 
-                  <h4>Status code
+                  <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+                  <h4 ng-if="channel.type === 'http'">Status code
                     <span ng-if="transactionDetails.response.status >= 200 && transactionDetails.response.status < 300" class="label label-success">{{transactionDetails.response.status}}</span>
                     <span ng-if="transactionDetails.response.status >= 300 && transactionDetails.response.status < 400" class="label label-primary">{{transactionDetails.response.status}}</span>
                     <span ng-if="transactionDetails.response.status >= 400 && transactionDetails.response.status < 500" class="label label-warning">{{transactionDetails.response.status}}</span>
@@ -159,7 +163,7 @@
                   </h4>
                   <h6 class="subtitle"><em>Received at {{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
-                  <a data-toggle="collapse" href="#res-headers-table">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+                  <a data-toggle="collapse" href="#res-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
                   <div id="res-headers-table" class="panel panel-default collapse">
                     <div class="panel-body">
                       <table class="table-condensed table-borderless">
@@ -198,9 +202,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click="viewAddReqResDetails(route)">
+                      <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click="viewAddReqResDetails(route, routeDefs[route.name])">
                         <td data-title="Route">{{ route.name }}</td>
-                        <td data-title="URL">{{ route.request.method + ' ' + route.request.host + ':' + route.request.port + '/' + route.request.path + '?' + route.request.querystring }}</td>
+                        <td data-title="URL">
+                          <span class="label label-default" ng-if="routeDefs[route.name].type === 'http'">{{route.request.method}}</span>
+                          <span class="label label-danger" ng-if="routeDefs[route.name].type !== 'http'">{{routeDefs[route.name].type | uppercase}}</span>
+                          <span>{{ route.request.host }}</span><span ng-if="route.request.port">{{ ':' + route.request.port }}</span><span ng-if="routeDefs[route.name].type === 'http'">{{ route.request.path }}</span><span ng-if="route.request.querystring && routeDefs[route.name].type === 'http'">{{ '?' + route.request.querystring }}</span>
+                        </td>
                         <td data-title="Status">{{ route.response.status }}</td>
                         <td data-title="Response Time">{{ route.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                       </tr>
@@ -228,7 +236,10 @@
                     <tbody>
                       <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click="viewAddReqResDetails(orchestration)">
                         <td data-title="Name">{{ orchestration.name }}</td>
-                        <td data-title="URL">{{ orchestration.request.method + ' ' + orchestration.request.host + ':' + orchestration.request.port + '/' + orchestration.request.path + '?' + orchestration.request.querystring }}</td>
+                        <td data-title="URL">
+                          <span class="label label-default">{{orchestration.request.method}}</span>
+                          <span>{{ orchestration.request.host }}</span><span ng-if="orchestration.request.port">{{ ':' + orchestration.request.port }}</span><span>{{ orchestration.request.path }}</span><span ng-if="orchestration.request.querystring">{{ '?' + orchestration.request.querystring }}</span>
+                        </td>
                         <td data-title="Status">{{ orchestration.response.status }}</td>
                         <td data-title="Response Time">{{ orchestration.response.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
                       </tr>

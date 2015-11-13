@@ -85,6 +85,10 @@ angular.module('openhimConsoleApp')
         // get the channels for the transactions filter dropdown
         Api.Channels.get({ channelId: transactionDetails.channelID }, function(channel){
           $scope.channel = channel;
+          $scope.routeDefs = {};
+          channel.routes.forEach(function (route) {
+            $scope.routeDefs[route.name] = route;
+          });
 
           if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
             if ( user.groups.indexOf('admin') >= 0 ){
@@ -206,7 +210,7 @@ angular.module('openhimConsoleApp')
     /**               Transactions View Route Functions                 **/
     /*********************************************************************/
 
-    $scope.viewAddReqResDetails = function(record){
+    $scope.viewAddReqResDetails = function(record, route){
       $modal.open({
         templateUrl: 'views/transactionsAddReqResModal.html',
         controller: 'TransactionsAddReqResModalCtrl',
@@ -214,6 +218,9 @@ angular.module('openhimConsoleApp')
         resolve: {
           record: function () {
             return record;
+          },
+          route: function () {
+            return route;
           }
         }
       });
