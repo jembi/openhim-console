@@ -15,7 +15,7 @@
     <fieldset>
 
       <div>
-        <div class="form-group" ng-repeat="def in mediator.configDefs">
+        <div id="mediator-config-form-group" class="form-group" ng-repeat="def in mediator.configDefs">
           <div class="col-sm-4">
           <label ng-if="def.displayName">{{def.displayName}}</label>
           <label ng-if="!def.displayName">{{def.param}}</label>
@@ -57,6 +57,11 @@
                 <td><input class="form-control" type="text" ng-model="newMapping.key"></td>
                 <td><input class="form-control" type="text" ng-model="newMapping.value"></td>
                 <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
+              </tr>
+              <tr ng-if="doesNewKeyExist(def.param)">
+                <td><div class="has-error"><i class="glyphicon glyphicon-warning-sign"></i>Key already exists</div></td>
+                <td></td>
+                <td></td>
               </tr>
             </table>
           </div>
