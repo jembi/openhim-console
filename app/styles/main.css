@@ -948,6 +948,13 @@ body {
 #scrollToTop { display: none; width: auto; margin: 15px auto; }
 .exportModelTitle i { top: 3px; left: 3px; }
 
+.mediator-config-map { width: 100% }
+
+.form-horizontal .form-group { margin-left: 0px; margin-right: 0px; }
+
+.mediator-settings-col1 { width: 25%; }
+.mediator-settings-col2 { width: 75%; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */

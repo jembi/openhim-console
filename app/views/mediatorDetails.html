@@ -81,14 +81,14 @@
                     <th style="border-top: 0px">Value: </th>
                   </tr>
                   <tr ng-repeat="(k, v) in mediatorDetails.config">
-                    <td style="width: 25%">
+                    <td class="mediator-settings-col1">
                       <strong>
                         <span ng-if="mediatorDefsMap[k].displayName">{{mediatorDefsMap[k].displayName}}</span>
                         <span ng-if="!mediatorDefsMap[k].displayName">{{k}}</span>
                       </strong>
                       <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
                     </td>
-                    <td style="width: 75%">
+                    <td class="mediator-settings-col2">
                       <div ng-if="mediatorDefsMap[k].type !== 'map'">{{v}}</div>
                       <div ng-if="mediatorDefsMap[k].type === 'map'">
                         <a data-toggle="collapse" href="#res-headers-table">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>

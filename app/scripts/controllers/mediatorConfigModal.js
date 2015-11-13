@@ -48,4 +48,7 @@ angular.module('openhimConsoleApp')
       $scope.newMapping.value = '';
     };
 
+    $scope.isNewKeyValid = function (param) {
+      return $scope.newMapping.key && !$scope.mediator.config[param][$scope.newMapping.key];
+    };
   });

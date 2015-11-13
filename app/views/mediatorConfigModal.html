@@ -10,18 +10,19 @@
     <span>This mediator has does not have any config options that can be specified here.</span>
   </center>
 </div>
-<form name="form" novalidate>
+<form class="form-horizontal" ng-submit="saveConfig()" novalidate>
   <div class="modal-body">
     <fieldset>
 
-      <div class="form-group-2columns" ng-repeat="def in mediator.configDefs">
-        <div class="form-group" style="float: left; width: 33%;">
+      <div>
+        <div class="form-group" ng-repeat="def in mediator.configDefs">
+          <div class="col-sm-4">
           <label ng-if="def.displayName">{{def.displayName}}</label>
           <label ng-if="!def.displayName">{{def.param}}</label>
           <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-        </div>
-        <div class="form-group" style="float: right; width: 67%">
+          </div>
 
+          <div class="col-sm-8">
           <div ng-if="def.type === 'string'">
             <input class="form-control" type="text" ng-model="mediator.config[def.param]">
           </div>
@@ -46,18 +47,19 @@
           </div>
 
           <div ng-if="def.type === 'map'">
-            <table style="width: 100%;">
+            <table class="mediator-config-map">
               <tr ng-repeat="(mapping, _v) in mediator.config[def.param]">
                 <td>{{mapping}}</td>
                 <td><input class="form-control" type="text" ng-model="mediator.config[def.param][mapping]"></td>
-                <td><button class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"></td>
+                <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
               </tr>
               <tr>
                 <td><input class="form-control" type="text" ng-model="newMapping.key"></td>
                 <td><input class="form-control" type="text" ng-model="newMapping.value"></td>
-                <td><button class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!newMapping.key"><i class="glyphicon glyphicon-plus"></td>
+                <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
               </tr>
             </table>
+          </div>
           </div>
         </div>
       </div>
