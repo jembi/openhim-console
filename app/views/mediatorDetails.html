@@ -91,8 +91,8 @@
                     <td class="mediator-settings-col2">
                       <div ng-if="mediatorDefsMap[k].type !== 'map'">{{v}}</div>
                       <div ng-if="mediatorDefsMap[k].type === 'map'">
-                        <a data-toggle="collapse" href="#mediator-map-table">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
-                        <div id="mediator-map-table" class="panel panel-default collapse">
+                        <a data-toggle="collapse" href="#mediator-map-table-{{k}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
+                        <div id="mediator-map-table-{{k}}" class="panel panel-default collapse">
                           <div class="panel-body">
                             <table class="table-condensed table-borderless">
                               <tr ng-repeat="(mk, mv) in v">

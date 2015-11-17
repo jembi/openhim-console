@@ -54,8 +54,8 @@
                 <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
               </tr>
               <tr>
-                <td><input class="form-control" type="text" ng-model="newMapping.key"></td>
-                <td><input class="form-control" type="text" ng-model="newMapping.value"></td>
+                <td><input class="form-control" type="text" ng-model="inputKeys[def.param]"></td>
+                <td><input class="form-control" type="text" ng-model="inputValues[def.param]"></td>
                 <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
               </tr>
               <tr ng-if="doesNewKeyExist(def.param)">
