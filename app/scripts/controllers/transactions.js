@@ -495,7 +495,7 @@ angular.module('openhimConsoleApp')
       var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
 
       // first clear existing filters
-      clearUrlParams();
+      $location.search({});
 
       // if optionalParam param = bulkrerun
       if ( optionalParam === 'bulkrerun' ){
@@ -651,16 +651,6 @@ angular.module('openhimConsoleApp')
       }
     };
 
-    var clearUrlParams =  function(){
-      // loop through all parameters
-      for (var property in $location.search()) {
-        if ($location.search().hasOwnProperty(property)) {
-          // set parameter to null to remove
-          $location.search(property, null);
-        }
-      }
-    };
-
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function () {
 
@@ -677,7 +667,7 @@ angular.module('openhimConsoleApp')
       var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
 
       // clear all filter parameters
-      clearUrlParams();
+      $location.search({});
 
       // get the filter params object after clearing them
       var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
