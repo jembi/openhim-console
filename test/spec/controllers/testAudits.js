@@ -162,10 +162,10 @@ describe('Controller: AuditsCtrl', function () {
     filters.filters['eventIdentification.eventActionCode'].should.equal('R');
     filters.filters['eventIdentification.eventOutcomeIndicator'].should.equal('0');
     filters.filters['auditSourceIdentification.auditSourceID'].should.equal('openhim');
-    
+
     // url params string that gets used to reload the audits URL with selected paramaters
-    urlParams.should.equal('&limit=10&dateStart='+moment(startDate).format()+'&dateEnd='+moment(endDate).endOf('day').format()+'&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
-    
+    urlParams.should.equal('&limit=10&dateStart='+moment(startDate).format('YYYY-MM-DD')+'&dateEnd='+moment(endDate).endOf('day').format('YYYY-MM-DD')+'&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim');
+
   });
 
   it('should prepend new audits to the scope', function () {
