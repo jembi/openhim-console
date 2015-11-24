@@ -1,12 +1,12 @@
 <fieldset>
   <div class="form-group collapse-side-margins" ng-repeat="def in configDefs">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
     <label ng-if="def.displayName">{{def.displayName}}</label>
     <label ng-if="!def.displayName">{{def.param}}</label>
     <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-9">
     <div ng-if="def.type === 'string'">
       <input class="form-control" type="text" ng-model="config[def.param]">
     </div>
