@@ -76,7 +76,7 @@ angular.module('openhimConsoleApp')
       if ( $location.search().roleIDCode ){ $scope.filters.activeParticipant.roleIDCode = $location.search().roleIDCode; }
       if ( $location.search().alternativeUserID ){ $scope.filters.activeParticipant.alternativeUserID = $location.search().alternativeUserID; }
       if ( $location.search().networkAccessPointID ){ $scope.filters.activeParticipant.networkAccessPointID = $location.search().networkAccessPointID; }
-      
+
       $scope.filters.auditSourceIdentification = {};
       if ( $location.search().auditSourceID ){ $scope.filters.auditSourceIdentification.auditSourceID = $location.search().auditSourceID; }
 
@@ -91,16 +91,16 @@ angular.module('openhimConsoleApp')
     var userSettings = consoleSession.sessionUserSettings;
 
 
-    
+
 
     if ( userSettings ){
       if ( userSettings.filter ){
-        
+
         if ( userSettings.filter.limit && userSettings.filter.limit !== 0 && userSettings.filter.limit === ''){
           $scope.settings.filter.limit = userSettings.filter.limit;
         }
       }
-      
+
       if ( userSettings.list ){
         $scope.settings.list.tabview = userSettings.list.tabview;
       }
@@ -137,10 +137,9 @@ angular.module('openhimConsoleApp')
         var startDate = moment(filterDateStart).format();
         var endDate = moment(filterDateEnd).endOf('day').format();
         filtersObject.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$gte': startDate, '$lte': endDate } );
-        filterUrlParams += '&dateStart='+startDate;
-        filterUrlParams += '&dateEnd='+endDate;
       }
-
+      if (filterDateStart) { filterUrlParams += '&dateStart='+moment(filterDateStart).format('YYYY-MM-DD'); }
+      if (filterDateEnd) { filterUrlParams += '&dateEnd='+moment(filterDateEnd).format('YYYY-MM-DD'); }
 
       /* ----- filter by Patient ----- */
       var patientID = $scope.filters.participantObjectIdentification.patientID.patientID;
@@ -155,7 +154,7 @@ angular.module('openhimConsoleApp')
       if ( assigningAuthID === null || assigningAuthID === undefined || assigningAuthID === '' ){
         assigningAuthID = '.*';
       }
-      
+
       // add patientID filter
       var participantPatientID = patientID+'\\^\\^\\^'+assigningAuth+'&'+assigningAuthID+'&.*';
       if ( valueNotEmpty(patientID) === true ) {
@@ -293,7 +292,7 @@ angular.module('openhimConsoleApp')
       }else if (type === 'filtersObject'){
         return filtersObject;
       }
-      
+
     };
 
     var refreshSuccess = function (audits){
@@ -400,7 +399,7 @@ angular.module('openhimConsoleApp')
         }
       }
     };
-    
+
     //Clear filter data end refresh audits scope
     $scope.clearFilters = function () {
       $scope.settings.filter.limit = 10;
