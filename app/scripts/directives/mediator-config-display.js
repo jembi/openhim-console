@@ -14,7 +14,7 @@ angular.module('openhimConsoleApp')
       },
       templateUrl: 'views/partials/mediator-config-display.html',
       link: function(scope){
-        scope.mediatorDefsMap = {}
+        scope.mediatorDefsMap = {};
 
         scope.$watch('configDefs', function(configDefs){
           if (configDefs) {

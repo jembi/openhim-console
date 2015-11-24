@@ -51,7 +51,7 @@ angular.module('openhimConsoleApp')
       link: function(scope, element){
         if (scope.configDefs) {
           if (!scope.config) {
-            scope.config = {}
+            scope.config = {};
           }
 
           element.append('<div mediator-config config-defs="configDefs" config="config"/>');
