@@ -547,7 +547,6 @@ angular.module('openhimConsoleApp')
       if ( filterParamsBeforeClear === filterParamsAfterClear ){
         $scope.refreshTransactionsList();
       }
-
     };
 
     //Refresh transactions list
