@@ -74,39 +74,7 @@
                 <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0" class="btn btn-info btn-xs" ng-click="editMediatorConfig()" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
               </td>
               <td>
-
-                <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
-                  <tr>
-                    <th style="border-top: 0px">Setting: </th>
-                    <th style="border-top: 0px">Value: </th>
-                  </tr>
-                  <tr ng-repeat="(k, v) in mediatorDetails.config">
-                    <td class="mediator-settings-col1">
-                      <strong>
-                        <span ng-if="mediatorDefsMap[k].displayName">{{mediatorDefsMap[k].displayName}}</span>
-                        <span ng-if="!mediatorDefsMap[k].displayName">{{k}}</span>
-                      </strong>
-                      <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
-                    </td>
-                    <td class="mediator-settings-col2">
-                      <div ng-if="mediatorDefsMap[k].type !== 'map'">{{v}}</div>
-                      <div ng-if="mediatorDefsMap[k].type === 'map'">
-                        <a data-toggle="collapse" href="#mediator-map-table-{{k}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
-                        <div id="mediator-map-table-{{k}}" class="panel panel-default collapse">
-                          <div class="panel-body">
-                            <table class="table-condensed table-borderless">
-                              <tr ng-repeat="(mk, mv) in v">
-                                <th>{{mk}}: </th>
-                                <td>{{mv}}</td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-
+                <div mediator-config-display config-defs="mediatorDetails.configDefs" config="mediatorDetails.config"/>
               </td>
             </tr>
           </table>

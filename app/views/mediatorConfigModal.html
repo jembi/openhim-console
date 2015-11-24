@@ -12,64 +12,7 @@
 </div>
 <form class="form-horizontal" ng-submit="saveConfig()" novalidate>
   <div class="modal-body">
-    <fieldset>
-
-      <div>
-        <div class="form-group collapse-side-margins" ng-repeat="def in mediator.configDefs">
-          <div class="col-sm-4">
-          <label ng-if="def.displayName">{{def.displayName}}</label>
-          <label ng-if="!def.displayName">{{def.param}}</label>
-          <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-          </div>
-
-          <div class="col-sm-8">
-          <div ng-if="def.type === 'string'">
-            <input class="form-control" type="text" ng-model="mediator.config[def.param]">
-          </div>
-
-          <div ng-if="def.type === 'bigstring'">
-            <textarea rows="4" class="form-control" ng-model="mediator.config[def.param]"></textarea>
-          </div>
-
-          <div ng-if="def.type === 'bool'">
-            <div class="btn-group" style="margin-bottom: 10px; clear: both;">
-              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="true">True</label>
-              <label class="btn btn-primary" ng-model="mediator.config[def.param]" btn-radio="false">False</label>
-            </div>
-          </div>
-
-          <div ng-if="def.type === 'number'">
-            <input class="form-control" type="number" ng-model="mediator.config[def.param]">
-          </div>
-
-          <div ng-if="def.type === 'option'">
-            <select class="form-control" ng-options="val for val in def.values" ng-model="mediator.config[def.param]"/>
-          </div>
-
-          <div ng-if="def.type === 'map'">
-            <table class="mediator-config-map">
-              <tr ng-repeat="(mapping, _v) in mediator.config[def.param]">
-                <td>{{mapping}}</td>
-                <td><input class="form-control" type="text" ng-model="mediator.config[def.param][mapping]"></td>
-                <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
-              </tr>
-              <tr>
-                <td><input class="form-control" type="text" ng-model="inputKeys[def.param]"></td>
-                <td><input class="form-control" type="text" ng-model="inputValues[def.param]"></td>
-                <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
-              </tr>
-              <tr ng-if="doesNewKeyExist(def.param)">
-                <td><div class="has-error"><i class="glyphicon glyphicon-warning-sign"></i>Key already exists</div></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-          </div>
-        </div>
-      </div>
-
-    </fieldset>
+    <div mediator-config config-defs="mediator.configDefs" config="mediator.config"/>
   </div>
 
   <div class="modal-footer">
