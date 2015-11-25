@@ -14,6 +14,7 @@ angular.module('openhimConsoleApp')
       },
       templateUrl: 'views/partials/mediator-config.html',
       link: function(scope){
+
         scope.inputKeys = {};
         scope.inputValues = {};
 
@@ -37,6 +38,32 @@ angular.module('openhimConsoleApp')
         scope.isNewKeyValid = function (param) {
           return scope.inputKeys[param] && !scope.doesNewKeyExist(param);
         };
+
+
+        scope.inputKeysForArrays = {};
+        scope.inputValuesForArrays = {};
+
+        scope.removeMappingInArray = function (param, index, mapping) {
+          delete scope.config[param][index][mapping];
+        };
+
+        scope.addNewMappingInArray = function (param, index) {
+          if (!scope.config[param][index]) {
+            scope.config[param][index] = {};
+          }
+          scope.config[param][index][scope.inputKeysForArrays[param+index]] = scope.inputValuesForArrays[param+index];
+          scope.inputKeysForArrays[param+index] = '';
+          scope.inputValuesForArrays[param+index] = '';
+        };
+
+        scope.doesNewKeyExistInArray = function (param, index) {
+          return scope.config[param][index] && scope.config[param][index][scope.inputKeysForArrays[param+index]];
+        };
+
+        scope.isNewKeyValidInArray = function (param, index) {
+          return scope.inputKeysForArrays[param+index] && !scope.doesNewKeyExistInArray(param, index);
+        };
+
 
         scope.removeArrayItem = function (param, index) {
           scope.config[param].splice(index, 1);

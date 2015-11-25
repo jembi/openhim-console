@@ -1,4 +1,5 @@
 <fieldset>
+  <div class="content-box-large bordered-box">
   <div class="form-group collapse-side-margins" ng-repeat="def in configDefs">
 
   <div ng-if="!def.array">
@@ -96,15 +97,15 @@
         <table class="mediator-config-map">
           <tr ng-repeat="(mapping, _v) in config[def.param][$index]">
             <td>{{mapping}}</td>
-            <td><input class="form-control" type="text" ng-model="config[def.param][$index][mapping]"></td>
-            <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
+            <td><input class="form-control" type="text" ng-model="config[def.param][$parent.$index][mapping]"></td>
+            <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMappingInArray(def.param, $parent.$index, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
           </tr>
           <tr>
-            <td><input class="form-control" type="text" ng-model="inputKeys[def.param]"></td>
-            <td><input class="form-control" type="text" ng-model="inputValues[def.param]"></td>
-            <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
+            <td><input class="form-control" type="text" ng-model="inputKeysForArrays[def.param + $parent.$index]"></td>
+            <td><input class="form-control" type="text" ng-model="inputValuesForArrays[def.param + $parent.$index]"></td>
+            <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMappingInArray(def.param, $parent.$index)" ng-disabled="!isNewKeyValidInArray(def.param, $parent.$index)"><i class="glyphicon glyphicon-plus"/></button></td>
           </tr>
-          <tr ng-if="doesNewKeyExist(def.param)">
+          <tr ng-if="doesNewKeyExistInArray(def.param, $parent.$index)">
             <td><div class="has-error"><i class="glyphicon glyphicon-warning-sign"></i>Key already exists</div></td>
             <td></td>
             <td></td>
@@ -123,7 +124,7 @@
     </div><!-- ng-repeat configItem in config[def.param] -->
     <div>
       <div class="col-sm-3">
-        <div ng-if="!config[def.param]">
+        <div ng-if="!config[def.param] || config[def.param].length == 0">
           <label ng-if="def.displayName">{{def.displayName}}</label>
           <label ng-if="!def.displayName">{{def.param}}</label>
           <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
@@ -136,4 +137,5 @@
   </div><!-- if array -->
 
   </div><!-- ng-repeat def in configDefs -->
+  </div>
 </fieldset>

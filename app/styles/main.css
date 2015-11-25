@@ -683,8 +683,8 @@ body {
 .navbar-nav > li > a { padding-top: 15px; padding-bottom: 15px; }
 .navbar{ margin: 0; min-height: auto; }
 .topMenu{ display: none; }
-.dashboard-metrics-box .panel-heading { padding: 0; margin-bottom: 10px; display: inline-block; width: 100% ;}
-.dashboard-metrics-box .panel-body { padding: 0; }
+.bordered-box .panel-heading { padding: 0; margin-bottom: 10px; display: inline-block; width: 100% ;}
+.bordered-box .panel-body { padding: 0; }
 
 .responsiveTransactionIndexCheckbox label { display: none; }
 .loadMoreBtn { float: right; }
@@ -722,8 +722,8 @@ body {
 #transaction-status-graph:hover { cursor: pointer; }
 .dashboard-info-box{ box-shadow: none; margin: 0 20px 0 0 !important; float: left; font-size: 18px; background: #2c3742; color: #fff; text-align: center; }
 .dashboard-info-box strong { font-size: 30px; }
-.dashboard-metrics-box { margin-bottom: 20px !important; border: 1px solid #ccc; }
-.dashboard-metrics-box:last-child {
+.bordered-box { margin-bottom: 20px !important; border: 1px solid #ccc; }
+.bordered-box:last-child {
   margin-bottom: 0px !important;
 }
 
