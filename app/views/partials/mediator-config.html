@@ -131,7 +131,7 @@
         </div>
       </div><!-- col-sm-3 -->
       <div class="col-sm-9 text-align-right">
-        <button type="button" class="btn btn-primary btn-xs" ng-click="addNewArrayItem(def)"><i class="glyphicon glyphicon-plus"/> {{def.param}}</button>
+        <button type="button" class="btn btn-primary btn-xs" ng-click="addNewArrayItem(def)"><i class="glyphicon glyphicon-plus"/> <span ng-if="def.displayName">{{def.displayName}}</span><span ng-if="!def.displayName">{{def.param}}</span></button>
       </div>
     </div>
   </div><!-- if array -->

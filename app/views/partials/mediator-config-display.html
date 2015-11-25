@@ -1,22 +1,22 @@
 <table class="table mediator-config-table">
-  <tr ng-repeat="(k, v) in config">
+  <tr ng-repeat="(configKey, configValue) in config">
     <td class="mediator-settings-col1">
       <strong>
-        <span ng-if="mediatorDefsMap[k].displayName">{{mediatorDefsMap[k].displayName}}</span>
-        <span ng-if="!mediatorDefsMap[k].displayName">{{k}}</span>
+        <span ng-if="mediatorDefsMap[configKey].displayName">{{mediatorDefsMap[configKey].displayName}}</span>
+        <span ng-if="!mediatorDefsMap[configKey].displayName">{{configKey}}</span>
       </strong>
-      <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
+      <i ng-if="mediatorDefsMap[configKey].description" tooltip="{{mediatorDefsMap[configKey].description}}" class="glyphicon glyphicon-question-sign"></i>
     </td>
     <td class="mediator-settings-col2">
 
-      <div ng-if="!mediatorDefsMap[k].array">
-        <div ng-if="mediatorDefsMap[k].type !== 'map' && mediatorDefsMap[k].type !== 'struct'">{{v}}</div>
-        <div ng-if="mediatorDefsMap[k].type === 'map'">
+      <div ng-if="!mediatorDefsMap[configKey].array">
+        <div ng-if="mediatorDefsMap[configKey].type !== 'map' && mediatorDefsMap[configKey].type !== 'struct'">{{configValue}}</div>
+        <div ng-if="mediatorDefsMap[configKey].type === 'map'">
           <a data-toggle="collapse" href="#mediator-map-table-{{$id}}-{{$index}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
           <div id="mediator-map-table-{{$id}}-{{$index}}" class="panel panel-default collapse">
             <div class="panel-body">
               <table class="table-condensed table-borderless">
-                <tr ng-repeat="(mk, mv) in v">
+                <tr ng-repeat="(mk, mv) in configValue">
                   <th>{{mk}}: </th>
                   <td>{{mv}}</td>
                 </tr>
@@ -24,22 +24,22 @@
             </div>
           </div>
         </div>
-        <div ng-if="mediatorDefsMap[k].type === 'struct'">
-          <div mediator-nested-config-display config-defs="mediatorDefsMap[k].template" config="v"></div>
+        <div ng-if="mediatorDefsMap[configKey].type === 'struct'">
+          <div mediator-nested-config-display config-defs="mediatorDefsMap[configKey].template" config="configValue"></div>
         </div>
       </div><!-- if !array -->
 
-      <div class="content-box-large bordered-box" ng-if="mediatorDefsMap[k].array">
+      <div class="content-box-large bordered-box" ng-if="mediatorDefsMap[configKey].array">
         <table class="table-condensed table-borderless">
-          <tr ng-repeat="(arrK, arrV) in v">
+          <tr ng-repeat="(arrKey, arrayValue) in configValue">
             <td>
-              <div ng-if="mediatorDefsMap[k].type !== 'map' && mediatorDefsMap[k].type !== 'struct'">{{arrV}}</div>
-              <div ng-if="mediatorDefsMap[k].type === 'map'">
+              <div ng-if="mediatorDefsMap[configKey].type !== 'map' && mediatorDefsMap[configKey].type !== 'struct'">{{arrayValue}}</div>
+              <div ng-if="mediatorDefsMap[configKey].type === 'map'">
                 <a data-toggle="collapse" href="#mediator-map-table-{{$id}}-{{$parent.$index}}-{{$index}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
                 <div id="mediator-map-table-{{$id}}-{{$parent.$index}}-{{$index}}" class="panel panel-default collapse">
                   <div class="panel-body">
                     <table class="table-condensed table-borderless">
-                      <tr ng-repeat="(amk, amv) in arrV">
+                      <tr ng-repeat="(amk, amv) in arrayValue">
                         <th>{{amk}}: </th>
                         <td>{{amv}}</td>
                       </tr>
@@ -47,8 +47,8 @@
                   </div>
                 </div>
               </div>
-              <div ng-if="mediatorDefsMap[k].type === 'struct'">
-                <div mediator-nested-config-display config-defs="mediatorDefsMap[k].template" config="arrV"></div>
+              <div ng-if="mediatorDefsMap[configKey].type === 'struct'">
+                <div mediator-nested-config-display config-defs="mediatorDefsMap[configKey].template" config="arrayValue"></div>
               </div>
             </td>
           </tr>
