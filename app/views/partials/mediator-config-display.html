@@ -30,7 +30,7 @@
       </div><!-- if !array -->
 
       <div class="content-box-large bordered-box" ng-if="mediatorDefsMap[configKey].array">
-        <table class="table-condensed table-borderless">
+        <table class="table table-borderless">
           <tr ng-repeat="(arrKey, arrayValue) in configValue">
             <td>
               <div ng-if="mediatorDefsMap[configKey].type !== 'map' && mediatorDefsMap[configKey].type !== 'struct'">{{arrayValue}}</div>
