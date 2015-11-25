@@ -8,23 +8,53 @@
       <i ng-if="mediatorDefsMap[k].description" tooltip="{{mediatorDefsMap[k].description}}" class="glyphicon glyphicon-question-sign"></i>
     </td>
     <td class="mediator-settings-col2">
-      <div ng-if="mediatorDefsMap[k].type !== 'map' && mediatorDefsMap[k].type !== 'struct'">{{v}}</div>
-      <div ng-if="mediatorDefsMap[k].type === 'map'">
-        <a data-toggle="collapse" href="#mediator-map-table-{{$id}}-{{$index}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
-        <div id="mediator-map-table-{{$id}}-{{$index}}" class="panel panel-default collapse">
-          <div class="panel-body">
-            <table class="table-condensed table-borderless">
-              <tr ng-repeat="(mk, mv) in v">
-                <th>{{mk}}: </th>
-                <td>{{mv}}</td>
-              </tr>
-            </table>
+
+      <div ng-if="!mediatorDefsMap[k].array">
+        <div ng-if="mediatorDefsMap[k].type !== 'map' && mediatorDefsMap[k].type !== 'struct'">{{v}}</div>
+        <div ng-if="mediatorDefsMap[k].type === 'map'">
+          <a data-toggle="collapse" href="#mediator-map-table-{{$id}}-{{$index}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
+          <div id="mediator-map-table-{{$id}}-{{$index}}" class="panel panel-default collapse">
+            <div class="panel-body">
+              <table class="table-condensed table-borderless">
+                <tr ng-repeat="(mk, mv) in v">
+                  <th>{{mk}}: </th>
+                  <td>{{mv}}</td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-      <div ng-if="mediatorDefsMap[k].type === 'struct'">
-        <div mediator-nested-config-display config-defs="mediatorDefsMap[k].template" config="v"></div>
-      </div>
+        <div ng-if="mediatorDefsMap[k].type === 'struct'">
+          <div mediator-nested-config-display config-defs="mediatorDefsMap[k].template" config="v"></div>
+        </div>
+      </div><!-- if !array -->
+
+      <div class="content-box-large bordered-box" ng-if="mediatorDefsMap[k].array">
+        <table class="table-condensed table-borderless">
+          <tr ng-repeat="(arrK, arrV) in v">
+            <td>
+              <div ng-if="mediatorDefsMap[k].type !== 'map' && mediatorDefsMap[k].type !== 'struct'">{{arrV}}</div>
+              <div ng-if="mediatorDefsMap[k].type === 'map'">
+                <a data-toggle="collapse" href="#mediator-map-table-{{$id}}-{{$parent.$index}}-{{$index}}">Show Values <i class="glyphicon glyphicon-chevron-down"></i></a>
+                <div id="mediator-map-table-{{$id}}-{{$parent.$index}}-{{$index}}" class="panel panel-default collapse">
+                  <div class="panel-body">
+                    <table class="table-condensed table-borderless">
+                      <tr ng-repeat="(amk, amv) in arrV">
+                        <th>{{amk}}: </th>
+                        <td>{{amv}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="mediatorDefsMap[k].type === 'struct'">
+                <div mediator-nested-config-display config-defs="mediatorDefsMap[k].template" config="arrV"></div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div><!-- if array -->
+
     </td>
   </tr>
 </table>
