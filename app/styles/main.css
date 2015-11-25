@@ -929,6 +929,8 @@ body {
 .mediator-settings-col1 { width: 25%; }
 .mediator-settings-col2 { width: 75%; }
 
+.text-align-right { text-align: right; }
+
 /*------- Custom CSS Changes ----*/
 
 /* Responsive CSS */

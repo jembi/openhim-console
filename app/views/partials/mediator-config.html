@@ -1,10 +1,12 @@
 <fieldset>
   <div class="form-group collapse-side-margins" ng-repeat="def in configDefs">
+
+  <div ng-if="!def.array">
     <div class="col-sm-3">
     <label ng-if="def.displayName">{{def.displayName}}</label>
     <label ng-if="!def.displayName">{{def.param}}</label>
     <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-    </div>
+    </div><!-- col-sm-3 -->
 
     <div class="col-sm-9">
     <div ng-if="def.type === 'string'">
@@ -53,6 +55,85 @@
     <div ng-if="def.type === 'struct'">
       <div mediator-nested-config config-defs="def.template" config="config[def.param]"></div>
     </div>
+    </div><!-- col-sm-9 -->
+  </div><!-- if !array -->
+
+  <div ng-if="def.array">
+    <div ng-repeat="configItem in config[def.param] track by $index">
+      <div class="col-sm-3">
+        <div ng-if="$index == 0">
+          <label ng-if="def.displayName">{{def.displayName}}</label>
+          <label ng-if="!def.displayName">{{def.param}}</label>
+          <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </div>
+      </div><!-- col-sm-3 -->
+
+      <div class="col-sm-8">
+      <div ng-if="def.type === 'string'">
+        <input class="form-control" type="text" ng-model="config[def.param][$index]">
+      </div>
+
+      <div ng-if="def.type === 'bigstring'">
+        <textarea rows="4" class="form-control" ng-model="config[def.param][$index]"></textarea>
+      </div>
+
+      <div ng-if="def.type === 'bool'">
+        <div class="btn-group" style="margin-bottom: 10px; clear: both;">
+          <label class="btn btn-primary" ng-model="config[def.param][$index]" btn-radio="true">True</label>
+          <label class="btn btn-primary" ng-model="config[def.param][$index]" btn-radio="false">False</label>
+        </div>
+      </div>
+
+      <div ng-if="def.type === 'number'">
+        <input class="form-control" type="number" ng-model="config[def.param][$index]">
+      </div>
+
+      <div ng-if="def.type === 'option'">
+        <select class="form-control" ng-options="val for val in def.values" ng-model="config[def.param][$index]"/>
+      </div>
+
+      <div ng-if="def.type === 'map'">
+        <table class="mediator-config-map">
+          <tr ng-repeat="(mapping, _v) in config[def.param][$index]">
+            <td>{{mapping}}</td>
+            <td><input class="form-control" type="text" ng-model="config[def.param][$index][mapping]"></td>
+            <td><button type="button" class="btn btn-danger btn-xs" ng-click="removeMapping(def.param, mapping)"><i class="glyphicon glyphicon-remove"/></button></td>
+          </tr>
+          <tr>
+            <td><input class="form-control" type="text" ng-model="inputKeys[def.param]"></td>
+            <td><input class="form-control" type="text" ng-model="inputValues[def.param]"></td>
+            <td><button type="button" class="btn btn-primary btn-xs" ng-click="addNewMapping(def.param)" ng-disabled="!isNewKeyValid(def.param)"><i class="glyphicon glyphicon-plus"/></button></td>
+          </tr>
+          <tr ng-if="doesNewKeyExist(def.param)">
+            <td><div class="has-error"><i class="glyphicon glyphicon-warning-sign"></i>Key already exists</div></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+
+      <div ng-if="def.type === 'struct'">
+        <div mediator-nested-config config-defs="def.template" config="config[def.param][$index]"></div>
+      </div>
+      </div><!-- col-sm-8 -->
+
+      <div class="col-sm-1 text-align-right">
+        <button type="button" class="btn btn-danger btn-xs" ng-click="removeArrayItem(def.param, $index)"><i class="glyphicon glyphicon-remove"/></button>
+      </div><!-- col-sm-1 -->
+    </div><!-- ng-repeat configItem in config[def.param] -->
+    <div>
+      <div class="col-sm-3">
+        <div ng-if="!config[def.param]">
+          <label ng-if="def.displayName">{{def.displayName}}</label>
+          <label ng-if="!def.displayName">{{def.param}}</label>
+          <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </div>
+      </div><!-- col-sm-3 -->
+      <div class="col-sm-9 text-align-right">
+        <button type="button" class="btn btn-primary btn-xs" ng-click="addNewArrayItem(def)"><i class="glyphicon glyphicon-plus"/> {{def.param}}</button>
+      </div>
     </div>
-  </div>
+  </div><!-- if array -->
+
+  </div><!-- ng-repeat def in configDefs -->
 </fieldset>

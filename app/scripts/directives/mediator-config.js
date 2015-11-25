@@ -37,6 +37,27 @@ angular.module('openhimConsoleApp')
         scope.isNewKeyValid = function (param) {
           return scope.inputKeys[param] && !scope.doesNewKeyExist(param);
         };
+
+        scope.removeArrayItem = function (param, index) {
+          scope.config[param].splice(index, 1);
+        };
+
+        scope.addNewArrayItem = function (def) {
+          if (!scope.config[def.param]){
+            scope.config[def.param] = [];
+          }
+
+          var newItem = '';
+          switch (def.type) {
+            case 'bool': newItem = false; break;
+            case 'number': newItem = 0; break;
+            case 'option': newItem = def.values[0]; break;
+            case 'map': newItem = {}; break;
+            case 'struct': newItem = {}; break;
+          }
+
+          scope.config[def.param].push(newItem);
+        };
       }
     };
   })
