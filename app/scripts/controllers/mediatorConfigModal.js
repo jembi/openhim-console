@@ -2,9 +2,6 @@
 
 angular.module('openhimConsoleApp')
   .controller('MediatorConfigModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, mediator) {
-    $scope.inputKeys = {};
-    $scope.inputValues = {};
-
     $scope.mediator = Api.Mediators.get({ urn: mediator.urn }, function(){
       if (!$scope.mediator.config) {
         $scope.mediator.config = {};
@@ -32,26 +29,5 @@ angular.module('openhimConsoleApp')
 
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
-    };
-
-    $scope.removeMapping = function (param, mapping) {
-      delete $scope.mediator.config[param][mapping];
-    };
-
-    $scope.addNewMapping = function (param) {
-      if (!$scope.mediator.config[param]) {
-        $scope.mediator.config[param] = {};
-      }
-      $scope.mediator.config[param][$scope.inputKeys[param]] = $scope.inputValues[param];
-      $scope.inputKeys[param] = '';
-      $scope.inputValues[param] = '';
-    };
-
-    $scope.doesNewKeyExist = function (param) {
-      return $scope.mediator.config[param] && $scope.mediator.config[param][$scope.inputKeys[param]];
-    };
-
-    $scope.isNewKeyValid = function (param) {
-      return $scope.inputKeys[param] && !$scope.doesNewKeyExist(param);
     };
   });
