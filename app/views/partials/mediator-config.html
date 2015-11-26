@@ -118,7 +118,7 @@
       </div>
       </div><!-- col-sm-8 -->
 
-      <div class="col-sm-1 text-align-right">
+      <div class="col-sm-1 mediator-config-col">
         <button type="button" class="btn btn-danger btn-xs" ng-click="removeArrayItem(def.param, $index)"><i class="glyphicon glyphicon-remove"/></button>
       </div><!-- col-sm-1 -->
     </div><!-- ng-repeat configItem in config[def.param] -->
@@ -130,7 +130,7 @@
           <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </div>
       </div><!-- col-sm-3 -->
-      <div class="col-sm-9 text-align-right">
+      <div class="col-sm-9 mediator-config-col">
         <button type="button" class="btn btn-primary btn-xs" ng-click="addNewArrayItem(def)"><i class="glyphicon glyphicon-plus"/> <span ng-if="def.displayName">{{def.displayName}}</span><span ng-if="!def.displayName">{{def.param}}</span></button>
       </div>
     </div>

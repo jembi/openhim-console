@@ -929,7 +929,7 @@ body {
 .mediator-settings-col1 { width: 25%; }
 .mediator-settings-col2 { width: 75%; }
 
-.text-align-right { text-align: right; }
+.mediator-config-col { text-align: right; padding-top: 10px !important; }
 
 /*------- Custom CSS Changes ----*/
 

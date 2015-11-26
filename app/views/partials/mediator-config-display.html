@@ -31,7 +31,7 @@
 
       <div class="content-box-large bordered-box" ng-if="mediatorDefsMap[configKey].array">
         <table class="table table-borderless">
-          <tr ng-repeat="(arrKey, arrayValue) in configValue track by $index">
+          <tr ng-repeat="arrayValue in configValue track by $index">
             <td>
               <div ng-if="mediatorDefsMap[configKey].type !== 'map' && mediatorDefsMap[configKey].type !== 'struct'">{{arrayValue}}</div>
               <div ng-if="mediatorDefsMap[configKey].type === 'map'">
@@ -48,7 +48,8 @@
                 </div>
               </div>
               <div ng-if="mediatorDefsMap[configKey].type === 'struct'">
-                <div mediator-nested-config-display config-defs="mediatorDefsMap[configKey].template" config="arrayValue"></div>
+                <div ng-if="!arrayValue"><span class="label label-default"><i>None</i></span></div>
+                <div ng-if="arrayValue" mediator-nested-config-display class="bordered-box" config-defs="mediatorDefsMap[configKey].template" config="arrayValue"></div>
               </div>
             </td>
           </tr>
