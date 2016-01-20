@@ -223,11 +223,21 @@ angular.module('openhimConsoleApp')
       data = JSON.parse(data);
 
       var totalRecords = 0;
-      totalRecords += data.Clients.length;
-      totalRecords += data.Channels.length;
-      totalRecords += data.ContactGroups.length;
-      totalRecords += data.Users.length;
-      totalRecords += data.Mediators.length;
+      if (data.Clients) {
+        totalRecords += data.Clients.length;
+      }
+      if (data.Channels) {
+        totalRecords += data.Channels.length;
+      }
+      if (data.ContactGroups) {
+        totalRecords += data.ContactGroups.length;
+      }
+      if (data.Users) {
+        totalRecords += data.Users.length;
+      }
+      if (data.Mediators) {
+        totalRecords += data.Mediators.length;
+      }
 
       var doneItems = 0;
 
