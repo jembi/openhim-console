@@ -77,14 +77,15 @@
               </select>
             </div>
             <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
-              <label>Was Rerun: </label>
+              <label>Method: </label>
               <select class="form-control"
-                ng-model="filters.transaction.wasRerun"
-                ng-class="{formControlNotEmpty: filters.transaction.wasRerun}">
-                <option value="">Don't filter</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+                  ng-model="filters.transaction.method"
+                  ng-class="{formControlNotEmpty: filters.transaction.method}">
+                  <option value="">Don't filter</option>
+                  <option value="GET">GET</option>
+                  <option value="POST">POST</option>
+                  <option value="PUT">PUT</option>
+                </select>
             </div>
           </div>
           <div class="settings_div">
@@ -103,17 +104,6 @@
                 ng-model="filters.transaction.propertyValue"
                 ng-class="{formControlNotEmpty: filters.transaction.propertyValue}">
             </div>
-          </div>
-          <div class="settings_div">
-            <label>Method: </label>
-            <select class="form-control"
-                ng-model="filters.transaction.method"
-                ng-class="{formControlNotEmpty: filters.transaction.method}">
-                <option value="">Don't filter</option>
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-              </select>
           </div>
         </div>
       </div>
@@ -275,7 +265,7 @@
         <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="end date" ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-change="applyFiltersToUrl()" />
       </div>
     </div>
-    <div class="settings_div" style="float: left;">
+    <div class="settings_div" style="float: left; margin-right: 15px;">
       <label>
         Limit:
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
@@ -289,6 +279,19 @@
         <option value="500">500</option>
       </select>
     </div>
+    <div class="settings_div" style="float: right;">
+      <label>
+        Show Reruns: 
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set whether to only show transactions that have been rerun" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <select class="form-control"
+        ng-change="applyFiltersToUrl()"
+        ng-model="filters.transaction.wasRerun">
+        <option value="dont-filter">Don't filter</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>  
 
   </div>
 

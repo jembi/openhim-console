@@ -53,6 +53,8 @@ angular.module('openhimConsoleApp')
     $scope.filters.transaction = {};
     $scope.filters.route = {};
     $scope.filters.orchestration = {};
+    // default value for reruns filter
+    $scope.filters.transaction.wasRerun = 'no';
 
     // check if no parameters exist and user has settings defined
     if ( angular.equals({}, $location.search()) && userSettings ){
@@ -80,6 +82,7 @@ angular.module('openhimConsoleApp')
     if ( $location.search().limit ){ $scope.settings.filter.limit = $location.search().limit; }
     if ( $location.search().startDate ){ $scope.settings.filter.startDate = $location.search().startDate; }
     if ( $location.search().endDate ){ $scope.settings.filter.endDate = $location.search().endDate; }
+    if ( $location.search().txWasRerun ){ $scope.filters.transaction.wasRerun = $location.search().txWasRerun; }
 
     // search for transaction filters
     if ( $location.search().txStatus ){ $scope.filters.transaction.status = $location.search().txStatus; }
@@ -111,10 +114,6 @@ angular.module('openhimConsoleApp')
     }
     if ( $location.search().txClient ){
       $scope.filters.transaction.client = $location.search().txClient;
-      $scope.advancedFilters.isCollapsed = false;
-    }
-    if ( $location.search().txWasRerun ){
-      $scope.filters.transaction.wasRerun = $location.search().txWasRerun;
       $scope.advancedFilters.isCollapsed = false;
     }
     if ( $location.search().txPropertyKey ){
