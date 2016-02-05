@@ -22,6 +22,7 @@
                     <th width="50">#</th>
                     <th>Channel Name</th>
                     <th>Channel Description</th>
+                    <th>Channel URL</th>
                     <th>Monitoring</th>
                     <th>Status</th>
                     <th width="80"></th>
@@ -38,6 +39,7 @@
                     <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.description }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.description }}</span>
                   </td>
+                  <td data-title="Channel URL">{{ channel.urlPattern }}</td>
                   <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">
 
