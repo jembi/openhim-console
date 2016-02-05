@@ -65,11 +65,12 @@ describe('Controller: ChannelsModalCtrl', function () {
     var modalInstance = sinon.spy();
 
 
-    createController = function (channel) {
+    createController = function (channel, channelDuplicate) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: channel
+        channel: channel,
+        channelDuplicate: channelDuplicate
       });
     };
     createControllerRoutes = function () {
@@ -99,6 +100,19 @@ describe('Controller: ChannelsModalCtrl', function () {
 
     scope.channel.should.be.ok;
   });
+
+
+
+  it('should create a duplicate channel from an existing channel', function () {
+    createController(null, 'test');
+    httpBackend.flush();
+
+    scope.channel.should.be.ok;
+    scope.channel.should.not.have.property('_id');
+    scope.channel.should.not.have.property('name');
+  });
+
+
 
   it('should run validateFormChannels() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
     createController();
@@ -273,11 +287,12 @@ describe('Controller: channelBasicInfoCtrl', function () {
     q = $q;
 
     var modalInstance = sinon.spy();
-    createControllerParent = function (channel) {
+    createControllerParent = function (channel, channelDuplicate) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: channel
+        channel: channel,
+        channelDuplicate: channelDuplicate
       });
     };
     createController = function () {
@@ -346,7 +361,8 @@ describe('Controller: channelAccessControlCtrl', function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: null,
+        channelDuplicate: null
       });
     };
     createController = function () {
@@ -398,7 +414,8 @@ describe('Controller: channelContentMatchingCtrl', function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: channel
+        channel: channel,
+        channelDuplicate: null
       });
     };
     createController = function () {
@@ -478,7 +495,8 @@ describe('Controller: channelRoutesCtrl', function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: null,
+        channelDuplicate: null
       });
     };
     createController = function () {
@@ -737,7 +755,8 @@ describe('Controller: channelAlertsCtrl', function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: null,
+        channelDuplicate: null
       });
     };
     createController = function () {
@@ -770,7 +789,8 @@ describe('Controller: channelSettingsCtrl', function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: null
+        channel: null,
+        channelDuplicate: null
       });
     };
     createController = function () {

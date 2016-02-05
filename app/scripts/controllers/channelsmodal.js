@@ -2,7 +2,7 @@
 
 var app = angular.module('openhimConsoleApp');
 
-app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel) {
+app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate) {
 
   /****************************************************************/
   /**   These are the functions for the Channel initial load     **/
@@ -32,7 +32,17 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     });
   }else{
     $scope.update = false;
-    $scope.channel = new Api.Channels();
+    if ( channelDuplicate ){
+      $scope.channelDuplicate = true;
+      $scope.channel = Api.Channels.get({ channelId: channelDuplicate }, function (result) {
+        delete( result._id );
+        delete( result.name );
+        $scope.channel = result;
+      });
+
+    }else{
+      $scope.channel = new Api.Channels();
+    }
   }
 
   /****************************************************************/
@@ -278,8 +288,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 // nested controller for the channel basic info tab
 app.controller('channelBasicInfoCtrl', function ($scope) {
 
-  // if update is true
-  if ($scope.update) {
+  var setUrlPattern = function(){
     $scope.channel.$promise.then(function () {
       // check if urlPattern has regex delimiters
       var urlPatternLength = $scope.channel.urlPattern.length;
@@ -292,11 +301,21 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
         $scope.urlPattern.regex = false;
       }
     });
+  };
+
+  // if update is true
+  if ($scope.update) {
+    setUrlPattern();
   }else{
     // set default options if new channel
     $scope.channel.type = 'http';
     $scope.channel.authType = 'private';
     $scope.channel.status = 'enabled';
+
+    if ( $scope.channelDuplicate ){
+      setUrlPattern();
+    }
+
   }
 
 });
