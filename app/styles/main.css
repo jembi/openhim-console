@@ -1333,3 +1333,29 @@ label { position: relative; }
 .subtitle {
   color: #999999;
 }
+
+.channelPriorityOrdering {
+  display: none; 
+  margin-left: 10px;
+  position: absolute;
+}
+
+.channelPriorityOrdering .priorityUp {
+  margin-top: -5px; 
+  float: left;
+}
+
+.channelPriorityOrdering .priorityDown {
+  margin-top: 5px; 
+  margin-left: -1px; 
+  float: left; 
+  clear: both;
+}
+
+.channelPriorityOrdering .priorityUp:hover, .channelPriorityOrdering .priorityDown:hover {
+  cursor: pointer;
+}
+
+.channelListingTable tr:hover .channelPriorityOrdering {
+  display: inline-block;
+}
