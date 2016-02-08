@@ -303,19 +303,14 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
     });
   };
 
-  // if update is true
-  if ($scope.update) {
+  // if update/channelDuplicate is true
+  if ($scope.update || $scope.channelDuplicate) {
     setUrlPattern();
   }else{
     // set default options if new channel
     $scope.channel.type = 'http';
     $scope.channel.authType = 'private';
     $scope.channel.status = 'enabled';
-
-    if ( $scope.channelDuplicate ){
-      setUrlPattern();
-    }
-
   }
 
 });
