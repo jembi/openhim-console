@@ -639,17 +639,21 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     return false;
   };
 
+  var isRouteEnabled = function(route) {
+    return (route.status === null) || route.status === 'enabled';
+  };
+
   $scope.noPrimaries = function () {
     if ($scope.channel.routes) {
       for (var i = 0 ; i < $scope.channel.routes.length ; i++) {
-        if ($scope.channel.routes[i].primary === true) {
+        if (isRouteEnabled($scope.channel.routes[i]) && $scope.channel.routes[i].primary === true) {
           // atleast one primary so return false
           return false;
         }
       }
     }
     // return true if no primary routes found
-    Alerting.AlertAddMsg('route', 'warning', 'Atleast one of your routes must be set to the primary.');
+    Alerting.AlertAddMsg('route', 'warning', 'At least one of your enabled routes must be set to primary.');
     return true;
   };
 
@@ -658,7 +662,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       var routes = $scope.channel.routes;
       var count = 0;
       for (var i = 0 ; i < routes.length ; i++) {
-        if (routes[i].primary === true) {
+        if (isRouteEnabled(routes[i]) && routes[i].primary === true) {
           count++;
         }
 
