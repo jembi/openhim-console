@@ -473,7 +473,8 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         primary: primary,
         username: '',
         password: '',
-        type : 'http'
+        type : 'http',
+        status: 'enabled'
       };
     }else if ( type === 'edit' ){
       // show add/edit box
