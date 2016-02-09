@@ -525,7 +525,8 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         primary: primary,
         username: username,
         password: password,
-        type : routeType
+        type : routeType,
+        status: 'enabled'
       });
       // reset selected mediator option
       $scope.mediator.route = null;
@@ -641,7 +642,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
   };
 
   var isRouteEnabled = function(route) {
-    return (route.status === null) || route.status === 'enabled';
+    return (typeof route.status === 'undefined' || route.status === null) || route.status === 'enabled';
   };
 
   $scope.noPrimaries = function () {
