@@ -1333,3 +1333,7 @@ label { position: relative; }
 .subtitle {
   color: #999999;
 }
+
+.setPasswordHasErrors {
+  float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;
+}

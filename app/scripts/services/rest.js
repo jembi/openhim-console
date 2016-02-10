@@ -52,10 +52,6 @@ angular.module('openhimConsoleApp')
       // endpoint to restart the core server
       Restart: $resource( server + '/restart', {}),
 
-
-
-
-
       // User Token
       UserPasswordToken: $resource( server + '/token/:token', { token: '@token' }, {
         update: { method: 'PUT' }
@@ -63,10 +59,6 @@ angular.module('openhimConsoleApp')
 
       // user reset password request
       UserPasswordResetRequest: $resource( server + '/password-reset-request/:email', { email: '@email' }, {}),
-
-
-
-
 
       Keystore: $resource( server + '/keystore/:type/:property', { type: '@type', property: '@property' }, {
         update: { method: 'PUT' }
