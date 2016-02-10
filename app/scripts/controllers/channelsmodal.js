@@ -547,6 +547,10 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     $scope.routeAddEdit = false;
   };
 
+  $scope.onRouteDisable = function(route){
+    route.primary = false;
+  };
+
 
   /****************************************/
   /**   Functions for Channel Routes     **/

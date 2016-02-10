@@ -23,7 +23,7 @@
         <label>Status</label><br />
         <div class="btn-group" style="clear: both;">
           <label class="btn btn-primary" ng-model="newRoute.status" btn-radio="'enabled'">Enabled</label>
-          <label class="btn btn-primary" ng-model="newRoute.status" btn-radio="'disabled'">Disabled</label>
+          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" btn-radio="'disabled'">Disabled</label>
         </div>
       </div>
     </div>
