@@ -1,0 +1,41 @@
+'use strict';
+
+angular.module('openhimConsoleApp')
+  .controller('ForgotPasswordCtrl', function ($scope, Alerting, Api) {
+
+    $scope.userEmail = '';
+    $scope.showFormCtrl = true;
+
+    $scope.submitRequest = function(){
+      // reset alert object
+      Alerting.AlertReset();
+      var userEmail = $scope.userEmail;
+
+      if(!userEmail){
+        Alerting.AlertAddMsg('forgotPassword', 'danger', 'Please provide your email address');
+      }else if(userEmail==='root@openhim.org'){
+        Alerting.AlertAddMsg('forgotPassword', 'danger', 'Cannot reset password for "root@openhim.org"');
+      }else{
+        Alerting.AlertAddMsg('forgotPassword', 'warning', 'Busy checking your credentials...');
+
+        //autheticate valid email address
+        Api.Authenticate.get({ email: userEmail }, function () {
+
+          // send request to API - create token/expiry for email user
+          Api.UserPasswordResetRequest.get({ email: userEmail }, function () {
+            Alerting.AlertReset();
+            Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...');
+            $scope.showFormCtrl = false;
+          }, function(err){
+            console.log(err);
+          });
+
+        }, function () {
+          Alerting.AlertReset();
+          Alerting.AlertAddMsg('forgotPassword', 'danger', 'Could not authenticate email address');
+        });
+      }
+
+    };
+
+  });
