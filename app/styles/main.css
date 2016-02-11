@@ -1337,3 +1337,11 @@ label { position: relative; }
 .setPasswordHasErrors {
   float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;
 }
+
+.loginBoxLink {
+  display: inline-block; width: 100%;
+}
+
+.loginBoxLink a {
+  float: right;
+}
