@@ -27,13 +27,12 @@
             <table class="table table-striped channelListingTable">
               <thead>
                   <tr>
-                    <th width="50">#</th>
-                    <th>Channel Name</th>
-                    <th>Channel URL</th>
-                    <th>
+                    <th width="80">
                       Priority
                       <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign"></i>
                     </th>
+                    <th>Channel Name</th>
+                    <th>Channel URL Pattern</th>
                     <th>Description</th>
                     <th>Monitoring</th>
                     <th>Status</th>
@@ -41,24 +40,20 @@
                   </tr>
               </thead>
               <tbody>
-                <!--<tr ng-repeat="channel in channels | orderBy:['-status','name']">-->
-                <tr ng-repeat="channel in channels | orderBy:['priority','name']">
-                  <td data-title="#{{ $index +1 }}">{{ $index +1 }}</td>
+                <tr ng-repeat="channel in channels | orderBy:['-status', 'priority','name']">
+                  <td data-title="Priority" align="left" style="font-weight: bold">
+                    <div class="channelPriorityOrdering">
+                      <i class="glyphicon glyphicon-circle-arrow-up priorityUp" ng-if="channel.priority > 1 || !channel.priority" ng-click="updateChannelPriority(channel, 'up');"></i>
+                      <i class="glyphicon glyphicon-circle-arrow-down priorityDown" ng-if="channel.priority" ng-click="updateChannelPriority(channel, 'down');"></i>
+                    </div>
+                    <span ng-if="channel.priority">{{ channel.priority }}</span>
+                    <span ng-if="!channel.priority">-</span>
+                  </td>
                   <td data-title="Channel Name">
                     <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
-                  <td data-title="Channel URL">{{ channel.urlPattern }}</td>
-                  <td data-title="Priority">
-                    <div style="float: left;">
-                      <span ng-if="channel.priority">{{ channel.priority }}</span>
-                      <span ng-if="!channel.priority">-</span>
-                    </div>
-                    <div class="channelPriorityOrdering" style="float: left;">
-                      <i class="glyphicon glyphicon-chevron-up priorityUp" ng-if="channel.priority > 1 || !channel.priority" ng-click="updateChannelPriority(channel, 'up');"></i>
-                      <i class="glyphicon glyphicon-chevron-down priorityDown" ng-if="channel.priority" ng-click="updateChannelPriority(channel, 'down');"></i>
-                    </div>
-                  </td>
+                  <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
                   <td data-title="Description">
                     <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.description }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.description }}</span>

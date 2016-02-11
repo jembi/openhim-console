@@ -1336,20 +1336,18 @@ label { position: relative; }
 
 .channelPriorityOrdering {
   display: none; 
-  margin-left: 10px;
-  position: absolute;
+  float: right;
+  width: 45px;
 }
 
-.channelPriorityOrdering .priorityUp {
-  margin-top: -5px; 
+.priorityUp {
+  font-size: 17px;
   float: left;
 }
 
-.channelPriorityOrdering .priorityDown {
-  margin-top: 5px; 
-  margin-left: -1px; 
-  float: left; 
-  clear: both;
+.priorityDown {
+  font-size: 17px;
+  float: right;
 }
 
 .channelPriorityOrdering .priorityUp:hover, .channelPriorityOrdering .priorityDown:hover {
@@ -1357,5 +1355,5 @@ label { position: relative; }
 }
 
 .channelListingTable tr:hover .channelPriorityOrdering {
-  display: inline-block;
+  display: block;
 }
