@@ -196,8 +196,8 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
       paramsString = '?' + paramsString;
     }
 
-    // success redirect happens on login.js controller - ignore current login route
-    if ( curRoute !== '/login' && curRoute !== '/logout' && curRoute.indexOf('/set-password') === -1 ){
+    // success redirect happens on login.js controller - ignore these routes
+    if ( curRoute !== '/login' && curRoute !== '/logout' && curRoute !== '/forgot-password' && curRoute.indexOf('/set-password') === -1 ){
       $rootScope.referringURL = curRoute + paramsString;
     }
 
