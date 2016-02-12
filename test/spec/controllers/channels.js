@@ -148,14 +148,6 @@ describe('Controller: ChannelsCtrl', function () {
     lowestLevel.should.equal(7);
   });
 
-  /*it('should successfully updateChannelPriority level', function () {
-    createController();
-    httpBackend.flush();
-
-    scope.updateChannelPriority(channel, 'up');
-    httpBackend.flush();
-  });*/
-
 
   it('should successfully updateChannelPriority level', function () {
     createController();
@@ -188,10 +180,5 @@ describe('Controller: ChannelsCtrl', function () {
     scope.channels[1].$update.should.be.called;
     scope.channels[2].$update.should.be.called;
   });
-
-
-
-
-
 
 });
