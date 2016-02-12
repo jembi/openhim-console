@@ -38,7 +38,8 @@ angular.module('openhimConsoleApp')
             Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...');
             $scope.showFormCtrl = false;
           }, function(err){
-            console.log(err);
+            Alerting.AlertReset();
+            Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator');
           });
 
         }, function () {
