@@ -144,7 +144,7 @@ angular.module('openhimConsoleApp')
       var newPriority;
       var curPriority = channel.priority;
       if ( !curPriority ){
-        newPriority = getLowestPriority() + 1;
+        newPriority = $scope.getLowestPriority() + 1;
       }else{
         // set priority to lower number ( minus 1 )
         if ( direction === 'up' ){
@@ -160,12 +160,12 @@ angular.module('openhimConsoleApp')
         // reload channels
         $scope.$broadcast('channelsChanged');
       }, function( err ){
-        console.log( err );
+        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while updating the channel: #' + err.status + ' - ' + err.data);
       });
 
     };
 
-    var getLowestPriority = function(){
+    $scope.getLowestPriority = function(){
       var lowestPriority = 0;
       for (var i = 0; i<$scope.channels.length; i++){
         if ( $scope.channels[i].priority && $scope.channels[i].priority > lowestPriority){
