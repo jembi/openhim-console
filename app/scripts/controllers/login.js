@@ -4,6 +4,8 @@
 angular.module('openhimConsoleApp')
   .controller('LoginCtrl', function ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api) {
 
+    $scope.emailFocus = true;
+    $scope.passwordFocus = false;
     $scope.rootPasswordReset = false;
     $scope.resetSuccess = false;
 
@@ -25,6 +27,8 @@ angular.module('openhimConsoleApp')
 
     if ( $location.search().email ){
       $scope.loginEmail = $location.search().email;
+      $scope.emailFocus = false;
+      $scope.passwordFocus = true;
     }
 
     $scope.validateLogin = function(){

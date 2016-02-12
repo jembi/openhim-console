@@ -5,8 +5,8 @@
         <div class="content-wrap" ng-show="!rootPasswordReset">
           <h6>Sign In</h6>
           <form ng-submit="validateLogin()">
-            <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="{{ !loginEmail }}">
-            <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password" focus="{{ loginEmail !== '' }}">
+            <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="{{emailFocus}}">
+            <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password" focus="{{passwordFocus}}">
             <div class="loginBoxLink">
               <a href="#/forgot-password/{{ linkUserEmail }}">Forgot your password?</a>
             </div>
