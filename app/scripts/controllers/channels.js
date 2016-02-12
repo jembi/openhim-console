@@ -156,7 +156,8 @@ angular.module('openhimConsoleApp')
         }  
       }
 
-      Api.Channels.update({ _id: channel._id, priority: newPriority }, function(){
+      channel.priority = newPriority;
+      channel.$update(function(){
         // reload channels
         $scope.$broadcast('channelsChanged');
       }, function( err ){

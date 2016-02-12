@@ -161,18 +161,19 @@ describe('Controller: ChannelsCtrl', function () {
     createController();
     httpBackend.flush();
 
+    scope.channels[0].$update = sinon.spy();
+    scope.channels[1].$update = sinon.spy();
+    scope.channels[2].$update = sinon.spy();
+
     scope.channels[0].should.have.property('priority', 1);
     scope.channels[1].should.have.property('priority', 5);
     scope.channels[2].should.have.property('priority', 7);
 
     // up the priority level - Should stay the same as 1 is the highest
     scope.updateChannelPriority(scope.channels[0], 'up');
-    //httpBackend.flush();
     scope.channels[0].should.have.property('priority', 1);
     scope.updateChannelPriority(scope.channels[0], 'down');
-    
     scope.channels[0].should.have.property('priority', 2);
-    httpBackend.flush();
 
     scope.updateChannelPriority(scope.channels[1], 'up');
     scope.updateChannelPriority(scope.channels[1], 'up');
@@ -182,6 +183,10 @@ describe('Controller: ChannelsCtrl', function () {
     scope.updateChannelPriority(scope.channels[2], 'down');
     scope.updateChannelPriority(scope.channels[2], 'down');
     scope.channels[2].should.have.property('priority', 10);   
+
+    scope.channels[0].$update.should.be.called;
+    scope.channels[1].$update.should.be.called;
+    scope.channels[2].$update.should.be.called;
   });
 
 
