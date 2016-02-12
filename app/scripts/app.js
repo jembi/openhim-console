@@ -269,7 +269,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
     }else{
 
       //if not 'set-password' page
-      if ( $location.path().indexOf('set-password') !== 1 && $location.path().indexOf('forgot-password') !== 1 ){
+      if ( $location.path().indexOf('set-password') !== 1 && $location.path().indexOf('forgot-password') !== 1 && $location.path().indexOf('login') !== 1 ){
         //No session - user needs to log in
         $window.location = '#/login';
       }

@@ -1,10 +1,21 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('ForgotPasswordCtrl', function ($scope, Alerting, Api) {
+  .controller('ForgotPasswordCtrl', function ($scope, $location, Alerting, Api) {
 
     $scope.userEmail = '';
     $scope.showFormCtrl = true;
+    $scope.linkUserEmail = '';
+
+    $scope.$watch('userEmail', function (newVal, oldVal) {
+      if ( newVal || newVal !== oldVal ){
+        $scope.linkUserEmail = '?email=' + newVal;
+      }
+    });
+
+    if ( $location.search().email ){
+      $scope.userEmail = $location.search().email;
+    }
 
     $scope.submitRequest = function(){
       // reset alert object
