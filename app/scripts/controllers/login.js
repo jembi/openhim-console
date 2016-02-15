@@ -2,7 +2,9 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimConsoleApp')
-  .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api) {
+  .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api, config) {
+
+    $scope.config = config;
 
     $scope.rootPasswordReset = false;
     $scope.resetSuccess = false;
@@ -28,6 +30,7 @@ angular.module('openhimConsoleApp')
         // reset alert to show processing message
         Alerting.AlertReset();
         Alerting.AlertAddMsg('login', 'warning', 'Busy checking your credentials...');
+        $scope.coreConnectionError = false;
 
         //check login credentials and create session if valid
         $scope.checkLoginCredentials(loginEmail, loginPassword);
@@ -60,7 +63,7 @@ angular.module('openhimConsoleApp')
 
         }else{
           if ( result === 'Internal Server Error' ){
-            Alerting.AlertAddServerMsg();
+            $scope.coreConnectionError = true;
           }else{
             Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again');
           }
