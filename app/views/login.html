@@ -48,6 +48,13 @@
         </div>
       </div>
 
+      <div ng-if="coreConnectionError" class="alert alert-danger" style="padding: 10px; margin: 15px 10%;">
+          An error occurred while attempting to connect to the OpenHIM Core on https://{{config.host}}:{{config.port}}.<br><br>
+          The service may not be running or may not be accessible from you current location.<br><br>
+          Additionally if Core is using a self-signed certificate, you may first need to instruct your browser to accept it. You can do so by accessing the following <a target="_blank" href="https://{{config.host}}:{{config.port}}/heartbeat">link</a>.<br><br>
+          Please contact your system administrator if the error persists or if the service was not accessible using the above link.
+      </div>
+
       <div ng-if="loginBanner" class="box" ng-bind-html="loginBanner" style="padding: 10px; margin: 15px 10%;"></div>
 
     </div>

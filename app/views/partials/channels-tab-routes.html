@@ -12,10 +12,19 @@
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
-      <label>Primary Route</label><br />
-      <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="true">True</label>
-        <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="false">False</label>
+      <div style="float: left;">
+        <label>Primary Route</label><br />
+        <div class="btn-group" style="clear: both;">
+          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="true">True</label>
+          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="false">False</label>
+        </div>
+      </div>
+      <div style="float: left; margin-left: 20px;">
+        <label>Status</label><br />
+        <div class="btn-group" style="clear: both;">
+          <label class="btn btn-primary" ng-model="newRoute.status" btn-radio="'enabled'">Enabled</label>
+          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" btn-radio="'disabled'">Disabled</label>
+        </div>
       </div>
     </div>
   </div>
@@ -97,7 +106,7 @@
     <thead>
       <tr style="font-weight: bold">
         <th>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Primary</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Status | Primary</div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured</div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port</div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform</div>
@@ -111,8 +120,14 @@
         <td colspan="6">
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
             <span>{{ route.name }}</span>
-            <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
-              <i ng-if="route.primary" class="glyphicon glyphicon-star" style="color: #428bca"></i>
+            <label ng-if="route.status == 'enabled'" tooltip="Enabled">
+              <i class="glyphicon glyphicon-ok-circle" style="color: #3c763d;"></i>
+            </label>
+            <label ng-if="route.status == 'disabled'" tooltip="Disabled">
+              <i class="glyphicon glyphicon-remove-circle" style="color: #f0ad4e;"></i>
+            </label>
+            <label ng-if="route.primary" tooltip="The primary route is the route from which the http response will be read and returned to the client.">
+              <i class="glyphicon glyphicon-star" style="color: #428bca"></i>
             </label>
           </div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">

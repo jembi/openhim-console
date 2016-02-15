@@ -6,22 +6,33 @@
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
-<div class="form-group-2columns" ng-class="{ 'has-error' : ngError.urlPattern }" style="margin-bottom: 15px;">
-  <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" >
-    <label><span>*</span> URL Pattern</label>
-    <div class="input-group" style="width: 100%;">
-      <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
-      <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-style="{ false: {'border-radius': '4px'}, true: {}}[urlPattern.regex];" />
-      <div ng-show="urlPattern.regex" class="input-group-addon">$</div>
+<div class="form-group-2columns" style="margin-bottom: 15px;">
+  <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" ng-class="{ 'has-error' : ngError.urlPattern }" >
+    
+    <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" >
+      <label><span>*</span> URL Pattern</label>
+      <div class="input-group" style="width: 100%;">
+        <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-style="{ false: {'border-radius': '4px'}, true: {}}[urlPattern.regex];" />
+        <div ng-show="urlPattern.regex" class="input-group-addon">$</div>
+      </div>
     </div>
+    <div class="addUrlRegexDelimiterDiv">
+      <label>
+        <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
+        <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign" style="font-size: 12px"></i>
+      </label>
+    </div>
+    <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+
   </div>
-  <div class="addUrlRegexDelimiterDiv">
+  <div class="form-group" style="float: right; width: 23%;">
     <label>
-      <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
-      <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign" style="font-size: 12px"></i>
+      Priority
+      <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign"></i>
     </label>
+    <input class="form-control" type="number" min="1" ng-model="channel.priority" />
   </div>
-  <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
 
