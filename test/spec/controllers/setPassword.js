@@ -1,5 +1,4 @@
 'use strict';
-/* global sinon:false */
 /* jshint expr: true */
 
 describe('Controller: SetPasswordCtrl', function () {
@@ -20,20 +19,18 @@ describe('Controller: SetPasswordCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    $httpBackend.when('GET', new RegExp('.*/new-user/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond({
+    $httpBackend.when('GET', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond({
       'firstname': 'John',
       'surname': 'Smith',
       'msisdn': '',
       'token': 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'
     });
 
-    $httpBackend.when('PUT', new RegExp('.*/new-user/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond('Successfully set new user password.');
+    $httpBackend.when('PUT', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond('Successfully set new user password.');
 
     createController = function() {
       scope = $rootScope.$new();
-      scope.user = {
-        $update: sinon.spy()
-      };
+      scope.user = { };
       return $controller('SetPasswordCtrl', { $scope: scope, $routeParams: { token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU' } });
     };
 
@@ -45,7 +42,7 @@ describe('Controller: SetPasswordCtrl', function () {
   });
 
   it('should fetch a new user profile', function () {
-    httpBackend.expectGET(new RegExp('.*/new-user/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'));
+    httpBackend.expectGET(new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'));
     createController();
     httpBackend.flush();
 
@@ -102,7 +99,6 @@ describe('Controller: SetPasswordCtrl', function () {
 
     // Should submit the form with supplied values and save the user with new password salt/hash
     scope.submitFormSetPassword();
-    scope.user.$update.should.be.called;
     scope.ngError.should.have.property('hasErrors', false);
 
     scope.user.should.have.property('passwordSalt' );

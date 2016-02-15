@@ -1334,6 +1334,18 @@ label { position: relative; }
   color: #999999;
 }
 
+.setPasswordHasErrors {
+  float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;
+}
+
+.loginBoxLink {
+  display: inline-block; width: 100%;
+}
+
+.loginBoxLink a {
+  float: right;
+}
+
 .channelPriorityOrdering {
   display: none; 
   float: right;

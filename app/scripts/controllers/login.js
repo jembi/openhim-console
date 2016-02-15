@@ -2,10 +2,11 @@
 /* global getHashAndSalt: false */
 
 angular.module('openhimConsoleApp')
-  .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api, config) {
+  .controller('LoginCtrl', function ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
 
     $scope.config = config;
-
+    $scope.emailFocus = true;
+    $scope.passwordFocus = false;
     $scope.rootPasswordReset = false;
     $scope.resetSuccess = false;
 
@@ -17,6 +18,19 @@ angular.module('openhimConsoleApp')
 
     $scope.loginEmail = '';
     $scope.loginPassword = '';
+    $scope.linkUserEmail = '';
+
+    $scope.$watch('loginEmail', function (newVal, oldVal) {
+      if ( newVal || newVal !== oldVal ){
+        $scope.linkUserEmail = '?email=' + newVal;
+      }
+    });
+
+    if ( $location.search().email ){
+      $scope.loginEmail = $location.search().email;
+      $scope.emailFocus = false;
+      $scope.passwordFocus = true;
+    }
 
     $scope.validateLogin = function(){
       // reset alert object
