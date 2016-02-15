@@ -4,7 +4,7 @@
 angular.module('openhimConsoleApp')
   .controller('LoginCtrl', function ($scope, login, $window, $timeout, $rootScope, Alerting, Api, config) {
 
-    $scope.heartbeatLink = 'https://' + config.host + ':' + config.port + '/heartbeat';
+    $scope.config = config;
 
     $scope.rootPasswordReset = false;
     $scope.resetSuccess = false;
