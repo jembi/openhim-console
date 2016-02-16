@@ -705,6 +705,37 @@ describe('Controller: channelRoutesCtrl', function () {
     scope.multiplePrimaries().should.be.true;
   });
 
+  it('should return false if there is enabled primary route and multiple disabled primary routes', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.routes = [
+      {
+        name: 'Test Route 1',
+        path: '/test/path',
+        host: 'localhost',
+        port: '9999',
+        primary: true
+      },
+      {
+        name: 'Test Route 2',
+        path: '/test/path2',
+        host: 'localhost',
+        port: '9988'
+      },
+      {
+        name: 'Test Route 3',
+        path: '/test/path3',
+        host: 'localhost',
+        port: '9988',
+        primary: true,
+        status: 'disabled'
+      }
+    ];
+    scope.multiplePrimaries().should.be.false;
+  });
+
   it('should return false if there is only one primary route', function () {
     createControllerParent();
     createController();

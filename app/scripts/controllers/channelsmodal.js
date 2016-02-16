@@ -487,7 +487,8 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         primary: primary,
         username: '',
         password: '',
-        type : 'http'
+        type : 'http',
+        status: 'enabled'
       };
     }else if ( type === 'edit' ){
       // show add/edit box
@@ -538,7 +539,8 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         primary: primary,
         username: username,
         password: password,
-        type : routeType
+        type : routeType,
+        status: 'enabled'
       });
       // reset selected mediator option
       $scope.mediator.route = null;
@@ -557,6 +559,10 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
     // hide add/edit box
     $scope.routeAddEdit = false;
+  };
+
+  $scope.onRouteDisable = function(route){
+    route.primary = false;
   };
 
 
@@ -653,17 +659,21 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     return false;
   };
 
+  var isRouteEnabled = function(route) {
+    return (typeof route.status === 'undefined' || route.status === null) || route.status === 'enabled';
+  };
+
   $scope.noPrimaries = function () {
     if ($scope.channel.routes) {
       for (var i = 0 ; i < $scope.channel.routes.length ; i++) {
-        if ($scope.channel.routes[i].primary === true) {
+        if (isRouteEnabled($scope.channel.routes[i]) && $scope.channel.routes[i].primary === true) {
           // atleast one primary so return false
           return false;
         }
       }
     }
     // return true if no primary routes found
-    Alerting.AlertAddMsg('route', 'warning', 'Atleast one of your routes must be set to the primary.');
+    Alerting.AlertAddMsg('route', 'warning', 'At least one of your enabled routes must be set to primary.');
     return true;
   };
 
@@ -672,7 +682,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       var routes = $scope.channel.routes;
       var count = 0;
       for (var i = 0 ; i < routes.length ; i++) {
-        if (routes[i].primary === true) {
+        if (isRouteEnabled(routes[i]) && routes[i].primary === true) {
           count++;
         }
 

@@ -22,9 +22,9 @@ describe('Controller: ChannelsCtrl', function () {
     httpBackend = $httpBackend;
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
-      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'},
-      {'name':'Sample JsonStub Channel 3','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b33333333','status':'deleted'}
+      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','priority': 1,'allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','priority': 5,'allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'},
+      {'name':'Sample JsonStub Channel 3','urlPattern':'sample/api','priority': 7,'allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b33333333','status':'deleted'}
     ]);
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
@@ -138,4 +138,47 @@ describe('Controller: ChannelsCtrl', function () {
     modalSpy.should.be.calledOnce;
     httpBackend.flush();
   });
+
+
+  it('should getLowestPriority level from channels', function () {
+    createController();
+    httpBackend.flush();
+
+    var lowestLevel = scope.getLowestPriority();
+    lowestLevel.should.equal(7);
+  });
+
+
+  it('should successfully updateChannelPriority level', function () {
+    createController();
+    httpBackend.flush();
+
+    scope.channels[0].$update = sinon.spy();
+    scope.channels[1].$update = sinon.spy();
+    scope.channels[2].$update = sinon.spy();
+
+    scope.channels[0].should.have.property('priority', 1);
+    scope.channels[1].should.have.property('priority', 5);
+    scope.channels[2].should.have.property('priority', 7);
+
+    // up the priority level - Should stay the same as 1 is the highest
+    scope.updateChannelPriority(scope.channels[0], 'up');
+    scope.channels[0].should.have.property('priority', 1);
+    scope.updateChannelPriority(scope.channels[0], 'down');
+    scope.channels[0].should.have.property('priority', 2);
+
+    scope.updateChannelPriority(scope.channels[1], 'up');
+    scope.updateChannelPriority(scope.channels[1], 'up');
+    scope.channels[1].should.have.property('priority', 3);
+
+    scope.updateChannelPriority(scope.channels[2], 'down');
+    scope.updateChannelPriority(scope.channels[2], 'down');
+    scope.updateChannelPriority(scope.channels[2], 'down');
+    scope.channels[2].should.have.property('priority', 10);   
+
+    scope.channels[0].$update.should.be.called;
+    scope.channels[1].$update.should.be.called;
+    scope.channels[2].$update.should.be.called;
+  });
+
 });

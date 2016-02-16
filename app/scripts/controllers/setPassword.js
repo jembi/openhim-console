@@ -3,7 +3,7 @@
 /* global isValidMSISDN: false */
 
 angular.module('openhimConsoleApp')
-  .controller('SetPasswordCtrl', function ($scope, $modal, $routeParams, $timeout, Api, Alerting) {
+  .controller('SetPasswordCtrl', function ($scope, $modal, $routeParams, $timeout, $location, Api, Alerting) {
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -16,13 +16,14 @@ angular.module('openhimConsoleApp')
 
     var setPassSuccess = function(user){
       $scope.user = user;
+      $scope.tokenType = user.tokenType;
     };
 
     var setPassError = function(err){
       Alerting.AlertReset();
       // on error - add server error alert
       if ( err.status === 404 ){
-        Alerting.AlertAddMsg('top', 'danger', 'No user exist for the supplied token. Please ensure you have copied the token correctly.');
+        Alerting.AlertAddMsg('top', 'danger', 'Invalid token');
       }else if(err.status === 410 ){
         //expired new user
         Alerting.AlertAddMsg('top', 'danger', 'The time to set the new user password has expired. Please contact your OpenHIM administrator to set your password');
@@ -32,7 +33,7 @@ angular.module('openhimConsoleApp')
     };
 
     //get the Data for the supplied token
-    Api.NewUser.get({ token: $routeParams.token }, setPassSuccess, setPassError);
+    Api.UserPasswordToken.get({ token: $routeParams.token }, setPassSuccess, setPassError);
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -44,9 +45,16 @@ angular.module('openhimConsoleApp')
     /****************************************************************/
 
     var success = function () {
+      $scope.goToTop();
       Alerting.AlertReset();
-      Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully - Please proceed to the login page.');
+      Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully. You will be redirected to the login screen shortly.');
       $scope.passwordSetSuccessful = true;
+
+      $scope.redirectToLogin = $timeout(function(){
+        // redirect after 5 seconds
+        $location.path('/login').search({ email: $scope.user.email });
+      }, 5000);
+
     };
 
     var error = function (err) {
@@ -62,12 +70,9 @@ angular.module('openhimConsoleApp')
     };
 
     var saveUser = function (user) {
-      user.$update({}, function(){
-        success();
 
-        // rootScope function to scroll to top
-        $scope.goToTop();
-      }, error);
+      Api.UserPasswordToken.update({ token: $routeParams.token }, user, success, error);
+
     };
 
     var setHashAndSave = function (user, hash, salt) {

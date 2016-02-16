@@ -118,6 +118,10 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/visualizer.html',
       controller: 'VisualizerCtrl'
     })
+    .when('/forgot-password', {
+      templateUrl: 'views/forgotPassword.html',
+      controller: 'ForgotPasswordCtrl'
+    })
     .when('/set-password/:token', {
       templateUrl: 'views/setPassword.html',
       controller: 'SetPasswordCtrl'
@@ -192,10 +196,11 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
       paramsString = '?' + paramsString;
     }
 
-    // success redirect happens on login.js controller - ignore current login route
-    if ( curRoute !== '/login' && curRoute !== '/logout' ){
+    // success redirect happens on login.js controller - ignore these routes
+    if ( curRoute !== '/' && curRoute.indexOf('/login') === -1 && curRoute !== '/logout' && curRoute.indexOf('/forgot-password') === -1 && curRoute.indexOf('/set-password') === -1 ){
       $rootScope.referringURL = curRoute + paramsString;
     }
+
 
     /* ----- Set Referring URL ----- */
 
@@ -264,7 +269,7 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
     }else{
 
       //if not 'set-password' page
-      if ( $location.path().indexOf('set-password') !== 1 ){
+      if ( $location.path().indexOf('set-password') !== 1 && $location.path().indexOf('forgot-password') !== 1 && $location.path().indexOf('login') !== 1 ){
         //No session - user needs to log in
         $window.location = '#/login';
       }

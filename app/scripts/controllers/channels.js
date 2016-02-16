@@ -3,7 +3,6 @@
 angular.module('openhimConsoleApp')
   .controller('ChannelsCtrl', function ($scope, $modal, Api, Alerting) {
 
-
     /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function(channels){
       $scope.channels = channels;
@@ -153,6 +152,45 @@ angular.module('openhimConsoleApp')
     var restoreError = function (err) {
       // add the error message
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data);
+    };
+
+
+
+    /*--------------------------Update priority Level----------------------------*/
+    $scope.updateChannelPriority = function(channel, direction){
+      var newPriority;
+      var curPriority = channel.priority;
+      if ( !curPriority ){
+        newPriority = $scope.getLowestPriority() + 1;
+      }else{
+        // set priority to lower number ( minus 1 )
+        if ( direction === 'up' ){
+          if ( curPriority === 1 ){ return; }
+
+          newPriority = curPriority - 1;
+        }else{
+          newPriority = curPriority + 1;
+        }  
+      }
+
+      channel.priority = newPriority;
+      channel.$update(function(){
+        // reload channels
+        $scope.$broadcast('channelsChanged');
+      }, function( err ){
+        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while updating the channel: #' + err.status + ' - ' + err.data);
+      });
+
+    };
+
+    $scope.getLowestPriority = function(){
+      var lowestPriority = 0;
+      for (var i = 0; i<$scope.channels.length; i++){
+        if ( $scope.channels[i].priority && $scope.channels[i].priority > lowestPriority){
+          lowestPriority = $scope.channels[i].priority;
+        }
+      }
+      return lowestPriority;
     };
 
   });

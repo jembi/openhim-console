@@ -1333,3 +1333,39 @@ label { position: relative; }
 .subtitle {
   color: #999999;
 }
+
+.setPasswordHasErrors {
+  float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;
+}
+
+.loginBoxLink {
+  display: inline-block; width: 100%;
+}
+
+.loginBoxLink a {
+  float: right;
+}
+
+.channelPriorityOrdering {
+  display: none; 
+  float: right;
+  width: 45px;
+}
+
+.priorityUp {
+  font-size: 17px;
+  float: left;
+}
+
+.priorityDown {
+  font-size: 17px;
+  float: right;
+}
+
+.channelPriorityOrdering .priorityUp:hover, .channelPriorityOrdering .priorityDown:hover {
+  cursor: pointer;
+}
+
+.channelListingTable tr:hover .channelPriorityOrdering {
+  display: block;
+}
