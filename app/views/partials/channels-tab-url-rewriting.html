@@ -33,7 +33,7 @@
     <div class="form-group" style="float: left;">
       <label>
         Path Transform
-        <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the path by using the following substitute expression format:<br /> s/from/to/g" class="glyphicon glyphicon-question-sign"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the path by using the following substitute expression format:<br /> s/from/to/g" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label><br />
       <input ng-model="newUrlRewrite.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
     </div>
@@ -59,7 +59,7 @@
     <div class="form-group" style="float: left;">
       <label>
         URL Rewriting enabled?
-        <i ng-show="uiSettings.showTooltips" tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label><br />
       <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="false">False</label>
@@ -67,7 +67,7 @@
     <div class="form-group" style="float: left; margin-left: 20px;">
       <label>
         Add Auto Rewrite Rules?
-        <i ng-show="uiSettings.showTooltips" tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label><br />
       <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="true">True</label>
       <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="false">False</label>

@@ -62,7 +62,7 @@
     <div class="form-group" style="float: left; margin-left: 20px;">
       <label>
         <span style="color: #a94442;">**</span> Route Path Transform
-        <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the route path by using the following substitute expression format:<br /> s/from/to/g" class="glyphicon glyphicon-question-sign"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the route path by using the following substitute expression format:<br /> s/from/to/g" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label><br />
       <input ng-model="newRoute.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
     </div>
@@ -111,7 +111,7 @@
         <td colspan="6">
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
             <span>{{ route.name }}</span>
-            <label tooltip="The primary route is the route from which the http response will be read and returned to the client.">
+            <label tooltip="The primary route is the route from which the http response will be read and returned to the client." class="tooltip-wide">
               <i ng-if="route.primary" class="glyphicon glyphicon-star" style="color: #428bca"></i>
             </label>
           </div>
