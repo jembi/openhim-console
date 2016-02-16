@@ -33,7 +33,8 @@ angular.module('openhimConsoleApp')
         templateUrl: 'views/channelsmodal.html',
         controller: 'ChannelsModalCtrl',
         resolve: {
-          channel: function () {}
+          channel: function () {},
+          channelDuplicate: function () {}
         }
       });
     };
@@ -47,6 +48,22 @@ angular.module('openhimConsoleApp')
         resolve: {
           channel: function () {
             return channel;
+          },
+          channelDuplicate: function () {}
+        }
+      });
+    };
+
+    $scope.duplicateChannel = function(channel) {
+      Alerting.AlertReset();
+
+      $modal.open({
+        templateUrl: 'views/channelsmodal.html',
+        controller: 'ChannelsModalCtrl',
+        resolve: {
+          channel: function () {},
+          channelDuplicate: function () {
+            return channel._id;
           }
         }
       });

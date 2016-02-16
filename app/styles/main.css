@@ -1253,7 +1253,7 @@ footer{ box-shadow: none; }
 select:hover { cursor: pointer; }
 label { position: relative; }
 .glyphicon-question-sign:hover{ cursor: pointer; }
-.tooltip-inner{ min-width: 200px !important; }
+.tooltip-wide + div>div.tooltip-inner { min-width: 200px !important; }
 
 .col-md-tableformat{ border: 1px solid #dddddd; background: #fff; float: left; margin: 5px 15px 5px 0px;}
 .col-md-tableformat label{ border-bottom: 1px solid #dddddd; width: 100%; padding: 5px 10px; margin: 0px; }
