@@ -28,9 +28,9 @@ cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "host" then . + {"value": "
 cat $ETCCONFIGFILE | jq 'to_entries | map(if .key == "port" then . + {"value": "'$PORT'"} else . end) | from_entries' > /tmp/config.json && mv /tmp/config.json $ETCCONFIGFILE
 
 # Enable the openhim-console site in nginx
-ln -s /etc/nginx/sites-available/openhim-console /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/openhim-console /etc/nginx/sites-enabled/
 # Disable the default site - can't have two sites on port 80 without server_name config
-rm /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-enabled/default
 
 service nginx reload
 

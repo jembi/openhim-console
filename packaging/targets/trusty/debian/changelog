@@ -1,3 +1,17 @@
+openhim-console (1.5.0-9~trusty) trusty; urgency=medium
+
+  * Release Debian Build 1.5.0-9. Find v1.5.0 changelog here:
+    https://github.com/jembi/openhim-console/releases
+
+ -- Ryan Crichton <ryan@jembi.org>  Tue, 23 Feb 2016 08:42:33 +0200
+
+openhim-console (1.5.0-8~trusty) trusty; urgency=medium
+
+  * Release Debian Build 1.5.0-8. Find v1.5.0 changelog here:
+    https://github.com/jembi/openhim-console/releases
+
+ -- Ryan Crichton <ryan@jembi.org>  Fri, 19 Feb 2016 08:54:25 +0200
+
 openhim-console (1.5.0-7~trusty) trusty; urgency=medium
 
   * Release Debian Build 1.5.0-7. Find v1.5.0 changelog here:
