@@ -430,8 +430,7 @@ angular.module('openhimConsoleApp')
 
       if (!filters.filters['eventIdentification.eventDateTime']) {
         //only poll for latest if date filters are OFF
-
-        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$gte': moment(lastUpdated).format() } );
+        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$gte': moment(lastUpdated).format(), '$lte': moment().format() } );
         lastUpdated = moment() - serverDiffTime;
 
         delete filters.filterPage;
