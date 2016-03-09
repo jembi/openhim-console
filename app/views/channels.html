@@ -33,7 +33,6 @@
                     </th>
                     <th>Channel Name</th>
                     <th>Channel URL Pattern</th>
-                    <th>Description</th>
                     <th>Access</th>
                     <th>Monitoring</th>
                     <th>Status</th>
@@ -51,14 +50,10 @@
                     <span ng-if="!channel.priority">-</span>
                   </td>
                   <td data-title="Channel Name">
-                    <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
+                    <a tooltip={{channel.description}} ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
-                  <td data-title="Description">
-                    <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.description }}</a>
-                    <span ng-if="channel.status=='deleted'">{{ channel.description }}</span>
-                  </td>
                   
                   <td data-title="Access">
                     <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">
