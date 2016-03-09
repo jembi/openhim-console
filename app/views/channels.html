@@ -56,7 +56,7 @@
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
                   
                   <td data-title="Access">
-                    <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">
+                    <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel, 'Access Control')">
                       
                       <span ng-if="channel.allow" tooltip="Clients and Roles">
                         <i class="glyphicon glyphicon-th"></i>
