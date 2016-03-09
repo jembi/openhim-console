@@ -39,7 +39,7 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    $scope.editChannel = function(channel) {
+    $scope.editChannel = function(channel, tab) {
       Alerting.AlertReset();
 
       $modal.open({
@@ -49,7 +49,10 @@ angular.module('openhimConsoleApp')
           channel: function () {
             return channel;
           },
-          channelDuplicate: function () {}
+          channelDuplicate: function () {},
+          tab: function () {
+            return tab;
+          }
         }
       });
     };
