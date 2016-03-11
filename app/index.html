@@ -70,6 +70,7 @@
                             <li ng-class="{current: isCurrent('/transactions')}"><a href="#/transactions"><i class="glyphicon glyphicon-list-alt"></i> Transaction log</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/audits')}"><a href="#/audits"><i class="glyphicon glyphicon-book"></i> Audit Log</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
+                            <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/roles')}"><a href="#/roles"><i class="glyphicon glyphicon-star-empty"></i> Roles</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
                             <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
@@ -161,6 +162,7 @@
     <script src="scripts/controllers/clientsmodal.js"></script>
     <script src="scripts/controllers/monitoring.js"></script>
     <script src="scripts/controllers/users.js"></script>
+    <script src="scripts/controllers/roles.js"></script>
     <script src="scripts/controllers/usersmodal.js"></script>
     <script src="scripts/controllers/transactions.js"></script>
     <script src="scripts/controllers/transactionDetails.js"></script>
