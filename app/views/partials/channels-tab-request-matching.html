@@ -1,7 +1,7 @@
 <div class="form-group-2columns" style="margin-bottom: 15px;">
-  <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" ng-class="{ 'has-error' : ngError.urlPattern }" >
+  <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" ng-class="{ 'has-error' : ngError.urlPattern }" ng-if="channel.type === 'http' || channel.type === 'polling'">
     
-    <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" >
+    <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;">
       <label><span>*</span> URL Pattern</label>
       <div class="input-group" style="width: 100%;">
         <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
@@ -18,7 +18,7 @@
     <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 
   </div>
-  <div class="form-group" style="float: right; width: 23%; margin-bottom: 0px;">
+  <div class="form-group" style="float: right; width: 23%; margin-bottom: 0px;" ng-class="{fullWidthPriority:channel.type === 'tcp' || channel.type === 'tls'}">
     <label>
       Priority
       <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
@@ -57,10 +57,9 @@
 </div>
 
 
+<p>Do you want to match on particular request body content? <input type="checkbox" ng-model="matching.showRequestMatching" style="margin-top: 0px; vertical-align: middle;" class="ng-pristine ng-valid"></p>
 
-<p>Do you want to match on particular request body content? <input type="checkbox" ng-model="showRequestBody" style="margin-top: 0px; vertical-align: middle;" class="ng-pristine ng-valid"></p>
-
-<div ng-show="showRequestBody">
+<div ng-show="matching.showRequestMatching">
   <div class="form-group">
     <label>Match Content Types</label>
     <taglist tag-data="channel.matchContentTypes"><input class="form-control" placeholder="Enter a content type and press enter..." type="text" /></taglist>

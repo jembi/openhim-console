@@ -120,6 +120,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     createControllerRoutes();
     httpBackend.flush();
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = '';
     scope.channel.urlPattern = '';
     scope.channel.allow = [];
@@ -162,6 +165,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     createControllerRoutes();
     httpBackend.flush();
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = '';
     scope.channel.urlPattern = '';
     scope.channel.allow = [];
@@ -238,6 +244,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     // update is false so create new channel
     scope.update = true;
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = 'ChannelName';
     scope.channel.urlPattern = 'sample/api';
     scope.urlPattern.regex = false;
@@ -377,15 +386,14 @@ describe('Controller: channelAccessControlCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should create a taglist array for Client and User Roles', function () {
+  it('should create a taglist array for User Roles Groups', function () {
     createControllerParent();
     createController();
     httpBackend.flush();
 
     scope.channel.should.be.ok;
 
-    // client ID as well as each unique role
-    scope.taglistClientRoleOptions.length.should.equal(5);
+    // Each unique role
     scope.taglistUserRoleOptions.length.should.equal(3);
   });
 });
