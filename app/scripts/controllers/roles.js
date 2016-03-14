@@ -4,8 +4,6 @@ angular.module('openhimConsoleApp')
   .controller('RolesCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting) {
     
     $scope.displayAssignClients = {};
-    $scope.closeX = {};
-    $scope.addPlus= {};
     
     /* -------------------------Load Clients---------------------------- */
     var querySuccess = function(clients){
@@ -105,44 +103,16 @@ angular.module('openhimConsoleApp')
     }; 
     
     $scope.assignRoleToClient = function(client, role) {
-      $scope.clientEdited = true;
-      for (var i=0;i<$scope.clients.length;i++) {
-        if ($scope.clients[i]._id == client._id) {
-          if ($scope.clients[i].roles.length > 0) {
-            for (var j=0;j<$scope.clients[i].roles.length;j++) {
-              if (! ($scope.clients[i].roles[j] == role.name)) {
-                $scope.clients[i].roles.push(role.name);
-              }
-            }
-          } else {
-            $scope.clients[i].roles.push(role.name);
-          }
-        } 
-      }
-    };
+      client.roles.push(role.name);
+      client.$update();
+    }
     
     $scope.removeRoleFromClient = function(client, role) {
-      $scope.clientEdited = true;
-      for (var i=0;i<$scope.clients.length;i++) {
-        if ($scope.clients[i]._id == client._id) {
-            $scope.clients[i].roles.pop(role.name);
-        }
-      }
-    };
-    
-    $scope.toggleCloseX = function(client, role) {
-      $scope.closeX[role.name+client.name] = $scope.closeX[role.name+client.name] === true ? false : true;
-    };
-    
-    $scope.toggleAddPlus = function(client, role) {
-      $scope.addPlus[role.name+client.name] = $scope.addPlus[role.name+client.name] === true ? false : true;
-    };
+      client.roles.pop(role.name);
+      client.$update();
+    }
     
     $scope.toggleDisplayAllClients = function() {
       $scope.displayAllClients = $scope.displayAllClients === true ? false : true;
     }; 
-    
-    $scope.writeClientEditToApi = function() {
-        console.log('hello');
-    }
   });
