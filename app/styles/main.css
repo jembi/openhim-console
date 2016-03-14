@@ -1369,3 +1369,11 @@ label { position: relative; }
 .channelListingTable tr:hover .channelPriorityOrdering {
   display: block;
 }
+
+.rolesChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
+.rolesChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
+
+.limitChannelTdWidth {width:120px;}
+
+.isAllowed { color: #009933; }
+.isNotAllowed { color: #FF0000 }
