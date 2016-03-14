@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('RolesCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting) {
+  .controller('RolesCtrl', function ($rootScope, $scope, $modal, $interval, Api, Notify, Alerting) {
     
-    $scope.displayAssignClients = {};
+    $scope.clientsObject = {};
+    $scope.channelsObject = {};
+    $scope.rolesObject = {};
     
     /* -------------------------Load Clients---------------------------- */
-    var querySuccess = function(clients){
+    var clientQuerySuccess = function(clients){
       $scope.clients = clients;
       if( clients.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
@@ -19,16 +21,16 @@ angular.module('openhimConsoleApp')
     };
 
     // do the initial request
-    Api.Clients.query(querySuccess, queryError);
+    Api.Clients.query(clientQuerySuccess, queryError);
 
     $scope.$on('clientsChanged', function () {
-      Api.Clients.query(querySuccess, queryError);
+      Api.Clients.query(clientQuerySuccess, queryError);
     });
     /* -------------------------Load Clients---------------------------- */
     
   
     /* -------------------------Load Channels---------------------------- */
-    var querySuccess = function(channels){
+    var channelQuerySuccess = function(channels){
       $scope.channels = channels;
       if( channels.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created');
@@ -41,10 +43,10 @@ angular.module('openhimConsoleApp')
     };
 
     // do the initial request
-    Api.Channels.query(querySuccess, queryError);
+    Api.Channels.query(channelQuerySuccess, queryError);
 
     $scope.$on('channelsChanged', function () {
-      Api.Channels.query(querySuccess, queryError);
+      Api.Channels.query(channelQuerySuccess, queryError);
     });
     /* -------------------------Load Channels---------------------------- */
       
@@ -58,7 +60,7 @@ angular.module('openhimConsoleApp')
     });
     
     var loadRoles = function () {
-      var querySuccess = function(roles){
+      var roleQuerySuccess = function(roles){
         $scope.roles = roles;
         if( roles.length === 0 ){
           Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created');
@@ -71,48 +73,101 @@ angular.module('openhimConsoleApp')
       };
 
       // do the initial request
-      Api.Roles.query(querySuccess, queryError);
+      Api.Roles.query(roleQuerySuccess, queryError);
 
       $scope.$on('rolesChanged', function () {
-        Api.Roles.query(querySuccess, queryError);
+        Api.Roles.query(roleQuerySuccess, queryError);
       });
     }    
-    /* -------------------------Load Roles---------------------------- */
+    /* -------------------------End Load Roles---------------------------- */
+    
+    $scope.toggleEditRoleNames = function() {
+      $scope.editRoleNames = $scope.editRoleNames === true ? false : true;
+    }
+    
+    $scope.addRole = function() {
+      console.log('hello');
+    }
     
     
-    $scope.roleAssignedToChannel = function(channelID, roleChannels) {
-      for(var i=0; i<roleChannels.length; i++) {
-        if ( channelID == roleChannels[i]._id ) {
-          return true;
-        }
-      }
-      return false;
-    }; 
-    
+     
+    /* -------------------------Assign Clients to Roles---------------------------- */
     $scope.roleAssignedToClient = function(client, role) {
-      for (var i=0;i<client.roles.length;i++) {
-        if (client.roles[i] == role.name) {
+      if(client.roles) {
+        for (var i=0;i<client.roles.length;i++) {
+          if (client.roles[i] == role.name) {
+            return true;
+          }
+        }
+        return false;
+      }
+    };
+    
+    $scope.assignRoleToClient = function(client, role) {
+      client.roles.push(role.name);
+      client.$update(function(result) {
+        Notify.notify('clientsChanged');
+      }, function(){});
+    };
+    
+    $scope.removeRoleFromClient = function(client, role) {
+      var index = client.roles.indexOf(role.name);
+      client.roles.splice(index, 1);
+      client.$update(function(result) {
+        Notify.notify('clientsChanged');
+      }, function(){});
+    };
+    
+    $scope.toggleEditClients = function() {
+      $scope.editClients = $scope.editClients === true ? false : true;
+    };
+    /* -------------------------Assign Clients to Roles---------------------------- */
+    
+    
+    /* -------------------------Assign Roles To Channels---------------------------- */
+    $scope.roleAssignedToChannel = function(channel, role) {
+      for(var i=0; i<role.channels.length; i++) {
+        if ( channel._id == role.channels[i]._id ) {
           return true;
         }
       }
       return false;
     };
     
-    $scope.displayAssignRoleToClients = function(role) {
-      $scope.displayAssignClients[role.name] = $scope.displayAssignClients[role.name] === true ? false : true;
-    }; 
+    $scope.assignChannelToRole = function(channel, role) {
+      role.channels.push({"_id":channel._id, "name":channel.name});
+      role.$update(function(result) {
+        Notify.notify('rolesChanged');
+      }, function(){});
+    };
     
-    $scope.assignRoleToClient = function(client, role) {
-      client.roles.push(role.name);
-      client.$update();
-    }
+    $scope.removeChannelFromRole = function(channel, role) {
+      var index = -1;
+      for(var i = 0; i < role.channels.length; i++) {
+        if (role.channels[i]._id === channel._id) {
+            index = i;
+            break;
+        }
+      }
+      role.channels.splice(index, 1);
+      role.$update(function(result) {
+        Notify.notify('rolesChanged');
+      }, function(){});
+    };
     
-    $scope.removeRoleFromClient = function(client, role) {
-      client.roles.pop(role.name);
-      client.$update();
-    }
+    $scope.assignRoleToChannel = function(channel, role) {
+      channel.allow.push(role.name);
+      channel.$update(function(result) {
+        Notify.notify('channelsChanged');
+      }, function(){});
+    };
     
-    $scope.toggleDisplayAllClients = function() {
-      $scope.displayAllClients = $scope.displayAllClients === true ? false : true;
-    }; 
+    $scope.removeAssignRoleFromChannel = function(channel, role) {
+      var index = channel.allow.indexOf(role.name);
+      channel.allow.splice(index, 1);
+      channel.$update(function(result) {
+        Notify.notify('channelsChanged');
+      }, function(){});
+    };
+    /* -------------------------Assign Roles To Channels---------------------------- */
   });

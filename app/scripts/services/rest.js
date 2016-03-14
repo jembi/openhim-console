@@ -16,7 +16,7 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
       
-      Roles: $resource( server + '/roles/:roleId', {
+      Roles: $resource( server + '/roles/:roleId', { roleId: '@_id' }, {
         update: { method: 'PUT' }
       }),
 

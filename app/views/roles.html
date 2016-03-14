@@ -21,46 +21,36 @@
                 <thead>
                   <tr>
                     <th width="50">#</th>
-                    <th>Role</th>
-                    <th width="150">Clients
-                      <span class="isAllowed" ng-click="toggleDisplayAllClients()">
-                        <i class="glyphicon glyphicon-plus"></i>
-                      </span>
-                      <span ng-show="clientEdited" style="color:#FE7A2F" ng-click="writeClientEditToApi()">
-                        <i class="glyphicon glyphicon-floppy-disk"></i>
+                    <th>Role
+                      <span class="inTableEditColumn" ng-click="toggleEditRoleNames()">
+                        <i class=" cursorPointer glyphicon glyphicon-edit"></i>
                       </span>
                     </th>
-                    <th ng-repeat="channel in channels | orderBy:['-status', 'priority','name']">{{ channel.name }}</th>
-                    <th width="80"></th>
+                    <th width="150">Clients
+                      <span class="inTableEditColumn" ng-click="toggleEditClients()">
+                        <i class=" cursorPointer glyphicon glyphicon-edit"></i>
+                      </span>
+                    </th>
+                    <th ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">{{ channel.name }}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="role in roles | orderBy:['name']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                    <td data-title="Role"><a href="" ng-click="editRole(role)">{{ role.name }}</a></td>
+                    <td data-title="Role">
+                      <span ng-show="!editRoleNames">{{ role.name }}</span>
+                      <input class="input-group" ng-show="editRoleNames" value="{{role.name}}"></input>
+                    </td>
                     <td data-title="Clients">
-                      <div width="150">
-                        <span width:"120" class="isAllowed columnPaddingForX" ng-repeat="client in clients" ng-mouseover="toggleCloseX(client, role)" ng-mouseleave="toggleCloseX(client, role)" ng-show="roleAssignedToClient(client, role)" ng-click="removeRoleFromClient(client, role)">
-                          {{ client.name }} 
-                          <span width:"25" class="isNotAllowed" ng-show="closeX[role.name+client.name]"><strong>x</strong></span>
-                          <br/>
-                        </span>
-                      </div>
-                      <div ng-show="displayAllClients || displayAssignClients[role.name]">
-                        <span class="isNotAllowed" ng-show="!roleAssignedToClient(client, role)" ng-repeat="client in clients" ng-click="assignRoleToClient(client, role)" ng-mouseover="toggleAddPlus(client, role)" ng-mouseleave="toggleAddPlus(client, role)"> 
-                          {{client.name}}
-                          <span width:"25" class="isAllowed" ng-show="addPlus[role.name+client.name]"><strong>+</strong></span>
-                          <br/>
-                        </span>
+                      <div width="150" ng-repeat="client in clients">
+                        <span width:"120" class="roleAssignedToClientSpan" ng-show="roleAssignedToClient(client, role) && !editClients">{{ client.name }}<br/></span>
+                        <span width:"120" class="cursorPointer roleAssignedToClientSpan" ng-show="roleAssignedToClient(client, role) && editClients" ng-click="removeRoleFromClient(client, role)">{{ client.name }} <br/></span>
+                        <span width:"120" class="cursorPointer roleNotAssignedToClientSpan" ng-show="!roleAssignedToClient(client, role) && editClients" ng-click="assignRoleToClient(client, role)"> {{client.name}}<br/></span>
                       </div>
                     </td>
                     <td class="limitChannelTdWidth" ng-repeat="channel in channels">
-                      <i ng-show="roleAssignedToChannel(channel._id, role.channels)" class="isAllowed glyphicon glyphicon-ok"></i>
-                      <i ng-show="!roleAssignedToChannel(channel._id, role.channels)" class="isNotAllowed glyphicon glyphicon-remove"></i>
-                    </td>
-                    <td>
-                      <button ng-show="chagesIncurred()" class="btn btn-warning btn-xs" ng-click="saveChanges(role, client)"><i class="glyphicon glyphicon-floppy-disk"> Save</i></button>
-                      <button class="btn btn-danger btn-xs" ng-click="confirmDddelete(client)"><i class="glyphicon glyphicon-remove"></i></button>
+                      <i ng-show="roleAssignedToChannel(channel, role)" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, role)"></i>
+                      <i ng-show="!roleAssignedToChannel(channel, role)" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, role)"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -80,7 +70,7 @@
             <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
             <!-- Bottom Alerts -->
 
-            <button class="btn btn-primary" ng-click="addClient()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
+            <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
           </div>
         </div>
       </div>
