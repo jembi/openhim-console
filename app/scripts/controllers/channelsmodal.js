@@ -352,7 +352,7 @@ app.controller('channelAccessControlCtrl', function ($scope, Api) {
 });
 
 // nested controller for the channel content matching tab
-app.controller('channelContentMatchingCtrl', function ($scope) {
+app.controller('channelRequestMatchingCtrl', function ($scope) {
 
   // if update is true
   if ($scope.update) {
@@ -360,7 +360,12 @@ app.controller('channelContentMatchingCtrl', function ($scope) {
       if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
       if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+
+      if ( $scope.channel.matchContentRegex || $scope.channel.matchContentJson || $scope.channel.matchContentXpath ){
+        $scope.showRequestBody = true;
+      }
     });
+
   }
 
 });

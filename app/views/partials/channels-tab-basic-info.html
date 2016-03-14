@@ -6,41 +6,12 @@
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
-<div class="form-group-2columns" style="margin-bottom: 15px;">
-  <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" ng-class="{ 'has-error' : ngError.urlPattern }" >
-    
-    <div class="form-group" style="float: left; width: 75%; margin-bottom: 0px;" >
-      <label><span>*</span> URL Pattern</label>
-      <div class="input-group" style="width: 100%;">
-        <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
-        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-style="{ false: {'border-radius': '4px'}, true: {}}[urlPattern.regex];" />
-        <div ng-show="urlPattern.regex" class="input-group-addon">$</div>
-      </div>
-    </div>
-    <div class="addUrlRegexDelimiterDiv">
-      <label>
-        <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
-        <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
-      </label>
-    </div>
-    <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-
-  </div>
-  <div class="form-group" style="float: right; width: 23%;">
-    <label>
-      Priority
-      <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-    </label>
-    <input class="form-control" type="number" min="1" ng-model="channel.priority" />
-  </div>
-</div>
-
-
 <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
   <label><span></span> Description</label>
   <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
+
 <div class="form-group">
   <label style="display: block;">Channel Type</label>
   <div class="btn-group">
@@ -50,6 +21,7 @@
     <label class="btn btn-primary" ng-model="channel.type" btn-radio="'polling'">Polling</label>
   </div>
 </div>
+
 <div class="form-group-2columns" ng-show="channel.type == 'tcp' || channel.type == 'tls'">
   <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
     <label><span>*</span> TCP Host</label>
@@ -71,26 +43,6 @@
     <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
     <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
   </div>
-</div>
-
-<div class="form-group">
-  <label>
-    Authentication Type
-    <i ng-show="uiSettings.showTooltips" tooltip="Private requires authentication and Public bypasses authentication protocols" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-  </label>
-  <div style="display: block;">
-    <div class="btn-group">
-      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'private'">Private</label>
-      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'public'">Public</label>
-    </div>
-  </div>
-</div>
-<div class="form-group">
-  <label>
-    Whitelisted IP addresses
-    <i ng-show="uiSettings.showTooltips" tooltip="Enter the IP's that are allowed to access the channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-  </label>
-  <taglist tag-data="channel.whitelist"><input class="form-control" placeholder="Whitelisted IP addresses" type="text" ng-model="whitelist" /></taglist>
 </div>
 
 <div class="form-group-2columns">
