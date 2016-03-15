@@ -7,7 +7,7 @@
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-star-empty"></i>&nbsp;&nbsp;Roles</h2>
-            <!-- <pre>{{roles | json}}</pre> -->
+            <!-- <pre>{{clientsMirror | json}}</pre> -->
           </div>
         </div>
 
@@ -35,17 +35,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="role in roles | orderBy:['name']">
+                  <tr ng-repeat="role in rolesMirror | orderBy:['name']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                     <td data-title="Role">
                       <span ng-show="!editRoleNames">{{ role.name }}</span>
                       <input class="input-group" ng-show="editRoleNames" value="{{role.name}}"></input>
                     </td>
                     <td data-title="Clients">
-                      <div width="150" ng-repeat="client in clients">
-                        <span width:"120" class="roleAssignedToClientSpan" ng-show="roleAssignedToClient(client, role) && !editClients">{{ client.name }}<br/></span>
-                        <span width:"120" class="cursorPointer roleAssignedToClientSpan" ng-show="roleAssignedToClient(client, role) && editClients" ng-click="removeRoleFromClient(client, role)">{{ client.name }} <br/></span>
-                        <span width:"120" class="cursorPointer roleNotAssignedToClientSpan" ng-show="!roleAssignedToClient(client, role) && editClients" ng-click="assignRoleToClient(client, role)"> {{client.name}}<br/></span>
+                      <div width="150" ng-repeat="client in clientsMirror">
+                        <span width:"120" class="roleAssignedToClientSpan" ng-show="clientRoles[client.name + role.name] && !editClients">{{ client.name }}<br/></span>
+                        <span width:"120" class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+role.name] && editClients" ng-click="removeRoleFromClient(client, role)">{{ client.name }} <br/></span>
+                        <span width:"120" class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+role.name] && editClients" ng-click="assignRoleToClient(client, role)"> {{client.name}}<br/></span>
                       </div>
                     </td>
                     <td class="limitChannelTdWidth" ng-repeat="channel in channels">
