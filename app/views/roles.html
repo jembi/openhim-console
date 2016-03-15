@@ -48,9 +48,9 @@
                         <span width:"120" class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+role.name] && editClients" ng-click="assignRoleToClient(client, role)"> {{client.name}}<br/></span>
                       </div>
                     </td>
-                    <td class="limitChannelTdWidth" ng-repeat="channel in channels">
-                      <i ng-show="roleAssignedToChannel(channel, role)" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, role)"></i>
-                      <i ng-show="!roleAssignedToChannel(channel, role)" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, role)"></i>
+                    <td class="limitChannelTdWidth" ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">
+                      <i ng-show="channelRoles[channel.name + role.name]" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, role)"></i>
+                      <i ng-show="!channelRoles[channel.name + role.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, role)"></i>
                     </td>
                   </tr>
                 </tbody>

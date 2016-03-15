@@ -30,11 +30,14 @@ angular.module('openhimConsoleApp')
     $scope.$on('clientsChanged', function () {
       Api.Clients.query(clientQuerySuccess, queryError);
     });
-    /* -------------------------Load Clients---------------------------- */
+    /* -------------------------End Load Clients---------------------------- */
     
   
     /* -------------------------Load Channels---------------------------- */
     var channelQuerySuccess = function(channels){
+      if(!channelsMirror) {
+        $scope.channelsMirror = channels;
+      }
       $scope.channels = channels;
       if( channels.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created');
@@ -52,7 +55,7 @@ angular.module('openhimConsoleApp')
     $scope.$on('channelsChanged', function () {
       Api.Channels.query(channelQuerySuccess, queryError);
     });
-    /* -------------------------Load Channels---------------------------- */
+    /* -------------------------End Load Channels---------------------------- */
       
     
     /* -------------------------Load Roles---------------------------- */
@@ -108,12 +111,13 @@ angular.module('openhimConsoleApp')
     var waitForRolesMirror = function() {
       $scope.$watch('rolesMirror', function (newVal, oldVal) {
         if(newVal) {
-          buildClientRolesObject();
+          buildClientsRolesObject();
+          buildChannelsRolesObject();
         }
       });
     }
     
-    var buildClientRolesObject = function() {
+    var buildClientsRolesObject = function() {
       angular.forEach($scope.clientsMirror, function(client) { 
         angular.forEach($scope.rolesMirror, function(role) {
           $scope.clientRoles[client.name + role.name] = false;
@@ -154,50 +158,39 @@ angular.module('openhimConsoleApp')
     
     
     /* -------------------------Assign Roles To Channels---------------------------- */
-    $scope.roleAssignedToChannel = function(channel, role) {
-      for(var i=0; i<role.channels.length; i++) {
-        if ( channel._id == role.channels[i]._id ) {
-          return true;
-        }
-      }
-      return false;
-    };
-    
-    // This code will come in handy when we create a roles collection
-    // $scope.assignChannelToRole = function(channel, role) {
-    //   role.channels.push({"_id":channel._id, "name":channel.name});
-    //     Api.Channels.update({}, role, function(result) {
-    //     Notify.notify('rolesChanged');
-    //   }, function(){});
-    // };
-    // 
-    // $scope.removeChannelFromRole = function(channel, role) {
-    //   var index = -1;
-    //   for(var i = 0; i < role.channels.length; i++) {
-    //     if (role.channels[i]._id === channel._id) {
-    //         index = i;
-    //         break;
-    //     }
-    //   }
-    //   role.channels.splice(index, 1);
-    //   Api.Channels.update({}, role, function(result) {
-    //     Notify.notify('rolesChanged');
-    //   }, function(){});
-    // };
+    $scope.channelRoles = {};
+    var buildChannelsRolesObject = function() {
+      angular.forEach($scope.channelsMirror, function(channel) {
+        angular.forEach($scope.rolesMirror, function(role) {
+          $scope.channelRoles[channel._id + role.name] = false;
+          for (var i=0;i<role.channels.length;i++) {
+            if (role.channels[i]._id == channel._id) {
+              $scope.channelRoles[channel.name + role.name] = true;
+            }
+          }
+        });
+      });
+    }
     
     $scope.assignRoleToChannel = function(channel, role) {
+      $scope.channelRoles[channel.name + role.name] = true;
       channel.allow.push(role.name);
-      channel.$update(function(result) {
+      Api.Channels.update({}, channel, function(result) {
         Notify.notify('channelsChanged');
-      }, function(){});
+      }, function(error) {
+        Alerting.AlertAddMsg('server', 'error', error);
+      });
     };
     
     $scope.removeAssignRoleFromChannel = function(channel, role) {
+      $scope.channelRoles[channel.name + role.name] = false;
       var index = channel.allow.indexOf(role.name);
       channel.allow.splice(index, 1);
-      channel.$update(function(result) {
+      Api.Channels.update({}, channel, function(result) {
         Notify.notify('channelsChanged');
-      }, function(){});
+      }, function(error) {
+        Alerting.AlertAddMsg('server', 'error', error);
+      });
     };
-    /* -------------------------Assign Roles To Channels---------------------------- */
+    /* -------------------------End Assign Roles To Channels---------------------------- */
   });
