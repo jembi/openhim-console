@@ -213,9 +213,8 @@ angular.module('openhimConsoleApp')
     $scope.addRole = function() {
       $scope.newRoles.push(
         {
-          uid: generateGuid(),
           name: "Role" + $scope.newRolesIndex, 
-          index: $scope.newRolesIndex++,
+          index: $scope.newRolesIndex++
         });
     }
     
@@ -274,15 +273,6 @@ angular.module('openhimConsoleApp')
           });
         }
       }
-    }
-    
-    var generateGuid = function() {
-      function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1);
-      }
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
     
     var updateClients = function(role) {
