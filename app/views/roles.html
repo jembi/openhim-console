@@ -7,6 +7,7 @@
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-star-empty"></i>&nbsp;&nbsp;Roles</h2>
+            <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
             <!-- <pre>{{clientsMirror | json}}</pre> -->
           </div>
         </div>
@@ -15,42 +16,66 @@
         <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
         <!-- Top Alerts -->
         <div class="rolesChannelsMatrixDiv">
-          <div class="panel-body">
+          <div class="rolesTableScrollDiv panel-body">
             <div id="no-more-tables">
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th width="50">#</th>
-                    <th>Role
+                    <th width="150">Role
                       <span class="inTableEditColumn" ng-click="toggleEditRoleNames()">
-                        <i class=" cursorPointer glyphicon glyphicon-edit"></i>
+                        <i class="cursorPointer glyphicon glyphicon-edit"></i>
                       </span>
                     </th>
-                    <th width="150">Clients
+                    <th width="100">Clients
                       <span class="inTableEditColumn" ng-click="toggleEditClients()">
-                        <i class=" cursorPointer glyphicon glyphicon-edit"></i>
+                        <i class="cursorPointer glyphicon glyphicon-edit"></i>
                       </span>
                     </th>
                     <th ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">{{ channel.name }}</th>
+                    <th width="50"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="role in rolesMirror | orderBy:['name']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                    <td data-title="Role">
+                    <td class="inTableEditTextBoxTd" data-title="Role">
                       <span ng-show="!editRoleNames">{{ role.name }}</span>
-                      <input class="input-group" ng-show="editRoleNames" value="{{role.name}}"></input>
+                      <input class="form-control" ng-show="editRoleNames" value="{{role.name}}"></input>
                     </td>
                     <td data-title="Clients">
-                      <div width="150" ng-repeat="client in clientsMirror">
-                        <span width:"120" class="roleAssignedToClientSpan" ng-show="clientRoles[client.name + role.name] && !editClients">{{ client.name }}<br/></span>
-                        <span width:"120" class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+role.name] && editClients" ng-click="removeRoleFromClient(client, role)">{{ client.name }} <br/></span>
-                        <span width:"120" class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+role.name] && editClients" ng-click="assignRoleToClient(client, role)"> {{client.name}}<br/></span>
+                      <div width="100" ng-repeat="client in clientsMirror">
+                        <span class="roleAssignedToClientSpan" ng-show="clientRoles[client.name + role.name] && !editClients">{{ client.name }}<br/></span>
+                        <span class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+role.name] && editClients" ng-click="removeRoleFromClient(client, role, true)">{{ client.name }} <br/></span>
+                        <span class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+role.name] && editClients" ng-click="assignRoleToClient(client, role, true)"> {{client.name}}<br/></span>
                       </div>
                     </td>
                     <td class="limitChannelTdWidth" ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">
-                      <i ng-show="channelRoles[channel.name + role.name]" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, role)"></i>
-                      <i ng-show="!channelRoles[channel.name + role.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, role)"></i>
+                      <i ng-show="channelRoles[channel.name + role.name]" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, role, true)"></i>
+                      <i ng-show="!channelRoles[channel.name + role.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, role, true)"></i>
+                    </td>
+                    <td><button class="btn btn-danger btn-xs" ng-click="confirmDelete(role)"><i class="glyphicon glyphicon-remove"></i></button></td>
+                  </tr>
+                  
+                  <tr class="addNewRoleTr" ng-repeat="newRole in newRoles">
+                    <td>#</span></td>
+                    <td data-title="Role">
+                      <input class="input-group" ng-model="newRole.name"></input>
+                    </td>
+                    <td data-title="Clients">
+                      <div width="100" ng-repeat="client in clientsMirror">
+                        <span class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+newRole.name]" ng-click="removeRoleFromClient(client, newRole)">{{ client.name }} <br/></span>
+                        <span class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+newRole.name]" ng-click="assignRoleToClient(client, newRole)"> {{client.name}}<br/></span>
+                      </div>
+                    </td>
+                    <td class="limitChannelTdWidth" ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">
+                      <i ng-show="channelRoles[channel.name + newRole.name]" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, newRole)"></i>
+                      <i ng-show="!channelRoles[channel.name + newRole.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, newRole)"></i>
+                    </td>
+                  
+                    <td width="50">
+                      <button class="btn btn-warning btn-xs" ng-click="saveNewRole(newRole)"><i class="glyphicon glyphicon-floppy-disk"></i></button>
+                      <button class="btn btn-danger btn-xs" ng-click="removeNewRole(newRole)"><i class="glyphicon glyphicon-remove"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -70,7 +95,6 @@
             <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
             <!-- Bottom Alerts -->
 
-            <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
           </div>
         </div>
       </div>

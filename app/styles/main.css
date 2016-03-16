@@ -1381,3 +1381,9 @@ label { position: relative; }
 .cursorPointer {cursor: pointer}
 
 .inTableEditColumn {color: #FE7A2F}
+
+.addNewRoleTr td {background-color:#D9FFBE ! important}
+
+.inTableEditTextBoxTd input {width:100px; height:21px; font-size:12px;}
+
+.rolesTableScrollDiv {overflow-x: auto;}

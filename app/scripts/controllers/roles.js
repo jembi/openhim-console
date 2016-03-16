@@ -7,6 +7,9 @@ angular.module('openhimConsoleApp')
     var clientsMirror = null;
     var channelsMirror = null;
     var rolesMirror = null;
+    $scope.addNewRole = false;
+    $scope.newRoles = [];
+    $scope.newRolesIndex = 0;
     
     /* -------------------------Load Clients---------------------------- */
     var clientQuerySuccess = function(clients){
@@ -16,6 +19,8 @@ angular.module('openhimConsoleApp')
       $scope.clients = clients;
       if( clients.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
+      } else {
+        Alerting.AlertReset('bottom');
       }
     };
 
@@ -41,6 +46,8 @@ angular.module('openhimConsoleApp')
       $scope.channels = channels;
       if( channels.length === 0 ){
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created');
+      } else {
+        Alerting.AlertReset('bottom');
       }
     };
 
@@ -74,6 +81,8 @@ angular.module('openhimConsoleApp')
         $scope.roles = roles;
         if( roles.length === 0 ){
           Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created');
+        } else {
+          Alerting.AlertReset('bottom');
         }
       };
 
@@ -91,13 +100,6 @@ angular.module('openhimConsoleApp')
     }    
     /* -------------------------End Load Roles---------------------------- */
     
-    $scope.toggleEditRoleNames = function() {
-      $scope.editRoleNames = $scope.editRoleNames === true ? false : true;
-    }
-    
-    $scope.addRole = function() {
-      console.log('hello');
-    }
     
     /* -------------------------Assign Clients to Roles---------------------------- */
     $scope.clientRoles = {};
@@ -130,25 +132,29 @@ angular.module('openhimConsoleApp')
       });
     }
 
-    $scope.assignRoleToClient = function(client, role) {
+    $scope.assignRoleToClient = function(client, role, save) {
       $scope.clientRoles[client.name + role.name] = true;
       client.roles.push(role.name);
-      Api.Clients.update({}, client , function(response){
-        Notify.notify('clientsChanged');
-      }, function(error) {
-        Alerting.AlertAddMsg('server', 'error', error);
-      });
+      if(save) {
+        Api.Clients.update({}, client , function(response){
+          Notify.notify('clientsChanged');
+        }, function(error) {
+          Alerting.AlertAddMsg('server', 'error', error);
+        });
+      }
     };
     
-    $scope.removeRoleFromClient = function(client, role) {
+    $scope.removeRoleFromClient = function(client, role, save) {
       $scope.clientRoles[client.name + role.name] = false;
       var index = client.roles.indexOf(role.name);
       client.roles.splice(index, 1);
-      Api.Clients.update({}, client , function(response) {
-        Notify.notify('clientsChanged');
-      }, function(error) {
-        Alerting.AlertAddMsg('server', 'error', error);
-      });
+      if(save) {
+        Api.Clients.update({}, client , function(response) {
+          Notify.notify('clientsChanged');
+        }, function(error) {
+          Alerting.AlertAddMsg('server', 'error', error);
+        });
+      }
     };
     
     $scope.toggleEditClients = function() {
@@ -162,7 +168,7 @@ angular.module('openhimConsoleApp')
     var buildChannelsRolesObject = function() {
       angular.forEach($scope.channelsMirror, function(channel) {
         angular.forEach($scope.rolesMirror, function(role) {
-          $scope.channelRoles[channel._id + role.name] = false;
+          $scope.channelRoles[channel.name + role.name] = false;
           for (var i=0;i<role.channels.length;i++) {
             if (role.channels[i]._id == channel._id) {
               $scope.channelRoles[channel.name + role.name] = true;
@@ -172,25 +178,186 @@ angular.module('openhimConsoleApp')
       });
     }
     
-    $scope.assignRoleToChannel = function(channel, role) {
+    $scope.assignRoleToChannel = function(channel, role, save) {
       $scope.channelRoles[channel.name + role.name] = true;
       channel.allow.push(role.name);
-      Api.Channels.update({}, channel, function(result) {
-        Notify.notify('channelsChanged');
-      }, function(error) {
-        Alerting.AlertAddMsg('server', 'error', error);
-      });
+      if(save) {
+        Api.Channels.update({}, channel, function(result) {
+          Notify.notify('channelsChanged');
+        }, function(error) {
+          Alerting.AlertAddMsg('server', 'error', error);
+        });
+      }
     };
     
-    $scope.removeAssignRoleFromChannel = function(channel, role) {
+    $scope.removeAssignRoleFromChannel = function(channel, role, save) {
       $scope.channelRoles[channel.name + role.name] = false;
       var index = channel.allow.indexOf(role.name);
       channel.allow.splice(index, 1);
-      Api.Channels.update({}, channel, function(result) {
-        Notify.notify('channelsChanged');
-      }, function(error) {
-        Alerting.AlertAddMsg('server', 'error', error);
-      });
+      if(save) {
+        Api.Channels.update({}, channel, function(result) {
+          Notify.notify('channelsChanged');
+        }, function(error) {
+          Alerting.AlertAddMsg('server', 'error', error);
+        });
+      }
     };
     /* -------------------------End Assign Roles To Channels---------------------------- */
+    
+    
+    /* -------------------------Edit Roles---------------------------- */
+    $scope.toggleEditRoleNames = function() {
+      $scope.editRoleNames = $scope.editRoleNames === true ? false : true;
+    }
+    
+    $scope.addRole = function() {
+      $scope.newRoles.push(
+        {
+          uid: generateGuid(),
+          name: "Role" + $scope.newRolesIndex, 
+          index: $scope.newRolesIndex++,
+        });
+    }
+    
+    $scope.removeNewRole = function(role) {
+      var spliceIndex = -1;
+      for(var i = 0; i<$scope.newRoles.length; i++) {
+         if ($scope.newRoles[i].name ===  role.name) {
+             spliceIndex = i;
+             break;
+         }
+      }
+      $scope.newRoles.splice(spliceIndex, 1);
+    }
+    
+    $scope.saveNewRole = function(role) {
+      var roleAssignedToChannel = false;
+      for(var k in $scope.channelRoles) {
+        var channelIndex = k.indexOf(role.name);
+        if( channelIndex > 0) {
+          roleAssignedToChannel = true;
+        }
+      }
+      
+      var clientAssignedToRole = false;
+      for(var k in $scope.clientRoles) {
+        var clientIndex = k.indexOf(role.name);
+        if( clientIndex > 0) {
+          clientAssignedToRole = true;
+        }
+      }
+      
+      if (roleAssignedToChannel) {
+        updateChannels(role);
+        if (clientAssignedToRole) {
+          updateClients(role);
+        }
+        $scope.removeNewRole(role);
+        Alerting.AlertReset('bottom');
+      } else {
+        Alerting.AlertAddMsg('bottom', 'warning', 'Please assign a new role to at least on Channel');
+      }
+    }
+    
+    var updateChannels = function(role) {
+      for(var k in $scope.channelRoles) {
+        var channelIndex = k.indexOf(role.name);
+        if( channelIndex > 0) {
+          angular.forEach($scope.channelsMirror, function(channel) {
+            if(channel.name == k.substring(0, channelIndex)) {
+              Api.Channels.update({}, channel, function(result) {
+                Notify.notify('channelsChanged');
+              }, function(error) {
+                Alerting.AlertAddMsg('server', 'error', error);
+              });
+            }
+          });
+        }
+      }
+    }
+    
+    var generateGuid = function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+    
+    var updateClients = function(role) {
+      for(var k in $scope.clientRoles) {
+        var clientIndex = k.indexOf(role.name);
+        if( clientIndex > 0) {
+          angular.forEach($scope.clientsMirror, function(client) {
+            if(client.name == k.substring(0, clientIndex)) {
+              Api.Clients.update({}, client, function(result) {
+                Notify.notify('clientsChanged');
+              }, function(error) {
+                Alerting.AlertAddMsg('server', 'error', error);
+              });
+            }
+          });
+        }
+      }
+    }
+    
+    var removeRole = function(role) {
+      angular.forEach($scope.channels, function(channel) {
+        var channelSpliceIndex = channel.allow.indexOf(role.name);
+        if(channelSpliceIndex >= 0) {
+          channel.allow.splice(channelSpliceIndex, 1);
+          Api.Channels.update({}, channel, function(result) {
+            Notify.notify('channelsChanged');
+          }, function(error) {
+            Alerting.AlertAddMsg('server', 'error', error);
+          });
+        }
+      });
+      
+      angular.forEach($scope.clients, function(client) {
+        var clientSpliceIndex = client.roles.indexOf(role.name);
+        if(clientSpliceIndex > 0) {
+          client.roles.splice(clientSpliceIndex, 1);
+          Api.Clients.update({}, client, function(result) {
+            Notify.notify('clientsChanged');
+          }, function(error) {
+            Alerting.AlertAddMsg('server', 'error', error);
+          });
+        }
+      });
+      Alerting.AlertAddMsg('top', 'success', 'The role has been deleted successfully');
+    }
+    
+    /* -------------------------End Edit Roles---------------------------- */
+    
+    /*------------------------Delete Confirm----------------------------*/
+    $scope.confirmDelete = function(role){
+      Alerting.AlertReset();
+
+      var deleteObject = {
+        title: 'Delete Role',
+        button: 'Delete',
+        message: 'Are you sure you wish to delete the role "' + role.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return deleteObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // Delete confirmed - delete the user
+        removeRole(role);
+      }, function () {
+        // delete cancelled - do nothing
+      });
+
+    };
+    /*------------------------End Delete Confirm----------------------------*/
   });
