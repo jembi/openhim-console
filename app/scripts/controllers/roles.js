@@ -210,28 +210,30 @@ angular.module('openhimConsoleApp')
     /* -------------------------Edit Roles---------------------------- */
     $scope.nameSaved = [];
     $scope.changeRoleName = function(role) {
-      angular.forEach($scope.clientsMirror, function(client) {
-        for (var i=0;i<client.roles.length;i++) {
-          if (client.roles[i] == role.name) {
-            $scope.clientRoles[client.name + role.displayName] = true;
-            client.roles.push(role.displayName);
+      if(role.displayName != role.name) {
+        angular.forEach($scope.clientsMirror, function(client) {
+          for (var i=0;i<client.roles.length;i++) {
+            if (client.roles[i] == role.name) {
+              $scope.clientRoles[client.name + role.displayName] = true;
+              client.roles.push(role.displayName);
+            }
           }
-        }
-      });
+        });
 
-      angular.forEach($scope.channelsMirror, function(channel) {
-        for (var i=0;i<role.channels.length;i++) {
-          if (role.channels[i]._id == channel._id) {
-            $scope.channelRoles[channel.name + role.displayName] = true;
-            channel.allow.push(role.displayName);
+        angular.forEach($scope.channelsMirror, function(channel) {
+          for (var i=0;i<role.channels.length;i++) {
+            if (role.channels[i]._id == channel._id) {
+              $scope.channelRoles[channel.name + role.displayName] = true;
+              channel.allow.push(role.displayName);
+            }
           }
-        }
-      });
-      $scope.removeRole(role);
-      updateChannels(role);
-      updateClients(role);
-      
-      $scope.nameSaved[role.displayName] = true;
+        });
+        $scope.removeRole(role);
+        updateChannels(role);
+        updateClients(role);
+        
+        $scope.nameSaved[role.displayName] = true;
+      }
     }
     
     $scope.toggleEditRoleNames = function() {
