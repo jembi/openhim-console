@@ -264,7 +264,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
     // has url rewrite errors
     if ( $scope.ngError.hasUrlRewritesWarnings ){
-      $scope.ngError.urlRewritesTab = true;
+      $scope.ngError.dataControlTab = true;
       $scope.ngError.hasErrors = true;
     }
 
@@ -781,7 +781,14 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
 
 // nested controller for the channel routes tab
-app.controller('channelUrlRewritingCtrl', function ($scope, $timeout, Api, Alerting) {
+app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerting) {
+
+  // store settings
+  if (!$scope.update) {
+    // set default variables if new channel
+    $scope.channel.requestBody = true;
+    $scope.channel.responseBody = true;
+  }
 
   /***********************************************************/
   /**   Default Channel URL Rewrite Rule configurations     **/
@@ -1190,17 +1197,5 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   /****************************************************************/
   /**   These are the functions for the Channel Alert Groups     **/
   /****************************************************************/
-
-});
-
-// nested controller for the channel settings tab
-app.controller('channelSettingsCtrl', function ($scope) {
-
-  // if update is false
-  if (!$scope.update) {
-    // set default variables if new channel
-    $scope.channel.requestBody = true;
-    $scope.channel.responseBody = true;
-  }
 
 });

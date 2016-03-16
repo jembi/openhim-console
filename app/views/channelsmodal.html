@@ -38,18 +38,18 @@
         <div ng-include="'views/partials/channels-tab-access-control.html'"></div>
       </tab>
 
+      <!-- ************* TAB FOR CHANNEL DATA CONTROL ************** -->
+      <tab ng-controller="channelDataControlCtrl" class="{{ngError.dataControlTab === true ? 'has-error-tab' : ''}}">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Data Control</tab-heading>
+        <h3>Data Control</h3>
+        <div ng-include="'views/partials/channels-tab-data-control.html'"></div>
+      </tab>
+
       <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
       <tab ng-controller="channelRoutesCtrl" class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Routes</tab-heading>
         <h3>Routes</h3>
         <div ng-include="'views/partials/channels-tab-routes.html'"></div>
-      </tab>
-
-      <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
-      <tab ng-controller="channelUrlRewritingCtrl" class="{{ngError.urlRewritesTab === true ? 'has-error-tab' : ''}}">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>URL Rewriting</tab-heading>
-        <h3>URL Rewriting</h3>
-        <div ng-include="'views/partials/channels-tab-url-rewriting.html'"></div>
       </tab>
 
       <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
@@ -58,14 +58,6 @@
         <h3>Alerts</h3>
         <div ng-include="'views/partials/channels-tab-alerts.html'"></div>
       </tab>
-
-      <!-- ************* TAB FOR GENERAL CHANNEL SETTINGS ************** -->
-      <tab ng-controller="channelSettingsCtrl" class="{{ngError.contentSettingsTab === true ? 'has-error-tab' : ''}}">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Settings</tab-heading>
-        <h3>Settings</h3>
-        <div ng-include="'views/partials/channels-tab-settings.html'"></div>
-      </tab>
-
 
     </tabset>
   </fieldset>

@@ -324,6 +324,38 @@ describe('Controller: channelBasicInfoCtrl', function () {
     scope.channel.status.should.equal('enabled');
   });
 
+});
+
+
+
+
+describe('Controller: channelRequestMatchingCtrl', function () {
+  // load the controller's module
+  beforeEach(module('openhimConsoleApp'));
+  var scope, createController, createControllerParent, q;
+
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller, $rootScope, $q) {
+
+    scope = $rootScope.$new();
+    q = $q;
+
+    var modalInstance = sinon.spy();
+    createControllerParent = function (channel) {
+      return $controller('ChannelsModalCtrl', {
+        $scope: scope,
+        $modalInstance: modalInstance,
+        channel: channel,
+        channelDuplicate: null
+      });
+    };
+    createController = function () {
+      return $controller('channelRequestMatchingCtrl', {
+        $scope: scope
+      });
+    };
+  }));
+
   it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
     var defer = q.defer();
     defer.resolve();
@@ -338,9 +370,23 @@ describe('Controller: channelBasicInfoCtrl', function () {
       scope.channel.urlPattern.should.equal('/example/path');
     });
   });
+
+  it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
+    var defer = q.defer();
+    defer.resolve();
+    createControllerParent({ _id: 'test', $promise: defer.promise });
+
+    defer.promise.then(function () {
+      // set macthContentJson variable to enable JSON matching radio button
+      scope.channel.matchContentJson = 'JSONMatchingVar';
+      scope.channel.matchContentValue = 'JSONMatchingValue';
+      createController();
+
+      scope.channel.should.be.ok;
+      scope.matching.contentMatching.should.equal('JSON matching');
+    });
+  });
 });
-
-
 
 
 
@@ -401,55 +447,44 @@ describe('Controller: channelAccessControlCtrl', function () {
 
 
 
-
-
-
-
-
-describe('Controller: channelContentMatchingCtrl', function () {
+describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent, q;
+  var scope, createController, createControllerParent;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $q) {
-
+  beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    q = $q;
 
     var modalInstance = sinon.spy();
-    createControllerParent = function (channel) {
+    createControllerParent = function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        channel: channel,
+        channel: null,
         channelDuplicate: null
       });
     };
     createController = function () {
-      return $controller('channelContentMatchingCtrl', {
+      return $controller('channelDataControlCtrl', {
         $scope: scope
       });
     };
   }));
 
-  it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
-    var defer = q.defer();
-    defer.resolve();
-    createControllerParent({ _id: 'test', $promise: defer.promise });
+  it('should set default request/reponse body settings - Update is false', function () {
+    createControllerParent();
+    scope.update = false;
+    createController();
 
-    defer.promise.then(function () {
-      // set macthContentJson variable to enable JSON matching radio button
-      scope.channel.matchContentJson = 'JSONMatchingVar';
-      scope.channel.matchContentValue = 'JSONMatchingValue';
-      createController();
-
-      scope.channel.should.be.ok;
-      scope.matching.contentMatching.should.equal('JSON matching');
-    });
+    scope.channel.should.be.ok;
+    scope.channel.requestBody.should.equal(true);
+    scope.channel.responseBody.should.equal(true);
   });
-});
 
+  // URL Rewriting tests still to be written
+
+});
 
 
 
@@ -812,61 +847,3 @@ describe('Controller: channelAlertsCtrl', function () {
     /* STILL NEEDED */
   });
 });
-
-
-describe('Controller: channelSettingsCtrl', function () {
-  // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
-
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-
-    var modalInstance = sinon.spy();
-    createControllerParent = function () {
-      return $controller('ChannelsModalCtrl', {
-        $scope: scope,
-        $modalInstance: modalInstance,
-        channel: null,
-        channelDuplicate: null
-      });
-    };
-    createController = function () {
-      return $controller('channelSettingsCtrl', {
-        $scope: scope
-      });
-    };
-  }));
-
-  it('should set default request/reponse body settings - Update is false', function () {
-    createControllerParent();
-    scope.update = false;
-    createController();
-
-    scope.channel.should.be.ok;
-    scope.channel.requestBody.should.equal(true);
-    scope.channel.responseBody.should.equal(true);
-  });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
