@@ -1384,6 +1384,6 @@ label { position: relative; }
 
 .addNewRoleTr td {background-color:#D9FFBE ! important}
 
-.inTableEditTextBoxTd input {width:100px; height:21px; font-size:12px;}
+.inTableEditTextBoxTd input {float:left; width:100px; height:21px; font-size:12px;}
 
 .rolesTableScrollDiv {overflow-x: auto;}

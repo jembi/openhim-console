@@ -102,8 +102,6 @@ angular.module('openhimConsoleApp')
     
     
     /* -------------------------Assign Clients to Roles---------------------------- */
-    $scope.clientRoles = {};
-
     $scope.$watch('clientsMirror', function (newVal, oldVal) {
       if(newVal) {
         waitForRolesMirror();
@@ -115,10 +113,14 @@ angular.module('openhimConsoleApp')
         if(newVal) {
           buildClientsRolesObject();
           buildChannelsRolesObject();
+          angular.forEach($scope.rolesMirror, function(role) {
+            role.displayName = role.name;
+          });
         }
       });
     }
     
+    $scope.clientRoles = {};
     var buildClientsRolesObject = function() {
       angular.forEach($scope.clientsMirror, function(client) { 
         angular.forEach($scope.rolesMirror, function(role) {
@@ -206,8 +208,35 @@ angular.module('openhimConsoleApp')
     
     
     /* -------------------------Edit Roles---------------------------- */
+    $scope.nameSaved = [];
+    $scope.changeRoleName = function(role) {
+      angular.forEach($scope.clientsMirror, function(client) {
+        for (var i=0;i<client.roles.length;i++) {
+          if (client.roles[i] == role.name) {
+            $scope.clientRoles[client.name + role.displayName] = true;
+            client.roles.push(role.displayName);
+          }
+        }
+      });
+
+      angular.forEach($scope.channelsMirror, function(channel) {
+        for (var i=0;i<role.channels.length;i++) {
+          if (role.channels[i]._id == channel._id) {
+            $scope.channelRoles[channel.name + role.displayName] = true;
+            channel.allow.push(role.displayName);
+          }
+        }
+      });
+      $scope.removeRole(role);
+      updateChannels(role);
+      updateClients(role);
+      
+      $scope.nameSaved[role.displayName] = true;
+    }
+    
     $scope.toggleEditRoleNames = function() {
       $scope.editRoleNames = $scope.editRoleNames === true ? false : true;
+      $scope.nameSaved = [];
     }
     
     $scope.addRole = function() {
@@ -292,7 +321,7 @@ angular.module('openhimConsoleApp')
       }
     }
     
-    var removeRole = function(role) {
+    $scope.removeRole = function(role) {
       angular.forEach($scope.channels, function(channel) {
         var channelSpliceIndex = channel.allow.indexOf(role.name);
         if(channelSpliceIndex >= 0) {
@@ -316,10 +345,10 @@ angular.module('openhimConsoleApp')
           });
         }
       });
-      Alerting.AlertAddMsg('top', 'success', 'The role has been deleted successfully');
     }
     
     /* -------------------------End Edit Roles---------------------------- */
+    
     
     /*------------------------Delete Confirm----------------------------*/
     $scope.confirmDelete = function(role){
@@ -343,7 +372,7 @@ angular.module('openhimConsoleApp')
 
       modalInstance.result.then(function () {
         // Delete confirmed - delete the user
-        removeRole(role);
+        $scope.removeRole(role);
       }, function () {
         // delete cancelled - do nothing
       });
