@@ -16,7 +16,7 @@
 
         <!-- Users/Channels Matrix Table -->
         <button ng-if="usersChannelsMatrix" class="btn btn-primary" data-toggle="collapse" data-target="#users-channels-matrix" style="float: left; margin-bottom: 20px;"><i class="glyphicon glyphicon-eye-open"></i> Show/hide Users to Channels permissions</button>
-        <div id="users-channels-matrix" class="panel-body collapse usersChannelsMatrixDiv">
+        <div id="users-channels-matrix" class="panel-body collapse usersChannelsMatrixDiv" style="clear: both;">
 
           <div class="usersChannelsMatrixLegendDiv">
             <title>Legend:</title>
@@ -92,7 +92,7 @@
                   <th>Email</th>
                   <th>First Name</th>
                   <th>Surname</th>
-                  <th>Groups</th>
+                  <th>Permission Groups</th>
                   <th width="80"></th>
                 </tr>
               </thead>
@@ -105,7 +105,7 @@
                   </td>
                   <td data-title="First Name">{{ user.firstname }}</td>
                   <td data-title="Surname">{{ user.surname }}</td>
-                  <td data-title="Group"><span ng-repeat="group in user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
+                  <td data-title="Permission Group"><span ng-repeat="group in user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
                   <td>
                     <button class="btn btn-warning btn-xs" ng-click="editUser(user)"><i class="glyphicon glyphicon-pencil"></i></button>
                     <button class="btn btn-danger btn-xs" ng-click="confirmDelete(user)"><i class="glyphicon glyphicon-remove"></i></button>

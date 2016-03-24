@@ -45,7 +45,7 @@
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.groups }">
-        <label><span>*</span> Groups</label>
+        <label><span>*</span> Permission Groups</label>
         <taglist tag-data="user.groups"><input class="form-control" placeholder="Enter a group and press enter..." type="text" ng-model="roles" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
