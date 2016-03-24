@@ -391,7 +391,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
 
 
 
-describe('Controller: channelAccessControlCtrl', function () {
+describe('Controller: channelUserAccessCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
   var scope, createController, createControllerParent, httpBackend;
@@ -421,7 +421,7 @@ describe('Controller: channelAccessControlCtrl', function () {
       });
     };
     createController = function () {
-      return $controller('channelAccessControlCtrl', {
+      return $controller('channelUserAccessCtrl', {
         $scope: scope
       });
     };

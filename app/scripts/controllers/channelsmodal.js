@@ -158,7 +158,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     // name validation
     if( !$scope.channel.name ){
       $scope.ngError.name = true;
-      $scope.ngError.accessBasicInfoTab = true;
+      $scope.ngError.basicInfoTab = true;
       $scope.ngError.hasErrors = true;
     }
 
@@ -382,8 +382,8 @@ app.controller('channelRequestMatchingCtrl', function ($scope, Api) {
 
 });
 
-// nested controller for the channel access control tab
-app.controller('channelAccessControlCtrl', function ($scope) {
+// nested controller for the channel - user access tab
+app.controller('channelUserAccessCtrl', function ($scope) {
 
   // object for the taglist roles
   $scope.taglistUserRoleOptions = [];

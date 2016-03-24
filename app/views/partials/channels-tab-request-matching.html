@@ -18,7 +18,7 @@
     <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 
   </div>
-  <div class="form-group" style="float: right; width: 23%; margin-bottom: 0px;" ng-class="{fullWidthPriority:channel.type === 'tcp' || channel.type === 'tls'}">
+  <div class="form-group" style="float: right; width: 23%; margin-bottom: 0px;">
     <label>
       Priority
       <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
@@ -57,7 +57,7 @@
 </div>
 
 
-<p>Do you want to match on particular request body content? <input type="checkbox" ng-model="matching.showRequestMatching" style="margin-top: 0px; vertical-align: middle;" class="ng-pristine ng-valid"></p>
+<p>Enable matching on request body content or content type? <input type="checkbox" ng-model="matching.showRequestMatching" style="margin-top: 0px; vertical-align: middle;" class="ng-pristine ng-valid"></p>
 
 <div ng-show="matching.showRequestMatching">
   <div class="form-group">
