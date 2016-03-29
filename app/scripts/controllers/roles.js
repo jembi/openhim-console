@@ -324,28 +324,10 @@ angular.module('openhimConsoleApp')
     }
     
     $scope.removeRole = function(role) {
-      angular.forEach($scope.channels, function(channel) {
-        var channelSpliceIndex = channel.allow.indexOf(role.name);
-        if(channelSpliceIndex >= 0) {
-          channel.allow.splice(channelSpliceIndex, 1);
-          Api.Channels.update({}, channel, function(result) {
-            Notify.notify('channelsChanged');
-          }, function(error) {
-            Alerting.AlertAddMsg('server', 'error', error);
-          });
-        }
-      });
-      
-      angular.forEach($scope.clients, function(client) {
-        var clientSpliceIndex = client.roles.indexOf(role.name);
-        if(clientSpliceIndex > 0) {
-          client.roles.splice(clientSpliceIndex, 1);
-          Api.Clients.update({}, client, function(result) {
-            Notify.notify('clientsChanged');
-          }, function(error) {
-            Alerting.AlertAddMsg('server', 'error', error);
-          });
-        }
+      Api.Roles.remove({name:role.name}, function(result) {
+        Notify.notify('clientsChanged');
+      }, function(error) {
+        Alerting.AlertAddMsg('server', 'error', error);
       });
     }
     
