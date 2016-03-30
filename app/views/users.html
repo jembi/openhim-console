@@ -50,8 +50,7 @@
               <tbody>
                 <tr ng-repeat="user in usersChannelsMatrix.users | orderBy:['user']">
                   <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="User" style="max-width: none;">{{ user.user }}</td>
-                  
+                  <td data-title="User" style="max-width: none;"><a href="" ng-click="editUser(user.user)">{{ user.user.email }}</a></td>
                   <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
 
                     <!-- show if channel is allowed -->
