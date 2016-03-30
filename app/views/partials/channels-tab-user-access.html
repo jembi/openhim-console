@@ -1,17 +1,22 @@
-<div class="form-group" ng-class="{ 'has-error' : ngError.allow }">
-  <label><span>*</span> Allowed roles and clients</label>
-  <taglist tag-data="channel.allow" ><input class="form-control" placeholder="Enter a role and press enter..." type="text" ng-model="allowedRoles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
-  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-</div>
+
 <div class="form-group">
-  <label>User groups allowed to view this channel's transactions</label>
+  <label>
+  	User groups allowed to view this channel's transactions
+  	<i ng-show="uiSettings.showTooltips" tooltip="Supply the groups allowed to view this Channel’s transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+  </label>
   <taglist tag-data="channel.txViewAcl"><input class="form-control" placeholder="Enter the user groups that can view transactions created by this channel..." type="text" ng-model="txViewAcl" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
 </div>
 <div class="form-group">
-  <label>User groups allowed to view this channel's transactions request/response body</label>
+  <label>
+  	User groups allowed to view this channel's transactions request/response body
+  	<i ng-show="uiSettings.showTooltips" tooltip="Supply the groups allowed to view the request/response body of this Channel’s transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+  </label>
   <taglist tag-data="channel.txViewFullAcl"><input class="form-control" placeholder="Enter the user groups that can view transactions request/response body created by this channel..." type="text" ng-model="txViewFullAcl" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
 </div>
 <div class="form-group">
-  <label>User groups allowed to rerun this channel's transactions</label>
+  <label>
+  	User groups allowed to rerun this channel's transactions
+  	<i ng-show="uiSettings.showTooltips" tooltip="Supply the groups allowed to rerun this Channel’s transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+ 	</label>
   <taglist tag-data="channel.txRerunAcl"><input class="form-control" placeholder="Enter the user groups that can view transactions created by this channel..." type="text" ng-model="txRerunAcl" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
 </div>
