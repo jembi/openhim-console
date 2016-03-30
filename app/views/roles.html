@@ -8,7 +8,6 @@
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-star-empty"></i>&nbsp;&nbsp;Roles</h2>
             <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
-            <!-- <pre>{{clientsMirror | json}}</pre> -->
           </div>
         </div>
 
@@ -44,14 +43,14 @@
                   <tr ng-repeat="role in rolesMirror | orderBy:['name']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                     <td class="inTableEditTextBoxTd" data-title="Role">
-                      <span ng-show="!editRoleNames || nameSaved[role.name]">{{ role.name }}</span>
+                      <span ng-show="!editRoleNames || nameSaved[role.name]">{{ role.displayName }}</span>
                       <form ng-show="editRoleNames && !nameSaved[role.name]">
                         <input class="form-control" ng-model="role.displayName"></input>
                         <button  style="float:left" class="btn btn-warning btn-xs" ng-click="changeRoleName(role)"><i class="glyphicon glyphicon-floppy-disk"></i></button>
                       </form>
                     </td>
                     <td data-title="Clients">
-                      <div width="100" ng-repeat="client in clientsMirror">
+                      <div width="100" ng-repeat="client in clients">
                         <span class="roleAssignedToClientSpan" ng-show="clientRoles[client.name + role.name] && !editClients">{{ client.name }}<br/></span>
                         <span class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+role.name] && editClients" ng-click="removeRoleFromClient(client, role, true)">{{ client.name }} <br/></span>
                         <span class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+role.name] && editClients" ng-click="assignRoleToClient(client, role, true)"> {{client.name}}<br/></span>
@@ -70,14 +69,14 @@
                       <input class="form-control" ng-model="newRole.name"></input>
                     </td>
                     <td data-title="Clients">
-                      <div width="100" ng-repeat="client in clientsMirror">
+                      <div width="100" ng-repeat="client in clients">
                         <span class="cursorPointer roleAssignedToClientSpan" ng-show="clientRoles[client.name+newRole.name]" ng-click="removeRoleFromClient(client, newRole)">{{ client.name }} <br/></span>
-                        <span class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+newRole.name]" ng-click="assignRoleToClient(client, newRole)"> {{client.name}}<br/></span>
+                        <span class="cursorPointer roleNotAssignedToClientSpan" ng-show="!clientRoles[client.name+newRole.name]" ng-click="assignClientToNewRole(client, newRole)"> {{client.name}}<br/></span>
                       </div>
                     </td>
                     <td class="limitChannelTdWidth" ng-repeat="channel in channels | orderBy:['-status', 'priority', 'name']">
                       <i ng-show="channelRoles[channel.name + newRole.name]" class="isAllowed glyphicon glyphicon-ok" ng-click="removeAssignRoleFromChannel(channel, newRole)"></i>
-                      <i ng-show="!channelRoles[channel.name + newRole.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignRoleToChannel(channel, newRole)"></i>
+                      <i ng-show="!channelRoles[channel.name + newRole.name]" class="isNotAllowed glyphicon glyphicon-remove" ng-click="assignNewRoleToChannel(channel, newRole)"></i>
                     </td>
                   
                     <td width="50">
