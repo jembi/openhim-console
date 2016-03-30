@@ -45,8 +45,7 @@
                   <tr>
                     <th width="50">#</th>
                     <th>Email</th>
-                    <th>First Name</th>
-                    <th>Surname</th>
+                    <th>Name</th>
                     <th>Permission Groups</th>
                     <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" style="text-align: center;">{{channel.name}}</th>
                     <th width="80"></th>
@@ -56,8 +55,7 @@
                   <tr ng-repeat="user in usersChannelsMatrix.users | orderBy:['user']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                     <td data-title="User" style="max-width: none;"><a href="" ng-click="editUser(user.user)">{{ user.user.email }}</a></td>
-                    <td data-title="First Name">{{ user.user.firstname }}</td>
-                    <td data-title="Surname">{{ user.user.surname }}</td>
+                    <td data-title="Name">{{ user.user.firstname }} {{ user.user.surname }}</td>
                     <td data-title="Permission Group"><span ng-repeat="group in user.user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
                     <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
 
