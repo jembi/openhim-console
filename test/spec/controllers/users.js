@@ -111,12 +111,12 @@ describe('Controller: UsersCtrl', function () {
     scope.usersChannelsMatrix.should.have.property('users');
     scope.usersChannelsMatrix.users.length.should.equal(2);
 
-    scope.usersChannelsMatrix.users[0].user.should.equal('super@openhim.org');
+    scope.usersChannelsMatrix.users[0].user.email.should.equal('super@openhim.org');
     scope.usersChannelsMatrix.users[0].allowedChannels.length.should.equal(2);
     scope.usersChannelsMatrix.users[0].allowedChannelsBody.length.should.equal(2);
     scope.usersChannelsMatrix.users[0].allowedChannelsRerun.length.should.equal(2);
 
-    scope.usersChannelsMatrix.users[1].user.should.equal('normal@openhim.org');
+    scope.usersChannelsMatrix.users[1].user.email.should.equal('normal@openhim.org');
     scope.usersChannelsMatrix.users[1].allowedChannels.length.should.equal(2);
     scope.usersChannelsMatrix.users[1].allowedChannelsBody.length.should.equal(0);
     scope.usersChannelsMatrix.users[1].allowedChannelsRerun.length.should.equal(1);
