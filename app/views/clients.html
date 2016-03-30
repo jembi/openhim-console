@@ -4,57 +4,7 @@
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
       <div class="content-box-large">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <h2><i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;Clients</h2>
-          </div>
-        </div>
-
-        <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
-        <!-- Top Alerts -->
-
-        <div class="panel-body">
-          <div id="no-more-tables">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th width="50">#</th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Organization</th>
-                  <th>Software Name</th>
-                  <th>Description</th>
-                  <th>Contact Person</th>
-                  <th>Domain</th>
-                  <th>Roles</th>
-                  <th width="80"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="client in clients | orderBy:['name']">
-                  <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                  <td data-title="ID"><a href="" ng-click="editClient(client)">{{ client.clientID }}</a></td>
-                  <td data-title="Name"><a href="" ng-click="editClient(client)">{{ client.name }}</a></td>
-                  <td data-title="Organization">{{ client.organization }}</td>
-                  <td data-title="SoftwareName">{{ client.softwareName }}</td>
-                  <td data-title="Description">{{ client.description }}</td>
-                  <td data-title="Contact">
-                    <span ng-if="client.contactPersonEmail">{{ client.contactPerson }} ({{client.contactPersonEmail}})</span>
-                    <span ng-if="!client.contactPersonEmail">{{ client.contactPerson }}</span>
-                  </td>
-                  <td data-title="clientDomain">{{ client.clientDomain }}</td>
-                  <td data-title="Roles">{{ client.roles.join(', ') }}</td>
-                  <td>
-                    <button class="btn btn-warning btn-xs" ng-click="editClient(client)"><i class="glyphicon glyphicon-pencil"></i></button>
-                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(client)"><i class="glyphicon glyphicon-remove"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button class="btn btn-primary" ng-click="addClient()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Client</button>
-        </div>
+        
 
       
 
@@ -140,24 +90,74 @@
                 </tbody>
               </table>
             </div>
-
-            <!-- show loading gif when scope object empty and no server errors exist -->
-            <div class="loadingContainer" ng-show="!(roles || alerts.server)">
-              <img src="images/loading.gif" alt="Loading..." />
-            </div>
-
-            <!-- Server Alerts -->
-            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
-            <!-- Server Alerts -->
-
-            <!-- Bottom Alerts -->
-            <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
-            <!-- Bottom Alerts -->
             <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
           </div>
         </div>
-      </div>
-      
+        
+        <div class="panel-heading">
+          <div class="panel-title">
+            <h2><i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;Clients</h2>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div id="no-more-tables">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th width="50">#</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Organization</th>
+                  <th>Software Name</th>
+                  <th>Description</th>
+                  <th>Contact Person</th>
+                  <th>Domain</th>
+                  <th>Roles</th>
+                  <th width="80"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="client in clients | orderBy:['name']">
+                  <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                  <td data-title="ID"><a href="" ng-click="editClient(client)">{{ client.clientID }}</a></td>
+                  <td data-title="Name"><a href="" ng-click="editClient(client)">{{ client.name }}</a></td>
+                  <td data-title="Organization">{{ client.organization }}</td>
+                  <td data-title="SoftwareName">{{ client.softwareName }}</td>
+                  <td data-title="Description">{{ client.description }}</td>
+                  <td data-title="Contact">
+                    <span ng-if="client.contactPersonEmail">{{ client.contactPerson }} ({{client.contactPersonEmail}})</span>
+                    <span ng-if="!client.contactPersonEmail">{{ client.contactPerson }}</span>
+                  </td>
+                  <td data-title="clientDomain">{{ client.clientDomain }}</td>
+                  <td data-title="Roles">{{ client.roles.join(', ') }}</td>
+                  <td>
+                    <button class="btn btn-warning btn-xs" ng-click="editClient(client)"><i class="glyphicon glyphicon-pencil"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(client)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- show loading gif when scope object empty and no server errors exist -->
+          <div class="loadingContainer" ng-show="!(roles || alerts.server)">
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <!-- Server Alerts -->
+          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <!-- Server Alerts -->
+
+          <!-- Bottom Alerts -->
+          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <!-- Bottom Alerts -->
+          <button class="btn btn-primary" ng-click="addClient()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Client</button>
+        </div>
+        
+        
+        
+      </div><!--content-box-large -->
     </div>
   </div>
 </div>
