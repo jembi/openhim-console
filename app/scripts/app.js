@@ -62,10 +62,6 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/clients.html',
       controller: 'ClientsCtrl'
     })
-    .when('/roles', {
-      templateUrl: 'views/roles.html',
-      controller: 'RolesCtrl'
-    })
     .when('/monitoring', {
       templateUrl: 'views/monitoring.html',
       controller: 'MonitoringCtrl'
