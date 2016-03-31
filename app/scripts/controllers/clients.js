@@ -4,26 +4,26 @@ angular.module('openhimConsoleApp')
   .controller('ClientsCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting, Notify) {
 
 
-    /* -------------------------Initial load & onChanged---------------------------- */
-    var querySuccess = function(clients){
-      $scope.clients = clients;
-      if( clients.length === 0 ){
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
-      }
-    };
-
     var queryError = function(err){
       // on error - add server error alert
       Alerting.AlertAddServerMsg(err.status);
     };
 
-    // do the initial request
-    Api.Clients.query(querySuccess, queryError);
+    /* -------------------------Load Clients---------------------------- */
+    var clientQuerySuccess = function(clients){
+      $scope.clients = clients;
+      if( clients.length === 0 ){
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
+      }
+    };
+    
+    Api.Clients.query(clientQuerySuccess, queryError);
 
     $scope.$on('clientsChanged', function () {
-      Api.Clients.query(querySuccess, queryError);
+      Api.Clients.query(clientQuerySuccess, queryError);
+      loadRoles();
     });
-    /* -------------------------Initial load & onChanged---------------------------- */
+    /* -------------------------End Load Clients---------------------------- */
 
 
 
@@ -55,14 +55,8 @@ angular.module('openhimConsoleApp')
         }
       });
     };
-    /* -------------------------Add/edit client popup modal---------------------------- */
+    /* -------------------------End Add/edit client popup modal---------------------------- */
 
-
-
-  
-    
-    
-    
   
     /*-------------------------------------------------------------------*/
     /*----------------------------------Roles----------------------------*/
@@ -172,14 +166,11 @@ angular.module('openhimConsoleApp')
       }
       role.clients.push({'_id': client._id, 'name': client.clientID});
       $scope.clientRoles[client.clientID + role.name] = true;
-      console.log($scope.clientRoles);
       
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, function() {
-          Notify.notify('clientsChanged');
-        });
+        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
       }
     };
     
@@ -198,9 +189,7 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, function() {
-          Notify.notify('clientsChanged');
-        });
+        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
       }
     };
     
@@ -233,8 +222,8 @@ angular.module('openhimConsoleApp')
 
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
-      if(save){
-        apiCall('update', {name:role.name}, updateBody);
+      if(save) {
+        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
       }
     };
     
@@ -249,16 +238,37 @@ angular.module('openhimConsoleApp')
       }
       role.channels.splice(index, 1);
       
+      if(role.channels.length === 0 && save) {
+        apiCall('remove', {name:role.name}, function() {
+          Notify.notify('clientsChanged');
+          Alerting.AlertReset();
+          Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
+        }, removeRoleError);
+        return;
+      }
+      
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody);
+        apiCall('update', {name:role.name}, updateBody, removeRoleSuccess, removeRoleError);
       }
     };
     /* -------------------------End Assign Roles To Channels---------------------------- */
     
     
     /* -------------------------Edit Roles---------------------------- */
+    
+    var editRoleSuccess = function () {
+      Alerting.AlertReset();
+      Notify.notify('clientsChanged');
+      Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
+    };
+
+    var editRoleError = function (err) {
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while saving the roles\' details: #' + err.status + ' - ' + err.data);
+    };
+    
     $scope.nameSaved = [];
     $scope.changeRoleName = function(role) {
       try {
@@ -270,7 +280,7 @@ angular.module('openhimConsoleApp')
         var updateBody = {};
         updateBody.name = role.displayName;
         $scope.nameSaved[role.name] = true;
-        apiCall('update', {name:role.name}, updateBody);
+        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
       } catch (e) {
         $scope.nameSaved[role.name] = true;
       }
@@ -310,9 +320,11 @@ angular.module('openhimConsoleApp')
     
     $scope.saveNewRole = function(role) {
       apiCall('save', {name:null}, role, function() {
-        Notify.notify('rolesChanged');
+        Notify.notify('clientsChanged');
+        Alerting.AlertReset();
+        Alerting.AlertAddMsg('role', 'success', 'The role has been added successfully');
         $scope.removeNewRole(role);
-      });
+      }, editRoleError);
     };
     
     $scope.removeNewRole = function(role) {
@@ -327,10 +339,19 @@ angular.module('openhimConsoleApp')
       $scope.newRoles.splice(spliceIndex, 1);
     };
     
+    var removeRoleSuccess = function() {
+      Notify.notify('rolesChanged');
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
+    }
+    
+    var removeRoleError = function(err) {
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
+    }
+    
     $scope.removeRole = function(role) {
-      apiCall('remove', {name:role.name}, function() {
-        Notify.notify('rolesChanged');
-      });
+      apiCall('remove', {name:role.name}, removeRoleSuccess, removeRoleError);
       var spliceIndex = -1;
       for(var i = 0; i<$scope.roles.length; i++) {
          if ($scope.roles[i].name ===  role.name) {
@@ -373,15 +394,15 @@ angular.module('openhimConsoleApp')
       });
     };
     
-    var deleteSuccess = function () {
-      // On success
+    var clientDeleteSuccess = function () {
       $scope.clients = Api.Clients.query();
-      Alerting.AlertAddMsg('top', 'success', 'The client has been deleted successfully');
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('client', 'success', 'The client has been deleted successfully');
     };
     
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
+    var clientDeleteError = function (err) {
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
     };
     
     $scope.confirmRoleDelete = function(role) {
@@ -392,7 +413,7 @@ angular.module('openhimConsoleApp')
     
     $scope.confirmClientDelete = function(client) {
       confirmDelete(client, 'Client', function() {
-        client.$remove(deleteSuccess, deleteError);
+        client.$remove(clientDeleteSuccess, clientDeleteError);
       });
     };
     /*------------------------End Delete Confirm----------------------------*/

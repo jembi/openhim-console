@@ -68,14 +68,14 @@ angular.module('openhimConsoleApp')
     var success = function () {
 
       // add the success message
-      Alerting.AlertAddMsg('top', 'success', 'The client has been saved successfully');
+      Alerting.AlertAddMsg('client', 'success', 'The client has been saved successfully');
       notifyUser();
       
     };
 
     var error = function (err) {
       // add the success message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
+      Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
       notifyUser();
     };
 

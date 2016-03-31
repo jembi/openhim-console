@@ -14,9 +14,9 @@
           </div>
         </div>
 
-        <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
-        <!-- Top Alerts -->
+        <!-- Role Alerts -->
+        <alert ng-repeat="alert in alerts.role" type="alert.type">{{alert.msg}}</alert>
+        <!-- Role Alerts -->
         <div class="rolesChannelsMatrixDiv">
           <div class="rolesTableScrollDiv panel-body">
             <div id="no-more-tables">
@@ -99,6 +99,10 @@
             <h2><i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;Clients</h2>
           </div>
         </div>
+        
+        <!-- Client Alerts -->
+        <alert ng-repeat="alert in alerts.client" type="alert.type">{{alert.msg}}</alert>
+        <!-- Client Alerts -->
 
         <div class="panel-body">
           <div id="no-more-tables">
