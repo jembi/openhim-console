@@ -59,47 +59,7 @@ angular.module('openhimConsoleApp')
 
 
 
-    /*------------------------Delete Confirm----------------------------*/
-    $scope.confirmDelete = function(client){
-      Alerting.AlertReset();
-      $scope.serverRestarting = false;
-
-      var deleteObject = {
-        title: 'Delete Client',
-        button: 'Delete',
-        message: 'Are you sure you wish to delete the client "' + client.name + '"?'
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/confirmModal.html',
-        controller: 'ConfirmModalCtrl',
-        resolve: {
-          confirmObject: function () {
-            return deleteObject;
-          }
-        }
-      });
-
-      modalInstance.result.then(function () {
-        // Delete confirmed - delete the user
-        client.$remove(deleteSuccess, deleteError);
-      }, function () {
-        // delete cancelled - do nothing
-      });
-
-    };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.clients = Api.Clients.query();
-      Alerting.AlertAddMsg('top', 'success', 'The client has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
-    };
-    /*------------------------Delete Confirm----------------------------*/
+  
     
     
     
@@ -385,15 +345,16 @@ angular.module('openhimConsoleApp')
     
     
     /*------------------------Delete Confirm----------------------------*/
-    $scope.confirmRoleDelete = function(role){
+    var confirmDelete = function(object, objectType, callback) {
       Alerting.AlertReset();
-
+      $scope.serverRestarting = false;
+      
       var deleteObject = {
-        title: 'Delete Role',
+        title: 'Delete ' + objectType,
         button: 'Delete',
-        message: 'Are you sure you wish to delete the role "' + role.name + '"?'
+        message: 'Are you sure you wish to delete the "' + objectType + '": "' + object.name + '"?'
       };
-
+      
       var modalInstance = $modal.open({
         templateUrl: 'views/confirmModal.html',
         controller: 'ConfirmModalCtrl',
@@ -403,14 +364,36 @@ angular.module('openhimConsoleApp')
           }
         }
       });
-
+      
       modalInstance.result.then(function () {
-        // Delete confirmed - delete the user
-        $scope.removeRole(role);
+        // Delete confirmed - delete the object
+        callback();
       }, function () {
         // delete cancelled - do nothing
       });
-
+    };
+    
+    var deleteSuccess = function () {
+      // On success
+      $scope.clients = Api.Clients.query();
+      Alerting.AlertAddMsg('top', 'success', 'The client has been deleted successfully');
+    };
+    
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
+    };
+    
+    $scope.confirmRoleDelete = function(role) {
+      confirmDelete(role, 'Role', function() {
+        $scope.removeRole(role);
+      });
+    };
+    
+    $scope.confirmClientDelete = function(client) {
+      confirmDelete(client, 'Client', function() {
+        client.$remove(deleteSuccess, deleteError);
+      });
     };
     /*------------------------End Delete Confirm----------------------------*/
 
