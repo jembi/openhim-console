@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('ClientsCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting) {
+  .controller('ClientsCtrl', function ($rootScope, $scope, $modal, $interval, Api, Alerting, Notify) {
 
 
     /* -------------------------Initial load & onChanged---------------------------- */
@@ -110,10 +110,6 @@ angular.module('openhimConsoleApp')
     $scope.newRoles = [];
     $scope.newRolesIndex = 0;
     
-    var queryError = function(err){
-      Alerting.AlertAddServerMsg(err.status); // on query error - add server error alert
-    };
-    
     var apiCall = function(method, parameters, body, callback) {
       var success = function() {
         if (callback) {
@@ -137,20 +133,7 @@ angular.module('openhimConsoleApp')
           Api.Roles.remove(parameters, body, success, error);
           break;
       }
-    }
-    
-    /* -------------------------Load Clients---------------------------- */
-    var clientQuerySuccess = function(clients){
-      $scope.clients = clients;
-      if( clients.length === 0 ){
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
-      } else {
-        Alerting.AlertReset('bottom');
-      }
     };
-
-    Api.Clients.query(clientQuerySuccess, queryError); // request all clients to assign to roles
-    /* -------------------------End Load Clients---------------------------- */
     
   
     /* -------------------------Load Channels---------------------------- */
@@ -170,14 +153,14 @@ angular.module('openhimConsoleApp')
     /* -------------------------Load Roles---------------------------- */  
     $scope.$watch('channels', function (newVal) {
       if(newVal) {
-        loadRoles();  // load roles after channels are loaded
+        loadRoles();  // channels need to be loaded before roles to set up the table columns
       }
     });
     
     var loadRoles = function () {
-      var roleQuerySuccess = function(roles){
+      var roleQuerySuccess = function(roles) {
         $scope.roles = roles;
-        if( roles.length === 0 ){
+        if( roles.length === 0 ) {
           Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created');
         } else {
           Alerting.AlertReset('bottom');
@@ -186,7 +169,7 @@ angular.module('openhimConsoleApp')
 
       Api.Roles.query(roleQuerySuccess, queryError); // request roles
 
-      $scope.$on('rolesChanged', function () {
+      $scope.$on('rolesChanged', function() {
         Api.Roles.query(roleQuerySuccess, queryError);  // listen for changed roles and reload roles
       });
     };
@@ -229,11 +212,14 @@ angular.module('openhimConsoleApp')
       }
       role.clients.push({'_id': client._id, 'name': client.clientID});
       $scope.clientRoles[client.clientID + role.name] = true;
+      console.log($scope.clientRoles);
       
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody);
+        apiCall('update', {name:role.name}, updateBody, function() {
+          Notify.notify('clientsChanged');
+        });
       }
     };
     
@@ -252,7 +238,9 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody);
+        apiCall('update', {name:role.name}, updateBody, function() {
+          Notify.notify('clientsChanged');
+        });
       }
     };
     
@@ -316,7 +304,7 @@ angular.module('openhimConsoleApp')
       try {
         angular.forEach($scope.roles, function(aRole) {
           if(aRole.name === role.displayName) {
-            throw "break";
+            throw 'break';
           }
         });
         var updateBody = {};
@@ -350,7 +338,7 @@ angular.module('openhimConsoleApp')
       }
       role.clients.push({'_id': client._id, 'name': client.clientID});
       $scope.clientRoles[client.clientID + role.name] = true;
-    }
+    };
     
     $scope.assignNewRoleToChannel = function (channel, role) {
       if(!role.channels) {
@@ -358,7 +346,7 @@ angular.module('openhimConsoleApp')
       }
       role.channels.push({'_id': channel._id, 'name': channel.name});
       $scope.channelRoles[channel.name + role.name] = true;
-    }
+    };
     
     $scope.saveNewRole = function(role) {
       apiCall('save', {name:null}, role, function() {
