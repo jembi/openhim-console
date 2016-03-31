@@ -62,7 +62,12 @@
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.roles }">
         <label><span>*</span> Roles</label>
-        <taglist tag-data="client.roles"><input class="form-control" placeholder="Enter a role and press enter..." type="text" name="roles" ng-model="roles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
+        <br/>
+        <span ng-repeat="role in selectClientRoleOptions">
+          <input type="checkbox" ng-model="bleh" ng-checked="assigned[role]" ng-change="toggleRoleAssignedToClient(role)">{{role}}</input>
+          <br/>
+        </span>
+        
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 

@@ -9,22 +9,32 @@ angular.module('openhimConsoleApp')
     /***************************************************************/
 
     // object for the taglist roles
-    $scope.taglistClientRoleOptions = [];
+    $scope.selectClientRoleOptions = [];
+    $scope.assigned = {};
 
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
-
-    // get the roles for the client taglist option
-    Api.Clients.query(function(clients){
-      angular.forEach(clients, function(client){
-        angular.forEach(client.roles, function(role){
-          if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
-            $scope.taglistClientRoleOptions.push(role);
-          }
-        });
+    
+    Api.Roles.query(function(roles){
+      angular.forEach(roles, function(role) {
+        $scope.selectClientRoleOptions.push(role.name);
       });
     },
     function(){ /* server error - could not connect to API to get clients */  });
+    
+        
+    $scope.toggleRoleAssignedToClient = function(role) {
+      $scope.assigned[role] = $scope.assigned[role] === true ? false : true;
+    };
+    
+    $scope.addAssignedRolesToClientObject = function() {
+      $scope.client.roles = [];
+      for(var role in $scope.assigned) {
+        if($scope.assigned[role] === true) {
+          $scope.client.roles.push(role);
+        }
+      }
+    };
 
     // fetch the keystore for cert dropdown
     Api.Keystore.query({ type: 'ca' }, function (certs) {
@@ -34,9 +44,13 @@ angular.module('openhimConsoleApp')
     // if client exist then update true
     if (client) {
       $scope.update = true;
-      $scope.client = Api.Clients.get({ clientId: client._id });
+      $scope.client = Api.Clients.get({ clientId: client._id }, function () {
+        for(var i = 0; i<$scope.client.roles.length; i++) {
+          $scope.assigned[$scope.client.roles[i]] = true;
+        }
+      });
       //$scope.client = angular.copy(client);
-    }else{
+    } else {
       $scope.update = false;
       $scope.client = new Api.Clients();
     }
@@ -68,6 +82,7 @@ angular.module('openhimConsoleApp')
     var notifyUser = function(){
       // reset backing object and refresh clients list
       Notify.notify('clientsChanged');
+      Notify.notify('rolesChanged');
       $modalInstance.close();
     };
 
@@ -185,6 +200,7 @@ angular.module('openhimConsoleApp')
 
     $scope.submitFormClients = function(){
       // validate the form first to check for any errors
+      $scope.addAssignedRolesToClientObject();
       $scope.validateFormClients();
       // save the client object if no errors are present
       if ( $scope.ngError.hasErrors === false ){
