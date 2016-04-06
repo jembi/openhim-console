@@ -1,5 +1,5 @@
 <p class="text-muted">
-  Configure the requests that will be matched to this channel and forwarded on via the configured routes.
+  Configure the matching criteria for requests that should be forwarded to this channel.
 </p>
 
 <div class="form-group-2columns">
@@ -38,7 +38,7 @@
 
 <div class="form-group" ng-if="channel.authType == 'private'">
   <label>
-    Are there any IP address that this should ALWAYS treat as authenticated?
+    Are there any IP addresses that should ALWAYS be treated as authenticated?
     <i ng-show="uiSettings.showTooltips" tooltip="Enter the IP's that are allowed to access the channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
   </label>
   <taglist tag-data="channel.whitelist"><input class="form-control" placeholder="Whitelisted IP addresses" type="text" ng-model="whitelist" /></taglist>
