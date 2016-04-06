@@ -7,6 +7,9 @@
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Channels</h2>
+            <p class="text-muted">
+              Create and manage channels. A channel in the OpenHIM captures a request that matches the channel configuration and routes those requests to one or more routes that are defined in the channel config. The response from the primary route will be returned to the request sender as soon as the OpenHIM receives it.
+            </p>
           </div>
         </div>
 
@@ -33,7 +36,6 @@
                     </th>
                     <th>Channel Name</th>
                     <th>Channel URL Pattern</th>
-                    <th>Description</th>
                     <th>Monitoring</th>
                     <th>Status</th>
                     <th width="100"></th>
@@ -54,10 +56,6 @@
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
-                  <td data-title="Description">
-                    <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.description }}</a>
-                    <span ng-if="channel.status=='deleted'">{{ channel.description }}</span>
-                  </td>
                   <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">
 

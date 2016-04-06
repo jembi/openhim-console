@@ -1,19 +1,19 @@
-
+<p class="text-muted">Describe some basic information about the channel and choose its overall type.</p>
 
 <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
-  <label><span>*</span> Channel name</label>
-  <input class="form-control" type="text" ng-model="channel.name" focus="{{!update}}" />
+  <label><span>*</span> Give this channel a name</label>
+  <input class="form-control" placeholder="e.g. My Awesome Channel" type="text" ng-model="channel.name" focus="{{!update}}" />
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
 <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
-  <label><span></span> Description</label>
-  <textarea  placeholder="What does this channel do?"  class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
+  <label><span></span> What does this channel do?</label>
+  <textarea placeholder="Description..." class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
 <div class="form-group">
-  <label style="display: block;">Channel Type</label>
+  <label style="display: block;">What type of channel do you want?</label>
   <div class="btn-group">
     <label class="btn btn-primary" ng-model="channel.type" btn-radio="'http'">HTTP</label>
     <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tcp'">TCP</label>
@@ -37,7 +37,7 @@
 <div class="form-group-2columns" ng-show="channel.type == 'polling'">
   <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.pollingSchedule }">
     <label>
-      <span>*</span> Polling Schedule
+      <span>*</span> What schedule would you like the channel to poll on?
       <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
@@ -46,7 +46,7 @@
 </div>
 
 <div class="form-group-2columns">
-  <label style="display: block;">Status</label>
+  <label style="display: block;">Channel status</label>
   <div class="btn-group" style="margin-bottom: 10px">
     <label class="btn btn-primary" ng-model="channel.status" btn-radio="'enabled'">Enabled</label>
     <label class="btn btn-primary" ng-model="channel.status" btn-radio="'disabled'">Disabled</label>
