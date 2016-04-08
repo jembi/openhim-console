@@ -1372,18 +1372,12 @@ label { position: relative; }
 
 .rolesChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
 .rolesChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
-
-.limitChannelTdWidth {width:120px;}
-
+.limitChannelTdWidth { width:120px; }
 .roleAssignedToClientSpan { color: #333333; }
 .roleNotAssignedToClientSpan { color: #999; text-decoration: line-through; }
-
-.cursorPointer {cursor: pointer}
-
-.inTableEditColumn {color: #FE7A2F}
-
-.addNewRoleTr td {background-color:#D9FFBE ! important}
-
-.inTableEditTextBoxTd input {float:left; width:100px; height:21px; font-size:12px;}
-
-.rolesTableScrollDiv {overflow-x: auto;}
+.cursorPointer { cursor: pointer; }
+.inTableEditColumn { color: #FE7A2F; }
+.addNewRoleTr td { background-color:#D9FFBE ! important; }
+.inTableEditTextBoxTd input { float:left; width:100px; height:21px; font-size:12px; }
+.rolesTableScrollDiv { overflow-x: auto; }
+.delBtnPlacement { margin-left:22px; }
