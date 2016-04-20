@@ -5,8 +5,7 @@ angular.module('openhimConsoleApp')
 
 
     var queryError = function(err){
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status);
+      Alerting.AlertAddServerMsg(err.status); // on error - add server error alert
     };
 
     /* -------------------------Load Clients---------------------------- */
@@ -250,7 +249,11 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, removeRoleSuccess, removeRoleError);
+        apiCall('update', {name:role.name}, updateBody, function() {
+          Notify.notify('rolesChanged');
+          Alerting.AlertReset();
+          Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
+        }, editRoleError);
       }
     };
     /* -------------------------End Assign Roles To Channels---------------------------- */
@@ -292,6 +295,7 @@ angular.module('openhimConsoleApp')
     };
     
     $scope.addRole = function() {
+      Alerting.AlertReset();
       $scope.newRoles.push(
         {
           idName: 'Role' + $scope.newRolesIndex, 
@@ -341,6 +345,7 @@ angular.module('openhimConsoleApp')
     
     var removeRoleSuccess = function() {
       Notify.notify('rolesChanged');
+      Notify.notify('clientsChanged');
       Alerting.AlertReset();
       Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
     }
