@@ -269,10 +269,10 @@ angular.module('openhimConsoleApp')
         });
         var updateBody = {};
         updateBody.name = role.displayName;
-        $scope.nameSaved[role.name] = true;
+        $scope.nameSaved[role.displayName] = true;
         apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       } catch (e) {
-        $scope.nameSaved[role.name] = true;
+        $scope.nameSaved[role.displayName] = true;
       }
     };
     
