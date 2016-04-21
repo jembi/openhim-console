@@ -102,7 +102,7 @@ angular.module('openhimConsoleApp')
             scope.config = {};
           }
 
-          element.append('<div mediator-config config-defs="configDefs" config="config"/>');
+          element.append('<div mediator-config config-defs="configDefs" config="config"></div>');
           $compile(element.contents())(scope);
         }
       }
