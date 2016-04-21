@@ -10,6 +10,8 @@ angular.module('openhimConsoleApp')
 
     // object for the taglist roles
     $scope.selectClientRoleOptions = [];
+    $scope.formData = {};
+    $scope.formData.newClientRole = null;
     $scope.assigned = {};
 
     // object to store temp values like password (not associated with schema object)
@@ -20,8 +22,7 @@ angular.module('openhimConsoleApp')
         $scope.selectClientRoleOptions.push(role.name);
       });
     },
-    function(){ /* server error - could not connect to API to get clients */  });
-    
+    function(){ /* server error - could not connect to API to get clients */  });    
         
     $scope.toggleRoleAssignedToClient = function(role) {
       $scope.assigned[role] = $scope.assigned[role] === true ? false : true;
@@ -29,6 +30,9 @@ angular.module('openhimConsoleApp')
     
     $scope.addAssignedRolesToClientObject = function() {
       $scope.client.roles = [];
+      if($scope.formData.newClientRole) {
+        $scope.assigned[$scope.formData.newClientRole] = true;
+      }
       for(var role in $scope.assigned) {
         if($scope.assigned[role] === true) {
           $scope.client.roles.push(role);
