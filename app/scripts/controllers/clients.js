@@ -294,6 +294,10 @@ angular.module('openhimConsoleApp')
     
     
     $scope.assignClientToNewRole = function (client, role) {
+      if(!role.name) {
+        Alerting.AlertReset();
+        return Alerting.AlertAddMsg('role', 'danger', 'Please name the Role before assigning Clients/Channels');
+      }
       if(!role.clients) {
         role.clients = []; // if the role has no clients, initialize the array
       }
@@ -302,6 +306,10 @@ angular.module('openhimConsoleApp')
     };
     
     $scope.assignNewRoleToChannel = function (channel, role) {
+      if(!role.name) {
+        Alerting.AlertReset();
+        return Alerting.AlertAddMsg('role', 'danger', 'Please name the Role before assigning Clients/Channels');
+      }
       if(!role.channels) {
         role.channels = []; // if the role has no channels, initialize the array
       }
