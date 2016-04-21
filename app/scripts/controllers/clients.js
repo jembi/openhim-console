@@ -65,14 +65,11 @@ angular.module('openhimConsoleApp')
     
     var apiCall = function(method, parameters, body, callback) {
       var success = function() {
-        if (callback) {
-          callback();
-        }
+        callback(null, body);
       };
       
-      var error = function(error) {
-        Alerting.AlertReset('server');
-        Alerting.AlertAddMsg('server', 'error', error);
+      var error = function(err) {
+        callback(err);
       };
       
       switch(method) {
@@ -158,6 +155,16 @@ angular.module('openhimConsoleApp')
     };
     
     
+    var editRoleCallback = function (err) {
+      if(err) {
+        Alerting.AlertReset();
+        return Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while saving the roles\' details: #' + err.status + ' - ' + err.data);
+      }
+      Alerting.AlertReset();
+      Notify.notify('clientsChanged');
+      Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
+    };
+    
 
     $scope.assignRoleToClient = function(client, role, save) {
       if(!role.clients) {
@@ -169,7 +176,7 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
+        apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       }
     };
     
@@ -188,7 +195,7 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
+        apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       }
     };
     
@@ -222,7 +229,7 @@ angular.module('openhimConsoleApp')
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
+        apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       }
     };
     
@@ -238,22 +245,14 @@ angular.module('openhimConsoleApp')
       role.channels.splice(index, 1);
       
       if(role.channels.length === 0 && save) {
-        apiCall('remove', {name:role.name}, function() {
-          Notify.notify('clientsChanged');
-          Alerting.AlertReset();
-          Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
-        }, removeRoleError);
+        apiCall('remove', {name:role.name}, null, removeRoleCallback);
         return;
       }
       
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
-        apiCall('update', {name:role.name}, updateBody, function() {
-          Notify.notify('rolesChanged');
-          Alerting.AlertReset();
-          Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
-        }, editRoleError);
+        apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       }
     };
     /* -------------------------End Assign Roles To Channels---------------------------- */
@@ -261,16 +260,9 @@ angular.module('openhimConsoleApp')
     
     /* -------------------------Edit Roles---------------------------- */
     
-    var editRoleSuccess = function () {
-      Alerting.AlertReset();
-      Notify.notify('clientsChanged');
-      Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
-    };
-
-    var editRoleError = function (err) {
-      Alerting.AlertReset();
-      Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while saving the roles\' details: #' + err.status + ' - ' + err.data);
-    };
+    
+    
+    
     
     $scope.nameSaved = [];
     $scope.changeRoleName = function(role) {
@@ -283,7 +275,7 @@ angular.module('openhimConsoleApp')
         var updateBody = {};
         updateBody.name = role.displayName;
         $scope.nameSaved[role.name] = true;
-        apiCall('update', {name:role.name}, updateBody, editRoleSuccess, editRoleError);
+        apiCall('update', {name:role.name}, updateBody, editRoleCallback);
       } catch (e) {
         $scope.nameSaved[role.name] = true;
       }
@@ -322,13 +314,21 @@ angular.module('openhimConsoleApp')
       $scope.channelRoles[channel.name + role.name] = true;
     };
     
-    $scope.saveNewRole = function(role) {
-      apiCall('save', {name:null}, role, function() {
-        Notify.notify('clientsChanged');
+    
+    var saveNewRoleCallback = function (err, role) {
+      if(err) {
         Alerting.AlertReset();
-        Alerting.AlertAddMsg('role', 'success', 'The role has been added successfully');
-        $scope.removeNewRole(role);
-      }, editRoleError);
+        return Alerting.AlertAddMsg('role', 'danger', err.data);
+      }
+      Notify.notify('clientsChanged');
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('role', 'success', 'The role has been added successfully');
+      $scope.removeNewRole(role);
+    }
+    
+    
+    $scope.saveNewRole = function(role) {
+      apiCall('save', {name:null}, role, saveNewRoleCallback);
     };
     
     $scope.removeNewRole = function(role) {
@@ -343,20 +343,19 @@ angular.module('openhimConsoleApp')
       $scope.newRoles.splice(spliceIndex, 1);
     };
     
-    var removeRoleSuccess = function() {
+    var removeRoleCallback = function(err) {
+      if(err) {
+        Alerting.AlertReset();
+        return Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while deleting the role: #' + err.status + ' - ' + err.data);
+      }
       Notify.notify('rolesChanged');
       Notify.notify('clientsChanged');
       Alerting.AlertReset();
       Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
-    }
-    
-    var removeRoleError = function(err) {
-      Alerting.AlertReset();
-      Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data);
-    }
+    };
     
     $scope.removeRole = function(role) {
-      apiCall('remove', {name:role.name}, removeRoleSuccess, removeRoleError);
+      apiCall('remove', {name:role.name}, null, removeRoleCallback);
       var spliceIndex = -1;
       for(var i = 0; i<$scope.roles.length; i++) {
          if ($scope.roles[i].name ===  role.name) {
