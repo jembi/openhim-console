@@ -244,11 +244,6 @@ angular.module('openhimConsoleApp')
       }
       role.channels.splice(index, 1);
       
-      if(role.channels.length === 0 && save) {
-        apiCall('remove', {name:role.name}, null, removeRoleCallback);
-        return;
-      }
-      
       var updateBody = Object.assign({}, role);
       updateBody.name = undefined;
       if(save) {
@@ -324,7 +319,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
       Alerting.AlertAddMsg('role', 'success', 'The role has been added successfully');
       $scope.removeNewRole(role);
-    }
+    };
     
     
     $scope.saveNewRole = function(role) {
