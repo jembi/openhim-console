@@ -8,34 +8,87 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the Client initial load     **/
     /***************************************************************/
 
-    // object for the taglist roles
-    $scope.selectClientRoleOptions = [];
-    $scope.formData = {};
-    $scope.formData.newClientRole = null;
-    $scope.assigned = {};
-
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
     
-    Api.Roles.query(function(roles){
-      angular.forEach(roles, function(role) {
-        $scope.selectClientRoleOptions.push(role.name);
-      });
-    },
-    function(){ /* server error - could not connect to API to get clients */  });    
-        
-    $scope.toggleRoleAssignedToClient = function(role) {
-      $scope.assigned[role] = $scope.assigned[role] === true ? false : true;
+    $scope.roles = {};
+    $scope.formData = {};
+    $scope.formData.assigned = {};
+    $scope.formData.newClientRole = null;
+    
+    var checkAssignedRoles = function () {
+      for(var i = 0; i<$scope.client.roles.length; i++) {
+        $scope.formData.assigned[$scope.client.roles[i]] = true;
+      }
     };
     
-    $scope.addAssignedRolesToClientObject = function() {
-      $scope.client.roles = [];
-      if($scope.formData.newClientRole) {
-        $scope.assigned[$scope.formData.newClientRole] = true;
+    $scope.$watch('client', function() {
+      Api.Roles.query(function(roles) {
+        $scope.roles = roles;
+        if($scope.client.name) {
+          checkAssignedRoles();
+        } else {
+          $scope.client.roles = [];
+        }
+      });
+    });
+    
+    var removeRole = function(roleName) {
+      var index = -1;
+      for(var i = 0; i<$scope.client.roles.length; i++) {
+         if ($scope.client.roles[i] === roleName) {
+             index = i;
+             break;
+         }
       }
-      for(var role in $scope.assigned) {
-        if($scope.assigned[role] === true) {
-          $scope.client.roles.push(role);
+      $scope.client.roles.splice(index, 1);
+    };
+    
+    $scope.toggleAssignedRoles = function(role) {
+      if($scope.formData.assigned[role]) {
+        $scope.formData.assigned[role] = false;
+        removeRole(role);
+      } else {
+        $scope.formData.assigned[role] = true;
+        $scope.client.roles.push(role);
+      }
+    };
+    
+    var isDuplicateRole = function(role) {
+      var isDuplicate = false;
+      for(var i = 0; i<$scope.roles.length; i++) {
+        if($scope.roles[i].name === role) {
+          isDuplicate = true;
+        }
+      }
+      return isDuplicate;
+    };
+    
+    Api.Clients.query(function(clients) {
+      $scope.clients = clients;
+    });
+    
+    var isClient = function(role) {
+      var isClient = false;
+      for(var i = 0; i<$scope.clients.length; i++) {
+        if($scope.clients[i].name === role) {
+          isClient = true;
+        }
+      }
+      return isClient;
+    };
+    
+    $scope.createNewRole = function() {
+      var newRole = $scope.formData.newClientRole;
+      if(newRole) {
+        if(isDuplicateRole(newRole) || isClient(newRole)) {
+          $scope.formData.duplicateNewRole = true;
+        } else {
+          $scope.formData.duplicateNewRole = false;
+          $scope.client.roles.push(newRole);
+          $scope.roles.push({name: newRole});
+          $scope.formData.assigned[newRole] = true;
+          $scope.formData.newClientRole = null;
         }
       }
     };
@@ -48,11 +101,7 @@ angular.module('openhimConsoleApp')
     // if client exist then update true
     if (client) {
       $scope.update = true;
-      $scope.client = Api.Clients.get({ clientId: client._id }, function () {
-        for(var i = 0; i<$scope.client.roles.length; i++) {
-          $scope.assigned[$scope.client.roles[i]] = true;
-        }
-      });
+      $scope.client = Api.Clients.get({ clientId: client._id }, function () {});
       //$scope.client = angular.copy(client);
     } else {
       $scope.update = false;
@@ -204,7 +253,6 @@ angular.module('openhimConsoleApp')
 
     $scope.submitFormClients = function(){
       // validate the form first to check for any errors
-      $scope.addAssignedRolesToClientObject();
       $scope.validateFormClients();
       // save the client object if no errors are present
       if ( $scope.ngError.hasErrors === false ){

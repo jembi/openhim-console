@@ -64,15 +64,16 @@
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
           <label><span>**</span> Assign Existing Roles</label>
           <br/>
-          <span ng-repeat="role in selectClientRoleOptions">
-            <input type="checkbox" ng-model="requiredForNgChange" ng-checked="assigned[role]" ng-change="toggleRoleAssignedToClient(role)">{{role}}</input>
+          <span ng-repeat="role in roles">
+            <input type="checkbox" ng-model="requiredForNgChange" ng-checked="formData.assigned[role.name]" ng-change="toggleAssignedRoles(role.name)">{{role.name}}</input>
             <br/>
           </span>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Assign Existing Roles</strong>' or '<strong>Add New Role</strong>' is required!</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.roles }">
           <label><span>**</span> Add New Role</label>
-          <input class="form-control" type="text" name="newRole" ng-model="formData.newClientRole"/>
+          <input class="form-control" type="text" name="newRole" ng-model="formData.newClientRole" ng-blur="createNewRole()" ng-keyup="$event.keyCode == 13 && createNewRole()"/>
+          <div style="color:orange" ng-show="formData.duplicateNewRole"><i class="glyphicon glyphicon-warning-sign"></i>Role/Client already exists</div>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Assign Existing Roles</strong>' or '<strong>Add New Role</strong>' is required!</div>
         </div>
       </div>
