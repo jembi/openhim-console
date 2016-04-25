@@ -172,7 +172,7 @@ angular.module('openhimConsoleApp')
       role.clients.push({'_id': client._id, 'name': client.clientID});
       $scope.clientRoles[client.clientID + role.name] = true;
       
-      var updateBody = Object.assign({}, role);
+      var updateBody = angular.copy(role);
       updateBody.name = undefined;
       if(save) {
         apiCall('update', {name:role.name}, updateBody, editRoleCallback);
@@ -191,7 +191,7 @@ angular.module('openhimConsoleApp')
       }
       role.clients.splice(index, 1);
       
-      var updateBody = Object.assign({}, role);
+      var updateBody = angular.copy(role);
       updateBody.name = undefined;
       if(save) {
         apiCall('update', {name:role.name}, updateBody, editRoleCallback);
@@ -225,7 +225,7 @@ angular.module('openhimConsoleApp')
       role.channels.push({'_id': channel._id, 'name': channel.name});
       $scope.channelRoles[channel.name + role.name] = true;
 
-      var updateBody = Object.assign({}, role);
+      var updateBody = angular.copy(role);
       updateBody.name = undefined;
       if(save) {
         apiCall('update', {name:role.name}, updateBody, editRoleCallback);
@@ -243,7 +243,7 @@ angular.module('openhimConsoleApp')
       }
       role.channels.splice(index, 1);
       
-      var updateBody = Object.assign({}, role);
+      var updateBody = angular.copy(role);
       updateBody.name = undefined;
       if(save) {
         apiCall('update', {name:role.name}, updateBody, editRoleCallback);
@@ -356,7 +356,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully');
     };
     
-    $scope.removeRole = function(role) {
+    var removeRole = function(role) {
       apiCall('remove', {name:role.name}, null, removeRoleCallback);
       var spliceIndex = -1;
       for(var i = 0; i<$scope.roles.length; i++) {
@@ -413,7 +413,7 @@ angular.module('openhimConsoleApp')
     
     $scope.confirmRoleDelete = function(role) {
       confirmDelete(role, 'Role', function() {
-        $scope.removeRole(role);
+        removeRole(role);
       });
     };
     
