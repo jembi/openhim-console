@@ -222,7 +222,7 @@ describe('Controller: ClientsModalCtrl', function () {
     createController();
     httpBackend.flush();
     
-    scope.clients[0].name = 'TestRole';
+    scope.clients[0].clientID = 'TestRole';
     scope.formData.newClientRole = 'TestRole';
     
     scope.createNewRole();

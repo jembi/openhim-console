@@ -418,7 +418,7 @@ describe('Controller: channelAccessControlCtrl', function () {
     createController();
     httpBackend.flush();
     
-    scope.clients[0].name = 'TestRole';
+    scope.clients[0].clientID = 'TestRole';
     scope.formData.newChannelRole = 'TestRole';
     
     scope.createNewRole();
@@ -434,12 +434,12 @@ describe('Controller: channelAccessControlCtrl', function () {
     createController();
     httpBackend.flush();
     
-    scope.clients[0].name = 'TestRole';
+    scope.clients[0].clientID = 'TestRole';
     scope.formData.newChannelRole = 'TestRole';
     scope.assignedClients[0] = 'TestRole';
     
     scope.createNewRole();
-    scope.clients[0].should.have.property('name', 'TestRole');
+    scope.clients[0].should.have.property('clientID', 'TestRole');
     scope.formData.should.have.property('duplicateNewRole', true);
   });
   

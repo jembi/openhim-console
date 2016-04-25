@@ -418,7 +418,7 @@ app.controller('channelAccessControlCtrl', function ($scope, Api) {
   var isClient = function(role) {
     var isClient = false;
     for(var i = 0; i<$scope.clients.length; i++) {
-      if($scope.clients[i].name === role) {
+      if($scope.clients[i].clientID === role) {
         isClient = true;
       }
     }
