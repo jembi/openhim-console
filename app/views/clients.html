@@ -4,15 +4,20 @@
     <div ng-include="'views/sidebar.html'"></div>
     <div class="col-md-10">
       <div class="content-box-large">
-        
-
-      
 
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-star-empty"></i>&nbsp;&nbsp;Roles</h2>
           </div>
         </div>
+        
+        <!-- Role Alerts -->
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.role">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
+        <!-- Role Alerts -->
+        
         <div class="rolesChannelsMatrixDiv">
           <div class="rolesTableScrollDiv panel-body">
             <div id="no-more-tables">
@@ -86,14 +91,6 @@
                 </tbody>
               </table>
             </div>
-            
-            
-            <!-- Role Alerts -->
-            <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.role">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                {{alert.msg}}
-            </div>
-            <!-- Role Alerts -->
             <button class="btn btn-primary" ng-click="addRole()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Role</button>
           </div>
         </div>
@@ -104,6 +101,12 @@
           </div>
         </div>
         
+        <!-- Client Alerts -->
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.client">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
+        <!-- Client Alerts -->
 
         <div class="panel-body">
           <div id="no-more-tables">
@@ -145,12 +148,6 @@
             </table>
           </div>
           
-          <!-- Client Alerts -->
-          <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.client">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              {{alert.msg}}
-          </div>
-          <!-- Client Alerts -->
           
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(roles || alerts.server)">

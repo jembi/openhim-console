@@ -162,7 +162,6 @@ angular.module('openhimConsoleApp')
       }
       Alerting.AlertReset();
       Notify.notify('clientsChanged');
-      Alerting.AlertAddMsg('role', 'success', 'The role has been saved successfully');
     };
     
 
@@ -321,11 +320,11 @@ angular.module('openhimConsoleApp')
     var saveNewRoleCallback = function (err, role) {
       if(err) {
         Alerting.AlertReset();
-        return Alerting.AlertAddMsg('role', 'danger', err.data);
+        return Alerting.AlertAddMsg('role', 'danger', 'Saving new role failed: ' + err.data);
       }
-      Notify.notify('clientsChanged');
       Alerting.AlertReset();
-      Alerting.AlertAddMsg('role', 'success', 'The role has been added successfully');
+      Alerting.AlertAddMsg('role', 'success', 'Role with name "'+ role.name +'" successfully created.');
+      Notify.notify('clientsChanged');
       $scope.removeNewRole(role);
     };
     
