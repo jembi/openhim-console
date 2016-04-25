@@ -334,21 +334,131 @@ app.controller('channelAccessControlCtrl', function ($scope, Api) {
     });
   });
 
-  // get the roles for the client taglist option
-  Api.Clients.query(function(clients){
-    angular.forEach(clients, function(client){
-      if ( $scope.taglistClientRoleOptions.indexOf(client.clientID) === -1 ){
-        $scope.taglistClientRoleOptions.push(client.clientID);
-      }
-      angular.forEach(client.roles, function(role){
-        if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
-          $scope.taglistClientRoleOptions.push(role);
+  $scope.roles = {};
+  $scope.formData = {};
+  $scope.formData.assigned = [];
+  $scope.formData.newChannelRole = null;
+  $scope.assignedClients = [];
+  
+  var checkAssignedRoles = function () {
+    var isRole = false;
+    angular.forEach($scope.channel.allow, function(allow) {
+      angular.forEach($scope.roles, function(role) {
+        if(allow === role.name) {
+          isRole = true;
         }
       });
+      if(isRole) {
+        $scope.formData.assigned[allow] = true;
+      } else {
+        $scope.assignedClients.push(allow);
+      }
+      isRole = false;
     });
-  },
-  function(){ /* server error - could not connect to API to get clients */  });
-
+  };
+  
+  $scope.$watch('channel', function() {
+    Api.Roles.query(function(roles) {
+      $scope.roles = roles;
+      if($scope.channel.name) {
+        checkAssignedRoles();
+      } else {
+        $scope.channel.allow = [];
+      }
+    });
+  });
+  
+  var removeRole = function(roleName) {
+    var index = -1;
+    for(var i = 0; i<$scope.channel.allow.length; i++) {
+       if ($scope.channel.allow[i] === roleName) {
+           index = i;
+           break;
+       }
+    }
+    $scope.channel.allow.splice(index, 1);
+  };
+  
+  var isDuplicateChannelAllow = function(role) {
+    var isDuplicate = false;
+    for(var i = 0; i<$scope.channel.allow.length; i++) {
+      if($scope.channel.allow[i] === role) {
+        isDuplicate = true;
+      }
+    }
+    return isDuplicate;
+  };
+  
+  $scope.toggleAssignedRoles = function(role) {
+    if($scope.formData.assigned[role]) {
+      $scope.formData.assigned[role] = false;
+      removeRole(role);
+    } else {
+      if(!isDuplicateChannelAllow(role)) {
+        $scope.formData.assigned[role] = true;
+        $scope.channel.allow.push(role);
+      } 
+    }
+  };
+  
+  var isDuplicateRole = function(role) {
+    var isDuplicate = false;
+    for(var i = 0; i<$scope.roles.length; i++) {
+      if($scope.roles[i].name === role) {
+        isDuplicate = true;
+      }
+    }
+    return isDuplicate;
+  };
+  
+  Api.Clients.query(function(clients) {
+    $scope.clients = clients;
+  });
+  
+  var isClient = function(role) {
+    var isClient = false;
+    for(var i = 0; i<$scope.clients.length; i++) {
+      if($scope.clients[i].name === role) {
+        isClient = true;
+      }
+    }
+    return isClient;
+  };
+  
+  var isAssignedToChannel = function(role) {
+    var isAssigned = false;
+    for(var i = 0; i<$scope.assignedClients.length; i++) {
+      if($scope.assignedClients[i] === role) {
+        isAssigned = true;
+      }
+    }
+    return isAssigned;
+  };
+  
+  $scope.createNewRole = function() {
+    var newRole = $scope.formData.newChannelRole;
+    $scope.formData.duplicateNewRole = false;
+    if(newRole) {
+      if(isClient(newRole)) {
+        if(isAssignedToChannel(newRole)) {
+          $scope.formData.duplicateNewRole = true;
+          return;
+        }
+        $scope.channel.allow.push(newRole);
+        $scope.assignedClients.push(newRole);
+        $scope.formData.newChannelRole = null;
+        return;
+      } 
+      if(isDuplicateRole(newRole)) {
+        $scope.formData.duplicateNewRole = true;
+      } else {
+        $scope.channel.allow.push(newRole);
+        $scope.roles.push({name: newRole});
+        $scope.formData.assigned[newRole] = true;
+        $scope.formData.newChannelRole = null;
+      }
+    }
+  };
 });
 
 // nested controller for the channel content matching tab

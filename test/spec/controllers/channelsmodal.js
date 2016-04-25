@@ -353,6 +353,8 @@ describe('Controller: channelAccessControlCtrl', function () {
       {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ]);
+    
+    httpBackend.when('GET', new RegExp('.*/roles$')).respond([{}]);
 
     scope = $rootScope.$new();
 
@@ -376,18 +378,101 @@ describe('Controller: channelAccessControlCtrl', function () {
     httpBackend.verifyNoOutstandingExpectation();
     httpBackend.verifyNoOutstandingRequest();
   });
-
-  it('should create a taglist array for Client and User Roles', function () {
+  
+  it('should create a new role successfully', function () {
     createControllerParent();
+    httpBackend.flush();
+    
     createController();
     httpBackend.flush();
-
-    scope.channel.should.be.ok;
-
-    // client ID as well as each unique role
-    scope.taglistClientRoleOptions.length.should.equal(5);
-    scope.taglistUserRoleOptions.length.should.equal(3);
+    
+    scope.formData.newChannelRole = 'TestRole';
+    
+    scope.createNewRole();
+    scope.formData.should.have.property('duplicateNewRole', false);
+    scope.channel.allow.should.have.length(1);
+    scope.roles.should.have.length(2);
+    scope.formData.assigned.should.have.property('TestRole', true);
+    scope.formData.should.have.property('newChannelRole', null);    
   });
+  
+  it('should fail to create a new if role already exists', function () {
+    createControllerParent();
+    httpBackend.flush();
+    
+    createController();
+    httpBackend.flush();
+    
+    scope.roles[0].name = 'TestRole';
+    scope.formData.newChannelRole = 'TestRole';
+    
+    scope.createNewRole();
+    scope.formData.should.have.property('duplicateNewRole', true);
+    scope.roles.should.have.length(1);    
+  });
+  
+  it('should assign a client successfully', function () {
+    createControllerParent();
+    httpBackend.flush();
+    
+    createController();
+    httpBackend.flush();
+    
+    scope.clients[0].name = 'TestRole';
+    scope.formData.newChannelRole = 'TestRole';
+    
+    scope.createNewRole();
+    scope.formData.should.have.property('newChannelRole', null);
+    scope.channel.allow.should.have.length(1);   
+    scope.assignedClients.should.have.length(1);
+  });
+  
+  it('should fail to assign a client if the client is already assigned', function () {
+    createControllerParent();
+    httpBackend.flush();
+    
+    createController();
+    httpBackend.flush();
+    
+    scope.clients[0].name = 'TestRole';
+    scope.formData.newChannelRole = 'TestRole';
+    scope.assignedClients[0] = 'TestRole';
+    
+    scope.createNewRole();
+    scope.clients[0].should.have.property('name', 'TestRole');
+    scope.formData.should.have.property('duplicateNewRole', true);
+  });
+  
+  it('should toggle an assigned role', function () {
+    createControllerParent();
+    httpBackend.flush();
+    
+    createController();
+    httpBackend.flush();
+    
+    scope.channel.allow[0] = 'TestRole';
+    scope.channel.allow[1] = 'TestRole2';
+    scope.formData.assigned.TestRole = true;
+    
+    scope.toggleAssignedRoles('TestRole');
+    scope.formData.assigned.should.have.property('TestRole', false);
+    scope.channel.allow.should.have.length(1);    
+  });
+  
+  it('should toggle an unassigned role', function () {
+    createControllerParent();
+    httpBackend.flush();
+    
+    createController();
+    httpBackend.flush();
+    
+    scope.formData.assigned.TestRole = false;
+    
+    scope.toggleAssignedRoles('TestRole');
+    scope.formData.assigned.should.have.property('TestRole', true);    
+    scope.channel.allow.should.have.length(1);
+  });
+
 });
 
 
