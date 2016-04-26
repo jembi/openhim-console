@@ -8,23 +8,90 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the Client initial load     **/
     /***************************************************************/
 
-    // object for the taglist roles
-    $scope.taglistClientRoleOptions = [];
-
     // object to store temp values like password (not associated with schema object)
     $scope.temp = {};
-
-    // get the roles for the client taglist option
-    Api.Clients.query(function(clients){
-      angular.forEach(clients, function(client){
-        angular.forEach(client.roles, function(role){
-          if ( $scope.taglistClientRoleOptions.indexOf(role) === -1 ){
-            $scope.taglistClientRoleOptions.push(role);
-          }
-        });
+    
+    $scope.roles = {};
+    $scope.formData = {};
+    $scope.formData.assigned = {};
+    $scope.formData.newClientRole = null;
+    
+    var checkAssignedRoles = function () {
+      for(var i = 0; i<$scope.client.roles.length; i++) {
+        $scope.formData.assigned[$scope.client.roles[i]] = true;
+      }
+    };
+    
+    $scope.$watch('client', function() {
+      Api.Roles.query(function(roles) {
+        $scope.roles = roles;
+        if($scope.client.name) {
+          checkAssignedRoles();
+        } else {
+          $scope.client.roles = [];
+        }
       });
-    },
-    function(){ /* server error - could not connect to API to get clients */  });
+    });
+    
+    var removeRole = function(roleName) {
+      var index = -1;
+      for(var i = 0; i<$scope.client.roles.length; i++) {
+         if ($scope.client.roles[i] === roleName) {
+             index = i;
+             break;
+         }
+      }
+      $scope.client.roles.splice(index, 1);
+    };
+    
+    $scope.toggleAssignedRoles = function(role) {
+      if($scope.formData.assigned[role]) {
+        $scope.formData.assigned[role] = false;
+        removeRole(role);
+      } else {
+        $scope.formData.assigned[role] = true;
+        $scope.client.roles.push(role);
+      }
+    };
+    
+    var isDuplicateRole = function(role) {
+      var isDuplicate = false;
+      for(var i = 0; i<$scope.roles.length; i++) {
+        if($scope.roles[i].name === role) {
+          isDuplicate = true;
+        }
+      }
+      return isDuplicate;
+    };
+    
+    Api.Clients.query(function(clients) {
+      $scope.clients = clients;
+    });
+    
+    var isClient = function(role) {
+      var isClient = false;
+      for(var i = 0; i<$scope.clients.length; i++) {
+        if($scope.clients[i].clientID === role) {
+          isClient = true;
+        }
+      }
+      return isClient;
+    };
+    
+    $scope.createNewRole = function() {
+      var newRole = $scope.formData.newClientRole;
+      if(newRole) {
+        if(isDuplicateRole(newRole) || isClient(newRole)) {
+          $scope.formData.duplicateNewRole = true;
+        } else {
+          $scope.formData.duplicateNewRole = false;
+          $scope.client.roles.push(newRole);
+          $scope.roles.push({name: newRole});
+          $scope.formData.assigned[newRole] = true;
+          $scope.formData.newClientRole = null;
+        }
+      }
+    };
 
     // fetch the keystore for cert dropdown
     Api.Keystore.query({ type: 'ca' }, function (certs) {
@@ -34,9 +101,9 @@ angular.module('openhimConsoleApp')
     // if client exist then update true
     if (client) {
       $scope.update = true;
-      $scope.client = Api.Clients.get({ clientId: client._id });
+      $scope.client = Api.Clients.get({ clientId: client._id }, function () {});
       //$scope.client = angular.copy(client);
-    }else{
+    } else {
       $scope.update = false;
       $scope.client = new Api.Clients();
     }
@@ -54,20 +121,21 @@ angular.module('openhimConsoleApp')
     var success = function () {
 
       // add the success message
-      Alerting.AlertAddMsg('top', 'success', 'The client has been saved successfully');
+      Alerting.AlertAddMsg('client', 'success', 'The client has been saved successfully');
       notifyUser();
       
     };
 
     var error = function (err) {
       // add the success message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
+      Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
       notifyUser();
     };
 
     var notifyUser = function(){
       // reset backing object and refresh clients list
       Notify.notify('clientsChanged');
+      Notify.notify('rolesChanged');
       $modalInstance.close();
     };
 

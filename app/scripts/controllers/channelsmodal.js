@@ -410,7 +410,6 @@ app.controller('channelUserAccessCtrl', function ($scope) {
       });
     });
   });
-
 });
 
 // nested controller for the channel routes tab
@@ -800,7 +799,7 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
     $scope.channel.requestBody = true;
     $scope.channel.responseBody = true;
   }
-
+  
   /***********************************************************/
   /**   Default Channel URL Rewrite Rule configurations     **/
   /***********************************************************/
