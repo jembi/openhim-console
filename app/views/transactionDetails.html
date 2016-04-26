@@ -72,8 +72,8 @@
 
               <div class="sml-margin" ng-show="pagingEnabled === true">
                 <div class="btn-group" role="group">
-                  <a href="/#/transactions/{{prev}}" role="button" class="btn btn-primary" ng-disabled="prev === null"><i class="glyphicon glyphicon-arrow-left"></i> Prev</a>
-                  <a href="/#/transactions/{{next}}" role="button" class="btn btn-primary" ng-disabled="next === null">Next <i class="glyphicon glyphicon-arrow-right"></i></a>
+                  <a href="#/transactions/{{prev}}" role="button" class="btn btn-primary" ng-disabled="prev === null"><i class="glyphicon glyphicon-arrow-left"></i> Prev</a>
+                  <a href="#/transactions/{{next}}" role="button" class="btn btn-primary" ng-disabled="next === null">Next <i class="glyphicon glyphicon-arrow-right"></i></a>
                 </div>
                 <p class="transactionsSummary">Number {{txNumber}} of {{txTotal}} transaction in the <a href="#{{currFilterURL}}">current filter</a>.</p>
               </div>
@@ -102,7 +102,7 @@
                         </div>
                       </td>
                       <td data-title="Request Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z' }}</td>
-                      <td data-title=""><a href="/#/transactions/{{childTransaction._id}}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a></td>
+                      <td data-title=""><a href="#/transactions/{{childTransaction._id}}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a></td>
                     </tr>
                   </tbody>
                 </table>

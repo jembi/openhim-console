@@ -9,6 +9,9 @@
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-road"></i>&nbsp;&nbsp;Visualizer</h2>
+            <p class="text-muted">
+              The visualizer displays a live view of how transactions are being routed through the OpenHIM.
+            </p>
           </div>
         </div>
 
@@ -22,7 +25,7 @@
         <!-- Server Alerts -->
 
         <div class="panel-body" ng-show="loadingVisualizerError">
-          There seems to be issues with you visualizer settings. please configure them in the '<a href="/#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
+          There seems to be issues with you visualizer settings. please configure them in the '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
 
           <div ng-repeat="errorMsg in loadingVisualizerErrorMsgs">
             <span style="font-weight: bold; font-size: 14px;">{{errorMsg.section}}: </span>
