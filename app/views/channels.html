@@ -56,19 +56,19 @@
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
                   
                   <td data-title="Access">
-                    <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel, 'Access Control')">
+                    <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="">
                       
-                      <span ng-if="channel.allow" tooltip="Clients and Roles">
+                      <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Access Control')">
                         <i class="glyphicon glyphicon-th"></i>
                         <a ng-repeat="allow in channel.allow"> {{ allow }}</a>
                       </span>
                       
-                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses">
+                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel)">
                         <i class="glyphicon glyphicon-ok"></i>
                         <a ng-repeat="whitelist in channel.whitelist"> {{ whitelist }}</a>
                       </span>
                       
-                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available">
+                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel)">
                         <i class="glyphicon glyphicon-cloud-upload"></i>
                         <a > {{ channel.authType }}</a>
                       </span>
