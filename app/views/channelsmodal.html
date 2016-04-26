@@ -17,32 +17,19 @@
 
   <fieldset>
     <tabset justified="true">
-      <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
-      <tab ng-controller="channelBasicInfoCtrl" class="{{ngError.accessBasicInfoTab === true ? 'has-error-tab' : ''}}" active="selectedTab.basicInfo">
+      <!-- ************* TAB FOR CHANNEL BASIC INFO ************** -->
+      <tab ng-controller="channelBasicInfoCtrl" class="{{ngError.basicInfoTab === true ? 'has-error-tab' : ''}}" active="selectedTab.basicInfo">
         <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Basic Info</tab-heading>
         <h3>Basic Info</h3>
         <div ng-include="'views/partials/channels-tab-basic-info.html'"></div>
       </tab>
 
-
-
-      <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
-      <tab ng-controller="channelAccessControlCtrl" class="{{ngError.accessControlTab === true ? 'has-error-tab' : ''}}" active="selectedTab.accessControl">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Access Control</tab-heading>
-        <h3>Access Control</h3>
-        <div ng-include="'views/partials/channels-tab-access-control.html'"></div>        
+      <!-- ************* TAB FOR CHANNEL REQUEST MATCHING ************** -->
+      <tab ng-controller="channelRequestMatchingCtrl" class="{{ngError.requestMatchingTab === true ? 'has-error-tab' : ''}}" active="selectedTab.requestMatching">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Request Matching</tab-heading>
+        <h3>Request Matching</h3>
+        <div ng-include="'views/partials/channels-tab-request-matching.html'"></div>
       </tab>
-
-
-
-      <!-- ************* TAB FOR CHANNEL CONTENT MATCHING ************** -->
-      <tab ng-controller="channelContentMatchingCtrl" class="{{ngError.contentMatchingTab === true ? 'has-error-tab' : ''}}" active="selectedTab.contentMatching">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Content Matching</tab-heading>
-        <h3>Content Matching</h3>
-        <div ng-include="'views/partials/channels-tab-content-matching.html'"></div>
-      </tab>
-
-
 
       <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
       <tab ng-controller="channelRoutesCtrl" class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}" active="selectedTab.routes">
@@ -51,33 +38,28 @@
         <div ng-include="'views/partials/channels-tab-routes.html'"></div>
       </tab>
 
+      <!-- ************* TAB FOR CHANNEL DATA CONTROL ************** -->
+      <tab ng-controller="channelDataControlCtrl" class="{{ngError.dataControlTab === true ? 'has-error-tab' : ''}}" active="selectedTab.dataControl">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Data Control</tab-heading>
+        <h3>Data Control</h3>
+        <div ng-include="'views/partials/channels-tab-data-control.html'"></div>
+      </tab>
 
-
-      <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
-      <tab ng-controller="channelUrlRewritingCtrl" class="{{ngError.urlRewritesTab === true ? 'has-error-tab' : ''}}" active="selectedTab.urlRewriting">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>URL Rewriting</tab-heading>
-        <h3>URL Rewriting</h3>
-        <div ng-include="'views/partials/channels-tab-url-rewriting.html'"></div>
+      <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
+      <tab ng-controller="channelUserAccessCtrl" class="{{ngError.userAccessTab === true ? 'has-error-tab' : ''}}" active="selectedTab.accessControl">
+        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>User Access</tab-heading>
+        <h3>User Access</h3>
+        <div ng-include="'views/partials/channels-tab-user-access.html'"></div>
       </tab>
 
 
 
       <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
-      <tab ng-controller="channelAlertsCtrl" active="selectedTab.alerts">
+      <tab ng-controller="channelAlertsCtrl" class="{{ngError.alertsTab === true ? 'has-error-tab' : ''}}" active="selectedTab.alerts">
         <tab-heading>Alerts</tab-heading>
         <h3>Alerts</h3>
         <div ng-include="'views/partials/channels-tab-alerts.html'"></div>
       </tab>
-
-
-
-      <!-- ************* TAB FOR GENERAL CHANNEL SETTINGS ************** -->
-      <tab ng-controller="channelSettingsCtrl" class="{{ngError.contentSettingsTab === true ? 'has-error-tab' : ''}}" active="selectedTab.settings">
-        <tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Settings</tab-heading>
-        <h3>Settings</h3>
-        <div ng-include="'views/partials/channels-tab-settings.html'"></div>
-      </tab>
-
 
     </tabset>
   </fieldset>

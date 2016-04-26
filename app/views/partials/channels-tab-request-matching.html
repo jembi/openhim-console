@@ -1,0 +1,113 @@
+<p class="text-muted">
+  Configure the matching criteria for requests that should be forwarded to this channel.
+</p>
+
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left; width: 75%" ng-class="{ 'has-error' : ngError.urlPattern }" ng-if="channel.type === 'http' || channel.type === 'polling'">
+    
+    <div class="form-group" style="float: left; width: 75%">
+      <label><span>*</span> Which URL patterns will match this channel?</label>
+      <div class="input-group" style="width: 100%;">
+        <div ng-show="urlPattern.regex" class="input-group-addon">^</div>
+        <input class="form-control" placeholder="/example/path" type="text" ng-model="channel.urlPattern" ng-style="{ false: {'border-radius': '4px'}, true: {}}[urlPattern.regex];" />
+        <div ng-show="urlPattern.regex" class="input-group-addon">$</div>
+      </div>
+    </div>
+    <div class="addUrlRegexDelimiterDiv">
+      <label>
+        <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
+        <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+      </label>
+    </div>
+    <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>
+    Is this channel publically accessible or should client authentication be required?
+    <i ng-show="uiSettings.showTooltips" tooltip="Private requires authentication and Public bypasses authentication protocols" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+  </label>
+  <div style="display: block;">
+    <div class="btn-group">
+      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'private'">Private</label>
+      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'public'">Public</label>
+    </div>
+  </div>
+</div>
+
+<div class="form-group" ng-if="channel.authType == 'private'">
+  <label>
+    Are there any IP addresses that should ALWAYS be treated as authenticated?
+    <i ng-show="uiSettings.showTooltips" tooltip="Enter the IP's that are allowed to access the channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+  </label>
+  <taglist tag-data="channel.whitelist"><input class="form-control" placeholder="Whitelisted IP addresses" type="text" ng-model="whitelist" /></taglist>
+</div>
+
+<div class="form-group" ng-if="channel.authType == 'private'" ng-class="{ 'has-error' : ngError.allow }">
+  <label><span>*</span> Which clients should be able to access this channel?</label>
+  <taglist tag-data="channel.allow" ><input class="form-control" placeholder="Enter a specifc client or role and press enter..." type="text" ng-model="allowedRoles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
+  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+</div>
+
+<div class="form-group" style="width: 23%">
+  <label>
+    Channel priority
+    <i ng-show="uiSettings.showTooltips" tooltip="Optional. If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+  </label>
+  <input class="form-control" type="number" min="1" ng-model="channel.priority" />
+</div>
+
+<p>Do you want to match on any particular request content? <input type="checkbox" ng-model="matching.showRequestMatching" style="margin-top: 0px; vertical-align: middle;" class="ng-pristine ng-valid"></p>
+
+<div ng-show="matching.showRequestMatching">
+  <div class="form-group">
+    <label>Are there any particular Content-Types that you wish to match on?</label>
+    <taglist tag-data="channel.matchContentTypes"><input class="form-control" placeholder="Enter a content type and press enter..." type="text" /></taglist>
+  </div>
+  
+  <div class="form-group">
+    <label>Do you want to match on request BODY content? </label>
+    <div style="display: block;">
+      <div class="btn-group" style="margin-bottom: 10px">
+        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'No matching'">No matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'RegEx matching'">RegEx matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'XML matching'">XML matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'JSON matching'">JSON matching</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group-2columns" ng-show="matching.contentMatching == 'RegEx matching'">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentRegex }">
+      <label><span>*</span> Enter a regular expression to match on</label>
+      <input ng-model="channel.matchContentRegex" class="form-control" placeholder="e.g. [abc]+" type="text" ng-required="matching.contentMatching=='RegEx Matching'" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+  </div>
+
+  <div class="form-group-2columns" ng-show="matching.contentMatching == 'XML matching'">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentXpath }">
+      <label><span>*</span> Enter an xpath expression</label>
+      <input ng-model="channel.matchContentXpath" class="form-control" placeholder="e.g. /some/xpath" type="text" ng-required="matching.contentMatching=='XML matching'" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+    <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+      <label><span>*</span> What value should the expression evaluate to?</label>
+      <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a value" type="text" ng-required="matching.contentMatching=='XML matching'" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+  </div>
+
+  <div class="form-group-2columns" ng-show="matching.contentMatching == 'JSON matching'">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.matchContentJson }">
+      <label><span>*</span> Enter a JSON path</label>
+      <input ng-model="channel.matchContentJson" class="form-control" placeholder="e.g. some.property" type="text" ng-required="matching.contentMatching=='JSON matching'" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+    <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.matchContentValue }">
+      <label><span>*</span> What value should the path evaluate to?</label>
+      <input ng-model="channel.matchContentValue" class="form-control" placeholder="Enter a value" type="text" ng-required="matching.contentMatching=='JSON matching'" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+  </div>
+</div>

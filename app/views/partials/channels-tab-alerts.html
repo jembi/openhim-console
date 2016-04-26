@@ -1,3 +1,7 @@
+<p class="text-muted">
+  Alerts fire when specific conditions are met. These can be used to detect when excessive amounts of transactions are failing.
+</p>
+
 <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>
 <div ng-show="channel.alerts.length > 0">
   <div id="no-more-tables">
@@ -37,6 +41,7 @@
   </div>
   <div class="form-group" style="float: right;">
     <label>Failure Rate (%)</label>
+    <i ng-show="uiSettings.showTooltips" tooltip="Optional. If the rate of transactions with the supplied status is exceeded within a certain period (the default in 1min) then an alert will fire." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     <input class="form-control" type="number" min="0" max="100" ng-model="newAlert.failureRate" />
   </div>
 </div>

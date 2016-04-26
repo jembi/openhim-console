@@ -17,6 +17,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   // used in child and parent controller - ( Content Matching ) - define globally
   $scope.matching = {};
   $scope.matching.contentMatching = 'No matching';
+  $scope.matching.showRequestMatching = false;
 
   // get the users for the Channel taglist option and alert users - used in two child controllers
   Api.Users.query(function( users ){
@@ -48,12 +49,11 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   $scope.selectedTab = {};
   switch (tab) {
     case 'Basic Info': $scope.selectedTab.basicInfo = true; break;
-    case 'Access Control': $scope.selectedTab.accessControl = true; break;
-    case 'Content Matching': $scope.selectedTab.contentMatching = true; break;
+    case 'Request Matching': $scope.selectedTab.requestMatching = true; break;
     case 'Routes': $scope.selectedTab.routes = true; break;
-    case 'URL Rewriting': $scope.selectedTab.urlRewriting = true; break;
+    case 'Data Control': $scope.selectedTab.dataControl = true; break;
+    case 'Access Control': $scope.selectedTab.accessControl = true; break;
     case 'Alerts': $scope.selectedTab.alerts = true; break;
-    case 'Settings': $scope.selectedTab.settings = true; break;
     default: $scope.selectedTab.basicInfo = true; break;
   }
 
@@ -169,14 +169,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     // name validation
     if( !$scope.channel.name ){
       $scope.ngError.name = true;
-      $scope.ngError.accessBasicInfoTab = true;
-      $scope.ngError.hasErrors = true;
-    }
-
-    // urlPattern validation
-    if( !$scope.channel.urlPattern ){
-      $scope.ngError.urlPattern = true;
-      $scope.ngError.accessBasicInfoTab = true;
+      $scope.ngError.basicInfoTab = true;
       $scope.ngError.hasErrors = true;
     }
 
@@ -210,41 +203,65 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     }
 
     // roles validation
-    if( !$scope.channel.allow || $scope.channel.allow.length===0 ){
-      $scope.ngError.allow = true;
-      $scope.ngError.accessControlTab = true;
+    if ( $scope.channel.authType === 'private' ){
+      if( !$scope.channel.allow || $scope.channel.allow.length===0 ){
+        $scope.ngError.allow = true;
+        $scope.ngError.requestMatchingTab = true;
+        $scope.ngError.hasErrors = true;
+      }  
+    }
+
+    // set url-pattern to default for tcp/tls channel type
+    if ( $scope.channel.type === 'tcp' || $scope.channel.type === 'tls' ){
+      $scope.channel.urlPattern = '_'+$scope.channel.type;
+      $scope.urlPattern.regex = false;
+    }
+
+    // urlPattern validation
+    if( !$scope.channel.urlPattern ){
+      $scope.ngError.urlPattern = true;
+      $scope.ngError.requestMatchingTab = true;
       $scope.ngError.hasErrors = true;
+    }
+
+    // reset contentMatching if request matching not visible
+    if ( !$scope.matching.showRequestMatching ){
+      $scope.matching.contentMatching = 'No matching';
+      $scope.channel.matchContentRegex = null;
+      $scope.channel.matchContentXpath = null;
+      $scope.channel.matchContentValue = null;
+      $scope.channel.matchContentJson = null;
     }
 
     switch ($scope.matching.contentMatching){
       case 'RegEx matching':
         if( !$scope.channel.matchContentRegex){
           $scope.ngError.matchContentRegex = true;
-          $scope.ngError.contentMatchingTab = true;
+          $scope.ngError.requestMatchingTab = true;
           $scope.ngError.hasErrors = true;
         }
         break;
       case 'XML matching':
         if( !$scope.channel.matchContentXpath){
           $scope.ngError.matchContentXpath = true;
-          $scope.ngError.contentMatchingTab = true;
+          $scope.ngError.requestMatchingTab = true;
           $scope.ngError.hasErrors = true;
         }
         if( !$scope.channel.matchContentValue){
           $scope.ngError.matchContentValue = true;
-          $scope.ngError.contentMatchingTab = true;
+          $scope.ngError.requestMatchingTab = true;
           $scope.ngError.hasErrors = true;
         }
         break;
       case 'JSON matching':
         if( !$scope.channel.matchContentJson){
           $scope.ngError.matchContentJson = true;
-          $scope.ngError.contentMatchingTab = true;
+          $scope.ngError.requestMatchingTab = true;
           $scope.ngError.hasErrors = true;
         }
         if( !$scope.channel.matchContentValue){
           $scope.ngError.matchContentValue = true;
-          $scope.ngError.contentMatchingTab = true;
+          $scope.ngError.requestMatchingTab = true;
           $scope.ngError.hasErrors = true;
         }
         break;
@@ -258,7 +275,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
     // has url rewrite errors
     if ( $scope.ngError.hasUrlRewritesWarnings ){
-      $scope.ngError.urlRewritesTab = true;
+      $scope.ngError.dataControlTab = true;
       $scope.ngError.hasErrors = true;
     }
 
@@ -327,8 +344,8 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
 
 });
 
-// nested controller for the channel access control tab
-app.controller('channelAccessControlCtrl', function ($scope, Api) {
+// nested controller for the channel content matching tab
+app.controller('channelRequestMatchingCtrl', function ($scope, Api) {
 
   // object for the taglist roles
   $scope.taglistClientRoleOptions = [];
@@ -361,19 +378,38 @@ app.controller('channelAccessControlCtrl', function ($scope, Api) {
   },
   function(){ /* server error - could not connect to API to get clients */  });
 
-});
-
-// nested controller for the channel content matching tab
-app.controller('channelContentMatchingCtrl', function ($scope) {
-
   // if update is true
   if ($scope.update) {
     $scope.channel.$promise.then(function () {
       if( $scope.channel.matchContentRegex ){ $scope.matching.contentMatching = 'RegEx matching'; }
       if( $scope.channel.matchContentJson ){ $scope.matching.contentMatching = 'JSON matching'; }
       if( $scope.channel.matchContentXpath ){ $scope.matching.contentMatching = 'XML matching'; }
+
+      if ( $scope.channel.matchContentRegex || $scope.channel.matchContentJson || $scope.channel.matchContentXpath ){
+        $scope.matching.showRequestMatching = true;
+      }
     });
   }
+
+});
+
+// nested controller for the channel - user access tab
+app.controller('channelUserAccessCtrl', function ($scope) {
+
+  // object for the taglist roles
+  $scope.taglistUserRoleOptions = [];
+
+  // watch parent scope for 'users' change
+  $scope.$watch( 'users', function(){
+    // setup user groups taglist options
+    angular.forEach($scope.users, function(user){
+      angular.forEach(user.groups, function(group){
+        if ( $scope.taglistUserRoleOptions.indexOf(group) === -1 ){
+          $scope.taglistUserRoleOptions.push(group);
+        }
+      });
+    });
+  });
 
 });
 
@@ -756,7 +792,14 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
 
 // nested controller for the channel routes tab
-app.controller('channelUrlRewritingCtrl', function ($scope, $timeout, Api, Alerting) {
+app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerting) {
+
+  // store settings
+  if (!$scope.update) {
+    // set default variables if new channel
+    $scope.channel.requestBody = true;
+    $scope.channel.responseBody = true;
+  }
 
   /***********************************************************/
   /**   Default Channel URL Rewrite Rule configurations     **/
@@ -1165,17 +1208,5 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   /****************************************************************/
   /**   These are the functions for the Channel Alert Groups     **/
   /****************************************************************/
-
-});
-
-// nested controller for the channel settings tab
-app.controller('channelSettingsCtrl', function ($scope) {
-
-  // if update is false
-  if (!$scope.update) {
-    // set default variables if new channel
-    $scope.channel.requestBody = true;
-    $scope.channel.responseBody = true;
-  }
 
 });

@@ -7,6 +7,9 @@
         <div class="panel-heading">
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Channels</h2>
+            <p class="text-muted">
+              Create and manage channels. A channel in the OpenHIM captures a request that matches the channel configuration and routes those requests to one or more routes that are defined in the channel config. The response from the primary route will be returned to the request sender as soon as the OpenHIM receives it.
+            </p>
           </div>
         </div>
 
@@ -58,17 +61,17 @@
                   <td data-title="Access">
                     <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="">
                       
-                      <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Access Control')">
+                      <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-th"></i>
                         <a ng-repeat="allow in channel.allow"> {{ allow }}{{$last ? '' : ', '}}</a>
                       </span>
                       
-                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel)">
+                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-ok"></i>
                         <a ng-repeat="whitelist in channel.whitelist"> {{ whitelist }}{{$last ? '' : ', '}}</a>
                       </span>
                       
-                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel)">
+                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-cloud-upload"></i>
                         <a > {{ channel.authType }}{{$last ? '' : ', '}}</a>
                       </span>

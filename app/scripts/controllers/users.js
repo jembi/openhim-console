@@ -56,7 +56,7 @@ angular.module('openhimConsoleApp')
             });
           });
 
-          usersArray.push({ 'user': user.email, 'allowedChannels':allowedChannels, 'allowedChannelsBody':allowedChannelsBody, 'allowedChannelsRerun':allowedChannelsRerun });
+          usersArray.push({ 'user': user, 'allowedChannels':allowedChannels, 'allowedChannelsBody':allowedChannelsBody, 'allowedChannelsRerun':allowedChannelsRerun });
         });
 
         $scope.usersChannelsMatrix = {};
