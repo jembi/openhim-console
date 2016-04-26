@@ -63,17 +63,17 @@
                       
                       <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-th"></i>
-                        <a ng-repeat="allow in channel.allow"> {{ allow }}{{$last ? '' : ', '}}</a>
+                        <a>{{ channel.allow.join(', ') }}</a>
                       </span>
                       
                       <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-ok"></i>
-                        <a ng-repeat="whitelist in channel.whitelist"> {{ whitelist }}{{$last ? '' : ', '}}</a>
+                        <a>{{ channel.whitelist.join(', ') }}</a>
                       </span>
                       
                       <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-cloud-upload"></i>
-                        <a > {{ channel.authType }}{{$last ? '' : ', '}}</a>
+                        <a > {{ channel.authType }}</a>
                       </span>
 
                     </div>
