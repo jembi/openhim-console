@@ -36,6 +36,7 @@
                     </th>
                     <th>Channel Name</th>
                     <th>Channel URL Pattern</th>
+                    <th>Access</th>
                     <th>Monitoring</th>
                     <th>Status</th>
                     <th width="100"></th>
@@ -52,10 +53,35 @@
                     <span ng-if="!channel.priority">-</span>
                   </td>
                   <td data-title="Channel Name">
-                    <a ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
+                    <a tooltip={{channel.description}} ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
+                  
+                  <td data-title="Access">
+                    <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="">
+                      
+                      <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
+                        <i class="glyphicon glyphicon-th"></i>
+                        <a>{{ channel.allow.join(', ') }}</a>
+                      </span>
+                      
+                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
+                        <i class="glyphicon glyphicon-ok"></i>
+                        <a>{{ channel.whitelist.join(', ') }}</a>
+                      </span>
+                      
+                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
+                        <i class="glyphicon glyphicon-cloud-upload"></i>
+                        <a > {{ channel.authType }}</a>
+                      </span>
+
+                    </div>
+                    <div ng-if="channel.status=='deleted'">
+                      <span>{{ channel.authType }}</span>
+                    </div>
+                  </td>
+                  
                   <td data-title="Monitoring"><a href="#/channels/{{channel._id}}">Show my stats</a></td>
                   <td data-title="status">
 

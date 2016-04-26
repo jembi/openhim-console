@@ -70,7 +70,8 @@ describe('Controller: ChannelsModalCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createControllerRoutes = function () {
@@ -301,7 +302,8 @@ describe('Controller: channelBasicInfoCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createController = function () {
@@ -346,7 +348,8 @@ describe('Controller: channelRequestMatchingCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -392,7 +395,6 @@ describe('Controller: channelRequestMatchingCtrl', function () {
 
 
 
-
 describe('Controller: channelUserAccessCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
@@ -419,7 +421,8 @@ describe('Controller: channelUserAccessCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -452,11 +455,12 @@ describe('Controller: channelUserAccessCtrl', function () {
 describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, q;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new();
+    q = $q;
 
     var modalInstance = sinon.spy();
     createControllerParent = function () {
@@ -464,7 +468,8 @@ describe('Controller: channelDataControlCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -542,7 +547,8 @@ describe('Controller: channelRoutesCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -833,7 +839,8 @@ describe('Controller: channelAlertsCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -850,61 +857,3 @@ describe('Controller: channelAlertsCtrl', function () {
     /* STILL NEEDED */
   });
 });
-
-
-describe('Controller: channelSettingsCtrl', function () {
-  // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
-
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-
-    var modalInstance = sinon.spy();
-    createControllerParent = function () {
-      return $controller('ChannelsModalCtrl', {
-        $scope: scope,
-        $modalInstance: modalInstance,
-        channel: null,
-        channelDuplicate: null
-      });
-    };
-    createController = function () {
-      return $controller('channelSettingsCtrl', {
-        $scope: scope
-      });
-    };
-  }));
-
-  it('should set default request/reponse body settings - Update is false', function () {
-    createControllerParent();
-    scope.update = false;
-    createController();
-
-    scope.channel.should.be.ok;
-    scope.channel.requestBody.should.equal(true);
-    scope.channel.responseBody.should.equal(true);
-  });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
