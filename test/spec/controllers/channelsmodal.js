@@ -120,6 +120,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     createControllerRoutes();
     httpBackend.flush();
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = '';
     scope.channel.urlPattern = '';
     scope.channel.allow = [];
@@ -162,6 +165,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     createControllerRoutes();
     httpBackend.flush();
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = '';
     scope.channel.urlPattern = '';
     scope.channel.allow = [];
@@ -238,6 +244,9 @@ describe('Controller: ChannelsModalCtrl', function () {
     // update is false so create new channel
     scope.update = true;
 
+    scope.channel.type = 'http';
+    scope.channel.authType = 'private';
+    scope.matching.showRequestMatching = true;
     scope.channel.name = 'ChannelName';
     scope.channel.urlPattern = 'sample/api';
     scope.urlPattern.regex = false;
@@ -315,175 +324,12 @@ describe('Controller: channelBasicInfoCtrl', function () {
     scope.channel.status.should.equal('enabled');
   });
 
-  it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
-    var defer = q.defer();
-    defer.resolve();
-    createControllerParent({ _id: 'test', $promise: defer.promise });
-
-    defer.promise.then(function () {
-      scope.channel.urlPattern = '^/example/path$';
-
-      createController();
-      scope.channel.should.be.ok;
-
-      scope.channel.urlPattern.should.equal('/example/path');
-    });
-  });
 });
 
 
 
 
-
-
-describe('Controller: channelAccessControlCtrl', function () {
-  // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent, httpBackend;
-
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
-
-    httpBackend = $httpBackend;
-    $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
-      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited', 'tester'] }
-    ]);
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
-    ]);
-    
-    httpBackend.when('GET', new RegExp('.*/roles$')).respond([{}]);
-
-    scope = $rootScope.$new();
-
-    var modalInstance = sinon.spy();
-    createControllerParent = function () {
-      return $controller('ChannelsModalCtrl', {
-        $scope: scope,
-        $modalInstance: modalInstance,
-        channel: null,
-        channelDuplicate: null
-      });
-    };
-    createController = function () {
-      return $controller('channelAccessControlCtrl', {
-        $scope: scope
-      });
-    };
-  }));
-
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
-  
-  it('should create a new role successfully', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.formData.newChannelRole = 'TestRole';
-    
-    scope.createNewRole();
-    scope.formData.should.have.property('duplicateNewRole', false);
-    scope.channel.allow.should.have.length(1);
-    scope.roles.should.have.length(2);
-    scope.formData.assigned.should.have.property('TestRole', true);
-    scope.formData.should.have.property('newChannelRole', null);    
-  });
-  
-  it('should fail to create a new if role already exists', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.roles[0].name = 'TestRole';
-    scope.formData.newChannelRole = 'TestRole';
-    
-    scope.createNewRole();
-    scope.formData.should.have.property('duplicateNewRole', true);
-    scope.roles.should.have.length(1);    
-  });
-  
-  it('should assign a client successfully', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.clients[0].clientID = 'TestRole';
-    scope.formData.newChannelRole = 'TestRole';
-    
-    scope.createNewRole();
-    scope.formData.should.have.property('newChannelRole', null);
-    scope.channel.allow.should.have.length(1);   
-    scope.assignedClients.should.have.length(1);
-  });
-  
-  it('should fail to assign a client if the client is already assigned', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.clients[0].clientID = 'TestRole';
-    scope.formData.newChannelRole = 'TestRole';
-    scope.assignedClients[0] = 'TestRole';
-    
-    scope.createNewRole();
-    scope.clients[0].should.have.property('clientID', 'TestRole');
-    scope.formData.should.have.property('duplicateNewRole', true);
-  });
-  
-  it('should toggle an assigned role', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.channel.allow[0] = 'TestRole';
-    scope.channel.allow[1] = 'TestRole2';
-    scope.formData.assigned.TestRole = true;
-    
-    scope.toggleAssignedRoles('TestRole');
-    scope.formData.assigned.should.have.property('TestRole', false);
-    scope.channel.allow.should.have.length(1);    
-  });
-  
-  it('should toggle an unassigned role', function () {
-    createControllerParent();
-    httpBackend.flush();
-    
-    createController();
-    httpBackend.flush();
-    
-    scope.formData.assigned.TestRole = false;
-    
-    scope.toggleAssignedRoles('TestRole');
-    scope.formData.assigned.should.have.property('TestRole', true);    
-    scope.channel.allow.should.have.length(1);
-  });
-
-});
-
-
-
-
-
-
-
-
-
-describe('Controller: channelContentMatchingCtrl', function () {
+describe('Controller: channelRequestMatchingCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
   var scope, createController, createControllerParent, q;
@@ -504,11 +350,27 @@ describe('Controller: channelContentMatchingCtrl', function () {
       });
     };
     createController = function () {
-      return $controller('channelContentMatchingCtrl', {
+      return $controller('channelRequestMatchingCtrl', {
         $scope: scope
       });
     };
   }));
+
+  it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
+    var defer = q.defer();
+    defer.resolve();
+    createControllerParent({ _id: 'test', $promise: defer.promise });
+
+    defer.promise.then(function () {
+      scope.channel.urlPattern = '^/example/path$';
+
+      createController();
+      scope.channel.should.be.ok;
+
+      scope.channel.urlPattern.should.equal('/example/path');
+    });
+  });
+
 
   it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
     var defer = q.defer();
@@ -525,6 +387,105 @@ describe('Controller: channelContentMatchingCtrl', function () {
       scope.matching.contentMatching.should.equal('JSON matching');
     });
   });
+});
+
+
+
+
+
+describe('Controller: channelUserAccessCtrl', function () {
+  // load the controller's module
+  beforeEach(module('openhimConsoleApp'));
+  var scope, createController, createControllerParent, httpBackend;
+
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
+
+    httpBackend = $httpBackend;
+    $httpBackend.when('GET', new RegExp('.*/users')).respond([
+      { 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited', 'tester'] }
+    ]);
+    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
+      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
+      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+    ]);
+
+    scope = $rootScope.$new();
+
+    var modalInstance = sinon.spy();
+    createControllerParent = function () {
+      return $controller('ChannelsModalCtrl', {
+        $scope: scope,
+        $modalInstance: modalInstance,
+        channel: null,
+        channelDuplicate: null
+      });
+    };
+    createController = function () {
+      return $controller('channelUserAccessCtrl', {
+        $scope: scope
+      });
+    };
+  }));
+
+  afterEach(function() {
+    httpBackend.verifyNoOutstandingExpectation();
+    httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should create a taglist array for User Roles Groups', function () {
+    createControllerParent();
+    createController();
+    httpBackend.flush();
+
+    scope.channel.should.be.ok;
+
+    // Each unique role
+    scope.taglistUserRoleOptions.length.should.equal(3);
+  });
+});
+
+
+
+
+describe('Controller: channelDataControlCtrl', function () {
+  // load the controller's module
+  beforeEach(module('openhimConsoleApp'));
+  var scope, createController, createControllerParent;
+
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller, $rootScope) {
+    scope = $rootScope.$new();
+
+    var modalInstance = sinon.spy();
+    createControllerParent = function () {
+      return $controller('ChannelsModalCtrl', {
+        $scope: scope,
+        $modalInstance: modalInstance,
+        channel: null,
+        channelDuplicate: null
+      });
+    };
+    createController = function () {
+      return $controller('channelDataControlCtrl', {
+        $scope: scope
+      });
+    };
+  }));
+
+  it('should set default request/reponse body settings - Update is false', function () {
+    createControllerParent();
+    scope.update = false;
+    createController();
+
+    scope.channel.should.be.ok;
+    scope.channel.requestBody.should.equal(true);
+    scope.channel.responseBody.should.equal(true);
+  });
+
+  // URL Rewriting tests still to be written
+
 });
 
 

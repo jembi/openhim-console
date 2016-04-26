@@ -1370,6 +1370,7 @@ label { position: relative; }
   display: block;
 }
 
+.fullWidthPriority { width: 100% !important; }
 .rolesChannelsMatrixDiv .isAllowed { color: #009933; margin: 0px 2px; font-size: 13px; }
 .rolesChannelsMatrixDiv .isNotAllowed { color: #FF0000; margin: 0px 2px; font-size: 13px; }
 .limitChannelTdWidth { width:120px; }
