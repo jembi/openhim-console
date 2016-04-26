@@ -218,7 +218,7 @@ describe('Controller: ClientsCtrl', function () {
     scope.newRoles[0].should.have.property('name', 'test2');
   });
   
-  it('should remove a new roll', function () {
+  it('should remove a new role', function () {
     createController();
     httpBackend.flush();
     
