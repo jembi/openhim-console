@@ -2,7 +2,7 @@
 
 var app = angular.module('openhimConsoleApp');
 
-app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate) {
+app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate, tab) {
 
   /****************************************************************/
   /**   These are the functions for the Channel initial load     **/
@@ -44,6 +44,17 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     }else{
       $scope.channel = new Api.Channels();
     }
+  }
+  
+  $scope.selectedTab = {};
+  switch (tab) {
+    case 'Basic Info': $scope.selectedTab.basicInfo = true; break;
+    case 'Request Matching': $scope.selectedTab.requestMatching = true; break;
+    case 'Routes': $scope.selectedTab.routes = true; break;
+    case 'Data Control': $scope.selectedTab.dataControl = true; break;
+    case 'Access Control': $scope.selectedTab.accessControl = true; break;
+    case 'Alerts': $scope.selectedTab.alerts = true; break;
+    default: $scope.selectedTab.basicInfo = true; break;
   }
 
   /****************************************************************/

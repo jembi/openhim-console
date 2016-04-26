@@ -70,7 +70,8 @@ describe('Controller: ChannelsModalCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createControllerRoutes = function () {
@@ -301,7 +302,8 @@ describe('Controller: channelBasicInfoCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createController = function () {
@@ -346,7 +348,8 @@ describe('Controller: channelRequestMatchingCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -370,6 +373,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
       scope.channel.urlPattern.should.equal('/example/path');
     });
   });
+
 
   it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
     var defer = q.defer();
@@ -417,7 +421,8 @@ describe('Controller: channelUserAccessCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -450,11 +455,12 @@ describe('Controller: channelUserAccessCtrl', function () {
 describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
-  var scope, createController, createControllerParent;
+  var scope, createController, createControllerParent, q;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new();
+    q = $q;
 
     var modalInstance = sinon.spy();
     createControllerParent = function () {
@@ -462,7 +468,8 @@ describe('Controller: channelDataControlCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -485,6 +492,7 @@ describe('Controller: channelDataControlCtrl', function () {
   // URL Rewriting tests still to be written
 
 });
+
 
 
 
@@ -539,7 +547,8 @@ describe('Controller: channelRoutesCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -830,7 +839,8 @@ describe('Controller: channelAlertsCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
