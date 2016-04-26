@@ -70,7 +70,8 @@ describe('Controller: ChannelsModalCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createControllerRoutes = function () {
@@ -292,7 +293,8 @@ describe('Controller: channelBasicInfoCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: channelDuplicate
+        channelDuplicate: channelDuplicate,
+        tab: null
       });
     };
     createController = function () {
@@ -362,7 +364,8 @@ describe('Controller: channelAccessControlCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -415,7 +418,8 @@ describe('Controller: channelContentMatchingCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: channel,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -496,7 +500,8 @@ describe('Controller: channelRoutesCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -787,7 +792,8 @@ describe('Controller: channelAlertsCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {
@@ -821,7 +827,8 @@ describe('Controller: channelSettingsCtrl', function () {
         $scope: scope,
         $modalInstance: modalInstance,
         channel: null,
-        channelDuplicate: null
+        channelDuplicate: null,
+        tab: null
       });
     };
     createController = function () {

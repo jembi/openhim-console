@@ -34,7 +34,8 @@ angular.module('openhimConsoleApp')
         controller: 'ChannelsModalCtrl',
         resolve: {
           channel: function () {},
-          channelDuplicate: function () {}
+          channelDuplicate: function () {},
+          tab: function() {}
         }
       });
     };
