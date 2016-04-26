@@ -1198,15 +1198,3 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   /****************************************************************/
 
 });
-
-// nested controller for the channel settings tab
-app.controller('channelSettingsCtrl', function ($scope) {
-
-  // if update is false
-  if (!$scope.update) {
-    // set default variables if new channel
-    $scope.channel.requestBody = true;
-    $scope.channel.responseBody = true;
-  }
-
-});
