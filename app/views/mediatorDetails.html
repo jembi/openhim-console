@@ -53,10 +53,10 @@
 
                 <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
                   <tr>
-                    <th style="border-top: 0px">Name: </th>
-                    <th style="border-top: 0px">Host: </th>
-                    <th style="border-top: 0px">Port: </th>
-                    <th style="border-top: 0px">Type: </th>
+                    <th style="border-top: 0px">Name</th>
+                    <th style="border-top: 0px">Host</th>
+                    <th style="border-top: 0px">Port</th>
+                    <th style="border-top: 0px">Type</th>
                   </tr>
                   <tr ng-repeat="endpoints in mediatorDetails.endpoints">
                     <td style="width: 25%">{{endpoints.name}}</td>
@@ -75,6 +75,24 @@
               </td>
               <td>
                 <div mediator-config-display config-defs="mediatorDetails.configDefs" config="mediatorDetails.config"/>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Default channels</strong> <i class="glyphicon glyphicon-question-sign" tooltip="Mediator channels are default channel definitions that work well with this mediator, you may choose whether to install these or not"></i></td>
+              <td style="padding: 0px;">
+                <table class="table table-striped">
+                  <tr>
+                    <th>Name</th>
+                    <th>URL Pattern</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr ng-repeat="channel in mediatorDetails.defaultChannelConfig">
+                    <td>{{channel.name}}</td>
+                    <td>{{channel.urlPattern}}</td>
+                    <td>{{channel.description}}</td>
+                    <td><button class="btn btn-xs btn-success" tooltip="Install this channel" ng-click="addChannel(channel.name)"><i class="glyphicon glyphicon-plus"></i></button></td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>

@@ -45,6 +45,8 @@ describe('Controller: MediatorDetailsCtrl', function () {
     httpBackend = $httpBackend;
 
     $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond(testMediator);
+    $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 1']).respond(201);
+    $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 2']).respond(500);
 
     modalSpy = sinon.spy($modal, 'open');
 
@@ -116,6 +118,24 @@ describe('Controller: MediatorDetailsCtrl', function () {
 
     // empty object test
     expect(Object.getOwnPropertyNames(scope.mediatorDefsMap).length).to.be.equal(0);
+  });
+
+  it('should save a mediator channel with a particular name', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.addChannel('Mediator Channel 1');
+    httpBackend.flush();
+    scope.alerts.top[0].msg.should.be.equal('Successfully installed mediator channel');
+  });
+
+  it('should alert when there is an error saving mediator channel with a particular name', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.addChannel('Mediator Channel 2');
+    httpBackend.flush();
+    scope.alerts.top[0].msg.should.be.equal('Oops, something went wrong. Could not install mediator channel.');
   });
 
 });
