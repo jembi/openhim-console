@@ -15,7 +15,9 @@ angular.module('openhimConsoleApp')
       Channels: $resource( server + '/channels/:channelId', { channelId: '@_id' }, {
         update: { method: 'PUT' }
       }),
-      
+
+      TriggerPollingChannels: $resource( server + '/channels/:channelId/trigger', { channelId: '@_id' }, {}),
+
       Roles: $resource( server + '/roles/:name', { name: '@name' }, {
         update: { method: 'PUT' }
       }),

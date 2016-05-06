@@ -42,6 +42,10 @@
     </label>
     <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
     <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    <br/>
+    <button type="button" class="btn btn-primary" ng-click="manuallyTriggerChannel()">Manually Trigger</button>
+
+    <alert ng-repeat="alert in alerts.manualTrigger" type="alert.type">{{alert.msg}}</alert>
   </div>
 </div>
 
