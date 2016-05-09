@@ -314,7 +314,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 });
 
 // nested controller for the channel basic info tab
-app.controller('channelBasicInfoCtrl', function ($scope, Api, Notify, Alerting) {
+app.controller('channelBasicInfoCtrl', function ($scope, $timeout, Api, Notify, Alerting) {
 
   var setUrlPattern = function(){
     $scope.channel.$promise.then(function () {
@@ -333,10 +333,12 @@ app.controller('channelBasicInfoCtrl', function ($scope, Api, Notify, Alerting) 
 
   // Mannually Trigger Polling Channels
   $scope.manuallyTriggerChannel = function(){
-    Alerting.AlertReset();
+    Alerting.AlertReset('manualTrigger');
     Api.TriggerPollingChannels.get({ channelId: $scope.channel._id }, function (result) {
-      console.log(result);
-      Alerting.AlertAddMsg('manualTrigger', 'info', 'Channel Successfully Triggered');
+      Alerting.AlertAddMsg('manualTrigger', 'success', 'Channel Triggered');
+      $timeout(function(){
+        Alerting.AlertReset('manualTrigger')
+      }, 5000);
     });
   };
 
