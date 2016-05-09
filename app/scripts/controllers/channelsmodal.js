@@ -7,6 +7,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   /****************************************************************/
   /**   These are the functions for the Channel initial load     **/
   /****************************************************************/
+
   $scope.ngError = {};
 
   // used in child and parent controller - ( basic info ) - define globally
