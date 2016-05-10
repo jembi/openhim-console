@@ -3,10 +3,6 @@
 angular.module('openhimConsoleApp')
   .controller('MediatorDetailsCtrl', function ($rootScope, $scope, $modal, $location, $routeParams, Api, Alerting, MediatorDisplay) {
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
     var createParamDefMap = function (mediator) {
       var map = {};
       if (mediator.config) {
@@ -52,8 +48,13 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+    $scope.addChannel = function(channelName) {
+      Alerting.AlertReset('top');
+      Api.MediatorChannels.save({ urn: $routeParams.urn }, [channelName], function() {
+        Alerting.AlertAddMsg('top', 'success', 'Successfully installed mediator channel');
+      }, function() {
+        Alerting.AlertAddMsg('top', 'danger', 'Oops, something went wrong. Could not install mediator channel.');
+      });
+    };
 
   });

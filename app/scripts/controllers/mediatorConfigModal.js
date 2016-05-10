@@ -7,7 +7,12 @@ angular.module('openhimConsoleApp')
         $scope.mediator.config = {};
       }
     });
-    
+
+    var notifyUser = function() {
+      Notify.notify('mediatorConfigChanged');
+      $modalInstance.close();
+    };
+
     var success = function () {
       Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully');
       notifyUser();
@@ -16,11 +21,6 @@ angular.module('openhimConsoleApp')
     var error = function (err) {
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the mediator config: #' + err.status + ' - ' + err.data);
       notifyUser();
-    };
-
-    var notifyUser = function(){
-      Notify.notify('mediatorConfigChanged');
-      $modalInstance.close();
     };
 
     $scope.saveConfig = function () {
