@@ -335,10 +335,10 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, Api, Notify, 
   // Mannually Trigger Polling Channels
   $scope.manuallyTriggerChannel = function(){
     Alerting.AlertReset('manualTrigger');
-    Api.TriggerPollingChannels.get({ channelId: $scope.channel._id }, function (result) {
+    Api.TriggerPollingChannels.save({ channelId: $scope.channel._id },{ _id: $scope.channel._id }, function () {
       Alerting.AlertAddMsg('manualTrigger', 'success', 'Channel Triggered');
       $timeout(function(){
-        Alerting.AlertReset('manualTrigger')
+        Alerting.AlertReset('manualTrigger');
       }, 5000);
     });
   };
