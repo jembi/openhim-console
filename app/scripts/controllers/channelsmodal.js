@@ -25,7 +25,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   },
   function(){ /* server error - could not connect to API to get Users */ });
 
-  
+
   if (channel) {
     $scope.update = true;
     $scope.channel = Api.Channels.get({ channelId: channel._id }, function () {
@@ -45,7 +45,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
       $scope.channel = new Api.Channels();
     }
   }
-  
+
   $scope.selectedTab = {};
   switch (tab) {
     case 'Basic Info': $scope.selectedTab.basicInfo = true; break;
@@ -208,7 +208,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
         $scope.ngError.allow = true;
         $scope.ngError.requestMatchingTab = true;
         $scope.ngError.hasErrors = true;
-      }  
+      }
     }
 
     // set url-pattern to default for tcp/tls channel type
@@ -315,7 +315,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 });
 
 // nested controller for the channel basic info tab
-app.controller('channelBasicInfoCtrl', function ($scope) {
+app.controller('channelBasicInfoCtrl', function ($scope, $timeout, Api, Notify, Alerting) {
 
   var setUrlPattern = function(){
     $scope.channel.$promise.then(function () {
@@ -329,6 +329,17 @@ app.controller('channelBasicInfoCtrl', function ($scope) {
         // update checkbox if no regex delimiters
         $scope.urlPattern.regex = false;
       }
+    });
+  };
+
+  // Mannually Trigger Polling Channels
+  $scope.manuallyTriggerChannel = function(){
+    Alerting.AlertReset('manualTrigger');
+    Api.TriggerPollingChannels.save({ channelId: $scope.channel._id },{ _id: $scope.channel._id }, function () {
+      Alerting.AlertAddMsg('manualTrigger', 'success', 'Channel Triggered');
+      $timeout(function(){
+        Alerting.AlertReset('manualTrigger');
+      }, 5000);
     });
   };
 
@@ -472,7 +483,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
     // push the route object to channel.routes if no errors exist
     if ( $scope.ngErrorRoute.hasErrors === false ){
-      
+
       // if index then this is an update - delete old route based on idex
       if ( typeof( index ) !== 'undefined' && index !== null ){
         // remove old route from array
@@ -547,7 +558,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     }else if ( type === 'mediator' ){
       // dont show add/edit box for mediator add - push directly to channel routes
       $scope.routeAddEdit = false;
-      
+
       // set defaults
       primary = false;
       var name = '';
@@ -799,7 +810,7 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
     $scope.channel.requestBody = true;
     $scope.channel.responseBody = true;
   }
-  
+
   /***********************************************************/
   /**   Default Channel URL Rewrite Rule configurations     **/
   /***********************************************************/
@@ -819,12 +830,12 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
         $scope.channel.rewriteUrls = false;
         $scope.channel.addAutoRewriteRules = true;
       }
-    });    
+    });
   }
 
   $scope.urlRewriteAddEdit = false;
 
-  
+
 
   /***********************************************************/
   /**   Default Channel URL Rewrite Rule configurations     **/
@@ -849,7 +860,7 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
 
     // push the route object to channel.rewriteUrlsConfig if no errors exist
     if ( $scope.ngErrorUrlRewrite.hasErrors === false ){
-      
+
       // if index then this is an update - delete old urlRewrite based on index
       if ( typeof( index ) !== 'undefined' && index !== null ){
         // remove old urlRewrite from array
