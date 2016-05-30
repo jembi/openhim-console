@@ -210,7 +210,7 @@ angular.module('openhimConsoleApp')
     /**               Transactions View Route Functions                 **/
     /*********************************************************************/
 
-    $scope.viewAddReqResDetails = function(record, route){
+    $scope.viewAddReqResDetails = function(record, channel){
       $modal.open({
         templateUrl: 'views/transactionsAddReqResModal.html',
         controller: 'TransactionsAddReqResModalCtrl',
@@ -219,8 +219,8 @@ angular.module('openhimConsoleApp')
           record: function () {
             return record;
           },
-          route: function () {
-            return route;
+          channel: function () {
+            return channel;
           }
         }
       });

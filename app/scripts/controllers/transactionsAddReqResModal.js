@@ -3,10 +3,10 @@
 /* global returnContentType:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record, route) {
+  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record, channel) {
 
     $scope.record = record;
-    $scope.route = route; // optional
+    $scope.channel = channel; // optional
     $scope.viewFullBody = false;
     $scope.viewFullBodyType = null;
     $scope.viewFullBodyContent = null;

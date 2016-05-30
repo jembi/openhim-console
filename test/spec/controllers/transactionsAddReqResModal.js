@@ -14,7 +14,7 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
     });
   });
 
-  var scope, createController, modalInstance, record;
+  var scope, createController, modalInstance, record, channel;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
@@ -35,9 +35,13 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
         }
       };
 
+      channel = {
+        type: 'http'
+      };
+
       scope = $rootScope.$new();
       modalInstance = sinon.spy();
-      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record, route: null } );
+      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record, channel: channel } );
     };
 
   }));
@@ -48,6 +52,12 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
     scope.record.name.should.equal('second');
     scope.record.response.status.should.equal(301);
     scope.record.request.method.should.equal('GET');
+  });
+
+  it('should attach the channel object to the scope', function () {
+    createController();
+
+    scope.channel.type.should.equal('http');
   });
 
 });
