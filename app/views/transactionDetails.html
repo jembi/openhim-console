@@ -202,7 +202,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click="viewAddReqResDetails(route, routeDefs[route.name])">
+                      <tr class="table-list" ng-repeat="route in transactionDetails.routes" ng-click="viewAddReqResDetails(route, channel)">
                         <td data-title="Route">{{ route.name }}</td>
                         <td data-title="URL">
                           <span class="label label-default" ng-if="routeDefs[route.name].type === 'http'">{{route.request.method}}</span>
@@ -234,7 +234,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click="viewAddReqResDetails(orchestration)">
+                      <tr class="table-list" ng-repeat="orchestration in transactionDetails.orchestrations" ng-click="viewAddReqResDetails(orchestration, channel)">
                         <td data-title="Name">{{ orchestration.name }}</td>
                         <td data-title="URL">
                           <span class="label label-default">{{orchestration.request.method}}</span>

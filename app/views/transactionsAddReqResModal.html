@@ -16,19 +16,19 @@
         <div class="panel-body">
 
           <h4>
-            <div ng-if="route">
-              <span class="label label-default" ng-if="route.type === 'http'">{{record.request.method}}</span>
-              <span class="label label-danger" ng-if="route.type !== 'http'">{{route.type | uppercase}}</span>
-              <span>{{ record.request.host }}</span><span ng-if="record.request.port">{{ ':' + record.request.port }}</span><span ng-if="route.type === 'http'">{{ record.request.path }}</span><span ng-if="record.request.querystring && route.type === 'http'">{{ '?' + record.request.querystring }}</span>
+            <div ng-if="channel">
+              <span class="label label-default" ng-if="channel.type === 'http'">{{record.request.method}}</span>
+              <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+              <span>{{ record.request.host }}</span><span ng-if="record.request.port">{{ ':' + record.request.port }}</span><span ng-if="channel.type === 'http'">{{ record.request.path }}</span><span ng-if="record.request.querystring && channel.type === 'http'">{{ '?' + record.request.querystring }}</span>
             </div>
             <!-- Assume its HTTP, can't do much else -->
-            <div ng-if="!route">
+            <div ng-if="!channel">
               <span class="label label-default">{{record.request.method}}</span>
               <span>{{ record.request.host }}</span><span ng-if="record.request.port">{{ ':' + record.request.port }}</span><span>{{ record.request.path }}</span><span ng-if="record.request.querystring">{{ '?' + record.request.querystring }}</span>
             </div>
           <h6 class="subtitle"><em>Received at {{record.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
-          <a data-toggle="collapse" href="#popup-req-headers-table" ng-if="route.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+          <a data-toggle="collapse" href="#popup-req-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
           <div id="popup-req-headers-table" class="panel panel-default collapse">
             <div class="panel-body">
               <table class="table-condensed table-borderless">
@@ -45,7 +45,7 @@
             <div class="hljsFormat" hljs source="record.request.body"></div>
             <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Request', record.request.body, record.request.headers);">View Full Request Body</button>
           </div>
-          <div ng-if="route && !record.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
+          <div ng-if="(record.request.method === 'POST' || record.request.method === 'PUT') && !record.request.body" style="display: inline-block; width: 100%; margin-top: 15px;">
             <h4>Request body not stored, it is the same as the primary route</h4>
           </div>
         </div>
@@ -59,9 +59,9 @@
           <h3 class="panel-title">Response</h3>
         </div>
         <div class="panel-body">
-          <div ng-if="route">
-          <span class="label label-danger" ng-if="route.type !== 'http'">{{route.type | uppercase}}</span>
-            <h4 ng-if="route.type === 'http'">Status code
+          <div ng-if="channel">
+          <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+            <h4 ng-if="channel.type === 'http'">Status code
               <span ng-if="record.response.status >= 200 && record.response.status < 300" class="label label-success">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 300 && record.response.status < 400" class="label label-primary">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 400 && record.response.status < 500" class="label label-warning">{{record.response.status}}</span>
@@ -69,7 +69,7 @@
             </h4>
           </div>
           <!-- Assume its HTTP, can't do much else -->
-          <div ng-if="!route">
+          <div ng-if="!channel">
             <h4>Status code
               <span ng-if="record.response.status >= 200 && record.response.status < 300" class="label label-success">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 300 && record.response.status < 400" class="label label-primary">{{record.response.status}}</span>
@@ -79,7 +79,7 @@
           </div>
           <h6 class="subtitle"><em>Received at {{record.response.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
-          <a data-toggle="collapse" href="#popup-res-headers-table" ng-if="route.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
+          <a data-toggle="collapse" href="#popup-res-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
           <div id="popup-res-headers-table" class="panel panel-default collapse">
             <div class="panel-body">
               <table class="table-condensed table-borderless">
