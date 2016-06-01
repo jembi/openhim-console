@@ -68,7 +68,8 @@ angular.module('openhimConsoleApp')
           channel: function () {},
           channelDuplicate: function () {
             return channel._id;
-          }
+          },
+          tab: function() {}
         }
       });
     };
@@ -116,7 +117,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the channel: #' + err.status + ' - ' + err.data);
     };
     /*---------------------------Delete Confirm----------------------------*/
-    
+
     /*--------------------------Restore Confirm----------------------------*/
     $scope.confirmRestore = function(channel){
       Alerting.AlertReset();
@@ -174,7 +175,7 @@ angular.module('openhimConsoleApp')
           newPriority = curPriority - 1;
         }else{
           newPriority = curPriority + 1;
-        }  
+        }
       }
 
       channel.priority = newPriority;
