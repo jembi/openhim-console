@@ -43,7 +43,8 @@
     "node": ">=0.12.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "grunt serve"
   },
   "repository": {
     "type": "git",
