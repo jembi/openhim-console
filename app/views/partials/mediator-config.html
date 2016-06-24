@@ -1,8 +1,8 @@
 <fieldset>
   <div class="content-box-large bordered-box">
-    
+
     <div class="form-group collapse-side-margins" ng-repeat="def in configDefs">
-    
+
       <div ng-if="!def.array">
 
         <div class="col-sm-3">
@@ -59,6 +59,10 @@
 
           <div ng-if="def.type === 'struct'">
             <div mediator-nested-config config-defs="def.template" config="config[def.param]"></div>
+          </div>
+
+          <div ng-if="def.type === 'password'">
+            <input class="form-control" type="password" ng-model="config[def.param]">
           </div>
         </div><!-- col-sm-9 -->
       </div><!-- if !array -->
@@ -122,6 +126,10 @@
             <div ng-if="def.type === 'struct'">
               <div mediator-nested-config config-defs="def.template" config="config[def.param][$index]"></div>
             </div>
+
+            <div ng-if="def.type === 'password'">
+              <input class="form-control" type="password" ng-model="config[def.param][$index]">
+            </div>
           </div><!-- col-sm-8 -->
 
           <div class="col-sm-1 mediator-config-col">
@@ -140,7 +148,7 @@
           </div><!-- col-sm-3 -->
           <div class="col-sm-9 mediator-config-col">
             <button type="button" class="btn btn-primary btn-xs" ng-click="addNewArrayItem(def)">
-              <i class="glyphicon glyphicon-plus"></i> 
+              <i class="glyphicon glyphicon-plus"></i>
               <span ng-if="def.displayName">{{def.displayName}}</span>
               <span ng-if="!def.displayName">{{def.param}}</span>
             </button>
