@@ -25,9 +25,6 @@
   </div>
 </div>
 
-
-
-
 <div ng-show="channel.responseBody" style="border-top: 1px solid #eee;">
   <h4>URL Rewriting</h4>
   <!-- Route Alerts -->
@@ -70,7 +67,7 @@
         <input ng-model="newUrlRewrite.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
       </div>
     </div>
-    
+
 
     <div style="margin-top: 10px;">
       <button type="button" class="btn btn-default" ng-click="cancelUrlRewriteAddEdit()">Cancel</button>
@@ -122,7 +119,7 @@
             <div style="width: 8%; float: right; display: block;"></div>
           </th>
         </tr>
-      <thead>
+      </thead>
       <tbody>
         <tr ng-repeat="rewrite in channel.rewriteUrlsConfig">
 
@@ -138,15 +135,15 @@
             </div>
 
             <div style="width: 8%; float: right; display: block;">
-              <button class="btn btn-warning btn-xs" ng-click="addEditUrlRewrite('edit', rewrite, $index)"><i class="glyphicon glyphicon-pencil"></i></button> 
+              <button class="btn btn-warning btn-xs" ng-click="addEditUrlRewrite('edit', rewrite, $index)"><i class="glyphicon glyphicon-pencil"></i></button>
               <button class="btn btn-danger btn-xs" ng-click="removeUrlRewrite($index)"><i class="glyphicon glyphicon-remove"></i></button>
             </div>
           </td>
 
         </tr>
-      <tbody>
+      </tbody>
     </table>
 
     <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditUrlRewrite('new', null, null)">Add Custom URL Rewrite Rule</button>
-  </div>  
+  </div>
 </div>
