@@ -546,7 +546,8 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         username: '',
         password: '',
         type : 'http',
-        status: 'enabled'
+        status: 'enabled',
+        forwardAuthHeader: false
       };
     }else if ( type === 'edit' ){
       // show add/edit box
