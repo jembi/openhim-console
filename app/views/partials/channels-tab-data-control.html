@@ -25,6 +25,32 @@
   </div>
 </div>
 
+<div ng-show="channel.requestBody" style="border-top: 1px solid #eee;">
+  <h4>Auto Retry</h4>
+
+  <div class="form-group-2columns">
+    <div class="form-group" style="float: left;">
+      <label style="display: block;">
+        Automatically resend failed transactions?
+        <i ng-show="uiSettings.showTooltips" tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="clear: both;">
+        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" btn-radio="true">True</label>
+        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" btn-radio="false">False</label>
+      </div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label style="display: block">
+        How often?
+        <i ng-show="uiSettings.showTooltips" tooltip="The period (in minutes) to wait before resending transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="clear: both;">
+        <input class="form-control" type="number" min="1" max="302400" ng-model="channel.autoRetryPeriodMinutes" />
+      </div>
+    </div>
+  </div>
+</div>
+
 <div ng-show="channel.responseBody" style="border-top: 1px solid #eee;">
   <h4>URL Rewriting</h4>
   <!-- Route Alerts -->
