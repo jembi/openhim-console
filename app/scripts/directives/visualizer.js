@@ -208,6 +208,7 @@ angular.module('openhimConsoleApp')
             color = errorColor;
           } else {
             color = inactiveColor;
+            delay += 100;
           }
 
           if (speed<0) {
