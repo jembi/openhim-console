@@ -166,8 +166,7 @@
           <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
-          <span class="input-group-addon">#</span>
-          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.inactive">
+          <input colorpicker="hex" class="form-control" type="text" ng-model="user.settings.visualizer.color.inactive">
         </div>
       </div>
 
@@ -177,8 +176,7 @@
           <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
-          <span class="input-group-addon">#</span>
-          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.active">
+          <input colorpicker="hex" class="form-control" type="text" ng-model="user.settings.visualizer.color.active">
         </div>
       </div>
 
@@ -188,8 +186,7 @@
           <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
-          <span class="input-group-addon">#</span>
-          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.error">
+          <input colorpicker="hex" class="form-control" type="text" ng-model="user.settings.visualizer.color.error">
         </div>
       </div>
 
@@ -199,8 +196,7 @@
           <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
-          <span class="input-group-addon">#</span>
-          <input class="form-control" type="text" ng-model="user.settings.visualizer.color.text">
+          <input colorpicker="hex" class="form-control" type="text" ng-model="user.settings.visualizer.color.text">
         </div>
       </div>
     </div>

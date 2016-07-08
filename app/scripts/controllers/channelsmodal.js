@@ -436,18 +436,23 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     $scope.channel.routes = [];
   }
 
-  $scope.mediator = {};
-  $scope.mediator.route = {};
-  $scope.mediators = [];
+  $scope.selected = {};
+  $scope.mediatorRoutes = [];
   $scope.routeAddEdit = false;
+  $scope.mediators = [];
+  $scope.mediatorsMap = {};
 
   // get the mediators for the route option
   Api.Mediators.query(function(mediators){
+    $scope.mediators = mediators;
+
     // foreach mediator
     angular.forEach(mediators, function(mediator){
+      $scope.mediatorsMap[mediator.urn] = mediator;
+
       // foreach endpoint in the mediator
-      angular.forEach(mediator.endpoints, function(route){
-        $scope.mediators.push({ 'name': mediator.name + ' - ' + route.name, route: route });
+      angular.forEach(mediator.endpoints, function(endpoint){
+        $scope.mediatorRoutes.push({ 'fullName': mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint });
       });
     });
   }, function(){ /* server error - could not connect to API to get Mediators */ });
@@ -547,7 +552,9 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         password: '',
         type : 'http',
         status: 'enabled',
-        forwardAuthHeader: false
+        forwardAuthHeader: false,
+        mediator: '',
+        mediatorEndpoint: ''
       };
     }else if ( type === 'edit' ){
       // show add/edit box
@@ -556,55 +563,62 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       // set new/edit route to supplied object
       $scope.newRoute = angular.copy( object );
       $scope.oldRouteIndex = index;
-    }else if ( type === 'mediator' ){
-      // dont show add/edit box for mediator add - push directly to channel routes
-      $scope.routeAddEdit = false;
+    }
+  };
 
-      // set defaults
-      primary = false;
-      var name = '';
-      var secured = false;
-      var host = '';
-      var port = '';
-      var path = '';
-      var pathTransform = '';
-      var username = '';
-      var password = '';
-      var routeType = 'http';
+  $scope.addRouteFromMediator = function() {
+    $scope.resetRouteErrors();
+    $scope.oldRouteIndex = null;
 
-      if ($scope.mediator.route.route.name){ name = $scope.mediator.route.route.name; }
-      if ($scope.mediator.route.route.secured){ secured = $scope.mediator.route.route.secured; }
-      if ($scope.mediator.route.route.host){ host = $scope.mediator.route.route.host; }
-      if ($scope.mediator.route.route.port){ port = $scope.mediator.route.route.port; }
-      if ($scope.mediator.route.route.path){ path = $scope.mediator.route.route.path; }
-      if ($scope.mediator.route.route.pathTransform){ pathTransform = $scope.mediator.route.route.pathTransform; }
-      if ($scope.mediator.route.route.username){ username = $scope.mediator.route.route.username; }
-      if ($scope.mediator.route.route.password){ password = $scope.mediator.route.route.password; }
-      if ($scope.mediator.route.route.type){ routeType = $scope.mediator.route.route.type; }
+    // dont show add/edit box for mediator add - push directly to channel routes
+    $scope.routeAddEdit = false;
 
-      // if no routes exist yet then make mediator primary
-      if ( $scope.channel.routes.length === 0 ){
-        primary = true;
-      }
+    // set defaults
+    var primary = false;
+    var name = '';
+    var secured = false;
+    var host = '';
+    var port = '';
+    var path = '';
+    var pathTransform = '';
+    var username = '';
+    var password = '';
+    var routeType = 'http';
+    var forwardAuthHeader = false;
 
-      // add mediator to channel.routes array
-      $scope.channel.routes.push({
-        name: name,
-        secured: secured,
-        host: host,
-        port: port,
-        path: path,
-        pathTransform: pathTransform,
-        primary: primary,
-        username: username,
-        password: password,
-        type : routeType,
-        status: 'enabled'
-      });
-      // reset selected mediator option
-      $scope.mediator.route = null;
+    if ($scope.selected.mediatorRoute.fullName){ name = $scope.selected.mediatorRoute.fullName; }
+    if ($scope.selected.mediatorRoute.endpoint.secured){ secured = $scope.selected.mediatorRoute.endpoint.secured; }
+    if ($scope.selected.mediatorRoute.endpoint.host){ host = $scope.selected.mediatorRoute.endpoint.host; }
+    if ($scope.selected.mediatorRoute.endpoint.port){ port = $scope.selected.mediatorRoute.endpoint.port; }
+    if ($scope.selected.mediatorRoute.endpoint.path){ path = $scope.selected.mediatorRoute.endpoint.path; }
+    if ($scope.selected.mediatorRoute.endpoint.pathTransform){ pathTransform = $scope.selected.mediatorRoute.endpoint.pathTransform; }
+    if ($scope.selected.mediatorRoute.endpoint.username){ username = $scope.selected.mediatorRoute.endpoint.username; }
+    if ($scope.selected.mediatorRoute.endpoint.password){ password = $scope.selected.mediatorRoute.endpoint.password; }
+    if ($scope.selected.mediatorRoute.endpoint.type){ routeType = $scope.selected.mediatorRoute.endpoint.type; }
+    if ($scope.selected.mediatorRoute.endpoint.forwardAuthHeader){ forwardAuthHeader = $scope.selected.mediatorRoute.endpoint.forwardAuthHeader; }
+
+    // if no routes exist yet then make mediator primary
+    if ( $scope.channel.routes.length === 0 ){
+      primary = true;
     }
 
+    // add mediator to channel.routes array
+    $scope.channel.routes.push({
+      name: name,
+      secured: secured,
+      host: host,
+      port: port,
+      path: path,
+      pathTransform: pathTransform,
+      primary: primary,
+      username: username,
+      password: password,
+      type : routeType,
+      status: 'enabled',
+      forwardAuthHeader: forwardAuthHeader,
+      mediator: $scope.selected.mediatorRoute.mediator,
+      mediatorEndpoint: $scope.selected.mediatorRoute.endpoint.name
+    });
   };
 
   $scope.cancelRouteAddEdit = function(){

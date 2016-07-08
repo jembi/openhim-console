@@ -2,10 +2,10 @@
   "components": [],
   "endpoints": [],
   "color": {
-    "inactive": "CCCCCC",
-    "active": "4cae4c",
-    "error": "d43f3a",
-    "text": "000000"
+    "inactive": "#cccccc",
+    "active": "#4cae4c",
+    "error": "#d43f3a",
+    "text": "#000000"
   },
   "size": {
     "responsive": true,

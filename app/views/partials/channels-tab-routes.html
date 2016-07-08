@@ -34,6 +34,20 @@
   </div>
   <div class="form-group" style="display: inline-block; width: 100%">
     <div class="form-group" style="float: left;">
+      <label>Mediator</label><br />
+      <select style="float: left; width: auto;" class="form-control" ng-model="newRoute.mediator" ng-options="m.urn as m.name for m in mediators">
+        <option value="">Mediator</option>
+      </select>
+    </div>
+    <div ng-if="newRoute.mediator" class="form-group" style="float: left;">
+      <label>Endpoint</label><br />
+      <select style="float: left; width: auto;" class="form-control" ng-model="newRoute.mediatorEndpoint" ng-options="e.name as e.name for e in mediatorsMap[newRoute.mediator].endpoints">
+        <option value="">Endpoint</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group" style="display: inline-block; width: 100%">
+    <div class="form-group" style="float: left;">
       <label>Route Type</label><br />
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'http'">HTTP</label>
@@ -170,7 +184,7 @@
   </table>
 
   <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditRoute('new', null, null)">Add New Route</button>
-  <select style="float: left; width: auto;" class="form-control" ng-model="mediator.route" ng-change="addEditRoute('mediator', null, null)" ng-options="route as route.name for route in mediators">
+  <select style="float: left; width: auto;" class="form-control" ng-model="selected.mediatorRoute" ng-change="addRouteFromMediator()" ng-options="medRoute as medRoute.fullName for medRoute in mediatorRoutes">
     <option value="">Add Mediator Route</option>
   </select>
 </div>

@@ -28,7 +28,7 @@ describe('Controller: ProfileCtrl', function () {
     httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
       'components': [],
       'endpoints': [],
-      'color': { 'inactive': 'CCCCCC', 'active': '4cae4c', 'error': 'd43f3a', 'text': '000000' },
+      'color': { 'inactive': '#cccccc', 'active': '#4cae4c', 'error': '#d43f3a', 'text': '#000000' },
       'size': { 'width': 1000, 'height': 400, 'padding': 20 },
       'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
     });

@@ -69,13 +69,13 @@ angular.module('openhimConsoleApp')
 
 
       /********** Color Management **********/
-      inactiveColor = '#'+visSettings.color.inactive;
-      activeColor = '#'+visSettings.color.active;
-      errorColor = '#'+visSettings.color.error;
-      textColor = '#'+visSettings.color.text;
+      inactiveColor = visSettings.color.inactive;
+      activeColor = visSettings.color.active;
+      errorColor = visSettings.color.error;
+      textColor = visSettings.color.text;
 
       // check if config not empty
-      if ( inactiveColor === '#' || activeColor === '#' || errorColor === '#' || textColor === '#' ){
+      if ( inactiveColor === '' || activeColor === '' || errorColor === '' || textColor === '' ){
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' });
