@@ -439,17 +439,11 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
   $scope.selected = {};
   $scope.mediatorRoutes = [];
   $scope.routeAddEdit = false;
-  $scope.mediators = [];
-  $scope.mediatorsMap = {};
 
   // get the mediators for the route option
   Api.Mediators.query(function(mediators){
-    $scope.mediators = mediators;
-
     // foreach mediator
     angular.forEach(mediators, function(mediator){
-      $scope.mediatorsMap[mediator.urn] = mediator;
-
       // foreach endpoint in the mediator
       angular.forEach(mediator.endpoints, function(endpoint){
         $scope.mediatorRoutes.push({ 'fullName': mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint });
@@ -552,9 +546,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
         password: '',
         type : 'http',
         status: 'enabled',
-        forwardAuthHeader: false,
-        mediator: '',
-        mediatorEndpoint: ''
+        forwardAuthHeader: false
       };
     }else if ( type === 'edit' ){
       // show add/edit box
@@ -615,9 +607,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
       password: password,
       type : routeType,
       status: 'enabled',
-      forwardAuthHeader: forwardAuthHeader,
-      mediator: $scope.selected.mediatorRoute.mediator,
-      mediatorEndpoint: $scope.selected.mediatorRoute.endpoint.name
+      forwardAuthHeader: forwardAuthHeader
     });
   };
 
