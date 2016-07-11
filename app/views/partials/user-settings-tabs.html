@@ -80,38 +80,56 @@
       <div class="components_div">
         <label style="float: left">
           Components
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer. Components are shown 'above the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
-          <select class="form-control" ng-options="component.key as component.event for component in components" ng-model="visualizer.addSelectComponent" ng-change="addSelectComponentEndpoint('component')">
-            <option value="">Select Component</option>
-          </select>
-          
           <div id="no-more-tables" style="margin-top: 15px;">
             <table class="table table-striped table-bordered">
               <thead>
                 <tr style="font-weight: bold">
-                  <th>Event</th>
-                  <th>Description</th>
+                  <th>Event Type</th>
+                  <th>Event Name</th>
+                  <th>Display</th>
                   <th></th>
                 </tr>
-              <thead>
+              </thead>
               <tbody>
                 <tr ng-repeat="component in user.settings.visualizer.components">
-                  <td style="vertical-align: middle;" data-title="Event">{{component.event}}</td>
-                  <td data-title="Description"><input class="form-control" type="text" ng-model="component.desc" /></td>
+                  <td style="vertical-align: middle;" data-title="Type">{{component.eventType}}</td>
+                  <td style="vertical-align: middle;" data-title="Event">{{component.eventName}}</td>
+                  <td data-title="Display"><input class="form-control" type="text" ng-model="component.display" /></td>
                   <td style="vertical-align: middle;">
-                    <button class="btn btn-danger btn-xs" ng-click="removeComponentEndpoint('component', $index)"><i class="glyphicon glyphicon-remove"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-click="removeComponent($index)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>
                 <tr>
-                  <td data-title="Event"><input class="form-control" type="text" ng-model="visualizer.addComponent.event" /></td>
-                  <td data-title="Description"><input class="form-control" type="text" ng-model="visualizer.addComponent.desc" /></td>
+                  <td data-title="Type">
+                    <select class="form-control" ng-model="visualizer.addComponent.eventType">
+                      <option value="">Event Type</option>
+                      <option value="primary">Primary Route</option>
+                      <option value="route">Secondary Route</option>
+                      <option value="orchestration">Orchestration</option>
+                      <option value="channel">Channel</option>
+                    </select>
+                  </td>
+                  <td data-title="Event">
+                    <select ng-if="visualizer.addComponent.eventType === 'primary'" class="form-control" ng-options="route as route for route in primaryRoutes" ng-model="visualizer.addComponent.eventName">
+                      <option value="">Select Route</option>
+                    </select>
+                    <select ng-if="visualizer.addComponent.eventType === 'route'" class="form-control" ng-options="route as route for route in secondaryRoutes" ng-model="visualizer.addComponent.eventName">
+                      <option value="">Select Route</option>
+                    </select>
+                    <input ng-if="visualizer.addComponent.eventType === 'orchestration'"  class="form-control" type="text" ng-model="visualizer.addComponent.eventName" />
+                    <select ng-if="visualizer.addComponent.eventType === 'channel'" class="form-control" ng-options="channel.name as channel.name for channel in channels" ng-model="visualizer.addComponent.eventName">
+                      <option value="">Select Channel</option>
+                    </select>
+                  </td>
+                  <td data-title="Display"><input class="form-control" type="text" ng-model="visualizer.addComponent.display" /></td>
                   <td style="vertical-align: middle;">
-                    <button class="btn btn-success btn-xs" ng-click="addComponentEndpoint('component')"><i class="glyphicon glyphicon-plus"></i></button>
+                    <button class="btn btn-success btn-xs" ng-click="addComponent()"><i class="glyphicon glyphicon-plus"></i></button>
                   </td>
                 </tr>
-              <tbody>
+              </tbody>
             </table>
           </div>
 
@@ -120,39 +138,65 @@
 
       <div class="endpoints_div">
         <label style="float: left">
-          Endpoints
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the endpoints you wish to add to the visualizer" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          Channels
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the channels you wish to add to the visualizer. Channels are shown 'below the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
-          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectEndpoint" ng-change="addSelectComponentEndpoint('endpoint')">
-            <option value="">Select Endpoint</option>
+          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectChannel" ng-change="addSelectedChannel()">
+            <option value="">Select Channel</option>
           </select>
           
           <div id="no-more-tables" style="margin-top: 15px;">
             <table class="table table-striped table-bordered">
               <thead>
                 <tr style="font-weight: bold">
-                  <th>Event</th>
-                  <th>Description</th>
+                  <th>Channel</th>
+                  <th>Display</th>
                   <th></th>
                 </tr>
-              <thead>
+              </thead>
               <tbody>
-                <tr ng-repeat="endpoint in user.settings.visualizer.endpoints">
-                  <td style="vertical-align: middle;" data-title="Event">{{endpoint.event}}</td>
-                  <td data-title="Description"><input class="form-control" type="text" ng-model="endpoint.desc" /></td>
-                  <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs" ng-click="removeComponentEndpoint('endpoint', $index)"><i class="glyphicon glyphicon-remove"></i></button></td>
+                <tr ng-repeat="channel in user.settings.visualizer.channels">
+                  <td style="vertical-align: middle;" data-title="Channel">{{channel.eventName}}</td>
+                  <td data-title="Display"><input class="form-control" type="text" ng-model="channel.display" /></td>
+                  <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs" ng-click="removeChannel($index)"><i class="glyphicon glyphicon-remove"></i></button></td>
                 </tr>
-                <tr>
-                  <td data-title="Event"><input class="form-control" type="text" ng-model="visualizer.addEndpoint.event" /></td>
-                  <td data-title="Description"><input class="form-control" type="text" ng-model="visualizer.addEndpoint.desc" /></td>
-                  <td style="vertical-align: middle;">
-                    <button class="btn btn-success btn-xs" ng-click="addComponentEndpoint('endpoint')"><i class="glyphicon glyphicon-plus"></i></button>
-                  </td>
-                </tr>
-              <tbody>
+              </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <div class="mediators_div">
+        <label style="float: left">
+          Mediators
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown 'just above the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </label>
+        <div class="btn-group" style="width: 100%; clear: both;">
+          <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="visualizer.addSelectMediator" ng-change="addSelectedMediator()">
+            <option value="">Select Mediator</option>
+          </select>
+          <div id="no-more-tables" style="margin-top: 15px;">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr style="font-weight: bold">
+                  <th>Mediator</th>
+                  <th>Display</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="mediator in user.settings.visualizer.mediators">
+                  <td style="vertical-align: middle;" data-title="Mediator">{{mediator.name}}</td>
+                  <td data-title="Display"><input class="form-control" type="text" ng-model="mediator.display" /></td>
+                  <td style="vertical-align: middle;">
+                    <button class="btn btn-danger btn-xs" ng-click="removeMediator($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>

@@ -23,16 +23,27 @@ angular.module('openhimConsoleApp')
     Api.Channels.query(function(channels){
       $scope.channels = channels;
 
-      $scope.components = [];
-      // setup components object
-      angular.forEach(channels, function(channel){
-        $scope.components.push({ key: channel.name, event: channel.name });
+      $scope.primaryRoutes = [];
+      $scope.secondaryRoutes = [];
 
+      angular.forEach(channels, function(channel){
         angular.forEach(channel.routes, function(route){
-          $scope.components.push({ key: 'route-'+route.name, event: '----> route-'+route.name });
+          if (route.primary) {
+            if ($scope.primaryRoutes.indexOf(route.name) < 0) {
+              $scope.primaryRoutes.push(route.name);
+            }
+          } else {
+            if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
+              $scope.secondaryRoutes.push(route.name);
+            }
+          }
         });
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
+
+    Api.Mediators.query(function(mediators){
+      $scope.mediators = mediators;
+    }, function(){ /* server error - could not connect to API to get mediators */ });
 
     // get the users for the taglist roles options
     Api.Users.query(function(users){
@@ -61,13 +72,45 @@ angular.module('openhimConsoleApp')
         $scope.user.settings.filter = {};
       }
 
-      if ( !$scope.user.settings.visualizer ){
-        $scope.user.settings.visualizer = {};
+      var isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
+        $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators;
 
-        // load default visualizer config for user with no visualizer settings
-        $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-          angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
-        });
+      if ( !$scope.user.settings.visualizer || isUsingOldVisualizerSettings){
+        if (!isUsingOldVisualizerSettings) {
+          $scope.user.settings.visualizer = {};
+
+          // load default visualizer config for user with no visualizer settings
+          $http.get('config/visualizer.json').success(function( visualizerConfig ) {
+            angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
+          });
+        } else {
+          // migrate settings
+          $scope.user.settings.visualizer.channels = [];
+          $scope.user.settings.visualizer.mediators = [];
+
+          angular.forEach($scope.user.settings.visualizer.endpoints, function (endpoint) {
+            $scope.user.settings.visualizer.channels.push({
+              eventType: 'channel',
+              eventName: endpoint.event.replace('channel-', ''),
+              display: endpoint.desc
+            });
+          });
+          delete $scope.user.settings.visualizer.endpoints;
+
+          angular.forEach($scope.user.settings.visualizer.components, function (component) {
+            var split = component.event.split('-');
+            if (split.length > 1) {
+              component.eventType = split[0];
+              component.eventName = split[1];
+            } else {
+              component.eventType = 'channel';
+              component.eventName = component.event;
+            }
+            component.display = component.desc;
+            delete component.event;
+            delete component.desc;
+          });
+        }
       }
     };
 
@@ -162,36 +205,35 @@ angular.module('openhimConsoleApp')
     // setup visualizer object
     $scope.visualizer = {};
 
-    $scope.addSelectComponentEndpoint = function(type){
-      // check type and add to correct object
-      if ( type === 'component' ){
-        $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addSelectComponent, desc: $scope.visualizer.addSelectComponent });
-        $scope.visualizer.addSelectComponent = null;
-      }else if( type === 'endpoint' ){
-        $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addSelectEndpoint.name, desc: $scope.visualizer.addSelectEndpoint.name });
-        $scope.visualizer.addSelectEndpoint = null;
+    $scope.addSelectedChannel = function(){
+      $scope.user.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.visualizer.addSelectChannel.name, display: $scope.visualizer.addSelectChannel.name });
+      $scope.visualizer.addSelectChannel = null;
+    };
+
+    $scope.addSelectedMediator = function(){
+      $scope.user.settings.visualizer.mediators.push({ mediator: $scope.visualizer.addSelectMediator.urn, name: $scope.visualizer.addSelectMediator.name, display: $scope.visualizer.addSelectMediator.name });
+      $scope.visualizer.addSelectMediator = null;
+    };
+
+    $scope.addComponent = function(){
+      if( $scope.visualizer.addComponent.eventType ){
+        $scope.user.settings.visualizer.components.push({ eventType: $scope.visualizer.addComponent.eventType, eventName: $scope.visualizer.addComponent.eventName, display: $scope.visualizer.addComponent.display });
+        $scope.visualizer.addComponent.eventType = '';
+        $scope.visualizer.addComponent.eventName = '';
+        $scope.visualizer.addComponent.display = '';
       }
     };
 
-    $scope.addComponentEndpoint = function(type){
-      // check type and add to correct object
-      if ( type === 'component' ){
-        $scope.user.settings.visualizer.components.push({ event: $scope.visualizer.addComponent.event, desc: $scope.visualizer.addComponent.desc });
-        $scope.visualizer.addComponent.event = '';
-        $scope.visualizer.addComponent.desc = '';
-      }else if( type === 'endpoint' ){
-        $scope.user.settings.visualizer.endpoints.push({ event: 'channel-'+$scope.visualizer.addEndpoint.event, desc: $scope.visualizer.addEndpoint.desc });
-        $scope.visualizer.addEndpoint.event = '';
-        $scope.visualizer.addEndpoint.desc = '';
-      }
+    $scope.removeComponent = function(index){
+      $scope.user.settings.visualizer.components.splice(index, 1);
     };
 
-    $scope.removeComponentEndpoint = function(type, index){
-      if ( type === 'component' ){
-        $scope.user.settings.visualizer.components.splice(index, 1);
-      }else if( type === 'endpoint' ){
-        $scope.user.settings.visualizer.endpoints.splice(index, 1);
-      }
+    $scope.removeChannel = function(index){
+      $scope.user.settings.visualizer.channels.splice(index, 1);
+    };
+
+    $scope.removeMediator = function(index){
+      $scope.user.settings.visualizer.mediators.splice(index, 1);
     };
 
     /*******************************************/

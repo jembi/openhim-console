@@ -7,6 +7,7 @@ angular.module('openhimConsoleApp')
     $scope.loadingVisualizer = true;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
+    $scope.isUsingOldVisualizerSettings = false;
 
 
     // initialize global variables
@@ -32,6 +33,9 @@ angular.module('openhimConsoleApp')
       }
 
       var visSettings = user.settings.visualizer;
+      if (visSettings.endpoints && !visSettings.mediators) {
+        $scope.isUsingOldVisualizerSettings = true;
+      }
 
       /********** Visualizations Management **********/
       // setup components (components)

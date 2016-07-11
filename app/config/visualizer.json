@@ -1,6 +1,7 @@
 {
   "components": [],
-  "endpoints": [],
+  "channels": [],
+  "mediators": [],
   "color": {
     "inactive": "#cccccc",
     "active": "#4cae4c",
