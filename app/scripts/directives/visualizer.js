@@ -42,6 +42,7 @@ angular.module('openhimConsoleApp')
         scope.$watchCollection(settings, function(newSettings){
           // check if settings object exist before creating
           if ( newSettings ){
+            d3.select('#visualizer').html('');
 
             components = newSettings.components;
             channels = newSettings.channels;

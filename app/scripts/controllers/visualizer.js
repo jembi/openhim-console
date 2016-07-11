@@ -2,7 +2,7 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api, Alerting) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
 
     $scope.loadingVisualizer = true;
     $scope.loadingVisualizerError = false;
@@ -14,6 +14,7 @@ angular.module('openhimConsoleApp')
     var components = [];
     var channels = [];
     var mediators = [];
+    var settingsStore = {}; // a place the push current settings when switching to fullscreen
     var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
 
@@ -58,7 +59,7 @@ angular.module('openhimConsoleApp')
       if ( components.length === 0 || channels.length === 0 ){
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
-        $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has atleast one Component and one Endpoint added!' });
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has at least one Component and one Endpoint added!' });
       }
       /********** Visualizations Management **********/
 
@@ -216,4 +217,26 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.isFullScreen = false;
+
+    $scope.goFullScreenViaWatcher = function() {
+      $scope.isFullScreen = !$scope.isFullScreen;
+    };
+
+    Fullscreen.$on('FBFullscreen.change', function (evt, isFullscreenEnabled){
+      if (isFullscreenEnabled) {
+        settingsStore.visResponsive = $scope.visualizerSettings.visResponsive;
+        settingsStore.visW = $scope.visualizerSettings.visW;
+        settingsStore.visH = $scope.visualizerSettings.visH;
+        if ($scope.visualizerSettings.visResponsive) {
+          $scope.visualizerSettings.visResponsive = false;
+          $scope.visualizerSettings.visW = $window.innerWidth;
+          $scope.visualizerSettings.visH = $window.innerHeight;
+        }
+      } else {
+        $scope.visualizerSettings.visResponsive = settingsStore.visResponsive;
+        $scope.visualizerSettings.visW = settingsStore.visW;
+        $scope.visualizerSettings.visH = settingsStore.visH;
+      }
+    });
   });
