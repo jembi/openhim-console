@@ -53,8 +53,8 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
 
-      VisualizerEvents: $resource( server + '/visualizer/events/:receivedTime'),
-      VisualizerSync: $resource( server + '/visualizer/sync'),
+      Events: $resource( server + '/events/:receivedTime'),
+      Heartbeat: $resource( server + '/heartbeat'),
 
       // endpoint to restart the core server
       Restart: $resource( server + '/restart', {}),

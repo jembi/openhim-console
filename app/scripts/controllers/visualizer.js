@@ -12,7 +12,8 @@ angular.module('openhimConsoleApp')
 
     // initialize global variables
     var components = [];
-    var endpoints = [];
+    var channels = [];
+    var mediators = [];
     var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
 
@@ -40,16 +41,21 @@ angular.module('openhimConsoleApp')
       /********** Visualizations Management **********/
       // setup components (components)
       angular.forEach(visSettings.components, function(component){
-        components.push({ comp: component.event, desc: component.desc });
+        components.push(component);
       });
 
-      // setup endpoints
-      angular.forEach(visSettings.endpoints, function(endpoint){
-        endpoints.push({ comp: endpoint.event, desc: endpoint.desc });
+      // setup channels
+      angular.forEach(visSettings.channels, function(channel){
+        channels.push(channel);
+      });
+
+      // setup channels
+      angular.forEach(visSettings.mediators, function(mediator){
+        mediators.push(mediator);
       });
 
       // check if components and components have events
-      if ( components.length === 0 || endpoints.length === 0 ){
+      if ( components.length === 0 || channels.length === 0 ){
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has atleast one Component and one Endpoint added!' });
@@ -105,11 +111,12 @@ angular.module('openhimConsoleApp')
       /********** Time Management **********/
 
 
-      // setup watchher objects
+      // setup watcher objects
       $scope.visualizerData = [];
       $scope.visualizerSettings = {
         components: components,
-        endpoints: endpoints,
+        channels: channels,
+        mediators: mediators,
         visResponsive: visResponsive,
         visW: visW,
         visH: visH,
@@ -148,7 +155,7 @@ angular.module('openhimConsoleApp')
 
       lastUpdate = (Date.now()-diffTime);
       visualizerUpdateInterval = $interval( function() {
-        Api.VisualizerEvents.get({ receivedTime: lastUpdate}, function (events) {
+        Api.Events.get({ receivedTime: lastUpdate}, function (events) {
           // update the visualizerData object to trigger the directive watcher and update the events
           $scope.visualizerData = events.events;
           lastUpdate = (Date.now()-diffTime);
@@ -176,8 +183,8 @@ angular.module('openhimConsoleApp')
 
     // function to start the visualizer
     var startVisualizer = function startVisualizer() {
-      Api.VisualizerSync.get(function (startVisualizer) {
-        diffTime = Date.now() - moment(startVisualizer.now);
+      Api.Heartbeat.get(function (heartbeat) {
+        diffTime = Date.now() - moment(heartbeat.now);
         $scope.play();
       });
     };

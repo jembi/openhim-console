@@ -461,8 +461,8 @@ angular.module('openhimConsoleApp')
     };
 
     //sync time with server
-    Api.VisualizerSync.get(function (startVisualizer) {
-      serverDiffTime = moment() - moment(startVisualizer.now);
+    Api.Heartbeat.get(function (heartbeat) {
+      serverDiffTime = moment() - moment(heartbeat.now);
       lastUpdated = moment() - serverDiffTime;
       if ($scope.settings.list.autoupdate) {
         $scope.startPolling();
