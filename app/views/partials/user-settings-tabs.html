@@ -310,22 +310,33 @@
 
       <div class="settings_div">
         <label style="float: left">
-          Max Speed
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          Min Event Display
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="The minimum amount of time to display an event for; for really quick transactions <br /> (min: 0ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
-        <div class="btn-group" style="clear: both; width: 100%">
-          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxSpeed" min="1" max="10">
+        <div class="input-group">
+          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.minDisplayPeriod" min="0" max="5000">
+          <span class="input-group-addon">ms</span>
         </div>
       </div>
 
       <div class="settings_div">
         <label style="float: left">
-          Max Timeout
+          Max Event Display
           <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="input-group">
           <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxTimeout" min="1000" max="10000">
           <span class="input-group-addon">ms</span>
+        </div>
+      </div>
+
+      <div class="settings_div">
+        <label style="float: left">
+          Max Speed
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </label>
+        <div class="btn-group" style="clear: both; width: 100%">
+          <input class="form-control" type="number" ng-model="user.settings.visualizer.time.maxSpeed" min="1" max="10">
         </div>
       </div>
     </div>

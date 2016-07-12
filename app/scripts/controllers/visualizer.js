@@ -16,7 +16,7 @@ angular.module('openhimConsoleApp')
     var mediators = [];
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
     var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
-    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
+    var visualizerUpdateInterval, updatePeriod, minDisplayPeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
 
 
     var consoleSession = localStorage.getItem('consoleSession');
@@ -97,6 +97,7 @@ angular.module('openhimConsoleApp')
       /********** Time Management **********/
       //How often to fetch updates from the server (in millis)
       updatePeriod = parseInt( visSettings.time.updatePeriod );
+      minDisplayPeriod = parseInt( visSettings.time.minDisplayPeriod );
 
       //play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
       $scope.visualizerSpeed = 0;
@@ -127,6 +128,7 @@ angular.module('openhimConsoleApp')
         errorColor: errorColor,
         textColor: textColor,
         updatePeriod: updatePeriod,
+        minDisplayPeriod: minDisplayPeriod,
         speed: $scope.visualizerSpeed,
         maxSpeed: maxSpeed,
         maxTimeout: maxTimeout
@@ -230,8 +232,8 @@ angular.module('openhimConsoleApp')
         settingsStore.visH = $scope.visualizerSettings.visH;
         if ($scope.visualizerSettings.visResponsive) {
           $scope.visualizerSettings.visResponsive = false;
-          $scope.visualizerSettings.visW = $window.innerWidth;
-          $scope.visualizerSettings.visH = $window.innerHeight;
+          $scope.visualizerSettings.visW = $window.innerWidth - 2*pad;
+          $scope.visualizerSettings.visH = $window.innerHeight - 8*pad;
         }
       } else {
         $scope.visualizerSettings.visResponsive = settingsStore.visResponsive;

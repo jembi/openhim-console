@@ -87,6 +87,7 @@ angular.module('openhimConsoleApp')
             // migrate settings
             $scope.user.settings.visualizer.channels = [];
             $scope.user.settings.visualizer.mediators = [];
+            $scope.user.settings.visualizer.time.minDisplayPeriod = 100;
 
             angular.forEach($scope.user.settings.visualizer.endpoints, function (endpoint) {
               $scope.user.settings.visualizer.channels.push({

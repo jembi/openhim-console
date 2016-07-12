@@ -18,7 +18,8 @@ angular.module('openhimConsoleApp')
         var channels = [];
         var mediators = [];
         var himRect, himText, visW, visH, pad, himX, himY, himW, himH, topBarY,
-          inactiveColor, activeColor, errorColor, textColor, speed, maxTimeout, vis;
+          inactiveColor, activeColor, errorColor, textColor, speed, maxTimeout, minDisplayPeriod,
+          vis;
 
         /* ---------- Directive Watchers ---------- */
 
@@ -57,9 +58,9 @@ angular.module('openhimConsoleApp')
             himW = visW - 2.0*pad;
             himH = visH/4.0 - 2.0*pad;
 
-            topBarY = visH/2.55;
-            if (mediators.length === 0) {
-              topBarY = visH/1.8;
+            topBarY = himY - (visH/50.0) - 0.25*pad;
+            if (mediators.length > 0) {
+              topBarY = topBarY - (visH/4.0 - 2.0*pad) - 0.25*pad;
             }
 
             inactiveColor = newSettings.inactiveColor;
@@ -69,6 +70,7 @@ angular.module('openhimConsoleApp')
 
             speed = newSettings.speed;
             maxTimeout = newSettings.maxTimeout;
+            minDisplayPeriod = newSettings.minDisplayPeriod;
 
             // load responsive visualizer
             if ( newSettings.visResponsive === true ){
@@ -171,7 +173,7 @@ angular.module('openhimConsoleApp')
           var compW = visW/mediators.length - 2.0*pad,
             compH = visH/4.0 - 2.0*pad;
           var compX = index*compW + pad + index*pad*2.0,
-            compY = visH/2.35;
+            compY = himY - compH - 0.25*pad;
 
           setupBasicComponent(compRect, compText, compX, compY, compW, compH, text);
         }
@@ -211,7 +213,7 @@ angular.module('openhimConsoleApp')
             .attr('rx', 6)
             .attr('ry', 6)
             .attr('x', 0 + pad)
-            .attr('y', visH*3.0/4.0)
+            .attr('y', himY+himH + 0.25*pad)
             .attr('width', visW - 2.0*pad)
             .attr('height', visH/50.0)
             .style('fill', inactiveColor);
@@ -254,7 +256,7 @@ angular.module('openhimConsoleApp')
             color = errorColor;
           } else {
             color = inactiveColor;
-            delay += 100;
+            delay += minDisplayPeriod;
           }
 
           if (speed<0) {
