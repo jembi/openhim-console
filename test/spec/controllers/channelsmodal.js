@@ -570,7 +570,7 @@ describe('Controller: channelRoutesCtrl', function () {
 
     scope.channel.should.be.ok;
     
-    scope.mediators.length.should.equal(3);
+    scope.mediatorRoutes.length.should.equal(3);
     scope.trustedCerts.length.should.equal(2);
   });
 
@@ -689,7 +689,7 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend.flush();
 
     scope.channel.routes.should.have.length(0);
-    scope.mediator.route = scope.mediators[0];
+    scope.mediator.route = scope.mediatorRoutes[0];
 
     scope.addEditRoute('mediator', null, null);
 
