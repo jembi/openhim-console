@@ -683,7 +683,7 @@ describe('Controller: channelRoutesCtrl', function () {
 
   });
 
-  it('should run addEditRoute("mediator") to add a mediator to the channel.routes', function () {
+  it('should run addRouteFromMediator to add a mediator to the channel.routes', function () {
     createControllerParent();
     createController();
     httpBackend.flush();
@@ -691,7 +691,7 @@ describe('Controller: channelRoutesCtrl', function () {
     scope.channel.routes.should.have.length(0);
     scope.selected.mediatorRoute = scope.mediatorRoutes[0];
 
-    scope.addEditRoute('mediator', null, null);
+    scope.addRouteFromMediator();
 
     scope.channel.routes.should.have.length(1);
     scope.channel.routes[0].should.have.property('name', 'Route 1');
