@@ -578,7 +578,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     var routeType = 'http';
     var forwardAuthHeader = false;
 
-    if ($scope.selected.mediatorRoute.fullName){ name = $scope.selected.mediatorRoute.fullName; }
+    if ($scope.selected.mediatorRoute.endpoint.name){ name = $scope.selected.mediatorRoute.endpoint.name; }
     if ($scope.selected.mediatorRoute.endpoint.secured){ secured = $scope.selected.mediatorRoute.endpoint.secured; }
     if ($scope.selected.mediatorRoute.endpoint.host){ host = $scope.selected.mediatorRoute.endpoint.host; }
     if ($scope.selected.mediatorRoute.endpoint.port){ port = $scope.selected.mediatorRoute.endpoint.port; }
