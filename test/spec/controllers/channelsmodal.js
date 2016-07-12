@@ -689,7 +689,7 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend.flush();
 
     scope.channel.routes.should.have.length(0);
-    scope.mediator.route = scope.mediatorRoutes[0];
+    scope.selected.mediatorRoute = scope.mediatorRoutes[0];
 
     scope.addEditRoute('mediator', null, null);
 
