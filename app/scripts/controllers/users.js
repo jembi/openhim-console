@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('UsersCtrl', function ($scope, $modal, Api, Alerting, Notify) {
+  .controller('UsersCtrl', function ($scope, $modal, $window, Api, Alerting, Notify) {
 
 
     /* -------------------------Initial load & onChanged---------------------------- */
@@ -148,7 +148,15 @@ angular.module('openhimConsoleApp')
       });
 
       modalInstance.result.then(function () {
-        // Delete confirmed - delete the user
+        // Delete confirmed - check if current user deleted themself, set flag, then delete user
+        $scope.sessionUserDeleted = false;
+        var sessionUser = localStorage.getItem('loggedOnUser');
+        sessionUser = JSON.parse(sessionUser);
+        
+        if(sessionUser.email == user.email){
+          $scope.sessionUserDeleted = true;
+        }
+        
         user.$remove(deleteSuccess, deleteError);
       }, function () {
         // delete cancelled - do nothing
@@ -157,7 +165,10 @@ angular.module('openhimConsoleApp')
     };
 
     var deleteSuccess = function () {
-      // On success
+      // On success - if current user was deleted, logout
+      if($scope.sessionUserDeleted) {
+        return $window.location = '#/logout';
+      }
       $scope.users = Api.Users.query();
       Alerting.AlertReset();
       Notify.notify('usersChanged');
