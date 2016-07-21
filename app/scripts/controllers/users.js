@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('UsersCtrl', function ($scope, $modal, Api, Alerting) {
+  .controller('UsersCtrl', function ($scope, $modal, Api, Alerting, Notify) {
 
 
     /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function(users){
       $scope.users = users;
       if( users.length === 0 ){
+        Alerting.AlertReset();
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no users created');
       }
 
@@ -70,6 +71,7 @@ angular.module('openhimConsoleApp')
 
     var queryError = function(err){
       // on error - add server error alert
+      Alerting.AlertReset();
       Alerting.AlertAddServerMsg(err.status);
     };
 
@@ -157,11 +159,14 @@ angular.module('openhimConsoleApp')
     var deleteSuccess = function () {
       // On success
       $scope.users = Api.Users.query();
+      Alerting.AlertReset();
+      Notify.notify('usersChanged');
       Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully');
     };
 
     var deleteError = function (err) {
       // add the error message
+      Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data);
     };
     /*---------------------------Delete Confirm----------------------------*/
