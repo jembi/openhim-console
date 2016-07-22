@@ -68,6 +68,28 @@ angular.module('openhimConsoleApp')
     /*******************************************/
     /**         Delete Confirmation           **/
     /*******************************************/
+    var deleteSuccess = function () {
+      // On success
+      $scope.contactGroups = Api.ContactGroups.query();
+      Alerting.AlertAddMsg('top', 'success', 'The contact list has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      if (err.status === 409) {
+        var warningMessage = 'Could not delete the contact list because it is associated with the following channels: ';
+        for (var i = 0; i < err.data.length; i++) {
+          if (i > 0 ) {
+            warningMessage += ', ';
+          }
+          warningMessage += err.data[i].name;
+        }
+        Alerting.AlertAddMsg('top', 'warning', warningMessage);
+      } else {
+        // add the error message
+        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the contact list: #' + err.status + ' - ' + err.data);
+      }
+    };
+
     $scope.confirmDelete = function(contactGroup){
       Alerting.AlertReset();
 
@@ -94,28 +116,6 @@ angular.module('openhimConsoleApp')
         // delete cancelled - do nothing
       });
 
-    };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.contactGroups = Api.ContactGroups.query();
-      Alerting.AlertAddMsg('top', 'success', 'The contact list has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      if (err.status === 409) {
-        var warningMessage = 'Could not delete the contact list because it is associated with the following channels: ';
-        for (var i = 0; i < err.data.length; i++) {
-          if (i > 0 ) {
-            warningMessage += ', ';
-          }
-          warningMessage += err.data[i].name;
-        }
-        Alerting.AlertAddMsg('top', 'warning', warningMessage);
-      } else {
-        // add the error message
-        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the contact list: #' + err.status + ' - ' + err.data);
-      }
     };
 
     /*******************************************/

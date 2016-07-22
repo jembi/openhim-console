@@ -16,18 +16,18 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddMsg('rerun', 'warning', rerunTransactionsSelected + ' of these transactions have already been rerun');
     }
 
-    $scope.confirmRerun = function() {
-      var tIds = $scope.transactionsSelected;
-      $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused });
-      $scope.task.$save({}, onSuccess);
-
-    };
-
     var onSuccess = function() {
       // On success
       Notify.notify('TasksChanged');
       $scope.rerunSuccess = true;
       $scope.$emit('transactionRerunSuccess');
+    };
+
+    $scope.confirmRerun = function() {
+      var tIds = $scope.transactionsSelected;
+      $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused });
+      $scope.task.$save({}, onSuccess);
+
     };
 
     $scope.cancel = function () {

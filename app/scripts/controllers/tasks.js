@@ -100,6 +100,16 @@ angular.module('openhimConsoleApp')
       
     };
 
+    var clearUrlParams =  function(){
+      // loop through all parameters
+      for (var property in $location.search()) {
+        if ($location.search().hasOwnProperty(property)) {
+          // set parameter to null to remove
+          $location.search(property, null);
+        }
+      }
+    };
+
     $scope.applyFiltersToUrl = function(){
 
       // get the filter params object before clearing them
@@ -144,23 +154,6 @@ angular.module('openhimConsoleApp')
 
 
     //Refresh tasks list
-    $scope.loadMoreTasks = function () {
-      $scope.busyLoadingMore = true;
-      Alerting.AlertReset();
-
-      $scope.showpage++;
-
-      var filters = $scope.returnFilters();
-
-      if (!filters.filters.created) {
-        //use page load time as an explicit end date
-        //this prevents issues with paging when new tasks come in, breaking the pages
-        filters.filters.created = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
-      }
-
-      Api.Tasks.query( $scope.returnFilters(), loadMoreSuccess, loadMoreError);
-    };
-
     var loadMoreSuccess = function (tasks){
       //on success
       $scope.tasks = $scope.tasks.concat(tasks);
@@ -182,16 +175,23 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
 
+    $scope.loadMoreTasks = function () {
+      $scope.busyLoadingMore = true;
+      Alerting.AlertReset();
 
-    var clearUrlParams =  function(){
-      // loop through all parameters
-      for (var property in $location.search()) {
-        if ($location.search().hasOwnProperty(property)) {
-          // set parameter to null to remove
-          $location.search(property, null);
-        }
+      $scope.showpage++;
+
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters.created) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new tasks come in, breaking the pages
+        filters.filters.created = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
       }
+
+      Api.Tasks.query( $scope.returnFilters(), loadMoreSuccess, loadMoreError);
     };
+
     
     //Clear filter data end refresh tasks scope
     $scope.clearFilters = function () {

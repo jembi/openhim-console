@@ -44,6 +44,17 @@ angular.module('openhimConsoleApp')
     /**   Delete Mediator Functions   **/
     /***********************************/
 
+    var deleteSuccess = function () {
+      // On success
+      $scope.mediators = Api.Mediators.query(querySuccess, queryError);
+      Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data);
+    };
+
     $scope.confirmDelete = function(mediator){
       Alerting.AlertReset();
 
@@ -70,17 +81,6 @@ angular.module('openhimConsoleApp')
         // delete cancelled - do nothing
       });
 
-    };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.mediators = Api.Mediators.query(querySuccess, queryError);
-      Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data);
     };
     
     /***********************************/

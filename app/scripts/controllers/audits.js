@@ -348,24 +348,6 @@ angular.module('openhimConsoleApp')
     //run the audit list view for the first time
     $scope.refreshAuditsList();
 
-    //Refresh audits list
-    $scope.loadMoreAudits = function () {
-      $scope.busyLoadingMore = true;
-      Alerting.AlertReset();
-
-      $scope.showpage++;
-
-      var filters = $scope.returnFilters('filtersObject');
-
-      if (!filters.filters['eventIdentification.eventDateTime']) {
-        //use page load time as an explicit end date
-        //this prevents issues with paging when new transactions come in, breaking the pages
-        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
-      }
-
-      Api.Audits.query( filters, loadMoreSuccess, loadMoreError);
-    };
-
     var loadMoreSuccess = function (audits){
       //on success
       $scope.audits = $scope.audits.concat(audits);
@@ -384,6 +366,24 @@ angular.module('openhimConsoleApp')
       // on error - Hide load more button and show error message
       jQuery('#loadMoreBtn').hide();
       Alerting.AlertAddServerMsg(err.status);
+    };
+
+    //Refresh audits list
+    $scope.loadMoreAudits = function () {
+      $scope.busyLoadingMore = true;
+      Alerting.AlertReset();
+
+      $scope.showpage++;
+
+      var filters = $scope.returnFilters('filtersObject');
+
+      if (!filters.filters['eventIdentification.eventDateTime']) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new transactions come in, breaking the pages
+        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
+      }
+
+      Api.Audits.query( filters, loadMoreSuccess, loadMoreError);
     };
 
     //location provider - load audit details

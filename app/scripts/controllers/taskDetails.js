@@ -107,6 +107,16 @@ angular.module('openhimConsoleApp')
       
     };
 
+    var clearUrlParams =  function(){
+      // loop through all parameters
+      for (var property in $location.search()) {
+        if ($location.search().hasOwnProperty(property)) {
+          // set parameter to null to remove
+          $location.search(property, null);
+        }
+      }
+    };
+
     $scope.applyFiltersToUrl = function(){
 
       // get the filter params object before clearing them
@@ -147,16 +157,6 @@ angular.module('openhimConsoleApp')
     // run the tasks list view for the first time
     $scope.refreshTaskDetails();
     
-
-    var clearUrlParams =  function(){
-      // loop through all parameters
-      for (var property in $location.search()) {
-        if ($location.search().hasOwnProperty(property)) {
-          // set parameter to null to remove
-          $location.search(property, null);
-        }
-      }
-    };
     
     //Clear filter data end refresh tasks scope
     $scope.clearFilters = function () {

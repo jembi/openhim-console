@@ -133,6 +133,12 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the Profile save process     **/
     /****************************************************************/
 
+    var error = function (err) {
+      // add the error message
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data);
+    };
+
     var success = function (user, password) {
       // update consoleSession with new userSettings
       $scope.consoleSession.sessionUserSettings = user.settings;
@@ -154,12 +160,6 @@ angular.module('openhimConsoleApp')
 
       Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.');
-    };
-
-    var error = function (err) {
-      // add the error message
-      Alerting.AlertReset();
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data);
     };
 
 

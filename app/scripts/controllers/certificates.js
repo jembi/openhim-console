@@ -249,6 +249,19 @@ angular.module('openhimConsoleApp')
     /**         Delete Functions           **/
     /****************************************/
 
+    var deleteSuccess = function () {
+      // On success
+      $scope.resetCertificates();
+      $scope.serverRestartRequired = true;
+      $scope.goToTop();
+      Alerting.AlertAddMsg('trustedCertDelete', 'success', 'The Trusted Certificate has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('trustedCertDelete', 'danger', 'An error has occurred while deleting the trusted certificate: #' + err.status + ' - ' + err.data);
+    };
+
     $scope.confirmDelete = function(cert){
       Alerting.AlertReset();
 
@@ -275,19 +288,6 @@ angular.module('openhimConsoleApp')
         // delete cancelled - do nothing
       });
 
-    };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.resetCertificates();
-      $scope.serverRestartRequired = true;
-      $scope.goToTop();
-      Alerting.AlertAddMsg('trustedCertDelete', 'success', 'The Trusted Certificate has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('trustedCertDelete', 'danger', 'An error has occurred while deleting the trusted certificate: #' + err.status + ' - ' + err.data);
     };
 
     /****************************************/

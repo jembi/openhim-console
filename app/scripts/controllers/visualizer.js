@@ -23,6 +23,14 @@ angular.module('openhimConsoleApp')
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
 
+    // function to start the visualizer
+    var startVisualizer = function startVisualizer() {
+      Api.Heartbeat.get(function (heartbeat) {
+        diffTime = Date.now() - moment(heartbeat.now);
+        $scope.play();
+      });
+    };
+
     // get the user settings to construct the visualizer
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
 
@@ -183,14 +191,6 @@ angular.module('openhimConsoleApp')
 
     // cancel update interval when visualizer scope destroyed
     $scope.$on('$destroy', cancelVisualizerUpdateInterval);
-
-    // function to start the visualizer
-    var startVisualizer = function startVisualizer() {
-      Api.Heartbeat.get(function (heartbeat) {
-        diffTime = Date.now() - moment(heartbeat.now);
-        $scope.play();
-      });
-    };
 
     // funcntion to slow down animate
     $scope.slowDown = function slowDown() {

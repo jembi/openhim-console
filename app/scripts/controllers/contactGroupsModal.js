@@ -40,6 +40,12 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the contactGroup Modal Popup     **/
     /********************************************************************/
 
+    var notifyContactGroup = function(){
+      // reset backing object and refresh users list
+      Notify.notify('contactGroupChanged');
+      $modalInstance.close();
+    };
+
     var success = function () {
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The contact list has been saved successfully');
@@ -50,12 +56,6 @@ angular.module('openhimConsoleApp')
       // add the success message
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact lists\' details: #' + err.status + ' - ' + err.data);
       notifyContactGroup();
-    };
-
-    var notifyContactGroup = function(){
-      // reset backing object and refresh users list
-      Notify.notify('contactGroupChanged');
-      $modalInstance.close();
     };
 
     var saveContactGroup = function (contactGroup) {

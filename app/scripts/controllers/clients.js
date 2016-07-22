@@ -15,6 +15,24 @@ angular.module('openhimConsoleApp')
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created');
       }
     };
+
+    var loadRoles = function () {
+      var roleQuerySuccess = function(roles) {
+        $scope.roles = roles;
+        if( roles.length === 0 ) {
+          Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created');
+        } else {
+          Alerting.AlertReset('bottom');
+        }
+      };
+
+      Api.Roles.query(roleQuerySuccess, queryError); // request roles
+
+      $scope.$on('rolesChanged', function() {
+        Api.Roles.query(roleQuerySuccess, queryError);  // listen for changed roles and reload roles
+      });
+    };
+    
     
     Api.Clients.query(clientQuerySuccess, queryError);
 
@@ -106,32 +124,31 @@ angular.module('openhimConsoleApp')
         loadRoles();  // channels need to be loaded before roles to set up the table columns
       }
     });
-    
-    var loadRoles = function () {
-      var roleQuerySuccess = function(roles) {
-        $scope.roles = roles;
-        if( roles.length === 0 ) {
-          Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created');
-        } else {
-          Alerting.AlertReset('bottom');
-        }
-      };
-
-      Api.Roles.query(roleQuerySuccess, queryError); // request roles
-
-      $scope.$on('rolesChanged', function() {
-        Api.Roles.query(roleQuerySuccess, queryError);  // listen for changed roles and reload roles
-      });
-    };
     /* -------------------------End Load Roles---------------------------- */
     
     
     /* -------------------------Assign Clients to Roles---------------------------- */
-    $scope.$watch('clients', function (newVal) {
-      if(newVal) {
-        waitForRoles(); // wait for roles before assigning clients
-      }
-    });
+    var buildClientsRolesObject = function() {
+      $scope.clientRoles = {};
+      angular.forEach($scope.roles, function(role) {
+        for (var i=0;i<role.clients.length;i++) {
+          $scope.clientRoles[role.clients[i].clientID + role.name] = true;
+        }
+      });
+    };
+
+    var buildChannelsRolesObject = function() {
+      $scope.channelRoles = {};
+      angular.forEach($scope.channels, function(channel) {
+        angular.forEach($scope.roles, function(role) {
+          for (var i=0;i<role.channels.length;i++) {
+            if (role.channels[i]._id === channel._id) {
+              $scope.channelRoles[channel.name + role.name] = true;
+            }
+          }
+        });
+      });
+    };
     
     var waitForRoles = function() {
       $scope.$watch('roles', function (newVal) {
@@ -145,14 +162,11 @@ angular.module('openhimConsoleApp')
       });
     };
     
-    var buildClientsRolesObject = function() {
-      $scope.clientRoles = {};
-      angular.forEach($scope.roles, function(role) {
-        for (var i=0;i<role.clients.length;i++) {
-          $scope.clientRoles[role.clients[i].clientID + role.name] = true;
-        }
-      });
-    };
+    $scope.$watch('clients', function (newVal) {
+      if(newVal) {
+        waitForRoles(); // wait for roles before assigning clients
+      }
+    });
     
     
     var editRoleCallback = function (err) {
@@ -205,19 +219,6 @@ angular.module('openhimConsoleApp')
     
     
     /* -------------------------Assign Roles To Channels---------------------------- */
-    var buildChannelsRolesObject = function() {
-      $scope.channelRoles = {};
-      angular.forEach($scope.channels, function(channel) {
-        angular.forEach($scope.roles, function(role) {
-          for (var i=0;i<role.channels.length;i++) {
-            if (role.channels[i]._id === channel._id) {
-              $scope.channelRoles[channel.name + role.name] = true;
-            }
-          }
-        });
-      });
-    };
-    
     $scope.assignRoleToChannel = function(channel, role, save) {
       if(!role.channels) {
         role.channels = []; // if the role has no channels, initialize the array

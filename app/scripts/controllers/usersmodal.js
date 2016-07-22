@@ -142,6 +142,12 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the User Modal Popup     **/
     /************************************************************/
 
+    var notifyUser = function(){
+      // reset backing object and refresh users list
+      Notify.notify('usersChanged');
+      $modalInstance.close();
+    };
+
     var success = function () {
 
       var consoleSession = localStorage.getItem('consoleSession');
@@ -182,12 +188,6 @@ angular.module('openhimConsoleApp')
       // add the success message
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' details: #' + err.status + ' - ' + err.data);
       notifyUser();
-    };
-
-    var notifyUser = function(){
-      // reset backing object and refresh users list
-      Notify.notify('usersChanged');
-      $modalInstance.close();
     };
 
     var saveUser = function (user) {

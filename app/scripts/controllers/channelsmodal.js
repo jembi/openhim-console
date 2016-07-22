@@ -67,6 +67,12 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   /**   These are the functions for the Channel Modal Popup     **/
   /***************************************************************/
 
+  var notifyUser = function(){
+    // reset backing object and refresh users list
+    Notify.notify('channelsChanged');
+    $modalInstance.close();
+  };
+
   var success = function () {
     // add the success message
     Alerting.AlertAddMsg('top', 'success', 'The channel has been saved successfully');
@@ -77,12 +83,6 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data);
     notifyUser();
-  };
-
-  var notifyUser = function(){
-    // reset backing object and refresh users list
-    Notify.notify('channelsChanged');
-    $modalInstance.close();
   };
 
   $scope.saveOrUpdate = function(channel) {

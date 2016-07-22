@@ -31,74 +31,6 @@ angular.module('openhimConsoleApp')
           }
         });
 
-        // watcher to find any new event data added
-        scope.$watchCollection(data, function(newData){
-          // check if data object exist before processing
-          if ( newData && newData.length > 0 ){
-            processEvents(newData);
-          }
-        });
-
-        // watcher to find any settings added
-        scope.$watchCollection(settings, function(newSettings){
-          // check if settings object exist before creating
-          if ( newSettings ){
-            d3.select('#visualizer').html('');
-
-            components = newSettings.components;
-            channels = newSettings.channels;
-            mediators = newSettings.mediators;
-
-            visW = newSettings.visW;
-            visH = newSettings.visH;
-            pad = newSettings.pad;
-
-            himX = 0 + pad;
-            himY = visH/1.7;
-            himW = visW - 2.0*pad;
-            himH = visH/4.0 - 2.0*pad;
-
-            topBarY = himY - (visH/50.0) - 0.25*pad;
-            if (mediators.length > 0) {
-              topBarY = topBarY - (visH/4.0 - 2.0*pad) - 0.25*pad;
-            }
-
-            inactiveColor = newSettings.inactiveColor;
-            activeColor = newSettings.activeColor;
-            errorColor = newSettings.errorColor;
-            textColor = newSettings.textColor;
-
-            speed = newSettings.speed;
-            maxTimeout = newSettings.maxTimeout;
-            minDisplayPeriod = newSettings.minDisplayPeriod;
-
-            // load responsive visualizer
-            if ( newSettings.visResponsive === true ){
-              vis = d3.select('#visualizer')
-                .append('svg:svg')
-                .attr('viewBox', '0 0 ' + newSettings.visW + ' ' + newSettings.visH )
-                .attr('preserveAspectRatio', 'xMinYMin');
-
-              vis.append('svg:rect')
-                .attr('width', newSettings.visW)
-                .attr('height', newSettings.visH);
-            }else{
-              // setup fixed size visualizer
-              vis = d3.select('#visualizer')
-                .append('svg:svg')
-                .attr('width', newSettings.visW)
-                .attr('height', newSettings.visH);
-            }
-
-            // setup the visualizer diagram
-            setupHIM(vis);
-            setupRegistries(vis);
-            setupMediators(vis);
-            setupChannels(vis);
-
-          }
-        });
-
         /* ---------- Directive Watchers ---------- */
         
 
@@ -244,6 +176,66 @@ angular.module('openhimConsoleApp')
           }
         }
 
+        // watcher to find any settings added
+        scope.$watchCollection(settings, function(newSettings){
+          // check if settings object exist before creating
+          if ( newSettings ){
+            d3.select('#visualizer').html('');
+
+            components = newSettings.components;
+            channels = newSettings.channels;
+            mediators = newSettings.mediators;
+
+            visW = newSettings.visW;
+            visH = newSettings.visH;
+            pad = newSettings.pad;
+
+            himX = 0 + pad;
+            himY = visH/1.7;
+            himW = visW - 2.0*pad;
+            himH = visH/4.0 - 2.0*pad;
+
+            topBarY = himY - (visH/50.0) - 0.25*pad;
+            if (mediators.length > 0) {
+              topBarY = topBarY - (visH/4.0 - 2.0*pad) - 0.25*pad;
+            }
+
+            inactiveColor = newSettings.inactiveColor;
+            activeColor = newSettings.activeColor;
+            errorColor = newSettings.errorColor;
+            textColor = newSettings.textColor;
+
+            speed = newSettings.speed;
+            maxTimeout = newSettings.maxTimeout;
+            minDisplayPeriod = newSettings.minDisplayPeriod;
+
+            // load responsive visualizer
+            if ( newSettings.visResponsive === true ){
+              vis = d3.select('#visualizer')
+                .append('svg:svg')
+                .attr('viewBox', '0 0 ' + newSettings.visW + ' ' + newSettings.visH )
+                .attr('preserveAspectRatio', 'xMinYMin');
+
+              vis.append('svg:rect')
+                .attr('width', newSettings.visW)
+                .attr('height', newSettings.visH);
+            }else{
+              // setup fixed size visualizer
+              vis = d3.select('#visualizer')
+                .append('svg:svg')
+                .attr('width', newSettings.visW)
+                .attr('height', newSettings.visH);
+            }
+
+            // setup the visualizer diagram
+            setupHIM(vis);
+            setupRegistries(vis);
+            setupMediators(vis);
+            setupChannels(vis);
+
+          }
+        });
+
         /* Animation */
 
         function animateComp(comp, event, delay, isError) {
@@ -316,8 +308,14 @@ angular.module('openhimConsoleApp')
             }
           });
         }
-       
 
+        // watcher to find any new event data added
+        scope.$watchCollection(data, function(newData){
+          // check if data object exist before processing
+          if ( newData && newData.length > 0 ){
+            processEvents(newData);
+          }
+        });
       }
     };
   });
