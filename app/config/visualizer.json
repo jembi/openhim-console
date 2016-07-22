@@ -16,7 +16,7 @@
   },
   "time": {
     "updatePeriod": 200,
-    "minDisplayPeriod": 100,
+    "minDisplayPeriod": 500,
     "maxSpeed": 5,
     "maxTimeout": 5000
   }

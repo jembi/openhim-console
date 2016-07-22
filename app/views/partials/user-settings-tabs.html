@@ -80,7 +80,7 @@
       <div class="components_div">
         <label style="float: left">
           Components
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer. Components are shown 'above the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer. Components are shown above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
           <div id="no-more-tables" style="margin-top: 15px;">
@@ -139,7 +139,7 @@
       <div class="endpoints_div">
         <label style="float: left">
           Channels
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the channels you wish to add to the visualizer. Channels are shown 'below the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the channels you wish to add to the visualizer. Channels are shown below the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
           <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectChannel" ng-change="addSelectedChannel()">
@@ -170,7 +170,7 @@
       <div class="mediators_div">
         <label style="float: left">
           Mediators
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown 'just above the line'." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown just above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="width: 100%; clear: both;">
           <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="visualizer.addSelectMediator" ng-change="addSelectedMediator()">
