@@ -126,6 +126,17 @@ angular.module('openhimConsoleApp')
 
 
     /*--------------------------Delete Confirm----------------------------*/
+    var deleteSuccess = function () {
+      // On success
+      $scope.users = Api.Users.query();
+      Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data);
+    };
+
     $scope.confirmDelete = function(user){
       Alerting.AlertReset();
 
@@ -152,17 +163,6 @@ angular.module('openhimConsoleApp')
         // delete cancelled - do nothing
       });
 
-    };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.users = Api.Users.query();
-      Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data);
     };
     /*---------------------------Delete Confirm----------------------------*/
 

@@ -67,7 +67,7 @@ describe('Controller: TransactionsCtrl', function () {
       }
     ]);
 
-    $httpBackend.when('GET', new RegExp('.*/visualizer/sync')).respond({ 'now': Date.now() });
+    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() });
 
 
     modalSpy = sinon.spy($modal, 'open');

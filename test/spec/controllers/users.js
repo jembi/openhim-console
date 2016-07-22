@@ -23,10 +23,32 @@ describe('Controller: UsersCtrl', function () {
     httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
       'components': [],
       'endpoints': [],
-      'color': { 'inactive': 'CCCCCC', 'active': '4cae4c', 'error': 'd43f3a', 'text': '000000' },
+      'color': { 'inactive': '#cccccc', 'active': '#4cae4c', 'error': '#d43f3a', 'text': '#000000' },
       'size': { 'width': 1000, 'height': 400, 'padding': 20 },
-      'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'maxTimeout': 5000 }
+      'time': { 'updatePeriod': 200, 'maxSpeed': 5, 'minDisplayPeriod': 100, 'maxTimeout': 5000 }
     });
+
+    $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
+      {
+        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+        'version': '0.0.1',
+        'name': 'Test 1 Mediator',
+        'description': 'Test 1 Description',
+        'defaultChannelConfig': [
+          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+        ],
+        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
+      }, {
+        'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
+        'version': '0.1.2',
+        'name': 'Test 2 Mediator',
+        'description': 'Test 2 Description',
+        'defaultChannelConfig': [
+          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+        ],
+        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
+      }
+    ]);
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([{
         'firstname': 'Super',

@@ -1,4 +1,5 @@
 'use strict';
+/* jshint expr: true */
 
 describe('Controller: LogsCtrl', function () {
 
@@ -78,8 +79,8 @@ describe('Controller: LogsCtrl', function () {
     scope.reset();
 
     scope.params.level.should.equal('info');
-    expect(scope.params.from).to.not.exist();
-    expect(scope.params.until).to.not.exist();
+    expect(scope.params.from).to.not.exist;
+    expect(scope.params.until).to.not.exist;
   });
 
 });

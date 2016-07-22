@@ -170,7 +170,7 @@
   </table>
 
   <button style="float: left; margin-right: 20px;" class="btn btn-primary" ng-click="addEditRoute('new', null, null)">Add New Route</button>
-  <select style="float: left; width: auto;" class="form-control" ng-model="mediator.route" ng-change="addEditRoute('mediator', null, null)" ng-options="route as route.name for route in mediators">
+  <select style="float: left; width: auto;" class="form-control" ng-model="selected.mediatorRoute" ng-change="addRouteFromMediator()" ng-options="medRoute as medRoute.fullName for medRoute in mediatorRoutes">
     <option value="">Add Mediator Route</option>
   </select>
 </div>
