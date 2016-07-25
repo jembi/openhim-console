@@ -50,14 +50,14 @@ angular.module('openhimConsoleApp')
       // construct the transactionLoadData if API success
       for (var i = 0; i < loadResults.length; i++) {
         dateFormat = loadResults[i].timestamp;
-        date = moment(dateFormat, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+        date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
         for (var x = 0; x < transactionLoadData.length; x++) {
           if( transactionLoadData[x].date === date ){
-            transactionLoadData[x].value = loadResults[i].load;
+            transactionLoadData[x].value = loadResults[i].total;
             // add to load total
-            $scope.loadTotal += loadResults[i].load;
+            $scope.loadTotal += loadResults[i].total;
           }
         }
       }
@@ -85,11 +85,11 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset('load');
 
       // do API call here to pull channel load metrics
-      Api.Metrics.query({
+      Api.MetricsChannel.query({
         type: 'day',
         channelId : $routeParams.channelId,
-        startDate: moment().subtract(1,'weeks').toDate(),
-        endDate: moment().toDate()
+        startDate: moment().subtract(1,'weeks').format(),
+        endDate: moment().format()
       }, loadMetricsSuccess, loadMetricsError);
     };
 
@@ -129,7 +129,7 @@ angular.module('openhimConsoleApp')
       // construct the loadData if API success
       for (var i = 0; i < timeResults.length; i++) {
         dateFormat = timeResults[i].timestamp;
-        date = moment(dateFormat, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+        date = moment(dateFormat).format('YYYY-MM-DD');
 
         // check if date is equal to date in object and update load total
         for (var x = 0; x < transactionTimeData.length; x++) {
@@ -166,11 +166,11 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset('responseTime');
 
       // do API call here to pull channel time metrics
-      Api.Metrics.query({
+      Api.MetricsChannel.query({
         type: 'day',
         channelId : $routeParams.channelId,
-        startDate: moment().subtract(6, 'd').toDate(),
-        endDate: moment().toDate()
+        startDate: moment().subtract(6, 'd').format(),
+        endDate: moment().format()
       }, timeMetricsSuccess, timeMetricsError);
     };
 
@@ -272,11 +272,11 @@ angular.module('openhimConsoleApp')
       // reset any load metric alert warnings
       Alerting.AlertReset('status');
 
-      var startDate = moment().subtract(6, 'd').toDate();
-      var endDate = moment().toDate();
+      var startDate = moment().subtract(6, 'd').format();
+      var endDate = moment().format();
 
-      Api.Metrics.query({
-        type: 'status',
+      Api.MetricsChannel.query({
+        type: 'day',
         channelId : $routeParams.channelId,
         startDate: startDate,
         endDate: endDate

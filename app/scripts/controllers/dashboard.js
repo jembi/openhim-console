@@ -43,7 +43,7 @@ angular.module('openhimConsoleApp')
           // check if the result has value for current hour in the loop
           // add one hour to simulate transactions for the end of the hour and not in the hour
           if ( moment( date ).add(1, 'hours').format('H') === moment( hour, 'YYYY-MM-DD H' ).format('H') ){
-            value = loadResults[x].load;
+            value = loadResults[x].total;
           }
         }
 
@@ -71,11 +71,11 @@ angular.module('openhimConsoleApp')
       // reset any load metric alert warnings
       Alerting.AlertReset('load');
 
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+      var startDate = moment().startOf('day').format();
+      var endDate = moment().startOf('hour').add(1, 'hours').format();
 
       // do API call here to pull load metrics
-      Api.Metrics.query({
+      Api.MetricsLoadTime.query({
         startDate: startDate,
         endDate: endDate
       }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
@@ -141,8 +141,8 @@ angular.module('openhimConsoleApp')
       // reset any load metric alert warnings
       Alerting.AlertReset('responseTime');
 
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+      var startDate = moment().startOf('day').format();
+      var endDate = moment().startOf('hour').add(1, 'hours').format();
 
       // do API call here to pull load metrics
       Api.MetricsLoadTime.query({
@@ -287,8 +287,8 @@ angular.module('openhimConsoleApp')
       // reset any load metric alert warnings
       Alerting.AlertReset('status');
 
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
+      var startDate = moment().startOf('day').format();
+      var endDate = moment().startOf('hour').add(1, 'hours').format();
 
       // do API call here to pull load metrics
       Api.MetricsStatus.query({
