@@ -596,24 +596,6 @@ angular.module('openhimConsoleApp')
     //run the transaction list view for the first time
     $scope.refreshTransactionsList();
 
-    //Refresh transactions list
-    $scope.loadMoreTransactions = function () {
-      $scope.busyLoadingMore = true;
-      Alerting.AlertReset();
-
-      $scope.showpage++;
-
-      var filters = $scope.returnFilters();
-
-      if (!filters.filters['request.timestamp']) {
-        //use page load time as an explicit end date
-        //this prevents issues with paging when new transactions come in, breaking the pages
-        filters.filters['request.timestamp'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
-      }
-
-      Api.Transactions.query(filters, loadMoreSuccess, loadMoreError);
-    };
-
     var loadMoreSuccess = function (transactions){
       //on success
       $scope.transactions = $scope.transactions.concat(transactions);
@@ -632,6 +614,24 @@ angular.module('openhimConsoleApp')
       // on error - Hide load more button and show error message
       $scope.loadMoreBtn = false;
       Alerting.AlertAddServerMsg(err.status);
+    };
+
+    //Refresh transactions list
+    $scope.loadMoreTransactions = function () {
+      $scope.busyLoadingMore = true;
+      Alerting.AlertReset();
+
+      $scope.showpage++;
+
+      var filters = $scope.returnFilters();
+
+      if (!filters.filters['request.timestamp']) {
+        //use page load time as an explicit end date
+        //this prevents issues with paging when new transactions come in, breaking the pages
+        filters.filters['request.timestamp'] = JSON.stringify( { '$lte': moment(pageLoadDate - serverDiffTime).format() } );
+      }
+
+      Api.Transactions.query(filters, loadMoreSuccess, loadMoreError);
     };
 
     //location provider - load transaction details
@@ -861,8 +861,8 @@ angular.module('openhimConsoleApp')
     };
 
     //sync time with server
-    Api.VisualizerSync.get(function (startVisualizer) {
-      serverDiffTime = moment() - moment(startVisualizer.now);
+    Api.Heartbeat.get(function (heartbeat) {
+      serverDiffTime = moment() - moment(heartbeat.now);
       lastUpdated = moment() - serverDiffTime;
       if ($scope.settings.list.autoupdate) {
         $scope.startPolling();

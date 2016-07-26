@@ -2,23 +2,34 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, login, Api, Alerting) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
 
     $scope.loadingVisualizer = true;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
+    $scope.isUsingOldVisualizerSettings = false;
 
 
     // initialize global variables
     var components = [];
-    var endpoints = [];
+    var channels = [];
+    var mediators = [];
+    var settingsStore = {}; // a place the push current settings when switching to fullscreen
     var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
-    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
+    var visualizerUpdateInterval, updatePeriod, minDisplayPeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
 
 
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
     $scope.consoleSession = consoleSession;
+
+    // function to start the visualizer
+    var startVisualizer = function startVisualizer() {
+      Api.Heartbeat.get(function (heartbeat) {
+        diffTime = Date.now() - moment(heartbeat.now);
+        $scope.play();
+      });
+    };
 
     // get the user settings to construct the visualizer
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
@@ -32,23 +43,31 @@ angular.module('openhimConsoleApp')
       }
 
       var visSettings = user.settings.visualizer;
+      if (visSettings.endpoints && !visSettings.mediators) {
+        $scope.isUsingOldVisualizerSettings = true;
+      }
 
       /********** Visualizations Management **********/
       // setup components (components)
       angular.forEach(visSettings.components, function(component){
-        components.push({ comp: component.event, desc: component.desc });
+        components.push(component);
       });
 
-      // setup endpoints
-      angular.forEach(visSettings.endpoints, function(endpoint){
-        endpoints.push({ comp: endpoint.event, desc: endpoint.desc });
+      // setup channels
+      angular.forEach(visSettings.channels, function(channel){
+        channels.push(channel);
+      });
+
+      // setup channels
+      angular.forEach(visSettings.mediators, function(mediator){
+        mediators.push(mediator);
       });
 
       // check if components and components have events
-      if ( components.length === 0 || endpoints.length === 0 ){
+      if ( components.length === 0 || channels.length === 0 ){
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
-        $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has atleast one Component and one Endpoint added!' });
+        $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has at least one Component and one Endpoint added!' });
       }
       /********** Visualizations Management **********/
 
@@ -69,13 +88,13 @@ angular.module('openhimConsoleApp')
 
 
       /********** Color Management **********/
-      inactiveColor = '#'+visSettings.color.inactive;
-      activeColor = '#'+visSettings.color.active;
-      errorColor = '#'+visSettings.color.error;
-      textColor = '#'+visSettings.color.text;
+      inactiveColor = visSettings.color.inactive;
+      activeColor = visSettings.color.active;
+      errorColor = visSettings.color.error;
+      textColor = visSettings.color.text;
 
       // check if config not empty
-      if ( inactiveColor === '#' || activeColor === '#' || errorColor === '#' || textColor === '#' ){
+      if ( inactiveColor === '' || activeColor === '' || errorColor === '' || textColor === '' ){
         $scope.loadingVisualizerError = true;
         $scope.loadingVisualizer = false;
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' });
@@ -86,6 +105,7 @@ angular.module('openhimConsoleApp')
       /********** Time Management **********/
       //How often to fetch updates from the server (in millis)
       updatePeriod = parseInt( visSettings.time.updatePeriod );
+      minDisplayPeriod = parseInt( visSettings.time.minDisplayPeriod );
 
       //play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
       $scope.visualizerSpeed = 0;
@@ -101,11 +121,12 @@ angular.module('openhimConsoleApp')
       /********** Time Management **********/
 
 
-      // setup watchher objects
+      // setup watcher objects
       $scope.visualizerData = [];
       $scope.visualizerSettings = {
         components: components,
-        endpoints: endpoints,
+        channels: channels,
+        mediators: mediators,
         visResponsive: visResponsive,
         visW: visW,
         visH: visH,
@@ -115,6 +136,7 @@ angular.module('openhimConsoleApp')
         errorColor: errorColor,
         textColor: textColor,
         updatePeriod: updatePeriod,
+        minDisplayPeriod: minDisplayPeriod,
         speed: $scope.visualizerSpeed,
         maxSpeed: maxSpeed,
         maxTimeout: maxTimeout
@@ -144,7 +166,7 @@ angular.module('openhimConsoleApp')
 
       lastUpdate = (Date.now()-diffTime);
       visualizerUpdateInterval = $interval( function() {
-        Api.VisualizerEvents.get({ receivedTime: lastUpdate}, function (events) {
+        Api.Events.get({ receivedTime: lastUpdate}, function (events) {
           // update the visualizerData object to trigger the directive watcher and update the events
           $scope.visualizerData = events.events;
           lastUpdate = (Date.now()-diffTime);
@@ -169,14 +191,6 @@ angular.module('openhimConsoleApp')
 
     // cancel update interval when visualizer scope destroyed
     $scope.$on('$destroy', cancelVisualizerUpdateInterval);
-
-    // function to start the visualizer
-    var startVisualizer = function startVisualizer() {
-      Api.VisualizerSync.get(function (startVisualizer) {
-        diffTime = Date.now() - moment(startVisualizer.now);
-        $scope.play();
-      });
-    };
 
     // funcntion to slow down animate
     $scope.slowDown = function slowDown() {
@@ -205,4 +219,26 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.isFullScreen = false;
+
+    $scope.goFullScreenViaWatcher = function() {
+      $scope.isFullScreen = !$scope.isFullScreen;
+    };
+
+    Fullscreen.$on('FBFullscreen.change', function (evt, isFullscreenEnabled){
+      if (isFullscreenEnabled) {
+        settingsStore.visResponsive = $scope.visualizerSettings.visResponsive;
+        settingsStore.visW = $scope.visualizerSettings.visW;
+        settingsStore.visH = $scope.visualizerSettings.visH;
+        if ($scope.visualizerSettings.visResponsive) {
+          $scope.visualizerSettings.visResponsive = false;
+          $scope.visualizerSettings.visW = $window.innerWidth - 2*pad;
+          $scope.visualizerSettings.visH = $window.innerHeight - 8*pad;
+        }
+      } else {
+        $scope.visualizerSettings.visResponsive = settingsStore.visResponsive;
+        $scope.visualizerSettings.visW = settingsStore.visW;
+        $scope.visualizerSettings.visH = settingsStore.visH;
+      }
+    });
   });

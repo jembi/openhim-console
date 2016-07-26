@@ -1,11 +1,12 @@
 {
   "components": [],
-  "endpoints": [],
+  "channels": [],
+  "mediators": [],
   "color": {
-    "inactive": "CCCCCC",
-    "active": "4cae4c",
-    "error": "d43f3a",
-    "text": "000000"
+    "inactive": "#cccccc",
+    "active": "#4cae4c",
+    "error": "#d43f3a",
+    "text": "#000000"
   },
   "size": {
     "responsive": true,
@@ -15,6 +16,7 @@
   },
   "time": {
     "updatePeriod": 200,
+    "minDisplayPeriod": 500,
     "maxSpeed": 5,
     "maxTimeout": 5000
   }

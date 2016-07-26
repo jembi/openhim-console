@@ -78,6 +78,17 @@ angular.module('openhimConsoleApp')
 
 
     /*--------------------------Delete Confirm----------------------------*/
+    var deleteSuccess = function () {
+      // On success
+      $scope.channels = Api.Channels.query();
+      Alerting.AlertAddMsg('top', 'success', 'The channel has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the channel: #' + err.status + ' - ' + err.data);
+    };
+
     $scope.confirmDelete = function(channel){
       Alerting.AlertReset();
 
@@ -105,20 +116,20 @@ angular.module('openhimConsoleApp')
       });
 
     };
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.channels = Api.Channels.query();
-      Alerting.AlertAddMsg('top', 'success', 'The channel has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the channel: #' + err.status + ' - ' + err.data);
-    };
     /*---------------------------Delete Confirm----------------------------*/
 
     /*--------------------------Restore Confirm----------------------------*/
+    var restoreSuccess = function () {
+      // On success
+      $scope.channels = Api.Channels.query();
+      Alerting.AlertAddMsg('top', 'success', 'The channel has been successfully restored');
+    };
+
+    var restoreError = function (err) {
+      // add the error message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data);
+    };
+
     $scope.confirmRestore = function(channel){
       Alerting.AlertReset();
 
@@ -146,17 +157,6 @@ angular.module('openhimConsoleApp')
         // restore cancelled - do nothing
       });
 
-    };
-
-    var restoreSuccess = function () {
-      // On success
-      $scope.channels = Api.Channels.query();
-      Alerting.AlertAddMsg('top', 'success', 'The channel has been successfully restored');
-    };
-
-    var restoreError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data);
     };
 
 

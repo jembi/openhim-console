@@ -195,8 +195,6 @@ describe('Controller: ExportImportCtrl', function () {
     createController();
     httpBackend.flush();
 
-    scope.downloadLink.should.equal( '' );
-
     scope.selectedExports.Users.length.should.equal( 2 );
     scope.selectedExports.Clients.length.should.equal( 2 );
     scope.selectedExports.Channels.length.should.equal( 3 );
@@ -205,8 +203,7 @@ describe('Controller: ExportImportCtrl', function () {
 
     scope.createExportFile( scope.selectedExports );
 
-    // PhontomJS browser doesnt support BlobBuilder
-    scope.downloadLink.should.equal( '' );
+    expect(scope.downloadLink.indexOf('')).to.be.above(-1);
   });
 
   it('should execute runImportFile() and import the data', function () {
