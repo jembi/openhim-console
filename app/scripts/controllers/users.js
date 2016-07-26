@@ -153,7 +153,7 @@ angular.module('openhimConsoleApp')
         var sessionUser = localStorage.getItem('loggedOnUser');
         sessionUser = JSON.parse(sessionUser);
         
-        if(sessionUser.email == user.email){
+        if(sessionUser.email === user.email){
           $scope.sessionUserDeleted = true;
         }
         
@@ -167,7 +167,8 @@ angular.module('openhimConsoleApp')
     var deleteSuccess = function () {
       // On success - if current user was deleted, logout
       if($scope.sessionUserDeleted) {
-        return $window.location = '#/logout';
+        $window.location = '#/logout';
+        return;
       }
       $scope.users = Api.Users.query();
       Alerting.AlertReset();

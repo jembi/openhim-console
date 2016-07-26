@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api) {
+  .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api, Alerting) {
 
 
     /***************************************************/
@@ -11,7 +11,7 @@ angular.module('openhimConsoleApp')
     $scope.downloadLink = '';
 
     // function to reset export options to default
-    $scope.resetExportOptions = function(){
+    $scope.resetExportOptions = function() {
       // assign all collections to select exports object
       $scope.selectedExports = {};
       $scope.selectedExports.Users = $scope.exportCollections.Users;
@@ -28,29 +28,43 @@ angular.module('openhimConsoleApp')
       $scope.showRecordOptions.Mediators = false;
       $scope.showRecordOptions.ContactGroups = false;
     };
-
-    // Make API requests for the export configuration options
-    var Users = Api.Users.query();
-    var Clients = Api.Clients.query();
-    var Channels = Api.Channels.query();
-    var Mediators = Api.Mediators.query();
-    var ContactGroups = Api.ContactGroups.query();
-
-    // set up settings object
-    $scope.exportSettings = {};
-    $scope.exportSettings.removeIds = true;
-
-    // Assign API collections to export options object
-    $scope.exportCollections = {};
-    $scope.exportCollections.Users = Users;
-    $scope.exportCollections.Clients = Clients;
-    $scope.exportCollections.Channels = Channels;
-    $scope.exportCollections.Mediators = Mediators;
-    $scope.exportCollections.ContactGroups = ContactGroups;
-
-    // set inital reset ( default export option )
-    $scope.resetExportOptions();
     
+    var getMetadataSuccess = function(result) {
+      exportObject = result[0];
+      var Users = exportObject.Users;
+      var Clients = exportObject.Clients;
+      var Channels = exportObject.Channels;
+      var Mediators = exportObject.Mediators;
+      var ContactGroups = exportObject.ContactGroups;
+
+      // set up settings object
+      $scope.exportSettings = {};
+      $scope.exportSettings.removeIds = true;
+
+      // Assign API collections to export options object
+      $scope.exportCollections = {};
+      $scope.exportCollections.Users = Users;
+      $scope.exportCollections.Clients = Clients;
+      $scope.exportCollections.Channels = Channels;
+      $scope.exportCollections.Mediators = Mediators;
+      $scope.exportCollections.ContactGroups = ContactGroups;
+
+      // set inital reset ( default export option )
+      $scope.resetExportOptions();
+    };
+    
+    var getMetadataError = function(err) {
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data);
+    };
+      
+      
+    // Make API requests for the export configuration options
+    var exportObject = Api.Metadata.query(function(result) {
+      getMetadataSuccess(result);
+    }, function(err) {
+      getMetadataError(err);
+    });
 
     /***************************************************/
     /**         Initial page load functions           **/
@@ -76,41 +90,33 @@ angular.module('openhimConsoleApp')
 
     // function to toggle specific records
     $scope.toggleRecordExportSelection = function(model, record) {
-
       var idx = $scope.selectedExports[model].indexOf(record);
 
       // is currently selected
       if (idx > -1) {
         $scope.selectedExports[model].splice(idx, 1);
-      }else {
+      } else {
         // is newly selected
         $scope.selectedExports[model].push(record);
       }
     };
-
     // function to remove certain properties from export object
     $scope.removeProperties = function(obj) {
-
       var propertyID = '_id';
       var propertyV = '__v';
       
       for (var prop in obj) {
         if (prop === propertyID || prop === propertyV) {
           delete obj[prop];
-        } else if ( typeof obj[prop] === 'object' || obj[prop] instanceof Array ){
+        } else if ( typeof obj[prop] === 'object' || obj[prop] instanceof Array ) {
           $scope.removeProperties(obj[prop]);
         }
       }
-
       return obj;
     };
 
 
-
-
-
-
-    var NewBlob = function(data, datatype){
+    var NewBlob = function(data, datatype) {
       var out;
       try {
         out = new Blob([data], {type: datatype});
@@ -139,10 +145,8 @@ angular.module('openhimConsoleApp')
     };
 
 
-
     // function to create the export file object
-    $scope.createExportFile = function(){
-      
+    $scope.createExportFile = function() {
       var exportData = angular.copy( $scope.selectedExports );
       var textFile = null;
 
@@ -152,38 +156,37 @@ angular.module('openhimConsoleApp')
         var data = new NewBlob(text, 'application/json');
 
         // if blob error exist
-        if ( data.error ){
+        if ( data.error ) {
           return;
-        }else{
+        } else {
           // If we are replacing a previously generated file we need to
           // manually revoke the object URL to avoid memory leaks.
           if (textFile !== null) {
             window.URL.revokeObjectURL(textFile);
           }
-
           textFile = window.URL.createObjectURL(data);
           return textFile;
         }
       };
 
-      if ( $scope.exportSettings.removeIds === false ){
+      if ( $scope.exportSettings.removeIds === false ) {
         exportData = JSON.stringify( exportData, null, 2 );
         $scope.importScriptName = 'openhim-update.json';
-      }else{
+      } else {
         exportData = JSON.stringify( $scope.removeProperties( exportData ), null, 2 );
         $scope.importScriptName = 'openhim-insert.json';
       }
       
       // assign download link and show download button
       var blobLink = makeTextFile( exportData );
-      if ( blobLink ){
+      if ( blobLink ) {
         $scope.downloadLink = blobLink;
       }
       
     };
 
     // function for when the download button is clicked
-    $scope.downloadExportFile = function(){
+    $scope.downloadExportFile = function() {
       //reset download link and remove download button
       $scope.downloadLink = '';
     };
@@ -199,111 +202,44 @@ angular.module('openhimConsoleApp')
     /****************************************/
 
     // import failed function
-    var importFail = function(model, value, err){
-      $scope.failedImports.push({ model:model, record: value, error: err.data, status: err.status });
-      $scope.importFail++;
+    var importFail = function(err) {
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred during the import: #' + err.status + ' - ' + err.data);
     };
 
     // import success function
-    var importSuccess = function(){
-      $scope.importSuccess++;
+    var importSuccess = function(data) {
+      $scope.importStatus = 'done';
+      $scope.importResult = data;
     };
 
     // function to run import file
-    $scope.runImportFile = function(data){
+    $scope.runImportFile = function(data) {
+      $scope.importStatus = 'progress';
+      $scope.updateFlag = false;
 
-      // set counter variables
-      $scope.importFail = 0;
-      $scope.importSuccess = 0;
-      $scope.failedImports = [];
-      $scope.importProgressStatus = 0;
-      $scope.importProgressType = '';
-
-      // convert to json object
       data = JSON.parse(data);
+      
+      // If record has _id then do update instead of insert
+      if (data.Clients && data.Clients.length > 0 && data.Clients[0]._id) { $scope.updateFlag = true; }
+      if (data.Channels && data.Channels.length > 0 && data.Channels[0]._id) { $scope.updateFlag = true; }
+      if (data.ContactGroups && data.ContactGroups.length > 0 && data.ContactGroups[0]._id) { $scope.updateFlag = true; }
+      if (data.Users && data.Users.length > 0 && data.Users[0]._id) { $scope.updateFlag = true; }
+      if (data.Mediators && data.Mediators.length > 0 && data.Mediators[0]._id) { $scope.updateFlag = true; }
 
-      var totalRecords = 0;
-      if (data.Clients) {
-        totalRecords += data.Clients.length;
-      }
-      if (data.Channels) {
-        totalRecords += data.Channels.length;
-      }
-      if (data.ContactGroups) {
-        totalRecords += data.ContactGroups.length;
-      }
-      if (data.Users) {
-        totalRecords += data.Users.length;
-      }
-      if (data.Mediators) {
-        totalRecords += data.Mediators.length;
-      }
-
-      var doneItems = 0;
-
-      //loop through each collection in object
-      angular.forEach(data, function(modelRecords, model) {
-
-        // loop through each record
-        angular.forEach(modelRecords, function(value) {
-
-          var record;
-          var insertParams = {};
-
-          // check model to determine which API to call
-          switch(model) {
-            case 'Clients':
-              record = new Api.Clients( value );
-              break;
-            case 'Channels':
-              record = new Api.Channels( value );
-              break;
-            case 'ContactGroups':
-              record = new Api.ContactGroups( value );
-              break;
-            case 'Mediators':
-              if ( value._id ){
-                delete value._id;
-              }
-              record = new Api.Mediators( value );
-              insertParams.urn = '';
-              break;
-            case 'Users':
-              record = new Api.Users( value );
-              insertParams.email = '';
-              break;
-            default:
-              // no default yet
-          }
-
-          // if record has _id then do update
-          if ( record._id ){
-            record.$update(function(){
-              importSuccess();
-            }, function(err){
-              importFail(model, value, err);
-            });
-          }else{
-            record.$save(insertParams, function(){
-              importSuccess();
-            }, function(err){
-              importFail(model, value, err);
-            });
-          }
-
-          doneItems++;
-          $scope.importProgressStatus = Math.floor( doneItems / totalRecords );
-
-          // update progress bar too 100%
-          if( doneItems === totalRecords ){
-            $scope.importProgressStatus = 100;
-            $scope.importProgressType = 'success';
-          }
-
+      if ( $scope.updateFlag ) {
+        Api.Metadata.update(data, function(result) {
+          importSuccess(result);
+        }, function(err) {
+          importFail(err);
         });
-
-      });
-
+      } else {
+        Api.Metadata.save(data, function(result) {
+          importSuccess(result);
+        }, function(err) {
+          importFail(err);
+        });
+      }
     };
 
     // watch if files have been dropped
@@ -311,8 +247,6 @@ angular.module('openhimConsoleApp')
       $scope.upload($scope.files);
     });
 
-
-    
 
     // function to upload the file
     $scope.upload = function (files) {
@@ -336,12 +270,22 @@ angular.module('openhimConsoleApp')
         }
       }
     };
+    
+    $scope.viewRecordDetails = function(type, content) {
+      $modal.open({
+        templateUrl: 'views/transactionsBodyModal.html',
+        controller: 'TransactionsBodyModalCtrl',
+        windowClass: 'modal-fullview',
+        resolve: {
+          bodyData: function () {
+            return { type: type, content: content, headers: { 'content-type': 'application/json' } };
+          }
+        }
+      });
+    };
 
 
     /****************************************/
     /**         Import Functions           **/
     /****************************************/
-
-    
-
   });

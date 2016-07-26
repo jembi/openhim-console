@@ -14,7 +14,10 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.role">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
         <!-- Top Alerts -->
         
         <div class="exportSectionDiv">
@@ -71,38 +74,54 @@
             </div>
             
           </div>
-
-          <div ng-if="importProgressStatus">
+          
+          <div ng-if="importStatus == 'progress'">
             <h3>Import Results: </h3>
-            <progressbar ng-if="importProgressStatus" style="width: 100%; margin-bottom: 15px;" class="progress-striped active" max="100" value="importProgressStatus" type="{{importProgressType}}"><i>{{importProgressStatus}} %</i></progressbar>
+            <img src="images/loading.gif" alt="Loading..." />
+          </div>
+
+          <div ng-if="importStatus == 'done'">
+            <h3>Import Results: </h3>
+            
             <div>
-              <label>Successfull Imports ( {{importSuccess}} )</label>
+              <label class="successfulImports">Successfull Imports ( {{importResult.successes.length}} )</label>
             </div>
             <div>
-              <label class="failedImportsLink">Failed Imports ( {{importFail}} )</label>
+              <label class="failedImports">Failed Imports ( {{importResult.errors.length}} )</label>
+            </div>
 
-              <div id="no-more-tables" ng-if="importFail">
-                <table class="table table-bordered" style="100%">
-                  <thead>
-                    <tr>
-                      <th width="50">#</th>
-                      <th>Model</th>
-                      <th>Record</th>
-                      <th>Status</th>
-                      <th>Error</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="import in failedImports">
-                      <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                      <td data-title="Model">{{ import.model }}</td>
-                      <td data-title="Record">{{ import.record }}</td>
-                      <td data-title="Status">{{ import.status }}</td>
-                      <td data-title="Error">{{ import.error }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div id="no-more-tables">
+              <table class="table table-bordered" style="width:100%">
+                <thead>
+                  <tr>
+                    <th width="50">#</th>
+                    <th>Model</th>
+                    <th>Record</th>
+                    <th>Status</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="successfulImports" ng-repeat="import in importResult.successes">
+                    <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                    <td data-title="Model">{{ import.model }}</td>
+                    <td>
+                      <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+                    </td>
+                    <td data-title="Status">{{ import.status }}</td>
+                    <td data-title="Error">{{ import.message }}</td>
+                  </tr>
+                  <tr class="failedImports" ng-repeat="import in importResult.errors">
+                    <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                    <td data-title="Model">{{ import.model }}</td>
+                    <td>
+                      <button style="margin-top:3px; background-color:red;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+                    </td>
+                    <td data-title="Status">{{ import.status }}</td>
+                    <td data-title="Error">{{ import.message }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
