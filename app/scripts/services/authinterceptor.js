@@ -31,7 +31,7 @@ angular.module('openhimConsoleApp')
              */
             requestTS = new Date(Math.abs(new Date().getTime() + user.timeDiff)).toISOString();
           } catch (e) {
-            console.log(e.message);
+            console.log('Authinterceptor: ' + e.message);
           }
           var username = user.email;
 

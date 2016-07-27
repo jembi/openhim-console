@@ -25,7 +25,7 @@ angular.module('openhimConsoleApp')
     Api.AuditsFilterOptions.get(function(auditsFilterOptions){
       $scope.auditsFilterOptions = auditsFilterOptions;
     }, function(err){
-      console.log( err );
+      console.log( 'Audits error: ' + err );
     });
 
 
