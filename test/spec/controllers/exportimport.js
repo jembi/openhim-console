@@ -203,7 +203,7 @@ describe('Controller: ExportImportCtrl', function () {
 
     scope.createExportFile( scope.selectedExports );
 
-    expect(scope.downloadLink.indexOf('')).to.be.above(-1);
+    expect(scope.downloadLink.indexOf('blob:http://localhost:8080/')).to.be.above(-1);
   });
 
   it('should execute runImportFile() and import the data', function () {
