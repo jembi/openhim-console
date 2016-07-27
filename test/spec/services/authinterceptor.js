@@ -22,7 +22,8 @@ describe('Service: Authinterceptor', function () {
 
   var u = {
     email: 'test-user',
-    passwordHash: 'test-hash'
+    passwordHash: 'test-hash',
+    timeDiff: new Date().getTime()
   };
 
   it('should add add authentication details to each request config', function () {

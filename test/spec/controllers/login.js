@@ -27,9 +27,9 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
+    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: new Date().getTime() });
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({ salt: 'test-salt', ts: 'test-ts' });
+    httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({ salt: 'test-salt', ts: new Date().getTime() });
 
     httpBackend.when('GET', new RegExp('.*/authenticate/incorrect@user.org')).respond({});
 
