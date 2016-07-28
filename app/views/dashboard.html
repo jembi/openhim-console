@@ -17,26 +17,27 @@
 
         <div class="panel-body" ng-show="!alerts.server">
 
+          <div class="content-box-large bordered-box">
+            <div metrics-date-type-selector selected="selectedDateType" on-change="updateMetrics" />
+          </div>
+
           <div style="margin: 20px 0px;" ng-if="activeChannels || loadTotal || avgResponseTime">
             <div class="panel-body">
               <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
-                Active Channels (Today): <br /><strong>{{activeChannels}}</strong>
+                Active Channels: <br /><strong>{{activeChannels}}</strong>
               </div>
               <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions (Today): <br /><strong>{{loadTotal}}</strong>
+                Total Transactions: <br /><strong>{{loadTotal}}</strong>
               </div>
               <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time (Today): <br /><strong>{{avgResponseTime}} ms</strong>
+                Average Response Time: <br /><strong>{{avgResponseTime}} ms</strong>
               </div>
             </div>
           </div>
 
           <div class="content-box-large bordered-box">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Load (Today - Per Hour)</div>
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
-              </div>
+              <div class="panel-title">Transaction Load</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -54,10 +55,7 @@
 
           <div class="content-box-large bordered-box">
             <div class="panel-heading">
-              <div class="panel-title">Average Response Time (Today - Per Hour)</div>
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getTimeMetrics()"></i>
-              </div>
+              <div class="panel-title">Average Response Time</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -75,10 +73,7 @@
 
           <div class="content-box-large bordered-box">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Statuses (Today - Per Channel)</div>
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
-              </div>
+              <div class="panel-title">Transaction Statuses</div>
             </div>
 
             <!-- Transaction Load Alerts -->

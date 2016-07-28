@@ -1,0 +1,19 @@
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <select class="form-control" ng-model="selected.type" ng-change="onChange()">
+      <option value="minute">minute</option>
+      <option value="hour">hour</option>
+      <option value="day">day</option>
+      <option value="month">month</option>
+      <option value="year">year</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="sr-only">From</label>
+    <input type="text" class="form-control" ng-model="selected.from" ng-change="onChange()" placeholder="from" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+  </div>
+  <div class="form-group">
+    <label class="sr-only">Until</label>
+    <input type="text" class="form-control" ng-model="selected.until" ng-change="onChange()" placeholder="until" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+  </div>
+</form>

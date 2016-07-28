@@ -85,7 +85,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset('load');
 
       // do API call here to pull channel load metrics
-      Api.MetricsChannel.query({
+      Api.MetricsTimeseriesChannel.query({
         type: 'day',
         channelId : $routeParams.channelId,
         startDate: moment().subtract(1,'weeks').format(),
@@ -166,7 +166,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset('responseTime');
 
       // do API call here to pull channel time metrics
-      Api.MetricsChannel.query({
+      Api.MetricsTimeseriesChannel.query({
         type: 'day',
         channelId : $routeParams.channelId,
         startDate: moment().subtract(6, 'd').format(),
@@ -275,7 +275,7 @@ angular.module('openhimConsoleApp')
       var startDate = moment().subtract(6, 'd').format();
       var endDate = moment().format();
 
-      Api.MetricsChannel.query({
+      Api.MetricsTimeseriesChannel.query({
         type: 'day',
         channelId : $routeParams.channelId,
         startDate: startDate,
