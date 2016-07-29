@@ -132,6 +132,14 @@ angular.module('openhimConsoleApp')
           }
         });
 
+        angular.forEach($scope.validImports, function(item) {
+            if(item.model==='Channels') {resolvedData.Channels.push(item.record);}
+            else if(item.model==='Clients') {resolvedData.Clients.push(item.record);}
+            else if(item.model==='Mediators') {resolvedData.Mediators.push(item.record);}
+            else if(item.model==='Users') {resolvedData.Users.push(item.record);}
+            else if(item.model==='ContactGroups') {resolvedData.ContactGroups.push(item.record);}  
+        });
+
         // read the import script data and process
         $scope.runImportFile(resolvedData);
       }
