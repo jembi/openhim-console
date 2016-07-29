@@ -5,7 +5,7 @@
     Resolve Metadata Conflicts
   </h4>
 </div>
-<form class="form-horizontal" ng-submit="saveImport()" novalidate>
+<form class="form-horizontal" ng-submit="saveImport()" ng-class="{ 'has-error' : ngErrors.hasErrors }" novalidate>
   <div class="modal-body">
     <div ng-if="conflicts.length === 0" class="med-no-config">
       <center>
@@ -48,9 +48,12 @@
 
           <!-- Import Conflicts -->
           <tr class="importConflicts" ng-repeat="import in conflicts">
-            <td data-title="Overwrite"><input type="checkbox" ng-model="import.selected" ng-change="checkIfAllSelected()"></td>
+            <td data-title="Overwrite"><input type="checkbox" ng-model="import.overwrite" ng-change="checkIfAllSelected()"></td>
             <td data-title="Model">{{ import.model }}</td>
-            <td data-title="UID">{{ import.uid }}</td>
+            <td data-title="UID">
+              <input type="text" ng-disabled="import.overwrite" ng-model="import.uid">
+              <div class="has-error-msg" ng-if="import.errMsg"><i class="glyphicon glyphicon-warning-sign"></i>{{import.errMsg}}</div>
+            </td>
             <td>
               <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
             </td>
@@ -77,6 +80,11 @@
 
   <div class="modal-footer">
     <div>
+      <!-- hasErrors Alerts -->
+      <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsImport" type="alert.type">
+        <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+      </alert>
+      <!-- hasErrors Alerts -->
       <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
       <button type="button" class="btn btn-primary" ng-click="saveImport()">Save changes</button>
     </div>

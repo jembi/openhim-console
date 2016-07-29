@@ -1,39 +1,35 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('ExportImportModalCtrl', function ($scope, $modal, $modalInstance, Api, Alerting, data) {
+  .controller('ExportImportModalCtrl', function ($scope, $modal, $modalInstance, $timeout, Api, Alerting, data) {
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
 
-    console.log(data);
-    $scope.validationResults = data;
-    // $scope.viewRecordDetails = viewRecordDetails;
-
-    // 
     $scope.outcome = {
       selectedAll: false
     };
+    $scope.ngErrors = {};
     $scope.conflicts = [];
     $scope.validImports = [];
 
-    for(var i=0; i < $scope.validationResults.successes.length; i++) {
-      if($scope.validationResults.successes[i].status === 'Conflict') {$scope.conflicts.push($scope.validationResults.successes[i]);}
-      if($scope.validationResults.successes[i].status === 'Valid') {$scope.validImports.push($scope.validationResults.successes[i]);}
+    for(var i=0; i < data.successes.length; i++) {
+      if(data.successes[i].status === 'Conflict') {$scope.conflicts.push(data.successes[i]);}
+      if(data.successes[i].status === 'Valid') {$scope.validImports.push(data.successes[i]);}
     }
 
-    $scope.saveImport = function() {
-      console.log(data);
-
-      // read the import script data and process
-      // $scope.runImportFile(data);
-
-      $modalInstance.close();
+    $scope.cancel = function () {
+      $timeout.cancel( $scope.clearValidationRoute );
+      $modalInstance.dismiss('cancel');
     };
 
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+    $scope.resetErrors = function(){
+      Alerting.AlertReset();
+      $scope.ngErrors.hasErrors = false;
+      angular.forEach($scope.conflicts, function(item) {
+        item.errMsg = undefined;
+      });
     };
 
     /***************************************************/
@@ -61,29 +57,84 @@ angular.module('openhimConsoleApp')
     // function to run import file
     $scope.runImportFile = function(data) {
       $scope.importStatus = 'progress';
-      $scope.updateFlag = false;
 
       data = JSON.parse(data);
       
-      // If record has _id then do update instead of insert
-      if (data.Clients && data.Clients.length > 0 && data.Clients[0]._id) { $scope.updateFlag = true; }
-      if (data.Channels && data.Channels.length > 0 && data.Channels[0]._id) { $scope.updateFlag = true; }
-      if (data.ContactGroups && data.ContactGroups.length > 0 && data.ContactGroups[0]._id) { $scope.updateFlag = true; }
-      if (data.Users && data.Users.length > 0 && data.Users[0]._id) { $scope.updateFlag = true; }
-      if (data.Mediators && data.Mediators.length > 0 && data.Mediators[0]._id) { $scope.updateFlag = true; }
+      Api.Metadata.save(data, function(result) {
+        importSuccess(result);
+      }, function(err) {
+        importFail(err);
+      });
+    };
 
-      if ( $scope.updateFlag ) {
-        Api.Metadata.update(data, function(result) {
-          importSuccess(result);
-        }, function(err) {
-          importFail(err);
+    var validateImport = function() {
+      console.log('start validation');
+      // update the uid for each 
+      angular.forEach($scope.conflicts, function(item) {
+        if(!item.overwrite){
+          var err = 'Needs to be different to original uid.';
+          if(item.model==='Channels' && item.record.name === item.uid) {item.errMsg = err;}
+          else if(item.model==='Clients' && item.record.clientID === item.uid) {item.errMsg = err;}
+          else if(item.model==='Mediators' && item.record.urn === item.uid) {item.errMsg = err;}
+          else if(item.model==='Users' && item.record.email === item.uid) {item.errMsg = err;}
+          else if(item.model==='ContactGroups' && item.record.groups === item.uid) {item.errMsg = err;}
+
+          $scope.ngErrors.hasErrors = $scope.conflicts.some(function(item){
+            return item.errMsg;
+          });
+        }
+      });
+
+      if($scope.ngErrors.hasErrors) {
+        $scope.clearValidationRoute = $timeout(function(){
+          console.log('reset errors');
+          // clear errors after 5 seconds
+          $scope.resetErrors();
+        }, 5000);
+        Alerting.AlertAddMsg('hasErrorsImport', 'danger', 'There are errors on the import form.');
+      }
+      console.log($scope.conflicts);
+
+      return $scope.ngErrors.hasErrors;
+    };
+
+    $scope.saveImport = function() {
+      if(validateImport()){
+        console.log($scope.validImports);
+        console.log($scope.conflicts);
+        
+        // setup data object
+        var resolvedData = {
+          'Channels': [ ],
+          'Clients': [],
+          'Mediators': [],
+          'Users': [],
+          'ContactGroups': []
+        };
+        angular.forEach($scope.conflicts, function(item) {
+
+          // update the uid for each 
+          if(!item.overwrite){
+            if(item.model==='Channels') {item.record.name = item.uid;}
+            else if(item.model==='Clients') {item.record.clientID = item.uid;}
+            else if(item.model==='Mediators') {item.record.urn = item.uid;}
+            else if(item.model==='Users') {item.record.email = item.uid;}
+            else if(item.model==='ContactGroups') {item.record.groups = item.uid;}
+          }
+
+          if(item.model==='Channels') {resolvedData.Channels.push(item.record);}
+          else if(item.model==='Clients') {resolvedData.Clients.push(item.record);}
+          else if(item.model==='Mediators') {resolvedData.Mediators.push(item.record);}
+          else if(item.model==='Users') {resolvedData.Users.push(item.record);}
+          else if(item.model==='ContactGroups') {resolvedData.ContactGroups.push(item.record);}
         });
-      } else {
-        Api.Metadata.save(data, function(result) {
-          importSuccess(result);
-        }, function(err) {
-          importFail(err);
-        });
+
+        console.log(resolvedData);
+
+        // read the import script data and process
+        $scope.runImportFile(data);
+
+        $modalInstance.close();
       }
     };
 
@@ -102,14 +153,13 @@ angular.module('openhimConsoleApp')
 
     $scope.selectAll = function() {
       angular.forEach($scope.conflicts, function(item) {
-        item.selected = !$scope.outcome.selectedAll;
+        item.overwrite = !$scope.outcome.selectedAll;
       });
-      console.log($scope.conflicts);
     };
 
     $scope.checkIfAllSelected = function() {
       $scope.outcome.selectedAll = $scope.conflicts.every(function(item) {
-        return item.selected;
+        return item.overwrite;
       });
     };
 
@@ -117,5 +167,4 @@ angular.module('openhimConsoleApp')
     /****************************************/
     /**         Import Functions           **/
     /****************************************/
-
   });

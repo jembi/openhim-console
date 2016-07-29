@@ -59,15 +59,12 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data);
     };
 
-    var openValidationModal = function() {
+    var openValidationModal = function(data) {
       $modal.open({
         templateUrl: 'views/exportImportModal.html',
         controller: 'ExportImportModalCtrl',
         resolve: {
-          data: function () {return $scope.validatedData;}
-          // viewRecordDetails: function(type, content) {
-          //   return $scope.viewRecordDetails(type, content);
-          // }
+          data: function () {return $scope.validatedData? data : $scope.validatedData;}
         }
       });
     };      
@@ -214,6 +211,10 @@ angular.module('openhimConsoleApp')
     /**         Import Functions           **/
     /****************************************/
 
+    var saveValidationResults = function(data) {
+      $scope.validatedData = data;
+    };
+
     var validateImportFail = function(err) {
       console.log(err);
 
@@ -222,15 +223,15 @@ angular.module('openhimConsoleApp')
     };
 
     var validateImportSuccess = function(result) {
-      console.log('succesfully validated file');
-      console.log(result);
+      console.log('succesfully validated uploaded file');
 
-      $scope.validatedData = result;
-      openValidationModal();
+      openValidationModal(result);
+      saveValidationResults(result);
+      $scope.importStatus = 'resolveConflicts';
     };
 
     $scope.validateImportFile = function(data) {
-      $scope.importStatus = 'resolveConflicts';
+      $scope.importStatus = 'progress';
 
       Api.MetadataValidation.save(data, function(result){
         validateImportSuccess(result);
@@ -244,7 +245,6 @@ angular.module('openhimConsoleApp')
       $scope.upload($scope.files);
     });
 
-
     // function to upload the file
     $scope.upload = function (files) {
       if (files && files.length) {
@@ -253,10 +253,8 @@ angular.module('openhimConsoleApp')
 
         // onload function used by the reader
         reader.onload = function(event) {
-          var data = event.target.result;
-
           // read the import script data and validate
-          $scope.validateImportFile(data);
+          $scope.validateImportFile(event.target.result);
         };
 
         // foreach uploaded file
