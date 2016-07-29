@@ -13,17 +13,17 @@
       </center>
     </div>
 
-    <div>
-      <label class="successfulImports">Successfull Imports ( {{validImports.length}} )</label>
-    </div>
-    <div>
-      <label class="importConflicts">Conflict Imports ( {{conflicts.length}} )</label>
-    </div>
-    <div>
-      <label class="failedImports">Failed Imports ( {{validationResults.errors.length}} )</label>
-    </div>
+    <div id="no-more-tables" ng-if="importStatus == 'resolvingConflicts'">
+      <div>
+        <label class="successfulImports">Successfull Imports ( {{validImports.length}} )</label>
+      </div>
+      <div>
+        <label class="importConflicts">Conflict Imports ( {{conflicts.length}} )</label>
+      </div>
+      <div>
+        <label class="failedImports">Failed Imports ( {{validationResults.errors.length}} )</label>
+      </div>
 
-    <div id="no-more-tables">
       <table class="table table-bordered" style="width:100%">
         <thead>
           <tr>
@@ -81,9 +81,6 @@
     </div>
   </div>
 
-
-  </div>
-
   <div class="modal-footer">
     <div>
       <!-- hasErrors Alerts -->
@@ -92,7 +89,7 @@
       </alert>
       <!-- hasErrors Alerts -->
       <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="saveImport()">Save changes</button>
+      <button type="button" class="btn btn-primary" ng-click="saveImport()">Import changes</button>
     </div>
   </div>
 </form>

@@ -60,12 +60,20 @@ angular.module('openhimConsoleApp')
     };
 
     var openValidationModal = function() {
-      $modal.open({
+      console.log($scope.importStatus);
+      var modalInstance = $modal.open({
         templateUrl: 'views/exportImportModal.html',
         controller: 'ExportImportModalCtrl',
         resolve: {
-          data: function () {return $scope.validatedData}
+          data: function () {return $scope.validatedData;}
         }
+      });
+
+      modalInstance.result.then(function(importResults) {
+        $scope.importStatus = 'done';
+        $scope.importResults = importResults;
+      }, function() {
+        console.info('Modal dismissed at: ' + new Date());
       });
     };      
       
@@ -220,10 +228,10 @@ angular.module('openhimConsoleApp')
 
     var validateImportSuccess = function(result) {
       console.log('succesfully validated uploaded file');
+      $scope.importStatus = 'resolvingConflicts';
       $scope.validatedData = result;
 
       openValidationModal();
-      $scope.importStatus = 'resolveConflicts';
     };
 
     $scope.validateImportFile = function(data) {
@@ -262,7 +270,7 @@ angular.module('openhimConsoleApp')
         }
       }
     };
-    
+
     $scope.viewRecordDetails = function(type, content) {
       $modal.open({
         templateUrl: 'views/transactionsBodyModal.html',

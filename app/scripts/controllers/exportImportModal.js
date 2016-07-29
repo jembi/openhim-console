@@ -13,6 +13,7 @@ angular.module('openhimConsoleApp')
     $scope.ngErrors = {};
     $scope.conflicts = [];
     $scope.validImports = [];
+    $scope.importStatus = 'resolvingConflicts';
 
     for(var i=0; i < data.successes.length; i++) {
       if(data.successes[i].status === 'Conflict') {$scope.conflicts.push(data.successes[i]);}
@@ -51,12 +52,11 @@ angular.module('openhimConsoleApp')
     // import success function
     var importSuccess = function(data) {
       $scope.importStatus = 'done';
-      $scope.importResult = data;
+      $modalInstance.close(data);
     };
 
     // function to run import file
     $scope.runImportFile = function(importData) {
-      $scope.importStatus = 'progress';
       console.log(importData);
       
       Api.Metadata.save(importData, function(result) {
@@ -70,7 +70,7 @@ angular.module('openhimConsoleApp')
       console.log('start validation');
       // update the uid for each 
       angular.forEach($scope.conflicts, function(item) {
-        if(!item.overwrite){
+        if(item.action && item.action === 'duplicate'){
           var err = 'Needs to be different to original uid.';
           if(item.model==='Channels' && item.record.name === item.uid) {item.errMsg = err;}
           else if(item.model==='Clients' && item.record.clientID === item.uid) {item.errMsg = err;}
@@ -99,6 +99,7 @@ angular.module('openhimConsoleApp')
 
     $scope.saveImport = function() {
       if(validateImport()){
+        $scope.importStatus = 'progress';
         console.log($scope.validImports);
         console.log($scope.conflicts);
         
@@ -114,7 +115,7 @@ angular.module('openhimConsoleApp')
         angular.forEach($scope.conflicts, function(item) {
 
           // update the uid for each 
-          if(!item.overwrite){
+          if(item.action && item.action === 'duplicate'){
             if(item.model==='Channels') {item.record.name = item.uid;}
             else if(item.model==='Clients') {item.record.clientID = item.uid;}
             else if(item.model==='Mediators') {item.record.urn = item.uid;}
@@ -122,17 +123,17 @@ angular.module('openhimConsoleApp')
             else if(item.model==='ContactGroups') {item.record.groups = item.uid;}
           }
 
-          if(item.model==='Channels') {resolvedData.Channels.push(item.record);}
-          else if(item.model==='Clients') {resolvedData.Clients.push(item.record);}
-          else if(item.model==='Mediators') {resolvedData.Mediators.push(item.record);}
-          else if(item.model==='Users') {resolvedData.Users.push(item.record);}
-          else if(item.model==='ContactGroups') {resolvedData.ContactGroups.push(item.record);}
+          if(item.action && item.action !== 'ignore'){
+            if(item.model==='Channels') {resolvedData.Channels.push(item.record);}
+            else if(item.model==='Clients') {resolvedData.Clients.push(item.record);}
+            else if(item.model==='Mediators') {resolvedData.Mediators.push(item.record);}
+            else if(item.model==='Users') {resolvedData.Users.push(item.record);}
+            else if(item.model==='ContactGroups') {resolvedData.ContactGroups.push(item.record);}  
+          }
         });
 
         // read the import script data and process
         $scope.runImportFile(resolvedData);
-
-        // $modalInstance.close();
       }
     };
 
@@ -160,6 +161,7 @@ angular.module('openhimConsoleApp')
         return item.action === 'overwrite';
       });
     };
+    $scope.checkIfAllOverwrites();
 
     /****************************************/
     /**         Import Functions           **/
