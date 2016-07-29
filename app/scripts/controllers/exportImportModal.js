@@ -55,12 +55,11 @@ angular.module('openhimConsoleApp')
     };
 
     // function to run import file
-    $scope.runImportFile = function(data) {
+    $scope.runImportFile = function(importData) {
       $scope.importStatus = 'progress';
-
-      data = JSON.parse(data);
+      console.log(importData);
       
-      Api.Metadata.save(data, function(result) {
+      Api.Metadata.save(importData, function(result) {
         importSuccess(result);
       }, function(err) {
         importFail(err);
@@ -95,7 +94,7 @@ angular.module('openhimConsoleApp')
       }
       console.log($scope.conflicts);
 
-      return $scope.ngErrors.hasErrors;
+      return !$scope.ngErrors.hasErrors;
     };
 
     $scope.saveImport = function() {
@@ -105,12 +104,13 @@ angular.module('openhimConsoleApp')
         
         // setup data object
         var resolvedData = {
-          'Channels': [ ],
+          'Channels': [],
           'Clients': [],
           'Mediators': [],
           'Users': [],
           'ContactGroups': []
         };
+
         angular.forEach($scope.conflicts, function(item) {
 
           // update the uid for each 
@@ -129,12 +129,10 @@ angular.module('openhimConsoleApp')
           else if(item.model==='ContactGroups') {resolvedData.ContactGroups.push(item.record);}
         });
 
-        console.log(resolvedData);
-
         // read the import script data and process
-        $scope.runImportFile(data);
+        $scope.runImportFile(resolvedData);
 
-        $modalInstance.close();
+        // $modalInstance.close();
       }
     };
 
@@ -153,16 +151,15 @@ angular.module('openhimConsoleApp')
 
     $scope.selectAll = function() {
       angular.forEach($scope.conflicts, function(item) {
-        item.overwrite = !$scope.outcome.selectedAll;
+        item.action = !$scope.outcome.selectedAll ? 'overwrite' : (item.action === 'overwrite' ? 'ignore' : item.action);
       });
     };
 
-    $scope.checkIfAllSelected = function() {
+    $scope.checkIfAllOverwrites = function() {
       $scope.outcome.selectedAll = $scope.conflicts.every(function(item) {
-        return item.overwrite;
+        return item.action === 'overwrite';
       });
     };
-
 
     /****************************************/
     /**         Import Functions           **/

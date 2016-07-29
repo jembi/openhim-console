@@ -27,7 +27,7 @@
       <table class="table table-bordered" style="width:100%">
         <thead>
           <tr>
-            <th width="120"><input type="checkbox" ng-model="outcome.selectedAll" ng-click="selectAll()">&nbsp;&nbsp;Overwrite</th>
+            <th width="135"><input type="checkbox" ng-model="outcome.selectedAll" ng-click="selectAll()">Overwrite All</th>
             <th>Model</th>
             <th>UID</th>
             <th>Record</th>
@@ -47,17 +47,23 @@
           </tr>
 
           <!-- Import Conflicts -->
-          <tr class="importConflicts" ng-repeat="import in conflicts">
-            <td data-title="Overwrite"><input type="checkbox" ng-model="import.overwrite" ng-change="checkIfAllSelected()"></td>
+          <tr ng-repeat="import in conflicts">
+            <td data-title="Overwrite">
+              <div class="input-group-vertical">
+                <label><input type="radio" ng-model="import.action" value="ignore" ng-change="checkIfAllOverwrites()"> Ignore</label>
+                <label><input type="radio" ng-model="import.action" value="overwrite" ng-change="checkIfAllOverwrites()"> Overwrite</label>
+                <label><input type="radio" ng-model="import.action" value="duplicate" ng-change="checkIfAllOverwrites()"> Duplicate</label>
+              </div>
+            </td>
             <td data-title="Model">{{ import.model }}</td>
             <td data-title="UID">
-              <input type="text" ng-disabled="import.overwrite" ng-model="import.uid">
+              <input type="text" ng-disabled="import.action!=='duplicate'" ng-model="import.uid">
               <div class="has-error-msg" ng-if="import.errMsg"><i class="glyphicon glyphicon-warning-sign"></i>{{import.errMsg}}</div>
             </td>
             <td>
               <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
             </td>
-            <td data-title="Status">{{ import.status }}</td>
+            <td class="importConflicts" data-title="Status">{{ import.status }}</td>
           </tr>
 
           <!-- Invalid Imports -->

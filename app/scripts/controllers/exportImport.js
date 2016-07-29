@@ -59,12 +59,12 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data);
     };
 
-    var openValidationModal = function(data) {
+    var openValidationModal = function() {
       $modal.open({
         templateUrl: 'views/exportImportModal.html',
         controller: 'ExportImportModalCtrl',
         resolve: {
-          data: function () {return $scope.validatedData? data : $scope.validatedData;}
+          data: function () {return $scope.validatedData}
         }
       });
     };      
@@ -211,10 +211,6 @@ angular.module('openhimConsoleApp')
     /**         Import Functions           **/
     /****************************************/
 
-    var saveValidationResults = function(data) {
-      $scope.validatedData = data;
-    };
-
     var validateImportFail = function(err) {
       console.log(err);
 
@@ -224,9 +220,9 @@ angular.module('openhimConsoleApp')
 
     var validateImportSuccess = function(result) {
       console.log('succesfully validated uploaded file');
+      $scope.validatedData = result;
 
-      openValidationModal(result);
-      saveValidationResults(result);
+      openValidationModal();
       $scope.importStatus = 'resolveConflicts';
     };
 
