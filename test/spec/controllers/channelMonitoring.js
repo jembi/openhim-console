@@ -16,6 +16,10 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
   var scope, createController, httpBackend;
 
+  function daysAgo(days) {
+    return moment().subtract(days, 'days').startOf('day');
+  }
+
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
@@ -23,17 +27,18 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
     var statusData = [{ completed: 2, completedWErrors: 0, failed: 3, processing: 0, successful: 16 }];
 
-    var timeLoadData = [{ 'load': 34, 'avgResp': 2881.91, 'timestamp': moment().subtract(6, 'd').format('YYYY-MM-DD') },
-                        { 'load': 73, 'avgResp': 1313.57, 'timestamp': moment().subtract(5, 'd').format('YYYY-MM-DD') },
-                        { 'load': 17, 'avgResp': 3761.57, 'timestamp': moment().subtract(4, 'd').format('YYYY-MM-DD') },
-                        { 'load': 72, 'avgResp': 3545.57, 'timestamp': moment().subtract(3, 'd').format('YYYY-MM-DD') },
-                        { 'load': 45, 'avgResp': 1233.57, 'timestamp': moment().subtract(2, 'd').format('YYYY-MM-DD') },
-                        { 'load': 47, 'avgResp': 4564.57, 'timestamp': moment().subtract(1, 'd').format('YYYY-MM-DD') },
-                        { 'load': 4, 'avgResp': 3553.34, 'timestamp': moment().format('YYYY-MM-DD') }];
+    var timeLoadData = [{ 'total': 34, 'avgResp': 2881.91, 'timestamp': daysAgo(6).format() },
+                        { 'total': 73, 'avgResp': 1313.57, 'timestamp': daysAgo(5).format() },
+                        { 'total': 17, 'avgResp': 3761.57, 'timestamp': daysAgo(4).format() },
+                        { 'total': 72, 'avgResp': 3545.57, 'timestamp': daysAgo(3).format() },
+                        { 'total': 45, 'avgResp': 1233.57, 'timestamp': daysAgo(2).format() },
+                        { 'total': 47, 'avgResp': 4564.57, 'timestamp': daysAgo(1).format() },
+                        { 'total': 4, 'avgResp': 3553.34, 'timestamp': daysAgo(0).format() }];
 
+    $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/hour/channels/5322fe9d8b6add4b2b059dd8')).respond([]);
+    $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/day/channels/5322fe9d8b6add4b2b059dd8')).respond(timeLoadData);
+    $httpBackend.when('GET', new RegExp('.*/metrics/channels/5322fe9d8b6add4b2b059dd8')).respond(statusData);
     $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]});
-    $httpBackend.when('GET', new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8?.*.')).respond( statusData );
-    $httpBackend.when('GET', new RegExp('.*/metrics/day/5322fe9d8b6add4b2b059dd8?.*.')).respond( timeLoadData );
 
 
     createController = function() {
@@ -60,9 +65,12 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
 
 
-  it('should run getStatusMetrics() and set the statusDonutData graph object', function () {
+  it('should run updateMetrics() and set the statusDonutData graph object', function () {
     createController();
-    scope.getStatusMetrics();
+    scope.selectedDateType.from = daysAgo(6).toDate();
+    scope.selectedDateType.until = daysAgo(0).toDate();
+    scope.selectedDateType.type = 'day';
+    scope.updateMetrics();
     httpBackend.flush();
 
     scope.statusDonutData.should.have.property('data');
@@ -95,68 +103,74 @@ describe('Controller: ChannelMonitoringCtrl', function () {
   });
 
 
-  it('should run getLoadMetrics() and set the transactionLoadData graph object', function () {
+  it('should run updateMetrics() and set the transactionLoadData graph object', function () {
     createController();
-    scope.getLoadMetrics();
+    scope.selectedDateType.from = daysAgo(6).toDate();
+    scope.selectedDateType.until = daysAgo(0).toDate();
+    scope.selectedDateType.type = 'day';
+    scope.updateMetrics();
     httpBackend.flush();
 
     scope.transactionLoadData.should.have.property('data');
     scope.transactionLoadData.data.length.should.equal(7);
-    scope.transactionLoadData.should.have.property('xkey', 'date');
+    scope.transactionLoadData.should.have.property('xkey', 'timestamp');
     scope.transactionLoadData.should.have.property('ykeys');
     scope.transactionLoadData.ykeys[0].should.equal('value');
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels[0].should.equal('Load');
-    scope.transactionLoadData.should.have.property('postunits', '');
+    scope.transactionLoadData.should.have.property('postunits', ' per day');
 
-    scope.transactionLoadData.data[0].should.have.property('date');
+    scope.transactionLoadData.data[0].should.have.property('timestamp');
     scope.transactionLoadData.data[0].should.have.property('value', 34);
-    scope.transactionLoadData.data[1].should.have.property('date');
+    scope.transactionLoadData.data[1].should.have.property('timestamp');
     scope.transactionLoadData.data[1].should.have.property('value', 73);
-    scope.transactionLoadData.data[2].should.have.property('date');
+    scope.transactionLoadData.data[2].should.have.property('timestamp');
     scope.transactionLoadData.data[2].should.have.property('value', 17);
-    scope.transactionLoadData.data[3].should.have.property('date');
+    scope.transactionLoadData.data[3].should.have.property('timestamp');
     scope.transactionLoadData.data[3].should.have.property('value', 72);
-    scope.transactionLoadData.data[4].should.have.property('date');
+    scope.transactionLoadData.data[4].should.have.property('timestamp');
     scope.transactionLoadData.data[4].should.have.property('value', 45);
-    scope.transactionLoadData.data[5].should.have.property('date');
+    scope.transactionLoadData.data[5].should.have.property('timestamp');
     scope.transactionLoadData.data[5].should.have.property('value', 47);
-    scope.transactionLoadData.data[6].should.have.property('date');
+    scope.transactionLoadData.data[6].should.have.property('timestamp');
     scope.transactionLoadData.data[6].should.have.property('value', 4);
 
 
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
 
-  it('should run getLoadMetrics() and set the transactionTimeData graph object', function () {
-    httpBackend.expectGET(new RegExp('.*/metrics/status/5322fe9d8b6add4b2b059dd8'));
+  it('should run updateMetrics() and set the transactionTimeData graph object', function () {
+    httpBackend.expectGET(new RegExp('.*/metrics/channels/5322fe9d8b6add4b2b059dd8'));
     createController();
-    scope.getLoadMetrics();
+    scope.selectedDateType.from = daysAgo(6).toDate();
+    scope.selectedDateType.until = daysAgo(0).toDate();
+    scope.selectedDateType.type = 'day';
+    scope.updateMetrics();
     httpBackend.flush();
 
-    scope.transactionTimeData.should.have.property('data');
-    scope.transactionTimeData.data.length.should.equal(7);
-    scope.transactionTimeData.should.have.property('xkey', 'date');
-    scope.transactionTimeData.should.have.property('ykeys');
-    scope.transactionTimeData.ykeys[0].should.equal('value');
-    scope.transactionTimeData.should.have.property('labels');
-    scope.transactionTimeData.labels[0].should.equal('Load');
-    scope.transactionTimeData.should.have.property('postunits', ' ms');
+    scope.transactionResponseTimeData.should.have.property('data');
+    scope.transactionResponseTimeData.data.length.should.equal(7);
+    scope.transactionResponseTimeData.should.have.property('xkey', 'timestamp');
+    scope.transactionResponseTimeData.should.have.property('ykeys');
+    scope.transactionResponseTimeData.ykeys[0].should.equal('value');
+    scope.transactionResponseTimeData.should.have.property('labels');
+    scope.transactionResponseTimeData.labels[0].should.equal('Load');
+    scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
-    scope.transactionTimeData.data[0].should.have.property('date');
-    scope.transactionTimeData.data[0].should.have.property('value', '2881.91');
-    scope.transactionTimeData.data[1].should.have.property('date');
-    scope.transactionTimeData.data[1].should.have.property('value', '1313.57');
-    scope.transactionTimeData.data[2].should.have.property('date');
-    scope.transactionTimeData.data[2].should.have.property('value', '3761.57');
-    scope.transactionTimeData.data[3].should.have.property('date');
-    scope.transactionTimeData.data[3].should.have.property('value', '3545.57');
-    scope.transactionTimeData.data[4].should.have.property('date');
-    scope.transactionTimeData.data[4].should.have.property('value', '1233.57');
-    scope.transactionTimeData.data[5].should.have.property('date');
-    scope.transactionTimeData.data[5].should.have.property('value', '4564.57');
-    scope.transactionTimeData.data[6].should.have.property('date');
-    scope.transactionTimeData.data[6].should.have.property('value', '3553.34');
+    scope.transactionResponseTimeData.data[0].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[0].should.have.property('value', '2881.91');
+    scope.transactionResponseTimeData.data[1].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[1].should.have.property('value', '1313.57');
+    scope.transactionResponseTimeData.data[2].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[2].should.have.property('value', '3761.57');
+    scope.transactionResponseTimeData.data[3].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[3].should.have.property('value', '3545.57');
+    scope.transactionResponseTimeData.data[4].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[4].should.have.property('value', '1233.57');
+    scope.transactionResponseTimeData.data[5].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[5].should.have.property('value', '4564.57');
+    scope.transactionResponseTimeData.data[6].should.have.property('timestamp');
+    scope.transactionResponseTimeData.data[6].should.have.property('value', '3553.34');
 
 
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
