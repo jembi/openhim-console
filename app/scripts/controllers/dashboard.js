@@ -5,6 +5,8 @@
 angular.module('openhimConsoleApp')
   .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting) {
 
+    var noDataErrorMsg = 'There has been no transactions received for the queried timeframe';
+
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
@@ -62,7 +64,8 @@ angular.module('openhimConsoleApp')
 
     function loadMetricsSuccess(metrics) {
       if (metrics.length === 0) {
-        Alerting.AlertAddMsg('load', 'warning', 'There has been no transactions received for the queried timeframe');
+        Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg);
+        Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg);
       } else {
         var round = function (d) {
           return (d).toFixed(2);
@@ -75,12 +78,10 @@ angular.module('openhimConsoleApp')
     function loadMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
     }
 
     function updateTimeseriesMetrics() {
-      // reset any load metric alert warnings
-      Alerting.AlertReset('load');
-
       // do API call here to pull load metrics
       Api.MetricsTimeseries.query({
         type: $scope.selectedDateType.type,
@@ -174,7 +175,7 @@ angular.module('openhimConsoleApp')
 
     function statusMetricsSuccess (metrics) {
       if (metrics.length === 0) {
-        Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
+        Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg);
       } else {
         updateStatusBarChart(metrics);
       }
@@ -186,9 +187,6 @@ angular.module('openhimConsoleApp')
     }
 
     function updateStatusMetrics() {
-      // reset any load metric alert warnings
-      Alerting.AlertReset('status');
-
       // do API call here to pull load metrics
       Api.MetricsChannels.query({
         startDate: moment($scope.selectedDateType.from).format(),
@@ -198,6 +196,10 @@ angular.module('openhimConsoleApp')
 
 
     $scope.updateMetrics = function() {
+      Alerting.AlertReset('load');
+      Alerting.AlertReset('responseTime');
+      Alerting.AlertReset('status');
+
       updateTimeseriesMetrics();
       updateStatusMetrics();
     };
