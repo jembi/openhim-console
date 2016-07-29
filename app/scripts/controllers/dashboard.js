@@ -24,7 +24,7 @@ angular.module('openhimConsoleApp')
     /***************************************************/
 
 
-    function buildLineChartData(metrics, key, keyUnit) {
+    function buildLineChartData(metrics, key, keyUnit, valueFormatter) {
       var graphData = [];
       var from = moment($scope.selectedDateType.from);
       var until = moment($scope.selectedDateType.until);
@@ -44,6 +44,9 @@ angular.module('openhimConsoleApp')
 
           if (timestamp.isSame(ts, $scope.selectedDateType.type)) {
             value = metrics[j][key];
+            if (valueFormatter) {
+              value = valueFormatter(value);
+            }
             $scope.loadTotal += metrics[j].total;
             avgResponseTimeTotal += metrics[j].avgResp;
           }
@@ -57,19 +60,22 @@ angular.module('openhimConsoleApp')
     }
 
 
-    $scope.loadMetricsSuccess = function(metrics){
-      if ( metrics.length === 0 ){
+    function loadMetricsSuccess(metrics) {
+      if (metrics.length === 0) {
         Alerting.AlertAddMsg('load', 'warning', 'There has been no transactions received for the queried timeframe');
-      }else{
+      } else {
+        var round = function (d) {
+          return (d).toFixed(2);
+        };
         $scope.transactionLoadData = buildLineChartData(metrics, 'total', 'per ' + $scope.selectedDateType.type);
-        $scope.transactionResponseTimeData = buildLineChartData(metrics, 'avgResp', 'ms');
+        $scope.transactionResponseTimeData = buildLineChartData(metrics, 'avgResp', 'ms', round);
       }
-    };
+    }
 
-    $scope.loadMetricsError = function(err){
+    function loadMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
+    }
 
     function updateTimeseriesMetrics() {
       // reset any load metric alert warnings
@@ -80,11 +86,11 @@ angular.module('openhimConsoleApp')
         type: $scope.selectedDateType.type,
         startDate: moment($scope.selectedDateType.from).format(),
         endDate: moment($scope.selectedDateType.until).format()
-      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
+      }, loadMetricsSuccess, loadMetricsError);
     }
 
 
-    $scope.updateStatusBarChart = function(metrics){
+    function updateStatusBarChart(metrics) {
       // set scope variable for amount of active channels
       $scope.activeChannels = metrics.length;
 
@@ -105,7 +111,7 @@ angular.module('openhimConsoleApp')
         var statusColors = [];
 
         // loop through each channels found in result and construct graph objects
-        for ( var i=0; i<metrics.length; i++ ){
+        for (var i=0; i<metrics.length; i++) {
           channelGraphStack = {};
 
           // create a link object for when the user clicks on the bar
@@ -115,7 +121,7 @@ angular.module('openhimConsoleApp')
           channelGraphStack.processing = metrics[i].processing;
 
           // only add these if it isnt yet present
-          if ( statusKeys.indexOf('processing') === -1 ){
+          if (statusKeys.indexOf('processing') === -1) {
             statusKeys.push('processing');
             statusLabels.push('Processing');
             statusColors.push('#777777');
@@ -124,7 +130,7 @@ angular.module('openhimConsoleApp')
           channelGraphStack.failed = metrics[i].failed;
 
           // only add these if it isnt yet present
-          if ( statusKeys.indexOf('failed') === -1 ){
+          if (statusKeys.indexOf('failed') === -1) {
             statusKeys.push('failed');
             statusLabels.push('Failed');
             statusColors.push('#d9534f');
@@ -133,7 +139,7 @@ angular.module('openhimConsoleApp')
           channelGraphStack.completed = metrics[i].completed;
 
           // only add these if it isnt yet present
-          if ( statusKeys.indexOf('completed') === -1 ){
+          if (statusKeys.indexOf('completed') === -1) {
             statusKeys.push('completed');
             statusLabels.push('Completed');
             statusColors.push('#f0ad4e');
@@ -141,7 +147,7 @@ angular.module('openhimConsoleApp')
 
           channelGraphStack.completedWErrors = metrics[i].completedWErrors;
 
-          if ( statusKeys.indexOf('completedWErrors') === -1 ){
+          if (statusKeys.indexOf('completedWErrors') === -1) {
             statusKeys.push('completedWErrors');
             statusLabels.push('Completed With Errors');
             statusColors.push('#5bc0de');
@@ -149,7 +155,7 @@ angular.module('openhimConsoleApp')
 
           channelGraphStack.successful = metrics[i].successful;
 
-          if ( statusKeys.indexOf('successful') === -1 ){
+          if (statusKeys.indexOf('successful') === -1) {
             statusKeys.push('successful');
             statusLabels.push('Successful');
             statusColors.push('#5cb85c');
@@ -164,20 +170,20 @@ angular.module('openhimConsoleApp')
         Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data);
       });
 
-    };
+    }
 
-    $scope.statusMetricsSuccess = function(metrics){
-      if ( metrics.length === 0 ){
+    function statusMetricsSuccess (metrics) {
+      if (metrics.length === 0) {
         Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
-      }else{
-        $scope.updateStatusBarChart(metrics);
+      } else {
+        updateStatusBarChart(metrics);
       }
-    };
+    }
 
-    $scope.statusMetricsError = function(err){
+    function statusMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
+    }
 
     function updateStatusMetrics() {
       // reset any load metric alert warnings
@@ -187,7 +193,7 @@ angular.module('openhimConsoleApp')
       Api.MetricsChannels.query({
         startDate: moment($scope.selectedDateType.from).format(),
         endDate: moment($scope.selectedDateType.until).format()
-      }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
+      }, statusMetricsSuccess, statusMetricsError);
     }
 
 
