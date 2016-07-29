@@ -9,6 +9,7 @@ angular.module('openhimConsoleApp')
     /***************************************************/
 
     $scope.downloadLink = '';
+    $scope.validatedData = {};
 
     // function to reset export options to default
     $scope.resetExportOptions = function() {
@@ -57,7 +58,19 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data);
     };
-      
+
+    var openValidationModal = function() {
+      $modal.open({
+        templateUrl: 'views/exportImportModal.html',
+        controller: 'ExportImportModalCtrl',
+        resolve: {
+          data: function () {return $scope.validatedData;}
+          // viewRecordDetails: function(type, content) {
+          //   return $scope.viewRecordDetails(type, content);
+          // }
+        }
+      });
+    };      
       
     // Make API requests for the export configuration options
     var exportObject = Api.Metadata.query(function(result) {
@@ -201,45 +214,29 @@ angular.module('openhimConsoleApp')
     /**         Import Functions           **/
     /****************************************/
 
-    // import failed function
-    var importFail = function(err) {
+    var validateImportFail = function(err) {
+      console.log(err);
+
       Alerting.AlertReset();
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred during the import: #' + err.status + ' - ' + err.data);
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while validating the import: #' + err.status + ' - ' + err.data);
     };
 
-    // import success function
-    var importSuccess = function(data) {
-      $scope.importStatus = 'done';
-      $scope.importResult = data;
+    var validateImportSuccess = function(result) {
+      console.log('succesfully validated file');
+      console.log(result);
+
+      $scope.validatedData = result;
+      openValidationModal();
     };
 
-    // function to run import file
-    $scope.runImportFile = function(data) {
-      $scope.importStatus = 'progress';
-      $scope.updateFlag = false;
+    $scope.validateImportFile = function(data) {
+      $scope.importStatus = 'resolveConflicts';
 
-      data = JSON.parse(data);
-      
-      // If record has _id then do update instead of insert
-      if (data.Clients && data.Clients.length > 0 && data.Clients[0]._id) { $scope.updateFlag = true; }
-      if (data.Channels && data.Channels.length > 0 && data.Channels[0]._id) { $scope.updateFlag = true; }
-      if (data.ContactGroups && data.ContactGroups.length > 0 && data.ContactGroups[0]._id) { $scope.updateFlag = true; }
-      if (data.Users && data.Users.length > 0 && data.Users[0]._id) { $scope.updateFlag = true; }
-      if (data.Mediators && data.Mediators.length > 0 && data.Mediators[0]._id) { $scope.updateFlag = true; }
-
-      if ( $scope.updateFlag ) {
-        Api.Metadata.update(data, function(result) {
-          importSuccess(result);
-        }, function(err) {
-          importFail(err);
-        });
-      } else {
-        Api.Metadata.save(data, function(result) {
-          importSuccess(result);
-        }, function(err) {
-          importFail(err);
-        });
-      }
+      Api.MetadataValidation.save(data, function(result){
+        validateImportSuccess(result);
+      }, function(err){
+        validateImportFail(err);
+      });
     };
 
     // watch if files have been dropped
@@ -257,8 +254,9 @@ angular.module('openhimConsoleApp')
         // onload function used by the reader
         reader.onload = function(event) {
           var data = event.target.result;
-          // read the import script data and process
-          $scope.runImportFile(data);
+
+          // read the import script data and validate
+          $scope.validateImportFile(data);
         };
 
         // foreach uploaded file
@@ -282,6 +280,10 @@ angular.module('openhimConsoleApp')
           }
         }
       });
+    };
+
+    $scope.showConflictModal = function() {
+      openValidationModal();
     };
 
 

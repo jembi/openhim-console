@@ -1,0 +1,84 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">
+    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
+    Resolve Metadata Conflicts
+  </h4>
+</div>
+<form class="form-horizontal" ng-submit="saveImport()" novalidate>
+  <div class="modal-body">
+    <div ng-if="conflicts.length === 0" class="med-no-config">
+      <center>
+        <span>There are no conflicts with this import.</span>
+      </center>
+    </div>
+
+    <div>
+      <label class="successfulImports">Successfull Imports ( {{validImports.length}} )</label>
+    </div>
+    <div>
+      <label class="importConflicts">Conflict Imports ( {{conflicts.length}} )</label>
+    </div>
+    <div>
+      <label class="failedImports">Failed Imports ( {{validationResults.errors.length}} )</label>
+    </div>
+
+    <div id="no-more-tables">
+      <table class="table table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th width="120"><input type="checkbox" ng-model="outcome.selectedAll" ng-click="selectAll()">&nbsp;&nbsp;Overwrite</th>
+            <th>Model</th>
+            <th>UID</th>
+            <th>Record</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Valid Imports -->
+          <tr class="successfulImports" ng-repeat="import in validImports">
+            <td data-title="Overwrite">{{ import.message }}</td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">{{ import.uid }}</td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td data-title="Status">{{ import.status }}</td>
+          </tr>
+
+          <!-- Import Conflicts -->
+          <tr class="importConflicts" ng-repeat="import in conflicts">
+            <td data-title="Overwrite"><input type="checkbox" ng-model="import.selected" ng-change="checkIfAllSelected()"></td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">{{ import.uid }}</td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td data-title="Status">{{ import.status }}</td>
+          </tr>
+
+          <!-- Invalid Imports -->
+          <tr class="failedImports" ng-repeat="import in validationResults.errors">
+            <td data-title="Overwrite">{{ import.message }}</td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">{{ import.uid }}</td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td data-title="Status">{{ import.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  </div>
+
+  <div class="modal-footer">
+    <div>
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="saveImport()">Save changes</button>
+    </div>
+  </div>
+</form>

@@ -80,6 +80,12 @@
             <img src="images/loading.gif" alt="Loading..." />
           </div>
 
+          <div ng-if="importStatus == 'resolveConflicts'">
+            <h3>Import Results: </h3>
+            
+            <label class="btn btn-primary" ng-click="showConflictModal()"><strong>Resolve Conflicts</strong></label>
+          </div>
+
           <div ng-if="importStatus == 'done'">
             <h3>Import Results: </h3>
             
