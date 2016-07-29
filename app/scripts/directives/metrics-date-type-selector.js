@@ -8,7 +8,7 @@ angular.module('openhimConsoleApp')
       templateUrl:'views/partials/metrics-date-type-selector.html',
       scope: {
         selected: '=',
-        onChange: '='
+        onChange: '=?'
       },
       link: function(scope){
         if (!scope.onChange) {

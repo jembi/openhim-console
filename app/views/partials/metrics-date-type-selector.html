@@ -21,10 +21,10 @@
   </div>
   <div ng-hide="!custom" class="form-group">
     <label class="sr-only">From</label>
-    <input type="text" class="form-control" ng-model="selected.from" ng-change="onChange()" placeholder="from" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+    <input type="text" class="form-control" ng-model="selected.from" ng-blur="onChange()" placeholder="from" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
   </div>
   <div ng-hide="!custom" class="form-group">
     <label class="sr-only">Until</label>
-    <input type="text" class="form-control" ng-model="selected.until" ng-change="onChange()" placeholder="until" ng-blur="reload()" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+    <input type="text" class="form-control" ng-model="selected.until" ng-blur="onChange()" placeholder="until" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
   </div>
 </form>
