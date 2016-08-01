@@ -119,7 +119,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionLoadData.should.have.property('ykeys');
     scope.transactionLoadData.ykeys[0].should.equal('value');
     scope.transactionLoadData.should.have.property('labels');
-    scope.transactionLoadData.labels[0].should.equal('Load');
+    scope.transactionLoadData.labels[0].should.equal('Transactions');
     scope.transactionLoadData.should.have.property('postunits', ' per day');
 
     scope.transactionLoadData.data[0].should.have.property('timestamp');
@@ -157,7 +157,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionResponseTimeData.should.have.property('ykeys');
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
-    scope.transactionResponseTimeData.labels[0].should.equal('Load');
+    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
     scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data[0].should.have.property('timestamp');

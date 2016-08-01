@@ -81,7 +81,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.ykeys[0].should.equal('value');
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels.length.should.equal(1);
-    scope.transactionLoadData.labels[0].should.equal('Load');
+    scope.transactionLoadData.labels[0].should.equal('Transactions');
     scope.transactionLoadData.should.have.property('postunits', ' per hour');
 
 
@@ -116,7 +116,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
-    scope.transactionResponseTimeData.labels[0].should.equal('Load');
+    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
     scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data.length.should.equal(5);
@@ -149,7 +149,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.ykeys[0].should.equal('value');
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels.length.should.equal(1);
-    scope.transactionLoadData.labels[0].should.equal('Load');
+    scope.transactionLoadData.labels[0].should.equal('Transactions');
     scope.transactionLoadData.should.have.property('postunits', ' per day');
 
 
@@ -184,7 +184,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
-    scope.transactionResponseTimeData.labels[0].should.equal('Load');
+    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
     scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data.length.should.equal(5); // 5 days of data
