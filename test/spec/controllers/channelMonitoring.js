@@ -70,6 +70,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.selectedDateType.from = daysAgo(6).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
     scope.selectedDateType.type = 'day';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -108,6 +109,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.selectedDateType.from = daysAgo(6).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
     scope.selectedDateType.type = 'day';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -145,6 +147,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.selectedDateType.from = daysAgo(6).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
     scope.selectedDateType.type = 'day';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 

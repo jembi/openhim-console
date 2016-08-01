@@ -3,63 +3,18 @@
 
 
 angular.module('openhimConsoleApp')
-  .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting) {
+  .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, Metrics) {
 
     var noDataErrorMsg = 'There has been no transactions received for the queried timeframe';
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
 
     $scope.selectedDateType = {
-      from: moment().startOf('day').toDate(),
-      until: moment().endOf('day').toDate(),
-      type: 'hour'
+      period: '1d'
     };
 
     var dashboardInterval = $interval(function() {
       $scope.updateMetrics();
     }, 5000);
-
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
-
-    function buildLineChartData(metrics, key, keyUnit, valueFormatter) {
-      var graphData = [];
-      var from = moment($scope.selectedDateType.from);
-      var until = moment($scope.selectedDateType.until);
-      var unit = $scope.selectedDateType.type + 's';
-      var avgResponseTimeTotal = 0;
-
-      $scope.loadTotal = 0;
-      $scope.avgResponseTime = 0;
-
-      var diff = Math.abs(from.diff(until, unit));
-      for (var i = 0; i <= diff; i++) {
-        var timestamp = from.clone().add(i, unit);
-        var value = 0;
-
-        for (var j = 0; j < metrics.length; j++) {
-          var ts = moment(metrics[j].timestamp);
-
-          if (timestamp.isSame(ts, $scope.selectedDateType.type)) {
-            value = metrics[j][key];
-            if (valueFormatter) {
-              value = valueFormatter(value);
-            }
-            $scope.loadTotal += metrics[j].total;
-            avgResponseTimeTotal += metrics[j].avgResp;
-          }
-        }
-
-        graphData.push({ timestamp: timestamp.format('YYYY-MM-DD HH:mm'), value: value });
-      }
-
-      $scope.avgResponseTime = (avgResponseTimeTotal / metrics.length).toFixed(2);
-      return {data: graphData, xkey: 'timestamp', ykeys: ['value'], labels: ['Load'], postunits: ' ' + keyUnit};
-    }
 
 
     function loadMetricsSuccess(metrics) {
@@ -70,8 +25,8 @@ angular.module('openhimConsoleApp')
         var round = function (d) {
           return (d).toFixed(2);
         };
-        $scope.transactionLoadData = buildLineChartData(metrics, 'total', 'per ' + $scope.selectedDateType.type);
-        $scope.transactionResponseTimeData = buildLineChartData(metrics, 'avgResp', 'ms', round);
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'per ' + $scope.selectedDateType.type);
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', 'ms', round);
       }
     }
 
@@ -200,6 +155,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertReset('responseTime');
       Alerting.AlertReset('status');
 
+      Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType);
       updateTimeseriesMetrics();
       updateStatusMetrics();
     };

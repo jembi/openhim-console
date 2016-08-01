@@ -20,13 +20,13 @@
             <div metrics-date-type-selector selected="selectedDateType" on-change="updateMetrics" />
           </div>
 
-          <div style="margin-bottom: 20px;" ng-if="loadTotal || avgResponseTime">
+          <div style="margin-bottom: 20px;" ng-if="transactionLoadData.loadTotal || transactionLoadData.avgResponseTime">
             <div class="panel-body">
-              <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions: <br /><strong>{{loadTotal}}</strong>
+              <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
+                Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
               </div>
-              <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time: <br /><strong>{{avgResponseTime}} ms</strong>
+              <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
+                Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
               </div>
             </div>
           </div>

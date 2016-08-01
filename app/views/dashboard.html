@@ -26,11 +26,11 @@
               <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
                 Active Channels: <br /><strong>{{activeChannels}}</strong>
               </div>
-              <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions: <br /><strong>{{loadTotal}}</strong>
+              <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
+                Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
               </div>
-              <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time: <br /><strong>{{avgResponseTime}} ms</strong>
+              <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
+                Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
               </div>
             </div>
           </div>

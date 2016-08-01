@@ -68,6 +68,10 @@ describe('Controller: DashboardCtrl', function () {
 
   it('should run updateMetrics() and create transactionLoadData scope object (default: hours)', function() {
     createController();
+    scope.selectedDateType.from = hoursAgo(4).toDate();
+    scope.selectedDateType.until = hoursAgo(0).toDate();
+    scope.selectedDateType.type = 'hour';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -81,27 +85,28 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.should.have.property('postunits', ' per hour');
 
 
-    scope.transactionLoadData.data.length.should.equal(24); // Default is for today, the entire day
+    scope.transactionLoadData.data.length.should.equal(5);
 
-    var indexOf = function(hourAgo) {
-      return parseInt( hoursAgo(hourAgo).format('H') );
-    };
-    scope.transactionLoadData.data[indexOf(4)].should.have.property('timestamp', hoursAgo(4).format('YYYY-MM-DD HH:mm'));
-    scope.transactionLoadData.data[indexOf(4)].should.have.property('value', 21);
-    scope.transactionLoadData.data[indexOf(3)].should.have.property('timestamp', hoursAgo(3).format('YYYY-MM-DD HH:mm'));
-    scope.transactionLoadData.data[indexOf(3)].should.have.property('value', 65);
-    scope.transactionLoadData.data[indexOf(2)].should.have.property('timestamp', hoursAgo(2).format('YYYY-MM-DD HH:mm'));
-    scope.transactionLoadData.data[indexOf(2)].should.have.property('value', 32);
-    scope.transactionLoadData.data[indexOf(1)].should.have.property('timestamp', hoursAgo(1).format('YYYY-MM-DD HH:mm'));
-    scope.transactionLoadData.data[indexOf(1)].should.have.property('value', 13);
-    scope.transactionLoadData.data[indexOf(0)].should.have.property('timestamp', hoursAgo(0).format('YYYY-MM-DD HH:mm'));
-    scope.transactionLoadData.data[indexOf(0)].should.have.property('value', 56);
+    scope.transactionLoadData.data[0].should.have.property('timestamp', hoursAgo(4).format('YYYY-MM-DD HH:mm'));
+    scope.transactionLoadData.data[0].should.have.property('value', 21);
+    scope.transactionLoadData.data[1].should.have.property('timestamp', hoursAgo(3).format('YYYY-MM-DD HH:mm'));
+    scope.transactionLoadData.data[1].should.have.property('value', 65);
+    scope.transactionLoadData.data[2].should.have.property('timestamp', hoursAgo(2).format('YYYY-MM-DD HH:mm'));
+    scope.transactionLoadData.data[2].should.have.property('value', 32);
+    scope.transactionLoadData.data[3].should.have.property('timestamp', hoursAgo(1).format('YYYY-MM-DD HH:mm'));
+    scope.transactionLoadData.data[3].should.have.property('value', 13);
+    scope.transactionLoadData.data[4].should.have.property('timestamp', hoursAgo(0).format('YYYY-MM-DD HH:mm'));
+    scope.transactionLoadData.data[4].should.have.property('value', 56);
 
   });
 
 
   it('should run updateMetrics() and create transactionResponseTimeData scope object (default: hours)', function() {
     createController();
+    scope.selectedDateType.from = hoursAgo(4).toDate();
+    scope.selectedDateType.until = hoursAgo(0).toDate();
+    scope.selectedDateType.type = 'hour';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -114,21 +119,18 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.labels[0].should.equal('Load');
     scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
-    scope.transactionResponseTimeData.data.length.should.equal(24); // Default is for today, the entire day
+    scope.transactionResponseTimeData.data.length.should.equal(5);
 
-    var indexOf = function(hourAgo) {
-      return parseInt( hoursAgo(hourAgo).format('H') );
-    };
-    scope.transactionResponseTimeData.data[indexOf(4)].should.have.property('timestamp', hoursAgo(4).format('YYYY-MM-DD HH:mm'));
-    scope.transactionResponseTimeData.data[indexOf(4)].should.have.property('value', '43269.95');
-    scope.transactionResponseTimeData.data[indexOf(3)].should.have.property('timestamp', hoursAgo(3).format('YYYY-MM-DD HH:mm'));
-    scope.transactionResponseTimeData.data[indexOf(3)].should.have.property('value', '13367.98');
-    scope.transactionResponseTimeData.data[indexOf(2)].should.have.property('timestamp', hoursAgo(2).format('YYYY-MM-DD HH:mm'));
-    scope.transactionResponseTimeData.data[indexOf(2)].should.have.property('value', '11249.94');
-    scope.transactionResponseTimeData.data[indexOf(1)].should.have.property('timestamp', hoursAgo(1).format('YYYY-MM-DD HH:mm'));
-    scope.transactionResponseTimeData.data[indexOf(1)].should.have.property('value', '54668.97');
-    scope.transactionResponseTimeData.data[indexOf(0)].should.have.property('timestamp', hoursAgo(0).format('YYYY-MM-DD HH:mm'));
-    scope.transactionResponseTimeData.data[indexOf(0)].should.have.property('value', '34769.91');
+    scope.transactionResponseTimeData.data[0].should.have.property('timestamp', hoursAgo(4).format('YYYY-MM-DD HH:mm'));
+    scope.transactionResponseTimeData.data[0].should.have.property('value', '43269.95');
+    scope.transactionResponseTimeData.data[1].should.have.property('timestamp', hoursAgo(3).format('YYYY-MM-DD HH:mm'));
+    scope.transactionResponseTimeData.data[1].should.have.property('value', '13367.98');
+    scope.transactionResponseTimeData.data[2].should.have.property('timestamp', hoursAgo(2).format('YYYY-MM-DD HH:mm'));
+    scope.transactionResponseTimeData.data[2].should.have.property('value', '11249.94');
+    scope.transactionResponseTimeData.data[3].should.have.property('timestamp', hoursAgo(1).format('YYYY-MM-DD HH:mm'));
+    scope.transactionResponseTimeData.data[3].should.have.property('value', '54668.97');
+    scope.transactionResponseTimeData.data[4].should.have.property('timestamp', hoursAgo(0).format('YYYY-MM-DD HH:mm'));
+    scope.transactionResponseTimeData.data[4].should.have.property('value', '34769.91');
   });
 
   it('should run updateMetrics() and create transactionLoadData scope object (days)', function() {
@@ -137,6 +139,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.selectedDateType.from = daysAgo(4).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
     scope.selectedDateType.type = 'day';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -171,6 +174,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.selectedDateType.from = daysAgo(4).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
     scope.selectedDateType.type = 'day';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 
@@ -200,6 +204,10 @@ describe('Controller: DashboardCtrl', function () {
 
   it('should run updateMetrics() and create statusData scope object', function() {
     createController();
+    scope.selectedDateType.from = hoursAgo(4).toDate();
+    scope.selectedDateType.until = hoursAgo(0).toDate();
+    scope.selectedDateType.type = 'hour';
+    scope.selectedDateType.period = 'custom';
     scope.updateMetrics();
     httpBackend.flush();
 

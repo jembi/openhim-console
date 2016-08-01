@@ -1,16 +1,16 @@
 <form class="form-inline" role="form">
   <div class="form-group">
     <div class="btn-group">
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'1h'">1h</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'1d'">1d</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'1w'">1w</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'1m'">1m</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'1y'">1y</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'5y'">5y</label>
-      <label class="btn btn-primary" ng-change="changePeriod()" ng-model="period" btn-radio="'custom'">Custom</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'1h'">1h</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'1d'">1d</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'1w'">1w</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'1m'">1m</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'1y'">1y</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'5y'">5y</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'custom'">Custom</label>
     </div>
   </div>
-  <div ng-hide="!custom" class="form-group">
+  <div ng-hide="selected.period !== 'custom'" class="form-group">
     <select class="form-control" ng-model="selected.type" ng-change="onChange()">
       <option value="minute">Breakdown by minute</option>
       <option value="hour">Breakdown by hour</option>
@@ -19,11 +19,11 @@
       <option value="year">Breakdown by year</option>
     </select>
   </div>
-  <div ng-hide="!custom" class="form-group">
+  <div ng-hide="selected.period !== 'custom'" class="form-group">
     <label class="sr-only">From</label>
     <input type="text" class="form-control" ng-model="selected.from" ng-blur="onChange()" placeholder="from" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
   </div>
-  <div ng-hide="!custom" class="form-group">
+  <div ng-hide="selected.period !== 'custom'" class="form-group">
     <label class="sr-only">Until</label>
     <input type="text" class="form-control" ng-model="selected.until" ng-blur="onChange()" placeholder="until" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
   </div>
