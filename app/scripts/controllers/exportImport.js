@@ -214,14 +214,14 @@ angular.module('openhimConsoleApp')
     /**         Import Functions           **/
     /****************************************/
 
-    var validateImportFail = function(err) {
+    var validateFail = function(err) {
       console.log(err);
 
       Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while validating the import: #' + err.status + ' - ' + err.data);
     };
 
-    var validateImportSuccess = function(result) {
+    var validateSuccess = function(result) {
       console.log('succesfully validated uploaded file');
       $scope.importStatus = 'resolvingConflicts';
       $scope.validatedData = result;
@@ -233,9 +233,9 @@ angular.module('openhimConsoleApp')
       $scope.importStatus = 'progress';
 
       Api.MetadataValidation.save(data, function(result){
-        validateImportSuccess(result);
+        validateSuccess(result);
       }, function(err){
-        validateImportFail(err);
+        validateFail(err);
       });
     };
 
