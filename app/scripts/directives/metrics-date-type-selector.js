@@ -11,11 +11,19 @@ angular.module('openhimConsoleApp')
         onChange: '=?'
       },
       link: function(scope){
+        scope.optionsEnabled = {
+          minute: true,
+          hour: true,
+          day: true,
+          month: true,
+          year: true
+        };
+
         if (!scope.onChange) {
           scope.onChange = function(){};
         }
 
-        scope.customDateBreakdownChange = function() {
+        function processOptions() {
           var from = moment(scope.selected.from);
           var until = moment(scope.selected.until);
 
@@ -27,18 +35,47 @@ angular.module('openhimConsoleApp')
 
           if (from.isAfter(until)) {
             scope.selected.from = scope.selected.until;
-          } else if (scope.selected.type === 'minute' && diff('minutes') > maxBreakdown) {
-            scope.selected.type = 'hour';
-          } else if (scope.selected.type === 'hour' && diff('hours') > maxBreakdown) {
-            scope.selected.type = 'day';
-          } else if (scope.selected.type === 'day' && diff('days') > maxBreakdown) {
-            scope.selected.type = 'month';
-          } else if (scope.selected.type === 'month' && diff('months') > maxBreakdown) {
-            scope.selected.type = 'year';
           }
 
+          scope.optionsEnabled.minute = true;
+          scope.optionsEnabled.hour = true;
+          scope.optionsEnabled.day = true;
+          scope.optionsEnabled.month = true;
+          scope.optionsEnabled.year = true;
+
+          if (diff('minutes') > maxBreakdown) {
+            scope.optionsEnabled.minute = false;
+            if (scope.selected.type === 'minute') {
+              scope.selected.type = 'hour';
+            }
+          }
+          if (diff('hours') > maxBreakdown) {
+            scope.optionsEnabled.hour = false;
+            if (scope.selected.type === 'hour') {
+              scope.selected.type = 'day';
+            }
+          }
+          if (diff('days') > maxBreakdown) {
+            scope.optionsEnabled.day = false;
+            if (scope.selected.type === 'day') {
+              scope.selected.type = 'month';
+            }
+          }
+          if (diff('months') > maxBreakdown) {
+            scope.optionsEnabled.month = false;
+            if (scope.selected.type === 'month') {
+              scope.selected.type = 'year';
+            }
+          }
+        }
+
+        scope.customDateBreakdownChange = function() {
+          processOptions();
           scope.onChange();
         };
+
+        // process for initial values
+        processOptions();
       }
     };
   });

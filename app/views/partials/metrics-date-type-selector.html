@@ -17,11 +17,11 @@
         <i tooltip-placement="top" tooltip="The precision of the metrics to generate the graphs for" class="glyphicon glyphicon-question-sign"></i>
       </label><br/>
       <select class="form-control" ng-model="selected.type" ng-change="customDateBreakdownChange()">
-        <option value="minute">minute</option>
-        <option value="hour">hour</option>
-        <option value="day">day</option>
-        <option value="month">month</option>
-        <option value="year">year</option>
+        <option ng-disabled="!optionsEnabled.minute" value="minute">minute</option>
+        <option ng-disabled="!optionsEnabled.hour" value="hour">hour</option>
+        <option ng-disabled="!optionsEnabled.day" value="day">day</option>
+        <option ng-disabled="!optionsEnabled.month" value="month">month</option>
+        <option ng-disabled="!optionsEnabled.year" value="year">year</option>
       </select>
     </div>
     <div ng-hide="selected.period !== 'custom'" class="form-group">
