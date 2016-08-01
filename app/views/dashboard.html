@@ -37,7 +37,7 @@
 
           <div class="content-box-large bordered-box">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Load</div>
+              <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -55,7 +55,7 @@
 
           <div class="content-box-large bordered-box">
             <div class="panel-heading">
-              <div class="panel-title">Average Response Time</div>
+              <div class="panel-title">Average Response Time (ms)</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -83,7 +83,7 @@
             <div class="panel-body" ng-if="!alerts.status">
               <div morris-bar-chart
                 id="transaction-status-graph"
-                data="statusData"
+                data="channelsData"
                 style="height: 250px;">
               </div>
             </div>

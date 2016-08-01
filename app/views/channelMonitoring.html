@@ -33,7 +33,7 @@
 
           <div class="content-box-large load-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Load</div>
+              <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -52,7 +52,7 @@
 
           <div class="content-box-large response-time-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
-              <div class="panel-title">Average Response Time</div>
+              <div class="panel-title">Average Response Time (ms)</div>
             </div>
 
             <!-- Transaction ResponseTime Alerts -->
@@ -82,14 +82,14 @@
                 <div class="col-md-9">
                   <div morris-bar-chart
                     id="status-bar" 
-                    data="statusBarData"
+                    data="channelsBarData"
                     style="height: 250px;">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div morris-donut-chart
                     id="status-donut"
-                    data="statusDonutData"
+                    data="channelsDonutData"
                     style="height: 250px;">
                   </div>
                 </div>

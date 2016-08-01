@@ -25,7 +25,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
     httpBackend = $httpBackend;
 
-    var statusData = [{ completed: 2, completedWErrors: 0, failed: 3, processing: 0, successful: 16 }];
+    var channelsData = [{ completed: 2, completedWErrors: 0, failed: 3, processing: 0, successful: 16 }];
 
     var timeLoadData = [{ 'total': 34, 'avgResp': 2881.91, 'timestamp': daysAgo(6).format() },
                         { 'total': 73, 'avgResp': 1313.57, 'timestamp': daysAgo(5).format() },
@@ -37,7 +37,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/hour/channels/5322fe9d8b6add4b2b059dd8')).respond([]);
     $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/day/channels/5322fe9d8b6add4b2b059dd8')).respond(timeLoadData);
-    $httpBackend.when('GET', new RegExp('.*/metrics/channels/5322fe9d8b6add4b2b059dd8')).respond(statusData);
+    $httpBackend.when('GET', new RegExp('.*/metrics/channels/5322fe9d8b6add4b2b059dd8')).respond(channelsData);
     $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]});
 
 
@@ -65,7 +65,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
 
 
-  it('should run updateMetrics() and set the statusDonutData graph object', function () {
+  it('should run updateMetrics() and set the channelsDonutData graph object', function () {
     createController();
     scope.selectedDateType.from = daysAgo(6).toDate();
     scope.selectedDateType.until = daysAgo(0).toDate();
@@ -74,31 +74,31 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.updateMetrics();
     httpBackend.flush();
 
-    scope.statusDonutData.should.have.property('data');
-    scope.statusDonutData.data.length.should.equal(3);
-    scope.statusDonutData.should.have.property('colors');
-    scope.statusDonutData.colors.length.should.equal(3);
-    scope.statusDonutData.data[0].should.have.property('label', 'Failed');
-    scope.statusDonutData.data[0].should.have.property('value', '14.29');
-    scope.statusDonutData.data[1].should.have.property('label', 'Completed');
-    scope.statusDonutData.data[1].should.have.property('value', '9.52');
-    scope.statusDonutData.data[2].should.have.property('label', 'Successful');
-    scope.statusDonutData.data[2].should.have.property('value', '76.19');
+    scope.channelsDonutData.should.have.property('data');
+    scope.channelsDonutData.data.length.should.equal(3);
+    scope.channelsDonutData.should.have.property('colors');
+    scope.channelsDonutData.colors.length.should.equal(3);
+    scope.channelsDonutData.data[0].should.have.property('label', 'Failed');
+    scope.channelsDonutData.data[0].should.have.property('value', '14.29');
+    scope.channelsDonutData.data[1].should.have.property('label', 'Completed');
+    scope.channelsDonutData.data[1].should.have.property('value', '9.52');
+    scope.channelsDonutData.data[2].should.have.property('label', 'Successful');
+    scope.channelsDonutData.data[2].should.have.property('value', '76.19');
 
 
-    scope.statusBarData.should.have.property('data');
-    scope.statusBarData.data.length.should.equal(3);
-    scope.statusBarData.should.have.property('xkey', 'label');
-    scope.statusBarData.should.have.property('ykeys');
-    scope.statusBarData.ykeys[0].should.equal('value');
-    scope.statusBarData.should.have.property('labels');
-    scope.statusBarData.labels[0].should.equal('Total');
-    scope.statusBarData.data[0].should.have.property('label', 'Failed');
-    scope.statusBarData.data[0].should.have.property('value', 3);
-    scope.statusBarData.data[1].should.have.property('label', 'Completed');
-    scope.statusBarData.data[1].should.have.property('value', 2);
-    scope.statusBarData.data[2].should.have.property('label', 'Successful');
-    scope.statusBarData.data[2].should.have.property('value', 16);
+    scope.channelsBarData.should.have.property('data');
+    scope.channelsBarData.data.length.should.equal(3);
+    scope.channelsBarData.should.have.property('xkey', 'label');
+    scope.channelsBarData.should.have.property('ykeys');
+    scope.channelsBarData.ykeys[0].should.equal('value');
+    scope.channelsBarData.should.have.property('labels');
+    scope.channelsBarData.labels[0].should.equal('Total');
+    scope.channelsBarData.data[0].should.have.property('label', 'Failed');
+    scope.channelsBarData.data[0].should.have.property('value', 3);
+    scope.channelsBarData.data[1].should.have.property('label', 'Completed');
+    scope.channelsBarData.data[1].should.have.property('value', 2);
+    scope.channelsBarData.data[2].should.have.property('label', 'Successful');
+    scope.channelsBarData.data[2].should.have.property('value', 16);
 
     scope.channel.name.should.equal('Sample JsonStub Channel 1');
   });
@@ -120,7 +120,6 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionLoadData.ykeys[0].should.equal('value');
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels[0].should.equal('Transactions');
-    scope.transactionLoadData.should.have.property('postunits', ' per day');
 
     scope.transactionLoadData.data[0].should.have.property('timestamp');
     scope.transactionLoadData.data[0].should.have.property('value', 34);
@@ -158,7 +157,6 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
-    scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data[0].should.have.property('timestamp');
     scope.transactionResponseTimeData.data[0].should.have.property('value', '2881.91');

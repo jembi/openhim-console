@@ -10,21 +10,31 @@
       <label class="btn btn-primary" ng-change="onChange()" ng-model="selected.period" btn-radio="'custom'">Custom</label>
     </div>
   </div>
-  <div ng-hide="selected.period !== 'custom'" class="form-group">
-    <select class="form-control" ng-model="selected.type" ng-change="onChange()">
-      <option value="minute">Breakdown by minute</option>
-      <option value="hour">Breakdown by hour</option>
-      <option value="day">Breakdown by day</option>
-      <option value="month">Breakdown by month</option>
-      <option value="year">Breakdown by year</option>
-    </select>
-  </div>
-  <div ng-hide="selected.period !== 'custom'" class="form-group">
-    <label class="sr-only">From</label>
-    <input type="text" class="form-control" ng-model="selected.from" ng-blur="onChange()" placeholder="from" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
-  </div>
-  <div ng-hide="selected.period !== 'custom'" class="form-group">
-    <label class="sr-only">Until</label>
-    <input type="text" class="form-control" ng-model="selected.until" ng-blur="onChange()" placeholder="until" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+  <div class="settings_div">
+    <div ng-hide="selected.period !== 'custom'" class="form-group">
+      <label>
+        Breakdown
+        <i tooltip-placement="top" tooltip="The precision of the metrics to generate the graphs for" class="glyphicon glyphicon-question-sign"></i>
+      </label><br/>
+      <select class="form-control" ng-model="selected.type" ng-change="customDateBreakdownChange()">
+        <option value="minute">minute</option>
+        <option value="hour">hour</option>
+        <option value="day">day</option>
+        <option value="month">month</option>
+        <option value="year">year</option>
+      </select>
+    </div>
+    <div ng-hide="selected.period !== 'custom'" class="form-group">
+      <label>
+        From
+      </label>
+      <input type="text" class="form-control" ng-model="selected.from" ng-blur="customDateBreakdownChange()" placeholder="from" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+    </div>
+    <div ng-hide="selected.period !== 'custom'" class="form-group">
+      <label>
+        Until
+      </label>
+      <input type="text" class="form-control" ng-model="selected.until" ng-blur="customDateBreakdownChange()" placeholder="until" datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm' }">
+    </div>
   </div>
 </form>

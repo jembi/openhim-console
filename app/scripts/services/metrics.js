@@ -33,7 +33,7 @@ angular.module('openhimConsoleApp')
         }
       },
 
-      buildLineChartData: function(selectedPeriod, metrics, key, keyUnit, valueFormatter) {
+      buildLineChartData: function(selectedPeriod, metrics, key, valueFormatter) {
         var graphData = [];
         var from = moment(selectedPeriod.from);
         var until = moment(selectedPeriod.until);
@@ -70,7 +70,6 @@ angular.module('openhimConsoleApp')
           xkey: 'timestamp',
           ykeys: ['value'],
           labels: ['Transactions'],
-          postunits: ' ' + keyUnit,
           loadTotal: loadTotal,
           avgResponseTime: avgResponseTime
         };

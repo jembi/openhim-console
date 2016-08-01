@@ -25,8 +25,8 @@ angular.module('openhimConsoleApp')
         var round = function (d) {
           return (d).toFixed(2);
         };
-        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'per ' + $scope.selectedDateType.type);
-        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', 'ms', round);
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total');
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', round);
       }
     }
 
@@ -46,13 +46,13 @@ angular.module('openhimConsoleApp')
     }
 
 
-    function updateStatusBarChart(metrics) {
+    function updateChannelsBarChart(metrics) {
       // set scope variable for amount of active channels
       $scope.activeChannels = metrics.length;
 
       var channelsMap;
 
-      // create channelsMap for status name reference
+      // create channelsMap for channels name reference
       Api.Channels.query(function(channels){
         channelsMap = {};
         angular.forEach(channels, function(channel){
@@ -61,10 +61,10 @@ angular.module('openhimConsoleApp')
 
         // define varables for graph data set
         var channelGraphStack;
-        var statusData = [];
-        var statusKeys = [];
-        var statusLabels = [];
-        var statusColors = [];
+        var channelsData = [];
+        var channelsKeys = [];
+        var channelsLabels = [];
+        var channelsColors = [];
 
         // loop through each channels found in result and construct graph objects
         for (var i=0; i<metrics.length; i++) {
@@ -77,50 +77,50 @@ angular.module('openhimConsoleApp')
           channelGraphStack.processing = metrics[i].processing;
 
           // only add these if it isnt yet present
-          if (statusKeys.indexOf('processing') === -1) {
-            statusKeys.push('processing');
-            statusLabels.push('Processing');
-            statusColors.push('#777777');
+          if (channelsKeys.indexOf('processing') === -1) {
+            channelsKeys.push('processing');
+            channelsLabels.push('Processing');
+            channelsColors.push('#777777');
           }
 
           channelGraphStack.failed = metrics[i].failed;
 
           // only add these if it isnt yet present
-          if (statusKeys.indexOf('failed') === -1) {
-            statusKeys.push('failed');
-            statusLabels.push('Failed');
-            statusColors.push('#d9534f');
+          if (channelsKeys.indexOf('failed') === -1) {
+            channelsKeys.push('failed');
+            channelsLabels.push('Failed');
+            channelsColors.push('#d9534f');
           }
 
           channelGraphStack.completed = metrics[i].completed;
 
           // only add these if it isnt yet present
-          if (statusKeys.indexOf('completed') === -1) {
-            statusKeys.push('completed');
-            statusLabels.push('Completed');
-            statusColors.push('#f0ad4e');
+          if (channelsKeys.indexOf('completed') === -1) {
+            channelsKeys.push('completed');
+            channelsLabels.push('Completed');
+            channelsColors.push('#f0ad4e');
           }
 
           channelGraphStack.completedWErrors = metrics[i].completedWErrors;
 
-          if (statusKeys.indexOf('completedWErrors') === -1) {
-            statusKeys.push('completedWErrors');
-            statusLabels.push('Completed With Errors');
-            statusColors.push('#5bc0de');
+          if (channelsKeys.indexOf('completedWErrors') === -1) {
+            channelsKeys.push('completedWErrors');
+            channelsLabels.push('Completed With Errors');
+            channelsColors.push('#5bc0de');
           }
 
           channelGraphStack.successful = metrics[i].successful;
 
-          if (statusKeys.indexOf('successful') === -1) {
-            statusKeys.push('successful');
-            statusLabels.push('Successful');
-            statusColors.push('#5cb85c');
+          if (channelsKeys.indexOf('successful') === -1) {
+            channelsKeys.push('successful');
+            channelsLabels.push('Successful');
+            channelsColors.push('#5cb85c');
           }
 
-          statusData.push(channelGraphStack);
+          channelsData.push(channelGraphStack);
         }
 
-        $scope.statusData = {data: statusData, xkey: 'channel', ykeys: statusKeys, labels: statusLabels, colors: statusColors, stacked: true};
+        $scope.channelsData = {data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true};
       },
       function(err){
         Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data);
@@ -128,25 +128,25 @@ angular.module('openhimConsoleApp')
 
     }
 
-    function statusMetricsSuccess (metrics) {
+    function channelMetricsSuccess(metrics) {
       if (metrics.length === 0) {
         Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg);
       } else {
-        updateStatusBarChart(metrics);
+        updateChannelsBarChart(metrics);
       }
     }
 
-    function statusMetricsError(err) {
+    function channelMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
     }
 
-    function updateStatusMetrics() {
+    function updateChannelMetrics() {
       // do API call here to pull load metrics
       Api.MetricsChannels.query({
         startDate: moment($scope.selectedDateType.from).format(),
         endDate: moment($scope.selectedDateType.until).format()
-      }, statusMetricsSuccess, statusMetricsError);
+      }, channelMetricsSuccess, channelMetricsError);
     }
 
 
@@ -157,7 +157,7 @@ angular.module('openhimConsoleApp')
 
       Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType);
       updateTimeseriesMetrics();
-      updateStatusMetrics();
+      updateChannelMetrics();
     };
 
     $scope.updateMetrics();

@@ -43,12 +43,12 @@ describe('Controller: DashboardCtrl', function () {
                       { 'total': 56, 'avgResp': 34769.91, 'timestamp': daysAgo(0).format() }];
 
 
-    var statusData = [{ '_id': { 'channelID': '53884f881fdb6f2d69e29cff' }, 'failed': 10, 'successful': 58, 'processing': 0, 'completed': 20, 'completedWErrors': 2 },
+    var channelsData = [{ '_id': { 'channelID': '53884f881fdb6f2d69e29cff' }, 'failed': 10, 'successful': 58, 'processing': 0, 'completed': 20, 'completedWErrors': 2 },
                       { '_id': { 'channelID': '12344f881faa6f2d69e29cee' }, 'failed': 8, 'successful': 43, 'processing': 2, 'completed': 4, 'completedWErrors': 4 },
                       { '_id': { 'channelID': '53884f881fdb6f2d35353cdd' }, 'failed': 16, 'successful': 26, 'processing': 0, 'completed': 8, 'completedWErrors': 5 }];
 
     $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/hour')).respond(timeLoadDataHours);
-    $httpBackend.when('GET', new RegExp('.*/metrics/channels.*')).respond( statusData );
+    $httpBackend.when('GET', new RegExp('.*/metrics/channels.*')).respond( channelsData );
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([{'_id':'5322fe9d8b6add4b2b059dd8', 'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}]}]);
 
     createController = function() {
@@ -82,7 +82,6 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels.length.should.equal(1);
     scope.transactionLoadData.labels[0].should.equal('Transactions');
-    scope.transactionLoadData.should.have.property('postunits', ' per hour');
 
 
     scope.transactionLoadData.data.length.should.equal(5);
@@ -117,7 +116,6 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
     scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
-    scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data.length.should.equal(5);
 
@@ -150,7 +148,6 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionLoadData.should.have.property('labels');
     scope.transactionLoadData.labels.length.should.equal(1);
     scope.transactionLoadData.labels[0].should.equal('Transactions');
-    scope.transactionLoadData.should.have.property('postunits', ' per day');
 
 
     scope.transactionLoadData.data.length.should.equal(5); // 5 days of data
@@ -185,7 +182,6 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
     scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
-    scope.transactionResponseTimeData.should.have.property('postunits', ' ms');
 
     scope.transactionResponseTimeData.data.length.should.equal(5); // 5 days of data
 
@@ -202,7 +198,7 @@ describe('Controller: DashboardCtrl', function () {
   });
 
 
-  it('should run updateMetrics() and create statusData scope object', function() {
+  it('should run updateMetrics() and create channelsData scope object', function() {
     createController();
     scope.selectedDateType.from = hoursAgo(4).toDate();
     scope.selectedDateType.until = hoursAgo(0).toDate();
@@ -211,33 +207,33 @@ describe('Controller: DashboardCtrl', function () {
     scope.updateMetrics();
     httpBackend.flush();
 
-    scope.statusData.should.have.property('data');
-    scope.statusData.data.length.should.equal(3);
-    scope.statusData.should.have.property('xkey', 'channel');
-    scope.statusData.should.have.property('colors');
-    scope.statusData.colors.length.should.equal(5);
-    scope.statusData.should.have.property('ykeys');
-    scope.statusData.ykeys.length.should.equal(5);
-    scope.statusData.should.have.property('labels');
-    scope.statusData.labels.length.should.equal(5);
+    scope.channelsData.should.have.property('data');
+    scope.channelsData.data.length.should.equal(3);
+    scope.channelsData.should.have.property('xkey', 'channel');
+    scope.channelsData.should.have.property('colors');
+    scope.channelsData.colors.length.should.equal(5);
+    scope.channelsData.should.have.property('ykeys');
+    scope.channelsData.ykeys.length.should.equal(5);
+    scope.channelsData.should.have.property('labels');
+    scope.channelsData.labels.length.should.equal(5);
 
-    scope.statusData.data[0].failed.should.equal(10);
-    scope.statusData.data[0].completed.should.equal(20);
-    scope.statusData.data[0].completedWErrors.should.equal(2);
-    scope.statusData.data[0].successful.should.equal(58);
-    scope.statusData.data[0].processing.should.equal(0);
+    scope.channelsData.data[0].failed.should.equal(10);
+    scope.channelsData.data[0].completed.should.equal(20);
+    scope.channelsData.data[0].completedWErrors.should.equal(2);
+    scope.channelsData.data[0].successful.should.equal(58);
+    scope.channelsData.data[0].processing.should.equal(0);
 
-    scope.statusData.data[1].failed.should.equal(8);
-    scope.statusData.data[1].completed.should.equal(4);
-    scope.statusData.data[1].completedWErrors.should.equal(4);
-    scope.statusData.data[1].successful.should.equal(43);
-    scope.statusData.data[1].processing.should.equal(2);
+    scope.channelsData.data[1].failed.should.equal(8);
+    scope.channelsData.data[1].completed.should.equal(4);
+    scope.channelsData.data[1].completedWErrors.should.equal(4);
+    scope.channelsData.data[1].successful.should.equal(43);
+    scope.channelsData.data[1].processing.should.equal(2);
 
-    scope.statusData.data[2].failed.should.equal(16);
-    scope.statusData.data[2].completed.should.equal(8);
-    scope.statusData.data[2].completedWErrors.should.equal(5);
-    scope.statusData.data[2].successful.should.equal(26);
-    scope.statusData.data[2].processing.should.equal(0);
+    scope.channelsData.data[2].failed.should.equal(16);
+    scope.channelsData.data[2].completed.should.equal(8);
+    scope.channelsData.data[2].completedWErrors.should.equal(5);
+    scope.channelsData.data[2].successful.should.equal(26);
+    scope.channelsData.data[2].processing.should.equal(0);
   });
 
 
