@@ -24,13 +24,9 @@
 
           <h3><strong>Export Data</strong></h3>
           <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
-            <label>
-              Will this export file be used as an Insert or Update?
-              <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="For an 'Insert Script' the exported data will always add new elements, however, an 'Update Script' will attempt to update existing elements if possible" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-            </label><br />
-            <div style="margin-bottom: 10px;">
-              <label class="btn btn-primary" ng-model="exportSettings.removeIds" btn-radio="true"><strong>Insert</strong> Script</label>
-            </div>
+            <button class="btn btn-primary" ng-click="createExportFile()" ng-show="!alerts.server"><i class="glyphicon glyphicon-export"></i> Generate Export Script</button>
+
+            <a ng-if="downloadLink" download="{{importScriptName}}" class="btn btn-primary" ng-href="{{downloadLink}}" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
           </div>
           
           <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
@@ -49,12 +45,6 @@
                 </label>
               </div>
             </div>
-          </div>
-
-          <div class="panel-body">
-            <button class="btn btn-primary" ng-click="createExportFile()" ng-show="!alerts.server"><i class="glyphicon glyphicon-export"></i> Generate Export Script</button>
-
-            <a ng-if="downloadLink" download="{{importScriptName}}" class="btn btn-primary" ng-href="{{downloadLink}}" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
           </div>
         </div>
 

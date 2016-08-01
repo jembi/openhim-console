@@ -187,13 +187,8 @@ angular.module('openhimConsoleApp')
         }
       };
 
-      if ( $scope.exportSettings.removeIds === false ) {
-        exportData = JSON.stringify( exportData, null, 2 );
-        $scope.importScriptName = 'openhim-update.json';
-      } else {
-        exportData = JSON.stringify( $scope.removeProperties( exportData ), null, 2 );
-        $scope.importScriptName = 'openhim-insert.json';
-      }
+      exportData = JSON.stringify( $scope.removeProperties( exportData ), null, 2 );
+      $scope.importScriptName = 'openhim-insert.json';
       
       // assign download link and show download button
       var blobLink = makeTextFile( exportData );
