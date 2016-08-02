@@ -73,10 +73,10 @@
 
             <div ng-if="importStatus == 'done'">
               <div>
-                <label class="successfulImports">Successfull Imports ( {{importResults.successes.length}} )</label>
+                <label class="successfulImports">Successfull Imports ( {{ numberOfSuccessfulImports() }} )</label>
               </div>
               <div>
-                <label class="failedImports">Failed Imports ( {{importResults.errors.length}} )</label>
+                <label class="failedImports">Failed Imports ( {{ numberOfFailedImports() }} )</label>
               </div>
 
               <div id="no-more-tables">
@@ -91,20 +91,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="successfulImports" ng-repeat="import in importResults.successes">
+                    <tr class="successfulImports" ng-repeat="import in importResults.rows">
                       <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                       <td data-title="Model">{{ import.model }}</td>
                       <td>
                         <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
-                      </td>
-                      <td data-title="Status">{{ import.status }}</td>
-                      <td data-title="Error">{{ import.message }}</td>
-                    </tr>
-                    <tr class="failedImports" ng-repeat="import in importResults.errors">
-                      <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                      <td data-title="Model">{{ import.model }}</td>
-                      <td>
-                        <button style="margin-top:3px; background-color:red;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
                       </td>
                       <td data-title="Status">{{ import.status }}</td>
                       <td data-title="Error">{{ import.message }}</td>

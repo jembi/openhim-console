@@ -70,11 +70,11 @@ angular.module('openhimConsoleApp')
       angular.forEach($scope.conflicts, function(item) {
         if(item.action && item.action === 'duplicate'){
           var err = 'Needs to be different to original uid.';
-          if(item.model==='Channel' && item.record.name === item.uid) {item.errMsg = err;}
-          else if(item.model==='Client' && item.record.clientID === item.uid) {item.errMsg = err;}
-          else if(item.model==='Mediator' && item.record.urn === item.uid) {item.errMsg = err;}
-          else if(item.model==='User' && item.record.email === item.uid) {item.errMsg = err;}
-          else if(item.model==='ContactGroup' && item.record.groups === item.uid) {item.errMsg = err;}
+          if(item.model==='Channels' && item.record.name === item.uid) {item.errMsg = err;}
+          else if(item.model==='Clients' && item.record.clientID === item.uid) {item.errMsg = err;}
+          else if(item.model==='Mediators' && item.record.urn === item.uid) {item.errMsg = err;}
+          else if(item.model==='Users' && item.record.email === item.uid) {item.errMsg = err;}
+          else if(item.model==='ContactGroups' && item.record.groups === item.uid) {item.errMsg = err;}
         }
       });
 
@@ -116,28 +116,28 @@ angular.module('openhimConsoleApp')
 
             // update the uid for each 
             if(item.action && item.action === 'duplicate'){
-              if(item.model==='Channel') {item.record.name = item.uid;}
-              else if(item.model==='Client') {item.record.clientID = item.uid;}
-              else if(item.model==='Mediator') {item.record.urn = item.uid;}
-              else if(item.model==='User') {item.record.email = item.uid;}
-              else if(item.model==='ContactGroup') {item.record.groups = item.uid;}
+              if(item.model==='Channels') {item.record.name = item.uid;}
+              else if(item.model==='Clients') {item.record.clientID = item.uid;}
+              else if(item.model==='Mediators') {item.record.urn = item.uid;}
+              else if(item.model==='Users') {item.record.email = item.uid;}
+              else if(item.model==='ContactGroups') {item.record.groups = item.uid;}
             }
 
             if(item.action && item.action !== 'ignore'){
-              if(item.model==='Channel') {$scope.resolvedData.Channels.push(item.record);}
-              else if(item.model==='Client') {$scope.resolvedData.Clients.push(item.record);}
-              else if(item.model==='Mediator') {$scope.resolvedData.Mediators.push(item.record);}
-              else if(item.model==='User') {$scope.resolvedData.Users.push(item.record);}
-              else if(item.model==='ContactGroup') {$scope.resolvedData.ContactGroups.push(item.record);}  
+              if(item.model==='Channels') {$scope.resolvedData.Channels.push(item.record);}
+              else if(item.model==='Clients') {$scope.resolvedData.Clients.push(item.record);}
+              else if(item.model==='Mediators') {$scope.resolvedData.Mediators.push(item.record);}
+              else if(item.model==='Users') {$scope.resolvedData.Users.push(item.record);}
+              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}  
             }
           });
 
           angular.forEach($scope.validImports, function(item) {
-              if(item.model==='Channel') {$scope.resolvedData.Channels.push(item.record);}
-              else if(item.model==='Client') {$scope.resolvedData.Clients.push(item.record);}
-              else if(item.model==='Mediator') {$scope.resolvedData.Mediators.push(item.record);}
-              else if(item.model==='User') {$scope.resolvedData.Users.push(item.record);}
-              else if(item.model==='ContactGroup') {$scope.resolvedData.ContactGroups.push(item.record);}  
+              if(item.model==='Channels') {$scope.resolvedData.Channels.push(item.record);}
+              else if(item.model==='Clients') {$scope.resolvedData.Clients.push(item.record);}
+              else if(item.model==='Mediators') {$scope.resolvedData.Mediators.push(item.record);}
+              else if(item.model==='Users') {$scope.resolvedData.Users.push(item.record);}
+              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}  
           });
 
           // read the import script data and process

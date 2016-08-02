@@ -19,7 +19,7 @@ describe('Controller: ExportImportModalCtrl', function () {
   var expectedResponse = {
     'rows': [
       {'model': 'Clients','record': {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},'status': 'Inserted','message': 'Successfully inserted Clients with name', 'uid': 'test1'},
-      {'model': 'User','record': { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Inserted','message': '', 'uid': 'normal@openim.org'}
+      {'model': 'Users','record': { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Inserted','message': '', 'uid': 'normal@openim.org'}
     ]
   };
 
@@ -37,12 +37,12 @@ describe('Controller: ExportImportModalCtrl', function () {
 
     data = {
       'rows': [
-        {'model': 'Channel','record': {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},'status': 'Valid','message': '', 'uid': 'Sample JsonStub Channel 1'},
-        {'model': 'Client','record': {'_id':'5322fe9d8b6add4b2b059ff6', 'clientID': 'test1', 'clientDomain': 'test1.openhim.org', 'name': 'Test 1', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'},'status': 'Conflict','message': '', 'uid': 'test1'},
-        {'model': 'Client','record': {'_id':'4567fe9d8b6addd83l559ff8', 'clientID': 'test2', 'clientDomain': 'test2.openhim.org', 'name': 'Test 2', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'},'status': 'Conflict','message': '', 'uid': 'test2'},
-        {'model': 'User','record': { '_id':'6380fe9d8b6addd83l559fs7', 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },'status': 'Conflict','message': '', 'uid': 'super@openim.org'},
-        {'model': 'User','record': { '_id':'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Valid','message': '', 'uid': 'normal@openim.org'},
-        {'model': 'Mediator','record': { '_id':'4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1','name': 'Test 1 Mediator','description': 'Test 1 Description','defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }],'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]},'status': 'Conflict','message': '', 'uid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'}
+        {'model': 'Channels','record': {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},'status': 'Valid','message': '', 'uid': 'Sample JsonStub Channel 1'},
+        {'model': 'Clients','record': {'_id':'5322fe9d8b6add4b2b059ff6', 'clientID': 'test1', 'clientDomain': 'test1.openhim.org', 'name': 'Test 1', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'},'status': 'Conflict','message': '', 'uid': 'test1'},
+        {'model': 'Clients','record': {'_id':'4567fe9d8b6addd83l559ff8', 'clientID': 'test2', 'clientDomain': 'test2.openhim.org', 'name': 'Test 2', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'},'status': 'Conflict','message': '', 'uid': 'test2'},
+        {'model': 'Users','record': { '_id':'6380fe9d8b6addd83l559fs7', 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },'status': 'Conflict','message': '', 'uid': 'super@openim.org'},
+        {'model': 'Users','record': { '_id':'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Valid','message': '', 'uid': 'normal@openim.org'},
+        {'model': 'Mediators','record': { '_id':'4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1','name': 'Test 1 Mediator','description': 'Test 1 Description','defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }],'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]},'status': 'Conflict','message': '', 'uid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'}
       ]
     };
 
@@ -82,7 +82,7 @@ describe('Controller: ExportImportModalCtrl', function () {
 
     // execute the import function
     scope.saveImport(function() {
-      sinon.assert.calledOnce(spy);  
+      sinon.assert.calledOnce(spy);
     });
 
     httpBackend.flush();

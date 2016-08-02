@@ -60,7 +60,6 @@ angular.module('openhimConsoleApp')
     };
 
     var openValidationModal = function() {
-      console.log($scope.importStatus);
       var modalInstance = $modal.open({
         templateUrl: 'views/exportImportModal.html',
         controller: 'ExportImportModalCtrl',
@@ -283,6 +282,14 @@ angular.module('openhimConsoleApp')
       openValidationModal();
     };
 
+
+    $scope.numberOfSuccessfulImports = function() {
+      return $scope.importResults.rows.filter(function(item) {return item.status !== 'Error';}).length;
+    };
+
+    $scope.numberOfFailedImports = function() {
+      return $scope.importResults.rows.filter(function(item) {return item.status === 'Error';}).length;
+    };
 
     /****************************************/
     /**         Import Functions           **/
