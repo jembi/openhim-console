@@ -206,7 +206,6 @@ angular.module('openhimConsoleApp')
     };
 
     var validateSuccess = function(result) {
-      console.log('succesfully validated uploaded file');
       $scope.importStatus = 'resolvingConflicts';
       $scope.validatedData = result;
 

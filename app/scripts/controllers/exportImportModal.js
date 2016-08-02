@@ -154,7 +154,7 @@ angular.module('openhimConsoleApp')
             $scope.resolvedData.ContactGroups.length > 0) { 
             $scope.runImportFile($scope.resolvedData, callback); 
           } else { 
-            $modalInstance.close(); 
+            $modalInstance.close();
             if(callback) {callback('Nothing to import');}
           }
         }
