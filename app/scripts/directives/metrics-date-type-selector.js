@@ -15,6 +15,7 @@ angular.module('openhimConsoleApp')
           minute: true,
           hour: true,
           day: true,
+          week: true,
           month: true,
           year: true
         };
@@ -40,6 +41,7 @@ angular.module('openhimConsoleApp')
           scope.optionsEnabled.minute = true;
           scope.optionsEnabled.hour = true;
           scope.optionsEnabled.day = true;
+          scope.optionsEnabled.week = true;
           scope.optionsEnabled.month = true;
           scope.optionsEnabled.year = true;
 
@@ -58,6 +60,12 @@ angular.module('openhimConsoleApp')
           if (diff('days') > maxBreakdown) {
             scope.optionsEnabled.day = false;
             if (scope.selected.type === 'day') {
+              scope.selected.type = 'week';
+            }
+          }
+          if (diff('weeks') > maxBreakdown) {
+            scope.optionsEnabled.week = false;
+            if (scope.selected.type === 'week') {
               scope.selected.type = 'month';
             }
           }
