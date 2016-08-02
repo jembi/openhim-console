@@ -41,9 +41,9 @@ angular.module('openhimConsoleApp')
       MediatorChannels: $resource( server + '/mediators/:urn/channels', { urn: '@urn' }),
 
       // add the metric endpoints
-      Metrics: $resource( server + '/metrics/:type/:channelId', {}),
-      MetricsStatus: $resource( server + '/metrics/status', {}),
-      MetricsLoadTime: $resource( server + '/metrics/load-time', {}),
+      MetricsChannels: $resource( server + '/metrics/channels/:channelId' ),
+      MetricsTimeseries: $resource( server + '/metrics/timeseries/:type' ),
+      MetricsTimeseriesChannel: $resource( server + '/metrics/timeseries/:type/channels/:channelId' ),
 
       Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
