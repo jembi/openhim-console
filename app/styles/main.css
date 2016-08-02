@@ -781,7 +781,9 @@ body {
 .showHideNoPadding { padding: 0px !important; float: left; }
 
 
-.failedImportsLink { color: red; }
+.failedImports { color: red; }
+.successfulImports { color: green; }
+.importConflicts { color: #FFBF00; }
 
 .exportModelTitle { font-size: 20px; text-decoration: underline; margin-bottom: 10px; }
 .exportModelTitle:hover { cursor: pointer; }

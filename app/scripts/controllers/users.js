@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('UsersCtrl', function ($scope, $modal, Api, Alerting) {
+  .controller('UsersCtrl', function ($scope, $modal, $window, Api, Alerting, Notify) {
 
 
     /* -------------------------Initial load & onChanged---------------------------- */
     var querySuccess = function(users){
       $scope.users = users;
       if( users.length === 0 ){
+        Alerting.AlertReset();
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no users created');
       }
 
@@ -70,6 +71,7 @@ angular.module('openhimConsoleApp')
 
     var queryError = function(err){
       // on error - add server error alert
+      Alerting.AlertReset();
       Alerting.AlertAddServerMsg(err.status);
     };
 
@@ -126,17 +128,6 @@ angular.module('openhimConsoleApp')
 
 
     /*--------------------------Delete Confirm----------------------------*/
-    var deleteSuccess = function () {
-      // On success
-      $scope.users = Api.Users.query();
-      Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully');
-    };
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data);
-    };
-
     $scope.confirmDelete = function(user){
       Alerting.AlertReset();
 
@@ -157,12 +148,38 @@ angular.module('openhimConsoleApp')
       });
 
       modalInstance.result.then(function () {
-        // Delete confirmed - delete the user
+        // Delete confirmed - check if current user deleted themself, set flag, then delete user
+        $scope.sessionUserDeleted = false;
+        var sessionUser = localStorage.getItem('loggedOnUser');
+        sessionUser = JSON.parse(sessionUser);
+        
+        if(sessionUser.email === user.email){
+          $scope.sessionUserDeleted = true;
+        }
+        
         user.$remove(deleteSuccess, deleteError);
       }, function () {
         // delete cancelled - do nothing
       });
 
+    };
+
+    var deleteSuccess = function () {
+      // On success - if current user was deleted, logout
+      if($scope.sessionUserDeleted) {
+        $window.location = '#/logout';
+        return;
+      }
+      $scope.users = Api.Users.query();
+      Alerting.AlertReset();
+      Notify.notify('usersChanged');
+      Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully');
+    };
+
+    var deleteError = function (err) {
+      // add the error message
+      Alerting.AlertReset();
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data);
     };
     /*---------------------------Delete Confirm----------------------------*/
 

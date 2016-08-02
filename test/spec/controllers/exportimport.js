@@ -15,61 +15,49 @@ describe('Controller: ExportImportCtrl', function () {
 
   var scope, createController, httpBackend;
 
+  var expectedExportData = [{
+    'Channels': [
+      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
+      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'},
+      {'name':'Sample JsonStub Channel 3','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b33333333','status':'deleted'}
+    ],
+    'Clients': [
+      {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
+      {_id:'4567fe9d8b6addd83l559ff8', clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+    ],
+    'Users': [
+      { _id:'6380fe9d8b6addd83l559fs7', 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
+      { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
+    ],
+    'ContactGroups': [
+      { _id:'5555fe9d8b6addd83l559sf6', 'group': 'Group 1', 'users': [ {'user': 'User 1', 'method': 'sms', 'maxAlerts': 'no max'}, {'user': 'User 2', 'method': 'email', 'maxAlerts': '1 per day'}, {'user': 'User 3', 'method': 'email', 'maxAlerts': '1 per hour'} ] },
+      { _id:'2335fe9d8b6addd83l559hu8', 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] },
+    ],
+    'Mediators': [
+      { _id:'4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1','name': 'Test 1 Mediator','description': 'Test 1 Description','defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }],'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]},
+      { _id:'1233fe9d8b6addd83l55tty6','urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA','version': '0.1.2','name': 'Test 2 Mediator','description': 'Test 2 Description','defaultChannelConfig': [{ 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }],'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]}
+    ]
+  }];
+
+  var expectedImportReponse = [
+    {'model': 'Clients','record': {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},'status': 'Updated','message': 'Successfully inserted Clients with name', 'uid': 'test1'},
+    {'model': 'Users','record': { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Updated','message': '', 'uid': 'normal@openim.org'}
+  ];
+
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-
-    $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      {'name':'Sample JsonStub Channel 1','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80,'primary':true}],'_id':'5322fe9d8b6add4b2b059ff5'},
-      {'name':'Sample JsonStub Channel 2','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b2b059ff6'},
-      {'name':'Sample JsonStub Channel 3','urlPattern':'sample/api','allow':['PoC'],'routes':[{'host':'jsonstub.com','port':80}],'_id':'5322fe9d8b6add4b33333333','status':'deleted'}
+    
+    $httpBackend.when('GET', new RegExp('.*/metadata')).respond(expectedExportData);
+    $httpBackend.when('GET', 'views/exportImportModal.html').respond({
+      close: function() {}
+    });
+    
+    httpBackend.when('POST', new RegExp('.*/metadata/validate')).respond([
+      {'model': 'Clients','record': {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},'status': 'Updated','message': 'Successfully inserted Clients with name', 'uid': 'test1'},
+      {'model': 'Users','record': { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Inserted','message': '', 'uid': 'normal@openim.org'}
     ]);
-    httpBackend.when('PUT', new RegExp('.*/channels')).respond('Channel has been successfully updated');
-
-    $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {_id:'4567fe9d8b6addd83l559ff8', clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
-    ]);
-    httpBackend.when('PUT', new RegExp('.*/clients')).respond('Client has been successfully updated');
-
-    $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { _id:'6380fe9d8b6addd83l559fs7', 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] },
-      { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }
-    ]);
-    httpBackend.when('PUT', new RegExp('.*/users')).respond('User has been successfully updated');
-
-    $httpBackend.when('GET', new RegExp('.*/groups')).respond([
-      { _id:'5555fe9d8b6addd83l559sf6', 'group': 'Group 1', 'users': [ {'user': 'User 1', 'method': 'sms', 'maxAlerts': 'no max'}, {'user': 'User 2', 'method': 'email', 'maxAlerts': '1 per day'}, {'user': 'User 3', 'method': 'email', 'maxAlerts': '1 per hour'} ] },
-      { _id:'2335fe9d8b6addd83l559hu8', 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] },
-    ]);
-    httpBackend.when('PUT', new RegExp('.*/groups')).respond('Group has been successfully updated');
-
-    $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
-      {
-        _id:'4444fe9d8b6addd83l5595555',
-        'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
-        'version': '0.0.1',
-        'name': 'Test 1 Mediator',
-        'description': 'Test 1 Description',
-        'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
-        ],
-        'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
-      },
-      {
-        _id:'1233fe9d8b6addd83l55tty6',
-        'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
-        'version': '0.1.2',
-        'name': 'Test 2 Mediator',
-        'description': 'Test 2 Description',
-        'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
-        ],
-        'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
-      }
-    ]);
-    httpBackend.when('POST', new RegExp('.*/mediators')).respond('Mediator has been successfully updated');
 
     createController = function() {
       scope = $rootScope.$new();
@@ -92,8 +80,6 @@ describe('Controller: ExportImportCtrl', function () {
     scope.exportCollections.Channels.length.should.equal(3);
     scope.exportCollections.Mediators.length.should.equal(2);
     scope.exportCollections.ContactGroups.length.should.equal(2);
-
-    scope.exportSettings.removeIds.should.equal(true);
 
     scope.selectedExports.Users.should.equal( scope.exportCollections.Users );
     scope.selectedExports.Clients.should.equal( scope.exportCollections.Clients );
@@ -213,49 +199,82 @@ describe('Controller: ExportImportCtrl', function () {
     expect(scope.downloadLink.indexOf('blob:http://localhost:8080/')).to.be.above(-1);
   });
 
-  it('should execute runImportFile() and import the data', function () {
+  it('should execute downloadExportFile() and reset downloadLink', function() {
     createController();
     httpBackend.flush();
 
-    var importData = {
-      Users: scope.selectedExports.Users,
-      Clients: scope.selectedExports.Clients,
-      Channels: scope.selectedExports.Channels,
-      Mediators: scope.selectedExports.Mediators,
-      ContactGroups: scope.selectedExports.ContactGroups
-    };
+    scope.downloadExportFile();
 
-    importData.Users[0].should.have.property('_id', '6380fe9d8b6addd83l559fs7');
-    importData.Users[0].should.have.property('firstname', 'Super');
-    importData.Users[0].should.have.property('surname', 'User');
-    importData.Users[0].should.have.property('email', 'super@openim.org');
+    scope.downloadLink.should.equal('');
+  });
 
-    importData.Channels[2].should.have.property('_id', '5322fe9d8b6add4b33333333');
-    importData.Channels[2].should.have.property('name', 'Sample JsonStub Channel 3');
-    importData.Channels[2].should.have.property('urlPattern', 'sample/api');
-
-    // lets change some data in our data object before doing the import
-    importData.Users[0].firstname = 'ImportFirtname';
-    importData.Users[0].surname = 'ImportSurname';
-    importData.Users[0].email = 'importemail.openim.org';
-    importData.Channels[2].name = 'Import Channel';
-    importData.Channels[2].urlPattern = '/import/channel';
-
-    // execute the import function
-    scope.runImportFile( JSON.stringify( importData ) );
-
-    // verify dat has been imported and updated successfully
-    scope.exportCollections.Users[0].should.have.property('_id', '6380fe9d8b6addd83l559fs7');
-    scope.exportCollections.Users[0].should.have.property('firstname', 'ImportFirtname');
-    scope.exportCollections.Users[0].should.have.property('surname', 'ImportSurname');
-    scope.exportCollections.Users[0].should.have.property('email', 'importemail.openim.org');
-
-    scope.exportCollections.Channels[2].should.have.property('_id', '5322fe9d8b6add4b33333333');
-    scope.exportCollections.Channels[2].should.have.property('name', 'Import Channel');
-    scope.exportCollections.Channels[2].should.have.property('urlPattern', '/import/channel');
-
+  it('should execute validateImportFile() and metadata request should be sent', function() {
+    createController();
     httpBackend.flush();
 
+    // Make API requests for the export configuration options
+    scope.validateImportFile(expectedExportData);
+
+    httpBackend.expect('POST', new RegExp('.*/metadata/validate'));
+    httpBackend.expect('GET', 'views/exportImportModal.html');
+    httpBackend.flush();
+  });
+
+  it('should execute numberOfSuccessfulImports() and count equal all records', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.importResults = expectedImportReponse;
+
+    scope.numberOfSuccessfulImports().should.equal(expectedImportReponse.length);
+    scope.numberOfFailedImports().should.equal(0);
+  });
+
+  it('should execute numberOfSuccessfulImports() and count equal all but the first ', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.importResults = expectedImportReponse;
+    scope.importResults[0].status= 'Error';
+
+    scope.numberOfSuccessfulImports().should.equal(expectedImportReponse.length - 1);
+    scope.numberOfFailedImports().should.equal(1);
+  });
+
+  it('should execute numberOfSuccessfulImports() and count equal 0', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.importResults = expectedImportReponse;
+    scope.importResults.forEach(function(item) {
+      item.status = 'Error';
+    });
+
+    scope.numberOfSuccessfulImports().should.equal(0);
+    scope.numberOfFailedImports().should.equal(expectedImportReponse.length);
+  });
+
+  it('should execute areThereAnyImports() and return true', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.importResults = expectedImportReponse;
+    scope.areThereAnyImports().should.equal(true);
+  });
+
+  it('should execute areThereAnyImports() and fail because importResults undefinded', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.areThereAnyImports().should.equal(false);
+  });
+
+  it('should execute areThereAnyImports() and fail because importResults.length=0', function() {
+    createController();
+    httpBackend.flush();
+
+    scope.importResults = [];
+    scope.areThereAnyImports().should.equal(false);
   });
 
 });
