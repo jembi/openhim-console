@@ -13,11 +13,19 @@ angular.module('openhimConsoleApp')
     $scope.ngErrors = {};
     $scope.conflicts = [];
     $scope.validImports = [];
+    $scope.invalidImports = [];
     $scope.importStatus = 'resolvingConflicts';
 
-    for(var i=0; i < data.rows.length; i++) {
-      if(data.rows[i].status === 'Conflict') {$scope.conflicts.push(data.rows[i]);}
-      if(data.rows[i].status === 'Valid') {$scope.validImports.push(data.rows[i]);}
+    for(var i=0; i < data.length; i++) {
+      if(data[i].status === 'Conflict') {
+        data[i].action = 'ignore';
+        $scope.conflicts.push(data[i]);
+      } else if(data[i].status === 'Valid') {
+        $scope.validImports.push(data[i]);
+      } else if (data[i].status === 'Error') {
+        $scope.invalidImports.push(data[i]);
+      }
+
     }
 
     $scope.cancel = function () {
@@ -60,9 +68,7 @@ angular.module('openhimConsoleApp')
     $scope.runImportFile = function(importData, callback) {
       Api.Metadata.save(importData, function(result) {
         importSuccess(result, callback);
-      }, function(err) {
-        importFail(err);
-      });
+      }, importFail);
     };
 
     $scope.validateImport = function(callback) {
@@ -145,7 +151,12 @@ angular.module('openhimConsoleApp')
             $scope.resolvedData.Clients.length > 0 ||
             $scope.resolvedData.Users.length > 0 ||
             $scope.resolvedData.Mediators.length > 0 ||
-            $scope.resolvedData.ContactGroups.length > 0) { $scope.runImportFile($scope.resolvedData, callback); }
+            $scope.resolvedData.ContactGroups.length > 0) { 
+            $scope.runImportFile($scope.resolvedData, callback); 
+          } else { 
+            $modalInstance.close(); 
+            if(callback) {callback('Nothing to import');}
+          }
         }
       });
     };

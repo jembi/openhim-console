@@ -71,16 +71,23 @@
             
             <label class="btn btn-primary" ng-click="showConflictModal()" ng-if="importStatus == 'resolvingConflicts'"><strong>Resolve Conflicts</strong></label>
 
-            <div ng-if="importStatus == 'done'">
+            <div ng-if="!areThereAnyImports()" class="med-no-config">
+              <center>
+                <span>There is nothing to import for this file.</span>
+              </center>
+            </div>
+
+
+            <div ng-if="importStatus == 'done' && areThereAnyImports()">
               <div>
-                <label class="successfulImports">Successfull Imports ( {{ numberOfSuccessfulImports() }} )</label>
+                <label class="successfulImports">Successfull Imports: {{ numberOfSuccessfulImports() }}</label>
               </div>
               <div>
-                <label class="failedImports">Failed Imports ( {{ numberOfFailedImports() }} )</label>
+                <label class="failedImports">Failed Imports: {{ numberOfFailedImports() }}</label>
               </div>
 
               <div id="no-more-tables">
-                <table class="table table-bordered" style="width:100%">
+                <table class="table table-bordered" style="width:100%" ng-if="numberOfSuccessfulImports() > 0">
                   <thead>
                     <tr>
                       <th width="50">#</th>
@@ -91,7 +98,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="successfulImports" ng-repeat="import in importResults.rows">
+                    <tr class="successfulImports" ng-repeat="import in importResults">
                       <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                       <td data-title="Model">{{ import.model }}</td>
                       <td>

@@ -82,10 +82,13 @@ angular.module('openhimConsoleApp')
       
       // Metadata API
       Metadata: $resource( server + '/metadata', {}, {
-        update: { method: 'PUT' }
+        save: { method: 'POST', isArray: true },
+        query: { method: 'GET', isArray: true }
       }),
 
-      MetadataValidation: $resource( server + '/metadata/validate', {})
+      MetadataValidation: $resource( server + '/metadata/validate', {}, {
+        save: { method: 'POST', isArray: true }
+      })
 
     };
   });

@@ -31,24 +31,11 @@ angular.module('openhimConsoleApp')
     };
     
     var getMetadataSuccess = function(result) {
-      exportObject = result[0];
-      var Users = exportObject.Users;
-      var Clients = exportObject.Clients;
-      var Channels = exportObject.Channels;
-      var Mediators = exportObject.Mediators;
-      var ContactGroups = exportObject.ContactGroups;
+      // Assign API collections to export options object
+      $scope.exportCollections = result[0];
 
       // set up settings object
       $scope.exportSettings = {};
-      $scope.exportSettings.removeIds = true;
-
-      // Assign API collections to export options object
-      $scope.exportCollections = {};
-      $scope.exportCollections.Users = Users;
-      $scope.exportCollections.Clients = Clients;
-      $scope.exportCollections.Channels = Channels;
-      $scope.exportCollections.Mediators = Mediators;
-      $scope.exportCollections.ContactGroups = ContactGroups;
 
       // set inital reset ( default export option )
       $scope.resetExportOptions();
@@ -71,13 +58,11 @@ angular.module('openhimConsoleApp')
       modalInstance.result.then(function(importResults) {
         $scope.importStatus = 'done';
         $scope.importResults = importResults;
-      }, function() {
-        console.info('Modal dismissed at: ' + new Date());
       });
     };      
       
     // Make API requests for the export configuration options
-    var exportObject = Api.Metadata.query(function(result) {
+    Api.Metadata.query(function(result) {
       getMetadataSuccess(result);
     }, function(err) {
       getMetadataError(err);
@@ -231,11 +216,7 @@ angular.module('openhimConsoleApp')
     $scope.validateImportFile = function(data) {
       $scope.importStatus = 'progress';
 
-      Api.MetadataValidation.save(data, function(result){
-        validateSuccess(result);
-      }, function(err){
-        validateFail(err);
-      });
+      Api.MetadataValidation.save(data, validateSuccess, validateFail);
     };
 
     // watch if files have been dropped
@@ -284,11 +265,15 @@ angular.module('openhimConsoleApp')
 
 
     $scope.numberOfSuccessfulImports = function() {
-      return $scope.importResults.rows.filter(function(item) {return item.status !== 'Error';}).length;
+      return $scope.importResults.filter(function(item) {return item.status !== 'Error';}).length;
     };
 
     $scope.numberOfFailedImports = function() {
-      return $scope.importResults.rows.filter(function(item) {return item.status === 'Error';}).length;
+      return $scope.importResults.filter(function(item) {return item.status === 'Error';}).length;
+    };
+
+    $scope.areThereAnyImports = function() {
+      return ($scope.importResults && $scope.importResults.length > 0) ? true : false;
     };
 
     /****************************************/

@@ -15,13 +15,13 @@
 
     <div id="no-more-tables" ng-if="importStatus == 'resolvingConflicts'">
       <div>
-        <label class="successfulImports">Successfull Imports ( {{validImports.length}} )</label>
+        <label class="successfulImports">Successfull Imports: {{validImports.length}}</label>
       </div>
       <div>
-        <label class="importConflicts">Conflict Imports ( {{conflicts.length}} )</label>
+        <label class="importConflicts">Conflict Imports: {{conflicts.length}}</label>
       </div>
       <div>
-        <label class="failedImports">Failed Imports ( {{validationResults.errors.length}} )</label>
+        <label class="failedImports">Failed Imports: {{invalidImports.length}}</label>
       </div>
 
       <table class="table table-bordered" style="width:100%">
@@ -67,7 +67,7 @@
           </tr>
 
           <!-- Invalid Imports -->
-          <tr class="failedImports" ng-repeat="import in validationResults.errors">
+          <tr class="failedImports" ng-repeat="import in invalidImports">
             <td data-title="Overwrite">{{ import.message }}</td>
             <td data-title="Model">{{ import.model }}</td>
             <td data-title="UID">{{ import.uid }}</td>
