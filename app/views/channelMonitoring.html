@@ -17,7 +17,7 @@
 
         <div class="panel-body" ng-show="!alerts.server">
           <div class="content-box-large bordered-box">
-            <div metrics-date-type-selector selected="selectedDateType" on-change="updateMetrics" />
+            <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
           </div>
 
           <div style="margin-bottom: 20px;" ng-if="transactionLoadData.loadTotal || transactionLoadData.avgResponseTime">

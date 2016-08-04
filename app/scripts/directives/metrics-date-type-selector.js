@@ -7,7 +7,7 @@ angular.module('openhimConsoleApp')
       restrict:'EA',
       templateUrl:'views/partials/metrics-date-type-selector.html',
       scope: {
-        selected: '=',
+        selectedDateType: '=',
         onChange: '=?'
       },
       link: function(scope){
@@ -25,8 +25,8 @@ angular.module('openhimConsoleApp')
         }
 
         function processOptions() {
-          var from = moment(scope.selected.from);
-          var until = moment(scope.selected.until);
+          var from = moment(scope.selectedDateType.from);
+          var until = moment(scope.selectedDateType.until);
 
           var diff = function(unit) {
             return Math.abs(from.diff(until, unit));
@@ -35,7 +35,7 @@ angular.module('openhimConsoleApp')
           var maxBreakdown = 120;
 
           if (from.isAfter(until)) {
-            scope.selected.from = scope.selected.until;
+            scope.selectedDateType.from = scope.selectedDateType.until;
           }
 
           scope.optionsEnabled.minute = true;
@@ -47,32 +47,32 @@ angular.module('openhimConsoleApp')
 
           if (diff('minutes') > maxBreakdown) {
             scope.optionsEnabled.minute = false;
-            if (scope.selected.type === 'minute') {
-              scope.selected.type = 'hour';
+            if (scope.selectedDateType.type === 'minute') {
+              scope.selectedDateType.type = 'hour';
             }
           }
           if (diff('hours') > maxBreakdown) {
             scope.optionsEnabled.hour = false;
-            if (scope.selected.type === 'hour') {
-              scope.selected.type = 'day';
+            if (scope.selectedDateType.type === 'hour') {
+              scope.selectedDateType.type = 'day';
             }
           }
           if (diff('days') > maxBreakdown) {
             scope.optionsEnabled.day = false;
-            if (scope.selected.type === 'day') {
-              scope.selected.type = 'week';
+            if (scope.selectedDateType.type === 'day') {
+              scope.selectedDateType.type = 'week';
             }
           }
           if (diff('weeks') > maxBreakdown) {
             scope.optionsEnabled.week = false;
-            if (scope.selected.type === 'week') {
-              scope.selected.type = 'month';
+            if (scope.selectedDateType.type === 'week') {
+              scope.selectedDateType.type = 'month';
             }
           }
           if (diff('months') > maxBreakdown) {
             scope.optionsEnabled.month = false;
-            if (scope.selected.type === 'month') {
-              scope.selected.type = 'year';
+            if (scope.selectedDateType.type === 'month') {
+              scope.selectedDateType.type = 'year';
             }
           }
         }
