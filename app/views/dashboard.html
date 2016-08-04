@@ -18,7 +18,7 @@
         <div class="panel-body" ng-show="!alerts.server">
 
           <div class="content-box-large bordered-box">
-            <div metrics-date-type-selector selected="selectedDateType" on-change="updateMetrics" />
+            <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
           </div>
 
           <div style="margin: 20px 0px;" ng-if="activeChannels || loadTotal || avgResponseTime">
