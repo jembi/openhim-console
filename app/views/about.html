@@ -17,7 +17,7 @@
 
         <div class="panel-body">
           <div>
-            <div class="version version-{{ aboutInfo.compatibility || toLowerCase }}" ng-if="aboutInfo && aboutInfo.compatibility">
+            <div class="version version-{{ aboutInfo.compatibility | lowercase }}" ng-if="aboutInfo && aboutInfo.compatibility">
               <h3>Installed versions of Core and Console are {{ aboutInfo.compatibility }}:</h3>
               <br/>
               <h4>OpenHIM Admin Console Version {{ aboutInfo.currentConsoleVersion }}</h4>
@@ -27,7 +27,7 @@
           <br/>
           
           <div>
-            <div class="version version-compatible" ng-if="aboutInfo && aboutInfo.compatibility == 'incompatible'">
+            <div class="version version-compatible" ng-if="aboutInfo && aboutInfo.compatibility == 'Incompatible'">
               <h3>Suggested Compatible Versions:</h3>
               <br/>
               <div ng-repeat="release in aboutInfo.releases">
