@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/morris.js/morris.css" />
     <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
     <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -135,7 +136,8 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-taglist/js/angular-taglist-directive.js"></script>
-    <script src="bower_components/raphael/raphael.js"></script>
+    <script src="bower_components/eve/eve.js"></script>
+    <script src="bower_components/raphael/raphael.min.js"></script>
     <script src="bower_components/mocha/mocha.js"></script>
     <script src="bower_components/morris.js/morris.js"></script>
     <script src="bower_components/moment/moment.js"></script>
@@ -145,6 +147,8 @@
     <script src="bower_components/ng-file-upload-shim/angular-file-upload-shim.js"></script>
     <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="bower_components/angular-bootstrap-datetimepicker-directive/angular-bootstrap-datetimepicker-directive.js"></script>
+    <script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+    <script src="bower_components/angular-fullscreen/src/angular-fullscreen.js"></script>
     <!-- endbower -->
     <script src="bower_components/cryptojslib/rollups/sha512.js"></script>
     <script src="bower_components/cryptojslib/components/enc-base64-min.js"></script>
@@ -184,6 +188,7 @@
     <script src="scripts/controllers/certificates.js"></script>
     <script src="scripts/controllers/certificatesmodal.js"></script>
     <script src="scripts/controllers/exportImport.js"></script>
+    <script src="scripts/controllers/exportImportModal.js"></script>
     <script src="scripts/controllers/audits.js"></script>
     <script src="scripts/controllers/auditDetails.js"></script>
     <script src="scripts/controllers/auditsContentModal.js"></script>
@@ -198,6 +203,7 @@
     <script src="scripts/directives/graph-directives-morris.js"></script>
     <script src="scripts/directives/mediator-config.js"></script>
     <script src="scripts/directives/mediator-config-display.js"></script>
+    <script src="scripts/directives/metrics-date-type-selector.js"></script>
     <script src="scripts/directives/visualizer.js"></script>
     <!-- Custom Directives -->
     <script src="scripts/services/rest.js"></script>
@@ -207,6 +213,7 @@
     <script src="scripts/services/alerting.js"></script>
     <script src="scripts/services/auditLookupMap.js"></script>
     <script src="scripts/services/mediatorDisplay.js"></script>
+    <script src="scripts/services/metrics.js"></script>
     <!-- endbuild -->
 
   </body>

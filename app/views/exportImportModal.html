@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">
+    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
+    Resolve Metadata Conflicts
+  </h4>
+</div>
+<form class="form-horizontal" ng-submit="saveImport()" ng-class="{ 'has-error' : ngErrors.hasErrors }" novalidate>
+  <div class="modal-body">
+    <div ng-if="conflicts.length === 0" class="med-no-config">
+      <center>
+        <span>There are no conflicts with this import.</span>
+      </center>
+    </div>
+
+    <div id="no-more-tables" ng-if="importStatus == 'resolvingConflicts'">
+      <div>
+        <label class="successfulImports">Successfull Imports: {{validImports.length}}</label>
+      </div>
+      <div>
+        <label class="importConflicts">Conflict Imports: {{conflicts.length}}</label>
+      </div>
+      <div>
+        <label class="failedImports">Failed Imports: {{invalidImports.length}}</label>
+      </div>
+
+      <table class="table table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th width="135"><input type="checkbox" ng-model="outcome.selectedAll" ng-click="selectAll()">Overwrite All</th>
+            <th>Model</th>
+            <th>UID</th>
+            <th>Record</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Valid Imports -->
+          <tr class="successfulImports" ng-repeat="import in validImports">
+            <td data-title="Overwrite">{{ import.message }}</td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">{{ import.uid }}</td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td data-title="Status">{{ import.status }}</td>
+          </tr>
+
+          <!-- Import Conflicts -->
+          <tr ng-repeat="import in conflicts">
+            <td data-title="Overwrite">
+              <div class="input-group-vertical">
+                <label><input type="radio" ng-model="import.action" value="ignore" ng-change="checkIfAllOverwrites()"> Ignore</label>
+                <label><input type="radio" ng-model="import.action" value="overwrite" ng-change="checkIfAllOverwrites()"> Overwrite</label>
+                <label><input type="radio" ng-model="import.action" value="duplicate" ng-change="checkIfAllOverwrites()"> Duplicate</label>
+              </div>
+            </td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">
+              <input type="text" ng-disabled="import.action!=='duplicate'" ng-model="import.uid">
+              <div class="has-error-msg" ng-if="import.errMsg"><i class="glyphicon glyphicon-warning-sign"></i>{{import.errMsg}}</div>
+            </td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td class="importConflicts" data-title="Status">{{ import.status }}</td>
+          </tr>
+
+          <!-- Invalid Imports -->
+          <tr class="failedImports" ng-repeat="import in invalidImports">
+            <td data-title="Overwrite">{{ import.message }}</td>
+            <td data-title="Model">{{ import.model }}</td>
+            <td data-title="UID">{{ import.uid }}</td>
+            <td>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+            </td>
+            <td data-title="Status">{{ import.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div>
+      <!-- hasErrors Alerts -->
+      <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsImport" type="alert.type">
+        <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+      </alert>
+      <!-- hasErrors Alerts -->
+      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      <button type="button" class="btn btn-primary" ng-click="saveImport()">Import changes</button>
+    </div>
+  </div>
+</form>

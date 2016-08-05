@@ -41,9 +41,9 @@ angular.module('openhimConsoleApp')
       MediatorChannels: $resource( server + '/mediators/:urn/channels', { urn: '@urn' }),
 
       // add the metric endpoints
-      Metrics: $resource( server + '/metrics/:type/:channelId', {}),
-      MetricsStatus: $resource( server + '/metrics/status', {}),
-      MetricsLoadTime: $resource( server + '/metrics/load-time', {}),
+      MetricsChannels: $resource( server + '/metrics/channels/:channelId' ),
+      MetricsTimeseries: $resource( server + '/metrics/timeseries/:type' ),
+      MetricsTimeseriesChannel: $resource( server + '/metrics/timeseries/:type/channels/:channelId' ),
 
       Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
         update: { method: 'PUT' }
@@ -53,8 +53,8 @@ angular.module('openhimConsoleApp')
         update: { method: 'PUT' }
       }),
 
-      VisualizerEvents: $resource( server + '/visualizer/events/:receivedTime'),
-      VisualizerSync: $resource( server + '/visualizer/sync'),
+      Events: $resource( server + '/events/:receivedTime'),
+      Heartbeat: $resource( server + '/heartbeat'),
 
       // endpoint to restart the core server
       Restart: $resource( server + '/restart', {}),
@@ -78,7 +78,17 @@ angular.module('openhimConsoleApp')
       AuditsFilterOptions: $resource( server + '/audits-filter-options/', {}),
 
       // Logs API
-      Logs: $resource(server + '/logs')
+      Logs: $resource(server + '/logs'),
+      
+      // Metadata API
+      Metadata: $resource( server + '/metadata', {}, {
+        save: { method: 'POST', isArray: true },
+        query: { method: 'GET', isArray: true }
+      }),
+
+      MetadataValidation: $resource( server + '/metadata/validate', {}, {
+        save: { method: 'POST', isArray: true }
+      })
 
     };
   });

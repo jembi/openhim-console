@@ -14,12 +14,11 @@ angular.module('openhimConsoleApp')
         scope.$watchCollection(exp, function(newVal){
           var data = newVal;
           
-          // if data exist
-          if ( data ){
+          if (data) {
             // if morris bar chart exist then update it
-            if (scope.morrisLineChart){
+            if (scope.morrisLineChart) {
               scope.morrisLineChart.setData(data.data);
-            }else{
+            } else {
               // create Morris Line Chart if it doesnt yet exist
               scope.morrisLineChart = new Morris.Line({
                 element: element,
@@ -47,12 +46,11 @@ angular.module('openhimConsoleApp')
         scope.$watchCollection(exp, function(newVal){
           var data = newVal;
 
-          // if data exist
-          if ( data ){
+          if (data) {
             // if morris bar chart exist then update it
-            if (scope.morrisBarChart){
+            if (scope.morrisBarChart) {
               scope.morrisBarChart.setData(data.data);
-            }else{
+            } else {
               // create Morris Bar Chart if it doesnt yet exist
               scope.morrisBarChart = new Morris.Bar({
                 element: element,
@@ -67,7 +65,7 @@ angular.module('openhimConsoleApp')
                 resize: true,
                 hideHover: 'auto'
               }).on('click', function(i, row){
-                if ( row.link ){
+                if (row.link) {
                   // on status click direct user to channel metrics page
                   viewPage(row.link);
                 }
@@ -89,21 +87,19 @@ angular.module('openhimConsoleApp')
         scope.$watchCollection(exp, function(newVal){
           var data = newVal;
           
-          // if data exist yet
-          if ( data ){
-            // if morris donut chart exist then update it
-            if (scope.morrisDonutChart){
-              scope.morrisDonutChart.setData(data.data);
-            }else{
-              // create Morris Donut Chart if it doesnt yet exist
-              scope.morrisDonutChart = new Morris.Donut({
-                element: element,
-                data: data.data,
-                colors: data.colors,
-                resize: true,
-                formatter: function (y) { return y + '%'; }
-              });
-            }
+          // we have to rebuild the morris chart else new colours won't get picked up
+          // in general this approach is a bit problematic with the other charts, so should be avoided
+          // (e.g. onClick events not getting cleared...)
+
+          elem.empty();
+          if (data) {
+            scope.morrisDonutChart = new Morris.Donut({
+              element: element,
+              data: data.data,
+              colors: data.colors,
+              resize: true,
+              formatter: function (y) { return y + '%'; }
+            });
           }
         });
       }

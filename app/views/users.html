@@ -14,7 +14,10 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
         <!-- Top Alerts -->
 
         <div class="panel-body">
@@ -57,7 +60,10 @@
                 <tbody>
                   <tr ng-repeat="user in usersChannelsMatrix.users | orderBy:['user']">
                     <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                    <td data-title="User" style="max-width: none;"><a href="" ng-click="editUser(user.user)">{{ user.user.email }}</a></td>
+                    <td data-title="User" style="max-width: none;">
+                      <a href="" ng-click="editUser(user.user)">{{ user.user.email }}</a>
+                      <span ng-if="user.user.locked" style="color: #d9534f" tooltip-html-unsafe="This user is currently locked<br />They will need to set their password or admin needs to set it for them"><i class="glyphicon glyphicon-lock"></i></span>
+                    </td>
                     <td data-title="Name">{{ user.user.firstname }} {{ user.user.surname }}</td>
                     <td data-title="Permission Group"><span ng-repeat="group in user.user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
                     <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
@@ -100,11 +106,17 @@
           </div>
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.server">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{alert.msg}}
+          </div>
           <!-- Server Alerts -->
 
           <!-- Bottom Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.bottom">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{alert.msg}}
+          </div>
           <!-- Bottom Alerts -->
 
           <button class="btn btn-primary" ng-click="addUser()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> User</button>

@@ -10,7 +10,9 @@ var app = angular
     'angular_taglist_directive',
     'hljs',
     'angularFileUpload',
-    'datetimepicker'
+    'datetimepicker',
+    'colorpicker.module',
+    'FBAngular'
   ]);
 
 // function to boostrap the app manually - used to first get config data before angular initializes

@@ -3,177 +3,56 @@
 
 
 angular.module('openhimConsoleApp')
-  .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting) {
+  .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, Metrics) {
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+    var noDataErrorMsg = 'There has been no transactions received for the queried timeframe';
+
+
+    $scope.selectedDateType = {
+      period: '1d'
+    };
 
     var dashboardInterval = $interval(function() {
-      //$scope.getTransactionLoadMetrics();
-      $scope.getLoadMetrics();
-      $scope.getTimeMetrics();
-      $scope.getStatusMetrics();
+      $scope.updateMetrics();
     }, 5000);
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
 
-
-
-
-    /*********************************************************/
-    /**         Transaction Load Metric Functions           **/
-    /*********************************************************/
-
-    $scope.updateTransactionLoadLineChart = function(loadResults){
-      var value;
-      var hour;
-      var transactionLoadData = [];
-      $scope.loadTotal = 0;
-
-      for ( var i=1; i<=moment().add(1, 'hours').format('H'); i++ ){
-        value = 0;
-        // needs to be in date format
-        hour = moment().format('YYYY-MM-DD')+' '+i+':00:00';
-        for ( var x=0; x<loadResults.length; x++ ){
-          var date = loadResults[x].timestamp;
-
-          // check if the result has value for current hour in the loop
-          // add one hour to simulate transactions for the end of the hour and not in the hour
-          if ( moment( date ).add(1, 'hours').format('H') === moment( hour, 'YYYY-MM-DD H' ).format('H') ){
-            value = loadResults[x].load;
-          }
-        }
-
-        $scope.loadTotal += value;
-        transactionLoadData.push({ hour: hour, value: value });
+    function loadMetricsSuccess(metrics) {
+      if (metrics.length === 0) {
+        Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg);
+        Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg);
+      } else {
+        var round = function (d) {
+          return (d).toFixed(2);
+        };
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total');
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', round);
       }
+    }
 
-      $scope.transactionLoadData = {data: transactionLoadData, xkey: 'hour', ykeys: ['value'], labels: ['Load'], postunits: ' per hour'};
-    };
-
-    $scope.loadMetricsSuccess = function(loadResults){
-      if ( loadResults.length === 0 ){
-        Alerting.AlertAddMsg('load', 'warning', 'There has been no transactions received for today');
-      }else{
-        $scope.updateTransactionLoadLineChart(loadResults);
-      }
-    };
-
-    $scope.loadMetricsError = function(err){
+    function loadMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+    }
 
-    $scope.getLoadMetrics = function(){
-      // reset any load metric alert warnings
-      Alerting.AlertReset('load');
-
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
-
+    function updateTimeseriesMetrics() {
       // do API call here to pull load metrics
-      Api.Metrics.query({
-        startDate: startDate,
-        endDate: endDate
-      }, $scope.loadMetricsSuccess, $scope.loadMetricsError);
-    };
-
-    $scope.getLoadMetrics();
-
-    /*********************************************************/
-    /**         Transaction Load Metric Functions           **/
-    /*********************************************************/
+      Api.MetricsTimeseries.query({
+        type: $scope.selectedDateType.type,
+        startDate: moment($scope.selectedDateType.from).format(),
+        endDate: moment($scope.selectedDateType.until).format()
+      }, loadMetricsSuccess, loadMetricsError);
+    }
 
 
-
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-
-    $scope.updateResponseTimeLineChart = function(timeResults){
-      var value = 0;
-      var hour;
-      var avgResponseTimeTotal = 0;
-      var responseTimeData = [];
-      $scope.avgResponseTime = 0;
-
-      for ( var i=1; i<=moment().add(1, 'hours').format('H'); i++ ){
-        value = 0;
-        // needs to be in date format
-        hour = moment().format('YYYY-MM-DD')+' '+i+':00';
-        for ( var x=0; x<timeResults.length; x++ ){
-          var date = timeResults[x].timestamp;
-          // check if the result has value for current hour in the loop
-          if ( moment( date ).add(1, 'hours').format('H') === moment( hour, 'YYYY-MM-DD H' ).format('H') ){
-            value = timeResults[x].avgResp;
-            avgResponseTimeTotal += value;
-          }
-        }
-
-        $scope.avgResponseTime += value;
-        responseTimeData.push({ hour: hour, value: value.toFixed(2) });
-      }
-
-      $scope.avgResponseTime = (avgResponseTimeTotal / timeResults.length).toFixed(2);
-
-      // set data for morris graph to create/update
-      $scope.transactionResponseTimeData = {data: responseTimeData, xkey: 'hour', ykeys: ['value'], labels: ['Load'], postunits: ' ms'};
-
-    };
-
-    $scope.timeMetricsSuccess = function(timeResults){
-      if ( timeResults.length === 0 ){
-        Alerting.AlertAddMsg('responseTime', 'warning', 'There has been no transactions received for today');
-      }else{
-        $scope.updateResponseTimeLineChart(timeResults);
-      }
-    };
-
-    $scope.timeMetricsError = function(err){
-      // add warning message when unable to get data
-      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
-    };
-
-    $scope.getTimeMetrics = function(){
-      // reset any load metric alert warnings
-      Alerting.AlertReset('responseTime');
-
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
-
-      // do API call here to pull load metrics
-      Api.MetricsLoadTime.query({
-        startDate: startDate,
-        endDate: endDate
-      }, $scope.timeMetricsSuccess, $scope.timeMetricsError);
-    };
-
-    $scope.getTimeMetrics();
-
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-
-
-
-
-
-
-    /********************************************************************/
-    /**         Channel Transactions Status Metric Functions           **/
-    /********************************************************************/
-
-    $scope.updateStatusBarChart = function(statusResults){
-
+    function updateChannelsBarChart(metrics) {
       // set scope variable for amount of active channels
-      $scope.activeChannels = statusResults.length;
+      $scope.activeChannels = metrics.length;
 
       var channelsMap;
 
-      // create channelsMap for status name reference
+      // create channelsMap for channels name reference
       Api.Channels.query(function(channels){
         channelsMap = {};
         angular.forEach(channels, function(channel){
@@ -181,128 +60,107 @@ angular.module('openhimConsoleApp')
         });
 
         // define varables for graph data set
-        var objectData;
-        var statusData = [];
-        var statusKeys = [];
-        var statusLabels = [];
-        var statusColors = [];
+        var channelGraphStack;
+        var channelsData = [];
+        var channelsKeys = [];
+        var channelsLabels = [];
+        var channelsColors = [];
 
         // loop through each channels found in result and construct graph objects
-        for ( var i=0; i<statusResults.length; i++ ){
-
-          objectData = {};
+        for (var i=0; i<metrics.length; i++) {
+          channelGraphStack = {};
 
           // create a link object for when the user clicks on the bar
-          objectData.link = 'channels/'+statusResults[i]._id.channelID;
-          objectData.channel = channelsMap[statusResults[i]._id.channelID];
+          channelGraphStack.link = 'channels/'+metrics[i]._id.channelID;
+          channelGraphStack.channel = channelsMap[metrics[i]._id.channelID];
 
-          // check if Processing status has any records
-          if ( statusResults[i].processing !== 0 ){
-            objectData.processing = statusResults[i].processing;
+          channelGraphStack.processing = metrics[i].processing;
 
-            // only add these if it isnt yet present
-            if ( statusKeys.indexOf('processing') === -1 ){
-              statusKeys.push('processing');
-              statusLabels.push('Processing');
-              statusColors.push('#777777');
-            }
+          // only add these if it isnt yet present
+          if (channelsKeys.indexOf('processing') === -1) {
+            channelsKeys.push('processing');
+            channelsLabels.push('Processing');
+            channelsColors.push('#777777');
           }
 
-          // check if Failed status has any records
-          if ( statusResults[i].failed !== 0 ){
-            objectData.failed = statusResults[i].failed;
+          channelGraphStack.failed = metrics[i].failed;
 
-            // only add these if it isnt yet present
-            if ( statusKeys.indexOf('failed') === -1 ){
-              statusKeys.push('failed');
-              statusLabels.push('Failed');
-              statusColors.push('#d9534f');
-            }
+          // only add these if it isnt yet present
+          if (channelsKeys.indexOf('failed') === -1) {
+            channelsKeys.push('failed');
+            channelsLabels.push('Failed');
+            channelsColors.push('#d9534f');
           }
 
-          // check if Completed status has any records
-          if ( statusResults[i].completed !== 0 ){
-            objectData.completed = statusResults[i].completed;
+          channelGraphStack.completed = metrics[i].completed;
 
-            // only add these if it isnt yet present
-            if ( statusKeys.indexOf('completed') === -1 ){
-              statusKeys.push('completed');
-              statusLabels.push('Completed');
-              statusColors.push('#f0ad4e');
-            }
+          // only add these if it isnt yet present
+          if (channelsKeys.indexOf('completed') === -1) {
+            channelsKeys.push('completed');
+            channelsLabels.push('Completed');
+            channelsColors.push('#f0ad4e');
           }
 
-          // check if Completed with error(s) status has any records
-          if ( statusResults[i].completedWErrors !== 0 ){
-            objectData.completedWErrors = statusResults[i].completedWErrors;
+          channelGraphStack.completedWErrors = metrics[i].completedWErrors;
 
-            // only add these if it isnt yet present
-            if ( statusKeys.indexOf('completedWErrors') === -1 ){
-              statusKeys.push('completedWErrors');
-              statusLabels.push('Completed With Errors');
-              statusColors.push('#5bc0de');
-            }
+          if (channelsKeys.indexOf('completedWErrors') === -1) {
+            channelsKeys.push('completedWErrors');
+            channelsLabels.push('Completed With Errors');
+            channelsColors.push('#5bc0de');
           }
 
-          // check if Successful status has any records
-          if ( statusResults[i].successful !== 0 ){
-            objectData.successful = statusResults[i].successful;
+          channelGraphStack.successful = metrics[i].successful;
 
-            // only add these if it isnt yet present
-            if ( statusKeys.indexOf('successful') === -1 ){
-              statusKeys.push('successful');
-              statusLabels.push('Successful');
-              statusColors.push('#5cb85c');
-            }
+          if (channelsKeys.indexOf('successful') === -1) {
+            channelsKeys.push('successful');
+            channelsLabels.push('Successful');
+            channelsColors.push('#5cb85c');
           }
 
-          // push objectData to main statusData object
-          statusData.push(objectData);
-
+          channelsData.push(channelGraphStack);
         }
 
-        $scope.statusData = {data: statusData, xkey: 'channel', ykeys: statusKeys, labels: statusLabels, colors: statusColors, stacked: true,};
-
+        $scope.channelsData = {data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true};
       },
       function(err){
         Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data);
       });
 
-    };
+    }
 
-    $scope.statusMetricsSuccess = function(statusResults){
-      if ( statusResults.length === 0 ){
-        Alerting.AlertAddMsg('status', 'warning', 'There has been no transactions received for today');
-      }else{
-        $scope.updateStatusBarChart(statusResults);
+    function channelMetricsSuccess(metrics) {
+      if (metrics.length === 0) {
+        Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg);
+      } else {
+        updateChannelsBarChart(metrics);
       }
-    };
+    }
 
-    $scope.statusMetricsError = function(err){
+    function channelMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
+    }
 
-    $scope.getStatusMetrics = function(){
-      // reset any load metric alert warnings
+    function updateChannelMetrics() {
+      // do API call here to pull load metrics
+      Api.MetricsChannels.query({
+        startDate: moment($scope.selectedDateType.from).format(),
+        endDate: moment($scope.selectedDateType.until).format()
+      }, channelMetricsSuccess, channelMetricsError);
+    }
+
+
+    $scope.updateMetrics = function() {
+      Alerting.AlertReset('load');
+      Alerting.AlertReset('responseTime');
       Alerting.AlertReset('status');
 
-      var startDate = moment().startOf('day').toDate();
-      var endDate = moment().startOf('hour').add(1, 'hours').toDate();
-
-      // do API call here to pull load metrics
-      Api.MetricsStatus.query({
-        startDate: startDate,
-        endDate: endDate
-      }, $scope.statusMetricsSuccess, $scope.statusMetricsError);
+      Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType);
+      updateTimeseriesMetrics();
+      updateChannelMetrics();
     };
 
-    // do the inital load of the transaction status metrics
-    $scope.getStatusMetrics();
-
-    /********************************************************************/
-    /**         Channel Transactions Status Metric Functions           **/
-    /********************************************************************/
+    $scope.updateMetrics();
 
 
     $scope.$on('$destroy', function() {
@@ -312,6 +170,4 @@ angular.module('openhimConsoleApp')
         dashboardInterval = undefined;
       }
     });
-
-
   });

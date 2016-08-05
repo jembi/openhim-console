@@ -118,6 +118,13 @@ angular.module('openhimConsoleApp')
     /**   These are the functions for the Client Modal Popup     **/
     /**************************************************************/
 
+    var notifyUser = function(){
+      // reset backing object and refresh clients list
+      Notify.notify('clientsChanged');
+      Notify.notify('rolesChanged');
+      $modalInstance.close();
+    };
+
     var success = function () {
 
       // add the success message
@@ -130,13 +137,6 @@ angular.module('openhimConsoleApp')
       // add the success message
       Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data);
       notifyUser();
-    };
-
-    var notifyUser = function(){
-      // reset backing object and refresh clients list
-      Notify.notify('clientsChanged');
-      Notify.notify('rolesChanged');
-      $modalInstance.close();
     };
 
     var saveClient = function (client) {

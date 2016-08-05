@@ -16,24 +16,24 @@
         <!-- Server Alerts -->
 
         <div class="panel-body" ng-show="!alerts.server">
+          <div class="content-box-large bordered-box">
+            <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
+          </div>
 
-          <div style="margin-bottom: 20px;" ng-if="loadTotal || avgResponseTime">
+          <div style="margin-bottom: 20px;" ng-if="transactionLoadData.loadTotal || transactionLoadData.avgResponseTime">
             <div class="panel-body">
-              <div ng-if="loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions (Past Week): <br /><strong>{{loadTotal}}</strong>
+              <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
+                Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
               </div>
-              <div ng-if="avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time (Past Week): <br /><strong>{{avgResponseTime}} ms</strong>
+              <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
+                Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
               </div>
             </div>
           </div>
 
           <div class="content-box-large load-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Load (Past Week)</div>
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getLoadMetrics()"></i>
-              </div>
+              <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
             </div>
 
             <!-- Transaction Load Alerts -->
@@ -52,11 +52,7 @@
 
           <div class="content-box-large response-time-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
             <div class="panel-heading">
-              <div class="panel-title">Average Response Time (Past Week)</div>
-              
-              <div class="panel-options">
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getTimeMetrics()"></i>
-              </div>
+              <div class="panel-title">Average Response Time (ms)</div>
             </div>
 
             <!-- Transaction ResponseTime Alerts -->
@@ -66,7 +62,7 @@
             <div class="panel-body" ng-if="!alerts.responseTime">
               <div morris-line-chart
                 id="response-time-graph" 
-                data="transactionTimeData"
+                data="transactionResponseTimeData"
                 style="height: 250px;">
               </div>
             </div>
@@ -74,11 +70,7 @@
 
           <div class="content-box-large" style="clear: both; border: 1px solid #ccc;">
             <div class="panel-heading">
-              <div class="panel-title">Transaction Status (Past Week)</div>
-              
-              <div class="panel-options">              
-                <i class="glyphicon glyphicon-refresh reload-metrics-btn" ng-click="getStatusMetrics()"></i>
-              </div>
+              <div class="panel-title">Transaction Status</div>
             </div>
             <div class="panel-body">
 
@@ -90,14 +82,14 @@
                 <div class="col-md-9">
                   <div morris-bar-chart
                     id="status-bar" 
-                    data="statusBarData"
+                    data="channelsBarData"
                     style="height: 250px;">
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div morris-donut-chart
                     id="status-donut"
-                    data="statusDonutData"
+                    data="channelsDonutData"
                     style="height: 250px;">
                   </div>
                 </div>

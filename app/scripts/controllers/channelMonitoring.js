@@ -3,11 +3,9 @@
 
 
 angular.module('openhimConsoleApp')
-  .controller('ChannelMonitoringCtrl', function ($scope, $modal, $interval, $location, $routeParams, Api, Alerting) {
+  .controller('ChannelMonitoringCtrl', function ($scope, $modal, $interval, $location, $routeParams, Api, Alerting, Metrics) {
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+    var noDataErrorMsg = 'There has been no transactions received for the queried timeframe';
 
     var channelSuccess = function(channel){
       $scope.channel = channel;
@@ -21,274 +19,151 @@ angular.module('openhimConsoleApp')
     //get the Data for the supplied ID and store in 'transactionsDetails' object
     Api.Channels.get({ channelId: $routeParams.channelId }, channelSuccess, channelError);
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
-    
-
-    /*********************************************************/
-    /**         Transaction Load Metric Functions           **/
-    /*********************************************************/
-
-    var updateLoadLineChart = function(loadResults){
-      /* DEFAULT LOAD OBJECT */
-      var transactionLoadData = [
-        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().format('YYYY-MM-DD'), value: 0 }
-      ];
-      $scope.loadTotal = 0;
-      /* DEFAULT LOAD OBJECT */
-
-      var dateFormat, date;
-
-      // construct the transactionLoadData if API success
-      for (var i = 0; i < loadResults.length; i++) {
-        dateFormat = loadResults[i].timestamp;
-        date = moment(dateFormat, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-
-        // check if date is equal to date in object and update load total
-        for (var x = 0; x < transactionLoadData.length; x++) {
-          if( transactionLoadData[x].date === date ){
-            transactionLoadData[x].value = loadResults[i].load;
-            // add to load total
-            $scope.loadTotal += loadResults[i].load;
-          }
-        }
-      }
-
-      // construct transactionLoadData scope object for morris
-      $scope.transactionLoadData = {data: transactionLoadData, xkey: 'date', ykeys: ['value'], labels: ['Load'], postunits: ''};
-
+    $scope.selectedDateType = {
+      period: '1d'
     };
 
-    var loadMetricsSuccess = function(loadResults){
-      if ( loadResults.length === 0 ){
-        Alerting.AlertAddMsg('load', 'warning', 'There were no transactions found for the past week');
-      }else{
-        updateLoadLineChart(loadResults);
-      }
-    };
+    var dashboardInterval = $interval(function() {
+      $scope.updateMetrics();
+    }, 5000);
 
-    var loadMetricsError = function(err){
+
+    function loadMetricsSuccess(metrics) {
+      if (metrics.length === 0) {
+        Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg);
+        Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg);
+      } else {
+        var round = function (d) {
+          return (d).toFixed(2);
+        };
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total');
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', round);
+      }
+    }
+
+    function loadMetricsError(err) {
       // add warning message when unable to get data
       Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-    };
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+    }
 
-    $scope.getLoadMetrics = function(){
-      // reset any load metric alert warnings
-      Alerting.AlertReset('load');
-
-      // do API call here to pull channel load metrics
-      Api.Metrics.query({
-        type: 'day',
+    function updateTimeseriesMetrics() {
+      Api.MetricsTimeseriesChannel.query({
+        type: $scope.selectedDateType.type,
         channelId : $routeParams.channelId,
-        startDate: moment().subtract(1,'weeks').toDate(),
-        endDate: moment().toDate()
+        startDate: moment($scope.selectedDateType.from).format(),
+        endDate: moment($scope.selectedDateType.until).format()
       }, loadMetricsSuccess, loadMetricsError);
-    };
-
-    // do the inital load of the transaction status metrics
-    $scope.getLoadMetrics();
-
-    /*********************************************************/
-    /**         Transaction Load Metric Functions           **/
-    /*********************************************************/
+    }
 
 
 
-
-
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-    
-    var updateResponseTimeLineChart = function(timeResults){
-
-      /* DEFAULT TIME OBJECT */
-      var transactionTimeData = [
-        { date: moment().subtract(6, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(5, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(4, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(3, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(2, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().subtract(1, 'd').format('YYYY-MM-DD'), value: 0 },
-        { date: moment().format('YYYY-MM-DD'), value: 0 }
-      ];
-      $scope.avgResponseTime = 0;
-      /* DEFAULT TIME OBJECT */
-
-      var dateFormat, date;
-      var avgResponseTimeTotal = 0;
-
-      // construct the loadData if API success
-      for (var i = 0; i < timeResults.length; i++) {
-        dateFormat = timeResults[i].timestamp;
-        date = moment(dateFormat, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-
-        // check if date is equal to date in object and update load total
-        for (var x = 0; x < transactionTimeData.length; x++) {
-          if( transactionTimeData[x].date === date ){
-            transactionTimeData[x].value = timeResults[i].avgResp.toFixed(2);
-            // add to load total
-            avgResponseTimeTotal += parseFloat(timeResults[i].avgResp);
-          }
-        }
+    var updateChannelsBarChart = function(channelsData){
+      // construct channels bar object for morris
+      var channelsBarData = [];
+      for (var i = 0; i < channelsData.length; i++) {
+        channelsBarData.push({ label: channelsData[i].label, value: channelsData[i].value });
       }
-
-      // calculate average response time
-      $scope.avgResponseTime = (avgResponseTimeTotal / timeResults.length).toFixed(2);
-
-      // construct avgResponseTime scope object for morris
-      $scope.transactionTimeData = {data: transactionTimeData, xkey: 'date', ykeys: ['value'], labels: ['Load'], postunits: ' ms'};
+      $scope.channelsBarData = {data: channelsBarData, xkey: 'label', ykeys: ['value'], labels: ['Total']};
     };
 
-    var timeMetricsSuccess = function(timeResults){
-      if ( timeResults.length === 0 ){
-        Alerting.AlertAddMsg('responseTime', 'warning', 'There were no transactions found for the past week');
-      }else{
-        updateResponseTimeLineChart(timeResults);
+    var updateChannelsDonutChart = function(channelsData){
+      var channelsDonutData = [];
+      var channelsDonutColors = [];
+      for (var i = 0; i < channelsData.length; i++) {
+        channelsDonutData.push({ label: channelsData[i].label, value: channelsData[i].percent });
+        channelsDonutColors.push(channelsData[i].color);
       }
+      $scope.channelsDonutData = {data: channelsDonutData, colors: channelsDonutColors};
     };
 
-    var timeMetricsError = function(err){
-      // add warning message when unable to get data
-      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Response Time Error: ' + err.status + ' ' + err.data);
-    };
+    var channelsMetricsSuccess = function(channelsResults){
 
-    $scope.getTimeMetrics = function(){
-      // reset any time metric alert warnings
-      Alerting.AlertReset('responseTime');
-
-      // do API call here to pull channel time metrics
-      Api.Metrics.query({
-        type: 'day',
-        channelId : $routeParams.channelId,
-        startDate: moment().subtract(6, 'd').toDate(),
-        endDate: moment().toDate()
-      }, timeMetricsSuccess, timeMetricsError);
-    };
-
-    // do the inital load of the transaction time metrics
-    $scope.getTimeMetrics();
-
-    /******************************************************************/
-    /**         Transaction Response Time Metric Functions           **/
-    /******************************************************************/
-
-
-
-
-
-
-    /***********************************************************/
-    /**         Transaction Status Metric Functions           **/
-    /***********************************************************/
-    
-    var updateStatusBarChart = function(statusData){
-      // construct status bar object for morris
-      var statusBarData = [];
-      for (var i = 0; i < statusData.length; i++) {
-        statusBarData.push({ label: statusData[i].label, value: statusData[i].value });
-      }
-      $scope.statusBarData = {data: statusBarData, xkey: 'label', ykeys: ['value'], labels: ['Total']};
-    };
-
-    var updateStatusDonutChart = function(statusData){
-      var statusDonutData = [];
-      var statusDonutColors = [];
-      for (var i = 0; i < statusData.length; i++) {
-        statusDonutData.push({ label: statusData[i].label, value: statusData[i].percent });
-        statusDonutColors.push(statusData[i].color);
-      }
-      $scope.statusDonutData = {data: statusDonutData, colors: statusDonutColors};
-    };
-
-    var statusMetricsSuccess = function(statusResults){
-
-      if ( statusResults.length === 0 ){
-        Alerting.AlertAddMsg('status', 'warning', 'There were no transactions found for the past day');
+      if ( channelsResults.length === 0 ){
+        Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg);
       }else{
 
-        var statusData = [];
+        var channelsData = [];
         var totalTransactions = 0;
         var value, percent;
 
-        totalTransactions += parseInt( statusResults[0].processing );
-        totalTransactions += parseInt( statusResults[0].failed );
-        totalTransactions += parseInt( statusResults[0].completed );
-        totalTransactions += parseInt( statusResults[0].completedWErrors );
-        totalTransactions += parseInt( statusResults[0].successful );
+        totalTransactions += parseInt( channelsResults[0].processing );
+        totalTransactions += parseInt( channelsResults[0].failed );
+        totalTransactions += parseInt( channelsResults[0].completed );
+        totalTransactions += parseInt( channelsResults[0].completedWErrors );
+        totalTransactions += parseInt( channelsResults[0].successful );
 
-        if (parseInt( statusResults[0].processing ) !== 0){
-          value = parseInt( statusResults[0].processing );
+        if (parseInt( channelsResults[0].processing ) !== 0){
+          value = parseInt( channelsResults[0].processing );
           percent = (100 / totalTransactions * value).toFixed(2);
-          statusData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
+          channelsData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' });
         }
 
-        if (parseInt( statusResults[0].failed ) !== 0){
-          value = parseInt( statusResults[0].failed );
+        if (parseInt( channelsResults[0].failed ) !== 0){
+          value = parseInt( channelsResults[0].failed );
           percent = (100 / totalTransactions * value).toFixed(2);
-          statusData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
+          channelsData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' });
         }
 
-        if (parseInt( statusResults[0].completed ) !== 0){
-          value = parseInt( statusResults[0].completed );
+        if (parseInt( channelsResults[0].completed ) !== 0){
+          value = parseInt( channelsResults[0].completed );
           percent = (100 / totalTransactions * value).toFixed(2);
-          statusData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
+          channelsData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' });
         }
 
-        if (parseInt( statusResults[0].completedWErrors ) !== 0){
-          value = parseInt( statusResults[0].completedWErrors );
+        if (parseInt( channelsResults[0].completedWErrors ) !== 0){
+          value = parseInt( channelsResults[0].completedWErrors );
           percent = (100 / totalTransactions * value).toFixed(2);
-          statusData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#5bc0de' });
+          channelsData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#5bc0de' });
         }
 
-        if ( parseInt( statusResults[0].successful ) !== 0 ){
-          value = parseInt( statusResults[0].successful );
+        if ( parseInt( channelsResults[0].successful ) !== 0 ){
+          value = parseInt( channelsResults[0].successful );
           percent = (100 / totalTransactions * value).toFixed(2);
-          statusData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
+          channelsData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' });
         }
 
-        updateStatusBarChart(statusData);
-        updateStatusDonutChart(statusData);
+        updateChannelsBarChart(channelsData);
+        updateChannelsDonutChart(channelsData);
 
       }
 
     };
 
-    var statusMetricsError = function(err){
+    var channelsMetricsError = function(err){
       // add warning message when unable to get data
-      Alerting.AlertAddMsg('status', 'danger', 'Transaction Status Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('status', 'danger', 'Transaction Channels Error: ' + err.status + ' ' + err.data);
     };
 
-    $scope.getStatusMetrics = function(){
+    function updateChannelsMetrics() {
+      Api.MetricsChannels.query({
+        channelId : $routeParams.channelId,
+        startDate: moment($scope.selectedDateType.from).format(),
+        endDate: moment($scope.selectedDateType.until).format()
+      }, channelsMetricsSuccess, channelsMetricsError);
+    }
 
-      // reset any load metric alert warnings
+
+
+    $scope.updateMetrics = function() {
+      Alerting.AlertReset('load');
+      Alerting.AlertReset('responseTime');
       Alerting.AlertReset('status');
 
-      var startDate = moment().subtract(6, 'd').toDate();
-      var endDate = moment().toDate();
-
-      Api.Metrics.query({
-        type: 'status',
-        channelId : $routeParams.channelId,
-        startDate: startDate,
-        endDate: endDate
-      }, statusMetricsSuccess, statusMetricsError);
-
+      Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType);
+      updateTimeseriesMetrics();
+      updateChannelsMetrics();
     };
 
-    // do the inital load of the transaction status metrics
-    $scope.getStatusMetrics();
+    $scope.updateMetrics();
 
-    /***********************************************************/
-    /**         Transaction Status Metric Functions           **/
-    /***********************************************************/
+
+    $scope.$on('$destroy', function() {
+      // Make sure that the interval is destroyed too
+      if (angular.isDefined(dashboardInterval)) {
+        $interval.cancel(dashboardInterval);
+        dashboardInterval = undefined;
+      }
+    });
 
   });
