@@ -1,3 +1,10 @@
+openhim-console (1.7.0-11~trusty) trusty; urgency=medium
+
+  * Release Debian Build 1.7.0-11. Find v1.7.0 changelog here:
+    https://github.com/jembi/openhim-console/releases
+
+ -- Ryan Crichton <ryan@jembi.org>  Thu, 04 Aug 2016 09:47:49 +0200
+
 openhim-console (1.6.0-10~trusty) trusty; urgency=medium
 
   * Release Debian Build 1.6.0-10. Find v1.6.0 changelog here:
