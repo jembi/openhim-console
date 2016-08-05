@@ -88,6 +88,11 @@ angular.module('openhimConsoleApp')
 
       MetadataValidation: $resource( server + '/metadata/validate', {}, {
         save: { method: 'POST', isArray: true }
+      }),
+      
+      // About page (versions) API
+      About: $resource( server + '/about', {}, {
+        query: { method: 'GET', isArray: false }
       })
 
     };

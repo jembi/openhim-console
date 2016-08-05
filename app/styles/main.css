@@ -1385,3 +1385,12 @@ label { position: relative; }
 .inTableEditTextBoxTd input { float:left; width:100px; height:21px; font-size:12px; }
 .rolesTableScrollDiv { overflow-x: auto; }
 .delBtnPlacement { margin-left:22px; }
+
+.version {
+  border-radius:10px;
+  padding:20px;
+  display:inline-block;
+}
+
+.version-compatible { background-color: #97F37E; }
+.version-incompatible { background-color: #EC6042; }

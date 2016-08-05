@@ -148,6 +148,10 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/logs.html',
       controller: 'LogsCtrl'
     })
+    .when('/about', {
+      templateUrl: 'views/about.html',
+      controller: 'AboutCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });
