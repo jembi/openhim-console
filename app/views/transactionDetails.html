@@ -154,12 +154,15 @@
                 </div>
                 <div class="panel-body">
 
-                  <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
-                  <h4 ng-if="channel.type === 'http'">Status code
-                    <span ng-if="transactionDetails.response.status >= 200 && transactionDetails.response.status < 300" class="label label-success">{{transactionDetails.response.status}}</span>
-                    <span ng-if="transactionDetails.response.status >= 300 && transactionDetails.response.status < 400" class="label label-primary">{{transactionDetails.response.status}}</span>
-                    <span ng-if="transactionDetails.response.status >= 400 && transactionDetails.response.status < 500" class="label label-warning">{{transactionDetails.response.status}}</span>
-                    <span ng-if="transactionDetails.response.status >= 500 && transactionDetails.response.status < 600" class="label label-danger">{{transactionDetails.response.status}}</span>
+                  <h4>
+                    <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+                    <span ng-if="channel.type === 'http'">Status code
+                      <span ng-if="transactionDetails.response.status >= 200 && transactionDetails.response.status < 300" class="label label-success">{{transactionDetails.response.status}}</span>
+                      <span ng-if="transactionDetails.response.status >= 300 && transactionDetails.response.status < 400" class="label label-primary">{{transactionDetails.response.status}}</span>
+                      <span ng-if="transactionDetails.response.status >= 400 && transactionDetails.response.status < 500" class="label label-warning">{{transactionDetails.response.status}}</span>
+                      <span ng-if="transactionDetails.response.status >= 500 && transactionDetails.response.status < 600" class="label label-danger">{{transactionDetails.response.status}}</span>
+                    </span>
+                    <span ng-if="transactionDetails.error" class="label label-warning">Internal Server Error</span>
                   </h4>
                   <h6 class="subtitle"><em>Received at {{transactionDetails.response.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z'}}</em></h6>
 
@@ -179,6 +182,11 @@
                     <h4>Response body</h4>
                     <div class="hljsFormat" hljs source="transactionDetails.response.body"></div>
                     <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);">View Full Response Body</button>
+                  </div>
+                  <div ng-if="transactionDetails.error" style="display: inline-block; width: 100%; margin-top: 15px;">
+                    <h4>Error</h4>
+                    <div>{{transactionDetails.error.message}}</div>
+                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Error', transactionDetails.error.stack);">View Error Details</button>
                   </div>
                 </div>
               </div>

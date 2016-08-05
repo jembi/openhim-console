@@ -59,15 +59,16 @@
           <h3 class="panel-title">Response</h3>
         </div>
         <div class="panel-body">
-          <div ng-if="channel">
-          <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
-            <h4 ng-if="channel.type === 'http'">Status code
+          <div ng-if="channel"><h4>
+            <span class="label label-danger" ng-if="channel.type !== 'http'">{{channel.type | uppercase}}</span>
+            <span ng-if="channel.type === 'http'">Status code
               <span ng-if="record.response.status >= 200 && record.response.status < 300" class="label label-success">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 300 && record.response.status < 400" class="label label-primary">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 400 && record.response.status < 500" class="label label-warning">{{record.response.status}}</span>
               <span ng-if="record.response.status >= 500 && record.response.status < 600" class="label label-danger">{{record.response.status}}</span>
-            </h4>
-          </div>
+            </span>
+            <span ng-if="record.error" class="label label-warning">Internal Server Error</span>
+          </h4></div>
           <!-- Assume its HTTP, can't do much else -->
           <div ng-if="!channel">
             <h4>Status code
@@ -96,6 +97,11 @@
             <div class="hljsFormat" hljs source="record.response.body"></div>
             <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Response', record.response.body, record.response.headers);">View Full Response Body</button>
           </div>
+          <div ng-if="record.error" style="display: inline-block; width: 100%; margin-top: 15px;">
+            <h4>Error</h4>
+            <div>{{record.error.message}}</div>
+            <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Error', record.error.stack);">View Error Details</button>
+          </div>
         </div>
       </div>
     </div>
@@ -104,7 +110,7 @@
   <div class="route-detail-container" ng-show="viewFullBody">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <div ng-if="fullBodyTransformLang" class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent"></div>
+        <div class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent"></div>
       </div>
     </div>
     <!-- show only if full body is show -->
