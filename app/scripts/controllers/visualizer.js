@@ -4,24 +4,14 @@
 angular.module('openhimConsoleApp')
   .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
 
+    // initialize global variables
+    var settingsStore = {}; // a place the push current settings when switching to fullscreen
+    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad;
+
     $scope.loadingVisualizer = true;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
     $scope.isUsingOldVisualizerSettings = false;
-
-
-    // initialize global variables
-    var components = [];
-    var channels = [];
-    var mediators = [];
-    var settingsStore = {}; // a place the push current settings when switching to fullscreen
-    var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
-    var visualizerUpdateInterval, updatePeriod, minDisplayPeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
-
-
-    var consoleSession = localStorage.getItem('consoleSession');
-    consoleSession = JSON.parse(consoleSession);
-    $scope.consoleSession = consoleSession;
 
     // function to start the visualizer
     var startVisualizer = function startVisualizer() {
@@ -31,18 +21,12 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    // get the user settings to construct the visualizer
-    Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
+    var loadVisualizer = function (visSettings) {
+      var visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout;
+      var components = [];
+      var channels = [];
+      var mediators = [];
 
-      // user doesnt have settings saved
-      if ( !user.settings ){
-        $scope.loadingVisualizerError = true;
-        $scope.loadingVisualizer = false;
-        $scope.loadingVisualizerErrorMsgs.push({ section: 'Settings Error', msg: 'There appear to be no settings saved for this user. Please save the user settings' });
-        return;
-      }
-
-      var visSettings = user.settings.visualizer;
       if (visSettings.endpoints && !visSettings.mediators) {
         $scope.isUsingOldVisualizerSettings = true;
       }
@@ -71,7 +55,6 @@ angular.module('openhimConsoleApp')
       }
       /********** Visualizations Management **********/
 
-
       /********** Size Management **********/
       visResponsive = visSettings.size.responsive;
       visW = parseInt( visSettings.size.width );
@@ -86,7 +69,6 @@ angular.module('openhimConsoleApp')
       }
       /********** Size Management **********/
 
-
       /********** Color Management **********/
       inactiveColor = visSettings.color.inactive;
       activeColor = visSettings.color.active;
@@ -100,7 +82,6 @@ angular.module('openhimConsoleApp')
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' });
       }
       /********** Color Management **********/
-
 
       /********** Time Management **********/
       //How often to fetch updates from the server (in millis)
@@ -119,7 +100,6 @@ angular.module('openhimConsoleApp')
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Speed Management', msg: 'Please ensure all speed management fields are supplied!' });
       }
       /********** Time Management **********/
-
 
       // setup watcher objects
       $scope.visualizerData = [];
@@ -142,7 +122,6 @@ angular.module('openhimConsoleApp')
         maxTimeout: maxTimeout
       };
 
-
       // check if visualizer should be loaded - no errors found
       if ( $scope.loadingVisualizer === true ){
         // visualizer loaded - change state
@@ -152,12 +131,7 @@ angular.module('openhimConsoleApp')
         startVisualizer();
       }
 
-    }, function(err){
-      $scope.loadingVisualizer = false;
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status);
-    });
-
+    };
 
     // function to play the visualizer - Pull new events
     $scope.play = function play() {
@@ -241,4 +215,20 @@ angular.module('openhimConsoleApp')
         $scope.visualizerSettings.visH = settingsStore.visH;
       }
     });
+
+    // visualizer list controls
+    Api.Visualizers.query(function (visualizers) {
+      $scope.visualizers = visualizers;
+      if (!$scope.selectedVis && visualizers.length > 0) {
+        $scope.selectedVis = visualizers[0];
+        loadVisualizer(visualizers[0]);
+      }
+    }, function (err) {
+      Alerting.AlertAddServerMsg(err.status);
+    })
+
+    $scope.selectVis = function (vis) {
+      $scope.selectedVis = vis;
+      loadVisualizer(vis);
+    }
   });
