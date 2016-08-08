@@ -31,8 +31,8 @@
               <h3>Suggested Compatible Versions:</h3>
               <br/>
               <div ng-repeat="release in aboutInfo.releases">
-                <h4><strong>Console</strong> {{ release.console }}</h4>
-                <h4>{{ release.coreMinimum }} &lt= <strong>Core</strong> &lt {{ release.coreMaximum }}</h4>
+                <h4><strong>Console</strong> {{ release.consoleVersion }}</h4>
+                <h4>{{ release.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ release.maximumCoreVersion }}</h4>
                 <br/>
               </div>
             </div>

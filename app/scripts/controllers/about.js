@@ -16,8 +16,8 @@ angular.module('openhimConsoleApp')
     
     
     var getVersionCompatible = function(minVersion, actualVersion) {
-      var v1 = minVersion.split(".");
-      var v2 = actualVersion.split(".");
+      var v1 = minVersion.split('.');
+      var v2 = actualVersion.split('.');
       
       if(v1[0] === v2[0]) {
         return 'Compatible';
@@ -26,20 +26,27 @@ angular.module('openhimConsoleApp')
     };
     
     
-    $scope.$on('aboutInfoReceived', function () {
+    var buildAboutInfoObject = function() {
       $scope.aboutInfo.currentConsoleVersion = config.version;
       
-      var releases = $scope.aboutInfo.releases
-      angular.forEach(releases, function(release, key) {
-        var coreMaxArray = release.coreMinimum.split(".");
-        coreMaxArray[0] = parseInt(coreMaxArray[0]) + 1;
-        $scope.aboutInfo.releases[key]['coreMaximum'] = coreMaxArray.join(".");
+      angular.forEach($scope.aboutInfo.releases, function(release, key) {
         
-        if(release.console === $scope.aboutInfo.currentConsoleVersion) {
-          $scope.aboutInfo.minCoreVersion = release.coreMinimum;
+        var maxCoreVersionArray = release.minimumCoreVersion.split('.');
+        maxCoreVersionArray[0] = parseInt(maxCoreVersionArray[0]) + 1;
+        $scope.aboutInfo.releases[key].maximumCoreVersion = maxCoreVersionArray.join('.');
+        
+        if(release.consoleVersion === $scope.aboutInfo.currentConsoleVersion) {
+          $scope.aboutInfo.minimumCoreVersion = release.minimumCoreVersion;
         }
       });
-      $scope.aboutInfo.compatibility = getVersionCompatible($scope.aboutInfo.minCoreVersion, $scope.aboutInfo.currentCoreVersion);
+      
+      $scope.aboutInfo.compatibility = getVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion);
+    };
+    
+    
+    $scope.$on('aboutInfoReceived', function () {
+      buildAboutInfoObject();
     });
     
   });
+  
