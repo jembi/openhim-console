@@ -345,7 +345,7 @@ module.exports = function (grunt) {
         options: {
           replacements: [
             {
-              pattern: /\"version\"\:\ \"[0-9]\.[0-9]\.[0-9]\"/,
+              pattern: /\"version\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/,
               replacement: '"version": "<%= packageVersion%>"'
             }
           ]
