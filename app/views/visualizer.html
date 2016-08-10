@@ -1,5 +1,4 @@
-
-<div class="page-content">
+<div class="page-content container-fluid">
   <div class="row">
     <!-- include the sidebar -->
     <div ng-include="'views/sidebar.html'"></div>
@@ -10,48 +9,72 @@
           <div class="panel-title">
             <h2><i class="glyphicon glyphicon-road"></i>&nbsp;&nbsp;Visualizer</h2>
             <p class="text-muted">
-              The visualizer displays a live view of how transactions are being routed through the OpenHIM.
+              The visualizer displays a live view of how transactions are being routed through the OpenHIM. Multiple visualizers can be created and these are shared amoung admin users. Pick a visualizer on the left to start viewing or create a new one.
             </p>
           </div>
         </div>
 
-        <!-- show loading gif when visualizer busy initializing -->
-        <div class="loadingContainer" ng-show="loadingVisualizer">
-          <img src="images/loading.gif" alt="Loading..." />
-        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2" role="navigation">
+              <h4>Choose a visualizer to view</h4>
+              <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" ng-repeat="vis in visualizers" ng-class="{ active: selectedVis === vis }">
+                  <a href ng-click="selectVis(vis)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+                    <span>{{ vis.name }}</span>
+                    <div class="pull-right" ng-if="selectedVis.name === vis.name || hover">
+                      <div class="btn-group" role="group">
+                        <button tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
+                        <button tooltip="Edit" class="btn btn-warning btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
+                        <button tooltip="Delete" class="btn btn-danger btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+              <button class="btn btn-primary lg-skip" ng-click="" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Visualizer</button>
+            </div>
+            <div class="col-md-9 col-md-offset-1"> 
+              <!-- show loading gif when visualizer busy initializing -->
+              <div class="loadingContainer" ng-show="loadingVisualizer">
+                <img src="images/loading.gif" alt="Loading..." />
+              </div>
 
-        <!-- Server Alerts -->
-        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
-        <!-- Server Alerts -->
+              <!-- Server Alerts -->
+              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <!-- Server Alerts -->
 
-        <div class="panel-body" ng-show="loadingVisualizerError">
-          There seems to be issues with you visualizer settings. please configure them in the '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
+              <div ng-show="loadingVisualizerError">
+                There seems to be issues with you visualizer settings. please configure them in the '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
 
-          <div ng-repeat="errorMsg in loadingVisualizerErrorMsgs">
-            <span style="font-weight: bold; font-size: 14px;">{{errorMsg.section}}: </span>
-            <span>{{errorMsg.msg}}</span>
+                <div ng-repeat="errorMsg in loadingVisualizerErrorMsgs">
+                  <span style="font-weight: bold; font-size: 14px;">{{errorMsg.section}}: </span>
+                  <span>{{errorMsg.msg}}</span>
+                </div>
+              </div>
+
+              <div ng-show="isUsingOldVisualizerSettings">
+                <strong>NEW</strong> The visualizer has been upgraded with new features! However this means you'll have to migrate your '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' in order to continue.
+              </div>
+
+              <div ng-show="!loadingVisualizer && !loadingVisualizerError && !isUsingOldVisualizerSettings">
+                <div class="btn-group">
+                  <button class="btn btn-default" ng-click="slowDown();" title="Animate Slower"><i class="glyphicon glyphicon-backward"></i></button>
+                  <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
+                  <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
+                  <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
+                  <button class="btn btn-default" ng-click="goFullScreenViaWatcher()"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                </div>
+                <div class="visualizerSpeed">{{speedText}}</div>
+
+
+                <div visualizer fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="panel-body" ng-show="isUsingOldVisualizerSettings">
-          <strong>NEW</strong> The visualizer has been upgraded with new features! However this means you'll have to migrate your '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' in order to continue.
-        </div>
-
-        <div class="panel-body" ng-show="!loadingVisualizer && !loadingVisualizerError && !isUsingOldVisualizerSettings">
-          <div class="btn-group">
-            <button class="btn btn-default" ng-click="slowDown();" title="Animate Slower"><i class="glyphicon glyphicon-backward"></i></button>
-            <button class="btn btn-default" ng-click="play();" ng-show="showPlay" title="Play the Visualizer"><i class="glyphicon glyphicon-play"></i></button>
-            <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
-            <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
-            <button class="btn btn-default" ng-click="goFullScreenViaWatcher()"><i class="glyphicon glyphicon-fullscreen"></i></button>
-          </div>
-          <div class="visualizerSpeed">{{speedText}}</div>
-
-
-          <div visualizer fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
-        </div>
       </div>
-
     </div>
   </div>
 </div>
