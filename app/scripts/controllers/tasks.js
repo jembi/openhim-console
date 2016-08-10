@@ -110,6 +110,12 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    $scope.applyFilterIfValidDate = function(date){
+      if (moment(date, 'YYYY-MM-DD', true).isValid()){
+        $scope.applyFiltersToUrl();
+      }
+    };
+
     $scope.applyFiltersToUrl = function(){
 
       // get the filter params object before clearing them
