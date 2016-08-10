@@ -104,6 +104,7 @@ angular.module('openhimConsoleApp')
       // setup watcher objects
       $scope.visualizerData = [];
       $scope.visualizerSettings = {
+        name: visSettings.name,
         components: components,
         channels: channels,
         mediators: mediators,
@@ -225,10 +226,10 @@ angular.module('openhimConsoleApp')
       }
     }, function (err) {
       Alerting.AlertAddServerMsg(err.status);
-    })
+    });
 
     $scope.selectVis = function (vis) {
       $scope.selectedVis = vis;
       loadVisualizer(vis);
-    }
+    };
   });
