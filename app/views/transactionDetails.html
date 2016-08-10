@@ -185,7 +185,7 @@
                   </div>
                   <div ng-if="transactionDetails.error" style="display: inline-block; width: 100%; margin-top: 15px;">
                     <h4>Error</h4>
-                    <div>{{transactionDetails.error.message}}</div>
+                    <div class="hljsFormat" hljs source="transactionDetails.error.message"></div>
                     <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Error', transactionDetails.error.stack);">View Error Details</button>
                   </div>
                 </div>
