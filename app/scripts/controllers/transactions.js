@@ -638,8 +638,10 @@ angular.module('openhimConsoleApp')
     $scope.viewTransactionDetails = function (path, $event) {
       //do transactions details redirection when clicked on TD
       if( $event.target.tagName === 'TD' ){
-        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
-        var txUrl = baseUrl + path;
+        var absUrl = $location.absUrl();
+        var absUrlPath = $location.url();
+        var baseUrl = absUrl.replace(absUrlPath, '');
+        var txUrl = baseUrl + '/' + path;
         if ( $scope.settings.list.tabview && $scope.settings.list.tabview === 'new' ){
           window.open(txUrl, '_blank');
         }else{
