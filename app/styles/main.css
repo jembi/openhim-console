@@ -1219,17 +1219,6 @@ footer a {
   background-color: #028A3B;
 }
 
-a {
-  color: #028A3B;
-  text-decoration: none;
-}
-
-a:hover,
-a:focus {
-  color: #95AE32;
-  text-decoration: underline;
-}
-
 .settingComponentDivs { clear: both; display: inline-block; border-top: 1px solid #ccc; width: 100%;margin-top: 10px;padding-top: 10px; }
 .settingComponentDivs .settings_div { width: 15%; min-width: 150px; }
 .settingComponentDivs .settings_div .input-group { clear: both; }
@@ -1351,7 +1340,7 @@ label { position: relative; }
 }
 
 .lg-skip {
-  margin-top: 50px; 
+  margin-top: 50px;
 }
 
 .subtitle {
@@ -1371,7 +1360,7 @@ label { position: relative; }
 }
 
 .channelPriorityOrdering {
-  display: none; 
+  display: none;
   float: right;
   width: 45px;
 }
