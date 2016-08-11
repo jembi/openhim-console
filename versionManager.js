@@ -37,6 +37,13 @@ var req = https.request(options, function(res) {
         silent: true,
     })
     
+    replace({
+        regex: /openhim.readthedocs.org\/en\/v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/,
+        replacement: `openhim.readthedocs.org/en/v${minimumCoreVersion}`,
+        paths: ['README.md'],
+        recursive: true,
+        silent: true,
+    })    
   })
 })
 
