@@ -1387,10 +1387,18 @@ label { position: relative; }
 .delBtnPlacement { margin-left:22px; }
 
 .version {
-  border-radius:10px;
-  padding:20px;
-  display:inline-block;
+  padding: 20px;
+  display: inline-block;
+  float: left;
+  clear: both;
+  margin-bottom: 20px;
+}
+
+.version h3 {
+  margin-top: 0px;
 }
 
 .version-compatible { background-color: #97F37E; }
 .version-incompatible { background-color: #EC6042; }
+
+.readable-text { font-size: 16px; }

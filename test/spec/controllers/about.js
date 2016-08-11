@@ -50,7 +50,7 @@ describe('Controller: AboutCtrl', function () {
     scope.aboutInfo.currentCoreVersion.should.equal('3.0.0');
     
     scope.aboutInfo.minimumCoreVersion.should.equal('3.0.0');
-    scope.aboutInfo.maximumCoreVersion.should.equal('3.1.0');
+    scope.aboutInfo.maximumCoreVersion.should.equal('4.0.0');
   });
 
   

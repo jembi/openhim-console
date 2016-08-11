@@ -16,24 +16,17 @@
 
 
         <div class="panel-body">
-          <div>
-            <!-- Display version of core and console of current instance.  Background warning if incompatible -->
-            <div ng-show="aboutInfo" class="version" ng-class="{ 'version-incompatible': footerVersionsCompatible == false }">
-              <h3>Running versions of Core and Console:</h3>
-              <br/>
-              <h4>OpenHIM Admin Console v{{ aboutInfo.currentConsoleVersion }}</h4>
-              <h4>OpenHIM Core v{{ aboutInfo.currentCoreVersion }}</h4>
-            </div>
+          <!-- Display version of core and console of current instance.  Background warning if incompatible -->
+          <div ng-show="aboutInfo" class="version" ng-class="{ 'version-incompatible': footerVersionsCompatible == false }">
+            <h3>Running versions of Core and Console:</h3>
+            <div class="readable-text">OpenHIM Admin Console <strong>v{{ aboutInfo.currentConsoleVersion }}</strong></div>
+            <div class="readable-text">OpenHIM Core <strong>v{{ aboutInfo.currentCoreVersion }}</strong></div>
           </div>
-          <br/>
           
-          <div>
-            <!-- Display versions of core compatible with this version of console if the current instance is incompatible -->
-            <div ng-if="aboutInfo.compatible == false" class="version version-compatible">
-              <h3>Versions of Core compatible with this version of Console:</h3>
-              <br/>
-              <h4>{{ aboutInfo.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ aboutInfo.maximumCoreVersion }}</h4>
-            </div>
+          <!-- Display versions of core compatible with this version of console if the current instance is incompatible -->
+          <div ng-if="aboutInfo.compatible == false" class="version version-compatible">
+            <h3>Versions of Core compatible with this version of Console:</h3>
+            <div class="readable-text">{{ aboutInfo.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ aboutInfo.maximumCoreVersion }}</div>
           </div>
         </div>
         

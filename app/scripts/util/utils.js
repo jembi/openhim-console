@@ -115,7 +115,7 @@ function isCoreVersionCompatible(minVersion, actualVersion) {
   var v2 = actualVersion.split('.');
   
   if(v1[0] === v2[0]) {
-    if(v1[1] === v2[1]) {
+    if(v1[1] <= v2[1]) {
       return true;
     }
   }
