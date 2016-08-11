@@ -98,7 +98,7 @@
             <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Response', record.response.body, record.response.headers);">View Full Response Body</button>
           </div>
           <div ng-if="record.error" style="display: inline-block; width: 100%; margin-top: 15px;">
-            <h4>Error</h4>
+            <h4>Internal Error<i ng-show="uiSettings.showTooltips" tooltip="An internal error occurred that prevented the OpenHIM from sending the transaction" class="glyphicon glyphicon-question-sign tooltip-wide iconInHeader"></i></h4>
             <div class="hljsFormat" hljs source="record.error.message"></div>
             <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="toggleFullView('Error', record.error.stack);">View Error Details</button>
           </div>
