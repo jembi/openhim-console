@@ -419,14 +419,12 @@ angular.module('openhimConsoleApp')
       $scope.settings.list.tabview = 'same';
 
       // get the filter params object before clearing them
-      //var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
       var filterParamsBeforeClear = angular.copy( $location.search() );
 
       // clear all filter parameters
       $location.search({});
 
       // get the filter params object after clearing them
-      // var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
       var filterParamsAfterClear = angular.copy( $location.search() );
 
       // if the filters object stays the same then call refresh function
