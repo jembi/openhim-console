@@ -91,9 +91,7 @@ angular.module('openhimConsoleApp')
       }),
       
       // About page (versions) API
-      About: $resource( server + '/about', {}, {
-        query: { method: 'GET', isArray: false }
-      })
+      About: $resource( server + '/about')
 
     };
   });

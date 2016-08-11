@@ -20,7 +20,7 @@ angular.module('openhimConsoleApp')
         
         scope.$root.$watch('sessionUser', function(newVal) {
           if(newVal) {
-            Api.About.query(success);
+            Api.About.get(success);
           } else {
             scope.footerCoreVersion = null;
             scope.footerConsoleVersion = null;

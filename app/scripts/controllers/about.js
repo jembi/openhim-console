@@ -15,7 +15,7 @@ angular.module('openhimConsoleApp')
       Alerting.AlertAddServerMsg(err.status);
     };
     
-    Api.About.query(success, error);
+    Api.About.get(success, error);
     
     var buildAboutInfoObject = function() {
       $scope.aboutInfo.currentConsoleVersion = config.version;
