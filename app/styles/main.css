@@ -1220,6 +1220,10 @@ footer a {
   border-radius: 0;
 }
 
+.nav-pills > li > a:hover {
+  border-radius: 0;
+}
+
 .settingComponentDivs { clear: both; display: inline-block; border-top: 1px solid #ccc; width: 100%;margin-top: 10px;padding-top: 10px; }
 .settingComponentDivs .settings_div { width: 15%; min-width: 150px; }
 .settingComponentDivs .settings_div .input-group { clear: both; }
