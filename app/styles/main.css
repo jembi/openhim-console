@@ -1217,6 +1217,7 @@ footer a {
 .nav-pills > li.active > a:focus {
   color: #ffffff;
   background-color: #028A3B;
+  border-radius: 0;
 }
 
 .settingComponentDivs { clear: both; display: inline-block; border-top: 1px solid #ccc; width: 100%;margin-top: 10px;padding-top: 10px; }
