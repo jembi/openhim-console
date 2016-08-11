@@ -28,6 +28,15 @@ var req = https.request(options, function(res) {
         recursive: true,
         silent: true,
     })
+    // Edit readme with compatible version of core
+    replace({
+        regex: /badge\/openhim--core-[0-9]{1,2}\.[0-9]{1,2}/,
+        replacement: `badge/openhim--core-${minimumCoreVersion.substr(0,3)}`,
+        paths: ['README.md'],
+        recursive: true,
+        silent: true,
+    })
+    
   })
 })
 
