@@ -21,9 +21,8 @@ angular.module('openhimConsoleApp')
       $scope.aboutInfo.currentConsoleVersion = config.version;
       $scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion;
       
-      var maxCoreVersionArray = config.minimumCoreVersion.split('.');
-      maxCoreVersionArray[0] = parseInt(maxCoreVersionArray[0]) + 1;
-      $scope.aboutInfo.maximumCoreVersion = maxCoreVersionArray.join('.');
+      var maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1;
+      $scope.aboutInfo.maximumCoreVersion = maxCoreMajorVersion + '.0.0';
       
       $scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion);
     };
