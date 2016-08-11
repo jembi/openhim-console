@@ -319,16 +319,25 @@ angular.module('openhimConsoleApp')
     };
 
 
+    $scope.applyFilterIfValidDate = function(date){
+      if (moment(date, 'YYYY-MM-DD', true).isValid()){
+        $scope.applyFiltersToUrl();
+      }
+    };
+
+
     $scope.applyFiltersToUrl = function(){
       var curHashParams = window.location.hash;
       var filters = $scope.returnFilters('urlParams');
-      var newHash = '#/audits?'+filters.substring(1);
+      var newHash = '/audits?'+filters.substring(1);
 
       // just refresh audits list - no new params
       if ( curHashParams ===  newHash ){
         $scope.refreshAuditsList();
       }else{
-        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/';
+        var absUrl = $location.absUrl();
+        var absUrlPath = $location.url();
+        var baseUrl = absUrl.replace(absUrlPath, '');
         window.location = baseUrl + newHash;
       }
     };
@@ -390,8 +399,10 @@ angular.module('openhimConsoleApp')
     $scope.viewAuditDetails = function (path, $event) {
       //do audits details redirection when clicked on TD
       if( $event.target.tagName === 'TD' ){
-        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
-        var txUrl = baseUrl + path;
+        var absUrl = $location.absUrl();
+        var absUrlPath = $location.url();
+        var baseUrl = absUrl.replace(absUrlPath, '');
+        var txUrl = baseUrl + '/' + path;
         if ( $scope.settings.list.tabview && $scope.settings.list.tabview === 'new' ){
           window.open(txUrl, '_blank');
         }else{
@@ -407,12 +418,20 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.dateEnd = '';
       $scope.settings.list.tabview = 'same';
 
-      // clear filters by loading audits page again with no filters
-      var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
-      var path = 'audits';
-      window.location = baseUrl + path;
+      // get the filter params object before clearing them
+      var filterParamsBeforeClear = angular.copy( $location.search() );
 
-      $scope.refreshAuditsList();
+      // clear all filter parameters
+      $location.search({});
+
+      // get the filter params object after clearing them
+      var filterParamsAfterClear = angular.copy( $location.search() );
+
+      // if the filters object stays the same then call refresh function
+      // if filters object not the same then angular changes route and loads controller ( refresh )
+      if (angular.equals(filterParamsBeforeClear, filterParamsAfterClear)){
+        $scope.refreshAuditsList();
+      }
     };
 
     /*************************************************************/
