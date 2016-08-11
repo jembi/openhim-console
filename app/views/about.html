@@ -18,7 +18,7 @@
         <div class="panel-body">
           <div>
             <!-- Display version of core and console of current instance.  Background warning if incompatible -->
-            <div class="version" ng-class="footerVersionsCompatible ? '' : 'version-incompatible'">
+            <div ng-show="aboutInfo" class="version" ng-class="{ 'version-incompatible': footerVersionsCompatible == false }">
               <h3>Running versions of Core and Console:</h3>
               <br/>
               <h4>OpenHIM Admin Console v{{ aboutInfo.currentConsoleVersion }}</h4>
