@@ -118,6 +118,8 @@ describe('Controller: VisualizerCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() });
 
+    $httpBackend.when('PUT', new RegExp('.*/users/test@user.org')).respond();
+
     createController = function() {
       scope = $rootScope.$new();
       return $controller('VisualizerCtrl', { $scope: scope });
@@ -131,6 +133,8 @@ describe('Controller: VisualizerCtrl', function () {
   });
 
   it('should add visualizer settings to the scope, defaulting to the first visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
     createController();
     httpBackend.flush();
 
@@ -188,13 +192,43 @@ describe('Controller: VisualizerCtrl', function () {
     });
   });
 
+  it('should add visualizer settings to the scope, defaulting to a user last viewed visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } });
+
+    createController();
+    httpBackend.flush();
+
+    scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2');
+  });
+
   it('should load another visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
     createController();
     httpBackend.flush();
 
     scope.selectVis(visualizers[1]);
+    httpBackend.flush();
 
     scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2');
+  });
+
+  it('should update a users last viewed visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
+    createController();
+    httpBackend.flush();
+
+    httpBackend.expect('PUT', new RegExp('.*/users/test@user.org'), function (data) {
+      return !!JSON.parse(data).settings.selectedVisualizer;
+    }).respond({});
+    scope.selectVis(visualizers[1]);
+    httpBackend.flush();
+
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+
+    consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal('Test Visualizer 2');
   });
 
 });
