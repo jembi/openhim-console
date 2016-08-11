@@ -334,23 +334,6 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
-    },
-    
-    'string-replace': {
-      inline: {
-        files: {
-          'app/config/default.json': 'app/config/default.json',
-          'bower.json': 'bower.json'
-        },
-        options: {
-          replacements: [
-            {
-              pattern: /\"version\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/,
-              replacement: '"version": "<%= packageVersion%>"'
-            }
-          ]
-        } 
-      }
     }
     
   });
@@ -405,9 +388,5 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
-  
-  grunt.loadNpmTasks('grunt-string-replace');
-  
-  grunt.registerTask('update-versions', ['string-replace']);
 
 };

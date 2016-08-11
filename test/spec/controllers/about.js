@@ -10,22 +10,13 @@ describe('Controller: AboutCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function() {
     module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'version': '1.7.0', 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
+      $provide.constant('config', { 'version': '1.7.0', 'minimumCoreVersion':'3.0.0', 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
     });
   });
 
   var scope, createController, httpBackend, modalSpy;
   
   var coreResponse = {
-    'releases': [
-      {
-        'consoleVersion': '1.7.0',
-        'minimumCoreVersion': '3.0.0'
-      }, {
-        'consoleVersion': '1.6.0',
-        'minimumCoreVersion': '2.0.0'
-      }
-    ],
     'currentCoreVersion': '3.0.0'
   };
   
@@ -55,13 +46,11 @@ describe('Controller: AboutCtrl', function () {
     createController();
     httpBackend.flush();
     
-    scope.aboutInfo.releases.length.should.equal(2);
     scope.aboutInfo.currentConsoleVersion.should.equal('1.7.0');
     scope.aboutInfo.currentCoreVersion.should.equal('3.0.0');
-    scope.aboutInfo.releases[0].maximumCoreVersion.should.equal('4.0.0');
-    scope.aboutInfo.releases[1].maximumCoreVersion.should.equal('3.0.0');
     
     scope.aboutInfo.minimumCoreVersion.should.equal('3.0.0');
+    scope.aboutInfo.maximumCoreVersion.should.equal('4.0.0');
   });
 
   

@@ -2,7 +2,9 @@
   "name": "openhim-console",
   "description": "This application provides a web application to configure and manage the OpenHIM-core component.",
   "version": "1.7.0",
-  "dependencies": {},
+  "dependencies": {
+    "replace": "^0.3.0"
+  },
   "devDependencies": {
     "bower": "^1.7.9",
     "chai": "^3.5.0",
@@ -50,7 +52,7 @@
   "scripts": {
     "test": "grunt test",
     "start": "grunt serve",
-    "version": "grunt update-versions && git add ."
+    "version": "node versionManager.js && git add -u"
   },
   "repository": {
     "type": "git",

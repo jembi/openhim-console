@@ -1,11 +1,14 @@
 'use strict';
+/* global isCoreVersionCompatible:false */
 
 angular.module('openhimConsoleApp')
-  .controller('AboutCtrl', function ($rootScope, $scope, Api, Alerting, Notify, config) {
+  .controller('AboutCtrl', function ($scope, Api, Alerting, config) {
+    
+    $scope.aboutInfo = {};
     
     var success = function(result) {
-      $scope.aboutInfo = result;
-      Notify.notify('aboutInfoReceived');
+      $scope.aboutInfo.currentCoreVersion = result.currentCoreVersion;
+      buildAboutInfoObject();
     };
     
     var error = function(err) {
@@ -14,39 +17,16 @@ angular.module('openhimConsoleApp')
     
     Api.About.query(success, error);
     
-    
-    var getVersionCompatible = function(minVersion, actualVersion) {
-      var v1 = minVersion.split('.');
-      var v2 = actualVersion.split('.');
-      
-      if(v1[0] === v2[0]) {
-        return 'Compatible';
-      }
-      return 'Incompatible';
-    };
-    
-    
     var buildAboutInfoObject = function() {
       $scope.aboutInfo.currentConsoleVersion = config.version;
+      $scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion;
       
-      angular.forEach($scope.aboutInfo.releases, function(release, key) {
-        
-        var maxCoreVersionArray = release.minimumCoreVersion.split('.');
-        maxCoreVersionArray[0] = parseInt(maxCoreVersionArray[0]) + 1;
-        $scope.aboutInfo.releases[key].maximumCoreVersion = maxCoreVersionArray.join('.');
-        
-        if(release.consoleVersion === $scope.aboutInfo.currentConsoleVersion) {
-          $scope.aboutInfo.minimumCoreVersion = release.minimumCoreVersion;
-        }
-      });
+      var maxCoreVersionArray = config.minimumCoreVersion.split('.');
+      maxCoreVersionArray[0] = parseInt(maxCoreVersionArray[0]) + 1;
+      $scope.aboutInfo.maximumCoreVersion = maxCoreVersionArray.join('.');
       
-      $scope.aboutInfo.compatibility = getVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion);
+      $scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion);
     };
-    
-    
-    $scope.$on('aboutInfoReceived', function () {
-      buildAboutInfoObject();
-    });
     
   });
   

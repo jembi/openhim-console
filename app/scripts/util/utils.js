@@ -9,6 +9,7 @@
 /* exported returnContentType */
 /* exported beautifyIndent */
 /* exported valueNotEmpty */
+/* exported isCoreVersionCompatible */
 
 
 var valueNotEmpty = function(value){
@@ -107,4 +108,14 @@ function beautifyIndent(type, content){
   // if not applicable then return as is
   return { lang: '', content: content};
 
+}
+
+function isCoreVersionCompatible(minVersion, actualVersion) {
+  var v1 = minVersion.split('.');
+  var v2 = actualVersion.split('.');
+  
+  if(v1[0] === v2[0]) {
+    return true;
+  }
+  return false;
 }

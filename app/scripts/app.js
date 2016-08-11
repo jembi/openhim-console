@@ -166,6 +166,8 @@ app.run( function($rootScope, $http, $location, $window, $anchorScroll, Alerting
   $rootScope.appTitle = config.title;
   $rootScope.appFooterTitle = config.footerTitle;
   $rootScope.appFooterPoweredBy = config.footerPoweredBy;
+  $rootScope.footerConsoleVersion = null;
+  $rootScope.footerCoreVersion =null;
   $rootScope.loginBanner = config.loginBanner;
 
   // invoke Alerting factory to create all alert messages

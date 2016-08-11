@@ -17,24 +17,22 @@
 
         <div class="panel-body">
           <div>
-            <div class="version version-{{ aboutInfo.compatibility | lowercase }}" ng-if="aboutInfo && aboutInfo.compatibility">
-              <h3>Installed versions of Core and Console are {{ aboutInfo.compatibility }}:</h3>
+            <!-- Display version of core and console of current instance.  Background warning if incompatible -->
+            <div class="version" ng-class="footerVersionsCompatible ? '' : 'version-incompatible'">
+              <h3>Running versions of Core and Console:</h3>
               <br/>
-              <h4>OpenHIM Admin Console Version {{ aboutInfo.currentConsoleVersion }}</h4>
-              <h4>OpenHIM Core Version {{ aboutInfo.currentCoreVersion }}</h4>
+              <h4>OpenHIM Admin Console v{{ aboutInfo.currentConsoleVersion }}</h4>
+              <h4>OpenHIM Core v{{ aboutInfo.currentCoreVersion }}</h4>
             </div>
           </div>
           <br/>
           
           <div>
-            <div class="version version-compatible" ng-if="aboutInfo && aboutInfo.compatibility == 'Incompatible'">
-              <h3>Suggested Compatible Versions:</h3>
+            <!-- Display versions of core compatible with this version of console if the current instance is incompatible -->
+            <div ng-if="aboutInfo.compatible == false" class="version version-compatible">
+              <h3>Versions of Core compatible with this version of Console:</h3>
               <br/>
-              <div ng-repeat="release in aboutInfo.releases">
-                <h4><strong>Console</strong> {{ release.consoleVersion }}</h4>
-                <h4>{{ release.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ release.maximumCoreVersion }}</h4>
-                <br/>
-              </div>
+              <h4>{{ aboutInfo.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ aboutInfo.maximumCoreVersion }}</h4>
             </div>
           </div>
         </div>
