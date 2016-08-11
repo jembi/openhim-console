@@ -250,13 +250,13 @@ angular.module('openhimConsoleApp')
         $scope.selectedVis = vis;
 
         // store in current session
-        if (! consoleSession.sessionUserSettings) {
+        if (!consoleSession.sessionUserSettings) {
           consoleSession.sessionUserSettings = {};
         }
         consoleSession.sessionUserSettings.selectedVisualizer = vis.name;
         localStorage.setItem('consoleSession', JSON.stringify(consoleSession));
         // store in user settings
-        if (! user.settings) {
+        if (!user.settings) {
           user.settings = {};
         }
         user.settings.selectedVisualizer = vis.name;
