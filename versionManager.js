@@ -10,6 +10,16 @@ var options = {
   method: 'GET'
 }
 
+var replaceStringInline = function(inlineRegex, replacement, paths) {
+  replace({
+    regex: inlineRegex,
+    replacement: replacement,
+    paths: paths,
+    recursive: true,
+    silent: true,
+  })
+}
+
 var req = https.request(options, function(res) {
   var data = ''
   res.setEncoding('utf8')
@@ -21,29 +31,10 @@ var req = https.request(options, function(res) {
   res.on('end', () => {
     var minimumCoreVersion = data.split("releases/tag/v")[1].substring(0, 5);
     // Add latest version of core to console config
-    replace({
-        regex: /\"minimumCoreVersion\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/,
-        replacement: `"minimumCoreVersion": "${minimumCoreVersion}"`,
-        paths: ['./app/config/default.json'],
-        recursive: true,
-        silent: true,
-    })
+    replaceStringInline(/\"minimumCoreVersion\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/, `"minimumCoreVersion": "${minimumCoreVersion}"`, ['./app/config/default.json'])
     // Edit readme with compatible version of core
-    replace({
-        regex: /badge\/openhim--core-[0-9]{1,2}\.[0-9]{1,2}/,
-        replacement: `badge/openhim--core-${minimumCoreVersion.substr(0,3)}`,
-        paths: ['README.md'],
-        recursive: true,
-        silent: true,
-    })
-    
-    replace({
-        regex: /openhim.readthedocs.org\/en\/v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/,
-        replacement: `openhim.readthedocs.org/en/v${minimumCoreVersion}`,
-        paths: ['README.md'],
-        recursive: true,
-        silent: true,
-    })    
+    replaceStringInline(/badge\/openhim--core-[0-9]{1,2}\.[0-9]{1,2}/, `badge/openhim--core-${minimumCoreVersion.substr(0,3)}`, ['README.md'])
+    replaceStringInline(/openhim.readthedocs.org\/en\/v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}/, `openhim.readthedocs.org/en/v${minimumCoreVersion}`, ['README.md'])   
   })
 })
 
@@ -54,10 +45,4 @@ req.on('error', (e) => {
 req.end()
 
 // Keep version of console consistent throughout project
-replace({
-    regex: /\"version\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/,
-    replacement: `"version": "${currentConsoleVersion}"`,
-    paths: ['./bower.json', './app/config/default.json'],
-    recursive: true,
-    silent: true,
-})
+replaceStringInline(/\"version\"\:\ \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\"/, `"version": "${currentConsoleVersion}"`, ['./bower.json', './app/config/default.json'])
