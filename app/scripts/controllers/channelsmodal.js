@@ -1137,17 +1137,24 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   };
 
   $scope.isAlertValid = function(){
-    if (!$scope.newAlert.status){
+    if (!$scope.newAlert.condition){
       return false;
+    }
+
+    if ($scope.newAlert.condition === 'status' && !$scope.newAlert.status){
+      if (!$scope.newAlert.status){
+        return false;
+      }
+
+      if ($scope.newAlert.status.length !== 3){
+        return false;
+      }
     }
 
     if ( (!$scope.newAlert.users || $scope.newAlert.users.length === 0) && (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0) ){
       return false;
     }
 
-    if ($scope.newAlert.status.length !== 3){
-      return false;
-    }
     return true;
   };
 
