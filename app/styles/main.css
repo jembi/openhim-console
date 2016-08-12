@@ -1212,6 +1212,17 @@ footer a {
   box-shadow: inset 0 0px 0px #028A3B, 0 0 4px #028A3B;
 }
 
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  color: #ffffff;
+  background-color: #028A3B;
+  border-radius: 0;
+}
+
+.nav-pills > li > a:hover {
+  border-radius: 0;
+}
 
 .settingComponentDivs { clear: both; display: inline-block; border-top: 1px solid #ccc; width: 100%;margin-top: 10px;padding-top: 10px; }
 .settingComponentDivs .settings_div { width: 15%; min-width: 150px; }
@@ -1333,6 +1344,10 @@ label { position: relative; }
   margin: 5px;
 }
 
+.lg-skip {
+  margin-top: 50px;
+}
+
 .subtitle {
   color: #999999;
 }
@@ -1350,7 +1365,7 @@ label { position: relative; }
 }
 
 .channelPriorityOrdering {
-  display: none; 
+  display: none;
   float: right;
   width: 45px;
 }

@@ -28,6 +28,7 @@
     "grunt-rev": "~0.1.0",
     "grunt-svgmin": "~0.2.1",
     "grunt-usemin": "~3.0.0",
+    "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
     "karma": "^1.1.1",
     "karma-chrome-launcher": "^1.0.1",
