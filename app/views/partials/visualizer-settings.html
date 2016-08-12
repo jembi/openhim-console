@@ -1,0 +1,292 @@
+
+<h4>Visualizations Management</h4>
+
+<div class="panel panel-default">
+  <!-- <div class="panel-heading">General Settings</div> -->
+  <div class="panel-body">
+    <div>
+      <label style="float: left">
+        Components
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer. Components are shown above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="width: 100%; clear: both;">
+        <div id="no-more-tables" style="margin-top: 15px;">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr style="font-weight: bold">
+                <th>Event Type</th>
+                <th>Event Name</th>
+                <th>Display</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="component in settings.visualizer.components">
+                <td style="vertical-align: middle;" data-title="Type">{{component.eventType}}</td>
+                <td style="vertical-align: middle;" data-title="Event">{{component.eventName}}</td>
+                <td data-title="Display"><input class="form-control" type="text" ng-model="component.display" /></td>
+                <td style="vertical-align: middle;">
+                  <button class="btn btn-danger btn-xs" ng-click="removeComponent($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td data-title="Type">
+                  <select class="form-control" ng-model="visualizer.addComponent.eventType">
+                    <option value="">Event Type</option>
+                    <option value="primary">Primary Route</option>
+                    <option value="route">Secondary Route</option>
+                    <option value="orchestration">Orchestration</option>
+                    <option value="channel">Channel</option>
+                  </select>
+                </td>
+                <td data-title="Event">
+                  <select ng-if="visualizer.addComponent.eventType === 'primary'" class="form-control" ng-options="route as route for route in primaryRoutes" ng-model="visualizer.addComponent.eventName">
+                    <option value="">Select Route</option>
+                  </select>
+                  <select ng-if="visualizer.addComponent.eventType === 'route'" class="form-control" ng-options="route as route for route in secondaryRoutes" ng-model="visualizer.addComponent.eventName">
+                    <option value="">Select Route</option>
+                  </select>
+                  <input ng-if="visualizer.addComponent.eventType === 'orchestration'"  class="form-control" type="text" ng-model="visualizer.addComponent.eventName" />
+                  <select ng-if="visualizer.addComponent.eventType === 'channel'" class="form-control" ng-options="channel.name as channel.name for channel in channels" ng-model="visualizer.addComponent.eventName">
+                    <option value="">Select Channel</option>
+                  </select>
+                </td>
+                <td data-title="Display"><input class="form-control" type="text" ng-model="visualizer.addComponent.display" /></td>
+                <td style="vertical-align: middle;">
+                  <button class="btn btn-success btn-xs" ng-click="addComponent()"><i class="glyphicon glyphicon-plus"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label style="float: left">
+        Channels
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the channels you wish to add to the visualizer. Channels are shown below the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="width: 100%; clear: both;">
+        <div id="no-more-tables" style="margin-top: 15px;">
+          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectChannel" ng-change="addSelectedChannel()">
+            <option value="">Select Channel</option>
+          </select>
+          <br>
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr style="font-weight: bold">
+                <th>Channel</th>
+                <th>Display</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="channel in settings.visualizer.channels">
+                <td style="vertical-align: middle;" data-title="Channel">{{channel.eventName}}</td>
+                <td data-title="Display"><input class="form-control" type="text" ng-model="channel.display" /></td>
+                <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs" ng-click="removeChannel($index)"><i class="glyphicon glyphicon-remove"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label style="float: left">
+        Mediators
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown just above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
+      <div class="btn-group" style="width: 100%; clear: both;">
+        <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="visualizer.addSelectMediator" ng-change="addSelectedMediator()">
+          <option value="">Select Mediator</option>
+        </select>
+        <div id="no-more-tables" style="margin-top: 15px;">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr style="font-weight: bold">
+                <th>Mediator</th>
+                <th>Display</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="mediator in settings.visualizer.mediators">
+                <td style="vertical-align: middle;" data-title="Mediator">{{mediator.name}}</td>
+                <td data-title="Display"><input class="form-control" type="text" ng-model="mediator.display" /></td>
+                <td style="vertical-align: middle;">
+                  <button class="btn btn-danger btn-xs" ng-click="removeMediator($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="panel-group" id="accordion">
+
+  <div class="settingComponentDivs panel panel-default">
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1"><div class="panel-heading">
+      <h4 class="panel-title">Visualizer Color Management</h4>
+    </div></a>
+
+    <div class="panel-collapse collapse" id="collapse1">
+      <div class="panel-body">
+        <span class="settings_div">
+          <label style="float: left">
+            Inactive Event Color
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.inactive">
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Active Event Color
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.active">
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Error Event Color
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.error">
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Event Text Color
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.text">
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="settingComponentDivs panel panel-default">
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2"><div class="panel-heading">
+      <h4 class="panel-title">Visualizer Size Management</h4>
+    </div></a>
+
+    <div class="panel-collapse collapse" id="collapse2">
+      <div class="panel-body">
+        <span class="settings_div">
+          <label style="float: left">
+            Responsive
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether the visualizer should resize automatically based on the screen size" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group" style="padding-top: 10px;">
+            <label class="responsiveCheckboxLabel">
+              <input type="checkbox" ng-model="settings.visualizer.size.responsive" style="margin-top: 0px; vertical-align: middle;" /> Responsive Visualizer
+            </label>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Width
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="text" ng-model="settings.visualizer.size.width">
+            <span class="input-group-addon">px</span>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Height
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="text" ng-model="settings.visualizer.size.height">
+            <span class="input-group-addon">px</span>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Padding
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="text" ng-model="settings.visualizer.size.padding">
+            <span class="input-group-addon">px</span>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="settingComponentDivs panel panel-default">
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapse3"><div class="panel-heading">
+      <h4 class="panel-title">Visualizer Time Management</h4>
+    </div></a>
+
+    <div class="panel-collapse collapse" id="collapse3">
+      <div class="panel-body">
+        <span class="settings_div">
+          <label style="float: left">
+            Update Period
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="How often to fetch events from the server <br /> (min: 50ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="number" ng-model="settings.visualizer.time.updatePeriod" min="50" max="5000">
+            <span class="input-group-addon">ms</span>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Min Event Display
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="The minimum amount of time to display an event for; for really quick transactions <br /> (min: 0ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="number" ng-model="settings.visualizer.time.minDisplayPeriod" min="0" max="5000">
+            <span class="input-group-addon">ms</span>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Max Event Display
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="input-group">
+            <input class="form-control" type="number" ng-model="settings.visualizer.time.maxTimeout" min="1000" max="10000">
+            <span class="input-group-addon">ms</span>
+          </div>
+        </span>
+
+        <span class="settings_div">
+          <label style="float: left">
+            Max Speed
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          </label>
+          <div class="btn-group" style="clear: both; width: 100%">
+            <input class="form-control" type="number" ng-model="settings.visualizer.time.maxSpeed" min="1" max="10">
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+<!-- End of panel group -->
+</div>

@@ -2,7 +2,7 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, $modal, login, Api, Alerting, Fullscreen) {
 
     // initialize global variables
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
@@ -192,6 +192,20 @@ angular.module('openhimConsoleApp')
       } else if ($scope.visualizerSpeed>0) {
         return ($scope.visualizerSpeed+1) + 'X Faster';
       }
+    };
+
+    // function to add new visualizer to list
+    $scope.addVisualiser = function addVisualiser(){
+
+      // open visualizer settings modal 
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          settingsStore: function () {return null;}
+        }
+      });
+
     };
 
     $scope.isFullScreen = false;
