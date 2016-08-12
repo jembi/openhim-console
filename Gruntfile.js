@@ -17,7 +17,9 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
+    
+    packageVersion: grunt.file.readJSON('package.json').version,
+    
     // Project settings
     yeoman: {
       // configurable paths
@@ -333,6 +335,7 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
+    
   });
 
 
@@ -385,4 +388,5 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
 };

@@ -16,3 +16,4 @@ packaging/Vagrantfile
 .#*
 \#*\#
 **/.vagrant
+npm-debug.log

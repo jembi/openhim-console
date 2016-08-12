@@ -91,7 +91,10 @@ angular.module('openhimConsoleApp')
       }),
 
       // Visualizer API
-      Visualizers: $resource(server + '/visualizers')
+      Visualizers: $resource(server + '/visualizers'),
+
+      // About page (versions) API
+      About: $resource( server + '/about')
 
     };
   });

@@ -1398,3 +1398,30 @@ label { position: relative; }
 .inTableEditTextBoxTd input { float:left; width:100px; height:21px; font-size:12px; }
 .rolesTableScrollDiv { overflow-x: auto; }
 .delBtnPlacement { margin-left:22px; }
+
+.about-info {
+  padding: 15px;
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+
+.about-info h3 { margin-top: 0px; }
+
+.compatible-versions-info { 
+  border: 1px solid;
+  background-color: #D9FFBE;
+  border-color: #d6e9c6;
+  margin-top:20px;
+}
+
+.version-danger-text { color: red; }
+.version-info-text { color: green; }
+
+.version-info {
+  border: 1px solid;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
+.readable-text { font-size: 16px; }
