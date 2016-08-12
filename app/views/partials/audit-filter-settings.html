@@ -234,7 +234,7 @@
         type="text"
         class="form-control"
         name="start"
-        ng-change="applyFiltersToUrl()" />
+        ng-change="applyFilterIfValidDate(settings.filter.dateStart)" />
       <span class="input-group-addon">to</span>
       <input
         datetimepicker
@@ -244,7 +244,7 @@
         type="text"
         class="form-control"
         name="end"
-        ng-change="applyFiltersToUrl()" />
+        ng-change="applyFilterIfValidDate(settings.filter.dateEnd)" />
     </div>
   </div>
   <div class="settings_div" style="float: left;">
