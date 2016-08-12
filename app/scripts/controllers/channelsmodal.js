@@ -43,7 +43,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
         delete( result._id );
         delete( result.name );
         $scope.channel = result;
-        $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0;
+        $scope.autoRetry.enableMaxAttempts = result.autoRetryMaxAttempts > 0;
       });
 
     }else{
@@ -290,6 +290,11 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
     // auto retry errors
     if ($scope.channel.autoRetryEnabled) {
+      if (!$scope.channel.autoRetryPeriodMinutes || $scope.channel.autoRetryPeriodMinutes <= 0) {
+        $scope.ngError.autoRetryPeriodMinutes = true;
+        $scope.ngError.dataControlTab = true;
+        $scope.ngError.hasErrors = true;
+      }
       if ($scope.autoRetry.enableMaxAttempts &&
           (!$scope.channel.autoRetryMaxAttempts || $scope.channel.autoRetryMaxAttempts <= 0)) {
         $scope.ngError.maxAttempts = true;
