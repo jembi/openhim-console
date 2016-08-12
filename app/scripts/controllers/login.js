@@ -13,6 +13,7 @@ angular.module('openhimConsoleApp')
     //if url "#/logout" is returned then destroy the session
     if( $window.location.hash === '#/logout' ){
       localStorage.removeItem('consoleSession');
+      $rootScope.sessionUser = null;
       $rootScope.navMenuVisible = false;
     }
 
