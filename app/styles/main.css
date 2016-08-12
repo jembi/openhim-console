@@ -1386,19 +1386,29 @@ label { position: relative; }
 .rolesTableScrollDiv { overflow-x: auto; }
 .delBtnPlacement { margin-left:22px; }
 
-.version {
-  padding: 20px;
+.about-info {
+  padding: 15px;
   display: inline-block;
   float: left;
   clear: both;
-  margin-bottom: 20px;
 }
 
-.version h3 {
-  margin-top: 0px;
+.about-info h3 { margin-top: 0px; }
+
+.compatible-versions-info { 
+  border: 1px solid;
+  background-color: #D9FFBE;
+  border-color: #d6e9c6;
+  margin-top:20px;
 }
 
-.version-compatible { background-color: #97F37E; }
-.version-incompatible { background-color: #EC6042; }
+.version-danger-text { color: red; }
+.version-info-text { color: green; }
+
+.version-info {
+  border: 1px solid;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
 
 .readable-text { font-size: 16px; }

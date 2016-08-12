@@ -6,7 +6,7 @@
 angular.module('openhimConsoleApp')
   .directive('footerVersion', function(Api, config) {
     return {
-      template:'<span ng-class="{ \'version-incompatible\': footerVersionsCompatible == false }" ng-if="footerConsoleVersion && footerCoreVersion">' +
+      template:'<span ng-class="{ \'version-danger-text\': footerVersionsCompatible == false }" ng-if="footerConsoleVersion && footerCoreVersion">' +
                   '(Console <strong>v{{ footerConsoleVersion }}</strong> | Core <strong>v{{ footerCoreVersion }}</strong>)' +
                 '</span>',
       scope: false,

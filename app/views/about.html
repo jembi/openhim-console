@@ -17,14 +17,18 @@
 
         <div class="panel-body">
           <!-- Display version of core and console of current instance.  Background warning if incompatible -->
-          <div ng-show="aboutInfo" class="version" ng-class="{ 'version-incompatible': footerVersionsCompatible == false }">
+          <div ng-show="aboutInfo" class="about-info version-info">
             <h3>Running versions of Core and Console:</h3>
             <div class="readable-text">OpenHIM Admin Console <strong>v{{ aboutInfo.currentConsoleVersion }}</strong></div>
             <div class="readable-text">OpenHIM Core <strong>v{{ aboutInfo.currentCoreVersion }}</strong></div>
+            <div class="readable-text">Versions are
+              <span ng-if="aboutInfo.compatible == true"><strong class="version-info-text">Compatible</strong></span>
+              <span ng-if="aboutInfo.compatible == false"><strong class="version-danger-text">Incompatible</strong></span>
+            </div>
           </div>
           
           <!-- Display versions of core compatible with this version of console if the current instance is incompatible -->
-          <div ng-if="aboutInfo.compatible == false" class="version version-compatible">
+          <div ng-if="aboutInfo.compatible == false" class="about-info compatible-versions-info">
             <h3>Versions of Core compatible with this version of Console:</h3>
             <div class="readable-text">{{ aboutInfo.minimumCoreVersion }} &lt= <strong>Core</strong> &lt {{ aboutInfo.maximumCoreVersion }}</div>
           </div>
