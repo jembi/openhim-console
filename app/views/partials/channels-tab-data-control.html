@@ -44,8 +44,29 @@
         How often?
         <i ng-show="uiSettings.showTooltips" tooltip="The period (in minutes) to wait before resending transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
+      <div class="btn-group" ng-class="{ 'has-error' : ngError.autoRetryPeriodMinutes }" style="clear: both;">
+        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled" ng-model="channel.autoRetryPeriodMinutes" />
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group-2columns">
+    <div class="form-group" style="float: left;">
+      <label style="display: block;">
+        Enable max number of attempts
+        <i ng-show="uiSettings.showTooltips" tooltip="The maximum number of times to retry transactions that are continuously failing" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      </label>
       <div class="btn-group" style="clear: both;">
-        <input class="form-control" type="number" min="1" max="302400" ng-model="channel.autoRetryPeriodMinutes" />
+        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" btn-radio="true">True</label>
+        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" btn-radio="false">False</label>
+      </div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;">
+      <label style="display: block">
+        Times
+      </label>
+      <div class="btn-group" ng-class="{ 'has-error' : ngError.maxAttempts }" style="clear: both;">
+        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled || !autoRetry.enableMaxAttempts" ng-model="channel.autoRetryMaxAttempts" />
       </div>
     </div>
   </div>
