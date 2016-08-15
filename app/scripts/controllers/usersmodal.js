@@ -96,19 +96,20 @@ angular.module('openhimConsoleApp')
       $modalInstance.close();
     };
 
-    var success = function () {
+    var success = function (user, password) {
 
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
 
-      if ( $scope.user.email === consoleSession.sessionUser ){
+      if ( user.email === consoleSession.sessionUser ){
 
         // update consoleSession with new userSettings
-        consoleSession.sessionUserSettings = $scope.user.settings;
+        consoleSession.sessionUserSettings = user.settings;
         localStorage.setItem('consoleSession', JSON.stringify( consoleSession ));
 
-        if ( $scope.password ){
-          login.login($scope.user.email, $scope.password, function (loggedIn) {
+        if ( password ){
+          //re-login with new settings
+          login.login(consoleSession.sessionUser, password, function (loggedIn) {
             if (loggedIn) {
               // add the success message
               Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully and you were logged in with your new credentials');
@@ -138,30 +139,32 @@ angular.module('openhimConsoleApp')
       notifyUser();
     };
 
-    var saveUser = function (user) {
+    var saveUser = function (user, password) {
+      var userObject = angular.copy(user);
       if ($scope.update) {
-        user.$update(success, error);
+        user.$update(function(){
+          success(userObject, password);
+        }, error);
       } else {
         user.$save({ email: '' }, success, error);
       }
     };
 
-    var setHashAndSave = function (user, hash, salt) {
+    var setHashAndSave = function (user, hash, salt, password) {
       if (typeof salt !== 'undefined' && salt !== null) {
         user.passwordSalt = salt;
       }
       user.passwordHash = hash;
-      saveUser(user);
+      saveUser(user, password);
     };
 
     $scope.save = function (user, password) {
       if (password) {
-        $scope.password = password;
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
-        setHashAndSave(user, h.hash, h.salt);
+        setHashAndSave(user, h.hash, h.salt, password);
       } else {
-        saveUser(user);
+        saveUser(user, '');
       }
     };
     
