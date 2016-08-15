@@ -2,7 +2,7 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, $modal, login, Api, Alerting, Fullscreen) {
 
     // initialize global variables
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
@@ -271,12 +271,39 @@ angular.module('openhimConsoleApp')
       Api.Users.update(user, callback);
     };
 
-    $scope.removeVisualizer = function (vis, i) {
+    // remove visualizer functions
+    var removeVisualizer = function (vis, i) {
       $scope.visualizers.splice(i, 1);
       if (vis === $scope.selectedVis) {
         $scope.selectVis($scope.visualizers[0]);
       }
       vis.$remove();
+    };
+
+    $scope.confirmRemoveVis = function(vis, i){
+      var deleteObject = {
+        title: 'Delete Visualizer',
+        button: 'Delete',
+        message: 'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return deleteObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // Delete confirmed - delete the visualizer
+        removeVisualizer(vis, i);
+      }, function () {
+        // delete cancelled - do nothing
+      });
+
     };
 
   });
