@@ -79,7 +79,7 @@ angular.module('openhimConsoleApp')
 
       // Logs API
       Logs: $resource(server + '/logs'),
-      
+
       // Metadata API
       Metadata: $resource( server + '/metadata', {}, {
         save: { method: 'POST', isArray: true },
@@ -91,7 +91,7 @@ angular.module('openhimConsoleApp')
       }),
 
       // Visualizer API
-      Visualizers: $resource(server + '/visualizers'),
+      Visualizers: $resource(server + '/visualizers/:name', { name: '@name' }),
 
       // About page (versions) API
       About: $resource( server + '/about')
