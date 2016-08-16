@@ -10,8 +10,10 @@ packaging/.gnupg
 packaging/.npm
 packaging/builds/*
 packaging/.gitconfig
+packaging/Vagrantfile
 \#*
 *~
 .#*
 \#*\#
 **/.vagrant
+npm-debug.log

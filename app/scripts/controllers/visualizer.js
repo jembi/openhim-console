@@ -2,26 +2,16 @@
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, login, Api, Alerting, Fullscreen) {
+  .controller('VisualizerCtrl', function ($scope, $http, $interval, $window, $modal, login, Api, Alerting, Fullscreen) {
 
-    $scope.loadingVisualizer = true;
+    // initialize global variables
+    var settingsStore = {}; // a place the push current settings when switching to fullscreen
+    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad;
+
+    $scope.loadingVisualizer = false;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
     $scope.isUsingOldVisualizerSettings = false;
-
-
-    // initialize global variables
-    var components = [];
-    var channels = [];
-    var mediators = [];
-    var settingsStore = {}; // a place the push current settings when switching to fullscreen
-    var visResponsive, visW, visH, pad, inactiveColor, activeColor, errorColor, textColor;
-    var visualizerUpdateInterval, updatePeriod, minDisplayPeriod, diffTime, lastUpdate, maxSpeed, maxTimeout;
-
-
-    var consoleSession = localStorage.getItem('consoleSession');
-    consoleSession = JSON.parse(consoleSession);
-    $scope.consoleSession = consoleSession;
 
     // function to start the visualizer
     var startVisualizer = function startVisualizer() {
@@ -31,18 +21,13 @@ angular.module('openhimConsoleApp')
       });
     };
 
-    // get the user settings to construct the visualizer
-    Api.Users.get({ email: $scope.consoleSession.sessionUser }, function(user){
+    var loadVisualizer = function (visSettings) {
+      $scope.loadingVisualizer = true;
+      var visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout;
+      var components = [];
+      var channels = [];
+      var mediators = [];
 
-      // user doesnt have settings saved
-      if ( !user.settings ){
-        $scope.loadingVisualizerError = true;
-        $scope.loadingVisualizer = false;
-        $scope.loadingVisualizerErrorMsgs.push({ section: 'Settings Error', msg: 'There appear to be no settings saved for this user. Please save the user settings' });
-        return;
-      }
-
-      var visSettings = user.settings.visualizer;
       if (visSettings.endpoints && !visSettings.mediators) {
         $scope.isUsingOldVisualizerSettings = true;
       }
@@ -71,7 +56,6 @@ angular.module('openhimConsoleApp')
       }
       /********** Visualizations Management **********/
 
-
       /********** Size Management **********/
       visResponsive = visSettings.size.responsive;
       visW = parseInt( visSettings.size.width );
@@ -86,7 +70,6 @@ angular.module('openhimConsoleApp')
       }
       /********** Size Management **********/
 
-
       /********** Color Management **********/
       inactiveColor = visSettings.color.inactive;
       activeColor = visSettings.color.active;
@@ -100,7 +83,6 @@ angular.module('openhimConsoleApp')
         $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' });
       }
       /********** Color Management **********/
-
 
       /********** Time Management **********/
       //How often to fetch updates from the server (in millis)
@@ -120,10 +102,10 @@ angular.module('openhimConsoleApp')
       }
       /********** Time Management **********/
 
-
       // setup watcher objects
       $scope.visualizerData = [];
       $scope.visualizerSettings = {
+        name: visSettings.name,
         components: components,
         channels: channels,
         mediators: mediators,
@@ -142,7 +124,6 @@ angular.module('openhimConsoleApp')
         maxTimeout: maxTimeout
       };
 
-
       // check if visualizer should be loaded - no errors found
       if ( $scope.loadingVisualizer === true ){
         // visualizer loaded - change state
@@ -152,12 +133,7 @@ angular.module('openhimConsoleApp')
         startVisualizer();
       }
 
-    }, function(err){
-      $scope.loadingVisualizer = false;
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status);
-    });
-
+    };
 
     // function to play the visualizer - Pull new events
     $scope.play = function play() {
@@ -241,4 +217,98 @@ angular.module('openhimConsoleApp')
         $scope.visualizerSettings.visH = settingsStore.visH;
       }
     });
+
+    // Retrieve the session from storage
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+    var user = null;
+
+    Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
+      user = u;
+
+      // visualizer list controls
+      Api.Visualizers.query(function (visualizers) {
+        $scope.visualizers = visualizers;
+        if (!$scope.selectedVis && visualizers.length > 0) {
+          $scope.selectedVis = visualizers[0];
+          if (user.settings && user.settings.selectedVisualizer) {
+            visualizers.forEach(function (vis) {
+              if (vis.name === user.settings.selectedVisualizer) {
+                $scope.selectedVis = vis;
+              }
+            });
+          }
+          loadVisualizer($scope.selectedVis);
+        }
+      }, function (err) {
+        Alerting.AlertAddServerMsg(err.status);
+      });
+
+    }, function (err) {
+      Alerting.AlertAddServerMsg(err.status);
+    });
+
+    $scope.selectVis = function (vis, callback) {
+      if (!callback) {
+        callback = function () {};
+      }
+
+      // set current visualizer
+      $scope.selectedVis = vis;
+
+      // store in current session
+      if (!consoleSession.sessionUserSettings) {
+        consoleSession.sessionUserSettings = {};
+      }
+      consoleSession.sessionUserSettings.selectedVisualizer = vis.name;
+      localStorage.setItem('consoleSession', JSON.stringify(consoleSession));
+      // store in user settings
+      if (!user.settings) {
+        user.settings = {};
+      }
+      user.settings.selectedVisualizer = vis.name;
+
+      loadVisualizer(vis);
+      Api.Users.update(user, callback);
+    };
+
+    // remove visualizer functions
+    var removeVisualizer = function (vis, i) {
+      $scope.visualizers.splice(i, 1);
+      if (vis === $scope.selectedVis) {
+        if ($scope.visualizers.length === 0) {
+          $scope.selectedVis = null;
+        } else {
+          $scope.selectVis($scope.visualizers[0]);
+        }
+      }
+      vis.$remove();
+    };
+
+    $scope.confirmRemoveVis = function(vis, i){
+      var deleteObject = {
+        title: 'Delete Visualizer',
+        button: 'Delete',
+        message: 'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return deleteObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // Delete confirmed - delete the visualizer
+        removeVisualizer(vis, i);
+      }, function () {
+        // delete cancelled - do nothing
+      });
+
+    };
+
   });

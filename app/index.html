@@ -52,6 +52,7 @@
                           <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
                           <ul class="dropdown-menu animated fadeInUp">
                             <li><a href="#/profile">Profile</a></li>
+                            <li><a href="#/about">About</a></li>
                             <li><a href="#/logout">Logout</a></li>
                           </ul>
                         </li>
@@ -101,7 +102,10 @@
           <div class="copy text-center">
             {{appFooterTitle}}<br />
             Copyright&nbsp;&copy;&nbsp;<script>document.write(new Date().getFullYear());</script>&nbsp;<a href='http://jembi.org'>Jembi Health Systems NPC</a><br />
-            <div ng-bind-html="appFooterPoweredBy"></div>
+            <div>
+              <span ng-bind-html="appFooterPoweredBy"></span>
+              <a href="#/about" footer-version></a>
+            </div>
           </div>
         </div>
       </footer>
@@ -193,6 +197,7 @@
     <script src="scripts/controllers/auditDetails.js"></script>
     <script src="scripts/controllers/auditsContentModal.js"></script>
     <script src="scripts/controllers/logs.js"></script>
+    <script src="scripts/controllers/about.js"></script>
 
     <!--- This is for utility functions -->
     <script src="scripts/util/sidebar.js"></script>
@@ -205,6 +210,7 @@
     <script src="scripts/directives/mediator-config-display.js"></script>
     <script src="scripts/directives/metrics-date-type-selector.js"></script>
     <script src="scripts/directives/visualizer.js"></script>
+    <script src="scripts/directives/footer-version.js"></script>
     <!-- Custom Directives -->
     <script src="scripts/services/rest.js"></script>
     <script src="scripts/services/notify.js"></script>

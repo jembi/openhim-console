@@ -488,6 +488,12 @@ angular.module('openhimConsoleApp')
 
     };
 
+    $scope.applyFilterIfValidDate = function(date){
+      if (moment(date, 'YYYY-MM-DD', true).isValid()){
+        $scope.applyFiltersToUrl();
+      }
+    };
+
     $scope.applyFiltersToUrl = function( optionalParam ){
 
       // get the filter params object before clearing them
@@ -638,8 +644,10 @@ angular.module('openhimConsoleApp')
     $scope.viewTransactionDetails = function (path, $event) {
       //do transactions details redirection when clicked on TD
       if( $event.target.tagName === 'TD' ){
-        var baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/';
-        var txUrl = baseUrl + path;
+        var absUrl = $location.absUrl();
+        var absUrlPath = $location.url();
+        var baseUrl = absUrl.replace(absUrlPath, '');
+        var txUrl = baseUrl + '/' + path;
         if ( $scope.settings.list.tabview && $scope.settings.list.tabview === 'new' ){
           window.open(txUrl, '_blank');
         }else{
@@ -662,17 +670,17 @@ angular.module('openhimConsoleApp')
       $scope.filters.transaction.channel = '';
 
       // get the filter params object before clearing them
-      var filterParamsBeforeClear = JSON.stringify( angular.copy( $location.search() ) );
+      var filterParamsBeforeClear = angular.copy( $location.search() );
 
       // clear all filter parameters
       $location.search({});
 
       // get the filter params object after clearing them
-      var filterParamsAfterClear = JSON.stringify( angular.copy( $location.search() ) );
+      var filterParamsAfterClear = angular.copy( $location.search() );
 
       // if the filters object stays the same then call refresh function
       // if filters object not the same then angular changes route and loads controller ( refresh )
-      if ( filterParamsBeforeClear === filterParamsAfterClear ){
+      if (angular.equals(filterParamsBeforeClear, filterParamsAfterClear)){
         $scope.refreshTransactionsList();
       }
 
