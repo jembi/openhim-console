@@ -1400,6 +1400,7 @@ label { position: relative; }
 .inTableEditTextBoxTd input { float:left; width:100px; height:21px; font-size:12px; }
 .rolesTableScrollDiv { overflow-x: auto; }
 .delBtnPlacement { margin-left:22px; }
+.iconInHeader { font-size: 12px; margin-left: 5px; }
 
 .about-info {
   padding: 15px;

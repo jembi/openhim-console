@@ -19,6 +19,9 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   $scope.matching.contentMatching = 'No matching';
   $scope.matching.showRequestMatching = false;
 
+  $scope.autoRetry = {};
+  $scope.autoRetry.enableMaxAttempts = false;
+
   // get the users for the Channel taglist option and alert users - used in two child controllers
   Api.Users.query(function( users ){
     $scope.users = users;
@@ -28,7 +31,8 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
   if (channel) {
     $scope.update = true;
-    $scope.channel = Api.Channels.get({ channelId: channel._id }, function () {
+    $scope.channel = Api.Channels.get({ channelId: channel._id }, function (channel) {
+      $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0;
 
     });
   }else{
@@ -39,6 +43,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
         delete( result._id );
         delete( result.name );
         $scope.channel = result;
+        $scope.autoRetry.enableMaxAttempts = result.autoRetryMaxAttempts > 0;
       });
 
     }else{
@@ -128,6 +133,10 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
         channel.matchContentXpath = null;
         channel.matchContentJson = null;
         channel.matchContentValue = null;
+    }
+
+    if (channel.autoRetryEnabled && !$scope.autoRetry.enableMaxAttempts) {
+      channel.autoRetryMaxAttempts = 0;
     }
 
     if ($scope.update) {
@@ -277,6 +286,21 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
     if ( $scope.ngError.hasUrlRewritesWarnings ){
       $scope.ngError.dataControlTab = true;
       $scope.ngError.hasErrors = true;
+    }
+
+    // auto retry errors
+    if ($scope.channel.autoRetryEnabled) {
+      if (!$scope.channel.autoRetryPeriodMinutes || $scope.channel.autoRetryPeriodMinutes <= 0) {
+        $scope.ngError.autoRetryPeriodMinutes = true;
+        $scope.ngError.dataControlTab = true;
+        $scope.ngError.hasErrors = true;
+      }
+      if ($scope.autoRetry.enableMaxAttempts &&
+          (!$scope.channel.autoRetryMaxAttempts || $scope.channel.autoRetryMaxAttempts <= 0)) {
+        $scope.ngError.maxAttempts = true;
+        $scope.ngError.dataControlTab = true;
+        $scope.ngError.hasErrors = true;
+      }
     }
 
     if ( $scope.ngError.hasErrors ){
@@ -1113,17 +1137,24 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   };
 
   $scope.isAlertValid = function(){
-    if (!$scope.newAlert.status){
+    if (!$scope.newAlert.condition){
       return false;
+    }
+
+    if ($scope.newAlert.condition === 'status' && !$scope.newAlert.status){
+      if (!$scope.newAlert.status){
+        return false;
+      }
+
+      if ($scope.newAlert.status.length !== 3){
+        return false;
+      }
     }
 
     if ( (!$scope.newAlert.users || $scope.newAlert.users.length === 0) && (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0) ){
       return false;
     }
 
-    if ($scope.newAlert.status.length !== 3){
-      return false;
-    }
     return true;
   };
 
