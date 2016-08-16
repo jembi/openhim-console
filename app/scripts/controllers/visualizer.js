@@ -8,7 +8,7 @@ angular.module('openhimConsoleApp')
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad;
 
-    $scope.loadingVisualizer = true;
+    $scope.loadingVisualizer = false;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
     $scope.isUsingOldVisualizerSettings = false;
@@ -22,6 +22,7 @@ angular.module('openhimConsoleApp')
     };
 
     var loadVisualizer = function (visSettings) {
+      $scope.loadingVisualizer = true;
       var visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout;
       var components = [];
       var channels = [];
@@ -275,7 +276,11 @@ angular.module('openhimConsoleApp')
     var removeVisualizer = function (vis, i) {
       $scope.visualizers.splice(i, 1);
       if (vis === $scope.selectedVis) {
-        $scope.selectVis($scope.visualizers[0]);
+        if ($scope.visualizers.length === 0) {
+          $scope.selectedVis = null;
+        } else {
+          $scope.selectVis($scope.visualizers[0]);
+        }
       }
       vis.$remove();
     };

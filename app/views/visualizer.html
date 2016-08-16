@@ -18,6 +18,7 @@
           <div class="row">
             <div class="col-md-2" role="navigation">
               <h4>Choose a visualizer to view</h4>
+              <span ng-if="visualizers.length === 0">There are no configured visualizers. Add one below.</span>
               <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" ng-repeat="vis in visualizers" ng-class="{ active: selectedVis === vis }">
                   <a ng-click="selectVis(vis)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
@@ -67,8 +68,7 @@
                 </div>
                 <div class="visualizerSpeed">{{speedText}}</div>
 
-
-                <div visualizer fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
+                <div visualizer ng-if="visualizers.length !== 0" fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
               </div>
             </div>
           </div>
