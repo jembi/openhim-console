@@ -8,7 +8,7 @@ angular.module('openhimConsoleApp')
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
     var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad;
 
-    $scope.loadingVisualizer = true;
+    $scope.loadingVisualizer = false;
     $scope.loadingVisualizerError = false;
     $scope.loadingVisualizerErrorMsgs = [];
     $scope.isUsingOldVisualizerSettings = false;
@@ -22,6 +22,7 @@ angular.module('openhimConsoleApp')
     };
 
     var loadVisualizer = function (visSettings) {
+      $scope.loadingVisualizer = true;
       var visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout;
       var components = [];
       var channels = [];
@@ -234,20 +235,22 @@ angular.module('openhimConsoleApp')
     // Retrieve the session from storage
     var consoleSession = localStorage.getItem('consoleSession');
     consoleSession = JSON.parse(consoleSession);
+    var user = null;
 
-    Api.Users.get({ email: consoleSession.sessionUser }, function (user) {
+    Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
+      user = u;
+
       // visualizer list controls
       Api.Visualizers.query(function (visualizers) {
         $scope.visualizers = visualizers;
         if (!$scope.selectedVis && visualizers.length > 0) {
+          $scope.selectedVis = visualizers[0];
           if (user.settings && user.settings.selectedVisualizer) {
             visualizers.forEach(function (vis) {
               if (vis.name === user.settings.selectedVisualizer) {
                 $scope.selectedVis = vis;
               }
             });
-          } else {
-            $scope.selectedVis = visualizers[0];
           }
           loadVisualizer($scope.selectedVis);
         }
@@ -255,32 +258,71 @@ angular.module('openhimConsoleApp')
         Alerting.AlertAddServerMsg(err.status);
       });
 
-      $scope.selectVis = function (vis, callback) {
-        if (!callback) {
-          callback = function () {};
-        }
-
-        // set current visualizer
-        $scope.selectedVis = vis;
-
-        // store in current session
-        if (!consoleSession.sessionUserSettings) {
-          consoleSession.sessionUserSettings = {};
-        }
-        consoleSession.sessionUserSettings.selectedVisualizer = vis.name;
-        localStorage.setItem('consoleSession', JSON.stringify(consoleSession));
-        // store in user settings
-        if (!user.settings) {
-          user.settings = {};
-        }
-        user.settings.selectedVisualizer = vis.name;
-
-        loadVisualizer(vis);
-        user.$update(callback);
-      };
-
     }, function (err) {
       Alerting.AlertAddServerMsg(err.status);
     });
+
+    $scope.selectVis = function (vis, callback) {
+      if (!callback) {
+        callback = function () {};
+      }
+
+      // set current visualizer
+      $scope.selectedVis = vis;
+
+      // store in current session
+      if (!consoleSession.sessionUserSettings) {
+        consoleSession.sessionUserSettings = {};
+      }
+      consoleSession.sessionUserSettings.selectedVisualizer = vis.name;
+      localStorage.setItem('consoleSession', JSON.stringify(consoleSession));
+      // store in user settings
+      if (!user.settings) {
+        user.settings = {};
+      }
+      user.settings.selectedVisualizer = vis.name;
+
+      loadVisualizer(vis);
+      Api.Users.update(user, callback);
+    };
+
+    // remove visualizer functions
+    var removeVisualizer = function (vis, i) {
+      $scope.visualizers.splice(i, 1);
+      if (vis === $scope.selectedVis) {
+        if ($scope.visualizers.length === 0) {
+          $scope.selectedVis = null;
+        } else {
+          $scope.selectVis($scope.visualizers[0]);
+        }
+      }
+      vis.$remove();
+    };
+
+    $scope.confirmRemoveVis = function(vis, i){
+      var deleteObject = {
+        title: 'Delete Visualizer',
+        button: 'Delete',
+        message: 'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/confirmModal.html',
+        controller: 'ConfirmModalCtrl',
+        resolve: {
+          confirmObject: function () {
+            return deleteObject;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+        // Delete confirmed - delete the visualizer
+        removeVisualizer(vis, i);
+      }, function () {
+        // delete cancelled - do nothing
+      });
+
+    };
 
   });

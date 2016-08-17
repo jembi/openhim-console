@@ -1,5 +1,6 @@
 'use strict';
 /* jshint expr: true */
+/* global sinon: false */
 
 describe('Controller: VisualizerCtrl', function () {
 
@@ -13,7 +14,7 @@ describe('Controller: VisualizerCtrl', function () {
     });
   });
 
-  var scope, createController, httpBackend;
+  var scope, createController, httpBackend, modal;
 
   var visualizers = [{
     'name': 'Test Visualizer 1',
@@ -110,9 +111,10 @@ describe('Controller: VisualizerCtrl', function () {
   }];
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
+    modal = $modal;
 
     $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers);
 
@@ -229,6 +231,56 @@ describe('Controller: VisualizerCtrl', function () {
     consoleSession = JSON.parse(consoleSession);
 
     consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal('Test Visualizer 2');
+  });
+
+  it('should open a modal to confirm deletion of a visualizer and remove a visualizer on confirmation', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
+    var modalSpy = sinon.stub(modal, 'open', function () {
+      return {
+        result: {
+          then: function(callback) {
+            callback();
+          }
+        }
+      };
+    });
+    var vis = angular.copy(visualizers[0], vis);
+    vis.$remove = sinon.spy();
+
+    createController();
+    httpBackend.flush();
+
+    scope.confirmRemoveVis(vis, 0);
+    modalSpy.should.be.calledOnce;
+    vis.$remove.should.be.calledOnce;
+    scope.visualizers.length.should.be.equal(1);
+    scope.visualizers[0].should.have.property('name', 'Test Visualizer 2');
+  });
+
+  it('should open a modal to confirm deletion of a visualizer and NOT remove a visualizer on cancellation', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
+    var modalSpy = sinon.stub(modal, 'open', function () {
+      return {
+        result: {
+          then: function(callback, cancel) {
+            cancel();
+          }
+        }
+      };
+    });
+    var vis = angular.copy(visualizers[0], vis);
+    vis.$remove = sinon.spy();
+
+    createController();
+    httpBackend.flush();
+
+    scope.confirmRemoveVis(vis, 0);
+    modalSpy.should.be.calledOnce;
+    vis.$remove.should.not.be.called;
+    scope.visualizers.length.should.be.equal(2);
+    scope.visualizers[0].should.have.property('name', 'Test Visualizer 1');
   });
 
 });

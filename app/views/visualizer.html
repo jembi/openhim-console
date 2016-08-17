@@ -14,19 +14,24 @@
           </div>
         </div>
 
+        <!-- Top Alerts -->
+        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <!-- Top Alerts -->
+
         <div class="panel-body">
           <div class="row">
             <div class="col-md-2" role="navigation">
               <h4>Choose a visualizer to view</h4>
+              <span ng-if="visualizers.length === 0">There are no configured visualizers. Add one below.</span>
               <ul class="nav nav-pills nav-stacked">
                 <li role="presentation" ng-repeat="vis in visualizers" ng-class="{ active: selectedVis === vis }">
-                  <a href ng-click="selectVis(vis)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+                  <a ng-click="selectVis(vis)" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
                     <span>{{ vis.name }}</span>
                     <div class="pull-right" ng-if="selectedVis.name === vis.name || hover">
                       <div class="btn-group" role="group">
                         <button tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
                         <button tooltip="Edit" class="btn btn-warning btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
-                        <button tooltip="Delete" class="btn btn-danger btn-xs" ng-click="" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button tooltip="Delete" class="btn btn-danger btn-xs" ng-click="confirmRemoveVis(vis, $index); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
                       </div>
                     </div>
                   </a>
@@ -67,10 +72,11 @@
                     <button class="btn btn-default" ng-click="goFullScreenViaWatcher()"><i class="glyphicon glyphicon-fullscreen"></i></button>
                   </div>  
 
-                  <div class="visualizerSpeed">{{speedText}}</div>
+                   <div class="visualizerSpeed">{{speedText}}</div>
 
-                  <div visualizer fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
+                  <div visualizer ng-if="visualizers.length !== 0" fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
                 </center>
+                
               </div>
             </div>
           </div>

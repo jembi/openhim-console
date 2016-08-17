@@ -2,27 +2,34 @@
   <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
   <h4 class="modal-title">
     <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
-    Visualizer Settings
+    Visualizations Management
+
+    <!-- hasErrors Alerts -->
+    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
   </h4>
 </div>
-<form class="form-horizontal" ng-submit="" ng-class="{ 'has-error' : ngErrors.hasErrors }" novalidate>
-  <div class="modal-body">
+<div class="modal-body">
+  
+
+  <!-- include for visualizer settings view -->
+  <div ng-include="'views/partials/visualizer-settings.html'"></div>
+
+</div>
+
+<div class="modal-footer">
+  <div>
+    <!-- hasErrors Alerts -->
+    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
+    </alert>
+    <!-- hasErrors Alerts -->
+    <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
     
-
-    <!-- include for visualizer settings view -->
-    <div ng-include="'views/partials/visualizer-settings.html'"></div>
-
+    <button type="button" class="btn btn-primary" ng-click="submitSettingsForm()">
+      <span ng-if="update == true">Save changes</span>
+      <span ng-if="update == false">Create Visualizer</span>
+    </button>
   </div>
-
-  <div class="modal-footer">
-    <div>
-      <!-- hasErrors Alerts -->
-      <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsImport" type="alert.type">
-        <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-      </alert>
-      <!-- hasErrors Alerts -->
-      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="">Save changes</button>
-    </div>
-  </div>
-</form>
+</div>

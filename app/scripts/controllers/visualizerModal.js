@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, settingsStore) {
+  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, settingsStore) {
 
 
     /***************************************************/
     /**         Initial page load functions           **/
     /***************************************************/
 
-
+    $scope.ngError = {};
+    $scope.validationRequiredMsg = 'This field is required.';
 
     // get/set the users scope whether new or update
     if (settingsStore) {
@@ -102,6 +103,86 @@ angular.module('openhimConsoleApp')
 
     $scope.removeMediator = function(index){
       $scope.settings.visualizer.mediators.splice(index, 1);
+    };
+
+    $scope.validateFormSettings = function(settings, callback){
+      // reset hasErrors alert object
+      Alerting.AlertReset('hasErrors');
+
+      console.log(settings);
+
+      // clear timeout if it has been set
+      $timeout.cancel( $scope.clearValidation );
+
+      $scope.ngError.hasErrors = false;
+
+      // required fields validation
+      if(!settings.name){
+        $scope.ngError.hasNoName = true;
+        $scope.ngError.hasErrors = true;
+      }
+
+      if(settings.components === undefined || settings.components.length === 0){
+        $scope.ngError.hasErrors = true;
+        $scope.ngError.hasNoComponents = true;
+      }
+
+      if(settings.mediators === undefined || settings.mediators.length === 0){
+        $scope.ngError.hasErrors = true;
+        $scope.ngError.hasNoMediators = true;
+      }
+
+      if(settings.channels === undefined || settings.channels.length === 0){
+        $scope.ngError.hasErrors = true;
+        $scope.ngError.hasNoChannels = true;
+      }
+
+      console.log($scope.ngError);
+
+      if ( $scope.ngError.hasErrors ){
+        $scope.clearValidation = $timeout(function(){
+          // clear errors after 5 seconds
+          $scope.ngError = {};
+          Alerting.AlertReset('hasErrors');
+        }, 5000);
+        Alerting.AlertAddMsg('hasErrors', 'danger', 'There are errors on the form.');
+        callback('Error: Form has errors');
+      } else {
+        callback();
+      }
+    };
+
+    var notifyUser = function(){
+      // reset backing object and refresh users list
+      Notify.notify('channelsChanged');
+      $modalInstance.close();
+    };
+
+    var success = function () {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully');
+      
+      notifyUser();
+    };
+
+    var error = function (err) {
+      // add the success message
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data);
+      notifyUser();
+    };
+
+    $scope.submitSettingsForm = function(){
+      
+      // validate form input
+      $scope.validateFormSettings($scope.settings.visualizer, function(err){
+        if(err){
+          console.log(err);
+        } else {
+
+          // save visualizer settings
+          Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
+        }
+      });
     };
 
     /*******************************************/
