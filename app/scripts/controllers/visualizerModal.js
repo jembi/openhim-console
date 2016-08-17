@@ -109,8 +109,6 @@ angular.module('openhimConsoleApp')
       // reset hasErrors alert object
       Alerting.AlertReset('hasErrors');
 
-      console.log(settings);
-
       // clear timeout if it has been set
       $timeout.cancel( $scope.clearValidation );
 
@@ -147,8 +145,6 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
         $scope.ngError.hasNoChannels = true;
       }
-
-      console.log($scope.ngError);
 
       if ( $scope.ngError.hasErrors ){
         $scope.clearValidation = $timeout(function(){
@@ -192,10 +188,7 @@ angular.module('openhimConsoleApp')
       
       // validate form input
       $scope.validateFormSettings($scope.settings.visualizer, function(err){
-        if(err){
-          console.log(err);
-        } else {
-
+        if(!err){
           // save visualizer settings
           Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
         }
