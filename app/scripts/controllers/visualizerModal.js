@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, settingsStore) {
+  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, settingsStore, visualizers) {
 
 
     /***************************************************/
@@ -120,7 +120,18 @@ angular.module('openhimConsoleApp')
       if(!settings.name){
         $scope.ngError.hasNoName = true;
         $scope.ngError.hasErrors = true;
-      }
+      } else {
+
+        // the visualizer name must be unique
+        var result = visualizers.filter(function (obj){
+          return obj.name === settings.name;
+        });
+
+        if(result.length > 0){
+          $scope.ngError.nameNotUnique = true;
+          $scope.ngError.hasErrors = true; 
+        }
+      }      
 
       if(settings.components === undefined || settings.components.length === 0){
         $scope.ngError.hasErrors = true;
@@ -168,6 +179,12 @@ angular.module('openhimConsoleApp')
     var error = function (err) {
       // add the success message
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data);
+
+      $scope.clearValidation = $timeout(function(){
+        // clear errors after 5 seconds
+        Alerting.AlertReset('hasErrors');
+      }, 10000);
+
       notifyUser();
     };
 

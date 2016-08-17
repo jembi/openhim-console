@@ -11,7 +11,9 @@
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the visualizer name (must be unique)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <input class="form-control" placeholder="e.g. My Awesome Visualizer" type="text" ng-model="settings.visualizer.name">
+
       <alert ng-if="ngError.hasNoName"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
+      <alert ng-if="ngError.nameNotUnique"><i class="glyphicon glyphicon-warning-sign"></i>The visualizer name must be unique.</alert>
     </div>
     <br>
     <br>
