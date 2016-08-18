@@ -91,9 +91,10 @@ angular.module('openhimConsoleApp')
       }),
 
       // Visualizer API
-      Visualizers: $resource(server + '/visualizers/:name', { name: '@name' }, {
+      Visualizers: $resource(server + '/visualizers/:id', { id: '@_id' }, {
         save: { method: 'POST' },
-        query: { method: 'GET', isArray: true }
+        query: { method: 'GET', isArray: true },
+        update: { method: 'PUT' }
       }),
 
       // About page (versions) API

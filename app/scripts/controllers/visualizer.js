@@ -198,13 +198,46 @@ angular.module('openhimConsoleApp')
     // function to add new visualizer to list
     $scope.addVisualiser = function addVisualiser(){
 
-      // open visualizer settings modal 
+      // open visualizer settings modal
       $modal.open({
         templateUrl: 'views/visualizerModal.html',
         controller: 'VisualizerModalCtrl',
         resolve: {
-          settingsStore: function () { return null; },
-          visualizers: function() { return $scope.visualizers; }
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return null; }
+        }
+      });
+
+    };
+
+    // function to edit a visualizer
+    $scope.editVisualiser = function editVisualiser(vis) {
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return vis; }
+        }
+      });
+
+    };
+
+    // function to duplicate a visualizer
+    $scope.duplicateVisualiser = function duplicateVisualiser(vis) {
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return vis; },
+          duplicate: function() { return null; }
         }
       });
 

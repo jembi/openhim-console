@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, settingsStore, visualizers) {
+  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
 
 
     /***************************************************/
@@ -12,11 +12,18 @@ angular.module('openhimConsoleApp')
     $scope.validationRequiredMsg = 'This field is required.';
 
     // get/set the users scope whether new or update
-    if (settingsStore) {
+    if (visualizer) {
       $scope.update = true;
-      
-      
-    }else{
+      $scope.settings = {};
+      // $scope.settings.visualizer = JSON.parse(angular.toJson(visualizer));
+      $scope.settings.visualizer = visualizer;
+    } else if (duplicate) {
+      delete(duplicate._id);
+      delete(duplicate.name);
+      $scope.settings = {};
+      // $scope.settings.visualizer = JSON.parse(angular.toJson(duplicate));
+      $scope.settings.visualizer = duplicate;
+    } else {
       $scope.update = false;
 
       // create visualizer settings properties
@@ -66,7 +73,7 @@ angular.module('openhimConsoleApp')
     /***************************************************/
 
 
-    
+
     /*******************************************/
     /**   Settings - Visualizer Functions     **/
     /*******************************************/
@@ -120,16 +127,18 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       } else {
 
-        // the visualizer name must be unique
-        var result = visualizers.filter(function (obj){
-          return obj.name === settings.name;
-        });
+        if (!$scope.update) {
+          // the visualizer name must be unique
+          var result = visualizers.filter(function (obj){
+            return obj.name === settings.name;
+          });
 
-        if(result.length > 0){
-          $scope.ngError.nameNotUnique = true;
-          $scope.ngError.hasErrors = true; 
+          if(result.length > 0){
+            $scope.ngError.nameNotUnique = true;
+            $scope.ngError.hasErrors = true;
+          }
         }
-      }      
+      }
 
       if(settings.components === undefined || settings.components.length === 0){
         $scope.ngError.hasErrors = true;
@@ -168,7 +177,7 @@ angular.module('openhimConsoleApp')
     var success = function () {
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully');
-      
+
       notifyUser();
     };
 
@@ -185,12 +194,16 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.submitSettingsForm = function(){
-      
+
       // validate form input
       $scope.validateFormSettings($scope.settings.visualizer, function(err){
         if(!err){
           // save visualizer settings
-          Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
+          if ($scope.update) {
+            $scope.settings.visualizer.$update();
+          } else {
+            Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
+          }
         }
       });
     };
@@ -200,5 +213,3 @@ angular.module('openhimConsoleApp')
     /*******************************************/
 
   });
-
-
