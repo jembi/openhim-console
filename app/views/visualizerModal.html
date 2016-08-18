@@ -27,9 +27,9 @@
     <!-- hasErrors Alerts -->
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
     
-    <button type="button" class="btn btn-primary" ng-click="submitSettingsForm()">
-      <span ng-if="update == true">Save changes</span>
-      <span ng-if="update == false">Create Visualizer</span>
+    <button type="button" class="btn btn-primary" ng-click="saveVisualizer()">
+      <span ng-if="update">Save changes</span>
+      <span ng-if="!update">Create Visualizer</span>
     </button>
   </div>
 </div>
