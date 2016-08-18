@@ -177,7 +177,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     createController(null);
     httpBackend.flush();
 
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
     expect(JSON.stringify(scope.channels)).to.equal(JSON.stringify(channels));
     expect(JSON.stringify(scope.mediators)).to.equal(JSON.stringify(mediators));
   });
@@ -193,7 +193,7 @@ describe('Controller: VisualizerModalCtrl', function () {
 
     scope.addSelectedChannel();
 
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute addSelectedMediator() and add mediator to settings object', function() {
@@ -206,7 +206,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     defaultVisualizerSettings.mediators.push({ mediator: selectedMediator.urn, name: selectedMediator.name, display: selectedMediator.name });
 
     scope.addSelectedMediator();
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute addComponent() and add component to settings object', function() {
@@ -218,7 +218,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     defaultVisualizerSettings.components.push({ eventType: component.eventType, eventName: component.eventName, display: component.display });
 
     scope.addComponent();
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute removeChannel() and remove the first channel', function() {
@@ -228,7 +228,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     defaultVisualizerSettings.channels.splice(0, 1);
 
     scope.removeChannel(0);
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute removeMediator() and remove the first mediator', function() {
@@ -238,7 +238,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     defaultVisualizerSettings.mediators.splice(0, 1);
 
     scope.removeMediator(0);
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute removeComponents() and remove the first component', function() {
@@ -249,7 +249,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     scope.addComponent();
 
     scope.removeMediator(0);
-    expect(scope.settings.visualizer).to.eql(defaultVisualizerSettings);
+    expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
   it('should execute validateFormSettings and return TRUE - valid settings', function() {

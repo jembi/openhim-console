@@ -9,7 +9,7 @@
         <span>*</span> Visualizer Name
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the visualizer name (must be unique)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
-      <input class="form-control" placeholder="e.g. My Awesome Visualizer" type="text" ng-model="settings.visualizer.name">
+      <input class="form-control" placeholder="e.g. My Awesome Visualizer" type="text" ng-model="visualizer.name">
 
       <alert ng-if="ngError.hasNoName"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
       <alert ng-if="ngError.nameNotUnique"><i class="glyphicon glyphicon-warning-sign"></i>The visualizer name must be unique.</alert>
@@ -34,7 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="component in settings.visualizer.components">
+              <tr ng-repeat="component in visualizer.components">
                 <td style="vertical-align: middle;" data-title="Type">{{component.eventType}}</td>
                 <td style="vertical-align: middle;" data-title="Event">{{component.eventName}}</td>
                 <td data-title="Display"><input class="form-control" type="text" ng-model="component.display" /></td>
@@ -97,7 +97,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="channel in settings.visualizer.channels">
+              <tr ng-repeat="channel in visualizer.channels">
                 <td style="vertical-align: middle;" data-title="Channel">{{channel.eventName}}</td>
                 <td data-title="Display"><input class="form-control" type="text" ng-model="channel.display" /></td>
                 <td style="vertical-align: middle;"><button class="btn btn-danger btn-xs" ng-click="removeChannel($index)"><i class="glyphicon glyphicon-remove"></i></button></td>
@@ -128,7 +128,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="mediator in settings.visualizer.mediators">
+              <tr ng-repeat="mediator in visualizer.mediators">
                 <td style="vertical-align: middle;" data-title="Mediator">{{mediator.name}}</td>
                 <td data-title="Display"><input class="form-control" type="text" ng-model="mediator.display" /></td>
                 <td style="vertical-align: middle;">
@@ -160,7 +160,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.inactive">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.inactive">
           </div>
         </span>
 
@@ -170,7 +170,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.active">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.active">
           </div>
         </span>
 
@@ -180,7 +180,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.error">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.error">
           </div>
         </span>
 
@@ -190,7 +190,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input colorpicker="hex" class="form-control" type="text" ng-model="settings.visualizer.color.text">
+            <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.text">
           </div>
         </span>
       </div>
@@ -211,7 +211,7 @@
           </label>
           <div class="input-group" style="padding-top: 10px;">
             <label class="responsiveCheckboxLabel">
-              <input type="checkbox" ng-model="settings.visualizer.size.responsive" style="margin-top: 0px; vertical-align: middle;" /> Responsive Visualizer
+              <input type="checkbox" ng-model="visualizer.size.responsive" style="margin-top: 0px; vertical-align: middle;" /> Responsive Visualizer
             </label>
           </div>
         </span>
@@ -222,7 +222,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" ng-model="settings.visualizer.size.width">
+            <input class="form-control" type="text" ng-model="visualizer.size.width">
             <span class="input-group-addon">px</span>
           </div>
         </span>
@@ -233,7 +233,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" ng-model="settings.visualizer.size.height">
+            <input class="form-control" type="text" ng-model="visualizer.size.height">
             <span class="input-group-addon">px</span>
           </div>
         </span>
@@ -244,7 +244,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="text" ng-model="settings.visualizer.size.padding">
+            <input class="form-control" type="text" ng-model="visualizer.size.padding">
             <span class="input-group-addon">px</span>
           </div>
         </span>
@@ -266,7 +266,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="How often to fetch events from the server <br /> (min: 50ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="number" ng-model="settings.visualizer.time.updatePeriod" min="50" max="5000">
+            <input class="form-control" type="number" ng-model="visualizer.time.updatePeriod" min="50" max="5000">
             <span class="input-group-addon">ms</span>
           </div>
         </span>
@@ -277,7 +277,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="The minimum amount of time to display an event for; for really quick transactions <br /> (min: 0ms, max: 5000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="number" ng-model="settings.visualizer.time.minDisplayPeriod" min="0" max="5000">
+            <input class="form-control" type="number" ng-model="visualizer.time.minDisplayPeriod" min="0" max="5000">
             <span class="input-group-addon">ms</span>
           </div>
         </span>
@@ -288,7 +288,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum timeout limit for an event <br /> (min: 1000ms, max: 10000ms)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
-            <input class="form-control" type="number" ng-model="settings.visualizer.time.maxTimeout" min="1000" max="10000">
+            <input class="form-control" type="number" ng-model="visualizer.time.maxTimeout" min="1000" max="10000">
             <span class="input-group-addon">ms</span>
           </div>
         </span>
@@ -299,7 +299,7 @@
             <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the maximum speed limit the visualizer can reach <br /> (min: 1, max: 10)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="btn-group" style="clear: both; width: 100%">
-            <input class="form-control" type="number" ng-model="settings.visualizer.time.maxSpeed" min="1" max="10">
+            <input class="form-control" type="number" ng-model="visualizer.time.maxSpeed" min="1" max="10">
           </div>
         </span>
       </div>

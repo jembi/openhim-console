@@ -84,18 +84,18 @@ angular.module('openhimConsoleApp')
     $scope.viewModel = {};
 
     $scope.addSelectedChannel = function(){
-      $scope.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.viewModel.addSelectChannel.name, display: $scope.viewModel.addSelectChannel.name });
+      $scope.visualizer.channels.push({ eventType: 'channel', eventName: $scope.viewModel.addSelectChannel.name, display: $scope.viewModel.addSelectChannel.name });
       $scope.viewModel.addSelectChannel = null;
     };
 
     $scope.addSelectedMediator = function(){
-      $scope.settings.visualizer.mediators.push({ mediator: $scope.viewModel.addSelectMediator.urn, name: $scope.viewModel.addSelectMediator.name, display: $scope.viewModel.addSelectMediator.name });
+      $scope.visualizer.mediators.push({ mediator: $scope.viewModel.addSelectMediator.urn, name: $scope.viewModel.addSelectMediator.name, display: $scope.viewModel.addSelectMediator.name });
       $scope.viewModel.addSelectMediator = null;
     };
 
     $scope.addComponent = function(){
       if( $scope.viewModel.addComponent.eventType ){
-        $scope.settings.visualizer.components.push({ eventType: $scope.viewModel.addComponent.eventType, eventName: $scope.viewModel.addComponent.eventName, display: $scope.viewModel.addComponent.display });
+        $scope.visualizer.components.push({ eventType: $scope.viewModel.addComponent.eventType, eventName: $scope.viewModel.addComponent.eventName, display: $scope.viewModel.addComponent.display });
         $scope.viewModel.addComponent.eventType = '';
         $scope.viewModel.addComponent.eventName = '';
         $scope.viewModel.addComponent.display = '';
@@ -103,18 +103,18 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.removeComponent = function(index){
-      $scope.settings.visualizer.components.splice(index, 1);
+      $scope.visualizer.components.splice(index, 1);
     };
 
     $scope.removeChannel = function(index){
-      $scope.settings.visualizer.channels.splice(index, 1);
+      $scope.visualizer.channels.splice(index, 1);
     };
 
     $scope.removeMediator = function(index){
-      $scope.settings.visualizer.mediators.splice(index, 1);
+      $scope.visualizer.mediators.splice(index, 1);
     };
 
-    $scope.validateFormSettings = function(settings, callback){
+    $scope.validateFormSettings = function(viz, callback){
       // reset hasErrors alert object
       Alerting.AlertReset('hasErrors');
 
@@ -124,7 +124,7 @@ angular.module('openhimConsoleApp')
       $scope.ngError.hasErrors = false;
 
       // required fields validation
-      if(!settings.name){
+      if(!viz.name){
         $scope.ngError.hasNoName = true;
         $scope.ngError.hasErrors = true;
       } else {
@@ -132,22 +132,22 @@ angular.module('openhimConsoleApp')
         if (!$scope.update) {
           // the visualizer name must be unique
           var result = visualizers.filter(function (obj){
-            return obj.name === settings.name;
+            return obj.name === viz.name;
           });
 
-          if(result.length > 0){
+          if (result.length > 0) {
             $scope.ngError.nameNotUnique = true;
             $scope.ngError.hasErrors = true;
           }
         }
       }
 
-      if(settings.components === undefined || settings.components.length === 0){
+      if(viz.components === undefined || viz.components.length === 0){
         $scope.ngError.hasErrors = true;
         $scope.ngError.hasNoComponents = true;
       }
 
-      if(settings.channels === undefined || settings.channels.length === 0){
+      if(viz.channels === undefined || viz.channels.length === 0){
         $scope.ngError.hasErrors = true;
         $scope.ngError.hasNoChannels = true;
       }
@@ -188,13 +188,13 @@ angular.module('openhimConsoleApp')
     $scope.saveVisualizer = function(){
 
       // validate form input
-      $scope.validateFormSettings($scope.settings.visualizer, function(err){
+      $scope.validateFormSettings($scope.visualizer, function(err){
         if(!err){
           // save visualizer settings
           if ($scope.update) {
-            Api.Visualizers.update($scope.settings.visualizer, success, error);
+            Api.Visualizers.update($scope.visualizer, success, error);
           } else {
-            Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
+            Api.Visualizers.save({ name: '' }, $scope.visualizer, success, error);
           }
         }
       });
