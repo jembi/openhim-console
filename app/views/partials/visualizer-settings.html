@@ -2,7 +2,6 @@
 <h4>Visualizer Settings</h4>
 
 <div class="panel panel-default">
-  <!-- <div class="panel-heading">General Settings</div> -->
   <div class="panel-body">
 
     <div class="settings_div has-error-key">
@@ -45,7 +44,7 @@
               </tr>
               <tr>
                 <td data-title="Type">
-                  <select class="form-control" ng-model="visualizer.addComponent.eventType">
+                  <select class="form-control" ng-model="viewModel.addComponent.eventType">
                     <option value="">Event Type</option>
                     <option value="primary">Primary Route</option>
                     <option value="route">Secondary Route</option>
@@ -54,18 +53,18 @@
                   </select>
                 </td>
                 <td data-title="Event">
-                  <select ng-if="visualizer.addComponent.eventType === 'primary'" class="form-control" ng-options="route as route for route in primaryRoutes" ng-model="visualizer.addComponent.eventName">
+                  <select ng-if="viewModel.addComponent.eventType === 'primary'" class="form-control" ng-options="route as route for route in primaryRoutes" ng-model="viewModel.addComponent.eventName">
                     <option value="">Select Route</option>
                   </select>
-                  <select ng-if="visualizer.addComponent.eventType === 'route'" class="form-control" ng-options="route as route for route in secondaryRoutes" ng-model="visualizer.addComponent.eventName">
+                  <select ng-if="viewModel.addComponent.eventType === 'route'" class="form-control" ng-options="route as route for route in secondaryRoutes" ng-model="viewModel.addComponent.eventName">
                     <option value="">Select Route</option>
                   </select>
-                  <input ng-if="visualizer.addComponent.eventType === 'orchestration'"  class="form-control" type="text" ng-model="visualizer.addComponent.eventName" />
-                  <select ng-if="visualizer.addComponent.eventType === 'channel'" class="form-control" ng-options="channel.name as channel.name for channel in channels" ng-model="visualizer.addComponent.eventName">
+                  <input ng-if="viewModel.addComponent.eventType === 'orchestration'"  class="form-control" type="text" ng-model="viewModel.addComponent.eventName" />
+                  <select ng-if="viewModel.addComponent.eventType === 'channel'" class="form-control" ng-options="channel.name as channel.name for channel in channels" ng-model="viewModel.addComponent.eventName">
                     <option value="">Select Channel</option>
                   </select>
                 </td>
-                <td data-title="Display"><input class="form-control" type="text" ng-model="visualizer.addComponent.display" placeholder="e.g. Primary Channel" /></td>
+                <td data-title="Display"><input class="form-control" type="text" ng-model="viewModel.addComponent.display" placeholder="e.g. Primary Channel" /></td>
                 <td style="vertical-align: middle;">
                   <button class="btn btn-success btn-xs" ng-click="addComponent()"><i class="glyphicon glyphicon-plus"></i></button>
                 </td>
@@ -84,7 +83,7 @@
       </label>
       <div class="btn-group" style="width: 100%; clear: both;">
         <div id="no-more-tables" style="margin-top: 15px;">
-          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="visualizer.addSelectChannel" ng-change="addSelectedChannel()">
+          <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="viewModel.addSelectChannel" ng-change="addSelectedChannel()">
             <option value="">Select Channel</option>
           </select>
           <alert ng-if="ngError.hasNoChannels"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
@@ -111,14 +110,13 @@
 
     <div class="settings_div has-error-key">
       <label style="float: left">
-        <span>*</span> Mediators
+        Mediators
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown just above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="width: 100%; clear: both;">
-        <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="visualizer.addSelectMediator" ng-change="addSelectedMediator()">
+        <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="viewModel.addSelectMediator" ng-change="addSelectedMediator()">
           <option value="">Select Mediator</option>
         </select>
-        <alert ng-if="ngError.hasNoMediators"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
 
         <div id="no-more-tables" style="margin-top: 15px;">
           <table class="table table-striped table-bordered">
@@ -145,6 +143,7 @@
   </div>
 </div>
 
+<h4>Advanced Settings</h4>
 
 <div class="panel-group" id="accordion">
 

@@ -72,24 +72,24 @@ angular.module('openhimConsoleApp')
     /*******************************************/
 
     // setup visualizer object
-    $scope.visualizer = {};
+    $scope.viewModel = {};
 
     $scope.addSelectedChannel = function(){
-      $scope.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.visualizer.addSelectChannel.name, display: $scope.visualizer.addSelectChannel.name });
-      $scope.visualizer.addSelectChannel = null;
+      $scope.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.viewModel.addSelectChannel.name, display: $scope.viewModel.addSelectChannel.name });
+      $scope.viewModel.addSelectChannel = null;
     };
 
     $scope.addSelectedMediator = function(){
-      $scope.settings.visualizer.mediators.push({ mediator: $scope.visualizer.addSelectMediator.urn, name: $scope.visualizer.addSelectMediator.name, display: $scope.visualizer.addSelectMediator.name });
-      $scope.visualizer.addSelectMediator = null;
+      $scope.settings.visualizer.mediators.push({ mediator: $scope.viewModel.addSelectMediator.urn, name: $scope.viewModel.addSelectMediator.name, display: $scope.viewModel.addSelectMediator.name });
+      $scope.viewModel.addSelectMediator = null;
     };
 
     $scope.addComponent = function(){
-      if( $scope.visualizer.addComponent.eventType ){
-        $scope.settings.visualizer.components.push({ eventType: $scope.visualizer.addComponent.eventType, eventName: $scope.visualizer.addComponent.eventName, display: $scope.visualizer.addComponent.display });
-        $scope.visualizer.addComponent.eventType = '';
-        $scope.visualizer.addComponent.eventName = '';
-        $scope.visualizer.addComponent.display = '';
+      if( $scope.viewModel.addComponent.eventType ){
+        $scope.settings.visualizer.components.push({ eventType: $scope.viewModel.addComponent.eventType, eventName: $scope.viewModel.addComponent.eventName, display: $scope.viewModel.addComponent.display });
+        $scope.viewModel.addComponent.eventType = '';
+        $scope.viewModel.addComponent.eventName = '';
+        $scope.viewModel.addComponent.display = '';
       }
     };
 
@@ -136,11 +136,6 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasNoComponents = true;
       }
 
-      if(settings.mediators === undefined || settings.mediators.length === 0){
-        $scope.ngError.hasErrors = true;
-        $scope.ngError.hasNoMediators = true;
-      }
-
       if(settings.channels === undefined || settings.channels.length === 0){
         $scope.ngError.hasErrors = true;
         $scope.ngError.hasNoChannels = true;
@@ -161,7 +156,7 @@ angular.module('openhimConsoleApp')
 
     var notifyUser = function(){
       // reset backing object and refresh users list
-      Notify.notify('channelsChanged');
+      Notify.notify('visualizersChanged');
       $modalInstance.close();
     };
 
@@ -172,19 +167,14 @@ angular.module('openhimConsoleApp')
       notifyUser();
     };
 
-    var error = function (err) {
+    var error = function () {
       // add the success message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data);
-
-      $scope.clearValidation = $timeout(function(){
-        // clear errors after 5 seconds
-        Alerting.AlertReset('hasErrors');
-      }, 10000);
+      Alerting.AlertAddMsg('top', 'danger', 'Failed to save the visualizer details because the visualizer name is not unique. Please try again.');
 
       notifyUser();
     };
 
-    $scope.submitSettingsForm = function(){
+    $scope.saveVisualizer = function(){
       
       // validate form input
       $scope.validateFormSettings($scope.settings.visualizer, function(err){

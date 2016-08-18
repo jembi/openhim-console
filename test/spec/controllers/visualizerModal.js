@@ -15,7 +15,6 @@ describe('Controller: VisualizerModalCtrl', function () {
     });
   });
 
-  // defaultVisualizerSettings  = readJSON('app/config/visualizer.json');
   defaultVisualizerSettings = {'components':[],'channels':[],'mediators':[],'color':{'inactive':'#cccccc','active':'#4cae4c','error':'#d43f3a','text':'#000000'},'size':{'responsive':true,'width':1000,'height':400,'padding':20},'time':{'updatePeriod':200,'minDisplayPeriod':500,'maxSpeed':5,'maxTimeout':5000}};
 
   validSettings = {'components':[{'eventType':'primary','eventName':'echoServer','display':'test2','$$hashKey':'024'}],'channels':[{'eventType':'channel','eventName':'TestHello','display':'TestHello','$$hashKey':'01Q'}],'mediators':[{'mediator':'urn:uuid:a15c3d48-0686-4c9b-b375-f68d2f244a33','name':'file-queue','display':'file-queue','$$hashKey':'01S'}],'color':{'inactive':'#cccccc','active':'#4cae4c','error':'#d43f3a','text':'#000000'},'size':{'responsive':true,'width':1000,'height':400,'padding':20},'time':{'updatePeriod':200,'minDisplayPeriod':500,'maxSpeed':5,'maxTimeout':5000},'name':'test1'};
@@ -134,8 +133,6 @@ describe('Controller: VisualizerModalCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-
-    // $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers);
 
     $httpBackend.when('GET', new RegExp('config/visualizer.json')).respond(defaultVisualizerSettings);
 
@@ -264,7 +261,6 @@ describe('Controller: VisualizerModalCtrl', function () {
       expect(scope.ngError.hasErrors).to.be.false;
       expect(scope.ngError.hasNoName).to.not.exist;
       expect(scope.ngError.hasNoComponents).to.not.exist;
-      expect(scope.ngError.hasNoMediators).to.not.exist;
       expect(scope.ngError.hasNoChannels).to.not.exist;
       expect(scope.ngError.nameNotUnique).to.not.exist;
     });
@@ -280,7 +276,6 @@ describe('Controller: VisualizerModalCtrl', function () {
       expect(scope.ngError.hasErrors).to.be.true;
       expect(scope.ngError.hasNoName).to.be.true;
       expect(scope.ngError.hasNoComponents).to.be.true;
-      expect(scope.ngError.hasNoMediators).to.be.true;
       expect(scope.ngError.hasNoChannels).to.be.true;
       expect(scope.ngError.nameNotUnique).to.not.exist;
     });
@@ -299,7 +294,6 @@ describe('Controller: VisualizerModalCtrl', function () {
 
       expect(scope.ngError.hasNoName).to.not.exist;
       expect(scope.ngError.hasNoComponents).to.not.exist;
-      expect(scope.ngError.hasNoMediators).to.not.exist;
       expect(scope.ngError.hasNoChannels).to.not.exist;
     });
   });

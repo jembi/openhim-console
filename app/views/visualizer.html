@@ -15,7 +15,10 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
         <!-- Top Alerts -->
 
         <div class="panel-body">
