@@ -14,6 +14,13 @@
           </div>
         </div>
 
+        <!-- Top Alerts -->
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
+        <!-- Top Alerts -->
+
         <div class="panel-body">
           <div class="row">
             <div class="col-md-2" role="navigation">
@@ -33,7 +40,7 @@
                   </a>
                 </li>
               </ul>
-              <button class="btn btn-primary lg-skip" ng-click="" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Visualizer</button>
+              <button class="btn btn-primary lg-skip" ng-click="addVisualiser()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Visualizer</button>
             </div>
             <div class="col-md-9">
               <!-- show loading gif when visualizer busy initializing -->
@@ -66,8 +73,8 @@
                     <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
                     <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
                     <button class="btn btn-default" ng-click="goFullScreenViaWatcher()"><i class="glyphicon glyphicon-fullscreen"></i></button>
-                  </div>  
-
+                  </div> 
+                
                   <div class="visualizerSpeed">{{speedText}}</div>
 
                   <div visualizer ng-if="visualizers.length !== 0" fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
