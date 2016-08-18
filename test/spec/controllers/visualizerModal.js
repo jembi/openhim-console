@@ -187,7 +187,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     httpBackend.flush();
     
     selectedChannel.name = 'Test1';
-    scope.visualizer.addSelectChannel = selectedChannel;
+    scope.viewModel.addSelectChannel = selectedChannel;
 
     defaultVisualizerSettings.channels.push({ eventType: 'channel', eventName: selectedChannel.name, display: selectedChannel.name });
 
@@ -201,7 +201,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     httpBackend.flush();
     
     selectedMediator.urn = 'urn:uuid:54chj341-128e-11e6-922a-27f0e4376df8';
-    scope.visualizer.addSelectMediator = selectedMediator;
+    scope.viewModel.addSelectMediator = selectedMediator;
 
     defaultVisualizerSettings.mediators.push({ mediator: selectedMediator.urn, name: selectedMediator.name, display: selectedMediator.name });
 
@@ -213,7 +213,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     createController(null);
     httpBackend.flush();
     
-    scope.visualizer.addComponent = component;
+    scope.viewModel.addComponent = component;
 
     defaultVisualizerSettings.components.push({ eventType: component.eventType, eventName: component.eventName, display: component.display });
 
@@ -245,7 +245,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     createController(null);
     httpBackend.flush();
 
-    scope.visualizer.addComponent = component;
+    scope.viewModel.addComponent = component;
     scope.addComponent();
 
     scope.removeMediator(0);
