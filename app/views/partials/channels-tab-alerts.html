@@ -1,5 +1,5 @@
 <p class="text-muted">
-  Alerts fire when specific conditions are met. These can be used to detect when excessive amounts of transactions are failing.
+  Alerts fire when specific conditions are met. These can be used to detect when excessive amounts of transactions are failing or if failing transactions have been automatically retried for a maximum number of times.
 </p>
 
 <alert ng-show="channel.alerts.length==0" type="warning">There are currently no Alerts added for this Channel</alert>
@@ -9,20 +9,22 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Status</th>
+          <th>Condition</th>
           <th>Users</th>
           <th>Groups</th>
-          <th>Failure Rate (%)</th>
           <th width="70"></th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="alert in channel.alerts">
           <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox"><span>{{ $index +1 }}</span></td>
-          <td data-title="Status"><a href="" ng-click="editAlert($index, alert)">{{ alert.status }}</a></td>
+          <td data-title="Condition">
+            <a href="" ng-if="(!alert.condition || alert.condition === 'status') && !alert.failureRate" ng-click="editAlert($index, alert)">Status {{alert.status}}</a>
+            <a href="" ng-if="(!alert.condition || alert.condition === 'status') && alert.failureRate" ng-click="editAlert($index, alert)">Status {{alert.status}} ({{alert.failureRate}}%)</a>
+            <a href="" ng-if="alert.condition === 'auto-retry-max-attempted'" ng-click="editAlert($index, alert)">Maximum Retries Attempted</a>
+          </td>
           <td data-title="Users">{{ alert.users.length }}</td>
           <td data-title="Groups">{{ alert.groups.length }}</td>
-          <td data-title="Failure Rate (%)">{{ alert.failureRate }}</td>
           <td>
             <button class="btn btn-warning btn-xs" ng-click="editAlert($index, alert)"><i class="glyphicon glyphicon-pencil"></i></button>
             <button class="btn btn-danger btn-xs" ng-click="removeAlert($index)"><i class="glyphicon glyphicon-remove"></i></button>
@@ -36,12 +38,23 @@
 <h4>Add a new alert</h4>
 <div class="form-group-2columns">
   <div class="form-group" style="float: left;">
-    <label><span>*</span> Status</label>
+    <label>Condition</label>
+    <i ng-show="uiSettings.showTooltips" tooltip="The condition for which the alert should trigger" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+    <select class="form-control" ng-model="newAlert.condition">
+      <option value="status">Matching Status Code</option>
+      <option value="auto-retry-max-attempted">Maximum Retries Attempted</option>
+    </select>
+  </div>
+</div>
+<div ng-hide="newAlert.condition !== 'status'" class="form-group-2columns">
+  <div class="form-group" style="float: left;">
+    <label><span>*</span> Status Code</label>
+    <i ng-show="uiSettings.showTooltips" tooltip="Match on particular HTTP status code. A range of status codes can be matched by using the format Yxx, where Y is the range (e.g. 5xx means match any transactions that have a status code in the 500-599 range)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     <input class="form-control" type="text" ng-model="newAlert.status" />
   </div>
   <div class="form-group" style="float: right;">
-    <label>Failure Rate (%)</label>
-    <i ng-show="uiSettings.showTooltips" tooltip="Optional. If the rate of transactions with the supplied status is exceeded within a certain period (the default in 1min) then an alert will fire." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+    <label>Transaction Rate (%)</label>
+    <i ng-show="uiSettings.showTooltips" tooltip="Optional. Specifies a percentage rate for which transactions need to match (within the last hour) in order to trigger an alert. E.g. if 10% is specified, then an alert will only be triggered if 10% or more of the transactions in the last hour have the matching status code." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     <input class="form-control" type="number" min="0" max="100" ng-model="newAlert.failureRate" />
   </div>
 </div>
