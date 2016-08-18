@@ -203,7 +203,6 @@ angular.module('openhimConsoleApp')
         templateUrl: 'views/visualizerModal.html',
         controller: 'VisualizerModalCtrl',
         resolve: {
-          settingsStore: function () { return null; },
           visualizers: function() { return $scope.visualizers; }
         }
       });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, settingsStore, visualizers) {
+  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, visualizers) {
 
 
     /***************************************************/
@@ -12,22 +12,16 @@ angular.module('openhimConsoleApp')
     $scope.validationRequiredMsg = 'This field is required.';
 
     // get/set the users scope whether new or update
-    if (settingsStore) {
-      $scope.update = true;
-      
-      
-    }else{
-      $scope.update = false;
+    $scope.update = false;
 
-      // create visualizer settings properties
-      $scope.settings = {};
-      $scope.settings.visualizer = {};
+    // create visualizer settings properties
+    $scope.settings = {};
+    $scope.settings.visualizer = {};
 
-      // load default visualizer config for new user
-      $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-        angular.extend( $scope.settings.visualizer, angular.copy( visualizerConfig ) );
-      });
-    }
+    // load default visualizer config for new user
+    $http.get('config/visualizer.json').success(function( visualizerConfig ) {
+      angular.extend( $scope.settings.visualizer, angular.copy( visualizerConfig ) );
+    });
 
     $scope.cancel = function () {
       $timeout.cancel( $scope.clearValidationRoute );
