@@ -14,27 +14,24 @@ angular.module('openhimConsoleApp')
     // get/set the users scope whether new or update
     if (visualizer) {
       $scope.update = true;
-      $scope.settings = {};
       // make a copy of the object so that the original doesn't get changed until we save
-      $scope.settings.visualizer = JSON.parse(angular.toJson(visualizer));
+      $scope.visualizer = JSON.parse(angular.toJson(visualizer));
     } else if (duplicate) {
       $scope.update = false;
       // make a copy of the object so that the original doesn't get changed until we save
       duplicate = JSON.parse(angular.toJson(duplicate));
       delete(duplicate._id);
       delete(duplicate.name);
-      $scope.settings = {};
-      $scope.settings.visualizer = duplicate;
+      $scope.visualizer = duplicate;
     } else {
       $scope.update = false;
 
       // create visualizer settings properties
-      $scope.settings = {};
-      $scope.settings.visualizer = {};
+      $scope.visualizer = {};
 
       // load default visualizer config for new user
       $http.get('config/visualizer.json').success(function(visualizerConfig) {
-        angular.extend($scope.settings.visualizer, angular.copy(visualizerConfig));
+        angular.extend($scope.visualizer, angular.copy(visualizerConfig));
       });
     }
 
