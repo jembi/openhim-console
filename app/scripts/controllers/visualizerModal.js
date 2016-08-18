@@ -15,13 +15,15 @@ angular.module('openhimConsoleApp')
     if (visualizer) {
       $scope.update = true;
       $scope.settings = {};
-      // $scope.settings.visualizer = JSON.parse(angular.toJson(visualizer));
-      $scope.settings.visualizer = visualizer;
+      // make a copy of the object so that the original doesn't get changed until we save
+      $scope.settings.visualizer = JSON.parse(angular.toJson(visualizer));
     } else if (duplicate) {
+      $scope.update = false;
+      // make a copy of the object so that the original doesn't get changed until we save
+      duplicate = JSON.parse(angular.toJson(duplicate));
       delete(duplicate._id);
       delete(duplicate.name);
       $scope.settings = {};
-      // $scope.settings.visualizer = JSON.parse(angular.toJson(duplicate));
       $scope.settings.visualizer = duplicate;
     } else {
       $scope.update = false;
@@ -31,8 +33,8 @@ angular.module('openhimConsoleApp')
       $scope.settings.visualizer = {};
 
       // load default visualizer config for new user
-      $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-        angular.extend( $scope.settings.visualizer, angular.copy( visualizerConfig ) );
+      $http.get('config/visualizer.json').success(function(visualizerConfig) {
+        angular.extend($scope.settings.visualizer, angular.copy(visualizerConfig));
       });
     }
 
@@ -200,7 +202,7 @@ angular.module('openhimConsoleApp')
         if(!err){
           // save visualizer settings
           if ($scope.update) {
-            $scope.settings.visualizer.$update();
+            Api.Visualizers.update($scope.settings.visualizer, success, error);
           } else {
             Api.Visualizers.save({ name: '' },$scope.settings.visualizer, success, error);
           }
