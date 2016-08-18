@@ -70,13 +70,12 @@
                     <button class="btn btn-default" ng-click="pause();" ng-show="showPause" title="Pause the Visualizer"><i class="glyphicon glyphicon-pause"></i></button>
                     <button class="btn btn-default" ng-click="speedUp();" title="Animate Faster"><i class="glyphicon glyphicon-forward"></i></button>
                     <button class="btn btn-default" ng-click="goFullScreenViaWatcher()"><i class="glyphicon glyphicon-fullscreen"></i></button>
-                  </div>  
-
-                   <div class="visualizerSpeed">{{speedText}}</div>
+                  </div> 
+                
+                  <div class="visualizerSpeed">{{speedText}}</div>
 
                   <div visualizer ng-if="visualizers.length !== 0" fullscreen="isFullScreen" only-watched-property vis-settings="visualizerSettings" vis-data="visualizerData" vis-speed="visualizerSpeed"></div>
-                </center>
-                
+                </center>                
               </div>
             </div>
           </div>
