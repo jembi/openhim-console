@@ -342,10 +342,14 @@ angular.module('openhimConsoleApp')
           $scope.selectVis($scope.visualizers[0]);
         }
       }
-      vis.$remove();
+      vis.$remove(function () {
+        Alerting.AlertAddMsg('top', 'success', 'The visualizer has been deleted successfully');
+      });
     };
 
     $scope.confirmRemoveVis = function(vis, i){
+      Alerting.AlertReset();
+
       var deleteObject = {
         title: 'Delete Visualizer',
         button: 'Delete',
