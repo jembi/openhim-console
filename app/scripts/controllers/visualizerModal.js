@@ -3,11 +3,6 @@
 angular.module('openhimConsoleApp')
   .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
 
-
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
     $scope.ngError = {};
     $scope.validationRequiredMsg = 'This field is required.';
 
@@ -36,7 +31,7 @@ angular.module('openhimConsoleApp')
     }
 
     $scope.cancel = function () {
-      $timeout.cancel( $scope.clearValidationRoute );
+      $timeout.cancel($scope.clearValidationRoute);
       $modalInstance.dismiss('cancel');
     };
 
@@ -62,20 +57,9 @@ angular.module('openhimConsoleApp')
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
 
-
     Api.Mediators.query(function(mediators){
       $scope.mediators = mediators;
     }, function(){ /* server error - could not connect to API to get mediators */ });
-
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
-
-
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
 
     // setup visualizer object
     $scope.viewModel = {};
@@ -111,12 +95,12 @@ angular.module('openhimConsoleApp')
       $scope.visualizer.mediators.splice(index, 1);
     };
 
-    $scope.validateFormSettings = function(viz, callback){
+    $scope.validateVisualizer = function(viz, callback){
       // reset hasErrors alert object
       Alerting.AlertReset('hasErrors');
 
       // clear timeout if it has been set
-      $timeout.cancel( $scope.clearValidation );
+      $timeout.cancel($scope.clearValidation);
 
       $scope.ngError.hasErrors = false;
 
@@ -185,8 +169,8 @@ angular.module('openhimConsoleApp')
     $scope.saveVisualizer = function(){
 
       // validate form input
-      $scope.validateFormSettings($scope.visualizer, function(err){
-        if(!err){
+      $scope.validateVisualizer($scope.visualizer, function(err){
+        if(!err) {
           // save visualizer settings
           if ($scope.update) {
             Api.Visualizers.update($scope.visualizer, success, error);
@@ -196,9 +180,5 @@ angular.module('openhimConsoleApp')
         }
       });
     };
-
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
 
   });

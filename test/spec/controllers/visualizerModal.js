@@ -1,5 +1,6 @@
 'use strict';
 /* jshint expr: true */
+/* global should */
 
 describe('Controller: VisualizerModalCtrl', function () {
 
@@ -151,12 +152,13 @@ describe('Controller: VisualizerModalCtrl', function () {
       close: function() { return true;}
     };
 
-    createController = function(settingsStore) {
-      return $controller('VisualizerModalCtrl', { 
+    createController = function(vis, dup) {
+      return $controller('VisualizerModalCtrl', {
         $scope: scope,
         $modalInstance: modalInstance,
-        settingsStore: settingsStore,
-        visualizers: visualizers
+        visualizers: visualizers,
+        visualizer: vis,
+        duplicate: dup
       });
     };
 
@@ -174,7 +176,7 @@ describe('Controller: VisualizerModalCtrl', function () {
 
   // Tests go here
   it('should initialize settings for visualizer modal', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
 
     expect(scope.visualizer).to.eql(defaultVisualizerSettings);
@@ -183,9 +185,9 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute addSelectedChannel() and add channel to settings object', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
-    
+
     selectedChannel.name = 'Test1';
     scope.viewModel.addSelectChannel = selectedChannel;
 
@@ -197,9 +199,9 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute addSelectedMediator() and add mediator to settings object', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
-    
+
     selectedMediator.urn = 'urn:uuid:54chj341-128e-11e6-922a-27f0e4376df8';
     scope.viewModel.addSelectMediator = selectedMediator;
 
@@ -210,9 +212,9 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute addComponent() and add component to settings object', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
-    
+
     scope.viewModel.addComponent = component;
 
     defaultVisualizerSettings.components.push({ eventType: component.eventType, eventName: component.eventName, display: component.display });
@@ -222,7 +224,7 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute removeChannel() and remove the first channel', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
 
     defaultVisualizerSettings.channels.splice(0, 1);
@@ -232,7 +234,7 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute removeMediator() and remove the first mediator', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
 
     defaultVisualizerSettings.mediators.splice(0, 1);
@@ -242,7 +244,7 @@ describe('Controller: VisualizerModalCtrl', function () {
   });
 
   it('should execute removeComponents() and remove the first component', function() {
-    createController(null);
+    createController(null, null);
     httpBackend.flush();
 
     scope.viewModel.addComponent = component;
@@ -252,11 +254,11 @@ describe('Controller: VisualizerModalCtrl', function () {
     expect(scope.visualizer).to.eql(defaultVisualizerSettings);
   });
 
-  it('should execute validateFormSettings and return TRUE - valid settings', function() {
-    createController(null);
+  it('should execute validateVisualizer and return TRUE - valid settings', function() {
+    createController(null, null);
     httpBackend.flush();
 
-    scope.validateFormSettings(validSettings, function(err){
+    scope.validateVisualizer(validSettings, function(err){
       expect(err).to.not.exist;
       expect(scope.ngError.hasErrors).to.be.false;
       expect(scope.ngError.hasNoName).to.not.exist;
@@ -266,11 +268,11 @@ describe('Controller: VisualizerModalCtrl', function () {
     });
   });
 
-  it('should execute validateFormSettings and return FALSE - incomplete settings', function() {
-    createController(null);
+  it('should execute validateVisualizer and return FALSE - incomplete settings', function() {
+    createController(null, null);
     httpBackend.flush();
 
-    scope.validateFormSettings(defaultVisualizerSettings, function(err){
+    scope.validateVisualizer(defaultVisualizerSettings, function(err){
       expect(err).to.exist;
 
       expect(scope.ngError.hasErrors).to.be.true;
@@ -281,13 +283,13 @@ describe('Controller: VisualizerModalCtrl', function () {
     });
   });
 
-  it('should execute validateFormSettings and return FALSE - throw name already exists error', function() {
-    createController(null);
+  it('should execute validateVisualizer and return FALSE - throw name already exists error', function() {
+    createController(null, null);
     httpBackend.flush();
 
     validSettings.name = 'Test Visualizer 1';
 
-    scope.validateFormSettings(validSettings, function(err){
+    scope.validateVisualizer(validSettings, function(err){
       expect(err).to.exist;
       expect(scope.ngError.hasErrors).to.be.true;
       expect(scope.ngError.nameNotUnique).to.be.true;
@@ -296,5 +298,67 @@ describe('Controller: VisualizerModalCtrl', function () {
       expect(scope.ngError.hasNoComponents).to.not.exist;
       expect(scope.ngError.hasNoChannels).to.not.exist;
     });
+  });
+
+  it('should set update to true when update visualizer is present', function() {
+    createController({}, null);
+    httpBackend.flush();
+
+    scope.update.should.be.true;
+  });
+
+  it('should set update to false when duplicate visualizer is present', function() {
+    createController(null, { _id: '123', name: 'Test' });
+    httpBackend.flush();
+
+    scope.update.should.be.false;
+  });
+
+  it('should delete name and _id from duplicate visualizer', function() {
+    var dup = { _id: '123', name: 'Test' };
+    createController(null, dup);
+    httpBackend.flush();
+
+    should.not.exist(scope.visualizer.name);
+    should.not.exist(scope.visualizer._id);
+  });
+
+  it('should assign a copy of the visualizer to edit to scope', function() {
+    var vis = { _id: '123', name: 'Test' };
+    createController(vis, null);
+    httpBackend.flush();
+
+    scope.visualizer.should.deep.equal(vis);
+    scope.visualizer.should.not.equal(vis);
+  });
+
+  it('should assign a copy of the visualizer to duplicate to scope', function() {
+    var dup = { test: 'prop' };
+    createController(null, dup);
+    httpBackend.flush();
+
+    scope.visualizer.should.deep.equal(dup);
+    scope.visualizer.should.not.equal(dup);
+  });
+
+  it('should execute a PUT request when a visualizer is being updated', function() {
+    createController(visualizers[0], null);
+    httpBackend.flush();
+    scope.visualizer._id = 123;
+
+    httpBackend.expectPUT(new RegExp('.*/visualizers/123')).respond(200);
+    scope.saveVisualizer();
+    httpBackend.flush();
+  });
+
+  it('should execute a POST request when a visualizer is being saved', function() {
+    createController(null, null);
+    httpBackend.flush();
+    scope.visualizer = JSON.parse(JSON.stringify(visualizers[0])); // poor mans object copy...
+    scope.visualizer.name = 'NewVis';
+
+    httpBackend.expectPOST(new RegExp('.*/visualizers')).respond(201);
+    scope.saveVisualizer();
+    httpBackend.flush();
   });
 });

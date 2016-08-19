@@ -196,7 +196,8 @@ angular.module('openhimConsoleApp')
     };
 
     // function to add new visualizer to list
-    $scope.addVisualiser = function addVisualiser(){
+    $scope.addVisualiser = function addVisualiser() {
+      Alerting.AlertReset();
 
       // open visualizer settings modal
       $modal.open({
@@ -213,6 +214,7 @@ angular.module('openhimConsoleApp')
 
     // function to edit a visualizer
     $scope.editVisualiser = function editVisualiser(vis) {
+      Alerting.AlertReset();
 
       // open visualizer settings modal
       $modal.open({
@@ -229,6 +231,7 @@ angular.module('openhimConsoleApp')
 
     // function to duplicate a visualizer
     $scope.duplicateVisualiser = function duplicateVisualiser(vis) {
+      Alerting.AlertReset();
 
       // open visualizer settings modal
       $modal.open({

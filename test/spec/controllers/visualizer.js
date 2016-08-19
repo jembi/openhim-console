@@ -303,4 +303,28 @@ describe('Controller: VisualizerCtrl', function () {
     modalSpy.should.be.calledOnce;
   });
 
+  it('should open a modal to edit a visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
+    var modalSpy = sinon.stub(modal, 'open');
+
+    createController();
+    httpBackend.flush();
+
+    scope.editVisualiser();
+    modalSpy.should.be.calledOnce;
+  });
+
+  it('should open a modal to duplicate a visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+
+    var modalSpy = sinon.stub(modal, 'open');
+
+    createController();
+    httpBackend.flush();
+
+    scope.duplicateVisualiser();
+    modalSpy.should.be.calledOnce;
+  });
+
 });
