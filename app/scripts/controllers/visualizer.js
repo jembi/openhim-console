@@ -258,7 +258,7 @@ angular.module('openhimConsoleApp')
         // visualizer list controls
         Api.Visualizers.query(function (visualizers) {
           $scope.visualizers = visualizers;
-          if (!$scope.selectedVis && visualizers.length > 0) {
+          if (visualizers.length > 0) {
             $scope.selectedVis = visualizers[0];
             if (user.settings && user.settings.selectedVisualizer) {
               visualizers.forEach(function (vis) {
