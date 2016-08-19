@@ -6,7 +6,7 @@ angular.module('openhimConsoleApp')
 
     // initialize global variables
     var settingsStore = {}; // a place the push current settings when switching to fullscreen
-    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad;
+    var visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad, user, consoleSession;
 
     $scope.loadingVisualizer = false;
     $scope.loadingVisualizerError = false;
@@ -195,6 +195,89 @@ angular.module('openhimConsoleApp')
       }
     };
 
+    // function to add new visualizer to list
+    $scope.addVisualiser = function addVisualiser() {
+      Alerting.AlertReset();
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return null; }
+        }
+      });
+
+    };
+
+    // function to edit a visualizer
+    $scope.editVisualiser = function editVisualiser(vis) {
+      Alerting.AlertReset();
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return vis; }
+        }
+      });
+
+    };
+
+    // function to duplicate a visualizer
+    $scope.duplicateVisualiser = function duplicateVisualiser(vis) {
+      Alerting.AlertReset();
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return vis; },
+          duplicate: function() { return null; }
+        }
+      });
+
+    };
+
+    function fetchSessionAndVisualizers() {
+      // Retrieve the session from storage
+      consoleSession = localStorage.getItem('consoleSession');
+      consoleSession = JSON.parse(consoleSession);
+      user = null;
+
+      Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
+        user = u;
+
+        // visualizer list controls
+        Api.Visualizers.query(function (visualizers) {
+          $scope.visualizers = visualizers;
+          if (visualizers.length > 0) {
+            $scope.selectedVis = visualizers[0];
+            if (user.settings && user.settings.selectedVisualizer) {
+              visualizers.forEach(function (vis) {
+                if (vis.name === user.settings.selectedVisualizer) {
+                  $scope.selectedVis = vis;
+                }
+              });
+            }
+            loadVisualizer($scope.selectedVis);
+          }
+        }, function (err) {
+          Alerting.AlertAddServerMsg(err.status);
+        });
+
+      }, function (err) {
+        Alerting.AlertAddServerMsg(err.status);
+      });
+    }
+
     $scope.isFullScreen = false;
 
     $scope.goFullScreenViaWatcher = function() {
@@ -218,34 +301,11 @@ angular.module('openhimConsoleApp')
       }
     });
 
-    // Retrieve the session from storage
-    var consoleSession = localStorage.getItem('consoleSession');
-    consoleSession = JSON.parse(consoleSession);
-    var user = null;
+    // do the initial request
+    fetchSessionAndVisualizers();
 
-    Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
-      user = u;
-
-      // visualizer list controls
-      Api.Visualizers.query(function (visualizers) {
-        $scope.visualizers = visualizers;
-        if (!$scope.selectedVis && visualizers.length > 0) {
-          $scope.selectedVis = visualizers[0];
-          if (user.settings && user.settings.selectedVisualizer) {
-            visualizers.forEach(function (vis) {
-              if (vis.name === user.settings.selectedVisualizer) {
-                $scope.selectedVis = vis;
-              }
-            });
-          }
-          loadVisualizer($scope.selectedVis);
-        }
-      }, function (err) {
-        Alerting.AlertAddServerMsg(err.status);
-      });
-
-    }, function (err) {
-      Alerting.AlertAddServerMsg(err.status);
+    $scope.$on('visualizersChanged', function () {
+      fetchSessionAndVisualizers();
     });
 
     $scope.selectVis = function (vis, callback) {
@@ -282,10 +342,14 @@ angular.module('openhimConsoleApp')
           $scope.selectVis($scope.visualizers[0]);
         }
       }
-      vis.$remove();
+      vis.$remove(function () {
+        Alerting.AlertAddMsg('top', 'success', 'The visualizer has been deleted successfully');
+      });
     };
 
     $scope.confirmRemoveVis = function(vis, i){
+      Alerting.AlertReset();
+
       var deleteObject = {
         title: 'Delete Visualizer',
         button: 'Delete',

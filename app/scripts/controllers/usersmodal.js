@@ -40,10 +40,6 @@ angular.module('openhimConsoleApp')
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
 
-    Api.Mediators.query(function(mediators){
-      $scope.mediators = mediators;
-    }, function(){ /* server error - could not connect to API to get mediators */ });
-
     // get the users for the taglist roles options
     Api.Users.query(function(users){
       angular.forEach(users, function(user){
@@ -70,49 +66,7 @@ angular.module('openhimConsoleApp')
 
         if ( !$scope.user.settings.filter ){
           $scope.user.settings.filter = {};
-        }
-
-        var isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
-          $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators;
-
-        if ( !$scope.user.settings.visualizer || isUsingOldVisualizerSettings){
-          if (!isUsingOldVisualizerSettings) {
-            $scope.user.settings.visualizer = {};
-
-            // load default visualizer config for user with no visualizer settings
-            $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-              angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
-            });
-          } else {
-            // migrate settings
-            $scope.user.settings.visualizer.channels = [];
-            $scope.user.settings.visualizer.mediators = [];
-            $scope.user.settings.visualizer.time.minDisplayPeriod = 100;
-
-            angular.forEach($scope.user.settings.visualizer.endpoints, function (endpoint) {
-              $scope.user.settings.visualizer.channels.push({
-                eventType: 'channel',
-                eventName: endpoint.event.replace('channel-', ''),
-                display: endpoint.desc
-              });
-            });
-            delete $scope.user.settings.visualizer.endpoints;
-
-            angular.forEach($scope.user.settings.visualizer.components, function (component) {
-              var split = component.event.split('-');
-              if (split.length > 1) {
-                component.eventType = split[0];
-                component.eventName = split[1];
-              } else {
-                component.eventType = 'channel';
-                component.eventName = component.event;
-              }
-              component.display = component.desc;
-              delete component.event;
-              delete component.desc;
-            });
-          }
-        }
+        }            
       });
 
     }else{
@@ -123,12 +77,6 @@ angular.module('openhimConsoleApp')
       $scope.user.settings.list = {};
       $scope.user.settings.filter = {};
       $scope.user.settings.filter.limit = 100;
-      $scope.user.settings.visualizer = {};
-
-      // load default visualizer config for new user
-      $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-        angular.extend( $scope.user.settings.visualizer, angular.copy( visualizerConfig ) );
-      });
     }
 
 
@@ -148,19 +96,20 @@ angular.module('openhimConsoleApp')
       $modalInstance.close();
     };
 
-    var success = function () {
+    var success = function (user, password) {
 
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
 
-      if ( $scope.user.email === consoleSession.sessionUser ){
+      if ( user.email === consoleSession.sessionUser ){
 
         // update consoleSession with new userSettings
-        consoleSession.sessionUserSettings = $scope.user.settings;
+        consoleSession.sessionUserSettings = user.settings;
         localStorage.setItem('consoleSession', JSON.stringify( consoleSession ));
 
-        if ( $scope.password ){
-          login.login($scope.user.email, $scope.password, function (loggedIn) {
+        if ( password ){
+          //re-login with new settings
+          login.login(consoleSession.sessionUser, password, function (loggedIn) {
             if (loggedIn) {
               // add the success message
               Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully and you were logged in with your new credentials');
@@ -190,30 +139,32 @@ angular.module('openhimConsoleApp')
       notifyUser();
     };
 
-    var saveUser = function (user) {
+    var saveUser = function (user, password) {
+      var userObject = angular.copy(user);
       if ($scope.update) {
-        user.$update(success, error);
+        user.$update(function(){
+          success(userObject, password);
+        }, error);
       } else {
         user.$save({ email: '' }, success, error);
       }
     };
 
-    var setHashAndSave = function (user, hash, salt) {
+    var setHashAndSave = function (user, hash, salt, password) {
       if (typeof salt !== 'undefined' && salt !== null) {
         user.passwordSalt = salt;
       }
       user.passwordHash = hash;
-      saveUser(user);
+      saveUser(user, password);
     };
 
     $scope.save = function (user, password) {
       if (password) {
-        $scope.password = password;
         var h = getHashAndSalt(password);
         user.passwordAlgorithm = h.algorithm;
-        setHashAndSave(user, h.hash, h.salt);
+        setHashAndSave(user, h.hash, h.salt, password);
       } else {
-        saveUser(user);
+        saveUser(user, '');
       }
     };
     
@@ -226,53 +177,6 @@ angular.module('openhimConsoleApp')
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
-
-
-
-    
-
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
-
-    // setup visualizer object
-    $scope.visualizer = {};
-
-    $scope.addSelectedChannel = function(){
-      $scope.user.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.visualizer.addSelectChannel.name, display: $scope.visualizer.addSelectChannel.name });
-      $scope.visualizer.addSelectChannel = null;
-    };
-
-    $scope.addSelectedMediator = function(){
-      $scope.user.settings.visualizer.mediators.push({ mediator: $scope.visualizer.addSelectMediator.urn, name: $scope.visualizer.addSelectMediator.name, display: $scope.visualizer.addSelectMediator.name });
-      $scope.visualizer.addSelectMediator = null;
-    };
-
-    $scope.addComponent = function(){
-      if( $scope.visualizer.addComponent.eventType ){
-        $scope.user.settings.visualizer.components.push({ eventType: $scope.visualizer.addComponent.eventType, eventName: $scope.visualizer.addComponent.eventName, display: $scope.visualizer.addComponent.display });
-        $scope.visualizer.addComponent.eventType = '';
-        $scope.visualizer.addComponent.eventName = '';
-        $scope.visualizer.addComponent.display = '';
-      }
-    };
-
-    $scope.removeComponent = function(index){
-      $scope.user.settings.visualizer.components.splice(index, 1);
-    };
-
-    $scope.removeChannel = function(index){
-      $scope.user.settings.visualizer.channels.splice(index, 1);
-    };
-
-    $scope.removeMediator = function(index){
-      $scope.user.settings.visualizer.mediators.splice(index, 1);
-    };
-
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
-
 
 
 
