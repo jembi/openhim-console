@@ -196,14 +196,51 @@ angular.module('openhimConsoleApp')
     };
 
     // function to add new visualizer to list
-    $scope.addVisualiser = function addVisualiser(){
+    $scope.addVisualiser = function addVisualiser() {
+      Alerting.AlertReset();
 
-      // open visualizer settings modal 
+      // open visualizer settings modal
       $modal.open({
         templateUrl: 'views/visualizerModal.html',
         controller: 'VisualizerModalCtrl',
         resolve: {
-          visualizers: function() { return $scope.visualizers; }
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return null; }
+        }
+      });
+
+    };
+
+    // function to edit a visualizer
+    $scope.editVisualiser = function editVisualiser(vis) {
+      Alerting.AlertReset();
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return null; },
+          duplicate: function() { return vis; }
+        }
+      });
+
+    };
+
+    // function to duplicate a visualizer
+    $scope.duplicateVisualiser = function duplicateVisualiser(vis) {
+      Alerting.AlertReset();
+
+      // open visualizer settings modal
+      $modal.open({
+        templateUrl: 'views/visualizerModal.html',
+        controller: 'VisualizerModalCtrl',
+        resolve: {
+          visualizers: function() { return $scope.visualizers; },
+          visualizer: function() { return vis; },
+          duplicate: function() { return null; }
         }
       });
 
@@ -221,7 +258,7 @@ angular.module('openhimConsoleApp')
         // visualizer list controls
         Api.Visualizers.query(function (visualizers) {
           $scope.visualizers = visualizers;
-          if (!$scope.selectedVis && visualizers.length > 0) {
+          if (visualizers.length > 0) {
             $scope.selectedVis = visualizers[0];
             if (user.settings && user.settings.selectedVisualizer) {
               visualizers.forEach(function (vis) {
@@ -305,10 +342,14 @@ angular.module('openhimConsoleApp')
           $scope.selectVis($scope.visualizers[0]);
         }
       }
-      vis.$remove();
+      vis.$remove(function () {
+        Alerting.AlertAddMsg('top', 'success', 'The visualizer has been deleted successfully');
+      });
     };
 
     $scope.confirmRemoveVis = function(vis, i){
+      Alerting.AlertReset();
+
       var deleteObject = {
         title: 'Delete Visualizer',
         button: 'Delete',

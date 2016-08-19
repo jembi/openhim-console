@@ -1,29 +1,37 @@
 'use strict';
 
 angular.module('openhimConsoleApp')
-  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, visualizers) {
-
-
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+  .controller('VisualizerModalCtrl', function ($http, $scope, $modalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
 
     $scope.ngError = {};
     $scope.validationRequiredMsg = 'This field is required.';
 
     // get/set the users scope whether new or update
-    $scope.update = false;
+    if (visualizer) {
+      $scope.update = true;
+      // make a copy of the object so that the original doesn't get changed until we save
+      $scope.visualizer = JSON.parse(angular.toJson(visualizer));
+    } else if (duplicate) {
+      $scope.update = false;
+      // make a copy of the object so that the original doesn't get changed until we save
+      duplicate = JSON.parse(angular.toJson(duplicate));
+      delete(duplicate._id);
+      delete(duplicate.name);
+      $scope.visualizer = duplicate;
+    } else {
+      $scope.update = false;
 
-    // create visualizer settings properties
-    $scope.visualizer = {};
+      // create visualizer settings properties
+      $scope.visualizer = {};
 
-    // load default visualizer config for new user
-    $http.get('config/visualizer.json').success(function( visualizerConfig ) {
-      angular.extend( $scope.visualizer, angular.copy( visualizerConfig ) );
-    });
+      // load default visualizer config for new user
+      $http.get('config/visualizer.json').success(function(visualizerConfig) {
+        angular.extend($scope.visualizer, angular.copy(visualizerConfig));
+      });
+    }
 
     $scope.cancel = function () {
-      $timeout.cancel( $scope.clearValidationRoute );
+      $timeout.cancel($scope.clearValidationRoute);
       $modalInstance.dismiss('cancel');
     };
 
@@ -49,20 +57,9 @@ angular.module('openhimConsoleApp')
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
 
-
     Api.Mediators.query(function(mediators){
       $scope.mediators = mediators;
     }, function(){ /* server error - could not connect to API to get mediators */ });
-
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
-
-
-    
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
 
     // setup visualizer object
     $scope.viewModel = {};
@@ -98,12 +95,12 @@ angular.module('openhimConsoleApp')
       $scope.visualizer.mediators.splice(index, 1);
     };
 
-    $scope.validateFormSettings = function(viz, callback){
+    $scope.validateVisualizer = function(viz, callback){
       // reset hasErrors alert object
       Alerting.AlertReset('hasErrors');
 
       // clear timeout if it has been set
-      $timeout.cancel( $scope.clearValidation );
+      $timeout.cancel($scope.clearValidation);
 
       $scope.ngError.hasErrors = false;
 
@@ -113,16 +110,18 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       } else {
 
-        // the visualizer name must be unique
-        var result = visualizers.filter(function (obj){
-          return obj.name === viz.name;
-        });
+        if (!$scope.update) {
+          // the visualizer name must be unique
+          var result = visualizers.filter(function (obj){
+            return obj.name === viz.name;
+          });
 
-        if(result.length > 0){
-          $scope.ngError.nameNotUnique = true;
-          $scope.ngError.hasErrors = true; 
+          if (result.length > 0) {
+            $scope.ngError.nameNotUnique = true;
+            $scope.ngError.hasErrors = true;
+          }
         }
-      }      
+      }
 
       if(viz.components === undefined || viz.components.length === 0){
         $scope.ngError.hasErrors = true;
@@ -156,7 +155,7 @@ angular.module('openhimConsoleApp')
     var success = function () {
       // add the success message
       Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully');
-      
+
       notifyUser();
     };
 
@@ -168,20 +167,18 @@ angular.module('openhimConsoleApp')
     };
 
     $scope.saveVisualizer = function(){
-      
+
       // validate form input
-      $scope.validateFormSettings($scope.visualizer, function(err){
-        if(!err){
+      $scope.validateVisualizer($scope.visualizer, function(err){
+        if(!err) {
           // save visualizer settings
-          Api.Visualizers.save({ name: '' },$scope.visualizer, success, error);
+          if ($scope.update) {
+            Api.Visualizers.update($scope.visualizer, success, error);
+          } else {
+            Api.Visualizers.save({ name: '' }, $scope.visualizer, success, error);
+          }
         }
       });
     };
 
-    /*******************************************/
-    /**   Settings - Visualizer Functions     **/
-    /*******************************************/
-
   });
-
-
