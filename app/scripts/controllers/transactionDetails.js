@@ -119,7 +119,7 @@ angular.module('openhimConsoleApp')
     };
 
     //get the Data for the supplied ID and store in 'transactionsDetails' object
-    Api.Transactions.get({ transactionId: $routeParams.transactionId }, querySuccess, queryError);
+    Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError);
 
     /***************************************************/
     /**         Initial page load functions           **/
