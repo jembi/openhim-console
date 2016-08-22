@@ -10,6 +10,7 @@
 /* exported beautifyIndent */
 /* exported valueNotEmpty */
 /* exported isCoreVersionCompatible */
+/* exported buildBlob */
 
 
 var valueNotEmpty = function(value){
@@ -120,4 +121,32 @@ function isCoreVersionCompatible(minVersion, actualVersion) {
     }
   }
   return false;
+}
+
+function buildBlob(data, datatype) {
+  var out;
+  try {
+    out = new Blob([data], {type: datatype});
+  }
+  catch (e) {
+
+    var BlobBuilder = function(){
+      window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
+    };
+    
+    if (e.name === 'TypeError' && window.BlobBuilder) {
+      var bb = new BlobBuilder();
+      bb.append(data);
+      out = bb.getBlob(datatype);
+    }
+    else if (e.name === 'InvalidStateError') {
+      // InvalidStateError (tested on FF13 WinXP)
+      out = new Blob([data], {type: datatype});
+    }
+    else {
+      out = { error: 'Browser not supported for Blob creation' };
+      // We're screwed, blob constructor unsupported entirely
+    }
+  }
+  return out;
 }
