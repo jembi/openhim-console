@@ -3,14 +3,16 @@
 /* global returnContentType:false */
 
 angular.module('openhimConsoleApp')
-  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record, channel) {
-
+  .controller('TransactionsAddReqResModalCtrl', function ($scope, $modal, $modalInstance, record, channel, transactionId, recordType, index) {
     $scope.record = record;
     $scope.channel = channel; // optional
     $scope.viewFullBody = false;
     $scope.viewFullBodyType = null;
     $scope.viewFullBodyContent = null;
     $scope.fullBodyTransformLang = null;
+    $scope.transactionId = transactionId;
+    $scope.recordPathRequest = recordType + '[' + index + '].request';
+    $scope.recordPathResponse = recordType + '[' + index + '].response';
 
     // transform request body with indentation/formatting
     if( record.request && record.request.body ){
