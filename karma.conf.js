@@ -35,7 +35,9 @@ module.exports = function(config) {
       'app/bower_components/morris.js/morris.js',
       'app/bower_components/angular-bootstrap-datetimepicker-directive/angular-bootstrap-datetimepicker-directive.js',
       'app/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
-      'app/bower_components/angular-fullscreen/src/angular-fullscreen.js'
+      'app/bower_components/angular-fullscreen/src/angular-fullscreen.js',
+      'app/bower_components/lodash/lodash.js',
+      'app/bower_components/file-saver/FileSaver.js'
     ],
 
     // list of files / patterns to exclude

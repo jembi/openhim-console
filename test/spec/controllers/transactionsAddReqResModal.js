@@ -41,7 +41,15 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
 
       scope = $rootScope.$new();
       modalInstance = sinon.spy();
-      return $controller('TransactionsAddReqResModalCtrl', { $scope: scope, $modalInstance: modalInstance, record: record, channel: channel } );
+      return $controller('TransactionsAddReqResModalCtrl', {
+        $scope: scope,
+        $modalInstance: modalInstance,
+        record: record,
+        channel: channel,
+        transactionId: record._id,
+        recordType: 'routes',
+        index: 0
+      });
     };
 
   }));

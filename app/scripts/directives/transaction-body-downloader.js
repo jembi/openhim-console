@@ -13,6 +13,8 @@ angular.module('openhimConsoleApp')
         path: '='
       },
       link: function(scope) {
+        scope.downloadHandler = saveAs;
+
         scope.download = function () {
           var onSuccess = function (trx) {
             var subTrx = _.get(trx, scope.path);
@@ -33,7 +35,7 @@ angular.module('openhimConsoleApp')
 
             var bodyBlob = buildBlob(subTrx.body, contentType);
             var filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension;
-            saveAs(bodyBlob, filename);
+            scope.downloadHandler(bodyBlob, filename);
           };
 
           var onError = function (err) {
