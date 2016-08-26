@@ -1,4 +1,5 @@
 'use strict';
+/* global buildBlob:false */
 
 angular.module('openhimConsoleApp')
   .controller('ExportImportCtrl', function ($upload, $scope, $modal, Api, Alerting) {
@@ -118,35 +119,6 @@ angular.module('openhimConsoleApp')
     };
 
 
-    var NewBlob = function(data, datatype) {
-      var out;
-      try {
-        out = new Blob([data], {type: datatype});
-      }
-      catch (e) {
-
-        var BlobBuilder = function(){
-          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-        };
-        
-        if (e.name === 'TypeError' && window.BlobBuilder) {
-          var bb = new BlobBuilder();
-          bb.append(data);
-          out = bb.getBlob(datatype);
-        }
-        else if (e.name === 'InvalidStateError') {
-          // InvalidStateError (tested on FF13 WinXP)
-          out = new Blob([data], {type: datatype});
-        }
-        else {
-          out = { error: 'Browser not supported for Blob creation' };
-          // We're screwed, blob constructor unsupported entirely
-        }
-      }
-      return out;
-    };
-
-
     // function to create the export file object
     $scope.createExportFile = function() {
       var exportData = angular.copy( $scope.selectedExports );
@@ -155,7 +127,7 @@ angular.module('openhimConsoleApp')
       // create the export script as a blob file
       var makeTextFile = function (text) {
         //var data = new Blob([text], {type: 'application/json'});
-        var data = new NewBlob(text, 'application/json');
+        var data = buildBlob(text, 'application/json');
 
         // if blob error exist
         if ( data.error ) {
