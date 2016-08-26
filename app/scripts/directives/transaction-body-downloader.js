@@ -7,7 +7,7 @@ angular.module('openhimConsoleApp')
   .directive('transactionBodyDownloader', function (Api) {
     return {
       restrict: 'EA',
-      template: '<div class="btn btn-primary" ng-click="download()"><i class="glyphicon glyphicon-download-alt"></i></div>',
+      template: '<div class="btn btn-primary" ng-click="download()" tooltip="Download body"><i class="glyphicon glyphicon-download-alt"></i></div>',
       scope: {
         transactionId: '=',
         path: '='
