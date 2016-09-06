@@ -19,8 +19,8 @@
             </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.transaction.statusCode"
-              ng-class="{formControlNotEmpty: filters.transaction.statusCode}">
+              ng-model="settings.filter.transaction.statusCode"
+              ng-class="{formControlNotEmpty: settings.filter.transaction.statusCode}">
               <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
           </div>
           <div class="settings_div">
@@ -28,39 +28,39 @@
               <label>Host: </label>
               <input type="text"
                 class="form-control"
-                ng-model="filters.transaction.host"
-                ng-class="{formControlNotEmpty: filters.transaction.host}">
+                ng-model="settings.filter.transaction.host"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.host}">
             </div>
             <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
               <label>Port: </label>
               <input type="text"
                 class="form-control"
-                ng-model="filters.transaction.port"
-                ng-class="{formControlNotEmpty: filters.transaction.port}">
+                ng-model="settings.filter.transaction.port"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.port}">
             </div>
           </div>
           <div class="settings_div">
             <label>Path: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.transaction.path"
-              ng-class="{formControlNotEmpty: filters.transaction.path}">
+              ng-model="settings.filter.transaction.path"
+              ng-class="{formControlNotEmpty: settings.filter.transaction.path}">
           </div>
           <div class="settings_div">
             <div class="settings_div" style="width: 48%; float: left;">
               <label>Request Param Key: </label>
               <input type="text"
                 class="form-control"
-                ng-model="filters.transaction.requestParamKey"
-                ng-class="{formControlNotEmpty: filters.transaction.requestParamKey}">
+                ng-model="settings.filter.transaction.requestParamKey"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.requestParamKey}">
             </div>
             <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
               <label>Request Param Value: </label>
               <input type="text"
                 class="form-control"
-                ng-disabled="!filters.transaction.requestParamKey"
-                ng-model="filters.transaction.requestParamValue"
-                ng-class="{formControlNotEmpty: filters.transaction.requestParamValue}">
+                ng-disabled="!settings.filter.transaction.requestParamKey"
+                ng-model="settings.filter.transaction.requestParamValue"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.requestParamValue}">
             </div>
           </div>
         </div>
@@ -70,17 +70,17 @@
             <div class="settings_div" style="width: 48%; float: left;">
               <label>Client: </label>
               <select class="form-control"
-                ng-model="filters.transaction.client"
+                ng-model="settings.filter.transaction.client"
                 ng-options="client._id as client.name for client in clients"
-                ng-class="{formControlNotEmpty: filters.transaction.client}">
+                ng-class="{formControlNotEmpty: settings.filter.transaction.client}">
                 <option value="">Don't filter</option>
               </select>
             </div>
             <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
               <label>Method: </label>
               <select class="form-control"
-                  ng-model="filters.transaction.method"
-                  ng-class="{formControlNotEmpty: filters.transaction.method}">
+                  ng-model="settings.filter.transaction.method"
+                  ng-class="{formControlNotEmpty: settings.filter.transaction.method}">
                   <option value="">Don't filter</option>
                   <option value="GET">GET</option>
                   <option value="POST">POST</option>
@@ -93,16 +93,16 @@
               <label>Property Key: </label>
               <input type="text"
                 class="form-control"
-                ng-model="filters.transaction.propertyKey"
-                ng-class="{formControlNotEmpty: filters.transaction.propertyKey}">
+                ng-model="settings.filter.transaction.propertyKey"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.propertyKey}">
             </div>
             <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
               <label>Property Value: </label>
               <input type="text"
                 class="form-control"
-                ng-disabled="!filters.transaction.propertyKey"
-                ng-model="filters.transaction.propertyValue"
-                ng-class="{formControlNotEmpty: filters.transaction.propertyValue}">
+                ng-disabled="!settings.filter.transaction.propertyKey"
+                ng-model="settings.filter.transaction.propertyValue"
+                ng-class="{formControlNotEmpty: settings.filter.transaction.propertyValue}">
             </div>
           </div>
         </div>
@@ -117,8 +117,8 @@
           </label>
           <input type="text"
             class="form-control"
-            ng-model="filters.route.statusCode"
-            ng-class="{formControlNotEmpty: filters.route.statusCode}">
+            ng-model="settings.filter.route.statusCode"
+            ng-class="{formControlNotEmpty: settings.filter.route.statusCode}">
             <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
         </div>
         <div class="settings_div">
@@ -126,39 +126,39 @@
             <label>Host: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.route.host"
-              ng-class="{formControlNotEmpty: filters.route.host}">
+              ng-model="settings.filter.route.host"
+              ng-class="{formControlNotEmpty: settings.filter.route.host}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
             <label>Port: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.route.port"
-              ng-class="{formControlNotEmpty: filters.route.port}">
+              ng-model="settings.filter.route.port"
+              ng-class="{formControlNotEmpty: settings.filter.route.port}">
           </div>
         </div>
         <div class="settings_div">
           <label>Path: </label>
           <input type="text"
             class="form-control"
-            ng-model="filters.route.path"
-            ng-class="{formControlNotEmpty: filters.route.path}">
+            ng-model="settings.filter.route.path"
+            ng-class="{formControlNotEmpty: settings.filter.route.path}">
         </div>
         <div class="settings_div">
           <div class="settings_div" style="width: 48%; float: left;">
             <label>Request Param Key: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.route.requestParamKey"
-              ng-class="{formControlNotEmpty: filters.route.requestParamKey}">
+              ng-model="settings.filter.route.requestParamKey"
+              ng-class="{formControlNotEmpty: settings.filter.route.requestParamKey}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
             <label>Request Param Value: </label>
             <input type="text"
               class="form-control"
-              ng-disabled="!filters.route.requestParamKey"
-              ng-model="filters.route.requestParamValue"
-              ng-class="{formControlNotEmpty: filters.route.requestParamValue}">
+              ng-disabled="!settings.filter.route.requestParamKey"
+              ng-model="settings.filter.route.requestParamValue"
+              ng-class="{formControlNotEmpty: settings.filter.route.requestParamValue}">
           </div>
         </div>
       </div>
@@ -172,8 +172,8 @@
           </label>
           <input type="text"
             class="form-control"
-            ng-model="filters.orchestration.statusCode"
-            ng-class="{formControlNotEmpty: filters.orchestration.statusCode}">
+            ng-model="settings.filter.orchestration.statusCode"
+            ng-class="{formControlNotEmpty: settings.filter.orchestration.statusCode}">
             <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Incorrect Status Code</div>
         </div>
         <div class="settings_div">
@@ -181,39 +181,39 @@
             <label>Host: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.orchestration.host"
-              ng-class="{formControlNotEmpty: filters.orchestration.host}">
+              ng-model="settings.filter.orchestration.host"
+              ng-class="{formControlNotEmpty: settings.filter.orchestration.host}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
             <label>Port: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.orchestration.port"
-              ng-class="{formControlNotEmpty: filters.orchestration.port}">
+              ng-model="settings.filter.orchestration.port"
+              ng-class="{formControlNotEmpty: settings.filter.orchestration.port}">
           </div>
         </div>
         <div class="settings_div">
           <label>Path: </label>
           <input type="text"
             class="form-control"
-            ng-model="filters.orchestration.path"
-            ng-class="{formControlNotEmpty: filters.orchestration.path}">
+            ng-model="settings.filter.orchestration.path"
+            ng-class="{formControlNotEmpty: settings.filter.orchestration.path}">
         </div>
         <div class="settings_div">
           <div class="settings_div" style="width: 48%; float: left;">
             <label>Request Param Key: </label>
             <input type="text"
               class="form-control"
-              ng-model="filters.orchestration.requestParamKey"
-              ng-class="{formControlNotEmpty: filters.orchestration.requestParamKey}">
+              ng-model="settings.filter.orchestration.requestParamKey"
+              ng-class="{formControlNotEmpty: settings.filter.orchestration.requestParamKey}">
           </div>
           <div class="settings_div" style="width: 48%; float: right; margin-right: 0px;">
             <label>Request Param Value: </label>
             <input type="text"
               class="form-control"
-              ng-disabled="!filters.orchestration.requestParamKey"
-              ng-model="filters.orchestration.requestParamValue"
-              ng-class="{formControlNotEmpty: filters.orchestration.requestParamValue}">
+              ng-disabled="!settings.filter.orchestration.requestParamKey"
+              ng-model="settings.filter.orchestration.requestParamValue"
+              ng-class="{formControlNotEmpty: settings.filter.orchestration.requestParamValue}">
           </div>
         </div>
       </div>
@@ -230,8 +230,8 @@
       </label>
       <!--<select class="form-control" ng-model="filterStatus">-->
       <select class="form-control"
-        ng-model="filters.transaction.status"
-        ng-class="{formControlNotEmpty: filters.transaction.status}"
+        ng-model="settings.filter.transaction.status"
+        ng-class="{formControlNotEmpty: settings.filter.transaction.status}"
         ng-change="applyFiltersToUrl()">
         <option value="">Don't filter</option>
         <option value="Failed">Show Failed</option>
@@ -247,9 +247,9 @@
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by Channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <select class="form-control"
-        ng-model="filters.transaction.channel"
+        ng-model="settings.filter.transaction.channel"
         ng-options="channel._id as channel.name for channel in channels | orderBy:['name']"
-        ng-class="{formControlNotEmpty: filters.transaction.channel}"
+        ng-class="{formControlNotEmpty: settings.filter.transaction.channel}"
         ng-change="applyFiltersToUrl()">
         <option value="">Don't filter</option>
       </select>
@@ -286,7 +286,7 @@
       </label>
       <select class="form-control"
         ng-change="applyFiltersToUrl()"
-        ng-model="filters.transaction.wasRerun">
+        ng-model="settings.filter.transaction.wasRerun">
         <option value="dont-filter">Don't filter</option>
         <option value="yes">Yes</option>
         <option value="no">No</option>
@@ -298,5 +298,17 @@
   <div class="transactionsFilterRefreshDiv">
     <button class="btn btn-warning" ng-click="clearFilters();">
       <i class="glyphicon glyphicon-remove"></i> Clear Filters
+    </button>
+  </div>
+  
+  <div class="transactionsFilterPersistToDbDiv">
+    <button class="btn btn-info" ng-click="persistUserFiltersToDatabase();">
+      <i class="glyphicon glyphicon-floppy-disk"></i> Set As Default
+    </button>
+  </div>
+  
+  <div class="transactionsFilterApplyDefaultDiv">
+    <button class="btn btn-primary" ng-click="applyDefaultFilters();">
+      <i class="glyphicon glyphicon-refresh"></i> Apply Defaults
     </button>
   </div>

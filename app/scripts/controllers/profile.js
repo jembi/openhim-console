@@ -68,10 +68,6 @@ angular.module('openhimConsoleApp')
         $scope.user.settings.list = {};
       }
 
-      if ( !$scope.user.settings.filter ){
-        $scope.user.settings.filter = {};
-      }
-
       var isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
         $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators;
 

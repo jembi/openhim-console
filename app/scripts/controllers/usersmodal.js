@@ -62,11 +62,7 @@ angular.module('openhimConsoleApp')
 
         if ( !$scope.user.settings.list ){
           $scope.user.settings.list = {};
-        }
-
-        if ( !$scope.user.settings.filter ){
-          $scope.user.settings.filter = {};
-        }            
+        }          
       });
 
     }else{

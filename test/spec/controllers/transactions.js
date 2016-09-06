@@ -3,14 +3,14 @@
 /* global sinon: false */
 /* global moment:false */
 
-describe('Controller: TransactionsCtrl', function () {
+describe('Controller: TransactionsCtrl', function() {
 
   // load the controller's module
   beforeEach(module('openhimConsoleApp'));
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
+  beforeEach(function() {
+    module('openhimConsoleApp', function($provide) {
       $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
     });
   });
@@ -18,7 +18,7 @@ describe('Controller: TransactionsCtrl', function () {
   var scope, createController, httpBackend, modalSpy;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function($controller, $rootScope, $httpBackend, $modal) {
 
     httpBackend = $httpBackend;
 
@@ -32,9 +32,33 @@ describe('Controller: TransactionsCtrl', function () {
       {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ]);
-
-
     
+    $httpBackend.when('GET', new RegExp('.*/users/*')).respond({
+      '_id': '349274c136f2eb682aodye4c',
+      'email': 'root@openhim.org',
+      'firstname': 'Super',
+      'surname': 'User',
+      'passwordAlgorithm': 'sha512',
+      'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
+      'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
+      'groups': [ 'admin' ],
+      'settings': {
+        'filter': {
+          'endDate' : '2016-08-17',
+    			'startDate' : '2016-08-16',
+    			'orchestration' : {},
+    			'route' : {},
+    			'transaction' : {
+    				'status' : 'Failed',
+    				'wasRerun' : 'yes'
+    			},
+    			'limit' : 70
+        },
+        'list': { 'tabview': 'new'}
+      }
+    });
+    
+    $httpBackend.when('PUT', new RegExp('.*/users/*')).respond();
 
     $httpBackend.when('GET', new RegExp('.*/transactions\\?(filterLimit|filterPage)')).respond([
       {
@@ -84,13 +108,13 @@ describe('Controller: TransactionsCtrl', function () {
     httpBackend.verifyNoOutstandingRequest();
   });
 
-  it('should attach a list of transactions to the scope', function () {
+  it('should attach a list of transactions to the scope', function() {
     createController();
     httpBackend.flush();
     scope.transactions.length.should.equal(4);
   });
 
-  it('should check rerun permissions for admin user', function () {
+  it('should check rerun permissions for admin user', function() {
     createController();
     httpBackend.flush();
 
@@ -106,18 +130,83 @@ describe('Controller: TransactionsCtrl', function () {
     scope.should.have.property('rerunAllowedAdmin', true);
   });
 
-  it('should check that the user prefered filters are set', function () {
+  it('should check that the user persisted filters are set', function() {
     createController();
     httpBackend.flush();
 
     // the consoleSession object is setup with user profile in 'login.js'
     scope.settings.filter.limit.should.equal('200');
-    scope.filters.transaction.status.should.equal('Successful');
-    scope.filters.transaction.channel.should.equal('5322fe9d8b6add4b2b059dd8');
     scope.settings.list.tabview.should.equal('new');
   });
+  
+  
+  it('should clear filters and apply to the session', function() {
+    createController();
+    
+    scope.clearFilters();
+    httpBackend.flush();
+    
+    scope.bulkRerunActive.should.equal(false);
+    scope.bulkRerun.should.equal(false);
+    scope.settings.filter.limit.should.equal(20);
+    scope.settings.filter.startDate.should.equal('');
+    scope.settings.filter.endDate.should.equal('');
+    scope.settings.filter.orchestration.should.be.empty;
+    scope.settings.filter.route.should.be.empty;
+    scope.settings.filter.transaction.wasRerun.should.equal('dont-filter');
+    scope.settings.list.tabview.should.equal('same');
+    scope.settings.list.autoupdate.should.equal(true);
+    scope.advancedFilters.isCollapsed.should.equal(true);
+    
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+    consoleSession.sessionUserSettings.filter.limit.should.equal(20);
+    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal('dont-filter');
+  });
+  
+  it('should apply user\'s default settings to the session', function() {
+    createController();
+    
+    scope.applyDefaultFilters();
+    httpBackend.flush();
+    
+    scope.settings.filter.limit.should.equal(70);
+    scope.settings.filter.startDate.should.equal('2016-08-16');
+    scope.settings.filter.endDate.should.equal('2016-08-17');
+    scope.settings.filter.orchestration.should.be.empty;
+    scope.settings.filter.route.should.be.empty;
+    scope.settings.filter.transaction.wasRerun.should.equal('yes');
+    scope.settings.filter.transaction.status.should.equal('Failed');
+    
+    var consoleSession = localStorage.getItem('consoleSession');
+    consoleSession = JSON.parse(consoleSession);
+    consoleSession.sessionUserSettings.filter.limit.should.equal(70);
+    consoleSession.sessionUserSettings.filter.startDate.should.equal('2016-08-16');
+    consoleSession.sessionUserSettings.filter.endDate.should.equal('2016-08-17');
+    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal('yes');
+    consoleSession.sessionUserSettings.filter.transaction.status.should.equal('Failed');
+    
+    // clear dates for polling tests
+    scope.clearFilters();
+    httpBackend.flush();
+  });
+  
+  it('should save user default filters to the API', function() {
+    createController();
+    httpBackend.flush();
+    
+    scope.settings.filter.limit = 293;
+    
+    scope.persistUserFiltersToDatabase();
+    
+    httpBackend.expectPUT(new RegExp('.*/users/root@openhim.org'));
+    httpBackend.flush();
+    
+    scope.settings.filter.limit.should.equal(293);
+  });
+  
 
-  it('should check filters are sent to the API', function () {
+  it('should check filters are sent to the API', function() {
     createController();
     httpBackend.flush();
 
@@ -128,13 +217,13 @@ describe('Controller: TransactionsCtrl', function () {
     scope.settings.filter.endDate = moment(endDate).format();
 
     // search for transaction filters
-    scope.filters.transaction.status = 'Successful';
-    scope.filters.transaction.channel = '5322fe9d8b6add4b2b059dd8';
-    scope.filters.transaction.statusCode = '2xx';
-    scope.filters.transaction.path = '/path';
-    scope.filters.transaction.wasRerun = 'yes';
-    scope.filters.route.statusCode = '2xx';
-    scope.filters.orchestration.statusCode = '2xx';
+    scope.settings.filter.transaction.status = 'Successful';
+    scope.settings.filter.transaction.channel = '5322fe9d8b6add4b2b059dd8';
+    scope.settings.filter.transaction.statusCode = '2xx';
+    scope.settings.filter.transaction.path = '/path';
+    scope.settings.filter.transaction.wasRerun = 'yes';
+    scope.settings.filter.route.statusCode = '2xx';
+    scope.settings.filter.orchestration.statusCode = '2xx';
 
     var filters = scope.returnFilters();
 
@@ -150,7 +239,7 @@ describe('Controller: TransactionsCtrl', function () {
 
   });
 
-  it('should prepend new transactions to the scope', function () {
+  it('should prepend new transactions to the scope', function() {
     createController();
     httpBackend.flush();
 
@@ -174,7 +263,7 @@ describe('Controller: TransactionsCtrl', function () {
     scope.transactions[0]._id.should.equal('550936d307756ef72b525555');
   });
 
-  it('should update "Processing" transactions', function () {
+  it('should update "Processing" transactions', function() {
     createController();
     httpBackend.flush();
 

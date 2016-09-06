@@ -1,49 +1,4 @@
 <tabset class="transaction_settings_tabset" justified="false" style="margin-bottom: 0px;">
-  <!-- FILTER SETTINGS -->
-  <tab>
-    <tab-heading>Filter Settings</tab-heading>
-    <div class="settings_div">
-      <label>
-        Status: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by their status" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-      </label>
-      <!--<select class="form-control" ng-model="filterStatus">-->
-      <select class="form-control" ng-model="user.settings.filter.status">
-        <option value="">Don't filter</option>
-        <option value="Failed">Show Failed</option>
-        <option value="Processing">Show Processing</option>
-        <option value="Completed">Show Completed</option>
-        <option value="Completed with error(s)">Show Completed with error(s)</option>
-        <option value="Successful">Show Successful</option>
-      </select>
-    </div>
-    <div class="settings_div">
-      <label>
-        Channel: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter transactions by Channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-      </label>
-      <select class="form-control" ng-model="user.settings.filter.channel" ng-options="channel._id as channel.name for channel in channels">
-        <option value="">Don't filter</option>
-      </select>
-    </div>
-    <div class="settings_div">
-      <label>
-        Limit: 
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-      </label>
-      <select class="form-control" ng-model="user.settings.filter.limit">
-        <option value="">Default</option>
-        <option value="10">10</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-        <option value="500">500</option>
-      </select>
-    </div>
-  </tab>
-
-
-
   <!-- LIST SETTINGS -->
   <tab>
     <tab-heading>List Settings</tab-heading>
