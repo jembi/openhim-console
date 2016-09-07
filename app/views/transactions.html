@@ -10,6 +10,14 @@
             <h2><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;Transactions Log</h2>
           </div>
         </div>
+        
+        <!-- Top Alerts -->
+        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{alert.msg}}
+        </div>
+        <!-- Top Alerts -->
+        
         <div class="panel-body">
 
           <!-- Filter options -->
@@ -64,11 +72,11 @@
             </div>
             <div ng-if="transactionsSelected.length > 0">
               <button class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
-              <button class="btn btn-danger btn-lg" ng-click="clearFilters()" style="margin: 0px 5px;">Cancel</button>
+              <button class="btn btn-danger btn-lg" ng-click="bulkRerunCancel()" style="margin: 0px 5px;">Cancel</button>
             </div>
           </alert>
 
-          <!-- down show tables if bulkRerunActive -->
+          <!-- don't show tables if bulkRerunActive -->
           <div id="no-more-tables" ng-if="!bulkRerunActive">
 
             <div  ng-show="transactions.length > 0" style="display: inline-block; width: 100%; margin-bottom: 10px;">
@@ -76,7 +84,7 @@
                 <i class="glyphicon glyphicon-repeat"></i> Re-run Selected Transactions
               </button>
 
-              <button class="btn btn-primary" ng-click="applyFiltersToUrl('bulkrerun');" style="float: left; margin-left: 15px;">
+              <button class="btn btn-primary" ng-click="bulkRerunInitiate();" style="float: left; margin-left: 15px;">
                 <i class="glyphicon glyphicon-repeat"></i> Re-run all transaction that match current filters
               </button>
             </div>

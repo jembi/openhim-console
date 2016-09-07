@@ -690,6 +690,10 @@ body {
 .loadMoreBtn { float: right; }
 .transactionsFilterRefreshDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
 .transactionsFilterRefreshDiv button i{ font-size: 30px; display: block; width: 100% !important; }
+.transactionsFilterPersistToDbDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
+.transactionsFilterPersistToDbDiv button i{ font-size: 30px; display: block; width: 100% !important; }
+.transactionsFilterApplyDefaultDiv{ float: right; padding-top: 22px; margin-bottom: 10px; }
+.transactionsFilterApplyDefaultDiv button i{ font-size: 30px; display: block; width: 100% !important; }
 .rerunTransactionsDiv{float: left; margin-bottom: 10px; }
 .form-group-2columns { clear: both; display: inline-block; width: 100%; }
 .form-group-2columns .form-group { width: 47%; }
