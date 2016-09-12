@@ -682,6 +682,17 @@ angular.module('openhimConsoleApp')
         }
       }
     };
+    
+    $scope.filtersApplied = function() {
+      if($scope.settings.filter.limit !== defaultLimit) { return true; }
+      if($scope.settings.filter.startDate !== '') { return true; }
+      if($scope.settings.filter.endDate !== '') { return true; }
+      if($scope.settings.filter.transaction.wasRerun !== 'dont-filter') { return true; }
+      if(Object.keys($scope.settings.filter.transaction).length > 1) { return true; }
+      if(!isEmpty($scope.settings.filter.orchestration)) { return true; }
+      if(!isEmpty($scope.settings.filter.route)) { return true; }
+      return false;
+    };
 
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function() {

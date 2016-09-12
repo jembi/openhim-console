@@ -1430,3 +1430,4 @@ label { position: relative; }
 }
 
 .readable-text { font-size: 16px; }
+.notify-filters-applied { color: orange; }
