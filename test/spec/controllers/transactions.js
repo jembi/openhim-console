@@ -228,7 +228,7 @@ describe('Controller: TransactionsCtrl', function() {
     var filters = scope.returnFilters();
 
     // filter object that gets sent through the API for query filtering
-    filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).endOf('day').format()+'"}');
+    filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).format()+'"}');
     filters.filters.status.should.equal('Successful');
     filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8');
     filters.filters['response.status'].should.equal('2xx');

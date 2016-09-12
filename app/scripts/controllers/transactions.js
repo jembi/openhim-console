@@ -254,12 +254,12 @@ angular.module('openhimConsoleApp')
   
       if(filterDateStart || filterDateEnd) {
         var buildDateFilterObject = function(object, comparator, date) {
-          object[comparator] = moment(date).format();
+          object[comparator] = moment(new Date(date)).format();
         };
         var dateFilterObject = {};
         
         if(filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart); }
-        if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', moment(filterDateEnd).endOf('day')); }
+        if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd); }
         
         filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
       }
@@ -492,7 +492,7 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
-      if ( $scope.ngError.hasErrors ){
+      if($scope.ngError.hasErrors) {
         $scope.clearValidation = $timeout(function() {
           // clear errors after 5 seconds
           $scope.ngError = {};
@@ -502,8 +502,17 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.applyFilterIfValidDate = function(date) {
-      if (moment(date, 'YYYY-MM-DD', true).isValid()) {
+    $scope.applyStartDate = function(date) {
+      if (moment(date, 'YYYY-MM-DD HH:mm', true).isValid()) {
+        $scope.applyFiltersToUrl();
+      }
+    };
+    
+    $scope.applyEndDate = function(date) {
+      if(moment(date, 'YYYY-MM-DD HH:mm', true).isValid()) {
+        if(moment(date).hour() === 0 && moment(date).minute() === 0) {
+          $scope.settings.filter.endDate = moment(new Date(date)).endOf('day');
+        }
         $scope.applyFiltersToUrl();
       }
     };

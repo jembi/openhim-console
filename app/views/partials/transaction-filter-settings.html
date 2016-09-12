@@ -259,10 +259,10 @@
         Date Range:
         <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Select a start and end date to filter transactions by date.<br />(both dates are required)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
-      <div class="input-daterange input-group" id="datepicker" style="width: 300px" >
-        <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="start date" ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-change="applyFilterIfValidDate(settings.filter.startDate)" />
+      <div class="input-daterange input-group" id="datepicker" style="width: 320px" >
+        <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: false }" placeholder="start date" ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-change="applyStartDate(settings.filter.startDate)" />
         <span class="input-group-addon">to</span>
-        <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="end date" ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-change="applyFilterIfValidDate(settings.filter.endDate)" />
+        <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm', useCurrent: false }" placeholder="end date" ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-change="applyEndDate(settings.filter.endDate)" />
       </div>
     </div>
     <div class="settings_div" style="float: left; margin-right: 15px;">
