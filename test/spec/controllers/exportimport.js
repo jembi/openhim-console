@@ -48,12 +48,12 @@ describe('Controller: ExportImportCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
 
     httpBackend = $httpBackend;
-    
+
     $httpBackend.when('GET', new RegExp('.*/metadata')).respond(expectedExportData);
     $httpBackend.when('GET', 'views/exportImportModal.html').respond({
       close: function() {}
     });
-    
+
     httpBackend.when('POST', new RegExp('.*/metadata/validate')).respond([
       {'model': 'Clients','record': {_id:'5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},'status': 'Updated','message': 'Successfully inserted Clients with name', 'uid': 'test1'},
       {'model': 'Users','record': { _id:'1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] },'status': 'Inserted','message': '', 'uid': 'normal@openim.org'}
@@ -196,7 +196,7 @@ describe('Controller: ExportImportCtrl', function () {
 
     scope.createExportFile( scope.selectedExports );
 
-    expect(scope.downloadLink.indexOf('blob:http://localhost:8080/')).to.be.above(-1);
+    expect(scope.downloadLink.indexOf('blob:http://localhost')).to.be.above(-1);
   });
 
   it('should execute downloadExportFile() and reset downloadLink', function() {
