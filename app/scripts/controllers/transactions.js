@@ -14,6 +14,7 @@ angular.module('openhimConsoleApp')
 
     // set default limit
     var defaultLimit = 20;
+    var defaultWasRerun = 'dont-filter';
     var defaultTabView = 'same';
     $scope.defaultBulkRerunLimit = 10000;
     $scope.loadMoreBtn = false;
@@ -54,7 +55,7 @@ angular.module('openhimConsoleApp')
     $scope.settings.filter.route = {};
     $scope.settings.filter.orchestration = {};
     // default value for reruns filter
-    $scope.settings.filter.transaction.wasRerun = 'dont-filter';
+    $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
     
     var isEmpty = function(obj) {
       for(var prop in obj) {
@@ -262,6 +263,9 @@ angular.module('openhimConsoleApp')
         if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd); }
         
         filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
+        $scope.dateApplied = true;
+      } else {
+        $scope.dateApplied = false;
       }
 
       /* ----- filter by transaction (basic) ----- */
@@ -684,10 +688,12 @@ angular.module('openhimConsoleApp')
     };
     
     $scope.filtersApplied = function() {
+      if($scope.dateApplied) {
+        if($scope.settings.filter.startDate !== '') { return true; }
+        if($scope.settings.filter.endDate !== '') { return true; }
+      }
       if($scope.settings.filter.limit !== defaultLimit) { return true; }
-      if($scope.settings.filter.startDate !== '') { return true; }
-      if($scope.settings.filter.endDate !== '') { return true; }
-      if($scope.settings.filter.transaction.wasRerun !== 'dont-filter') { return true; }
+      if($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true; }
       if(Object.keys($scope.settings.filter.transaction).length > 1) { return true; }
       if(!isEmpty($scope.settings.filter.orchestration)) { return true; }
       if(!isEmpty($scope.settings.filter.route)) { return true; }
@@ -707,7 +713,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.transaction = {};
       $scope.settings.filter.orchestration = {};
       $scope.settings.filter.route = {};
-      $scope.settings.filter.transaction.wasRerun = 'dont-filter';
+      $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
       
       $scope.settings.list.tabview = defaultTabView;
       $scope.settings.list.autoupdate = defaultAutoUpdate;
