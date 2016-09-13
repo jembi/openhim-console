@@ -251,10 +251,17 @@ angular.module('openhimConsoleApp')
       // date filter
       filterDateStart = $scope.settings.filter.startDate;
       filterDateEnd = $scope.settings.filter.endDate;
-      if(filterDateStart && filterDateEnd) {
-        var startDate = moment(filterDateStart).format();
-        var endDate = moment(filterDateEnd).endOf('day').format();
-        filtersObject.filters['request.timestamp'] = JSON.stringify( { '$gte': startDate, '$lte': endDate } );
+  
+      if(filterDateStart || filterDateEnd) {
+        var buildDateFilterObject = function(object, comparator, date) {
+          object[comparator] = moment(date).format();
+        };
+        var dateFilterObject = {};
+        
+        if(filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart); }
+        if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', moment(filterDateEnd).endOf('day')); }
+        
+        filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
       }
 
       /* ----- filter by transaction (basic) ----- */
@@ -495,7 +502,7 @@ angular.module('openhimConsoleApp')
 
     };
 
-    $scope.applyFilterIfValidDate = function(date){
+    $scope.applyFilterIfValidDate = function(date) {
       if (moment(date, 'YYYY-MM-DD', true).isValid()) {
         $scope.applyFiltersToUrl();
       }
