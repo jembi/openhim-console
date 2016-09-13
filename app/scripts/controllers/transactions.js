@@ -263,9 +263,6 @@ angular.module('openhimConsoleApp')
         if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd); }
         
         filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
-        $scope.dateApplied = true;
-      } else {
-        $scope.dateApplied = false;
       }
 
       /* ----- filter by transaction (basic) ----- */
@@ -597,6 +594,13 @@ angular.module('openhimConsoleApp')
 
       // execute refresh if no errors
       if($scope.ngError.hasErrors === false) {
+        
+        // Set dateApplied flag if a date filter is being applied
+        if($scope.settings.filter.startDate || $scope.settings.filter.endDate) {
+          $scope.dateApplied = true;
+        } else {
+          $scope.dateApplied = false;
+        }
 
         $scope.transactions = null;
 
