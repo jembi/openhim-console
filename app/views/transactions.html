@@ -101,9 +101,9 @@
                   <th>Path</th>
                   <th>Request Params</th>
                   <th>Channel</th>
+                  <th>Client</th>
                   <th>Status</th>
                   <th>Request Time</th>
-                  <th>Client</th>
                 </tr>
               </thead>
               <tbody>
@@ -128,6 +128,7 @@
                   <td data-title="Path">{{ transaction.request.path }}</td>
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
                   <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
+                  <td data-title="Client">{{ clientsIdNameMap[transaction.clientID] }}</td>
                   <td data-title="Status">
                     <span ng-if="transaction.status === 'Successful'" class="label label-success">Successful</span>
                     <span ng-if="transaction.status === 'Completed'" class="label label-success">Completed</span>
@@ -136,7 +137,6 @@
                     <span ng-if="transaction.status === 'Failed'" class="label label-danger">Failed</span>
                   </td>
                   <td data-title="Request Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                  <td data-title="Client">{{ clientsIdNameMap[transaction.clientID] }}</td>
                 </tr>
               </tbody>
             </table>
