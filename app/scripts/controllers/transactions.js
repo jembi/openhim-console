@@ -14,6 +14,7 @@ angular.module('openhimConsoleApp')
 
     // set default limit
     var defaultLimit = 20;
+    var defaultWasRerun = 'dont-filter';
     var defaultTabView = 'same';
     $scope.defaultBulkRerunLimit = 10000;
     $scope.loadMoreBtn = false;
@@ -54,7 +55,7 @@ angular.module('openhimConsoleApp')
     $scope.settings.filter.route = {};
     $scope.settings.filter.orchestration = {};
     // default value for reruns filter
-    $scope.settings.filter.transaction.wasRerun = 'dont-filter';
+    $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
     
     var isEmpty = function(obj) {
       for(var prop in obj) {
@@ -244,7 +245,10 @@ angular.module('openhimConsoleApp')
     /*******************************************************************/
     /**         Transactions List and Detail view functions           **/
     /*******************************************************************/
-
+    
+    var buildDateFilterObject = function(object, comparator, date) {
+      object[comparator] = moment(new Date(date)).format();
+    };
 
     //setup filter options
     $scope.returnFilters = function() {
@@ -263,13 +267,10 @@ angular.module('openhimConsoleApp')
       filterDateEnd = $scope.settings.filter.endDate;
   
       if(filterDateStart || filterDateEnd) {
-        var buildDateFilterObject = function(object, comparator, date) {
-          object[comparator] = moment(date).format();
-        };
         var dateFilterObject = {};
         
         if(filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart); }
-        if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', moment(filterDateEnd).endOf('day')); }
+        if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd); }
         
         filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
       }
@@ -502,7 +503,7 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
-      if ( $scope.ngError.hasErrors ){
+      if($scope.ngError.hasErrors) {
         $scope.clearValidation = $timeout(function() {
           // clear errors after 5 seconds
           $scope.ngError = {};
@@ -511,11 +512,28 @@ angular.module('openhimConsoleApp')
       }
 
     };
-
-    $scope.applyFilterIfValidDate = function(date) {
-      if (moment(date, 'YYYY-MM-DD', true).isValid()) {
+    
+    var refreshDateFilters = function(date, callback) {
+      if (moment(date, 'YYYY-MM-DD HH:mm:ss:SSSS', true).isValid()) {
+        callback();
+      } else if(!date) {
         $scope.applyFiltersToUrl();
       }
+    };
+
+    $scope.applyStartDate = function(date) {
+      refreshDateFilters(date, function() {
+        $scope.applyFiltersToUrl();
+      });
+    };
+    
+    $scope.applyEndDate = function(date) {
+      refreshDateFilters(date, function() {
+        if(moment(new Date(date)).hour() === 0 && moment(new Date(date)).minute() === 0) {
+          $scope.settings.filter.endDate = moment(new Date(date)).endOf('day').format('YYYY-MM-DD HH:mm:ss:SSSS');
+        }
+        $scope.applyFiltersToUrl();
+      });
     };
 
     $scope.applyFiltersToUrl = function() {
@@ -594,6 +612,13 @@ angular.module('openhimConsoleApp')
 
       // execute refresh if no errors
       if($scope.ngError.hasErrors === false) {
+        
+        // Set dateApplied flag if date is present when transaction list is refreshed
+        if($scope.settings.filter.startDate || $scope.settings.filter.endDate) {
+          $scope.dateApplied = true;
+        } else {
+          $scope.dateApplied = false;
+        }
 
         $scope.transactions = null;
 
@@ -683,6 +708,18 @@ angular.module('openhimConsoleApp')
         }
       }
     };
+    
+    $scope.filtersApplied = function() {
+      // We can't just check the scope date variables, as these are set before the filters are applied
+      // This is why we have a date applied variable, which checks if date filter is applied to transaction list
+      if($scope.dateApplied) { return true; }
+      if($scope.settings.filter.limit !== defaultLimit) { return true; }
+      if($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true; }
+      if(Object.keys($scope.settings.filter.transaction).length > 1) { return true; }
+      if(!isEmpty($scope.settings.filter.orchestration)) { return true; }
+      if(!isEmpty($scope.settings.filter.route)) { return true; }
+      return false;
+    };
 
     //Clear filter data end refresh transactions scope
     $scope.clearFilters = function() {
@@ -697,7 +734,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.transaction = {};
       $scope.settings.filter.orchestration = {};
       $scope.settings.filter.route = {};
-      $scope.settings.filter.transaction.wasRerun = 'dont-filter';
+      $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
       
       $scope.settings.list.tabview = defaultTabView;
       $scope.settings.list.autoupdate = defaultAutoUpdate;
