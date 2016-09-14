@@ -231,7 +231,7 @@ angular.module('openhimConsoleApp')
       $scope.clients.map(function(client) {
         clientsIdNameMap[client._id] = client.name;
       });
-    }
+    };
     // clients used for advanced filter dropdown and client name on transaction list
     Api.Clients.query(clientsSuccess);
 
