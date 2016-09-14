@@ -509,7 +509,7 @@ angular.module('openhimConsoleApp')
       } else if(!date) {
         $scope.applyFiltersToUrl();
       }
-    }
+    };
 
     $scope.applyStartDate = function(date) {
       refreshDateFilters(date, function() {
