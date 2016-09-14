@@ -101,6 +101,7 @@
                   <th>Path</th>
                   <th>Request Params</th>
                   <th>Channel</th>
+                  <th>Client</th>
                   <th>Status</th>
                   <th>Request Time</th>
                 </tr>
@@ -127,6 +128,7 @@
                   <td data-title="Path">{{ transaction.request.path }}</td>
                   <td data-title="Request Params">{{ transaction.request.querystring }}</td>
                   <td data-title="Channel">{{ channelsMap[transaction.channelID].name }}</td>
+                  <td data-title="Client">{{ clientsIdNameMap[transaction.clientID] }}</td>
                   <td data-title="Status">
                     <span ng-if="transaction.status === 'Successful'" class="label label-success">Successful</span>
                     <span ng-if="transaction.status === 'Completed'" class="label label-success">Completed</span>
