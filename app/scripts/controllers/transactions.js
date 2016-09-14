@@ -223,13 +223,13 @@ angular.module('openhimConsoleApp')
     }, function(){ /* server error - could not connect to API to get channels */ });
     
     
-    var clientsIdNameMap = [];
+    $scope.clientsIdNameMap = {};
     
     var clientsSuccess = function(clients) {
       $scope.clients = clients;
       // Create client map of id to name
       $scope.clients.map(function(client) {
-        clientsIdNameMap[client._id] = client.name;
+        $scope.clientsIdNameMap[client._id] = client.name;
       });
     };
     // clients used for advanced filter dropdown and client name on transaction list
@@ -758,11 +758,6 @@ angular.module('openhimConsoleApp')
         // update user via api
         updateUser(currentUser);
       });
-    };
-    
-    // Get client name from client id
-    $scope.getClientNameFromClientID = function(clientId) {
-      return clientsIdNameMap[clientId];
     };
 
     /*******************************************************************/

@@ -136,7 +136,7 @@
                     <span ng-if="transaction.status === 'Failed'" class="label label-danger">Failed</span>
                   </td>
                   <td data-title="Request Time">{{ transaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss Z' }}</td>
-                  <td data-title="Client">{{ getClientNameFromClientID(transaction.clientID) }}</td>
+                  <td data-title="Client">{{ clientsIdNameMap[transaction.clientID] }}</td>
                 </tr>
               </tbody>
             </table>
