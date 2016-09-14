@@ -504,7 +504,7 @@ angular.module('openhimConsoleApp')
     };
     
     var refreshDateFilters = function(date, callback) {
-      if (moment(date, 'YYYY-MM-DD HH:mm', true).isValid()) {
+      if (moment(date, 'YYYY-MM-DD HH:mm:ss:SSSS', true).isValid()) {
         callback();
       } else if(!date) {
         $scope.applyFiltersToUrl();
@@ -519,8 +519,8 @@ angular.module('openhimConsoleApp')
     
     $scope.applyEndDate = function(date) {
       refreshDateFilters(date, function() {
-        if(moment(date).hour() === 0 && moment(date).minute() === 0) {
-          $scope.settings.filter.endDate = moment(new Date(date)).endOf('day');
+        if(moment(new Date(date)).hour() === 0 && moment(new Date(date)).minute() === 0) {
+          $scope.settings.filter.endDate = moment(new Date(date)).endOf('day').format('YYYY-MM-DD HH:mm:ss:SSSS');
         }
         $scope.applyFiltersToUrl();
       });
@@ -702,10 +702,7 @@ angular.module('openhimConsoleApp')
     $scope.filtersApplied = function() {
       // We can't just check the scope date variables, as these are set before the filters are applied
       // This is why we have a date applied variable, which checks if date filter is applied to transaction list
-      if($scope.dateApplied) {
-        if(!$scope.settings.filter.startDate) { return true; }
-        if(!$scope.settings.filter.endDate) { return true; }
-      }
+      if($scope.dateApplied) { return true; }
       if($scope.settings.filter.limit !== defaultLimit) { return true; }
       if($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true; }
       if(Object.keys($scope.settings.filter.transaction).length > 1) { return true; }
