@@ -235,7 +235,10 @@ angular.module('openhimConsoleApp')
     /*******************************************************************/
     /**         Transactions List and Detail view functions           **/
     /*******************************************************************/
-
+    
+    var buildDateFilterObject = function(object, comparator, date) {
+      object[comparator] = moment(new Date(date)).format();
+    };
 
     //setup filter options
     $scope.returnFilters = function() {
@@ -254,9 +257,6 @@ angular.module('openhimConsoleApp')
       filterDateEnd = $scope.settings.filter.endDate;
   
       if(filterDateStart || filterDateEnd) {
-        var buildDateFilterObject = function(object, comparator, date) {
-          object[comparator] = moment(new Date(date)).format();
-        };
         var dateFilterObject = {};
         
         if(filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart); }
@@ -502,20 +502,28 @@ angular.module('openhimConsoleApp')
       }
 
     };
-
-    $scope.applyStartDate = function(date) {
+    
+    var refreshDateFilters = function(date, callback) {
       if (moment(date, 'YYYY-MM-DD HH:mm', true).isValid()) {
+        callback();
+      } else if(!date) {
         $scope.applyFiltersToUrl();
       }
+    }
+
+    $scope.applyStartDate = function(date) {
+      refreshDateFilters(date, function() {
+        $scope.applyFiltersToUrl();
+      });
     };
     
     $scope.applyEndDate = function(date) {
-      if(moment(date, 'YYYY-MM-DD HH:mm', true).isValid()) {
+      refreshDateFilters(date, function() {
         if(moment(date).hour() === 0 && moment(date).minute() === 0) {
           $scope.settings.filter.endDate = moment(new Date(date)).endOf('day');
         }
         $scope.applyFiltersToUrl();
-      }
+      });
     };
 
     $scope.applyFiltersToUrl = function() {
@@ -595,7 +603,7 @@ angular.module('openhimConsoleApp')
       // execute refresh if no errors
       if($scope.ngError.hasErrors === false) {
         
-        // Set dateApplied flag if a date filter is being applied
+        // Set dateApplied flag if date is present when transaction list is refreshed
         if($scope.settings.filter.startDate || $scope.settings.filter.endDate) {
           $scope.dateApplied = true;
         } else {
@@ -692,9 +700,11 @@ angular.module('openhimConsoleApp')
     };
     
     $scope.filtersApplied = function() {
+      // We can't just check the scope date variables, as these are set before the filters are applied
+      // This is why we have a date applied variable, which checks if date filter is applied to transaction list
       if($scope.dateApplied) {
-        if($scope.settings.filter.startDate !== '') { return true; }
-        if($scope.settings.filter.endDate !== '') { return true; }
+        if(!$scope.settings.filter.startDate) { return true; }
+        if(!$scope.settings.filter.endDate) { return true; }
       }
       if($scope.settings.filter.limit !== defaultLimit) { return true; }
       if($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true; }
