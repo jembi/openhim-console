@@ -17,7 +17,8 @@ describe('Controller: AboutCtrl', function () {
   var scope, createController, httpBackend, modalSpy;
   
   var coreResponse = {
-    'currentCoreVersion': '3.0.0'
+    'currentCoreVersion': '3.0.0',
+    'serverTimeZone': 'Africa/Johannesburg'
   };
   
   // Initialize the controller and a mock scope

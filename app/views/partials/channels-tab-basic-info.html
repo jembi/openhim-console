@@ -35,12 +35,16 @@
   </div>
 </div>
 <div class="form-group-2columns" ng-show="channel.type == 'polling'">
-  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.pollingSchedule }">
+  <div class="form-group" ng-class="{ 'has-error' : ngError.pollingSchedule }">
     <label>
       <span>*</span> What schedule would you like the channel to poll on?
       <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
-    <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
+    <div class="input-group" style="width: 100%;">
+      <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
+      <div class="input-group-addon tooltip-wide" tooltip-html-unsafe="These schedules always run according to server time<hr style='margin: 4px;' />Timezone:<br /><strong>{{ aboutInfo.serverTimezone }}</strong><br />Server Time:<br /><strong>{{ aboutInfo.serverTime }}</strong>">UTC {{ aboutInfo.serverTimezoneOffset }}</div>
+    </div>
+
     <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
     <br/>
 
@@ -48,7 +52,6 @@
       <div class="form-group" style="float: left;">
         <button type="button" class="btn btn-primary" ng-click="manuallyTriggerChannel()">Manually Trigger</button>
       </div>
-
       <div class="form-group" style="float: right;">
         <alert ng-repeat="alert in alerts.manualTrigger" type="alert.type">{{alert.msg}}</alert>
       </div>
