@@ -52,12 +52,12 @@
               <div class="input-group-vertical">
                 <label><input type="radio" ng-model="import.action" value="ignore" ng-change="checkIfAllOverwrites()"> Ignore</label>
                 <label><input type="radio" ng-model="import.action" value="overwrite" ng-change="checkIfAllOverwrites()"> Overwrite</label>
-                <label><input type="radio" ng-model="import.action" value="duplicate" ng-change="checkIfAllOverwrites()"> Duplicate</label>
+                <label ng-if="!import.duplicatePrevented"><input type="radio" ng-model="import.action" value="duplicate" ng-change="checkIfAllOverwrites()"> Duplicate</label>
               </div>
             </td>
             <td data-title="Model">{{ import.model }}</td>
             <td data-title="UID">
-              <input type="text" ng-disabled="import.action!=='duplicate'" ng-model="import.uid">
+              <input ng-if="!import.duplicatePrevented" type="text" ng-disabled="import.action!=='duplicate'" ng-model="import.uid">
               <div class="has-error-msg" ng-if="import.errMsg"><i class="glyphicon glyphicon-warning-sign"></i>{{import.errMsg}}</div>
             </td>
             <td>

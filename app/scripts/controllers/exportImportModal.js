@@ -19,6 +19,7 @@ angular.module('openhimConsoleApp')
     for(var i=0; i < data.length; i++) {
       if(data[i].status === 'Conflict') {
         data[i].action = 'ignore';
+        if(data[i].model === 'Keystore') { data[i].duplicatePrevented = true; }
         $scope.conflicts.push(data[i]);
       } else if(data[i].status === 'Valid') {
         $scope.validImports.push(data[i]);
@@ -115,7 +116,8 @@ angular.module('openhimConsoleApp')
             'Clients': [],
             'Mediators': [],
             'Users': [],
-            'ContactGroups': []
+            'ContactGroups': [],
+            'Keystore': []
           };
 
           angular.forEach($scope.conflicts, function(item) {
@@ -134,7 +136,8 @@ angular.module('openhimConsoleApp')
               else if(item.model==='Clients') {$scope.resolvedData.Clients.push(item.record);}
               else if(item.model==='Mediators') {$scope.resolvedData.Mediators.push(item.record);}
               else if(item.model==='Users') {$scope.resolvedData.Users.push(item.record);}
-              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}  
+              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}
+              else if(item.model==='Keystore') {$scope.resolvedData.Keystore.push(item.record);}  
             }
           });
 
@@ -143,7 +146,8 @@ angular.module('openhimConsoleApp')
               else if(item.model==='Clients') {$scope.resolvedData.Clients.push(item.record);}
               else if(item.model==='Mediators') {$scope.resolvedData.Mediators.push(item.record);}
               else if(item.model==='Users') {$scope.resolvedData.Users.push(item.record);}
-              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}  
+              else if(item.model==='ContactGroups') {$scope.resolvedData.ContactGroups.push(item.record);}
+              else if(item.model==='Keystore') {$scope.resolvedData.Keystore.push(item.record);} 
           });
 
           // read the import script data and process
@@ -151,7 +155,8 @@ angular.module('openhimConsoleApp')
             $scope.resolvedData.Clients.length > 0 ||
             $scope.resolvedData.Users.length > 0 ||
             $scope.resolvedData.Mediators.length > 0 ||
-            $scope.resolvedData.ContactGroups.length > 0) { 
+            $scope.resolvedData.ContactGroups.length > 0 ||
+            $scope.resolvedData.Keystore.length > 0) { 
             $scope.runImportFile($scope.resolvedData, callback); 
           } else { 
             $modalInstance.close();

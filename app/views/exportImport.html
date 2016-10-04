@@ -35,7 +35,7 @@
               <i ng-if="showRecordOptions[model]" class="glyphicon glyphicon-chevron-up"></i>
               <i ng-if="!showRecordOptions[model]" class="glyphicon glyphicon-chevron-down"></i>
             </label>
-            <div ng-if="showRecordOptions[model]">
+            <div ng-if="showRecordOptions[model] && model!='Keystore'">
               <div ng-repeat="record in collectionData | orderBy:['name','firstname','group']">
                 <label class="exportRecordTitle">
                   <input type="checkbox" ng-model="checkBox" value="{{record}}" ng-change="toggleRecordExportSelection(model, record)" />
