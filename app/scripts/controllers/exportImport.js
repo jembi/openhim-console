@@ -21,6 +21,7 @@ angular.module('openhimConsoleApp')
       $scope.selectedExports.Channels = $scope.exportCollections.Channels;
       $scope.selectedExports.Mediators = $scope.exportCollections.Mediators;
       $scope.selectedExports.ContactGroups = $scope.exportCollections.ContactGroups;
+      $scope.selectedExports.Keystore = $scope.exportCollections.Keystore;
 
       // set show all records to false - Entire collections being exported
       $scope.showRecordOptions = {};
@@ -29,6 +30,7 @@ angular.module('openhimConsoleApp')
       $scope.showRecordOptions.Channels = false;
       $scope.showRecordOptions.Mediators = false;
       $scope.showRecordOptions.ContactGroups = false;
+      $scope.showRecordOptions.Keystore = false;
     };
     
     var getMetadataSuccess = function(result) {
@@ -171,8 +173,6 @@ angular.module('openhimConsoleApp')
     /****************************************/
 
     var validateFail = function(err) {
-      console.log(err);
-
       Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while validating the import: #' + err.status + ' - ' + err.data);
     };
