@@ -1,6 +1,7 @@
 'use strict';
 /* global CryptoJS:false */
 /* global vkbeautify:false */
+/* global moment:false */
 /* exported isBase64String */
 /* exported decodeBase64 */
 /* exported getHashAndSalt */
@@ -11,6 +12,8 @@
 /* exported valueNotEmpty */
 /* exported isCoreVersionCompatible */
 /* exported buildBlob */
+/* exported getTimeForTimezone */
+/* exported getTimezoneOffset */
 
 
 var valueNotEmpty = function(value){
@@ -150,3 +153,15 @@ function buildBlob(data, datatype) {
   }
   return out;
 }
+
+
+
+function getTimeForTimezone(timezone) {
+  var timezoneDatetime = moment(new Date()).tz(timezone);
+  return moment(timezoneDatetime).format('YYYY-MM-DD HH:mm:ss Z');
+}
+function getTimezoneOffset(timezone) {
+  var timezoneDatetime = moment(new Date()).tz(timezone);
+  return moment(timezoneDatetime).format('Z');
+}
+

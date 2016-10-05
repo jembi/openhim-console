@@ -1408,7 +1408,7 @@ label { position: relative; }
   padding: 15px;
   display: inline-block;
   float: left;
-  clear: both;
+  margin-right: 20px;
 }
 
 .about-info h3 { margin-top: 0px; }
@@ -1417,7 +1417,8 @@ label { position: relative; }
   border: 1px solid;
   background-color: #D9FFBE;
   border-color: #d6e9c6;
-  margin-top:20px;
+  margin: 16px -16px -16px -16px;
+  padding-top: 8px;
 }
 
 .version-danger-text { color: red; }

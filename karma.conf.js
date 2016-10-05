@@ -32,6 +32,7 @@ module.exports = function(config) {
       'app/scripts/**/*.js',
       'test/spec/**/*.js',
       'app/bower_components/moment/moment.js',
+      'app/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js',
       'app/bower_components/morris.js/morris.js',
       'app/bower_components/angular-bootstrap-datetimepicker-directive/angular-bootstrap-datetimepicker-directive.js',
       'app/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',

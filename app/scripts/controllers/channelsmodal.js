@@ -1,4 +1,6 @@
 'use strict';
+/* global getTimeForTimezone:false */
+/* global getTimezoneOffset:false */
 
 var app = angular.module('openhimConsoleApp');
 
@@ -339,7 +341,31 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 });
 
 // nested controller for the channel basic info tab
-app.controller('channelBasicInfoCtrl', function ($scope, $timeout, Api, Notify, Alerting) {
+app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Api, Notify, Alerting) {
+
+
+  var updateTime = function(timezone) {
+    $scope.aboutInfo.serverTime = getTimeForTimezone(timezone);
+  };
+
+  var success = function(result) {
+    $scope.aboutInfo = result;
+    $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone);
+    updateTime(result.serverTimezone);
+    $scope.clock = $interval(function(){
+      updateTime(result.serverTimezone);
+    }, 1000);
+  };
+
+  var error = function(err) {
+    Alerting.AlertAddServerMsg(err.status);
+  };
+
+  Api.About.get(success, error);
+
+
+
+
 
   var setUrlPattern = function(){
     $scope.channel.$promise.then(function () {
@@ -376,6 +402,13 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, Api, Notify, 
     $scope.channel.authType = 'private';
     $scope.channel.status = 'enabled';
   }
+
+
+  $scope.$on('$destroy',function(){
+    if (angular.isDefined($scope.clock)) {
+      $interval.cancel($scope.clock);
+    }
+  });
 
 });
 
