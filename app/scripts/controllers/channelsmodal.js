@@ -353,7 +353,6 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Ap
     $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone);
     updateTime(result.serverTimezone);
     $scope.clock = $interval(function(){
-      console.log('test');
       updateTime(result.serverTimezone);
     }, 1000);
   };
