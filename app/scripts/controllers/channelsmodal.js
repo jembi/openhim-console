@@ -346,13 +346,14 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Ap
 
   var updateTime = function(timezone) {
     $scope.aboutInfo.serverTime = getTimeForTimezone(timezone);
-    $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(timezone);
   };
 
   var success = function(result) {
     $scope.aboutInfo = result;
+    $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone);
     updateTime(result.serverTimezone);
     $scope.clock = $interval(function(){
+      console.log('test');
       updateTime(result.serverTimezone);
     }, 1000);
   };
@@ -402,6 +403,13 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Ap
     $scope.channel.authType = 'private';
     $scope.channel.status = 'enabled';
   }
+
+
+  $scope.$on('$destroy',function(){
+    if (angular.isDefined($scope.clock)) {
+      $interval.cancel($scope.clock);
+    }
+  });
 
 });
 
