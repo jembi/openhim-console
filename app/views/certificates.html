@@ -19,6 +19,10 @@
         <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
         <!-- Server Alerts -->
 
+        <!-- WatchFSForCert message -->
+        <alert ng-repeat="alert in alerts.watchFSForCert" type="alert.type">{{alert.msg}}</alert>
+        <!-- WatchFSForCert message -->
+
 
         <!-- Restart the server message -->
         <alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
