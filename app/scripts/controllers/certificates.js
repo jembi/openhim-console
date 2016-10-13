@@ -22,6 +22,9 @@ angular.module('openhimConsoleApp')
       // get server certificate data
       Api.Keystore.get({ type: 'cert' }, function(result){
         $scope.currentServerCert = result;
+        if($scope.currentServerCert.watchFSForCert) {
+          Alerting.AlertAddMsg('watchFSForCert', 'warning', 'Generating of server certificates is disabled. Certificates are being managed from the file system, edit the OpenHIM config file to change this');
+        }
       }, function(err){
         Alerting.AlertAddServerMsg(err.status);
       });
