@@ -115,7 +115,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
-    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
+    scope.transactionResponseTimeData.labels[0].should.equal('Response Time (ms)');
 
     scope.transactionResponseTimeData.data.length.should.equal(5);
 
@@ -181,7 +181,7 @@ describe('Controller: DashboardCtrl', function () {
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
     scope.transactionResponseTimeData.labels.length.should.equal(1);
-    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
+    scope.transactionResponseTimeData.labels[0].should.equal('Response Time (ms)');
 
     scope.transactionResponseTimeData.data.length.should.equal(5); // 5 days of data
 
