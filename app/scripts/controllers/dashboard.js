@@ -25,8 +25,8 @@ angular.module('openhimConsoleApp')
         var round = function (d) {
           return (d).toFixed(2);
         };
-        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total');
-        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', round);
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'Transactions');
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', 'Response Time (ms)', round);
       }
     }
 
