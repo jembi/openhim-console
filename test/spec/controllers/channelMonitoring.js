@@ -156,7 +156,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
     scope.transactionResponseTimeData.should.have.property('ykeys');
     scope.transactionResponseTimeData.ykeys[0].should.equal('value');
     scope.transactionResponseTimeData.should.have.property('labels');
-    scope.transactionResponseTimeData.labels[0].should.equal('Transactions');
+    scope.transactionResponseTimeData.labels[0].should.equal('Response Time (ms)');
 
     scope.transactionResponseTimeData.data[0].should.have.property('timestamp');
     scope.transactionResponseTimeData.data[0].should.have.property('value', '2881.91');
