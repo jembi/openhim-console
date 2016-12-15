@@ -4,7 +4,7 @@
 
 <div class="form-group-2columns">
   <div class="form-group" style="float: left; width: 75%" ng-class="{ 'has-error' : ngError.urlPattern }" ng-if="channel.type === 'http' || channel.type === 'polling'">
-    
+
     <div class="form-group" style="float: left; width: 75%">
       <label><span>*</span> Which URL patterns will match this channel?</label>
       <div class="input-group" style="width: 100%;">
@@ -46,7 +46,7 @@
 
 <div class="form-group" ng-if="channel.authType == 'private'" ng-class="{ 'has-error' : ngError.allow }">
   <label><span>*</span> Which clients should be able to access this channel?</label>
-  <taglist tag-data="channel.allow" ><input class="form-control" placeholder="Enter a specifc client or role and press enter..." type="text" ng-model="allowedRoles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
+  <taglist tag-data="channel.allow" taglist-blur-timeout="200"><input class="form-control" placeholder="Enter a specifc client or role and press enter..." type="text" ng-model="allowedRoles" typeahead="role for role in taglistClientRoleOptions | filter:$viewValue" /></taglist>
   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
 </div>
 
@@ -65,7 +65,7 @@
     <label>Are there any particular Content-Types that you wish to match on?</label>
     <taglist tag-data="channel.matchContentTypes"><input class="form-control" placeholder="Enter a content type and press enter..." type="text" /></taglist>
   </div>
-  
+
   <div class="form-group">
     <label>Do you want to match on request BODY content? </label>
     <div style="display: block;">
