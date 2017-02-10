@@ -32,7 +32,7 @@ angular.module('openhimConsoleApp')
       $scope.showRecordOptions.ContactGroups = false;
       $scope.showRecordOptions.Keystore = false;
     };
-    
+
     var getMetadataSuccess = function(result) {
       // Assign API collections to export options object
       $scope.exportCollections = result[0];
@@ -43,7 +43,7 @@ angular.module('openhimConsoleApp')
       // set inital reset ( default export option )
       $scope.resetExportOptions();
     };
-    
+
     var getMetadataError = function(err) {
       Alerting.AlertReset();
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data);
@@ -62,8 +62,8 @@ angular.module('openhimConsoleApp')
         $scope.importStatus = 'done';
         $scope.importResults = importResults;
       });
-    };      
-      
+    };
+
     // Make API requests for the export configuration options
     Api.Metadata.query(function(result) {
       getMetadataSuccess(result);
@@ -81,7 +81,7 @@ angular.module('openhimConsoleApp')
     /****************************************/
     /**         Export Functions           **/
     /****************************************/
-      
+
     // function to toggle entire collection
     $scope.toggleCollectionExportSelection = function(model, collection) {
       if ( $scope.selectedExports[model] === collection) {
@@ -109,7 +109,7 @@ angular.module('openhimConsoleApp')
     $scope.removeProperties = function(obj) {
       var propertyID = '_id';
       var propertyV = '__v';
-      
+
       for (var prop in obj) {
         if (prop === propertyID || prop === propertyV) {
           delete obj[prop];
@@ -125,6 +125,11 @@ angular.module('openhimConsoleApp')
     $scope.createExportFile = function() {
       var exportData = angular.copy( $scope.selectedExports );
       var textFile = null;
+
+      Alerting.AlertReset();
+      if(exportData && exportData.Keystore && exportData.Keystore.length > 0) {
+    	  Alerting.AlertAddMsg('top', 'warning', 'Warning: The server\'s TLS private key will be exported and should be protected!');
+      }
 
       // create the export script as a blob file
       var makeTextFile = function (text) {
@@ -147,13 +152,13 @@ angular.module('openhimConsoleApp')
 
       exportData = JSON.stringify( $scope.removeProperties( exportData ), null, 2 );
       $scope.importScriptName = 'openhim-insert.json';
-      
+
       // assign download link and show download button
       var blobLink = makeTextFile( exportData );
       if ( blobLink ) {
         $scope.downloadLink = blobLink;
       }
-      
+
     };
 
     // function for when the download button is clicked
@@ -210,7 +215,7 @@ angular.module('openhimConsoleApp')
         // foreach uploaded file
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
-                   
+
           // when the file is read it triggers the onload event function above.
           reader.readAsText(file);
         }
