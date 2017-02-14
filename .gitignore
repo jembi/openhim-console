@@ -3,6 +3,7 @@ dist
 .tmp
 .sass-cache
 .idea/**
+.project
 app/bower_components
 openhim-webapp-2.sublime-project
 openhim-webapp-2.sublime-workspace
@@ -17,3 +18,4 @@ packaging/Vagrantfile
 \#*\#
 **/.vagrant
 npm-debug.log
+Dockerfile
