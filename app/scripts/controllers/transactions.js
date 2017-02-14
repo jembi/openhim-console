@@ -939,6 +939,7 @@ angular.module('openhimConsoleApp')
     var pollingInterval;
 
     $scope.pollForLatest = function() {
+      if (!$scope.transactions) { return }
       var filters = $scope.returnFilters();
 
       if(!filters.filters['request.timestamp']) {
@@ -962,22 +963,21 @@ angular.module('openhimConsoleApp')
     //poll for updates for any transactions that are marked as 'Processing'
     //TODO need an endpoint in core to lookup a several transactions by _id at once
     $scope.pollForProcessingUpdates = function() {
-      if ($scope.transactions !== null) {
-		$scope.transactions.forEach(function(trx) {
-			if (trx.status === 'Processing') {
-				Api.Transactions.get({
-					transactionId : trx._id,
-					filterRepresentation : 'simple'
-				}, function(result) {
-					$scope.transactions.forEach(function(scopeTrx) {
-						if (scopeTrx._id === result._id) {
-							scopeTrx.status = result.status;
-						}
-					});
+    	if (!$scope.transactions) { return }
+    	$scope.transactions.forEach(function(trx) {
+		if (trx.status === 'Processing') {
+			Api.Transactions.get({
+				transactionId : trx._id,
+				filterRepresentation : 'simple'
+			}, function(result) {
+				$scope.transactions.forEach(function(scopeTrx) {
+					if (scopeTrx._id === result._id) {
+						scopeTrx.status = result.status;
+					}
 				});
-			}
-		});
-	}
+			});
+		}
+	});
     };
 
     $scope.startPolling = function() {
