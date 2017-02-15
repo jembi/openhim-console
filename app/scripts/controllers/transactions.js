@@ -56,7 +56,7 @@ angular.module('openhimConsoleApp')
     $scope.settings.filter.orchestration = {};
     // default value for reruns filter
     $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
-    
+
     var isEmpty = function(obj) {
       for(var prop in obj) {
         if(obj.hasOwnProperty(prop)) {
@@ -65,7 +65,7 @@ angular.module('openhimConsoleApp')
       }
       return true;
     };
-    
+
     var attachUserFiltersToScope = function(filters) {
       if(filters.limit && filters.limit !== 0) { $scope.settings.filter.limit = filters.limit; }
       if(!isEmpty(filters.transaction)) { $scope.settings.filter.transaction = filters.transaction; }
@@ -222,10 +222,10 @@ angular.module('openhimConsoleApp')
         }
       });
     }, function(){ /* server error - could not connect to API to get channels */ });
-    
-    
+
+
     $scope.clientsIdNameMap = {};
-    
+
     var clientsSuccess = function(clients) {
       $scope.clients = clients;
       // Create client map of id to name
@@ -245,7 +245,7 @@ angular.module('openhimConsoleApp')
     /*******************************************************************/
     /**         Transactions List and Detail view functions           **/
     /*******************************************************************/
-    
+
     var buildDateFilterObject = function(object, comparator, date) {
       object[comparator] = moment(new Date(date)).format();
     };
@@ -265,13 +265,13 @@ angular.module('openhimConsoleApp')
       // date filter
       filterDateStart = $scope.settings.filter.startDate;
       filterDateEnd = $scope.settings.filter.endDate;
-  
+
       if(filterDateStart || filterDateEnd) {
         var dateFilterObject = {};
-        
+
         if(filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart); }
         if(filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd); }
-        
+
         filtersObject.filters['request.timestamp'] = JSON.stringify( dateFilterObject );
       }
 
@@ -512,7 +512,7 @@ angular.module('openhimConsoleApp')
       }
 
     };
-    
+
     var refreshDateFilters = function(date, callback) {
       if (moment(date, 'YYYY-MM-DD HH:mm:ss:SSSS', true).isValid()) {
         callback();
@@ -526,7 +526,7 @@ angular.module('openhimConsoleApp')
         $scope.applyFiltersToUrl();
       });
     };
-    
+
     $scope.applyEndDate = function(date) {
       refreshDateFilters(date, function() {
         if(moment(new Date(date)).hour() === 0 && moment(new Date(date)).minute() === 0) {
@@ -590,11 +590,11 @@ angular.module('openhimConsoleApp')
         $scope.refreshTransactionsList();
       }
     };
-    
+
     var updateConsoleSession = function() {
       var consoleSession = localStorage.getItem('consoleSession');
       consoleSession = JSON.parse(consoleSession);
-      
+
       // update consoleSession with new user filter settings
       consoleSession.sessionUserSettings = $scope.settings;
       localStorage.setItem('consoleSession', JSON.stringify(consoleSession));
@@ -612,7 +612,7 @@ angular.module('openhimConsoleApp')
 
       // execute refresh if no errors
       if($scope.ngError.hasErrors === false) {
-        
+
         // Set dateApplied flag if date is present when transaction list is refreshed
         if($scope.settings.filter.startDate || $scope.settings.filter.endDate) {
           $scope.dateApplied = true;
@@ -708,7 +708,7 @@ angular.module('openhimConsoleApp')
         }
       }
     };
-    
+
     $scope.filtersApplied = function() {
       // We can't just check the scope date variables, as these are set before the filters are applied
       // This is why we have a date applied variable, which checks if date filter is applied to transaction list
@@ -735,7 +735,7 @@ angular.module('openhimConsoleApp')
       $scope.settings.filter.orchestration = {};
       $scope.settings.filter.route = {};
       $scope.settings.filter.transaction.wasRerun = defaultWasRerun;
-      
+
       $scope.settings.list.tabview = defaultTabView;
       $scope.settings.list.autoupdate = defaultAutoUpdate;
 
@@ -744,31 +744,31 @@ angular.module('openhimConsoleApp')
       $scope.advancedFilters.isCollapsed = true;
       $scope.refreshTransactionsList();
     };
-    
-    
+
+
     // Apply the current user's default filters
     $scope.applyDefaultFilters = function() {
       Alerting.AlertReset();
       $scope.bulkRerunActive = false;
       $scope.bulkRerun = false;
-      
+
       var success = function (user) {
         attachUserFiltersToScope(user.settings.filter);
         $scope.refreshTransactionsList();
       };
-      
+
       var error = function (err) {
         Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching the users\' filters: #' + err.status + ' - ' + err.data);
       };
-      
+
       Api.Users.get({ email: sessionUserEmail }, success, error);
     };
 
-    
+
     // Persist Current Filters to Session and Database
     $scope.persistUserFiltersToDatabase = function() {
       Alerting.AlertReset();
-      
+
       var success = function () {
         Alerting.AlertAddMsg('top', 'success', 'User filters have been saved successfully');
       };
@@ -776,22 +776,22 @@ angular.module('openhimConsoleApp')
       var error = function (err) {
         Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' filters: #' + err.status + ' - ' + err.data);
       };
-      
+
       var updateUser = function (user) {
         var userObject = angular.copy(user);
         user.$update(function() {
           success(userObject);
         }, error);
       };
-      
+
       var currentUser = Api.Users.get({ email: sessionUserEmail }, function() {
         // check settings properties exist
         if (!currentUser.settings) { currentUser.settings = {}; }
         if (!currentUser.settings.filter) { currentUser.settings.filter = {}; }
-        
+
         // add user filters to the user object
         currentUser.settings.filter = $scope.settings.filter;
-        
+
         // update user via api
         updateUser(currentUser);
       });
@@ -810,7 +810,7 @@ angular.module('openhimConsoleApp')
       $scope.bulkRerun = true;
       $scope.refreshTransactionsList();
     };
-    
+
     $scope.bulkRerunCancel = function() {
       $scope.bulkRerun = false;
       $scope.bulkRerunActive = false;
@@ -939,6 +939,7 @@ angular.module('openhimConsoleApp')
     var pollingInterval;
 
     $scope.pollForLatest = function() {
+      if (!$scope.transactions) { return; }
       var filters = $scope.returnFilters();
 
       if(!filters.filters['request.timestamp']) {
@@ -962,17 +963,21 @@ angular.module('openhimConsoleApp')
     //poll for updates for any transactions that are marked as 'Processing'
     //TODO need an endpoint in core to lookup a several transactions by _id at once
     $scope.pollForProcessingUpdates = function() {
+      if (!$scope.transactions) { return; }
       $scope.transactions.forEach(function(trx) {
-        if (trx.status === 'Processing') {
-          Api.Transactions.get({ transactionId: trx._id, filterRepresentation: 'simple' }, function(result) {
-            $scope.transactions.forEach(function(scopeTrx) {
-              if (scopeTrx._id === result._id) {
-                scopeTrx.status = result.status;
-              }
-            });
-          });
-        }
-      });
+	      if (trx.status === 'Processing') {
+	        Api.Transactions.get({
+		        transactionId : trx._id,
+		        filterRepresentation : 'simple'
+	        }, function(result) {
+		        $scope.transactions.forEach(function(scopeTrx) {
+			        if (scopeTrx._id === result._id) {
+			          scopeTrx.status = result.status;
+			        }
+		        });
+	        });
+	      }
+	    });
     };
 
     $scope.startPolling = function() {
