@@ -1,6 +1,6 @@
 {
-  "version": "1.9.0",
-  "minimumCoreVersion": "3.2.0",
+  "version": "1.10.0",
+  "minimumCoreVersion": "3.4.0",
   "protocol": "https",
   "host": "localhost",
   "port": 8080,
