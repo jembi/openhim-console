@@ -157,8 +157,10 @@ function buildBlob(data, datatype) {
 
 
 function getTimeForTimezone(timezone) {
-  var timezoneDatetime = moment(new Date()).tz(timezone);
-  return moment(timezoneDatetime).format('YYYY-MM-DD HH:mm:ss Z');
+  if (timezone) {
+    var timezoneDatetime = moment(new Date()).tz(timezone);
+    return moment(timezoneDatetime).format('YYYY-MM-DD HH:mm:ss Z');
+  }
 }
 function getTimezoneOffset(timezone) {
   var timezoneDatetime = moment(new Date()).tz(timezone);
