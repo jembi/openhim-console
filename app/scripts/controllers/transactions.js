@@ -988,7 +988,6 @@ angular.module('openhimConsoleApp')
       if (!pollingInterval) {
         pollingInterval = $interval( function() {
           if (lastPollingCompleted) {
-            //console.log('polling time! '+pollPeriod);
             $scope.pollForLatest();
             $scope.pollForProcessingUpdates();
           }
