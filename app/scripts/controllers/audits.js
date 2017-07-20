@@ -443,6 +443,7 @@ angular.module('openhimConsoleApp')
     /****************************************************/
 
     var pollingInterval;
+    var lastPollingCompleted = true;
 
     $scope.pollForLatest = function() {
       var filters = $scope.returnFilters('filtersObject');
@@ -454,8 +455,10 @@ angular.module('openhimConsoleApp')
 
         delete filters.filterPage;
         delete filters.filterLimit;
+        lastPollingCompleted = false;
 
         Api.Audits.query(filters, function(audits) {
+          lastPollingCompleted = true;
           audits.forEach(function(audit) {
             $scope.audits.unshift(audit);
             $scope.baseIndex--;
@@ -467,7 +470,9 @@ angular.module('openhimConsoleApp')
     $scope.startPolling = function() {
       if (!pollingInterval) {
         pollingInterval = $interval( function() {
-          $scope.pollForLatest();
+          if (lastPollingCompleted) {
+            $scope.pollForLatest();
+          }
         }, pollPeriod);
       }
     };
