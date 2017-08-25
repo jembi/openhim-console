@@ -247,6 +247,14 @@ describe('Controller: TransactionsCtrl', function() {
 
     httpBackend.when('GET', new RegExp('.*/transactions')).respond([
       {
+        '_id' : '59a010234c3c346c24d01f6e',
+        'status' : 'Successful',
+        'clientID' : '5506aed5348ac60d23840a9e',
+        'channelID' : '550933dbbc9814c82b12fd16',
+        'request' : { 'path' : '/path/successful', 'headers' : { }, 'querystring' : 'test=testing', 'body' : 'Successful', 'method' : 'GET', 'timestamp' : '2017-08-25T11:55:38.953Z' },
+        'response' : { 'timestamp' : '2017-08-25T11:56:38.953Z', 'body' : 'Body', 'headers' : {  }, 'status' : 200 }
+      },
+      {
         '_id' : '550936d307756ef72b525555',
         'status' : 'Successful',
         'clientID' : '5506aed5348ac60d23840a9e',
@@ -259,8 +267,9 @@ describe('Controller: TransactionsCtrl', function() {
     scope.pollForLatest();
     httpBackend.flush();
 
-    scope.transactions.length.should.equal(originalLength + 1);
-    scope.transactions[0]._id.should.equal('550936d307756ef72b525555');
+    scope.transactions.length.should.equal(originalLength + 2);
+    scope.transactions[0]._id.should.equal('59a010234c3c346c24d01f6e');
+    scope.transactions[1]._id.should.equal('550936d307756ef72b525555');
   });
 
   it('should update "Processing" transactions', function() {
