@@ -956,7 +956,7 @@ angular.module('openhimConsoleApp')
 
         Api.Transactions.query(filters, function(transactions) {
           lastPollingCompleted = true;
-          transactions.forEach(function(trx) {
+          transactions.reverse().forEach(function(trx) {
             $scope.transactions.unshift(trx);
             $scope.baseIndex--;
           });
