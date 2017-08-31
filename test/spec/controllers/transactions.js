@@ -239,6 +239,30 @@ describe('Controller: TransactionsCtrl', function() {
 
   });
 
+  it('should check filters are sent to the API when rerun is set to no', function() {
+    createController();
+    httpBackend.flush();
+
+    var startDate = '2015-03-09T00:00:00+00:00';
+    var endDate = '2015-03-09T00:00:00+00:00';
+
+    scope.settings.filter.startDate = moment(startDate).format();
+    scope.settings.filter.endDate = moment(endDate).format();
+
+    // search for transaction filters
+    scope.settings.filter.transaction.wasRerun = 'no';
+    scope.settings.filter.route.statusCode = '2xx';
+    scope.settings.filter.orchestration.statusCode = '2xx';
+
+    var filters = scope.returnFilters();
+
+    // filter object that gets sent through the API for query filtering
+    filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).format()+'"}');
+    filters.filters.childIDs.should.equal('{"$eq":[]}');
+    filters.filters['routes.response.status'].should.equal('2xx');
+    filters.filters['orchestrations.response.status'].should.equal('2xx');
+  });
+
   it('should prepend new transactions to the scope', function() {
     createController();
     httpBackend.flush();
