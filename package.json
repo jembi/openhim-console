@@ -53,7 +53,8 @@
   "scripts": {
     "test": "grunt test",
     "start": "grunt serve",
-    "version": "node versionManager.js && git add -u"
+    "version": "node versionManager.js && git add -u",
+    "lint": "standard app/scripts/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -68,5 +69,8 @@
   "bugs": {
     "url": "https://github.com/jembi/openhim-console/issues"
   },
-  "homepage": "http://openhim.org"
+  "homepage": "http://openhim.org",
+  "standard": {
+    "globals": [ "angular", "localStorage", "sessionStorage", "FileReader", "Blob" ]
+  }
 }

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /* global _:false */
 /* global buildBlob:false */
 /* global saveAs:false */
@@ -12,38 +12,38 @@ angular.module('openhimConsoleApp')
         transactionId: '=',
         path: '='
       },
-      link: function(scope) {
-        scope.downloadHandler = saveAs;
+      link: function (scope) {
+        scope.downloadHandler = saveAs
 
         scope.download = function () {
           var onSuccess = function (trx) {
-            var subTrx = _.get(trx, scope.path);
+            var subTrx = _.get(trx, scope.path)
 
-            var contentType = 'text/plain'; // default
+            var contentType = 'text/plain' // default
             if (subTrx.headers && subTrx.headers['content-type']) {
-              contentType = subTrx.headers['content-type'];
+              contentType = subTrx.headers['content-type']
             }
 
-            var extension;
+            var extension
             if (contentType.indexOf('json') > -1) {
-              extension = '.json';
+              extension = '.json'
             } else if (contentType.indexOf('xml') > -1) {
-              extension = '.xml';
+              extension = '.xml'
             } else {
-              extension = '.txt';
+              extension = '.txt'
             }
 
-            var bodyBlob = buildBlob(subTrx.body, contentType);
-            var filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension;
-            scope.downloadHandler(bodyBlob, filename);
-          };
+            var bodyBlob = buildBlob(subTrx.body, contentType)
+            var filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
+            scope.downloadHandler(bodyBlob, filename)
+          }
 
           var onError = function (err) {
-            console.log(err);
-          };
+            console.log(err)
+          }
 
-          Api.Transactions.get({ transactionId: scope.transactionId, filterRepresentation: 'full' }, onSuccess, onError);
-        };
+          Api.Transactions.get({ transactionId: scope.transactionId, filterRepresentation: 'full' }, onSuccess, onError)
+        }
       }
-    };
-  });
+    }
+  })

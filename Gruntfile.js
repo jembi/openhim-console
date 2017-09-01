@@ -1,5 +1,5 @@
 // Generated on 2014-04-03 using generator-angular 0.8.0
-'use strict';
+'use strict'
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -8,18 +8,16 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
-
   // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt)
 
   // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+  require('time-grunt')(grunt)
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-    
     packageVersion: grunt.file.readJSON('package.json').version,
-    
+
     // Project settings
     yeoman: {
       // configurable paths
@@ -335,13 +333,12 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
-    
-  });
 
+  })
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'connect:dist:keepalive'])
     }
 
     grunt.task.run([
@@ -351,13 +348,13 @@ module.exports = function (grunt) {
       'autoprefixer',
       'connect:livereload',
       'watch'
-    ]);
-  });
+    ])
+  })
 
   grunt.registerTask('server', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
-  });
+    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.')
+    grunt.task.run(['serve:' + target])
+  })
 
   grunt.registerTask('test', [
     'clean:server',
@@ -366,7 +363,7 @@ module.exports = function (grunt) {
     'autoprefixer',
     'connect:test',
     'karma'
-  ]);
+  ])
 
   grunt.registerTask('build', [
     'clean:dist',
@@ -382,11 +379,10 @@ module.exports = function (grunt) {
     'rev',
     'usemin',
     'htmlmin'
-  ]);
+  ])
 
   grunt.registerTask('default', [
     'test',
     'build'
-  ]);
-
-};
+  ])
+}

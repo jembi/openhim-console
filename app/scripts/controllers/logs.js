@@ -1,102 +1,102 @@
-'use strict';
+'use strict'
 /* global moment: false */
 
 angular.module('openhimConsoleApp')
   .controller('LogsCtrl', function ($scope, $location, Api) {
-    function formatLog(log) {
-      return new moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n';
+    function formatLog (log) {
+      return new (moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n')()
     }
 
-    var lastFetch;
-    var locParams = $location.search();
-    $scope.params = angular.equals({}, locParams) ? { level: 'info' } : locParams;
-    $scope.logs = '';
-    var linesAdded = 0;
+    var lastFetch
+    var locParams = $location.search()
+    $scope.params = angular.equals({}, locParams) ? { level: 'info' } : locParams
+    $scope.logs = ''
+    var linesAdded = 0
 
     if ($scope.params.from || $scope.params.until) {
-      $scope.autoupdate = false;
-      $scope.tailLogs = false;
+      $scope.autoupdate = false
+      $scope.tailLogs = false
     } else {
-      $scope.autoupdate = true;
-      $scope.tailLogs = true;
+      $scope.autoupdate = true
+      $scope.tailLogs = true
     }
 
     // fetch initial logs
-    $scope.logs = '';
-    lastFetch = new Date();
+    $scope.logs = ''
+    lastFetch = new Date()
 
-    var fromDate, untilDate;
+    var fromDate
+    var untilDate
     if ($scope.params.from && $scope.params.from.length > 0) {
-      fromDate = moment($scope.params.from).format();
+      fromDate = moment($scope.params.from).format()
     }
     if ($scope.params.until && $scope.params.until.length > 0) {
-      untilDate = moment($scope.params.until).format();
+      untilDate = moment($scope.params.until).format()
     }
 
     var localParam = {
       from: fromDate,
       until: untilDate,
       level: $scope.params.level
-    };
+    }
     if (!$scope.params.until) {
-      localParam.until = lastFetch.toISOString();
+      localParam.until = lastFetch.toISOString()
     }
     Api.Logs.query(localParam, function (results) {
       results.forEach(function (log) {
-        $scope.logs += formatLog(log);
-      });
-    });
+        $scope.logs += formatLog(log)
+      })
+    })
 
-    function fetchMoreLogs() {
-      var now = new Date();
+    function fetchMoreLogs () {
+      var now = new Date()
       var localParam = {
         from: new Date(lastFetch).toISOString(),
         until: now.toISOString(),
         level: $scope.params.level
-      };
-      lastFetch = now;
+      }
+      lastFetch = now
       Api.Logs.query(localParam, function (results) {
         results.forEach(function (log) {
-          $scope.logs += formatLog(log);
-          linesAdded++;
+          $scope.logs += formatLog(log)
+          linesAdded++
           if (linesAdded > 10000) {
             // Prevent logs string from growing too much, remove from front
-            $scope.logs = $scope.logs.substring($scope.logs.indexOf('\n') + 1);
+            $scope.logs = $scope.logs.substring($scope.logs.indexOf('\n') + 1)
           }
-        });
-      });
+        })
+      })
     }
 
-    var autoUpdateInterval = setInterval(function() {
+    var autoUpdateInterval = setInterval(function () {
       if ($scope.autoupdate) {
-        fetchMoreLogs();
+        fetchMoreLogs()
       }
-    }, 1000);
+    }, 1000)
 
     var scrollInterval = setInterval(function () {
       if ($scope.tailLogs === true) {
-        var textarea = document.getElementById('textarea');
+        var textarea = document.getElementById('textarea')
         // scroll to bottom
-        textarea.scrollTop = textarea.scrollHeight;
+        textarea.scrollTop = textarea.scrollHeight
       }
-    }, 50);
+    }, 50)
 
     $scope.reload = function () {
       // sync params with location, this reloads the controller
-      $location.search($scope.params);
-    };
+      $location.search($scope.params)
+    }
 
     $scope.$on('$locationChangeStart', function () {
       // clear existing intervals whenever the location is changed
-      clearInterval(autoUpdateInterval);
-      clearInterval(scrollInterval);
-    });
+      clearInterval(autoUpdateInterval)
+      clearInterval(scrollInterval)
+    })
 
-    $scope.reset = function() {
-      delete $scope.params.from;
-      delete $scope.params.until;
-      $scope.params.level = 'info';
-      $scope.reload();
-    };
-
-  });
+    $scope.reset = function () {
+      delete $scope.params.from
+      delete $scope.params.until
+      $scope.params.level = 'info'
+      $scope.reload()
+    }
+  })

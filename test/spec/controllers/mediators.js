@@ -1,30 +1,33 @@
-'use strict';
+'use strict'
 /* jshint expr: true */
 /* global sinon: false */
 /* global moment: false */
 
 describe('Controller: MediatorsCtrl', function () {
-
   // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
+  beforeEach(module('openhimConsoleApp'))
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
       $provide.constant('config', {
-        'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy',
+        'protocol': 'https',
+        'host': 'localhost',
+        'port': 8080,
+        'title': 'Title',
+        'footerTitle': 'FooterTitle',
+        'footerPoweredBy': 'FooterPoweredBy',
         'mediatorLastHeartbeatWarningSeconds': 60,
         'mediatorLastHeartbeatDangerSeconds': 120
-      });
-    });
-  });
+      })
+    })
+  })
 
-  var scope, createController, httpBackend, modalSpy;
+  var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
-
-    httpBackend = $httpBackend;
+    httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
       {
@@ -61,55 +64,54 @@ describe('Controller: MediatorsCtrl', function () {
         ],
         'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }],
         '_lastHeartbeat': moment().subtract(3, 'minutes').toDate(),
-        '_uptime': 5443200 //over 2 months
+        '_uptime': 5443200 // over 2 months
       }
-    ]);
+    ])
 
-    modalSpy = sinon.spy($modal, 'open');
+    modalSpy = sinon.spy($modal, 'open')
 
-    createController = function() {
-      scope = $rootScope.$new();
-      return $controller('MediatorsCtrl', { $scope: scope });
-    };
+    createController = function () {
+      scope = $rootScope.$new()
+      return $controller('MediatorsCtrl', { $scope: scope })
+    }
+  }))
 
-  }));
-
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  afterEach(function () {
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  })
 
   it('should attach a list of mediators to the scope', function () {
-    createController();
-    httpBackend.flush();
-    scope.mediators.length.should.equal(2);
+    createController()
+    httpBackend.flush()
+    scope.mediators.length.should.equal(2)
 
-    scope.mediators[0].urn.should.equal('AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE');
-    scope.mediators[0].name.should.equal('Test 1 Mediator');
-    scope.mediators[0].description.should.equal('Test 1 Description');
-    scope.mediators[0].version.should.equal('0.0.1');
-    scope.mediators[0].endpoints.length.should.equal(1);
+    scope.mediators[0].urn.should.equal('AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')
+    scope.mediators[0].name.should.equal('Test 1 Mediator')
+    scope.mediators[0].description.should.equal('Test 1 Description')
+    scope.mediators[0].version.should.equal('0.0.1')
+    scope.mediators[0].endpoints.length.should.equal(1)
 
-    scope.mediators[1].urn.should.equal('EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA');
-    scope.mediators[1].name.should.equal('Test 2 Mediator');
-    scope.mediators[1].description.should.equal('Test 2 Description');
-    scope.mediators[1].version.should.equal('0.1.2');
-    scope.mediators[1].endpoints.length.should.equal(2);
-  });
+    scope.mediators[1].urn.should.equal('EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA')
+    scope.mediators[1].name.should.equal('Test 2 Mediator')
+    scope.mediators[1].description.should.equal('Test 2 Description')
+    scope.mediators[1].version.should.equal('0.1.2')
+    scope.mediators[1].endpoints.length.should.equal(2)
+  })
 
   it('should calculate the lastHeartbeatStatus field based on the last heartbeat', function () {
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.mediators[0].lastHeartbeatStatus.should.equal('success');
-    scope.mediators[1].lastHeartbeatStatus.should.equal('danger');
-  });
+    scope.mediators[0].lastHeartbeatStatus.should.equal('success')
+    scope.mediators[1].lastHeartbeatStatus.should.equal('danger')
+  })
 
   it('should set the uptimeDisplay field with a human friendly display string', function () {
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.mediators[0].uptimeDisplay.should.equal('an hour');
-    scope.mediators[1].uptimeDisplay.should.equal('2 months');
-  });
-});
+    scope.mediators[0].uptimeDisplay.should.equal('an hour')
+    scope.mediators[1].uptimeDisplay.should.equal('2 months')
+  })
+})
