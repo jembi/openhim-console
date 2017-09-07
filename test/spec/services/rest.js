@@ -19,6 +19,6 @@ describe('Service: Api', function () {
   }))
 
   it('should define an Api service', function () {
-    Api.should.be.ok
+    Api.should.be.ok()
   })
 })

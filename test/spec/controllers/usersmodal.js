@@ -89,7 +89,7 @@ describe('Controller: UsersModalCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.user.should.be.ok
+    scope.user.should.be.ok()
   })
 
   it('should run validateFormUsers() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
@@ -169,7 +169,7 @@ describe('Controller: UsersModalCtrl', function () {
 
     scope.submitFormUsers()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.user.$save.should.be.called
+    scope.user.$save.should.have.been.called()
   })
 
   it('should run submitFormUsers() and check any validation errors - TRUE - Should update the record', function () {
@@ -193,7 +193,7 @@ describe('Controller: UsersModalCtrl', function () {
 
     scope.submitFormUsers()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.user.$update.should.be.called
+    scope.user.$update.should.have.been.called()
 
     scope.user.should.have.property('passwordSalt')
     scope.user.should.have.property('passwordHash')

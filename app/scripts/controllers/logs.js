@@ -4,7 +4,7 @@
 angular.module('openhimConsoleApp')
   .controller('LogsCtrl', function ($scope, $location, Api) {
     function formatLog (log) {
-      return new (moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n')()
+      return moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n'
     }
 
     var lastFetch

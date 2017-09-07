@@ -122,7 +122,7 @@ describe('Controller: CertificatesCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.trustedCertificates[0])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 

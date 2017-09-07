@@ -10,7 +10,7 @@ angular.module('openhimConsoleApp')
 
       if (!mediator._lastHeartbeat) {
         mediator.lastHeartbeatStatus = 'never'
-        mediator.lastHeartbeatDisplayExplain = "No heartbeats have ever been received from this mediator. Perhaps it doesn't support heartbeats."
+        mediator.lastHeartbeatDisplayExplain = 'No heartbeats have ever been received from this mediator. Perhaps it doesn\'t support heartbeats.'
       } else {
         if (secondsDiffNow() < config.mediatorLastHeartbeatWarningSeconds) {
           mediator.lastHeartbeatStatus = 'success'

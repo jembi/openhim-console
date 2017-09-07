@@ -59,7 +59,7 @@ describe('Controller: ContactGroupsCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.contactGroups[0])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -68,7 +68,8 @@ describe('Controller: ContactGroupsCtrl', function () {
     httpBackend.expectGET('views/contactGroupsModal.html').respond(200, '')
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.addContactGroup()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
+
     httpBackend.flush()
   })
 
@@ -77,7 +78,7 @@ describe('Controller: ContactGroupsCtrl', function () {
     httpBackend.expectGET('views/contactGroupsModal.html').respond(200, '')
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.editContactGroup()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 })

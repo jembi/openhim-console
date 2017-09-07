@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 'use strict'
 /* jshint expr: true */
 
@@ -33,8 +34,8 @@ describe('Controller: ExportImportCtrl', function () {
       { _id: '2335fe9d8b6addd83l559hu8', 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] }
     ],
     'Mediators': [
-      { _id: '4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1', 'name': 'Test 1 Mediator', 'description': 'Test 1 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]},
-      { _id: '1233fe9d8b6addd83l55tty6', 'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA', 'version': '0.1.2', 'name': 'Test 2 Mediator', 'description': 'Test 2 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]}
+      {_id: '4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1', 'name': 'Test 1 Mediator', 'description': 'Test 1 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]},
+      {_id: '1233fe9d8b6addd83l55tty6', 'urn': 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA', 'version': '0.1.2', 'name': 'Test 2 Mediator', 'description': 'Test 2 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]}
     ]
   }]
 

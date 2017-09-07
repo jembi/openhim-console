@@ -41,8 +41,8 @@ describe('Controller: LoginCtrl', function () {
       'passwordSalt': 'test-salt',
       'surname': 'test',
       'groups': [ 'admin' ],
-      'settings': { 'filter': { 'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
-        'list': { 'tabview': 'new'} }
+      'settings': { 'filter': {'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
+        'list': {'tabview': 'new'} }
     }, {
       '_id': '349274c136f2eb682aodye4c',
       'email': 'root@openhim.org',
@@ -52,8 +52,8 @@ describe('Controller: LoginCtrl', function () {
       'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
       'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
       'groups': [ 'admin' ],
-      'settings': { 'filter': { 'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
-        'list': { 'tabview': 'new'} }
+      'settings': { 'filter': {'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
+        'list': {'tabview': 'new'} }
     })
 
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
@@ -104,7 +104,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
     })
 
     // process correct credentials and log user and create the session - Testing Complete Process
@@ -116,7 +116,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       scope.loginEmail = 'test@user.org'
       scope.loginPassword = 'test-password'
@@ -132,7 +132,7 @@ describe('Controller: LoginCtrl', function () {
       // user should exist when vald login details supplied
       user = login.getLoggedInUser()
 
-      user.should.exist
+      user.should.exist()
       user.should.have.property('email', 'test@user.org')
       user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
     })
@@ -148,7 +148,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -182,7 +182,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -216,7 +216,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.to.empty()
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -250,7 +250,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -272,7 +272,7 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.flush()
 
       var consoleSession = localStorage.getItem('consoleSession')
-      consoleSession.should.exist
+      consoleSession.should.exist()
 
       scope.alerts.login.length.should.equal(2)
       scope.alerts.login[0].type.should.equal('success')
@@ -291,7 +291,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       // check if login credentials valid and log the user in - User should not be logged in
       scope.checkLoginCredentials('incorrect@user.org', 'incorrect-password')
@@ -305,7 +305,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
     })
 
     // process the checkLoginCredentials() function - user should be valid and logged in - session created
@@ -316,7 +316,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty
+      user.should.be.empty()
 
       // check if login credentials valid and log the user in - create user session
       scope.checkLoginCredentials('test@user.org', 'test-password')
@@ -326,7 +326,7 @@ describe('Controller: LoginCtrl', function () {
       // user should exist when vald login details supplied
       user = login.getLoggedInUser()
 
-      user.should.exist
+      user.should.exist()
       user.should.have.property('email', 'test@user.org')
       user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
     })
@@ -352,8 +352,8 @@ describe('Controller: LoginCtrl', function () {
 
       // user should exist when vald login details supplied
       var user = login.getLoggedInUser()
-      user.should.exist
-      user.should.be.empty
+      user.should.exist()
+      user.should.be.empty()
     })
 
     // process the createUserSession() function and create user session successfully
@@ -366,7 +366,7 @@ describe('Controller: LoginCtrl', function () {
         var user = login.getLoggedInUser()
 
         // check that user is created
-        user.should.exist
+        user.should.exist()
         user.should.have.property('email', 'test@user.org')
         user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
 
@@ -374,7 +374,7 @@ describe('Controller: LoginCtrl', function () {
         scope.createUserSession('test@user.org')
 
         var consoleSession = localStorage.getItem('consoleSession')
-        consoleSession.should.exist
+        consoleSession.should.exist()
       })
 
       httpBackend.flush()

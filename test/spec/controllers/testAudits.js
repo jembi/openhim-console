@@ -14,7 +14,7 @@ describe('Controller: AuditsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy, auditsEndpoint
+  var scope, createController, httpBackend, modalSpy, auditsEndpoint // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {

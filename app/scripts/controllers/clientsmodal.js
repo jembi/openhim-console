@@ -130,7 +130,7 @@ angular.module('openhimConsoleApp')
 
     var error = function (err) {
       // add the success message
-      Alerting.AlertAddMsg('client', 'danger', "An error has occurred while saving the clients' details: #" + err.status + ' - ' + err.data)
+      Alerting.AlertAddMsg('client', 'danger', `An error has occurred while saving the clients' details: #` + err.status + ' - ' + err.data)
       notifyUser()
     }
 

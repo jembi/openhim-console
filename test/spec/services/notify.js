@@ -23,7 +23,7 @@ describe('Service: Notify', function () {
   }))
 
   it('should broadcast an event', function () {
-    Notify.should.be.ok
+    Notify.should.be.ok()
     Notify.notify('testEvent')
     rootScope.$broadcast.should.have.been.calledWith('testEvent')
   })

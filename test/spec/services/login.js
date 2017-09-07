@@ -54,7 +54,7 @@ describe('Service: login', function () {
 
     var user = login.getLoggedInUser()
 
-    user.should.exist
+    user.should.exist()
     user.should.have.property('email', 'test@user.org')
     user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
   })
@@ -62,7 +62,7 @@ describe('Service: login', function () {
   it('should logout a user', function () {
     login.logout()
     var user = login.getLoggedInUser()
-    ;(user === null).should.be.true
+    ;expect((user === null)).to.be.true()
   })
 
   it('should have a timediff', function () {
@@ -73,13 +73,13 @@ describe('Service: login', function () {
   })
 
   it('should check if a user is currently logged in', function () {
-    login.isLoggedIn().should.be.false
+    expect(login.isLoggedIn()).to.be.false()
 
     login.login('test@user.org', 'test-password', function () {})
     httpBackend.flush()
 
-    login.isLoggedIn().should.be.true
+    expect(login.isLoggedIn()).to.be.true()
     login.logout()
-    login.isLoggedIn().should.be.false
+    expect(login.isLoggedIn()).to.be.false()
   })
 })

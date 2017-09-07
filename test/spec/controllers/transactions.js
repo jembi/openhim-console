@@ -14,7 +14,7 @@ describe('Controller: TransactionsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -51,7 +51,7 @@ describe('Controller: TransactionsCtrl', function () {
           },
           'limit': 70
         },
-        'list': { 'tabview': 'new'}
+        'list': {'tabview': 'new'}
       }
     })
 
@@ -145,8 +145,8 @@ describe('Controller: TransactionsCtrl', function () {
     scope.settings.filter.limit.should.equal(20)
     scope.settings.filter.startDate.should.equal('')
     scope.settings.filter.endDate.should.equal('')
-    scope.settings.filter.orchestration.should.be.empty
-    scope.settings.filter.route.should.be.empty
+    scope.settings.filter.orchestration.should.be.empty()
+    scope.settings.filter.route.should.be.empty()
     scope.settings.filter.transaction.wasRerun.should.equal('dont-filter')
     scope.settings.list.tabview.should.equal('same')
     scope.settings.list.autoupdate.should.equal(true)
@@ -167,8 +167,8 @@ describe('Controller: TransactionsCtrl', function () {
     scope.settings.filter.limit.should.equal(70)
     scope.settings.filter.startDate.should.equal('2016-08-16')
     scope.settings.filter.endDate.should.equal('2016-08-17')
-    scope.settings.filter.orchestration.should.be.empty
-    scope.settings.filter.route.should.be.empty
+    scope.settings.filter.orchestration.should.be.empty()
+    scope.settings.filter.route.should.be.empty()
     scope.settings.filter.transaction.wasRerun.should.equal('yes')
     scope.settings.filter.transaction.status.should.equal('Failed')
 

@@ -97,7 +97,7 @@ describe('Controller: UsersCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.users[0])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -105,7 +105,7 @@ describe('Controller: UsersCtrl', function () {
     createController()
     scope.addUser()
 
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
 
     httpBackend.flush()
   })
@@ -114,7 +114,7 @@ describe('Controller: UsersCtrl', function () {
     createController()
     scope.editUser()
 
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
 
     httpBackend.flush()
   })

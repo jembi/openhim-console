@@ -37,7 +37,7 @@ describe('Controller: ExportImportModalCtrl', function () {
       {'model': 'Clients', 'record': {'_id': '4567fe9d8b6addd83l559ff8', 'clientID': 'test2', 'clientDomain': 'test2.openhim.org', 'name': 'Test 2', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'}, 'status': 'Conflict', 'message': '', 'uid': 'test2'},
       {'model': 'Users', 'record': { '_id': '6380fe9d8b6addd83l559fs7', 'firstname': 'Super', 'surname': 'User', 'email': 'super@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['admin'] }, 'status': 'Conflict', 'message': '', 'uid': 'super@openim.org'},
       {'model': 'Users', 'record': { '_id': '1569fe9d8b6addd83l559fd3', 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited'] }, 'status': 'Valid', 'message': '', 'uid': 'normal@openim.org'},
-      {'model': 'Mediators', 'record': { '_id': '4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1', 'name': 'Test 1 Mediator', 'description': 'Test 1 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]}, 'status': 'Conflict', 'message': '', 'uid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'}
+      {'model': 'Mediators', 'record': {'_id': '4444fe9d8b6addd83l5595555', 'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', 'version': '0.0.1', 'name': 'Test 1 Mediator', 'description': 'Test 1 Description', 'defaultChannelConfig': [{ 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }], 'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]}, 'status': 'Conflict', 'message': '', 'uid': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'}
     ]
 
     createController = function () {
@@ -120,9 +120,7 @@ describe('Controller: ExportImportModalCtrl', function () {
       return item.should.have.property('action', 'duplicate')
     })
 
-    scope.validateImport(function (result) {
-      result.should.equal(true)
-    })
+    scope.validateImport().should.equal(true)
   })
 
   it('should execute validateImportFile() and return FALSE - errors', function () {
@@ -137,9 +135,7 @@ describe('Controller: ExportImportModalCtrl', function () {
       return item.should.have.property('action', 'duplicate')
     })
 
-    scope.validateImport(function (result) {
-      result.should.equal(false)
-    })
+    scope.validateImport().should.equal(false)
   })
 
   it('should execute checkIfAllOverwrites() and set selectedAll to true', function () {

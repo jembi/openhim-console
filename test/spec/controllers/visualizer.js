@@ -192,7 +192,7 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should add visualizer settings to the scope, defaulting to a user last viewed visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } })
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ 'email': 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } })
 
     createController()
     httpBackend.flush()
@@ -242,15 +242,15 @@ describe('Controller: VisualizerCtrl', function () {
         }
       }
     })
-    var vis = angular.copy(visualizers[0], vis)
+    var vis = angular.copy(visualizers[0], vis)  // eslint-disable-line no-use-before-define
     vis.$remove = sinon.spy()
 
     createController()
     httpBackend.flush()
 
     scope.confirmRemoveVis(vis, 0)
-    modalSpy.should.be.calledOnce
-    vis.$remove.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
+    vis.$remove.should.have.been.calledOnce()
     scope.visualizers.length.should.be.equal(1)
     scope.visualizers[0].should.have.property('name', 'Test Visualizer 2')
   })
@@ -267,15 +267,15 @@ describe('Controller: VisualizerCtrl', function () {
         }
       }
     })
-    var vis = angular.copy(visualizers[0], vis)
+    var vis = angular.copy(visualizers[0], vis)  // eslint-disable-line no-use-before-define
     vis.$remove = sinon.spy()
 
     createController()
     httpBackend.flush()
 
     scope.confirmRemoveVis(vis, 0)
-    modalSpy.should.be.calledOnce
-    vis.$remove.should.not.be.called
+    modalSpy.should.have.been.calledOnce()
+    vis.$remove.should.not.have.been.called()
     scope.visualizers.length.should.be.equal(2)
     scope.visualizers[0].should.have.property('name', 'Test Visualizer 1')
   })
@@ -297,7 +297,7 @@ describe('Controller: VisualizerCtrl', function () {
     httpBackend.flush()
 
     scope.addVisualiser()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
   })
 
   it('should open a modal to edit a visualizer', function () {
@@ -309,7 +309,7 @@ describe('Controller: VisualizerCtrl', function () {
     httpBackend.flush()
 
     scope.editVisualiser()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
   })
 
   it('should open a modal to duplicate a visualizer', function () {
@@ -321,6 +321,6 @@ describe('Controller: VisualizerCtrl', function () {
     httpBackend.flush()
 
     scope.duplicateVisualiser()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
   })
 })

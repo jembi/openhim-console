@@ -54,8 +54,8 @@ describe('Controller: ChannelsModalCtrl', function () {
 
     // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
-      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+      {'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
+      {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels/.+')).respond({})
@@ -96,14 +96,14 @@ describe('Controller: ChannelsModalCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
   })
 
   it('should create a duplicate channel from an existing channel', function () {
     createController(null, 'test')
     httpBackend.flush()
 
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
     scope.channel.should.not.have.property('_id')
     scope.channel.should.not.have.property('name')
   })
@@ -200,7 +200,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
 
-    scope.channel.$save.should.be.called
+    scope.channel.$save.should.have.been.called()
   })
 
   it('should run submitFormChannels() and add the regex delimiters to the URL Pattern', function () {
@@ -224,7 +224,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
     scope.channel.should.have.property('urlPattern', '^sample/api$')
-    scope.channel.$save.should.be.called
+    scope.channel.$save.should.have.been.called()
   })
 
   it('should run submitFormChannels() and check any validation errors - TRUE - Should update the record', function () {
@@ -251,7 +251,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.channel.$update.should.be.called
+    scope.channel.$update.should.have.been.called()
 
     scope.channel.should.have.property('name', 'ChannelName')
     scope.channel.should.have.property('urlPattern', 'sample/api')
@@ -265,7 +265,7 @@ describe('Controller: ChannelsModalCtrl', function () {
 describe('Controller: channelBasicInfoCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
-  var scope, createController, createControllerParent, q
+  var scope, createController, createControllerParent, q // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
@@ -294,7 +294,7 @@ describe('Controller: channelBasicInfoCtrl', function () {
     scope.update = false
 
     createController()
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
 
     scope.channel.type.should.equal('http')
     scope.channel.authType.should.equal('private')
@@ -338,7 +338,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
       scope.channel.urlPattern = '^/example/path$'
 
       createController()
-      scope.channel.should.be.ok
+      scope.channel.should.be.ok()
 
       scope.channel.urlPattern.should.equal('/example/path')
     })
@@ -355,7 +355,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
       scope.channel.matchContentValue = 'JSONMatchingValue'
       createController()
 
-      scope.channel.should.be.ok
+      scope.channel.should.be.ok()
       scope.matching.contentMatching.should.equal('JSON matching')
     })
   })
@@ -407,7 +407,7 @@ describe('Controller: channelUserAccessCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
 
     // Each unique role
     scope.taglistUserRoleOptions.length.should.equal(3)
@@ -417,7 +417,7 @@ describe('Controller: channelUserAccessCtrl', function () {
 describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
-  var scope, createController, createControllerParent, q
+  var scope, createController, createControllerParent, q // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
@@ -446,7 +446,7 @@ describe('Controller: channelDataControlCtrl', function () {
     scope.update = false
     createController()
 
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
     scope.channel.requestBody.should.equal(true)
     scope.channel.responseBody.should.equal(true)
   })
@@ -491,8 +491,8 @@ describe('Controller: channelRoutesCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
-      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+      {'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
+      {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ])
 
     scope = $rootScope.$new()
@@ -524,7 +524,7 @@ describe('Controller: channelRoutesCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
 
     scope.mediatorRoutes.length.should.equal(3)
     scope.trustedCerts.length.should.equal(2)
@@ -707,7 +707,7 @@ describe('Controller: channelRoutesCtrl', function () {
         primary: true
       }
     ]
-    scope.multiplePrimaries().should.be.true
+    expect(scope.multiplePrimaries()).to.be.true()
   })
 
   it('should return false if there is enabled primary route and multiple disabled primary routes', function () {
@@ -738,7 +738,7 @@ describe('Controller: channelRoutesCtrl', function () {
         status: 'disabled'
       }
     ]
-    scope.multiplePrimaries().should.be.false
+    expect(scope.multiplePrimaries()).to.be.false()
   })
 
   it('should return false if there is only one primary route', function () {
@@ -767,7 +767,7 @@ describe('Controller: channelRoutesCtrl', function () {
         primary: true
       }
     ]
-    scope.multiplePrimaries().should.be.false
+    expect(scope.multiplePrimaries()).to.be.false()
   })
 })
 
@@ -800,7 +800,7 @@ describe('Controller: channelAlertsCtrl', function () {
   it('should create a new channel if this is not an update', function () {
     createControllerParent()
     createController()
-    scope.channel.should.be.ok
+    scope.channel.should.be.ok()
   /* STILL NEEDED */
   })
 })

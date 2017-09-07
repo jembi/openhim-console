@@ -22,7 +22,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   var testMediator = {
     'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',

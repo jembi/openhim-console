@@ -1,3 +1,4 @@
+/* global describe,beforeEach,inject, it, afterEach */
 'use strict'
 /* jshint expr: true */
 /* global moment: false */

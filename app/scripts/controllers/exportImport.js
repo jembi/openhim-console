@@ -122,7 +122,7 @@ angular.module('openhimConsoleApp')
 
       Alerting.AlertReset()
       if (exportData && exportData.Keystore && exportData.Keystore.length > 0) {
-        Alerting.AlertAddMsg('top', 'warning', "Warning: The server's TLS private key will be exported and should be protected!")
+        Alerting.AlertAddMsg('top', 'warning', `Warning: The server's TLS private key will be exported and should be protected!`)
       }
 
       // create the export script as a blob file

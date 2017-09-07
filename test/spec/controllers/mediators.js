@@ -23,7 +23,7 @@ describe('Controller: MediatorsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {

@@ -173,7 +173,7 @@ describe('Controller: ProfileCtrl', function () {
 
     // Should submit the form with supplied values annd save the user with new password salt/hash
     scope.submitFormProfile()
-    scope.user.$update.should.be.called
+    scope.user.$update.should.have.been.called()
     scope.ngError.should.have.property('hasErrors', false)
 
     scope.user.should.have.property('passwordSalt')

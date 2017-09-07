@@ -66,21 +66,21 @@ describe('Controller: ClientsCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmClientDelete(scope.clients[0])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
   it('should open a modal to add a client', function () {
     createController()
     scope.addClient()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
   it('should open a modal to edit a client', function () {
     createController()
     scope.editClient()
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -232,7 +232,7 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmRoleDelete(role)
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 })

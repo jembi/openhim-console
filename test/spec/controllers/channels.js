@@ -76,8 +76,8 @@ describe('Controller: ChannelsCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
-      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+      {'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
+      {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ])
 
     modalSpy = sinon.spy($modal, 'open')
@@ -106,7 +106,7 @@ describe('Controller: ChannelsCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.channels[0])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -116,7 +116,7 @@ describe('Controller: ChannelsCtrl', function () {
 
     httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmRestore(scope.channels[2])
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -124,7 +124,7 @@ describe('Controller: ChannelsCtrl', function () {
     createController()
     scope.addChannel()
 
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -132,7 +132,7 @@ describe('Controller: ChannelsCtrl', function () {
     createController()
     scope.editChannel()
 
-    modalSpy.should.be.calledOnce
+    modalSpy.should.have.been.calledOnce()
     httpBackend.flush()
   })
 
@@ -171,8 +171,8 @@ describe('Controller: ChannelsCtrl', function () {
     scope.updateChannelPriority(scope.channels[2], 'down')
     scope.channels[2].should.have.property('priority', 10)
 
-    scope.channels[0].$update.should.be.called
-    scope.channels[1].$update.should.be.called
-    scope.channels[2].$update.should.be.called
+    scope.channels[0].$update.should.have.been.called()
+    scope.channels[1].$update.should.have.been.called()
+    scope.channels[2].$update.should.have.been.called()
   })
 })

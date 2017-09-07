@@ -33,9 +33,9 @@ describe('Service: Authinterceptor', function () {
     config = Authinterceptor.request(config)
 
     config.headers['auth-username'].should.be.eql(u.email)
-    config.headers['auth-ts'].should.exist
-    config.headers['auth-salt'].should.exist
-    config.headers['auth-token'].should.exist
+    config.headers['auth-ts'].should.exist()
+    config.headers['auth-salt'].should.exist()
+    config.headers['auth-token'].should.exist()
 
     var sha512 = CryptoJS.algo.SHA512.create()
     sha512.update(u.passwordHash)

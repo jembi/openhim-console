@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 'use strict'
 /* jshint expr: true */
 /* global sinon: false */
@@ -13,7 +14,7 @@ describe('Controller: AboutCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   var coreResponse = {
     'currentCoreVersion': '3.0.0',
