@@ -329,10 +329,10 @@ angular.module('openhimConsoleApp')
       if ( valueNotEmpty(txWasRerun) === true ) {
 
         // if wasRerun is 'yes' - query all transactions that have child IDs
-        if ( txWasRerun === 'yes' ){
-          filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': true } );
-        }else if ( txWasRerun === 'no' ){
-          filtersObject.filters['childIDs.0'] = JSON.stringify( { '$exists': false } );
+        if ( txWasRerun === 'yes' ) {
+          filtersObject.filters.childIDs = JSON.stringify({ '$exists': true, '$ne': [] });
+        } else if ( txWasRerun === 'no' ) {
+          filtersObject.filters.childIDs = JSON.stringify({ '$eq': [] });
         }
       }
 
