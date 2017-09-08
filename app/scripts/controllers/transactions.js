@@ -737,7 +737,7 @@ angular.module('openhimConsoleApp')
       }
 
       var error = function (err) {
-        Alerting.AlertAddMsg('top', 'danger', `An error has occurred while fetching the users' filters: #` + err.status + ' - ' + err.data)
+        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching the users\' filters: #' + err.status + ' - ' + err.data)
       }
 
       Api.Users.get({ email: sessionUserEmail }, success, error)
@@ -752,7 +752,7 @@ angular.module('openhimConsoleApp')
       }
 
       var error = function (err) {
-        Alerting.AlertAddMsg('top', 'danger', `An error has occurred while saving the users' filters: #` + err.status + ' - ' + err.data)
+        Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' filters: #' + err.status + ' - ' + err.data)
       }
 
       var updateUser = function (user) {

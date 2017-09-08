@@ -96,7 +96,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
   var error = function (err) {
     // add the success message
-    Alerting.AlertAddMsg('top', 'danger', `An error has occurred while saving the channels' details: #` + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
 

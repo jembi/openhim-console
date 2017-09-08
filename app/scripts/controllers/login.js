@@ -128,7 +128,7 @@ angular.module('openhimConsoleApp')
               $scope.resetSuccess = true
 
               Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.')
-              Alerting.AlertAddMsg('login', 'success', `You will be redirected to the 'Transactions' page shortly.`)
+              Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.')
               $timeout(function () {
                 // redirect user to landing page (transactions)
                 $window.location = '#/transactions'

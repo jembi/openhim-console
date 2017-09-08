@@ -162,7 +162,7 @@ angular.module('openhimConsoleApp')
     var editRoleCallback = function (err) {
       if (err) {
         Alerting.AlertReset()
-        return Alerting.AlertAddMsg('role', 'danger', `An error has occurred while saving the roles' details: #` + err.status + ' - ' + err.data)
+        return Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while saving the roles\' details: #' + err.status + ' - ' + err.data)
       }
       Alerting.AlertReset()
       Notify.notify('clientsChanged')
