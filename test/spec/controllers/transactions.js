@@ -14,7 +14,7 @@ describe('Controller: TransactionsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -221,6 +221,40 @@ describe('Controller: TransactionsCtrl', function () {
     var filters = scope.returnFilters()
 
     // filter object that gets sent through the API for query filtering
+    filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).format()+'"}');
+    filters.filters.status.should.equal('Successful');
+    filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8');
+    filters.filters['response.status'].should.equal('2xx');
+    filters.filters['request.path'].should.equal('/path');
+    filters.filters.childIDs.should.equal('{"$exists":true,"$ne":[]}');
+    filters.filters['routes.response.status'].should.equal('2xx');
+    filters.filters['orchestrations.response.status'].should.equal('2xx');
+
+  });
+
+  it('should check filters are sent to the API when rerun is set to no', function() {
+    createController();
+    httpBackend.flush();
+
+    var startDate = '2015-03-09T00:00:00+00:00';
+    var endDate = '2015-03-09T00:00:00+00:00';
+
+    scope.settings.filter.startDate = moment(startDate).format();
+    scope.settings.filter.endDate = moment(endDate).format();
+
+    // search for transaction filters
+    scope.settings.filter.transaction.wasRerun = 'no';
+    scope.settings.filter.route.statusCode = '2xx';
+    scope.settings.filter.orchestration.statusCode = '2xx';
+
+    var filters = scope.returnFilters();
+
+    // filter object that gets sent through the API for query filtering
+    filters.filters['request.timestamp'].should.equal('{"$gte":"'+moment(startDate).format()+'","$lte":"'+moment(endDate).format()+'"}');
+    filters.filters.childIDs.should.equal('{"$eq":[]}');
+    filters.filters['routes.response.status'].should.equal('2xx');
+    filters.filters['orchestrations.response.status'].should.equal('2xx');
+  });
     filters.filters['request.timestamp'].should.equal('{"$gte":"' + moment(startDate).format() + '","$lte":"' + moment(endDate).format() + '"}')
     filters.filters.status.should.equal('Successful')
     filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8')
