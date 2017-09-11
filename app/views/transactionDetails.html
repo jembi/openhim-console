@@ -132,10 +132,10 @@
                   <a data-toggle="collapse" href="#req-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
                   <div id="req-headers-table" class="panel panel-default collapse">
                     <div class="panel-body">
-                      <table class="table-condensed table-borderless">
+                      <table class="table-condensed table-borderless" style="table-layout: fixed; width: 100%">
                         <tr ng-repeat="(key, property) in transactionDetails.request.headers">
                           <th>{{key}}: </th>
-                          <td>{{property}}</td>
+                          <td style="word-wrap: break-word">{{property}}</td>
                         </tr>
                       </table>
                     </div>
@@ -174,10 +174,10 @@
                   <a data-toggle="collapse" href="#res-headers-table" ng-if="channel.type === 'http'">Show Headers <i class="glyphicon glyphicon-chevron-down"></i></a>
                   <div id="res-headers-table" class="panel panel-default collapse">
                     <div class="panel-body">
-                      <table class="table-condensed table-borderless">
+                      <table class="table-condensed table-borderless" style="table-layout: fixed; width: 100%">
                         <tr ng-repeat="(key, property) in transactionDetails.response.headers">
                           <th>{{key}}: </th>
-                          <td>{{property}}</td>
+                          <td style="word-wrap: break-word">{{property}}</td>
                         </tr>
                       </table>
                     </div>
