@@ -1,25 +1,23 @@
-'use strict';
+'use strict'
 /* jshint expr: true */
 /* global sinon: false */
 
 describe('Controller: AuditDetailsCtrl', function () {
-
   // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
+  beforeEach(module('openhimConsoleApp'))
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
-    });
-  });
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+    })
+  })
 
-  var scope, createController, httpBackend, modalSpy;
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
-
-    httpBackend = $httpBackend;
+    httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/audits/538ed0867962a27d5df259b0')).respond({
       '_id': '538ed0867962a27d5df259b0',
@@ -50,32 +48,30 @@ describe('Controller: AuditDetailsCtrl', function () {
           'participantObjectIDTypeCode': { 'code': '2', 'displayName': 'PatientNumber', 'codeSystemName': 'RFC-3881' }
         }
       ]
-    });
+    })
 
-    $httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'_id': '539846c240f2eb682ffeca4b', 'email': 'test@user.org', 'firstname': 'test', 'surname': 'test', 'groups': ['admin', 'test', 'other']});
+    $httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'_id': '539846c240f2eb682ffeca4b', 'email': 'test@user.org', 'firstname': 'test', 'surname': 'test', 'groups': ['admin', 'test', 'other']})
 
-    modalSpy = sinon.spy($modal, 'open');
+    modalSpy = sinon.spy($modal, 'open')
 
-    createController = function() {
-      scope = $rootScope.$new();
-      return $controller('AuditDetailsCtrl', { $scope: scope, $routeParams: { auditId: '538ed0867962a27d5df259b0' } });
-    };
+    createController = function () {
+      scope = $rootScope.$new()
+      return $controller('AuditDetailsCtrl', { $scope: scope, $routeParams: { auditId: '538ed0867962a27d5df259b0' } })
+    }
+  }))
 
-  }));
-
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  afterEach(function () {
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  })
 
   it('should attach a single audit to the scope', function () {
-    createController();
-    httpBackend.flush();
-    scope.auditDetails.eventIdentification.eventDateTime.should.equal('2015-02-17T15:38:25.282+02:00');
-    scope.auditDetails.activeParticipant.length.should.equal(1);
-    scope.auditDetails.activeParticipant[0].userID.should.equal('pix|pix');
-    scope.auditDetails.auditSourceIdentification.auditSourceID.should.equal('openhim');
-    scope.auditDetails.participantObjectIdentification.length.should.equal(1);
-  });
-
-});
+    createController()
+    httpBackend.flush()
+    scope.auditDetails.eventIdentification.eventDateTime.should.equal('2015-02-17T15:38:25.282+02:00')
+    scope.auditDetails.activeParticipant.length.should.equal(1)
+    scope.auditDetails.activeParticipant[0].userID.should.equal('pix|pix')
+    scope.auditDetails.auditSourceIdentification.auditSourceID.should.equal('openhim')
+    scope.auditDetails.participantObjectIdentification.length.should.equal(1)
+  })
+})
