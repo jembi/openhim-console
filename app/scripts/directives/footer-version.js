@@ -1,4 +1,4 @@
-import { isCoreVersionCompatible } from '../util'
+import { isCoreVersionCompatible } from '../utils'
 import * as footerTemplate from './footer-version.html'
 
 export function footerVersion (Api, config) {
@@ -6,7 +6,7 @@ export function footerVersion (Api, config) {
     template: footerTemplate,
     scope: false,
     link: function (scope) {
-      var success = function (result) {
+      let success = function (result) {
         scope.footerCoreVersion = result.currentCoreVersion
         scope.footerConsoleVersion = config.version
         scope.footerVersionsCompatible = isCoreVersionCompatible(config.minimumCoreVersion, scope.footerCoreVersion)

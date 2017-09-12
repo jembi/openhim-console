@@ -107,7 +107,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     } else {
       if (!$scope.update) {
         // the visualizer name must be unique
-        var result = visualizers.filter(function (obj) {
+        let result = visualizers.filter(function (obj) {
           return obj.name === viz.name
         })
 
@@ -142,20 +142,20 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     }
   }
 
-  var notifyUser = function () {
+  let notifyUser = function () {
     // reset backing object and refresh users list
     Notify.notify('visualizersChanged')
     $uibModalInstance.close()
   }
 
-  var success = function () {
+  let success = function () {
     // add the success message
     Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully')
 
     notifyUser()
   }
 
-  var error = function () {
+  let error = function () {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'Failed to save the visualizer details because the visualizer name is not unique. Please try again.')
 

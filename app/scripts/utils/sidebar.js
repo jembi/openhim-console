@@ -3,8 +3,8 @@
 import $ from 'jquery'
 
 export function toggleSubMenu (element) {
-  var $li = $(element).parent('li')
-  var $ul = $(element).next('ul')
+  let $li = $(element).parent('li')
+  let $ul = $(element).next('ul')
 
   if ($li.hasClass('open')) {
     $ul.slideUp(350)

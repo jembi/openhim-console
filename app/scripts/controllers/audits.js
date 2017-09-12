@@ -469,3 +469,4 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     /**         Poll for latest transactions           **/
     /****************************************************/
   }
+}

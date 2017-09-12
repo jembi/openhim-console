@@ -1,16 +1,16 @@
-import { viewPage } from '../util'
+import { viewPage } from '../utils'
 import * as Morris from 'morris.js' // This needs to be replaced
 
 export function morrisLineChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      var element = attrs.id
-      var exp = $parse(attrs.data)
+      let element = attrs.id
+      let exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        var data = newVal
+        let data = newVal
 
         if (data) {
           // if morris bar chart exist then update it
@@ -38,12 +38,12 @@ export function morrisBarChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      var element = attrs.id
-      var exp = $parse(attrs.data)
+      let element = attrs.id
+      let exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        var data = newVal
+        let data = newVal
 
         if (data) {
           // if morris bar chart exist then update it
@@ -80,12 +80,12 @@ export function morrisDonutChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      var element = attrs.id
-      var exp = $parse(attrs.data)
+      let element = attrs.id
+      let exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        var data = newVal
+        let data = newVal
 
         // we have to rebuild the morris chart else new colours won't get picked up
         // in general this approach is a bit problematic with the other charts, so should be avoided

@@ -69,7 +69,7 @@ export function mediatorConfig () {
           scope.config[def.param] = []
         }
 
-        var newItem = ''
+        let newItem = ''
         switch (def.type) {
           case 'bool': newItem = false; break
           case 'number': newItem = 0; break

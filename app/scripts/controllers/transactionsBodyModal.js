@@ -6,7 +6,7 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, bodyData) 
   // transform body with indentation/formatting
   if ($scope.bodyData.content) {
     if (bodyData.headers && returnContentType(bodyData.headers)) {
-      var bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
+      let bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
       $scope.bodyData.content = bodyTransform.content
     }
   }

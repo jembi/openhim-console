@@ -14,15 +14,15 @@ export function transactionBodyDownloader (Api) {
       scope.downloadHandler = saveAs
 
       scope.download = function () {
-        var onSuccess = function (trx) {
-          var subTrx = _.get(trx, scope.path)
+        let onSuccess = function (trx) {
+          let subTrx = _.get(trx, scope.path)
 
-          var contentType = 'text/plain' // default
+          let contentType = 'text/plain' // default
           if (subTrx.headers && subTrx.headers['content-type']) {
             contentType = subTrx.headers['content-type']
           }
 
-          var extension
+          let extension
           if (contentType.indexOf('json') > -1) {
             extension = '.json'
           } else if (contentType.indexOf('xml') > -1) {
@@ -31,12 +31,12 @@ export function transactionBodyDownloader (Api) {
             extension = '.txt'
           }
 
-          var bodyBlob = buildBlob(subTrx.body, contentType)
-          var filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
+          let bodyBlob = buildBlob(subTrx.body, contentType)
+          let filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
           scope.downloadHandler(bodyBlob, filename)
         }
 
-        var onError = function (err) {
+        let onError = function (err) {
           console.log(err)
         }
 

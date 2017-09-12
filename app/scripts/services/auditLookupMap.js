@@ -1,7 +1,7 @@
 export function AuditLookups () {
   return {
     eventActionMap: function () {
-      var eventActionMap = {}
+      let eventActionMap = {}
       eventActionMap.C = 'Create (C)'
       eventActionMap.R = 'Read (R)'
       eventActionMap.U = 'Update (U)'
@@ -11,7 +11,7 @@ export function AuditLookups () {
       return eventActionMap
     },
     eventOutcomeMap: function () {
-      var eventOutcomeMap = {}
+      let eventOutcomeMap = {}
       eventOutcomeMap[0] = 'Success (0)'
       eventOutcomeMap[4] = 'Minor Failure (4)'
       eventOutcomeMap[8] = 'Serious Failure (8)'

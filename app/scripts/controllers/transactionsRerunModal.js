@@ -20,7 +20,7 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   };
 
   $scope.confirmRerun = function () {
-    var tIds = $scope.transactionsSelected
+    let tIds = $scope.transactionsSelected
     $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused })
     $scope.task.$save({}, onSuccess)
   }

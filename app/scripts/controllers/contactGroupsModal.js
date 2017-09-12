@@ -34,25 +34,25 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
   /**   These are the functions for the contactGroup Modal Popup     **/
   /********************************************************************/
 
-  var notifyContactGroup = function () {
+  let notifyContactGroup = function () {
     // reset backing object and refresh users list
     Notify.notify('contactGroupChanged')
     $uibModalInstance.close()
   }
 
-  var success = function () {
+  let success = function () {
     // add the success message
     Alerting.AlertAddMsg('top', 'success', 'The contact list has been saved successfully')
     notifyContactGroup()
   }
 
-  var error = function (err) {
+  let error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact lists\' details: #' + err.status + ' - ' + err.data)
     notifyContactGroup()
   }
 
-  var saveContactGroup = function (contactGroup) {
+  let saveContactGroup = function (contactGroup) {
     if ($scope.update) {
       contactGroup.$update(success, error)
     } else {

@@ -78,14 +78,14 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api,
   /**   These are the functions for the User Modal Popup     **/
   /************************************************************/
 
-  var notifyUser = function () {
+  let notifyUser = function () {
     // reset backing object and refresh users list
     Notify.notify('usersChanged')
     $uibModalInstance.close()
   }
 
-  var success = function (user, password) {
-    var consoleSession = localStorage.getItem('consoleSession')
+  let success = function (user, password) {
+    let consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
 
     if (user.email === consoleSession.sessionUser) {
@@ -118,14 +118,14 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api,
     }
   }
 
-  var error = function (err) {
+  let error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' details: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
 
-  var saveUser = function (user, password) {
-    var userObject = angular.copy(user)
+  let saveUser = function (user, password) {
+    let userObject = angular.copy(user)
     if ($scope.update) {
       user.$update(function () {
         success(userObject, password)
@@ -135,7 +135,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api,
     }
   }
 
-  var setHashAndSave = function (user, hash, salt, password) {
+  let setHashAndSave = function (user, hash, salt, password) {
     if (typeof salt !== 'undefined' && salt !== null) {
       user.passwordSalt = salt
     }
@@ -145,7 +145,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api,
 
   $scope.save = function (user, password) {
     if (password) {
-      var h = getHashAndSalt(password)
+      let h = getHashAndSalt(password)
       user.passwordAlgorithm = h.algorithm
       setHashAndSave(user, h.hash, h.salt, password)
     } else {

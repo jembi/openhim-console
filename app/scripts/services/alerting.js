@@ -12,13 +12,13 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      var alertObject = { type: alertType, msg: alertMsg }
+      let alertObject = { type: alertType, msg: alertMsg }
 
       // push alertObject to appropriate alertScope
       $rootScope.alerts[alertScope].push(alertObject)
     },
     AlertAddServerMsg: function (errCode) {
-      var alertMsg
+      let alertMsg
       switch (errCode) {
         case 403:
           alertMsg = 'The request has been forbidden by the server. Please contact the server administrator'
@@ -36,7 +36,7 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      var alertObject = { type: 'danger', msg: alertMsg }
+      let alertObject = { type: 'danger', msg: alertMsg }
 
       // push alertObject to appropriate alertScope
       $rootScope.alerts.server.push(alertObject)

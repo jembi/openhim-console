@@ -98,12 +98,12 @@ export function buildBlob (data, datatype) {
   try {
     out = new Blob([data], { type: datatype })
   } catch (e) {
-    var BlobBuilder = function () {
+    let BlobBuilder = function () {
       window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder
     }
 
     if (e.name === 'TypeError' && window.BlobBuilder) {
-      var bb = new BlobBuilder()
+      let bb = new BlobBuilder()
       bb.append(data)
       out = bb.getBlob(datatype)
     } else if (e.name === 'InvalidStateError') {
@@ -127,4 +127,19 @@ export function getTimeForTimezone (timezone) {
 export function getTimezoneOffset (timezone) {
   const timezoneDatetime = moment(new Date()).tz(timezone)
   return moment(timezoneDatetime).format('Z')
+}
+
+export function safe (fn, defaultValue = undefined) {
+  try {
+    return fn() || defaultValue
+  } catch (err) {
+    console.log(err)
+    return defaultValue
+  }
+}
+
+export function wait (timeout = 100) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
 }

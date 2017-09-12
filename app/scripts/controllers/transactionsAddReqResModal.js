@@ -17,7 +17,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
   // transform request body with indentation/formatting
   if (record.request && record.request.body) {
     if (record.request.headers && returnContentType(record.request.headers)) {
-      var requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
+      let requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
       $scope.record.request.body = requestTransform.content
       $scope.requestTransformLang = requestTransform.lang
     }
@@ -26,7 +26,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
   // transform response body with indentation/formatting
   if (record.response && record.response.body) {
     if (record.response.headers && returnContentType(record.response.headers)) {
-      var responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
+      let responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
       $scope.record.response.body = responseTransform.content
       $scope.responseTransformLang = responseTransform.lang
     }
