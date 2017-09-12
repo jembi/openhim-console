@@ -1,16 +1,16 @@
 import { buildBlob } from '../utils'
 
 export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
   $scope.downloadLink = ''
   $scope.validatedData = {}
 
-	// function to reset export options to default
+  // function to reset export options to default
   $scope.resetExportOptions = function () {
-		// assign all collections to select exports object
+    // assign all collections to select exports object
     $scope.selectedExports = {}
     $scope.selectedExports.Users = $scope.exportCollections.Users
     $scope.selectedExports.Clients = $scope.exportCollections.Clients
@@ -19,7 +19,7 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     $scope.selectedExports.ContactGroups = $scope.exportCollections.ContactGroups
     $scope.selectedExports.Keystore = $scope.exportCollections.Keystore
 
-		// set show all records to false - Entire collections being exported
+    // set show all records to false - Entire collections being exported
     $scope.showRecordOptions = {}
     $scope.showRecordOptions.Users = false
     $scope.showRecordOptions.Clients = false
@@ -30,13 +30,13 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
   }
 
   let getMetadataSuccess = function (result) {
-		// Assign API collections to export options object
+    // Assign API collections to export options object
     $scope.exportCollections = result[0]
 
-		// set up settings object
+    // set up settings object
     $scope.exportSettings = {}
 
-		// set inital reset ( default export option )
+    // set inital reset ( default export option )
     $scope.resetExportOptions()
   }
 
@@ -60,22 +60,22 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     })
   }
 
-	// Make API requests for the export configuration options
+  // Make API requests for the export configuration options
   Api.Metadata.query(function (result) {
     getMetadataSuccess(result)
   }, function (err) {
     getMetadataError(err)
   })
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	/****************************************/
-	/**         Export Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Export Functions           **/
+  /****************************************/
 
-	// function to toggle entire collection
+  // function to toggle entire collection
   $scope.toggleCollectionExportSelection = function (model, collection) {
     if ($scope.selectedExports[model] === collection) {
       $scope.selectedExports[model] = []
@@ -86,19 +86,19 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     }
   }
 
-	// function to toggle specific records
+  // function to toggle specific records
   $scope.toggleRecordExportSelection = function (model, record) {
     let idx = $scope.selectedExports[model].indexOf(record)
 
-		// is currently selected
+    // is currently selected
     if (idx > -1) {
       $scope.selectedExports[model].splice(idx, 1)
     } else {
-			// is newly selected
+      // is newly selected
       $scope.selectedExports[model].push(record)
     }
   }
-	// function to remove certain properties from export object
+  // function to remove certain properties from export object
   $scope.removeProperties = function (obj) {
     let propertyID = '_id'
     let propertyV = '__v'
@@ -113,7 +113,7 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     return obj
   }
 
-	// function to create the export file object
+  // function to create the export file object
   $scope.createExportFile = function () {
     let exportData = angular.copy($scope.selectedExports)
     let textFile = null
@@ -123,17 +123,17 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
       Alerting.AlertAddMsg('top', 'warning', 'Warning: The server\'s TLS private key will be exported and should be protected!')
     }
 
-		// create the export script as a blob file
+    // create the export script as a blob file
     let makeTextFile = function (text) {
-			// let data = new Blob([text], {type: 'application/json'});
+      // let data = new Blob([text], {type: 'application/json'});
       let data = buildBlob(text, 'application/json')
 
-			// if blob error exist
+      // if blob error exist
       if (data.error) {
 
       } else {
-				// If we are replacing a previously generated file we need to
-				// manually revoke the object URL to avoid memory leaks.
+        // If we are replacing a previously generated file we need to
+        // manually revoke the object URL to avoid memory leaks.
         if (textFile !== null) {
           window.URL.revokeObjectURL(textFile)
         }
@@ -145,26 +145,26 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     exportData = JSON.stringify($scope.removeProperties(exportData), null, 2)
     $scope.importScriptName = 'openhim-insert.json'
 
-		// assign download link and show download button
+    // assign download link and show download button
     let blobLink = makeTextFile(exportData)
     if (blobLink) {
       $scope.downloadLink = blobLink
     }
   }
 
-	// function for when the download button is clicked
+  // function for when the download button is clicked
   $scope.downloadExportFile = function () {
-		// reset download link and remove download button
+    // reset download link and remove download button
     $scope.downloadLink = ''
   }
 
-	/****************************************/
-	/**         Export Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Export Functions           **/
+  /****************************************/
 
-	/****************************************/
-	/**         Import Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Import Functions           **/
+  /****************************************/
 
   let validateFail = function (err) {
     Alerting.AlertReset()
@@ -184,27 +184,27 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     Api.MetadataValidation.save(data, validateSuccess, validateFail)
   }
 
-	// watch if files have been dropped
+  // watch if files have been dropped
   $scope.$watch('files', function () {
     $scope.upload($scope.files)
   })
 
-	// function to upload the file
+  // function to upload the file
   $scope.upload = function (files) {
     if (files && files.length) {
       let reader = new FileReader()
 
-			// onload function used by the reader
+      // onload function used by the reader
       reader.onload = function (event) {
-				// read the import script data and validate
+        // read the import script data and validate
         $scope.validateImportFile(event.target.result)
       }
 
-			// foreach uploaded file
+      // foreach uploaded file
       for (let i = 0; i < files.length; i++) {
         let file = files[i]
 
-				// when the file is read it triggers the onload event function above.
+        // when the file is read it triggers the onload event function above.
         reader.readAsText(file)
       }
     }
@@ -239,7 +239,7 @@ export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
     return !!(($scope.importResults && $scope.importResults.length > 0))
   }
 
-	/****************************************/
-	/**         Import Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Import Functions           **/
+  /****************************************/
 }

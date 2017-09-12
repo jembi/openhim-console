@@ -1,21 +1,21 @@
 import { isValidMSISDN, getHashAndSalt } from '../utils'
 
 export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
-	/****************************************************************/
-	/**   These are the functions for the Profile initial load     **/
-	/****************************************************************/
+  /****************************************************************/
+  /**   These are the functions for the Profile initial load     **/
+  /****************************************************************/
 
   let consoleSession = localStorage.getItem('consoleSession')
   consoleSession = JSON.parse(consoleSession)
   $scope.consoleSession = consoleSession
 
-	// object for the taglist roles
+  // object for the taglist roles
   $scope.taglistUserRoleOptions = []
 
-	// object to store temp values like password (not associated with schema object)
+  // object to store temp values like password (not associated with schema object)
   $scope.temp = {}
 
-	// get the allowed channels for the transaction settings
+  // get the allowed channels for the transaction settings
   Api.Channels.query(function (channels) {
     $scope.channels = channels
 
@@ -41,7 +41,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     $scope.mediators = mediators
   }, function () { /* server error - could not connect to API to get mediators */ })
 
-	// get the users for the taglist roles options
+  // get the users for the taglist roles options
   Api.Users.query(function (users) {
     angular.forEach(users, function (user) {
       angular.forEach(user.groups, function (group) {
@@ -55,7 +55,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   let querySuccess = function (user) {
     $scope.user = user
 
-		// check visualizer settings properties exist
+    // check visualizer settings properties exist
     if (!$scope.user.settings) {
       $scope.user.settings = {}
     }
@@ -65,18 +65,18 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     }
 
     let isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
-			$scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators
+      $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators
 
     if (!$scope.user.settings.visualizer || isUsingOldVisualizerSettings) {
       if (!isUsingOldVisualizerSettings) {
         $scope.user.settings.visualizer = {}
 
-				// load default visualizer config for user with no visualizer settings
+        // load default visualizer config for user with no visualizer settings
         $http.get('config/visualizer.json').success(function (visualizerConfig) {
           angular.extend($scope.user.settings.visualizer, angular.copy(visualizerConfig))
         })
       } else {
-				// migrate settings
+        // migrate settings
         $scope.user.settings.visualizer.channels = []
         $scope.user.settings.visualizer.mediators = []
         $scope.user.settings.visualizer.time.minDisplayPeriod = 100
@@ -108,35 +108,35 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// do the initial request
+  // do the initial request
   Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError)
 
-	/****************************************************************/
-	/**   These are the functions for the Profile initial load     **/
-	/****************************************************************/
+  /****************************************************************/
+  /**   These are the functions for the Profile initial load     **/
+  /****************************************************************/
 
-	/****************************************************************/
-	/**   These are the functions for the Profile save process     **/
-	/****************************************************************/
+  /****************************************************************/
+  /**   These are the functions for the Profile save process     **/
+  /****************************************************************/
 
   let error = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data)
   }
 
   let success = function (user, password) {
-		// update consoleSession with new userSettings
+    // update consoleSession with new userSettings
     $scope.consoleSession.sessionUserSettings = user.settings
     localStorage.setItem('consoleSession', JSON.stringify($scope.consoleSession))
 
-		// add the success message
+    // add the success message
     if (password !== '') {
-			// re-login with new credentials
+      // re-login with new credentials
       login.login($scope.consoleSession.sessionUser, password, function (loggedIn) {
         if (loggedIn) {
           Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError)
@@ -157,7 +157,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     user.$update({}, function () {
       success(userObject, password)
 
-			// rootScope function to scroll to top
+      // rootScope function to scroll to top
       $scope.goToTop()
     })
   }
@@ -181,15 +181,15 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     }
   }
 
-	/****************************************************************/
-	/**   These are the functions for the Profile save process     **/
-	/****************************************************************/
+  /****************************************************************/
+  /**   These are the functions for the Profile save process     **/
+  /****************************************************************/
 
-	/*******************************************/
-	/**   Settings - Visualizer Functions     **/
-	/*******************************************/
+  /*******************************************/
+  /**   Settings - Visualizer Functions     **/
+  /*******************************************/
 
-	// setup visualizer object
+  // setup visualizer object
   $scope.visualizer = {}
 
   $scope.addSelectedChannel = function () {
@@ -223,50 +223,50 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     $scope.user.settings.visualizer.mediators.splice(index, 1)
   }
 
-	/*******************************************/
-	/**   Settings - Visualizer Functions     **/
-	/*******************************************/
+  /*******************************************/
+  /**   Settings - Visualizer Functions     **/
+  /*******************************************/
 
-	/***************************************************************************/
-	/**   These are the general functions for the Profile form validation     **/
-	/***************************************************************************/
+  /***************************************************************************/
+  /**   These are the general functions for the Profile form validation     **/
+  /***************************************************************************/
 
   $scope.validateFormProfile = function () {
-		// reset hasErrors alert object
+    // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
     Alerting.AlertReset('top')
 
-		// clear timeout if it has been set
+    // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
 
     $scope.ngError = {}
     $scope.ngError.hasErrors = false
 
-		// name validation
+    // name validation
     if (!$scope.user.firstname) {
       $scope.ngError.firstname = true
       $scope.ngError.hasErrors = true
     }
 
-		// domain validation
+    // domain validation
     if (!$scope.user.surname) {
       $scope.ngError.surname = true
       $scope.ngError.hasErrors = true
     }
 
-		// roles validation
+    // roles validation
     if ($scope.user.msisdn && !isValidMSISDN($scope.user.msisdn)) {
       $scope.ngError.msisdn = true
       $scope.ngError.hasErrors = true
     }
 
-		// groups validation
+    // groups validation
     if ($scope.userGroupAdmin && $scope.user.groups.length === 0) {
       $scope.ngError.groups = true
       $scope.ngError.hasErrors = true
     }
 
-		// password validation
+    // password validation
     if ($scope.temp.password) {
       if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
         $scope.ngError.passwordConfirm = true
@@ -276,7 +276,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
 
     if ($scope.ngError.hasErrors) {
       $scope.clearValidation = $timeout(function () {
-				// clear errors after 5 seconds
+        // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
@@ -284,15 +284,15 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   }
 
   $scope.submitFormProfile = function () {
-		// validate the form first to check for any errors
+    // validate the form first to check for any errors
     $scope.validateFormProfile()
-		// save the user object if no errors are present
+    // save the user object if no errors are present
     if ($scope.ngError.hasErrors === false) {
       $scope.save($scope.user, $scope.temp.password)
     }
   }
 
-	/**************************************************************************/
-	/**   These are the general functions for the Client form validation     **/
-	/**************************************************************************/
+  /**************************************************************************/
+  /**   These are the general functions for the Client form validation     **/
+  /**************************************************************************/
 }

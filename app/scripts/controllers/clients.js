@@ -3,7 +3,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     Alerting.AlertAddServerMsg(err.status) // on error - add server error alert
   }
 
-	/* -------------------------Load Clients---------------------------- */
+  /* -------------------------Load Clients---------------------------- */
   let clientQuerySuccess = function (clients) {
     $scope.clients = clients
     if (clients.length === 0) {
@@ -34,9 +34,9 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     Api.Clients.query(clientQuerySuccess, queryError)
     loadRoles()
   })
-	/* -------------------------End Load Clients---------------------------- */
+  /* -------------------------End Load Clients---------------------------- */
 
-	/* -------------------------Add/edit client popup modal---------------------------- */
+  /* -------------------------Add/edit client popup modal---------------------------- */
   $scope.addClient = function () {
     Alerting.AlertReset()
     $scope.serverRestarting = false
@@ -64,10 +64,10 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
       }
     })
   }
-	/* -------------------------End Add/edit client popup modal---------------------------- */
+  /* -------------------------End Add/edit client popup modal---------------------------- */
 
-	/* ------------------------------------------------------------------- */
-	/* ----------------------------------Roles---------------------------- */
+  /* ------------------------------------------------------------------- */
+  /* ----------------------------------Roles---------------------------- */
   $scope.addNewRole = false
   $scope.newRoles = []
   $scope.newRolesIndex = 0
@@ -94,7 +94,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     }
   }
 
-	/* -------------------------Load Channels---------------------------- */
+  /* -------------------------Load Channels---------------------------- */
   let channelQuerySuccess = function (channels) {
     $scope.channels = channels
     if (channels.length === 0) {
@@ -105,17 +105,17 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   }
 
   Api.Channels.query(channelQuerySuccess, queryError) // request channels for table columns
-	/* -------------------------End Load Channels---------------------------- */
+  /* -------------------------End Load Channels---------------------------- */
 
-	/* -------------------------Load Roles---------------------------- */
+  /* -------------------------Load Roles---------------------------- */
   $scope.$watch('channels', function (newVal) {
     if (newVal) {
       loadRoles()  // channels need to be loaded before roles to set up the table columns
     }
   })
-	/* -------------------------End Load Roles---------------------------- */
+  /* -------------------------End Load Roles---------------------------- */
 
-	/* -------------------------Assign Clients to Roles---------------------------- */
+  /* -------------------------Assign Clients to Roles---------------------------- */
   let buildClientsRolesObject = function () {
     $scope.clientRoles = {}
     angular.forEach($scope.roles, function (role) {
@@ -201,9 +201,9 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   $scope.toggleEditClients = function () {
     $scope.editClients = $scope.editClients !== true
   }
-	/* -------------------------End Assign Clients to Roles---------------------------- */
+  /* -------------------------End Assign Clients to Roles---------------------------- */
 
-	/* -------------------------Assign Roles To Channels---------------------------- */
+  /* -------------------------Assign Roles To Channels---------------------------- */
   $scope.assignRoleToChannel = function (channel, role, save) {
     if (!role.channels) {
       role.channels = [] // if the role has no channels, initialize the array
@@ -235,16 +235,16 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
     }
   }
-	/* -------------------------End Assign Roles To Channels---------------------------- */
+  /* -------------------------End Assign Roles To Channels---------------------------- */
 
-	/* -------------------------Edit Roles---------------------------- */
+  /* -------------------------Edit Roles---------------------------- */
 
   $scope.nameSaved = []
   $scope.changeRoleName = function (role) {
     try {
       angular.forEach($scope.roles, function (aRole) {
         if (aRole.name === role.displayName) {
-          throw 'break'
+          throw new Error('break')
         }
       })
       let updateBody = {}
@@ -345,9 +345,9 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $scope.roles.splice(spliceIndex, 1)
   }
 
-	/* -------------------------End Edit Roles---------------------------- */
+  /* -------------------------End Edit Roles---------------------------- */
 
-	/* ------------------------Delete Confirm---------------------------- */
+  /* ------------------------Delete Confirm---------------------------- */
   let confirmDelete = function (object, objectType, callback) {
     Alerting.AlertReset()
     $scope.serverRestarting = false
@@ -369,10 +369,10 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - delete the object
+      // Delete confirmed - delete the object
       callback()
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 
@@ -398,5 +398,5 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
       client.$remove(clientDeleteSuccess, clientDeleteError)
     })
   }
-	/* ------------------------End Delete Confirm---------------------------- */
+  /* ------------------------End Delete Confirm---------------------------- */
 }

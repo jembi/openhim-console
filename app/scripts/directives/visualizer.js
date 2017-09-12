@@ -5,33 +5,33 @@ export function visualizer ($parse) {
     restrict: 'EA',
     template: '<div id="visualizer"></div>',
     link: function (scope, elem, attrs) {
-			// initialize directive data elements
-      var data = $parse(attrs.visData)
-      var settings = $parse(attrs.visSettings)
-      var speedVal = $parse(attrs.visSpeed)
+      // initialize directive data elements
+      let data = $parse(attrs.visData)
+      let settings = $parse(attrs.visSettings)
+      let speedVal = $parse(attrs.visSpeed)
 
-			// initialize global variables
-      var components = []
-      var channels = []
-      var mediators = []
-      var himRect, himText, visW, visH, pad, himX, himY, himW, himH, topBarY,
+      // initialize global variables
+      let components = []
+      let channels = []
+      let mediators = []
+      let himRect, himText, visW, visH, pad, himX, himY, himW, himH, topBarY,
         inactiveColor, activeColor, errorColor, textColor, speed, maxTimeout, minDisplayPeriod,
         vis
 
-			/* ---------- Directive Watchers ---------- */
+      /* ---------- Directive Watchers ---------- */
 
-			// watcher to update the speed of the visualizer
+      // watcher to update the speed of the visualizer
       scope.$watchCollection(speedVal, function (newSpeed) {
-				// check if data object exist before processing
+        // check if data object exist before processing
         if (newSpeed !== undefined) {
           speed = newSpeed
         }
       })
 
-			/* ---------- Directive Watchers ---------- */
+      /* ---------- Directive Watchers ---------- */
 
       function getRegistryRect (event) {
-        for (var i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; i++) {
           if (components[i].eventType === event.type && components[i].eventName.toLowerCase() === event.name.toLowerCase()) {
             return components[i].rect
           }
@@ -40,7 +40,7 @@ export function visualizer ($parse) {
       }
 
       function getChannelText (event) {
-        for (var i = 0; i < channels.length; i++) {
+        for (let i = 0; i < channels.length; i++) {
           if (channels[i].eventType === event.type && channels[i].eventName.toLowerCase() === event.name.toLowerCase()) {
             return channels[i].text
           }
@@ -49,7 +49,7 @@ export function visualizer ($parse) {
       }
 
       function getMediatorRect (event) {
-        for (var i = 0; i < mediators.length; i++) {
+        for (let i = 0; i < mediators.length; i++) {
           if (mediators[i].mediator === event.mediator) {
             return mediators[i].rect
           }
@@ -57,67 +57,67 @@ export function visualizer ($parse) {
         return null
       }
 
-			/* Component Drawing */
+      /* Component Drawing */
 
       function setupBasicComponent (compRect, compText, x, y, w, h, text) {
         compRect
-					.attr('rx', 6)
-					.attr('ry', 6)
-					.attr('x', x)
-					.attr('y', y)
-					.attr('width', w)
-					.attr('height', h)
-					.style('fill', inactiveColor)
+          .attr('rx', 6)
+          .attr('ry', 6)
+          .attr('x', x)
+          .attr('y', y)
+          .attr('width', w)
+          .attr('height', h)
+          .style('fill', inactiveColor)
 
-        var textSize = h / 3.5
+        let textSize = h / 3.5
         compText
-					.attr('x', x + w / 2.0)
-					.attr('y', y + h / 2.0 + textSize / 2.0)
-					.attr('text-anchor', 'middle')
-					.attr('font-size', textSize)
-					.text(text)
-					.style('fill', textColor)
+          .attr('x', x + w / 2.0)
+          .attr('y', y + h / 2.0 + textSize / 2.0)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', textSize)
+          .text(text)
+          .style('fill', textColor)
       }
 
       function setupRegistryComponent (compRect, compText, compConnector, index, text) {
-        var compW = visW / components.length - 2.0 * pad,
-          compH = visH / 4.0 - 2.0 * pad
-        var compX = index * compW + pad + index * pad * 2.0,
-          compY = 0 + pad
+        let compW = visW / components.length - 2.0 * pad
+        let compH = visH / 4.0 - 2.0 * pad
+        let compX = index * compW + pad + index * pad * 2.0
+        let compY = 0 + pad
 
         setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
 
         compConnector
-					.attr('x1', compX + compW / 2.0)
-					.attr('y1', compY + compH)
-					.attr('x2', compX + compW / 2.0)
-					.attr('y2', topBarY)
-					.style('stroke-width', visW / 150.0)
-					.style('stroke', '#ddd')
+          .attr('x1', compX + compW / 2.0)
+          .attr('y1', compY + compH)
+          .attr('x2', compX + compW / 2.0)
+          .attr('y2', topBarY)
+          .style('stroke-width', visW / 150.0)
+          .style('stroke', '#ddd')
       }
 
       function setupMediatorComponent (compRect, compText, compConnector, index, text) {
-        var compW = visW / mediators.length - 2.0 * pad,
-          compH = visH / 4.0 - 2.0 * pad
-        var compX = index * compW + pad + index * pad * 2.0,
-          compY = himY - compH - 0.25 * pad
+        let compW = visW / mediators.length - 2.0 * pad
+        let compH = visH / 4.0 - 2.0 * pad
+        let compX = index * compW + pad + index * pad * 2.0
+        let compY = himY - compH - 0.25 * pad
 
         setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
       }
 
       function setupChannelText (compText, index, text) {
-        var compW = visW / channels.length - 2.0 * pad,
-          compH = (visH / 4.0 - 2.0 * pad) / 3.0
-        var compX = index * compW + pad + index * pad * 2.0,
-          compY = visH - pad
+        let compW = visW / channels.length - 2.0 * pad
+        let compH = (visH / 4.0 - 2.0 * pad) / 3.0
+        let compX = index * compW + pad + index * pad * 2.0
+        let compY = visH - pad
 
         compText
-					.attr('x', compX + compW / 2.0)
-					.attr('y', compY)
-					.attr('text-anchor', 'middle')
-					.attr('font-size', compH)
-					.text(text)
-					.style('fill', inactiveColor)
+          .attr('x', compX + compW / 2.0)
+          .attr('y', compY)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', compH)
+          .text(text)
+          .style('fill', inactiveColor)
       }
 
       function setupHIM (vis) {
@@ -125,29 +125,29 @@ export function visualizer ($parse) {
         himText = vis.append('svg:text')
         setupBasicComponent(himRect, himText, himX, himY, himW, himH, 'Health Information Mediator')
 
-				// top bar
+        // top bar
         vis.append('svg:rect')
-					.attr('rx', 6)
-					.attr('ry', 6)
-					.attr('x', 0 + pad)
-					.attr('y', topBarY)
-					.attr('width', visW - 2.0 * pad)
-					.attr('height', visH / 50.0)
-					.style('fill', inactiveColor)
+          .attr('rx', 6)
+          .attr('ry', 6)
+          .attr('x', 0 + pad)
+          .attr('y', topBarY)
+          .attr('width', visW - 2.0 * pad)
+          .attr('height', visH / 50.0)
+          .style('fill', inactiveColor)
 
-				// bottom bar
+        // bottom bar
         vis.append('svg:rect')
-					.attr('rx', 6)
-					.attr('ry', 6)
-					.attr('x', 0 + pad)
-					.attr('y', himY + himH + 0.25 * pad)
-					.attr('width', visW - 2.0 * pad)
-					.attr('height', visH / 50.0)
-					.style('fill', inactiveColor)
+          .attr('rx', 6)
+          .attr('ry', 6)
+          .attr('x', 0 + pad)
+          .attr('y', himY + himH + 0.25 * pad)
+          .attr('width', visW - 2.0 * pad)
+          .attr('height', visH / 50.0)
+          .style('fill', inactiveColor)
       }
 
       function setupRegistries (vis) {
-        for (var i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; i++) {
           components[i].rect = vis.append('svg:rect')
           components[i].text = vis.append('svg:text')
           components[i].line = vis.append('svg:line')
@@ -156,7 +156,7 @@ export function visualizer ($parse) {
       }
 
       function setupMediators (vis) {
-        for (var i = 0; i < mediators.length; i++) {
+        for (let i = 0; i < mediators.length; i++) {
           mediators[i].rect = vis.append('svg:rect')
           mediators[i].text = vis.append('svg:text')
           mediators[i].line = vis.append('svg:line')
@@ -165,15 +165,15 @@ export function visualizer ($parse) {
       }
 
       function setupChannels (vis) {
-        for (var i = 0; i < channels.length; i++) {
+        for (let i = 0; i < channels.length; i++) {
           channels[i].text = vis.append('svg:text')
           setupChannelText(channels[i].text, i, channels[i].display)
         }
       }
 
-			// watcher to find any settings added
+      // watcher to find any settings added
       scope.$watchCollection(settings, function (newSettings) {
-				// check if settings object exist before creating
+        // check if settings object exist before creating
         if (newSettings) {
           d3.select('#visualizer').html('')
 
@@ -204,25 +204,25 @@ export function visualizer ($parse) {
           maxTimeout = newSettings.maxTimeout
           minDisplayPeriod = newSettings.minDisplayPeriod
 
-					// load responsive visualizer
+          // load responsive visualizer
           if (newSettings.visResponsive === true) {
             vis = d3.select('#visualizer')
-							.append('svg:svg')
-							.attr('viewBox', '0 0 ' + newSettings.visW + ' ' + newSettings.visH)
-							.attr('preserveAspectRatio', 'xMinYMin')
+              .append('svg:svg')
+              .attr('viewBox', '0 0 ' + newSettings.visW + ' ' + newSettings.visH)
+              .attr('preserveAspectRatio', 'xMinYMin')
 
             vis.append('svg:rect')
-							.attr('width', newSettings.visW)
-							.attr('height', newSettings.visH)
+              .attr('width', newSettings.visW)
+              .attr('height', newSettings.visH)
           } else {
-						// setup fixed size visualizer
+            // setup fixed size visualizer
             vis = d3.select('#visualizer')
-							.append('svg:svg')
-							.attr('width', newSettings.visW)
-							.attr('height', newSettings.visH)
+              .append('svg:svg')
+              .attr('width', newSettings.visW)
+              .attr('height', newSettings.visH)
           }
 
-					// setup the visualizer diagram
+          // setup the visualizer diagram
           setupHIM(vis)
           setupRegistries(vis)
           setupMediators(vis)
@@ -230,11 +230,11 @@ export function visualizer ($parse) {
         }
       })
 
-			/* Animation */
+      /* Animation */
 
       function animateComp (comp, event, delay, isError) {
-        var color
-        var delayMultiplier = 1.0
+        let color
+        let delayMultiplier = 1.0
 
         if (event.toLowerCase() === 'start') {
           color = activeColor
@@ -252,12 +252,12 @@ export function visualizer ($parse) {
         }
 
         comp
-					.transition()
-					.delay(delay * delayMultiplier)
-					.style('fill', color)
+          .transition()
+          .delay(delay * delayMultiplier)
+          .style('fill', color)
 
         if (event.toLowerCase() === 'start' || isError) {
-          var timeout
+          let timeout
           if (isError) {
             timeout = 1000
           } else {
@@ -265,9 +265,9 @@ export function visualizer ($parse) {
           }
 
           comp
-						.transition()
-						.delay(delay * delayMultiplier + timeout)
-						.style('fill', inactiveColor)
+            .transition()
+            .delay(delay * delayMultiplier + timeout)
+            .style('fill', inactiveColor)
         }
       }
 
@@ -276,13 +276,13 @@ export function visualizer ($parse) {
           return
         }
 
-        var baseTime = data[0].normalizedTimestamp
-        var isErrorStatus = function (status) {
+        let baseTime = data[0].normalizedTimestamp
+        let isErrorStatus = function (status) {
           return typeof status !== 'undefined' && status !== null && status.toLowerCase() === 'error'
         }
 
         angular.forEach(data, function (event) {
-          var comp = null
+          let comp = null
 
           comp = getRegistryRect(event)
           if (comp === null) {
@@ -296,15 +296,15 @@ export function visualizer ($parse) {
           }
 
           if (event.mediator) {
-            var med = getMediatorRect(event)
+            let med = getMediatorRect(event)
             animateComp(med, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
           }
         })
       }
 
-			// watcher to find any new event data added
+      // watcher to find any new event data added
       scope.$watchCollection(data, function (newData) {
-				// check if data object exist before processing
+        // check if data object exist before processing
         if (newData && newData.length > 0) {
           processEvents(newData)
         }

@@ -1,4 +1,5 @@
 import './angular-taglist-directive.css'
+import * as template from './angular-taglist-directive.html'
 
 export const angularTaglist = 'angular_taglist_directive'
 
@@ -11,10 +12,7 @@ angular.module(angularTaglist, []).directive('taglist', ['$timeout', function ($
       taglistBlurTimeout: '='
     },
     transclude: true,
-    template: '<div class="taglist">\
-        <span class="tag" data-ng-repeat="tag in tagData">\
-        <a href data-ng-click="tagData.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
-        <div class="tag-input" ng-transclude></div><div class="tags_clear"></div></div>',
+    template: template,
     compile: function (tElement, tAttrs, transcludeFn) {
       return function (scope, element, attrs) {
         element.bind('click', function () {
@@ -36,11 +34,11 @@ angular.module(angularTaglist, []).directive('taglist', ['$timeout', function ($
           if (evt.altKey || evt.metaKey || evt.ctrlKey || evt.shiftKey) {
             return
           }
-          if (evt.which == 188 || evt.which == 13) { // 188 = comma, 13 = return
+          if (evt.which === 188 || evt.which === 13) { // 188 = comma, 13 = return
             evt.preventDefault()
             addTag(this)
-          } else if (evt.which == 8 && /* 8 = delete */
-                        this.value.trim().length == 0 &&
+          } else if (evt.which === 8 && /* 8 = delete */
+                        this.value.trim().length === 0 &&
                         element[0].getElementsByClassName('tag').length > 0) {
             evt.preventDefault()
             scope.$apply(function () {

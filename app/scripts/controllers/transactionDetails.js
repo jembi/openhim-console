@@ -2,11 +2,11 @@ import { beautifyIndent, returnContentType } from '../utils'
 import moment from 'moment'
 
 export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// get txList for paging
+  // get txList for paging
   let txList = JSON.parse(sessionStorage.getItem('currTxList'))
 
   $scope.pagingEnabled = true
@@ -36,7 +36,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
   let querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
 
-		// transform request body with indentation/formatting
+    // transform request body with indentation/formatting
     if (transactionDetails.request && transactionDetails.request.body) {
       if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
         let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
@@ -44,7 +44,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
       }
     }
 
-		// transform response body with indentation/formatting
+    // transform response body with indentation/formatting
     if (transactionDetails.response && transactionDetails.response.body) {
       if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
         let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
@@ -52,20 +52,20 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
       }
     }
 
-		// calculate total transaction time
+    // calculate total transaction time
     if ((transactionDetails.request && transactionDetails.request.timestamp) &&
-			(transactionDetails.response && transactionDetails.response.timestamp)) {
+      (transactionDetails.response && transactionDetails.response.timestamp)) {
       let diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
 
       if (diff >= 1000) {
-				// display in seconds
+        // display in seconds
         let round = function (value, decimalPlaces) {
           return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
         }
 
         transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s'
       } else {
-				// display in milliseconds
+        // display in milliseconds
         transactionDetails.transactionTime = diff + ' ms'
       }
     }
@@ -74,9 +74,9 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     consoleSession = JSON.parse(consoleSession)
     $scope.consoleSession = consoleSession
 
-		// get the user to find user roles
+    // get the user to find user roles
     Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (user) {
-			// get the channels for the transactions filter dropdown
+      // get the channels for the transactions filter dropdown
       Api.Channels.get({ channelId: transactionDetails.channelID }, function (channel) {
         $scope.channel = channel
         $scope.routeDefs = {}
@@ -98,30 +98,30 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
       }, function () { /* server error - could not connect to API to get channels */ })
     }, function () { /* server error - could not connect to API to get user details */ })
 
-		// if clientID exist - fetch details
+    // if clientID exist - fetch details
     if (transactionDetails.clientID) {
-			// get the client object for the transactions details page
+      // get the client object for the transactions details page
       $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' })
     }
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// get the Data for the supplied ID and store in 'transactionsDetails' object
+  // get the Data for the supplied ID and store in 'transactionsDetails' object
   Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError)
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
-	// setup filter options
+  // setup filter options
   $scope.returnFilterObject = function () {
     let filtersObject = {}
 
@@ -133,38 +133,38 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     return filtersObject
   }
 
-	// Refresh transactions list
+  // Refresh transactions list
   $scope.fetchChildTransactions = function () {
     Api.Transactions.query($scope.returnFilterObject(), function (values) {
-			// on success
+      // on success
       $scope.childTransactions = values
     },
-			function (err) {
-  Alerting.AlertAddServerMsg(err.status)
-})
+      function (err) {
+        Alerting.AlertAddServerMsg(err.status)
+      })
   }
-	// run the transaction list view for the first time
+  // run the transaction list view for the first time
   $scope.fetchChildTransactions()
 
-	// location provider - load transaction details
+  // location provider - load transaction details
   $scope.viewTransactionDetails = function (path) {
-		// do transactions details redirection when clicked on TD
+    // do transactions details redirection when clicked on TD
     $location.path(path)
   }
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
-	/****************************************************************/
-	/**               Transactions ReRun Functions                 **/
-	/****************************************************************/
+  /****************************************************************/
+  /**               Transactions ReRun Functions                 **/
+  /****************************************************************/
 
   $scope.confirmRerunTransactions = function () {
     let transactionsSelected = [$scope.transactionDetails._id]
     let rerunTransactionsSelected = 0
 
-		// check if transaction has child IDs (It has been rerun before)
+    // check if transaction has child IDs (It has been rerun before)
     if ($scope.transactionDetails.childIDs) {
       if ($scope.transactionDetails.childIDs.length > 0) {
         rerunTransactionsSelected = 1
@@ -185,13 +185,13 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     })
   }
 
-	/****************************************************************/
-	/**               Transactions ReRun Functions                 **/
-	/****************************************************************/
+  /****************************************************************/
+  /**               Transactions ReRun Functions                 **/
+  /****************************************************************/
 
-	/*********************************************************************/
-	/**               Transactions View Route Functions                 **/
-	/*********************************************************************/
+  /*********************************************************************/
+  /**               Transactions View Route Functions                 **/
+  /*********************************************************************/
 
   $scope.viewAddReqResDetails = function (record, channel, recordType, index) {
     $uibModal.open({
@@ -218,13 +218,13 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     })
   }
 
-	/*********************************************************************/
-	/**               Transactions View Route Functions                 **/
-	/*********************************************************************/
+  /*********************************************************************/
+  /**               Transactions View Route Functions                 **/
+  /*********************************************************************/
 
-	/********************************************************************/
-	/**               Transactions View Body Functions                 **/
-	/********************************************************************/
+  /********************************************************************/
+  /**               Transactions View Body Functions                 **/
+  /********************************************************************/
 
   $scope.viewBodyDetails = function (type, content, headers) {
     $uibModal.open({
@@ -239,7 +239,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     })
   }
 
-	/********************************************************************/
-	/**               Transactions View Body Functions                 **/
-	/********************************************************************/
+  /********************************************************************/
+  /**               Transactions View Body Functions                 **/
+  /********************************************************************/
 }

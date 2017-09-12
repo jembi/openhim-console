@@ -3,14 +3,14 @@ import moment from 'moment'
 import { valueNotEmpty } from '../utils'
 
 export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alerting, $route) {
-	/**********************************************/
-	/**         Initial load functions           **/
-	/**********************************************/
+  /**********************************************/
+  /**         Initial load functions           **/
+  /**********************************************/
 
-	// remember when we loaded the page...
+  // remember when we loaded the page...
   let pageLoadDate = moment()
 
-	// default settings
+  // default settings
   $scope.showpage = 0
   $scope.showlimit = 10
   $scope.filters = {}
@@ -20,44 +20,44 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
   $scope.settings.list.tabview = 'same'
   $scope.settings.list.autoupdate = true
 
-	// polling
+  // polling
   let lastUpdated
   let serverDiffTime = 0
   $scope.baseIndex = 0
   let pollPeriod = 5000
 
-	// setup task filtter settings
+  // setup task filtter settings
   if ($location.search().limit) { $scope.filters.limit = $location.search().limit }
   if ($location.search().date) { $scope.filters.date = $location.search().date }
   if ($location.search().status) { $scope.filters.status = $location.search().status }
   if ($location.search().user) { $scope.filters.user = $location.search().user }
 
-	// get the users for the tasks filter dropdown
+  // get the users for the tasks filter dropdown
   $scope.users = Api.Users.query()
 
   $scope.refreshSuccess = function (tasks) {
-		// on success
+    // on success
     $scope.tasks = tasks
 
     if (tasks.length < $scope.showlimit) {
-      jQuery('#loadMoreBtn').hide()
+      $('#loadMoreBtn').hide()
 
       if (tasks.length === 0) {
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no tasks for the current filters')
       }
     } else {
-			// Show the load more button
-      jQuery('#loadMoreBtn').show()
+      // Show the load more button
+      $('#loadMoreBtn').show()
     }
   }
 
   $scope.refreshError = function (err) {
-		// on error - Hide load more button and show error message
-    jQuery('#loadMoreBtn').hide()
+    // on error - Hide load more button and show error message
+    $('#loadMoreBtn').hide()
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// setup filter options
+  // setup filter options
   $scope.returnFilters = function () {
     let filtersObject = {}
     let filterDate
@@ -65,10 +65,10 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     filtersObject.filterPage = $scope.showpage
     filtersObject.filterLimit = $scope.showlimit
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     filtersObject.filters = {}
 
-		// date filter
+    // date filter
     filterDate = $scope.filters.date
     if (filterDate) {
       let startDate = moment(filterDate).format()
@@ -76,8 +76,8 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
       filtersObject.filters.created = JSON.stringify({ '$gte': startDate, '$lte': endDate })
     }
 
-		/* ----- filter by tasks (basic) ----- */
-		// add task status filter
+    /* ----- filter by tasks (basic) ----- */
+    // add task status filter
     let taskStatus = $scope.filters.status
     if (valueNotEmpty(taskStatus) === true) {
       filtersObject.filters.status = taskStatus
@@ -87,17 +87,17 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     if (valueNotEmpty(taskUser) === true) {
       filtersObject.filters.user = taskUser
     }
-		/* ----- filter by tasks (basic) ----- */
+    /* ----- filter by tasks (basic) ----- */
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     return filtersObject
   }
 
   let clearUrlParams = function () {
-		// loop through all parameters
+    // loop through all parameters
     for (let property in $location.search()) {
       if ($location.search().hasOwnProperty(property)) {
-				// set parameter to null to remove
+        // set parameter to null to remove
         $location.search(property, null)
       }
     }
@@ -110,23 +110,23 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
   }
 
   $scope.applyFiltersToUrl = function () {
-		// get the filter params object before clearing them
+    // get the filter params object before clearing them
     let filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
 
-		// first clear existing filters
+    // first clear existing filters
     clearUrlParams()
 
-		// Add filters to url
+    // Add filters to url
     if ($scope.filters.status) { $location.search('status', $scope.filters.status) }
     if ($scope.filters.user) { $location.search('user', $scope.filters.user) }
     if ($scope.filters.limit) { $location.search('limit', $scope.filters.limit) }
     if ($scope.filters.date) { $location.search('date', $scope.filters.date) }
 
-		// get the filter params object after clearing them
+    // get the filter params object after clearing them
     let filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
 
-		// if the filters object stays the same then call refresh function
-		// if filters object not the same then angular changes route and loads controller ( refresh )
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
     if (filterParamsBeforeClear === filterParamsAfterClear) {
       $scope.refreshTasksList()
     }
@@ -137,35 +137,35 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
 
     $scope.tasks = null
 
-		// reset the showpage filter to start at 0
+    // reset the showpage filter to start at 0
     $scope.showpage = 0
     $scope.showlimit = $scope.filters.limit
 
-		// do the initial request
+    // do the initial request
     Api.Tasks.query($scope.returnFilters(), $scope.refreshSuccess, $scope.refreshError)
   }
-	// run the tasks list view for the first time
+  // run the tasks list view for the first time
   $scope.refreshTasksList()
 
-	// Refresh tasks list
+  // Refresh tasks list
   let loadMoreSuccess = function (tasks) {
-		// on success
+    // on success
     $scope.tasks = $scope.tasks.concat(tasks)
-		// remove any duplicates objects found in the tasks scope
-    $scope.tasks = jQuery.unique($scope.tasks)
+    // remove any duplicates objects found in the tasks scope
+    $scope.tasks = $.unique($scope.tasks)
 
     if (tasks.length < $scope.showlimit) {
-      jQuery('#loadMoreBtn').hide()
+      $('#loadMoreBtn').hide()
       Alerting.AlertAddMsg('bottom', 'warning', 'There are no more tasks to retrieve')
     }
 
-		// make sure newly added tasks are checked as well
+    // make sure newly added tasks are checked as well
     $scope.busyLoadingMore = false
   }
 
   let loadMoreError = function (err) {
-		// on error - Hide load more button and show error message
-    jQuery('#loadMoreBtn').hide()
+    // on error - Hide load more button and show error message
+    $('#loadMoreBtn').hide()
     Alerting.AlertAddServerMsg(err.status)
   }
 
@@ -178,46 +178,46 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     let filters = $scope.returnFilters()
 
     if (!filters.filters.created) {
-			// use page load time as an explicit end date
-			// this prevents issues with paging when new tasks come in, breaking the pages
+      // use page load time as an explicit end date
+      // this prevents issues with paging when new tasks come in, breaking the pages
       filters.filters.created = JSON.stringify({ '$lte': moment(pageLoadDate - serverDiffTime).format() })
     }
 
     Api.Tasks.query($scope.returnFilters(), loadMoreSuccess, loadMoreError)
   }
 
-	// Clear filter data end refresh tasks scope
+  // Clear filter data end refresh tasks scope
   $scope.clearFilters = function () {
-		// reset default filters
+    // reset default filters
     $scope.filters.limit = 100
     $scope.filters.date = ''
     $scope.filters.status = ''
     $scope.filters.user = ''
     $scope.settings.list.tabview = 'same'
 
-		// get the filter params object before clearing them
+    // get the filter params object before clearing them
     let filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
 
-		// clear all filter parameters
+    // clear all filter parameters
     clearUrlParams()
 
-		// get the filter params object after clearing them
+    // get the filter params object after clearing them
     let filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
 
-		// if the filters object stays the same then call refresh function
-		// if filters object not the same then angular changes route and loads controller ( refresh )
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
     if (filterParamsBeforeClear === filterParamsAfterClear) {
       $scope.refreshTasksList()
     }
   }
 
-	/**********************************************/
-	/**         Initial load functions           **/
-	/**********************************************/
+  /**********************************************/
+  /**         Initial load functions           **/
+  /**********************************************/
 
-	/*****************************************************/
-	/**         General rerun task functions            **/
-	/*****************************************************/
+  /*****************************************************/
+  /**         General rerun task functions            **/
+  /*****************************************************/
 
   $scope.viewTaskDetails = function (path) {
     let baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/'
@@ -256,9 +256,9 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     }
   }
 
-	/*****************************************************/
-	/**         General rerun task functions            **/
-	/*****************************************************/
+  /*****************************************************/
+  /**         General rerun task functions            **/
+  /*****************************************************/
 
   function updateTaskWithStatus (task, status) {
     let updated = new Api.Tasks()
@@ -295,16 +295,16 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     })
 
     modalInstance.result.then(function () {
-			// cancel confirmed
+      // cancel confirmed
       updateTaskWithStatus(task, 'Cancelled')
     }, function () {
-			// cancel cancelled
+      // cancel cancelled
     })
   }
 
-	/****************************************************/
-	/**         Poll for latest tasks                  **/
-	/****************************************************/
+  /****************************************************/
+  /**         Poll for latest tasks                  **/
+  /****************************************************/
 
   let pollingInterval
   let lastPollingCompleted = true
@@ -313,7 +313,7 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     let filters = $scope.returnFilters()
 
     if (!filters.filters.created) {
-			// only poll for latest if date filters are OFF
+      // only poll for latest if date filters are OFF
 
       filters.filters.created = JSON.stringify({ '$gte': moment(lastUpdated).format() })
       lastUpdated = moment() - serverDiffTime
@@ -332,8 +332,8 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     }
   }
 
-	// poll for updates for any tasks that are marked as 'Processing' or 'Queued'
-	// TODO need an endpoint in core to lookup a several tasks by _id at once
+  // poll for updates for any tasks that are marked as 'Processing' or 'Queued'
+  // TODO need an endpoint in core to lookup a several tasks by _id at once
   $scope.pollForProcessingUpdates = function () {
     $scope.tasks.forEach(function (task) {
       if (task.status === 'Processing' || task.status === 'Queued') {
@@ -374,7 +374,7 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     }
   }
 
-	// sync time with server
+  // sync time with server
   Api.Heartbeat.get(function (heartbeat) {
     serverDiffTime = moment() - moment(heartbeat.now)
     lastUpdated = moment() - serverDiffTime
@@ -385,7 +385,7 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
 
   $scope.$on('$destroy', $scope.stopPolling)
 
-	/****************************************************/
-	/**         Poll for latest transactions           **/
-	/****************************************************/
+  /****************************************************/
+  /**         Poll for latest transactions           **/
+  /****************************************************/
 }

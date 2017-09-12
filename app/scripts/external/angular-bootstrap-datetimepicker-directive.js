@@ -1,71 +1,71 @@
-'use strict'
+import * as $ from 'jquery'
 
 // Just exports the module name
 export const datetimepicker = 'datetimepicker'
 angular
-	.module('datetimepicker', [])
-	.provider('datetimepicker', function () {
-  var default_options = {}
+  .module('datetimepicker', [])
+  .provider('datetimepicker', function () {
+    let defaultOptions = {}
 
-  this.setOptions = function (options) {
-    default_options = options
-  }
+    this.setOptions = function (options) {
+      defaultOptions = options
+    }
 
-  this.$get = function () {
-    return {
-      getOptions: function () {
-        return default_options
+    this.$get = function () {
+      return {
+        getOptions: function () {
+          return defaultOptions
+        }
       }
     }
-  }
-})
-	.directive('datetimepicker', [
-  '$timeout',
-  'datetimepicker',
-  function ($timeout,
-			datetimepicker) {
-    var default_options = datetimepicker.getOptions()
+  })
+  .directive('datetimepicker', [
+    '$timeout',
+    'datetimepicker',
+    function ($timeout,
+      datetimepicker) {
+      let defaultOptions = datetimepicker.getOptions()
 
-    return {
-      require: '?ngModel',
-      restrict: 'AE',
-      scope: {
-        datetimepickerOptions: '@'
-      },
-      link: function ($scope, $element, $attrs, ngModelCtrl) {
-        var passed_in_options = $scope.$eval($attrs.datetimepickerOptions)
-        var options = jQuery.extend({}, default_options, passed_in_options)
-
-        $element
-						.on('dp.change', function (e) {
-  if (ngModelCtrl) {
-    $timeout(function () {
-      ngModelCtrl.$setViewValue(e.target.value)
-    })
-  }
-})
-						.datetimepicker(options)
-
-        function setPickerValue () {
-          var date = options.defaultDate || null
-
-          if (ngModelCtrl && ngModelCtrl.$viewValue) {
-            date = ngModelCtrl.$viewValue
-          }
+      return {
+        require: '?ngModel',
+        restrict: 'AE',
+        scope: {
+          datetimepickerOptions: '@'
+        },
+        link: function ($scope, $element, $attrs, ngModelCtrl) {
+          let passedInOptions = $scope.$eval($attrs.datetimepickerOptions)
+          let options = $.extend({}, defaultOptions, passedInOptions)
 
           $element
-							.data('DateTimePicker')
-							.date(date)
-        }
+            .on('dp.change', function (e) {
+              if (ngModelCtrl) {
+                $timeout(function () {
+                  ngModelCtrl.$setViewValue(e.target.value)
+                })
+              }
+            })
+            .datetimepicker(options)
 
-        if (ngModelCtrl) {
-          ngModelCtrl.$render = function () {
-            setPickerValue()
+          function setPickerValue () {
+            var date = options.defaultDate || null
+
+            if (ngModelCtrl && ngModelCtrl.$viewValue) {
+              date = ngModelCtrl.$viewValue
+            }
+
+            $element
+              .data('DateTimePicker')
+              .date(date)
           }
-        }
 
-        setPickerValue()
+          if (ngModelCtrl) {
+            ngModelCtrl.$render = function () {
+              setPickerValue()
+            }
+          }
+
+          setPickerValue()
+        }
       }
     }
-  }
-])
+  ])

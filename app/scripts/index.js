@@ -24,31 +24,35 @@ import * as controllers from './controllers'
 import * as directives from './directives'
 
 export const himConsole = angular
-	.module('openhimConsoleApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngRoute',
-  'ui.bootstrap',
-  'hljs',
-  'angularFileUpload',
-  'colorpicker.module',
-  datetimepicker,
-  angularTaglist,
-  'FBAngular'
-])
+  .module('openhimConsoleApp', [
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'ngRoute',
+    'ui.bootstrap',
+    'hljs',
+    'angularFileUpload',
+    'colorpicker.module',
+    datetimepicker,
+    angularTaglist,
+    'FBAngular'
+  ])
+
+for (const controller of controllers) {
+  himConsole.controller(controller.name)
+}
+
+for (const directive of directives) {
+  himConsole.directive(directive.name)
+}
 
 himConsole.run(function ($rootScope) {
-	// register listener to watch route changes
+  // register listener to watch route changes
   $rootScope.$on('$routeChangeStart', function () {
-		// reset the alert object for each route changed
+    // reset the alert object for each route changed
     $rootScope.alerts = {}
   })
 })
 
 // TODO: This needs to invert, the module should export and the controllers, should require it
 export * from './module'
-import './controllers'
-import './util'
-import './services'
-import './app'

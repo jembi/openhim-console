@@ -3,7 +3,7 @@ import { beautifyIndent, returnContentType } from '../utils'
 export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, bodyData) {
   $scope.bodyData = bodyData
 
-	// transform body with indentation/formatting
+  // transform body with indentation/formatting
   if ($scope.bodyData.content) {
     if (bodyData.headers && returnContentType(bodyData.headers)) {
       var bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)

@@ -13,7 +13,7 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   }
 
   function onSuccess () {
-		// On success
+    // On success
     Notify.notify('TasksChanged')
     $scope.rerunSuccess = true
     $scope.$emit('transactionRerunSuccess')

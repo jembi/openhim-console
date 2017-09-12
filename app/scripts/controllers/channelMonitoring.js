@@ -8,11 +8,11 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
   }
 
   let channelError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// get the Data for the supplied ID and store in 'transactionsDetails' object
+  // get the Data for the supplied ID and store in 'transactionsDetails' object
   Api.Channels.get({ channelId: $routeParams.channelId }, channelSuccess, channelError)
 
   $scope.selectedDateType = {
@@ -37,7 +37,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
   }
 
   function loadMetricsError (err) {
-		// add warning message when unable to get data
+    // add warning message when unable to get data
     Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
     Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
   }
@@ -52,7 +52,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
   }
 
   let updateChannelsBarChart = function (channelsData) {
-		// construct channels bar object for morris
+    // construct channels bar object for morris
     let channelsBarData = []
     for (let i = 0; i < channelsData.length; i++) {
       channelsBarData.push({ label: channelsData[i].label, value: channelsData[i].value })
@@ -120,7 +120,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
   }
 
   let channelsMetricsError = function (err) {
-		// add warning message when unable to get data
+    // add warning message when unable to get data
     Alerting.AlertAddMsg('status', 'danger', 'Transaction Channels Error: ' + err.status + ' ' + err.data)
   }
 
@@ -145,7 +145,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
   $scope.updateMetrics()
 
   $scope.$on('$destroy', function () {
-		// Make sure that the interval is destroyed too
+    // Make sure that the interval is destroyed too
     if (angular.isDefined(dashboardInterval)) {
       $interval.cancel(dashboardInterval)
       dashboardInterval = undefined

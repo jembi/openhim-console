@@ -1,9 +1,9 @@
 export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, AuditLookups) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// setup audit lookup objects
+  // setup audit lookup objects
   $scope.eventActionMap = AuditLookups.eventActionMap()
   $scope.eventOutcomeMap = AuditLookups.eventOutcomeMap()
 
@@ -12,22 +12,22 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// get the Data for the supplied ID and store in 'auditsDetails' object
+  // get the Data for the supplied ID and store in 'auditsDetails' object
   Api.Audits.get({ auditId: $routeParams.auditId }, querySuccess, queryError)
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
-	// setup filter options
+  // setup filter options
   $scope.returnFilterObject = function () {
     let filtersObject = {}
 
@@ -37,19 +37,19 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
     return filtersObject
   }
 
-	// location provider - load audit details
+  // location provider - load audit details
   $scope.viewTransactionDetails = function (path) {
-		// do audits details redirection when clicked on TD
+    // do audits details redirection when clicked on TD
     $location.path(path)
   }
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
-	/********************************************************************/
-	/**               Transactions View Body Functions                 **/
-	/********************************************************************/
+  /********************************************************************/
+  /**               Transactions View Body Functions                 **/
+  /********************************************************************/
 
   $scope.viewContentDetails = function (type, content) {
     $uibModal.open({
@@ -63,7 +63,7 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
     })
   }
 
-	/********************************************************************/
-	/**               Transactions View Body Functions                 **/
-	/********************************************************************/
+  /********************************************************************/
+  /**               Transactions View Body Functions                 **/
+  /********************************************************************/
 }

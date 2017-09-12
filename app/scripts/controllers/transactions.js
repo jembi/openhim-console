@@ -2,14 +2,14 @@ import moment from 'moment'
 import { valueNotEmpty } from '../utils'
 
 export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $interval, Api, Alerting) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// remember when we loaded the page...
+  // remember when we loaded the page...
   let pageLoadDate = moment()
 
-	// set default limit
+  // set default limit
   let defaultLimit = 20
   let defaultWasRerun = 'dont-filter'
   let defaultTabView = 'same'
@@ -17,18 +17,18 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   $scope.loadMoreBtn = false
   let defaultAutoUpdate = true
 
-	// filters collapsed by default
+  // filters collapsed by default
   $scope.advancedFilters = {}
   $scope.advancedFilters.isCollapsed = true
 
-	/* setup default filter options */
+  /* setup default filter options */
   $scope.showpage = 0
   $scope.checkbox = {}
   $scope.checkbox.checkAll = false
   $scope.transactionsSelected = []
   $scope.rerunTransactionsSelected = 0
 
-	// default settings
+  // default settings
   $scope.settings = {}
   $scope.settings.list = {}
   $scope.settings.list.tabview = defaultTabView
@@ -42,7 +42,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   let userSettings = consoleSession.sessionUserSettings
   let sessionUserEmail = consoleSession.sessionUser
 
-	// polling
+  // polling
   let lastUpdated
   let serverDiffTime = 0
   $scope.baseIndex = 0
@@ -51,7 +51,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   $scope.settings.filter.transaction = {}
   $scope.settings.filter.route = {}
   $scope.settings.filter.orchestration = {}
-	// default value for reruns filter
+  // default value for reruns filter
   $scope.settings.filter.transaction.wasRerun = defaultWasRerun
 
   let isEmpty = function (obj) {
@@ -72,7 +72,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.settings.filter.endDate = filters.endDate
   }
 
-	// check if no parameters exist and user has settings defined
+  // check if no parameters exist and user has settings defined
   if (angular.equals({}, $location.search()) && userSettings) {
     if (userSettings.filter) {
       attachUserFiltersToScope(userSettings.filter)
@@ -86,13 +86,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
   }
 
-	// setup default transaction settings
+  // setup default transaction settings
   if ($location.search().limit) { $scope.settings.filter.limit = $location.search().limit }
   if ($location.search().startDate) { $scope.settings.filter.startDate = $location.search().startDate }
   if ($location.search().endDate) { $scope.settings.filter.endDate = $location.search().endDate }
   if ($location.search().txWasRerun) { $scope.settings.filter.transaction.wasRerun = $location.search().txWasRerun }
 
-	// search for transaction filters
+  // search for transaction filters
   if ($location.search().txStatus) { $scope.settings.filter.transaction.status = $location.search().txStatus }
   if ($location.search().txChannel) { $scope.settings.filter.transaction.channel = $location.search().txChannel }
 
@@ -137,7 +137,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
 
-	// search for route filters
+  // search for route filters
   if ($location.search().routeStatusCode) {
     $scope.settings.filter.route.statusCode = $location.search().routeStatusCode
     $scope.advancedFilters.isCollapsed = false
@@ -163,7 +163,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
 
-	// search for orchestration filters
+  // search for orchestration filters
   if ($location.search().orchStatusCode) {
     $scope.settings.filter.orchestration.statusCode = $location.search().orchStatusCode
     $scope.advancedFilters.isCollapsed = false
@@ -194,7 +194,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.rerunAllowedAdmin = true
   }
 
-	// get the channels for the transactions filter dropdown
+  // get the channels for the transactions filter dropdown
   $scope.channels = Api.Channels.query(function () {
     $scope.channelsMap = {}
     angular.forEach($scope.channels, function (channel) {
@@ -223,27 +223,27 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   let clientsSuccess = function (clients) {
     $scope.clients = clients
-		// Create client map of id to name
+    // Create client map of id to name
     $scope.clients.map(function (client) {
       $scope.clientsIdNameMap[client._id] = client.name
     })
   }
-	// clients used for advanced filter dropdown and client name on transaction list
+  // clients used for advanced filter dropdown and client name on transaction list
   Api.Clients.query(clientsSuccess)
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
   let buildDateFilterObject = function (object, comparator, date) {
     object[comparator] = moment(new Date(date)).format()
   }
 
-	// setup filter options
+  // setup filter options
   $scope.returnFilters = function () {
     let filtersObject = {}
     let filterDateStart, filterDateEnd
@@ -251,10 +251,10 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     filtersObject.filterPage = $scope.showpage
     filtersObject.filterLimit = $scope.settings.filter.limit
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     filtersObject.filters = {}
 
-		// date filter
+    // date filter
     filterDateStart = $scope.settings.filter.startDate
     filterDateEnd = $scope.settings.filter.endDate
 
@@ -267,8 +267,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       filtersObject.filters['request.timestamp'] = JSON.stringify(dateFilterObject)
     }
 
-		/* ----- filter by transaction (basic) ----- */
-		// add transaction status filter
+    /* ----- filter by transaction (basic) ----- */
+    // add transaction status filter
     let txStatus = $scope.settings.filter.transaction.status
     if (valueNotEmpty(txStatus) === true) {
       filtersObject.filters.status = txStatus
@@ -278,10 +278,10 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if (valueNotEmpty(txChannel) === true) {
       filtersObject.filters.channelID = txChannel
     }
-		/* ----- filter by transaction (basic) ----- */
+    /* ----- filter by transaction (basic) ----- */
 
-		/* ----- filter by transaction (advanced) ----- */
-		// add transaction status filter
+    /* ----- filter by transaction (advanced) ----- */
+    // add transaction status filter
     let txStatusCode = $scope.settings.filter.transaction.statusCode
     if (valueNotEmpty(txStatusCode) === true) {
       filtersObject.filters['response.status'] = txStatusCode
@@ -319,7 +319,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
     let txWasRerun = $scope.settings.filter.transaction.wasRerun
     if (valueNotEmpty(txWasRerun) === true) {
-			// if wasRerun is 'yes' - query all transactions that have child IDs
+      // if wasRerun is 'yes' - query all transactions that have child IDs
       if (txWasRerun === 'yes') {
         filtersObject.filters['childIDs.0'] = JSON.stringify({ '$exists': true })
       } else if (txWasRerun === 'no') {
@@ -343,9 +343,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       filtersObject.filters['request.method'] = txHttpMethod
     }
 
-		/* ----- filter by transaction (advanced) ----- */
+    /* ----- filter by transaction (advanced) ----- */
 
-		/* ----- filter by route ----- */
+    /* ----- filter by route ----- */
     let routeStatusCode = $scope.settings.filter.route.statusCode
     if (valueNotEmpty(routeStatusCode) === true) {
       filtersObject.filters['routes.response.status'] = routeStatusCode
@@ -375,9 +375,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         filtersObject.filters['routes.request.querystring'] += '=' + routeParamValue
       }
     }
-		/* ----- filter by route ----- */
+    /* ----- filter by route ----- */
 
-		/* ----- filter by orchestration ----- */
+    /* ----- filter by orchestration ----- */
     let orchStatusCode = $scope.settings.filter.orchestration.statusCode
     if (valueNotEmpty(orchStatusCode) === true) {
       filtersObject.filters['orchestrations.response.status'] = orchStatusCode
@@ -407,18 +407,18 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         filtersObject.filters['orchestrations.request.querystring'] += '=' + orchParamValue
       }
     }
-		/* ----- filter by orchestration ----- */
+    /* ----- filter by orchestration ----- */
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     return filtersObject
   }
 
   let refreshSuccess = function (transactions) {
-		// on success
+    // on success
     $scope.transactions = transactions
 
-		// save latest returned transaction to session storage for use in transaction
-		// details paging.
+    // save latest returned transaction to session storage for use in transaction
+    // details paging.
     let idList = transactions.map(function (tx) { return tx._id })
     sessionStorage.setItem('currTxList', angular.toJson(idList))
     sessionStorage.setItem('currFilterURL', $location.url())
@@ -430,57 +430,57 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters')
       }
     } else {
-			// Show the load more button
+      // Show the load more button
       $scope.loadMoreBtn = true
     }
 
-		// if bulkRerun param true
+    // if bulkRerun param true
     if ($scope.bulkRerun) {
-			// set checkAll to true - used to add transactions in toggleCheckedAll function
+      // set checkAll to true - used to add transactions in toggleCheckedAll function
       $scope.checkbox.checkAll = true
 
-			// do the checkAll function to add the transactions to the transactionsSelected object
+      // do the checkAll function to add the transactions to the transactionsSelected object
       $scope.toggleCheckedAll()
 
       if (!$scope.settings.filter.startDate || !$scope.settings.filter.endDate) {
         $scope.NoDateRange = true
       }
     } else {
-			// normal transaction success
-			// make sure newly added transactions are checked as well
+      // normal transaction success
+      // make sure newly added transactions are checked as well
       $scope.resetCheckedItems()
     }
   }
 
   let refreshError = function (err) {
-		// on error - Hide load more button and show error message
+    // on error - Hide load more button and show error message
     $scope.loadMoreBtn = false
     Alerting.AlertAddServerMsg(err.status)
   }
 
   $scope.validateFormFilters = function () {
-		// reset hasErrors alert object
+    // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
 
-		// clear timeout if it has been set
+    // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
 
     $scope.ngError = {}
     $scope.ngError.hasErrors = false
 
-		// transaction status code validation
+    // transaction status code validation
     if ($scope.settings.filter.transaction.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.transaction.statusCode) === false) {
       $scope.ngError.txStatusCode = true
       $scope.ngError.hasErrors = true
     }
 
-		// route status code validation
+    // route status code validation
     if ($scope.settings.filter.route.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.route.statusCode) === false) {
       $scope.ngError.routeStatusCode = true
       $scope.ngError.hasErrors = true
     }
 
-		// orchestration status code validation
+    // orchestration status code validation
     if ($scope.settings.filter.orchestration.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.orchestration.statusCode) === false) {
       $scope.ngError.orchStatusCode = true
       $scope.ngError.hasErrors = true
@@ -488,7 +488,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
     if ($scope.ngError.hasErrors) {
       $scope.clearValidation = $timeout(function () {
-				// clear errors after 5 seconds
+        // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
@@ -519,19 +519,19 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   $scope.applyFiltersToUrl = function () {
-		// get the filter params object before clearing them
+    // get the filter params object before clearing them
     let filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
 
-		// first clear existing filters
+    // first clear existing filters
     $location.search({})
 
-		// Add filters to url
-		// set filter limit only if url parameter set
+    // Add filters to url
+    // set filter limit only if url parameter set
     if ($scope.settings.filter.limit) { $location.search('limit', $scope.settings.filter.limit) }
     if ($scope.settings.filter.startDate) { $location.search('startDate', $scope.settings.filter.startDate) }
     if ($scope.settings.filter.endDate) { $location.search('endDate', $scope.settings.filter.endDate) }
 
-		// add transaction filters
+    // add transaction filters
     if ($scope.settings.filter.transaction.status) { $location.search('txStatus', $scope.settings.filter.transaction.status) }
     if ($scope.settings.filter.transaction.channel) { $location.search('txChannel', $scope.settings.filter.transaction.channel) }
     if ($scope.settings.filter.transaction.statusCode) { $location.search('txStatusCode', $scope.settings.filter.transaction.statusCode) }
@@ -546,7 +546,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if ($scope.settings.filter.transaction.propertyValue) { $location.search('txPropertyValue', $scope.settings.filter.transaction.propertyValue) }
     if ($scope.settings.filter.transaction.method) { $location.search('txHttpMethod', $scope.settings.filter.transaction.method) }
 
-		// add route filters
+    // add route filters
     if ($scope.settings.filter.route.statusCode) { $location.search('routeStatusCode', $scope.settings.filter.route.statusCode) }
     if ($scope.settings.filter.route.host) { $location.search('routeHost', $scope.settings.filter.route.host) }
     if ($scope.settings.filter.route.port) { $location.search('routePort', $scope.settings.filter.route.port) }
@@ -554,7 +554,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if ($scope.settings.filter.route.requestParamKey) { $location.search('routeParamKey', $scope.settings.filter.route.requestParamKey) }
     if ($scope.settings.filter.route.requestParamValue) { $location.search('routeParamValue', $scope.settings.filter.route.requestParamValue) }
 
-		// add orchestration filters
+    // add orchestration filters
     if ($scope.settings.filter.orchestration.statusCode) { $location.search('orchStatusCode', $scope.settings.filter.orchestration.statusCode) }
     if ($scope.settings.filter.orchestration.host) { $location.search('orchHost', $scope.settings.filter.orchestration.host) }
     if ($scope.settings.filter.orchestration.port) { $location.search('orchPort', $scope.settings.filter.orchestration.port) }
@@ -562,11 +562,11 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if ($scope.settings.filter.orchestration.requestParamKey) { $location.search('orchParamKey', $scope.settings.filter.orchestration.requestParamKey) }
     if ($scope.settings.filter.orchestration.requestParamValue) { $location.search('orchParamValue', $scope.settings.filter.orchestration.requestParamValue) }
 
-		// get the filter params object after clearing them
+    // get the filter params object after clearing them
     let filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
 
-		// if the filters object stays the same then call refresh function
-		// if filters object not the same then angular changes route and loads controller ( refresh )
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
     if (filterParamsBeforeClear === filterParamsAfterClear) {
       $scope.refreshTransactionsList()
     }
@@ -576,23 +576,23 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     let consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
 
-		// update consoleSession with new user filter settings
+    // update consoleSession with new user filter settings
     consoleSession.sessionUserSettings = $scope.settings
     localStorage.setItem('consoleSession', JSON.stringify(consoleSession))
   }
 
-	// Refresh transactions list
+  // Refresh transactions list
   $scope.refreshTransactionsList = function () {
     Alerting.AlertReset()
 
-		// validate the form first to check for any errors
+    // validate the form first to check for any errors
     $scope.validateFormFilters()
 
     lastUpdated = moment() - serverDiffTime
 
-		// execute refresh if no errors
+    // execute refresh if no errors
     if ($scope.ngError.hasErrors === false) {
-			// Set dateApplied flag if date is present when transaction list is refreshed
+      // Set dateApplied flag if date is present when transaction list is refreshed
       if ($scope.settings.filter.startDate || $scope.settings.filter.endDate) {
         $scope.dateApplied = true
       } else {
@@ -601,27 +601,27 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
       $scope.transactions = null
 
-			// reset the showpage filter to start at 0
+      // reset the showpage filter to start at 0
       $scope.showpage = 0
-			// if bulkRerun param true
+      // if bulkRerun param true
       if ($scope.bulkRerun) {
-				// do API call only for 'bulkrerun' properties
+        // do API call only for 'bulkrerun' properties
         let returnFilters = $scope.returnFilters()
-				// add filterRepresentation to only return bulkrerun properties
+        // add filterRepresentation to only return bulkrerun properties
         returnFilters.filterRepresentation = 'bulkrerun'
 
-				// set filter limit to default defaultBulkRerunLimit
+        // set filter limit to default defaultBulkRerunLimit
         returnFilters.filterLimit = $scope.defaultBulkRerunLimit
 
-				// remove filterPage because no pagination needed
+        // remove filterPage because no pagination needed
         delete returnFilters.filterPage
 
-				// set bulkrerunActive true to show rerun information
+        // set bulkrerunActive true to show rerun information
         $scope.bulkRerunActive = true
 
         Api.Transactions.query(returnFilters, refreshSuccess, refreshError)
       } else {
-				//  do normal transaction API call for transactions
+        //  do normal transaction API call for transactions
         Api.Transactions.query($scope.returnFilters(), refreshSuccess, refreshError)
       }
       updateConsoleSession()
@@ -629,11 +629,11 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       Alerting.AlertAddMsg('server', 'danger', 'You appear to have errors in your filter query. Please correct and try again')
     }
   }
-	// run the transaction list view for the first time
+  // run the transaction list view for the first time
   $scope.refreshTransactionsList()
 
   let loadMoreSuccess = function (transactions) {
-		// on success
+    // on success
     $scope.transactions = $scope.transactions.concat(transactions)
 
     if (transactions.length < $scope.settings.filter.limit) {
@@ -641,18 +641,18 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve')
     }
 
-		// make sure newly added transactions are checked as well
+    // make sure newly added transactions are checked as well
     $scope.toggleCheckedAll()
     $scope.busyLoadingMore = false
   }
 
   let loadMoreError = function (err) {
-		// on error - Hide load more button and show error message
+    // on error - Hide load more button and show error message
     $scope.loadMoreBtn = false
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// Refresh transactions list
+  // Refresh transactions list
   $scope.loadMoreTransactions = function () {
     $scope.busyLoadingMore = true
     Alerting.AlertReset()
@@ -662,17 +662,17 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     let filters = $scope.returnFilters()
 
     if (!filters.filters['request.timestamp']) {
-			// use page load time as an explicit end date
-			// this prevents issues with paging when new transactions come in, breaking the pages
+      // use page load time as an explicit end date
+      // this prevents issues with paging when new transactions come in, breaking the pages
       filters.filters['request.timestamp'] = JSON.stringify({ '$lte': moment(pageLoadDate - serverDiffTime).format() })
     }
 
     Api.Transactions.query(filters, loadMoreSuccess, loadMoreError)
   }
 
-	// location provider - load transaction details
+  // location provider - load transaction details
   $scope.viewTransactionDetails = function (path, $event) {
-		// do transactions details redirection when clicked on TD
+    // do transactions details redirection when clicked on TD
     if ($event.target.tagName === 'TD') {
       let absUrl = $location.absUrl()
       let absUrlPath = $location.url()
@@ -688,8 +688,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   $scope.filtersApplied = function () {
-		// We can't just check the scope date variables, as these are set before the filters are applied
-		// This is why we have a date applied variable, which checks if date filter is applied to transaction list
+    // We can't just check the scope date variables, as these are set before the filters are applied
+    // This is why we have a date applied variable, which checks if date filter is applied to transaction list
     if ($scope.dateApplied) { return true }
     if ($scope.settings.filter.limit !== defaultLimit) { return true }
     if ($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true }
@@ -699,13 +699,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     return false
   }
 
-	// Clear filter data end refresh transactions scope
+  // Clear filter data end refresh transactions scope
   $scope.clearFilters = function () {
     Alerting.AlertReset()
     $scope.bulkRerunActive = false
     $scope.bulkRerun = false
 
-		// reset default filters
+    // reset default filters
     $scope.settings.filter.limit = defaultLimit
     $scope.settings.filter.startDate = ''
     $scope.settings.filter.endDate = ''
@@ -717,13 +717,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.settings.list.tabview = defaultTabView
     $scope.settings.list.autoupdate = defaultAutoUpdate
 
-		// clear all filter parameters
+    // clear all filter parameters
     $location.search({})
     $scope.advancedFilters.isCollapsed = true
     $scope.refreshTransactionsList()
   }
 
-	// Apply the current user's default filters
+  // Apply the current user's default filters
   $scope.applyDefaultFilters = function () {
     Alerting.AlertReset()
     $scope.bulkRerunActive = false
@@ -741,7 +741,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     Api.Users.get({ email: sessionUserEmail }, success, error)
   }
 
-	// Persist Current Filters to Session and Database
+  // Persist Current Filters to Session and Database
   $scope.persistUserFiltersToDatabase = function () {
     Alerting.AlertReset()
 
@@ -761,25 +761,25 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
 
     let currentUser = Api.Users.get({ email: sessionUserEmail }, function () {
-			// check settings properties exist
+      // check settings properties exist
       if (!currentUser.settings) { currentUser.settings = {} }
       if (!currentUser.settings.filter) { currentUser.settings.filter = {} }
 
-			// add user filters to the user object
+      // add user filters to the user object
       currentUser.settings.filter = $scope.settings.filter
 
-			// update user via api
+      // update user via api
       updateUser(currentUser)
     })
   }
 
-	/*******************************************************************/
-	/**         Transactions List and Detail view functions           **/
-	/*******************************************************************/
+  /*******************************************************************/
+  /**         Transactions List and Detail view functions           **/
+  /*******************************************************************/
 
-	/****************************************************/
-	/**         Transactions ReRun Functions           **/
-	/****************************************************/
+  /****************************************************/
+  /**         Transactions ReRun Functions           **/
+  /****************************************************/
   $scope.bulkRerunInitiate = function () {
     $scope.bulkRerun = true
     $scope.refreshTransactionsList()
@@ -793,13 +793,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   $scope.bulkRerunContinue = function () {
     $scope.bulkRerun = false
-		// set checkAll to true - used to add transactions in toggleCheckedAll function
+    // set checkAll to true - used to add transactions in toggleCheckedAll function
     $scope.checkbox.checkAll = true
 
-		// do the checkAll function to add the transactions to the transactionsSelected object
+    // do the checkAll function to add the transactions to the transactionsSelected object
     $scope.toggleCheckedAll()
 
-		// display confirmation popup modal to complete the rerun procedure
+    // display confirmation popup modal to complete the rerun procedure
     $scope.confirmRerunTransactions()
   }
 
@@ -824,19 +824,19 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   $scope.toggleCheckedAll = function () {
-		// if checked for all
+    // if checked for all
     if ($scope.checkbox.checkAll === true) {
       $scope.transactionsSelected = []
       $scope.rerunTransactionsSelected = 0
 
       angular.forEach($scope.transactions, function (transaction) {
-				// first check if transaction can be rerun
+        // first check if transaction can be rerun
         if (transaction.canRerun) {
-					// only add transaction if channel Rerun is allowed
+          // only add transaction if channel Rerun is allowed
           if ($scope.channelsMap[transaction.channelID].rerun) {
             $scope.transactionsSelected.push(transaction._id)
 
-						// check if transaction is a rerun
+            // check if transaction is a rerun
             if (transaction.childIDs) {
               if (transaction.childIDs.length > 0) {
                 $scope.rerunTransactionsSelected++
@@ -864,21 +864,21 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     let idx = $scope.transactionsSelected.indexOf(transactionID)
     let transaction = getObjectById(transactionID, $scope.transactions)
 
-		// is currently selected
+    // is currently selected
     if (idx > -1) {
       $scope.transactionsSelected.splice(idx, 1)
 
-			// check if transaction has reruns
+      // check if transaction has reruns
       if (transaction.childIDs) {
         if (transaction.childIDs.length > 0) {
           $scope.rerunTransactionsSelected--
         }
       }
     } else {
-			// is newly selected
+      // is newly selected
       $scope.transactionsSelected.push(transactionID)
 
-			// check if transaction has reruns
+      // check if transaction has reruns
       if (transaction.childIDs) {
         if (transaction.childIDs.length > 0) {
           $scope.rerunTransactionsSelected++
@@ -899,13 +899,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.refreshTransactionsList()
   })
 
-	/****************************************************/
-	/**         Transactions ReRun Functions           **/
-	/****************************************************/
+  /****************************************************/
+  /**         Transactions ReRun Functions           **/
+  /****************************************************/
 
-	/****************************************************/
-	/**         Poll for latest transactions           **/
-	/****************************************************/
+  /****************************************************/
+  /**         Poll for latest transactions           **/
+  /****************************************************/
 
   let pollingInterval
   let lastPollingCompleted = true
@@ -915,7 +915,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     let filters = $scope.returnFilters()
 
     if (!filters.filters['request.timestamp']) {
-			// only poll for latest if date filters are OFF
+      // only poll for latest if date filters are OFF
 
       filters.filters['request.timestamp'] = JSON.stringify({ '$gte': moment(lastUpdated).format() })
       lastUpdated = moment() - serverDiffTime
@@ -935,8 +935,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
   }
 
-	// poll for updates for any transactions that are marked as 'Processing'
-	// TODO need an endpoint in core to lookup a several transactions by _id at once
+  // poll for updates for any transactions that are marked as 'Processing'
+  // TODO need an endpoint in core to lookup a several transactions by _id at once
   $scope.pollForProcessingUpdates = function () {
     if (!$scope.transactions) { return }
     $scope.transactions.forEach(function (trx) {
@@ -973,7 +973,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
   }
 
-	// sync time with server
+  // sync time with server
   Api.Heartbeat.get(function (heartbeat) {
     serverDiffTime = moment() - moment(heartbeat.now)
     lastUpdated = moment() - serverDiffTime
@@ -984,7 +984,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   $scope.$on('$destroy', $scope.stopPolling)
 
-	/****************************************************/
-	/**         Poll for latest transactions           **/
-	/****************************************************/
+  /****************************************************/
+  /**         Poll for latest transactions           **/
+  /****************************************************/
 }

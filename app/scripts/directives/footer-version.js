@@ -1,7 +1,7 @@
 import { isCoreVersionCompatible } from '../util'
 import * as footerTemplate from './footer-version.html'
 
-function footerVersion (Api, config) {
+export function footerVersion (Api, config) {
   return {
     template: footerTemplate,
     scope: false,

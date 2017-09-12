@@ -2,7 +2,7 @@ import moment from 'moment'
 
 export function LogsCtrl ($scope, $location, Api) {
   function formatLog (log) {
-    return new moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n'
+    return moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n'
   }
 
   let lastFetch
@@ -19,7 +19,7 @@ export function LogsCtrl ($scope, $location, Api) {
     $scope.tailLogs = true
   }
 
-	// fetch initial logs
+  // fetch initial logs
   $scope.logs = ''
   lastFetch = new Date()
 
@@ -58,7 +58,7 @@ export function LogsCtrl ($scope, $location, Api) {
         $scope.logs += formatLog(log)
         linesAdded++
         if (linesAdded > 10000) {
-					// Prevent logs string from growing too much, remove from front
+          // Prevent logs string from growing too much, remove from front
           $scope.logs = $scope.logs.substring($scope.logs.indexOf('\n') + 1)
         }
       })
@@ -74,18 +74,18 @@ export function LogsCtrl ($scope, $location, Api) {
   let scrollInterval = setInterval(function () {
     if ($scope.tailLogs === true) {
       let textarea = document.getElementById('textarea')
-			// scroll to bottom
+      // scroll to bottom
       textarea.scrollTop = textarea.scrollHeight
     }
   }, 50)
 
   $scope.reload = function () {
-		// sync params with location, this reloads the controller
+    // sync params with location, this reloads the controller
     $location.search($scope.params)
   }
 
   $scope.$on('$locationChangeStart', function () {
-		// clear existing intervals whenever the location is changed
+    // clear existing intervals whenever the location is changed
     clearInterval(autoUpdateInterval)
     clearInterval(scrollInterval)
   })

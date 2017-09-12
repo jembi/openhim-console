@@ -1,7 +1,7 @@
 export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, MediatorDisplay) {
-	/******************************************************************/
-	/**   These are the functions for the Mediators initial load     **/
-	/******************************************************************/
+  /******************************************************************/
+  /**   These are the functions for the Mediators initial load     **/
+  /******************************************************************/
 
   let querySuccess = function (mediators) {
     $scope.mediators = mediators
@@ -13,37 +13,37 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// do the initial request
+  // do the initial request
   Api.Mediators.query(querySuccess, queryError)
 
-	/******************************************************************/
-	/**   These are the functions for the Mediators initial load     **/
-	/******************************************************************/
+  /******************************************************************/
+  /**   These are the functions for the Mediators initial load     **/
+  /******************************************************************/
 
-	// location provider - load transaction details
+  // location provider - load transaction details
   $scope.viewMediatorDetails = function (path, $event) {
-		// do mediators details redirection when clicked on TD
+    // do mediators details redirection when clicked on TD
     if ($event.target.tagName === 'TD') {
       $location.path(path)
     }
   }
 
-	/***********************************/
-	/**   Delete Mediator Functions   **/
-	/***********************************/
+  /***********************************/
+  /**   Delete Mediator Functions   **/
+  /***********************************/
 
   let deleteSuccess = function () {
-		// On success
+    // On success
     $scope.mediators = Api.Mediators.query(querySuccess, queryError)
     Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully')
   }
 
   let deleteError = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data)
   }
 
@@ -67,16 +67,16 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - delete the user
+      // Delete confirmed - delete the user
       mediator.$remove(deleteSuccess, deleteError)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 
-	/***********************************/
-	/**   Delete Mediator Functions   **/
-	/***********************************/
+  /***********************************/
+  /**   Delete Mediator Functions   **/
+  /***********************************/
 
   $scope.editMediatorConfig = function (mediator) {
     Alerting.AlertReset()

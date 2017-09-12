@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, login, Api, Alerting, Fullscreen) {
-	// initialize global variables
+  // initialize global variables
   let settingsStore = {} // a place the push current settings when switching to fullscreen
   let visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad, user, consoleSession
 
@@ -10,7 +10,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   $scope.loadingVisualizerErrorMsgs = []
   $scope.isUsingOldVisualizerSettings = false
 
-	// function to start the visualizer
+  // function to start the visualizer
   let startVisualizer = function startVisualizer () {
     Api.Heartbeat.get(function (heartbeat) {
       diffTime = Date.now() - moment(heartbeat.now)
@@ -29,77 +29,77 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       $scope.isUsingOldVisualizerSettings = true
     }
 
-		/** ******** Visualizations Management **********/
-		// setup components (components)
+    /** ******** Visualizations Management **********/
+    // setup components (components)
     angular.forEach(visSettings.components, function (component) {
       components.push(component)
     })
 
-		// setup channels
+    // setup channels
     angular.forEach(visSettings.channels, function (channel) {
       channels.push(channel)
     })
 
-		// setup channels
+    // setup channels
     angular.forEach(visSettings.mediators, function (mediator) {
       mediators.push(mediator)
     })
 
-		// check if components and components have events
+    // check if components and components have events
     if (components.length === 0 || channels.length === 0) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
       $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has at least one Component and one Endpoint added!' })
     }
-		/** ******** Visualizations Management **********/
+    /** ******** Visualizations Management **********/
 
-		/** ******** Size Management **********/
+    /** ******** Size Management **********/
     visResponsive = visSettings.size.responsive
     visW = parseInt(visSettings.size.width)
     visH = parseInt(visSettings.size.height)
     pad = parseInt(visSettings.size.padding)
 
-		// check if config not empty
+    // check if config not empty
     if (!visW || !visH || !pad) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
       $scope.loadingVisualizerErrorMsgs.push({ section: 'Size Management', msg: 'Please ensure all size management fields are supplied!' })
     }
-		/** ******** Size Management **********/
+    /** ******** Size Management **********/
 
-		/** ******** Color Management **********/
+    /** ******** Color Management **********/
     inactiveColor = visSettings.color.inactive
     activeColor = visSettings.color.active
     errorColor = visSettings.color.error
     textColor = visSettings.color.text
 
-		// check if config not empty
+    // check if config not empty
     if (inactiveColor === '' || activeColor === '' || errorColor === '' || textColor === '') {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
       $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' })
     }
-		/** ******** Color Management **********/
+    /** ******** Color Management **********/
 
-		/** ******** Time Management **********/
-		// How often to fetch updates from the server (in millis)
+    /** ******** Time Management **********/
+    // How often to fetch updates from the server (in millis)
     updatePeriod = parseInt(visSettings.time.updatePeriod)
     minDisplayPeriod = parseInt(visSettings.time.minDisplayPeriod)
 
-		// play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
+    // play speed; 0 = normal, -1 = 2X slower, -2 = 3X slower, 1 = 2X faster, etc.
     $scope.visualizerSpeed = 0
     maxSpeed = parseInt(visSettings.time.maxSpeed)
     maxTimeout = parseInt(visSettings.time.maxTimeout)
 
-		// check if config not empty
+    // check if config not empty
     if (!updatePeriod || !maxSpeed || !maxTimeout) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
       $scope.loadingVisualizerErrorMsgs.push({ section: 'Speed Management', msg: 'Please ensure all speed management fields are supplied!' })
     }
-		/** ******** Time Management **********/
+    /** ******** Time Management **********/
 
-		// setup watcher objects
+    // setup watcher objects
     $scope.visualizerData = []
     $scope.visualizerSettings = {
       name: visSettings.name,
@@ -121,17 +121,17 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       maxTimeout: maxTimeout
     }
 
-		// check if visualizer should be loaded - no errors found
+    // check if visualizer should be loaded - no errors found
     if ($scope.loadingVisualizer === true) {
-			// visualizer loaded - change state
+      // visualizer loaded - change state
       $scope.loadingVisualizer = false
 
-			// Start the visualizer
+      // Start the visualizer
       startVisualizer()
     }
   }
 
-	// function to play the visualizer - Pull new events
+  // function to play the visualizer - Pull new events
   $scope.play = function play () {
     $scope.showPlay = false
     $scope.showPause = true
@@ -139,14 +139,14 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     lastUpdate = (Date.now() - diffTime)
     visualizerUpdateInterval = $interval(function () {
       Api.Events.get({ receivedTime: lastUpdate }, function (events) {
-				// update the visualizerData object to trigger the directive watcher and update the events
+        // update the visualizerData object to trigger the directive watcher and update the events
         $scope.visualizerData = events.events
         lastUpdate = (Date.now() - diffTime)
       })
     }, updatePeriod)
   }
 
-	// function to cancel the update interval
+  // function to cancel the update interval
   let cancelVisualizerUpdateInterval = function () {
     if (angular.isDefined(visualizerUpdateInterval)) {
       $interval.cancel(visualizerUpdateInterval)
@@ -154,17 +154,17 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     }
   }
 
-	// function to pause the visualizer - cancel update interval
+  // function to pause the visualizer - cancel update interval
   $scope.pause = function pause () {
     $scope.showPlay = true
     $scope.showPause = false
     cancelVisualizerUpdateInterval()
   }
 
-	// cancel update interval when visualizer scope destroyed
+  // cancel update interval when visualizer scope destroyed
   $scope.$on('$destroy', cancelVisualizerUpdateInterval)
 
-	// funcntion to slow down animate
+  // funcntion to slow down animate
   $scope.slowDown = function slowDown () {
     if ($scope.visualizerSpeed > -1 * maxSpeed + 1) {
       $scope.visualizerSpeed--
@@ -172,7 +172,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     $scope.speedText = $scope.setSpeedText()
   }
 
-	// function to speed up animate
+  // function to speed up animate
   $scope.speedUp = function speedUp () {
     if ($scope.visualizerSpeed < maxSpeed - 1) {
       $scope.visualizerSpeed++
@@ -180,7 +180,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     $scope.speedText = $scope.setSpeedText()
   }
 
-	// function to set the animate speed
+  // function to set the animate speed
   $scope.setSpeedText = function setSpeedText () {
     if ($scope.visualizerSpeed === 0) {
       return ''
@@ -191,11 +191,11 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     }
   }
 
-	// function to add new visualizer to list
+  // function to add new visualizer to list
   $scope.addVisualiser = function addVisualiser () {
     Alerting.AlertReset()
 
-		// open visualizer settings modal
+    // open visualizer settings modal
     $uibModal.open({
       templateUrl: 'views/visualizerModal.html',
       controller: 'VisualizerModalCtrl',
@@ -207,11 +207,11 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     })
   }
 
-	// function to edit a visualizer
+  // function to edit a visualizer
   $scope.editVisualiser = function editVisualiser (vis) {
     Alerting.AlertReset()
 
-		// open visualizer settings modal
+    // open visualizer settings modal
     $uibModal.open({
       templateUrl: 'views/visualizerModal.html',
       controller: 'VisualizerModalCtrl',
@@ -223,11 +223,11 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     })
   }
 
-	// function to duplicate a visualizer
+  // function to duplicate a visualizer
   $scope.duplicateVisualiser = function duplicateVisualiser (vis) {
     Alerting.AlertReset()
 
-		// open visualizer settings modal
+    // open visualizer settings modal
     $uibModal.open({
       templateUrl: 'views/visualizerModal.html',
       controller: 'VisualizerModalCtrl',
@@ -240,7 +240,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   function fetchSessionAndVisualizers () {
-		// Retrieve the session from storage
+    // Retrieve the session from storage
     consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
     user = null
@@ -248,7 +248,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
       user = u
 
-			// visualizer list controls
+      // visualizer list controls
       Api.Visualizers.query(function (visualizers) {
         $scope.visualizers = visualizers
         if (visualizers.length > 0) {
@@ -293,7 +293,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     }
   })
 
-	// do the initial request
+  // do the initial request
   fetchSessionAndVisualizers()
 
   $scope.$on('visualizersChanged', function () {
@@ -305,16 +305,16 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       callback = function () { }
     }
 
-		// set current visualizer
+    // set current visualizer
     $scope.selectedVis = vis
 
-		// store in current session
+    // store in current session
     if (!consoleSession.sessionUserSettings) {
       consoleSession.sessionUserSettings = {}
     }
     consoleSession.sessionUserSettings.selectedVisualizer = vis.name
     localStorage.setItem('consoleSession', JSON.stringify(consoleSession))
-		// store in user settings
+    // store in user settings
     if (!user.settings) {
       user.settings = {}
     }
@@ -324,7 +324,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     Api.Users.update(user, callback)
   }
 
-	// remove visualizer functions
+  // remove visualizer functions
   let removeVisualizer = function (vis, i) {
     $scope.visualizers.splice(i, 1)
     if (vis === $scope.selectedVis) {
@@ -359,10 +359,10 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - delete the visualizer
+      // Delete confirmed - delete the visualizer
       removeVisualizer(vis, i)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 }

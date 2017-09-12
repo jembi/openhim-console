@@ -17,7 +17,7 @@ export function isBase64String (string) {
 }
 
 export function decodeBase64 (stringToBeDecoded) {
-	// decrypt
+  // decrypt
   const base64Value = CryptoJS.enc.Base64.parse(stringToBeDecoded)
   const decodeBase64Value = base64Value.toString(CryptoJS.enc.Utf8)
   return decodeBase64Value
@@ -69,7 +69,7 @@ export function beautifyIndent (type, content) {
       return { lang: 'html', content: pd.xml(content, 2) }
     }
 
-		// {anything}application/{word characters}+xml{anything}.
+    // {anything}application/{word characters}+xml{anything}.
     if (/.*application\/\w+\+xml.*/.test(type)) {
       return { lang: 'xml', content: pd.xml(content, 2) }
     }
@@ -77,7 +77,7 @@ export function beautifyIndent (type, content) {
     return { lang: '', content: content }
   }
 
-	// if not applicable then return as is
+  // if not applicable then return as is
   return { lang: '', content: content }
 }
 
@@ -107,11 +107,11 @@ export function buildBlob (data, datatype) {
       bb.append(data)
       out = bb.getBlob(datatype)
     } else if (e.name === 'InvalidStateError') {
-			// InvalidStateError (tested on FF13 WinXP)
+      // InvalidStateError (tested on FF13 WinXP)
       out = new Blob([data], { type: datatype })
     } else {
       out = { error: 'Browser not supported for Blob creation' }
-			// We're screwed, blob constructor unsupported entirely
+      // We're screwed, blob constructor unsupported entirely
     }
   }
   return out

@@ -1,5 +1,5 @@
 export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
-	/* -------------------------Initial load & onChanged---------------------------- */
+  /* -------------------------Initial load & onChanged---------------------------- */
   let querySuccess = function (users) {
     $scope.users = users
     if (users.length === 0) {
@@ -7,40 +7,40 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
       Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no users created')
     }
 
-		/* ----- Users Channels matrix ----- */
-		// Query all channels for Users Channels matrix table
+    /* ----- Users Channels matrix ----- */
+    // Query all channels for Users Channels matrix table
     Api.Channels.query(function (channels) {
       let usersArray = []
       let channelsArray = []
 
-			// loop through channels to create channels map
+      // loop through channels to create channels map
       angular.forEach(channels, function (channnel) {
         if (typeof channnel.status === 'undefined' || channnel.status !== 'deleted') {
           channelsArray.push({ 'id': channnel._id, 'name': channnel.name })
         }
       })
 
-			// loop through all users
+      // loop through all users
       angular.forEach(users, function (user) {
         let allowedChannels = []
         let allowedChannelsRerun = []
         let allowedChannelsBody = []
 
-				// loop through channels to determine if user has permissions
+        // loop through channels to determine if user has permissions
         angular.forEach(channels, function (channel) {
-					// loop through each user group to check if channel has access
+          // loop through each user group to check if channel has access
           angular.forEach(user.groups, function (group) {
-						// check if user group found in channel txViewAcl
+            // check if user group found in channel txViewAcl
             if (channel.txViewAcl.indexOf(group) >= 0 || group === 'admin') {
               allowedChannels.push(channel._id)
             }
 
-						// check if user group found in channel txViewFullAcl
+            // check if user group found in channel txViewFullAcl
             if (channel.txViewFullAcl.indexOf(group) >= 0 || group === 'admin') {
               allowedChannelsBody.push(channel._id)
             }
 
-						// check if user group found in channel txRerunAcl
+            // check if user group found in channel txRerunAcl
             if (channel.txRerunAcl.indexOf(group) >= 0 || group === 'admin') {
               allowedChannelsRerun.push(channel._id)
             }
@@ -54,34 +54,34 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
       $scope.usersChannelsMatrix.channels = channelsArray
       $scope.usersChannelsMatrix.users = usersArray
     }, function () { /* server error - could not connect to API to get channels */ })
-		/* ----- Users Channels matrix ----- */
+    /* ----- Users Channels matrix ----- */
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertReset()
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// do the initial request
+  // do the initial request
   Api.Users.query(querySuccess, queryError)
 
   $scope.$on('usersChanged', function () {
     Api.Users.query(querySuccess, queryError)
   })
 
-	/* -------------------------Initial load & onChanged---------------------------- */
+  /* -------------------------Initial load & onChanged---------------------------- */
 
-	// function to determine if channel is in the allowedChannels array
+  // function to determine if channel is in the allowedChannels array
   $scope.isAllowedChannel = function (channelID, allowedChannels) {
-		// check if channelID is found in allowedChannels
+    // check if channelID is found in allowedChannels
     if (allowedChannels.indexOf(channelID) >= 0) {
       return true
     }
     return false
   }
 
-	/* -------------------------Add/edit user popup modal---------------------------- */
+  /* -------------------------Add/edit user popup modal---------------------------- */
   $scope.addUser = function () {
     Alerting.AlertReset()
 
@@ -108,9 +108,9 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
       }
     })
   }
-	/* -------------------------Add/edit user popup modal---------------------------- */
+  /* -------------------------Add/edit user popup modal---------------------------- */
 
-	/* --------------------------Delete Confirm---------------------------- */
+  /* --------------------------Delete Confirm---------------------------- */
   $scope.confirmDelete = function (user) {
     Alerting.AlertReset()
 
@@ -131,7 +131,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - check if current user deleted themself, set flag, then delete user
+      // Delete confirmed - check if current user deleted themself, set flag, then delete user
       $scope.sessionUserDeleted = false
       let sessionUser = localStorage.getItem('loggedOnUser')
       sessionUser = JSON.parse(sessionUser)
@@ -142,12 +142,12 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
 
       user.$remove(deleteSuccess, deleteError)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 
   let deleteSuccess = function () {
-		// On success - if current user was deleted, logout
+    // On success - if current user was deleted, logout
     if ($scope.sessionUserDeleted) {
       $window.location = '#/logout'
       return
@@ -159,9 +159,9 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
   }
 
   let deleteError = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data)
   }
-	/* ---------------------------Delete Confirm---------------------------- */
+  /* ---------------------------Delete Confirm---------------------------- */
 }

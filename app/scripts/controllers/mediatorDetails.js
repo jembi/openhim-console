@@ -18,7 +18,7 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
@@ -26,7 +26,7 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
     Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError)
   })
 
-	// get the Data for the supplied ID and store in 'mediatorDetails' object
+  // get the Data for the supplied ID and store in 'mediatorDetails' object
   Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError)
 
   $scope.editMediatorConfig = function () {

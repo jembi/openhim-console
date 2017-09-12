@@ -1,8 +1,8 @@
 export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, certType) {
   let textFile = null
 
-  let notifyUser = function () {
-		// reset backing object and refresh certificate list
+  function notifyUser () {
+    // reset backing object and refresh certificate list
     Notify.notify('certificatesChanged')
   }
 
@@ -20,11 +20,11 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
         bb.append(data)
         out = bb.getBlob(datatype)
       } else if (e.name === 'InvalidStateError') {
-				// InvalidStateError (tested on FF13 WinXP)
+        // InvalidStateError (tested on FF13 WinXP)
         out = new Blob([data], { type: datatype })
       } else {
         out = { error: 'Browser not supported for Blob creation' }
-				// We're screwed, blob constructor unsupported entirely
+        // We're screwed, blob constructor unsupported entirely
       }
     }
     return out
@@ -32,7 +32,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
 
   let makeTextFile = function (text) {
     let data = new NewBlob(text, 'application/text')
-		// if blob error exist
+    // if blob error exist
     if (data.error) {
 
     } else {
@@ -58,16 +58,16 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   }
 
   $scope.downloadKeyFile = function () {
-		// reset download link and remove download button
+    // reset download link and remove download button
     $scope.downloadKeyLink = ''
   }
   $scope.downloadCertFile = function () {
-		// reset download link and remove download button
+    // reset download link and remove download button
     $scope.downloadCertLink = ''
   }
 
   let error = function (err) {
-		// add the success message
+    // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while creating the certificate: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
@@ -77,27 +77,27 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   }
 
   $scope.validateFormCertificates = function () {
-		// reset hasErrors alert object
+    // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
 
-		// clear timeout if it has been set
+    // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
 
     $scope.ngError = {}
     $scope.ngError.hasErrors = false
 
-		// certificate validity validation
+    // certificate validity validation
     if (!$scope.cert.days) {
       $scope.ngError.days = true
       $scope.ngError.hasErrors = true
     }
-		// commonName validation
+    // commonName validation
     if (!$scope.cert.commonName) {
       $scope.ngError.commonName = true
       $scope.ngError.hasErrors = true
     }
 
-		// country validation
+    // country validation
     if ($scope.cert.country) {
       if ($scope.cert.country.length !== 2) {
         $scope.ngError.country = true
@@ -109,7 +109,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
 
   $scope.submitFormCertificate = function () {
     $scope.validateFormCertificates()
-		// save the client object if no errors are present
+    // save the client object if no errors are present
     if ($scope.ngError.hasErrors === false) {
       $scope.save($scope.cert)
     }
@@ -119,7 +119,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   $scope.cert.type = certType
 
   let saveCert = function (cert) {
-		// set backup client object to check if cert has changed
+    // set backup client object to check if cert has changed
     $scope.keyName = cert.commonName + '.key.pem'
     $scope.certName = cert.commonName + '.cert.crt'
     $scope.certBackup = angular.copy(cert)

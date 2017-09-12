@@ -81,7 +81,7 @@ export function metricsDateTypeSelector () {
         scope.onChange()
       }
 
-			// process for initial values
+      // process for initial values
       processOptions()
     }
   }

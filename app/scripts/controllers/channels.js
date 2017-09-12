@@ -1,5 +1,5 @@
 export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
-	/* -------------------------Initial load & onChanged---------------------------- */
+  /* -------------------------Initial load & onChanged---------------------------- */
   let querySuccess = function (channels) {
     $scope.channels = channels
     if (channels.length === 0) {
@@ -8,19 +8,19 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// do the initial request
+  // do the initial request
   Api.Channels.query(querySuccess, queryError)
 
   $scope.$on('channelsChanged', function () {
     Api.Channels.query(querySuccess, queryError)
   })
-	/* -------------------------Initial load & onChanged---------------------------- */
+  /* -------------------------Initial load & onChanged---------------------------- */
 
-	/* -------------------------Add/edit user popup modal---------------------------- */
+  /* -------------------------Add/edit user popup modal---------------------------- */
   $scope.addChannel = function () {
     Alerting.AlertReset()
 
@@ -68,17 +68,17 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
       }
     })
   }
-	/* -------------------------Add/edit user popup modal---------------------------- */
+  /* -------------------------Add/edit user popup modal---------------------------- */
 
-	/* --------------------------Delete Confirm---------------------------- */
+  /* --------------------------Delete Confirm---------------------------- */
   let deleteSuccess = function () {
-		// On success
+    // On success
     $scope.channels = Api.Channels.query()
     Alerting.AlertAddMsg('top', 'success', 'The channel has been deleted successfully')
   }
 
   let deleteError = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the channel: #' + err.status + ' - ' + err.data)
   }
 
@@ -102,23 +102,23 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - delete the user
+      // Delete confirmed - delete the user
       channel.$remove(deleteSuccess, deleteError)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
-	/* ---------------------------Delete Confirm---------------------------- */
+  /* ---------------------------Delete Confirm---------------------------- */
 
-	/* --------------------------Restore Confirm---------------------------- */
+  /* --------------------------Restore Confirm---------------------------- */
   let restoreSuccess = function () {
-		// On success
+    // On success
     $scope.channels = Api.Channels.query()
     Alerting.AlertAddMsg('top', 'success', 'The channel has been successfully restored')
   }
 
   let restoreError = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data)
   }
 
@@ -142,22 +142,22 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     })
 
     modalInstance.result.then(function () {
-			// restore confirmed
+      // restore confirmed
       channel.status = 'enabled'
       channel.$update(restoreSuccess, restoreError)
     }, function () {
-			// restore cancelled - do nothing
+      // restore cancelled - do nothing
     })
   }
 
-	/* --------------------------Update priority Level---------------------------- */
+  /* --------------------------Update priority Level---------------------------- */
   $scope.updateChannelPriority = function (channel, direction) {
     let newPriority
     let curPriority = channel.priority
     if (!curPriority) {
       newPriority = $scope.getLowestPriority() + 1
     } else {
-			// set priority to lower number ( minus 1 )
+      // set priority to lower number ( minus 1 )
       if (direction === 'up') {
         if (curPriority === 1) { return }
 
@@ -169,7 +169,7 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
 
     channel.priority = newPriority
     channel.$update(function () {
-			// reload channels
+      // reload channels
       $scope.$broadcast('channelsChanged')
     }, function (err) {
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while updating the channel: #' + err.status + ' - ' + err.data)

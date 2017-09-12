@@ -1,11 +1,11 @@
 import * as CryptoJS from 'crypto-js'
 
 export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, client) {
-	/***************************************************************/
-	/**   These are the functions for the Client initial load     **/
-	/***************************************************************/
+  /***************************************************************/
+  /**   These are the functions for the Client initial load     **/
+  /***************************************************************/
 
-	// object to store temp values like password (not associated with schema object)
+  // object to store temp values like password (not associated with schema object)
   $scope.temp = {}
 
   $scope.roles = {}
@@ -90,50 +90,50 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
-	// fetch the keystore for cert dropdown
+  // fetch the keystore for cert dropdown
   Api.Keystore.query({ type: 'ca' }, function (certs) {
     $scope.certs = certs
   })
 
-	// if client exist then update true
+  // if client exist then update true
   if (client) {
     $scope.update = true
     $scope.client = Api.Clients.get({ clientId: client._id }, function () { })
-		// $scope.client = angular.copy(client);
+    // $scope.client = angular.copy(client);
   } else {
     $scope.update = false
     $scope.client = new Api.Clients()
   }
 
-	/***************************************************************/
-	/**   These are the functions for the Client initial load     **/
-	/***************************************************************/
+  /***************************************************************/
+  /**   These are the functions for the Client initial load     **/
+  /***************************************************************/
 
-	/**************************************************************/
-	/**   These are the functions for the Client Modal Popup     **/
-	/**************************************************************/
+  /**************************************************************/
+  /**   These are the functions for the Client Modal Popup     **/
+  /**************************************************************/
 
   let notifyUser = function () {
-		// reset backing object and refresh clients list
+    // reset backing object and refresh clients list
     Notify.notify('clientsChanged')
     Notify.notify('rolesChanged')
     $uibModalInstance.close()
   }
 
   let success = function () {
-		// add the success message
+    // add the success message
     Alerting.AlertAddMsg('client', 'success', 'The client has been saved successfully')
     notifyUser()
   }
 
   let error = function (err) {
-		// add the success message
+    // add the success message
     Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
 
   let saveClient = function (client) {
-		// set backup client object to check if cert has changed
+    // set backup client object to check if cert has changed
     $scope.clientBackup = angular.copy(client)
     if ($scope.update) {
       client.$update(success, error)
@@ -168,47 +168,47 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
-	/**************************************************************/
-	/**   These are the functions for the Client Modal Popup     **/
-	/**************************************************************/
+  /**************************************************************/
+  /**   These are the functions for the Client Modal Popup     **/
+  /**************************************************************/
 
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel')
   }
 
-	/**************************************************************************/
-	/**   These are the general functions for the Client form validation     **/
-	/**************************************************************************/
+  /**************************************************************************/
+  /**   These are the general functions for the Client form validation     **/
+  /**************************************************************************/
 
   $scope.validateFormClients = function () {
-		// reset hasErrors alert object
+    // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
 
-		// clear timeout if it has been set
+    // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
 
     $scope.ngError = {}
     $scope.ngError.hasErrors = false
 
-		// clientID validation
+    // clientID validation
     if (!$scope.client.clientID) {
       $scope.ngError.clientID = true
       $scope.ngError.hasErrors = true
     }
 
-		// name validation
+    // name validation
     if (!$scope.client.name) {
       $scope.ngError.name = true
       $scope.ngError.hasErrors = true
     }
 
-		// roles validation
+    // roles validation
     if (!$scope.client.roles || $scope.client.roles.length === 0) {
       $scope.ngError.roles = true
       $scope.ngError.hasErrors = true
     }
 
-		// password/certificate validation (new user)
+    // password/certificate validation (new user)
     if ($scope.update === false) {
       if (!$scope.client.certFingerprint && !$scope.temp.password) {
         $scope.ngError.certFingerprint = true
@@ -223,7 +223,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       }
     }
 
-		// password validation
+    // password validation
     if ($scope.temp.password) {
       if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
         $scope.ngError.passwordConfirm = true
@@ -233,7 +233,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
 
     if ($scope.ngError.hasErrors) {
       $scope.clearValidation = $timeout(function () {
-				// clear errors after 5 seconds
+        // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
@@ -241,15 +241,15 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   }
 
   $scope.submitFormClients = function () {
-		// validate the form first to check for any errors
+    // validate the form first to check for any errors
     $scope.validateFormClients()
-		// save the client object if no errors are present
+    // save the client object if no errors are present
     if ($scope.ngError.hasErrors === false) {
       $scope.save($scope.client, $scope.temp.password)
     }
   }
 
-	/**************************************************************************/
-	/**   These are the general functions for the Client form validation     **/
-	/**************************************************************************/
+  /**************************************************************************/
+  /**   These are the general functions for the Client form validation     **/
+  /**************************************************************************/
 }

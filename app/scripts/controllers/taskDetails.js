@@ -1,11 +1,11 @@
 import { valueNotEmpty } from '../utils'
 
 export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, $route) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// default settings
+  // default settings
   $scope.showpage = 1
   $scope.showlimit = 100
   $scope.filters = {}
@@ -14,17 +14,17 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   $scope.settings.list = {}
   $scope.settings.list.tabview = 'same'
 
-	// setup task filtter settings
+  // setup task filtter settings
   if ($location.search().limit) { $scope.filters.limit = $location.search().limit }
   if ($location.search().tstatus) { $scope.filters.tstatus = $location.search().tstatus }
   if ($location.search().rerunStatus) { $scope.filters.rerunStatus = $location.search().rerunStatus }
   if ($location.search().hasErrors) { $scope.filters.hasErrors = $location.search().hasErrors }
 
-	// find pagination filter parameters
+  // find pagination filter parameters
   if ($location.search().page) { $scope.showpage = parseInt($location.search().page) }
 
   $scope.setPagination = function (pageNum) {
-		// angular reloads controller on route change - Applies the pagination filter to API request
+    // angular reloads controller on route change - Applies the pagination filter to API request
     $location.search('page', pageNum)
   }
 
@@ -36,9 +36,9 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     var showpage = $scope.showpage
     var pages = Math.ceil(task.totalFilteredTransactions / showlimit)
 
-		// if page not set AND all transactions in the list - no filtering
+    // if page not set AND all transactions in the list - no filtering
     if ($scope.getProcessedPercentage(task) !== '100%' && task.totalFilteredTransactions > showlimit && !$location.search().page && task.totalTransactions === task.totalFilteredTransactions) {
-			// set pagination to current transaction being processed
+      // set pagination to current transaction being processed
       var currentProcessed = $scope.getProcessedTotal(task)
       $scope.setPagination(Math.ceil(currentProcessed / showlimit))
     }
@@ -56,29 +56,29 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   }
 
   var queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// setup filter options
+  // setup filter options
   $scope.returnFilters = function () {
     var filtersObject = {}
 
     filtersObject.taskId = $routeParams.taskId
 
-		// minus 1 from showpage to use correct index for slicing the results
+    // minus 1 from showpage to use correct index for slicing the results
     filtersObject.filterPage = $scope.showpage - 1
     filtersObject.filterLimit = $scope.showlimit
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     filtersObject.filters = {}
 
-		/* ----- filter by tasks (basic) ----- */
-		// add task status filter
+    /* ----- filter by tasks (basic) ----- */
+    // add task status filter
     var tstatus = $scope.filters.tstatus
     if (valueNotEmpty(tstatus) === true) {
       filtersObject.filters.tstatus = tstatus
@@ -93,40 +93,40 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     if (valueNotEmpty(hasErrors) === true) {
       filtersObject.filters.hasErrors = hasErrors
     }
-		/* ----- filter by tasks (basic) ----- */
+    /* ----- filter by tasks (basic) ----- */
 
-		/* ##### construct filters ##### */
+    /* ##### construct filters ##### */
     return filtersObject
   }
 
   var clearUrlParams = function () {
-		// loop through all parameters
+    // loop through all parameters
     for (var property in $location.search()) {
       if ($location.search().hasOwnProperty(property)) {
-				// set parameter to null to remove
+        // set parameter to null to remove
         $location.search(property, null)
       }
     }
   }
 
   $scope.applyFiltersToUrl = function () {
-		// get the filter params object before clearing them
+    // get the filter params object before clearing them
     var filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
 
-		// first clear existing filters
+    // first clear existing filters
     clearUrlParams()
 
-		// Add filters to url
+    // Add filters to url
     if ($scope.filters.limit) { $location.search('limit', $scope.filters.limit) }
     if ($scope.filters.tstatus) { $location.search('tstatus', $scope.filters.tstatus) }
     if ($scope.filters.rerunStatus) { $location.search('rerunStatus', $scope.filters.rerunStatus) }
     if ($scope.filters.hasErrors) { $location.search('hasErrors', $scope.filters.hasErrors) }
 
-		// get the filter params object after clearing them
+    // get the filter params object after clearing them
     var filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
 
-		// if the filters object stays the same then call refresh function
-		// if filters object not the same then angular changes route and loads controller ( refresh )
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
     if (filterParamsBeforeClear === filterParamsAfterClear) {
       $scope.refreshTaskDetails()
     }
@@ -138,40 +138,40 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     $scope.task = null
     $scope.showlimit = $scope.filters.limit
 
-		// do the initial request
+    // do the initial request
     Api.Tasks.get($scope.returnFilters(), querySuccess, queryError)
   }
-	// run the tasks list view for the first time
+  // run the tasks list view for the first time
   $scope.refreshTaskDetails()
 
-	// Clear filter data end refresh tasks scope
+  // Clear filter data end refresh tasks scope
   $scope.clearFilters = function () {
-		// reset default filters
+    // reset default filters
     $scope.filters.limit = 100
     $scope.filters.tstatus = ''
     $scope.filters.rerunStatus = ''
     $scope.filters.hasErrors = ''
     $scope.settings.list.tabview = 'same'
 
-		// get the filter params object before clearing them
+    // get the filter params object before clearing them
     var filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
 
-		// clear all filter parameters
+    // clear all filter parameters
     clearUrlParams()
 
-		// get the filter params object after clearing them
+    // get the filter params object after clearing them
     var filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
 
-		// if the filters object stays the same then call refresh function
-		// if filters object not the same then angular changes route and loads controller ( refresh )
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
     if (filterParamsBeforeClear === filterParamsAfterClear) {
       $scope.refreshTaskDetails()
     }
   }
 
-	/**************************************************/
-	/**         Task Calculation Functions           **/
-	/**************************************************/
+  /**************************************************/
+  /**         Task Calculation Functions           **/
+  /**************************************************/
 
   $scope.getProcessedTotal = function (task) {
     if (task) {
@@ -214,9 +214,9 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     }
   }
 
-	/**************************************************/
-	/**         Task Calculation Functions           **/
-	/**************************************************/
+  /**************************************************/
+  /**         Task Calculation Functions           **/
+  /**************************************************/
 
   function updateTaskWithStatus (task, status) {
     var updated = new Api.Tasks()
@@ -253,10 +253,10 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     })
 
     modalInstance.result.then(function () {
-			// cancel confirmed
+      // cancel confirmed
       updateTaskWithStatus(task, 'Cancelled')
     }, function () {
-			// cancel cancelled
+      // cancel cancelled
     })
   }
 }

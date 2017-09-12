@@ -1,7 +1,7 @@
 export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
-	/************************************************/
-	/**         Initial load & onChanged           **/
-	/************************************************/
+  /************************************************/
+  /**         Initial load & onChanged           **/
+  /************************************************/
   let querySuccess = function (contactGroups) {
     $scope.contactGroups = contactGroups
     if (contactGroups.length === 0) {
@@ -10,23 +10,23 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   }
 
   let queryError = function (err) {
-		// on error - add server error alert
+    // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
 
-	// do the initial request
+  // do the initial request
   Api.ContactGroups.query(querySuccess, queryError)
 
   $scope.$on('contactGroupChanged', function () {
     Api.ContactGroups.query(querySuccess, queryError)
   })
-	/************************************************/
-	/**         Initial load & onChanged           **/
-	/************************************************/
+  /************************************************/
+  /**         Initial load & onChanged           **/
+  /************************************************/
 
-	/**********************************************************/
-	/**         Add/edit contactGroups popup modal           **/
-	/**********************************************************/
+  /**********************************************************/
+  /**         Add/edit contactGroups popup modal           **/
+  /**********************************************************/
   $scope.addContactGroup = function () {
     Alerting.AlertReset()
     $uibModal.open({
@@ -52,15 +52,15 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
       }
     })
   }
-	/**********************************************************/
-	/**         Add/edit contactGroups popup modal           **/
-	/**********************************************************/
+  /**********************************************************/
+  /**         Add/edit contactGroups popup modal           **/
+  /**********************************************************/
 
-	/*******************************************/
-	/**         Delete Confirmation           **/
-	/*******************************************/
+  /*******************************************/
+  /**         Delete Confirmation           **/
+  /*******************************************/
   let deleteSuccess = function () {
-		// On success
+    // On success
     $scope.contactGroups = Api.ContactGroups.query()
     Alerting.AlertAddMsg('top', 'success', 'The contact list has been deleted successfully')
   }
@@ -76,7 +76,7 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
       }
       Alerting.AlertAddMsg('top', 'warning', warningMessage)
     } else {
-			// add the error message
+      // add the error message
       Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the contact list: #' + err.status + ' - ' + err.data)
     }
   }
@@ -101,14 +101,14 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     })
 
     modalInstance.result.then(function () {
-			// Delete confirmed - delete the contact group
+      // Delete confirmed - delete the contact group
       contactGroup.$remove(deleteSuccess, deleteError)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 
-	/*******************************************/
-	/**         Delete Confirmation           **/
-	/*******************************************/
+  /*******************************************/
+  /**         Delete Confirmation           **/
+  /*******************************************/
 }

@@ -25,13 +25,13 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
   }
 
   function loadMetricsError (err) {
-		// add warning message when unable to get data
+    // add warning message when unable to get data
     Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
     Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
   }
 
   function updateTimeseriesMetrics () {
-		// do API call here to pull load metrics
+    // do API call here to pull load metrics
     Api.MetricsTimeseries.query({
       type: $scope.selectedDateType.type,
       startDate: moment($scope.selectedDateType.from).format(),
@@ -40,36 +40,36 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
   }
 
   function updateChannelsBarChart (metrics) {
-		// set scope variable for amount of active channels
+    // set scope variable for amount of active channels
     $scope.activeChannels = metrics.length
 
     let channelsMap
 
-		// create channelsMap for channels name reference
+    // create channelsMap for channels name reference
     Api.Channels.query(function (channels) {
       channelsMap = {}
       angular.forEach(channels, function (channel) {
         channelsMap[channel._id] = channel.name
       })
 
-			// define varables for graph data set
+      // define varables for graph data set
       let channelGraphStack
       let channelsData = []
       let channelsKeys = []
       let channelsLabels = []
       let channelsColors = []
 
-			// loop through each channels found in result and construct graph objects
+      // loop through each channels found in result and construct graph objects
       for (let i = 0; i < metrics.length; i++) {
         channelGraphStack = {}
 
-				// create a link object for when the user clicks on the bar
+        // create a link object for when the user clicks on the bar
         channelGraphStack.link = 'channels/' + metrics[i]._id.channelID
         channelGraphStack.channel = channelsMap[metrics[i]._id.channelID]
 
         channelGraphStack.processing = metrics[i].processing
 
-				// only add these if it isnt yet present
+        // only add these if it isnt yet present
         if (channelsKeys.indexOf('processing') === -1) {
           channelsKeys.push('processing')
           channelsLabels.push('Processing')
@@ -78,7 +78,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
 
         channelGraphStack.failed = metrics[i].failed
 
-				// only add these if it isnt yet present
+        // only add these if it isnt yet present
         if (channelsKeys.indexOf('failed') === -1) {
           channelsKeys.push('failed')
           channelsLabels.push('Failed')
@@ -87,7 +87,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
 
         channelGraphStack.completed = metrics[i].completed
 
-				// only add these if it isnt yet present
+        // only add these if it isnt yet present
         if (channelsKeys.indexOf('completed') === -1) {
           channelsKeys.push('completed')
           channelsLabels.push('Completed')
@@ -115,9 +115,9 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
 
       $scope.channelsData = { data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true }
     },
-			function (err) {
-  Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data)
-})
+      function (err) {
+        Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data)
+      })
   }
 
   function channelMetricsSuccess (metrics) {
@@ -129,12 +129,12 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
   }
 
   function channelMetricsError (err) {
-		// add warning message when unable to get data
+    // add warning message when unable to get data
     Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
   }
 
   function updateChannelMetrics () {
-		// do API call here to pull load metrics
+    // do API call here to pull load metrics
     Api.MetricsChannels.query({
       startDate: moment($scope.selectedDateType.from).format(),
       endDate: moment($scope.selectedDateType.until).format()
@@ -154,7 +154,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
   $scope.updateMetrics()
 
   $scope.$on('$destroy', function () {
-		// Make sure that the interval is destroyed too
+    // Make sure that the interval is destroyed too
     if (angular.isDefined(dashboardInterval)) {
       $interval.cancel(dashboardInterval)
       dashboardInterval = undefined

@@ -1,4 +1,7 @@
-import { beautifyIndent, returnContentType } from '../utils'
+import {
+  beautifyIndent,
+  returnContentType
+} from '../utils'
 
 export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, record, channel, transactionId, recordType, index) {
   $scope.record = record
@@ -11,7 +14,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
   $scope.recordPathRequest = recordType + '[' + index + '].request'
   $scope.recordPathResponse = recordType + '[' + index + '].response'
 
-	// transform request body with indentation/formatting
+  // transform request body with indentation/formatting
   if (record.request && record.request.body) {
     if (record.request.headers && returnContentType(record.request.headers)) {
       var requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
@@ -20,7 +23,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
     }
   }
 
-	// transform response body with indentation/formatting
+  // transform response body with indentation/formatting
   if (record.response && record.response.body) {
     if (record.response.headers && returnContentType(record.response.headers)) {
       var responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
@@ -30,7 +33,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
   }
 
   $scope.toggleFullView = function (type, bodyContent, contentType) {
-		// if both parameters supplied - view body message
+    // if both parameters supplied - view body message
     if (type && bodyContent) {
       $scope.viewFullBody = true
       $scope.viewFullBodyType = type
@@ -45,7 +48,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
     $uibModalInstance.dismiss('cancel')
   }
 
-	/*********************************************************************/
-	/**               Transactions View Route Functions                 **/
-	/*********************************************************************/
+  /*********************************************************************/
+  /**               Transactions View Route Functions                 **/
+  /*********************************************************************/
 }

@@ -14,7 +14,7 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
   }
 
   $scope.submitRequest = function () {
-		// reset alert object
+    // reset alert object
     Alerting.AlertReset()
     let userEmail = $scope.userEmail
 
@@ -25,9 +25,9 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
     } else {
       Alerting.AlertAddMsg('forgotPassword', 'warning', 'Busy checking your credentials...')
 
-			// autheticate valid email address
+      // autheticate valid email address
       Api.Authenticate.get({ email: userEmail }, function () {
-				// send request to API - create token/expiry for email user
+        // send request to API - create token/expiry for email user
         Api.UserPasswordResetRequest.get({ email: userEmail }, function () {
           Alerting.AlertReset()
           Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...')

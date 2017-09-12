@@ -2,14 +2,14 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
   $scope.ngError = {}
   $scope.validationRequiredMsg = 'This field is required.'
 
-	// get/set the users scope whether new or update
+  // get/set the users scope whether new or update
   if (visualizer) {
     $scope.update = true
-		// make a copy of the object so that the original doesn't get changed until we save
+    // make a copy of the object so that the original doesn't get changed until we save
     $scope.visualizer = JSON.parse(angular.toJson(visualizer))
   } else if (duplicate) {
     $scope.update = false
-		// make a copy of the object so that the original doesn't get changed until we save
+    // make a copy of the object so that the original doesn't get changed until we save
     duplicate = JSON.parse(angular.toJson(duplicate))
     delete (duplicate._id)
     delete (duplicate.name)
@@ -17,10 +17,10 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
   } else {
     $scope.update = false
 
-		// create visualizer settings properties
+    // create visualizer settings properties
     $scope.visualizer = {}
 
-		// load default visualizer config for new user
+    // load default visualizer config for new user
     $http.get('config/visualizer.json').success(function (visualizerConfig) {
       angular.extend($scope.visualizer, angular.copy(visualizerConfig))
     })
@@ -31,7 +31,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     $uibModalInstance.dismiss('cancel')
   }
 
-	// get the allowed channels for the transaction settings
+  // get the allowed channels for the transaction settings
   Api.Channels.query(function (channels) {
     $scope.channels = channels
 
@@ -57,7 +57,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     $scope.mediators = mediators
   }, function () { /* server error - could not connect to API to get mediators */ })
 
-	// setup visualizer object
+  // setup visualizer object
   $scope.viewModel = {}
 
   $scope.addSelectedChannel = function () {
@@ -92,21 +92,21 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
   }
 
   $scope.validateVisualizer = function (viz, callback) {
-		// reset hasErrors alert object
+    // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
 
-		// clear timeout if it has been set
+    // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
 
     $scope.ngError.hasErrors = false
 
-		// required fields validation
+    // required fields validation
     if (!viz.name) {
       $scope.ngError.hasNoName = true
       $scope.ngError.hasErrors = true
     } else {
       if (!$scope.update) {
-				// the visualizer name must be unique
+        // the visualizer name must be unique
         var result = visualizers.filter(function (obj) {
           return obj.name === viz.name
         })
@@ -130,42 +130,43 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
 
     if ($scope.ngError.hasErrors) {
       $scope.clearValidation = $timeout(function () {
-				// clear errors after 5 seconds
+        // clear errors after 5 seconds
         $scope.ngError = {}
         Alerting.AlertReset('hasErrors')
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', 'There are errors on the form.')
-      callback('Error: Form has errors')
+      const message = 'Error: Form has errors'
+      callback(message)
     } else {
       callback()
     }
   }
 
   var notifyUser = function () {
-		// reset backing object and refresh users list
+    // reset backing object and refresh users list
     Notify.notify('visualizersChanged')
     $uibModalInstance.close()
   }
 
   var success = function () {
-		// add the success message
+    // add the success message
     Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully')
 
     notifyUser()
   }
 
   var error = function () {
-		// add the success message
+    // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'Failed to save the visualizer details because the visualizer name is not unique. Please try again.')
 
     notifyUser()
   }
 
   $scope.saveVisualizer = function () {
-		// validate form input
+    // validate form input
     $scope.validateVisualizer($scope.visualizer, function (err) {
       if (!err) {
-				// save visualizer settings
+        // save visualizer settings
         if ($scope.update) {
           Api.Visualizers.update($scope.visualizer, success, error)
         } else {
