@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global CryptoJS: false */
 
 describe('Service: Authinterceptor', function () {

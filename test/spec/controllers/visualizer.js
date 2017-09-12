@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global sinon: false */
 
 describe('Controller: VisualizerCtrl', function () {
@@ -242,7 +241,8 @@ describe('Controller: VisualizerCtrl', function () {
         }
       }
     })
-    var vis = angular.copy(visualizers[0], vis)  // eslint-disable-line no-use-before-define
+    var vis
+    vis = angular.copy(visualizers[0], vis)
     vis.$remove = sinon.spy()
 
     createController()
@@ -267,7 +267,8 @@ describe('Controller: VisualizerCtrl', function () {
         }
       }
     })
-    var vis = angular.copy(visualizers[0], vis)  // eslint-disable-line no-use-before-define
+    var vis
+    vis = angular.copy(visualizers[0], vis)
     vis.$remove = sinon.spy()
 
     createController()

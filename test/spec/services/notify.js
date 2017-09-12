@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global sinon:false */
 
 describe('Service: Notify', function () {

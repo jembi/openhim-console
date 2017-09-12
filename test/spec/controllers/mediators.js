@@ -1,6 +1,4 @@
 'use strict'
-/* jshint expr: true */
-/* global sinon: false */
 /* global moment: false */
 
 describe('Controller: MediatorsCtrl', function () {
@@ -23,7 +21,7 @@ describe('Controller: MediatorsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -67,8 +65,6 @@ describe('Controller: MediatorsCtrl', function () {
         '_uptime': 5443200 // over 2 months
       }
     ])
-
-    modalSpy = sinon.spy($modal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

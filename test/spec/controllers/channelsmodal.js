@@ -1,6 +1,5 @@
 'use strict'
 /* global sinon:false */
-/* jshint expr: true */
 
 describe('Controller: ChannelsModalCtrl', function () {
   // load the controller's module
@@ -265,12 +264,11 @@ describe('Controller: ChannelsModalCtrl', function () {
 describe('Controller: channelBasicInfoCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
-  var scope, createController, createControllerParent, q // eslint-disable-line 
+  var scope, createController, createControllerParent
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new()
-    q = $q
 
     var modalInstance = sinon.spy()
     createControllerParent = function (channel, channelDuplicate) {
@@ -417,12 +415,11 @@ describe('Controller: channelUserAccessCtrl', function () {
 describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
-  var scope, createController, createControllerParent, q // eslint-disable-line 
+  var scope, createController, createControllerParent
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new()
-    q = $q
 
     var modalInstance = sinon.spy()
     createControllerParent = function () {

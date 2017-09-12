@@ -1,6 +1,4 @@
 'use strict'
-/* jshint expr: true */
-/* global sinon: false */
 
 describe('Controller: AuditDetailsCtrl', function () {
   // load the controller's module
@@ -13,7 +11,7 @@ describe('Controller: AuditDetailsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
@@ -51,8 +49,6 @@ describe('Controller: AuditDetailsCtrl', function () {
     })
 
     $httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'_id': '539846c240f2eb682ffeca4b', 'email': 'test@user.org', 'firstname': 'test', 'surname': 'test', 'groups': ['admin', 'test', 'other']})
-
-    modalSpy = sinon.spy($modal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

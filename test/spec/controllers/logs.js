@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 
 describe('Controller: LogsCtrl', function () {
   // load the controller's module

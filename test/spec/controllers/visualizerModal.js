@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global should */
 
 describe('Controller: VisualizerModalCtrl', function () {

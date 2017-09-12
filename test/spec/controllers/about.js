@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 'use strict'
-/* jshint expr: true */
-/* global sinon: false */
 
 describe('Controller: AboutCtrl', function () {
   // load the controller's module
@@ -14,7 +12,7 @@ describe('Controller: AboutCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend
 
   var coreResponse = {
     'currentCoreVersion': '3.0.0',
@@ -26,8 +24,6 @@ describe('Controller: AboutCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/about')).respond(coreResponse)
-
-    modalSpy = sinon.spy($modal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

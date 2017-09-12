@@ -1,6 +1,4 @@
 'use strict'
-/* jshint expr: true */
-/* global sinon: false */
 
 describe('Controller: MediatorDetailsCtrl', function () {
   // load the controller's module
@@ -22,7 +20,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend
 
   var testMediator = {
     'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
@@ -50,8 +48,6 @@ describe('Controller: MediatorDetailsCtrl', function () {
     $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond(testMediator)
     $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 1']).respond(201)
     $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 2']).respond(500)
-
-    modalSpy = sinon.spy($modal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

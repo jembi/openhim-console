@@ -54,9 +54,10 @@
   },
   "scripts": {
     "test": "grunt test",
+    "pretest": "npm run lint",
     "start": "grunt serve",
     "version": "node versionManager.js && git add -u",
-    "lint": "standard app/scripts/**/*.js"
+    "lint": "standard app/scripts/**/*.js && standard test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -80,14 +81,11 @@
       "FileReader",
       "Blob",
       "inject",
-      "describe",
-      "context",
-      "before",
-      "beforeEach",
-      "after",
-      "afterEach",
-      "it",
       "expect"
-    ]
+    ],
+    "env": {
+      "mocha": true,
+      "browser": true
+    }
   }
 }

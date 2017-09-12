@@ -1,6 +1,5 @@
 'use strict'
 /* global sinon:false */
-/* jshint expr: true */
 
 describe('Controller: ClientsModalCtrl', function () {
   // load the controller's module
