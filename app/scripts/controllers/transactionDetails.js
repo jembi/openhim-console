@@ -1,248 +1,262 @@
-'use strict'
-/* global beautifyIndent:false */
-/* global returnContentType:false */
-/* global moment:false */
+import { beautifyIndent, returnContentType } from "../utils";
+import moment from "moment";
 
-angular.module('openhimConsoleApp')
-  .controller('TransactionDetailsCtrl', function ($scope, $modal, $location, $routeParams, Api, Alerting) {
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+export function TransactionDetailsCtrl($scope, $uibModal, $location, $routeParams, Api, Alerting) {
 
-    // get txList for paging
-    var txList = JSON.parse(sessionStorage.getItem('currTxList'))
+	/***************************************************/
+	/**         Initial page load functions           **/
+	/***************************************************/
 
-    $scope.pagingEnabled = true
-    if (!txList) {
-      $scope.pagingEnabled = false
-    } else if (txList.indexOf($routeParams.transactionId) === -1) {
-      $scope.pagingEnabled = false
-    }
+	// get txList for paging
+	let txList = JSON.parse(sessionStorage.getItem('currTxList'));
 
-    $scope.next = null
-    $scope.prev = null
-    if ($scope.pagingEnabled) {
-      var currTxIndex = txList.indexOf($routeParams.transactionId)
+	$scope.pagingEnabled = true;
+	if (!txList) {
+		$scope.pagingEnabled = false;
+	} else if (txList.indexOf($routeParams.transactionId) === -1) {
+		$scope.pagingEnabled = false;
+	}
 
-      $scope.txNumber = currTxIndex + 1
-      $scope.txTotal = txList.length
-      $scope.currFilterURL = sessionStorage.getItem('currFilterURL')
+	$scope.next = null;
+	$scope.prev = null;
+	if ($scope.pagingEnabled) {
+		let currTxIndex = txList.indexOf($routeParams.transactionId);
 
-      if (currTxIndex !== 0) {
-        $scope.prev = txList[currTxIndex - 1]
-      }
-      if (currTxIndex !== txList.length - 1) {
-        $scope.next = txList[currTxIndex + 1]
-      }
-    }
+		$scope.txNumber = currTxIndex + 1;
+		$scope.txTotal = txList.length;
+		$scope.currFilterURL = sessionStorage.getItem('currFilterURL');
 
-    var querySuccess = function (transactionDetails) {
-      $scope.transactionDetails = transactionDetails
+		if (currTxIndex !== 0) {
+			$scope.prev = txList[currTxIndex - 1];
+		}
+		if (currTxIndex !== txList.length - 1) {
+			$scope.next = txList[currTxIndex + 1];
+		}
+	}
 
-      // transform request body with indentation/formatting
-      if (transactionDetails.request && transactionDetails.request.body) {
-        if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-          var requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
-          $scope.transactionDetails.request.body = requestTransform.content
-        }
-      }
+	let querySuccess = function (transactionDetails) {
 
-      // transform response body with indentation/formatting
-      if (transactionDetails.response && transactionDetails.response.body) {
-        if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-          var responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
-          $scope.transactionDetails.response.body = responseTransform.content
-        }
-      }
+		$scope.transactionDetails = transactionDetails;
 
-      // calculate total transaction time
-      if ((transactionDetails.request && transactionDetails.request.timestamp) &&
-        (transactionDetails.response && transactionDetails.response.timestamp)) {
-        var diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
+		// transform request body with indentation/formatting
+		if (transactionDetails.request && transactionDetails.request.body) {
+			if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
+				let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body);
+				$scope.transactionDetails.request.body = requestTransform.content;
+			}
+		}
 
-        if (diff >= 1000) {
-          // display in seconds
-          var round = function (value, decimalPlaces) {
-            return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
-          }
+		// transform response body with indentation/formatting
+		if (transactionDetails.response && transactionDetails.response.body) {
+			if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
+				let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body);
+				$scope.transactionDetails.response.body = responseTransform.content;
+			}
+		}
 
-          transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s'
-        } else {
-          // display in milliseconds
-          transactionDetails.transactionTime = diff + ' ms'
-        }
-      }
+		// calculate total transaction time
+		if ((transactionDetails.request && transactionDetails.request.timestamp) &&
+			(transactionDetails.response && transactionDetails.response.timestamp)) {
+			let diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp);
 
-      var consoleSession = localStorage.getItem('consoleSession')
-      consoleSession = JSON.parse(consoleSession)
-      $scope.consoleSession = consoleSession
+			if (diff >= 1000) {
+				//display in seconds
+				let round = function (value, decimalPlaces) {
+					return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces);
+				};
 
-      // get the user to find user roles
-      Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (user) {
-        // get the channels for the transactions filter dropdown
-        Api.Channels.get({ channelId: transactionDetails.channelID }, function (channel) {
-          $scope.channel = channel
-          $scope.routeDefs = {}
-          channel.routes.forEach(function (route) {
-            $scope.routeDefs[route.name] = route
-          })
+				transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s';
+			} else {
+				//display in milliseconds
+				transactionDetails.transactionTime = diff + ' ms';
+			}
+		}
 
-          if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
-            if (user.groups.indexOf('admin') >= 0) {
-              $scope.rerunAllowed = true
-            } else {
-              angular.forEach(user.groups, function (role) {
-                if (channel.txRerunAcl.indexOf(role) >= 0) {
-                  $scope.rerunAllowed = true
-                }
-              })
-            }
-          }
-        }, function () { /* server error - could not connect to API to get channels */ })
-      }, function () { /* server error - could not connect to API to get user details */ })
 
-      // if clientID exist - fetch details
-      if (transactionDetails.clientID) {
-        // get the client object for the transactions details page
-        $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' })
-      }
-    }
+		let consoleSession = localStorage.getItem('consoleSession');
+		consoleSession = JSON.parse(consoleSession);
+		$scope.consoleSession = consoleSession;
 
-    var queryError = function (err) {
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status)
-    }
+		// get the user to find user roles
+		Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (user) {
+			// get the channels for the transactions filter dropdown
+			Api.Channels.get({ channelId: transactionDetails.channelID }, function (channel) {
+				$scope.channel = channel;
+				$scope.routeDefs = {};
+				channel.routes.forEach(function (route) {
+					$scope.routeDefs[route.name] = route;
+				});
 
-    // get the Data for the supplied ID and store in 'transactionsDetails' object
-    Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError)
+				if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
+					if (user.groups.indexOf('admin') >= 0) {
+						$scope.rerunAllowed = true;
+					} else {
+						angular.forEach(user.groups, function (role) {
+							if (channel.txRerunAcl.indexOf(role) >= 0) {
+								$scope.rerunAllowed = true;
+							}
+						});
+					}
+				}
+			}, function () { /* server error - could not connect to API to get channels */ });
+		}, function () { /* server error - could not connect to API to get user details */ });
 
-    /***************************************************/
-    /**         Initial page load functions           **/
-    /***************************************************/
+		// if clientID exist - fetch details
+		if (transactionDetails.clientID) {
+			// get the client object for the transactions details page
+			$scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' });
+		}
 
-    /*******************************************************************/
-    /**         Transactions List and Detail view functions           **/
-    /*******************************************************************/
 
-    // setup filter options
-    $scope.returnFilterObject = function () {
-      var filtersObject = {}
+	};
 
-      filtersObject.filterPage = 0
-      filtersObject.filterLimit = 0
-      filtersObject.filters = {}
-      filtersObject.filters.parentID = $routeParams.transactionId
+	let queryError = function (err) {
+		// on error - add server error alert
+		Alerting.AlertAddServerMsg(err.status);
+	};
 
-      return filtersObject
-    }
+	//get the Data for the supplied ID and store in 'transactionsDetails' object
+	Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError);
 
-    // Refresh transactions list
-    $scope.fetchChildTransactions = function () {
-      Api.Transactions.query($scope.returnFilterObject(), function (values) {
-        // on success
-        $scope.childTransactions = values
-      },
-        function (err) {
-          Alerting.AlertAddServerMsg(err.status)
-        })
-    }
-    // run the transaction list view for the first time
-    $scope.fetchChildTransactions()
+	/***************************************************/
+	/**         Initial page load functions           **/
+	/***************************************************/
 
-    // location provider - load transaction details
-    $scope.viewTransactionDetails = function (path) {
-      // do transactions details redirection when clicked on TD
-      $location.path(path)
-    }
 
-    /*******************************************************************/
-    /**         Transactions List and Detail view functions           **/
-    /*******************************************************************/
 
-    /****************************************************************/
-    /**               Transactions ReRun Functions                 **/
-    /****************************************************************/
+	/*******************************************************************/
+	/**         Transactions List and Detail view functions           **/
+	/*******************************************************************/
 
-    $scope.confirmRerunTransactions = function () {
-      var transactionsSelected = [$scope.transactionDetails._id]
-      var rerunTransactionsSelected = 0
+	//setup filter options
+	$scope.returnFilterObject = function () {
+		let filtersObject = {};
 
-      // check if transaction has child IDs (It has been rerun before)
-      if ($scope.transactionDetails.childIDs) {
-        if ($scope.transactionDetails.childIDs.length > 0) {
-          rerunTransactionsSelected = 1
-        }
-      }
+		filtersObject.filterPage = 0;
+		filtersObject.filterLimit = 0;
+		filtersObject.filters = {};
+		filtersObject.filters.parentID = $routeParams.transactionId;
 
-      $modal.open({
-        templateUrl: 'views/transactionsRerunModal.html',
-        controller: 'TransactionsRerunModalCtrl',
-        resolve: {
-          transactionsSelected: function () {
-            return transactionsSelected
-          },
-          rerunTransactionsSelected: function () {
-            return rerunTransactionsSelected
-          }
-        }
-      })
-    }
+		return filtersObject;
+	};
 
-    /****************************************************************/
-    /**               Transactions ReRun Functions                 **/
-    /****************************************************************/
+	//Refresh transactions list
+	$scope.fetchChildTransactions = function () {
 
-    /*********************************************************************/
-    /**               Transactions View Route Functions                 **/
-    /*********************************************************************/
+		Api.Transactions.query($scope.returnFilterObject(), function (values) {
+			// on success
+			$scope.childTransactions = values;
+		},
+			function (err) {
+				Alerting.AlertAddServerMsg(err.status);
+			});
 
-    $scope.viewAddReqResDetails = function (record, channel, recordType, index) {
-      $modal.open({
-        templateUrl: 'views/transactionsAddReqResModal.html',
-        controller: 'TransactionsAddReqResModalCtrl',
-        windowClass: 'modal-fullview',
-        resolve: {
-          record: function () {
-            return record
-          },
-          channel: function () {
-            return channel
-          },
-          transactionId: function () {
-            return $scope.transactionDetails._id
-          },
-          recordType: function () {
-            return recordType
-          },
-          index: function () {
-            return index
-          }
-        }
-      })
-    }
+	};
+	//run the transaction list view for the first time
+	$scope.fetchChildTransactions();
 
-    /*********************************************************************/
-    /**               Transactions View Route Functions                 **/
-    /*********************************************************************/
 
-    /********************************************************************/
-    /**               Transactions View Body Functions                 **/
-    /********************************************************************/
+	//location provider - load transaction details
+	$scope.viewTransactionDetails = function (path) {
+		//do transactions details redirection when clicked on TD
+		$location.path(path);
+	};
 
-    $scope.viewBodyDetails = function (type, content, headers) {
-      $modal.open({
-        templateUrl: 'views/transactionsBodyModal.html',
-        controller: 'TransactionsBodyModalCtrl',
-        windowClass: 'modal-fullview',
-        resolve: {
-          bodyData: function () {
-            return {type: type, content: content, headers: headers}
-          }
-        }
-      })
-    }
+	/*******************************************************************/
+	/**         Transactions List and Detail view functions           **/
+	/*******************************************************************/
 
-    /********************************************************************/
-    /**               Transactions View Body Functions                 **/
-    /********************************************************************/
-  })
+
+
+	/****************************************************************/
+	/**               Transactions ReRun Functions                 **/
+	/****************************************************************/
+
+	$scope.confirmRerunTransactions = function () {
+		let transactionsSelected = [$scope.transactionDetails._id];
+		let rerunTransactionsSelected = 0;
+
+		// check if transaction has child IDs (It has been rerun before)
+		if ($scope.transactionDetails.childIDs) {
+			if ($scope.transactionDetails.childIDs.length > 0) {
+				rerunTransactionsSelected = 1;
+			}
+		}
+
+		$uibModal.open({
+			templateUrl: 'views/transactionsRerunModal.html',
+			controller: 'TransactionsRerunModalCtrl',
+			resolve: {
+				transactionsSelected: function () {
+					return transactionsSelected;
+				},
+				rerunTransactionsSelected: function () {
+					return rerunTransactionsSelected;
+				}
+			}
+		});
+	};
+
+	/****************************************************************/
+	/**               Transactions ReRun Functions                 **/
+	/****************************************************************/
+
+
+
+	/*********************************************************************/
+	/**               Transactions View Route Functions                 **/
+	/*********************************************************************/
+
+	$scope.viewAddReqResDetails = function (record, channel, recordType, index) {
+		$uibModal.open({
+			templateUrl: 'views/transactionsAddReqResModal.html',
+			controller: 'TransactionsAddReqResModalCtrl',
+			windowClass: 'modal-fullview',
+			resolve: {
+				record: function () {
+					return record;
+				},
+				channel: function () {
+					return channel;
+				},
+				transactionId: function () {
+					return $scope.transactionDetails._id;
+				},
+				recordType: function () {
+					return recordType;
+				},
+				index: function () {
+					return index;
+				}
+			}
+		});
+	};
+
+	/*********************************************************************/
+	/**               Transactions View Route Functions                 **/
+	/*********************************************************************/
+
+
+
+	/********************************************************************/
+	/**               Transactions View Body Functions                 **/
+	/********************************************************************/
+
+	$scope.viewBodyDetails = function (type, content, headers) {
+		$uibModal.open({
+			templateUrl: 'views/transactionsBodyModal.html',
+			controller: 'TransactionsBodyModalCtrl',
+			windowClass: 'modal-fullview',
+			resolve: {
+				bodyData: function () {
+					return { type: type, content: content, headers: headers };
+				}
+			}
+		});
+	};
+
+	/********************************************************************/
+	/**               Transactions View Body Functions                 **/
+	/********************************************************************/
+
+}

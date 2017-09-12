@@ -1,44 +1,42 @@
-'use strict'
-/* global isCoreVersionCompatible:false */
-/* global getTimeForTimezone:false */
+import { isCoreVersionCompatible, getTimeForTimezone } from "../utils";
 
-angular.module('openhimConsoleApp')
-  .controller('AboutCtrl', function ($scope, $interval, Api, Alerting, config) {
-    $scope.aboutInfo = {}
+export function AboutCtrl($scope, $interval, Api, Alerting, config) {
 
-    var success = function (result) {
-      $scope.aboutInfo = result
-      buildAboutInfoObject()
+	$scope.aboutInfo = {};
 
-      $scope.updateTime(result.serverTimezone)
-      $scope.clock = $interval(function () {
-        $scope.updateTime(result.serverTimezone)
-      }, 1000)
-    }
+	let success = function (result) {
+		$scope.aboutInfo = result;
+		buildAboutInfoObject();
 
-    var error = function (err) {
-      Alerting.AlertAddServerMsg(err.status)
-    }
+		$scope.updateTime(result.serverTimezone);
+		$scope.clock = $interval(function () {
+			$scope.updateTime(result.serverTimezone);
+		}, 1000);
+	};
 
-    Api.About.get(success, error)
+	let error = function (err) {
+		Alerting.AlertAddServerMsg(err.status);
+	};
 
-    $scope.updateTime = function (timezone) {
-      $scope.aboutInfo.serverTime = getTimeForTimezone(timezone)
-    }
+	Api.About.get(success, error);
 
-    var buildAboutInfoObject = function () {
-      $scope.aboutInfo.currentConsoleVersion = config.version
-      $scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion
+	$scope.updateTime = function (timezone) {
+		$scope.aboutInfo.serverTime = getTimeForTimezone(timezone);
+	};
 
-      var maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1
-      $scope.aboutInfo.maximumCoreVersion = maxCoreMajorVersion + '.0.0'
+	let buildAboutInfoObject = function () {
+		$scope.aboutInfo.currentConsoleVersion = config.version;
+		$scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion;
 
-      $scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion)
-    }
+		let maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1;
+		$scope.aboutInfo.maximumCoreVersion = maxCoreMajorVersion + '.0.0';
 
-    $scope.$on('$destroy', function () {
-      if (angular.isDefined($scope.clock)) {
-        $interval.cancel($scope.clock)
-      }
-    })
-  })
+		$scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion);
+	};
+
+	$scope.$on('$destroy', function () {
+		if (angular.isDefined($scope.clock)) {
+			$interval.cancel($scope.clock);
+		}
+	});
+}
