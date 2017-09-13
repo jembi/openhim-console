@@ -143,3 +143,31 @@ export function wait (timeout = 100) {
     setTimeout(resolve, timeout)
   })
 }
+
+export function camelcaseToHtmlAttr (input) {
+  if (valueEmpty(input)) {
+    return input
+  }
+
+  const matches = input.match(/([A-Z]*[a-z|\d]+)/g) || []
+  return matches.map(m => m.toLowerCase()).join('-')
+}
+
+export function * objectVisitor (visitObj, visitPath = []) {
+  if (visitObj == null) {
+    return
+  }
+
+  for (const key in visitObj) {
+    const value = visitObj[key]
+    const currentPath = [...visitPath, key]
+    if (typeof value === 'object') {
+      yield * objectVisitor(value, currentPath)
+    } else {
+      yield {
+        path: currentPath,
+        value
+      }
+    }
+  }
+}

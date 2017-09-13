@@ -1,6 +1,6 @@
 import { buildBlob } from '../utils'
 
-export function ExportImportCtrl ($upload, $scope, $uibModal, Api, Alerting) {
+export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/

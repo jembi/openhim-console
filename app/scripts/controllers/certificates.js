@@ -1,9 +1,9 @@
-export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Alerting) {
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	// set variables for server restart
+  // set variables for server restart
   $scope.serverRestarting = false
   $scope.restartTimeout = 0
   $scope.serverRestartRequired = false
@@ -11,9 +11,9 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
   $scope.showImportResults = false
   $scope.certValidity = {}
 
-	// function to reset certs
+  // function to reset certs
   $scope.resetCertificates = function () {
-		// get server certificate data
+    // get server certificate data
     Api.Keystore.get({ type: 'cert' }, function (result) {
       $scope.currentServerCert = result
       if ($scope.currentServerCert.watchFSForCert) {
@@ -23,7 +23,7 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
       Alerting.AlertAddServerMsg(err.status)
     })
 
-		// get trusted certificates array
+    // get trusted certificates array
     $scope.trustedCertificates = Api.Keystore.query({ type: 'ca' })
     Api.Keystore.query({ type: 'ca' }, function (result) {
       $scope.trustedCertificates = result
@@ -31,7 +31,7 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
       Alerting.AlertAddServerMsg(err.status)
     })
 
-		// get current certificate validity
+    // get current certificate validity
     Api.Keystore.get({ type: 'validity' }, function (result) {
       $scope.certValidity = result
     }, function () {
@@ -39,18 +39,18 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     })
   }
 
-	// set inital certs
+  // set inital certs
   $scope.resetCertificates()
 
-	/***************************************************/
-	/**         Initial page load functions           **/
-	/***************************************************/
+  /***************************************************/
+  /**         Initial page load functions           **/
+  /***************************************************/
 
-	/****************************************/
-	/**         Import Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Import Functions           **/
+  /****************************************/
 
-	// import failed function
+  // import failed function
   $scope.uploadFail = function (err, location, fileName) {
     if (location === 'trustedCerts') {
       $scope.failedImports.push({ filename: fileName, error: err.data, status: err.status })
@@ -61,7 +61,7 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     $scope.importFail++
   }
 
-	// import success function
+  // import success function
   $scope.uploadSuccess = function (location, fileName) {
     Alerting.AlertAddMsg(location, 'success', 'Newly Uploaded File: ' + fileName)
     $scope.importSuccess++
@@ -81,7 +81,7 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     $scope.createCertificateSuccess()
   })
 
-	// execute the certificate upload
+  // execute the certificate upload
   $scope.uploadCertificate = function (data, totalFiles, fileName) {
     Alerting.AlertReset()
 
@@ -124,36 +124,36 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     doneItems++
     $scope.importProgressStatus = Math.floor(doneItems / totalFiles)
 
-		// update progress bar too 100%
+    // update progress bar too 100%
     if (doneItems === totalFiles) {
       $scope.importProgressStatus = 100
       $scope.importProgressType = 'success'
     }
   }
 
-	/* ----- Watcher to look for dropped files ----- */
+  /* ----- Watcher to look for dropped files ----- */
 
-	// watch if serverCert have been dropped
+  // watch if serverCert have been dropped
   $scope.$watch('serverCert', function () {
     $scope.upload($scope.serverCert)
     $scope.uploadType = 'serverCert'
   })
 
-	// watch if serverKey have been dropped
+  // watch if serverKey have been dropped
   $scope.$watch('serverKey', function () {
     $scope.upload($scope.serverKey)
     $scope.uploadType = 'serverKey'
   })
 
-	// watch if trustedCerts have been dropped
+  // watch if trustedCerts have been dropped
   $scope.$watch('trustedCerts', function () {
     $scope.upload($scope.trustedCerts)
     $scope.uploadType = 'trustedCerts'
   })
 
-	/* ----- Watcher to look for dropped files ----- */
+  /* ----- Watcher to look for dropped files ----- */
 
-	// function to upload the file
+  // function to upload the file
   $scope.upload = function (files) {
     if (files && files.length) {
       $scope.serverRestartError = false
@@ -161,26 +161,26 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
       let fileWrappedImportread = function (file) {
         return function (event) {
           let data = event.target.result
-					// read the import script data and process
+          // read the import script data and process
           $scope.uploadCertificate(data, files.length, file.name)
         }
       }
 
       $scope.showImportResults = false
 
-			// foreach uploaded file
+      // foreach uploaded file
       for (let i = 0; i < files.length; i++) {
         let file = files[i]
 
         let reader = new FileReader()
-				// onload function used by the reader
+        // onload function used by the reader
         reader.onload = fileWrappedImportread(file)
 
         if ($scope.uploadType === 'trustedCerts') {
           $scope.showImportResults = true
         }
 
-				// when the file is read it triggers the onload event function above.
+        // when the file is read it triggers the onload event function above.
         reader.readAsText(file)
       }
     }
@@ -219,16 +219,16 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     $scope.resetCertificates()
   }
 
-	/****************************************/
-	/**         Import Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Import Functions           **/
+  /****************************************/
 
-	/****************************************/
-	/**         Delete Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Delete Functions           **/
+  /****************************************/
 
   let deleteSuccess = function () {
-		// On success
+    // On success
     $scope.resetCertificates()
     $scope.serverRestartRequired = true
     $scope.goToTop()
@@ -236,7 +236,7 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
   }
 
   let deleteError = function (err) {
-		// add the error message
+    // add the error message
     Alerting.AlertAddMsg('trustedCertDelete', 'danger', 'An error has occurred while deleting the trusted certificate: #' + err.status + ' - ' + err.data)
   }
 
@@ -263,40 +263,40 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
       let certToDelete = new Api.Keystore()
       certToDelete.$remove({ type: 'ca', property: cert._id }, deleteSuccess, deleteError)
     }, function () {
-			// delete cancelled - do nothing
+      // delete cancelled - do nothing
     })
   }
 
-	/****************************************/
-	/**         Delete Functions           **/
-	/****************************************/
+  /****************************************/
+  /**         Delete Functions           **/
+  /****************************************/
 
-	/************************************************/
-	/**         Restart Server Functions           **/
-	/************************************************/
+  /************************************************/
+  /**         Restart Server Functions           **/
+  /************************************************/
 
-	// server restart later function
+  // server restart later function
   $scope.restartServerLater = function () {
     $scope.serverRestartRequired = false
   }
 
-	// server restart confirm function
+  // server restart confirm function
   $scope.restartServer = function () {
     let restartServer = new Api.Restart()
     restartServer.$save({}, function () {
-			// restart request sent successfully
+      // restart request sent successfully
 
-			// update restart variables
+      // update restart variables
       $scope.serverRestarting = true
       $scope.serverRestartRequired = false
 
-			// set estimate time for server restart - 10 seconds
+      // set estimate time for server restart - 10 seconds
       $scope.restartTimeout = 10
       let restartInterval = $interval(function () {
-				// decrement the timer
+        // decrement the timer
         $scope.restartTimeout--
 
-				// if timer is finshed - cancel interval - update display variable
+        // if timer is finshed - cancel interval - update display variable
         if ($scope.restartTimeout === 0) {
           $scope.serverRestarting = false
           $scope.resetCertificates()
@@ -309,9 +309,9 @@ export function CertificatesCtrl ($upload, $scope, $interval, $uibModal, Api, Al
     })
   }
 
-	/************************************************/
-	/**         Restart Server Functions           **/
-	/************************************************/
+  /************************************************/
+  /**         Restart Server Functions           **/
+  /************************************************/
 
   $scope.addCert = function (certType) {
     Alerting.AlertReset()

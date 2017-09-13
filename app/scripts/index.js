@@ -9,6 +9,7 @@ import 'angular-highlightjs'
 import 'angular-file-upload'
 import 'angular-bootstrap-colorpicker'
 import '@kariudo/angular-fullscreen'
+import ngFileUpload from 'ng-file-upload'
 
 import { datetimepicker } from './external/angular-bootstrap-datetimepicker-directive'
 import { angularTaglist } from './external/angular-taglist-directive'
@@ -16,6 +17,8 @@ import { angularTaglist } from './external/angular-taglist-directive'
 import * as controllers from './controllers'
 import * as directives from './directives'
 import * as services from './services'
+import * as views from '../views'
+import { objectVisitor, camelcaseToHtmlAttr } from './utils'
 
 import * as defaultConfig from '../config/default.json'
 
@@ -35,7 +38,7 @@ export const app = angular
     'ngRoute',
     'ui.bootstrap',
     'hljs',
-    'angularFileUpload',
+    ngFileUpload,
     'colorpicker.module',
     datetimepicker,
     angularTaglist,
@@ -53,6 +56,13 @@ for (const directive in directives) {
 for (const service in services) {
   app.factory(service, services[service])
 }
+
+app.run(function ($templateCache) {
+  for (const viewVisit of objectVisitor(views)) {
+    const viewPath = viewVisit.path.map(camelcaseToHtmlAttr).join('/')
+    $templateCache.put(`views/${viewPath}.html`, viewVisit.value)
+  }
+})
 
 app.run(function ($rootScope) {
   // register listener to watch route changes
@@ -92,10 +102,7 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
     /* ----- Set Referring URL ----- */
 
     let paramsString = ''
-    let curRoute
-
-    // set previous route value
-    curRoute = $location.path()
+    let curRoute = $location.path()
 
     // check if parameters exist
     if (Object.keys($location.search()).length > 0) {
@@ -139,7 +146,7 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
         localStorage.removeItem('consoleSession')
 
         // session expired - user needs to log in
-        $window.location = '#/login'
+        $location.path('/login')
       } else {
         // session still active - update expires time
         currentTime = new Date()
@@ -181,7 +188,7 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
       // if not 'set-password' page
       if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
         // No session - user needs to log in
-        $window.location = '#/login'
+        $location.path('/login')
       }
     }
   })
@@ -191,107 +198,107 @@ app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
       template: require('../views/dashboard.html'),
-      controller: 'DashboardCtrl'
+      controller: controllers.DashboardCtrl
     })
     .when('/channels', {
       template: require('../views/channels.html'),
-      controller: 'ChannelsCtrl'
+      controller: controllers.ChannelsCtrl
     })
     .when('/channels/:channelId', {
       template: require('../views/channelMonitoring.html'),
-      controller: 'ChannelMonitoringCtrl'
+      controller: controllers.ChannelMonitoringCtrl
     })
     .when('/clients', {
       template: require('../views/clients.html'),
-      controller: 'ClientsCtrl'
+      controller: controllers.ClientsCtrl
     })
     .when('/monitoring', {
       template: require('../views/monitoring.html'),
-      controller: 'MonitoringCtrl'
+      controller: controllers.MonitoringCtrl
     })
     .when('/users', {
       template: require('../views/users.html'),
-      controller: 'UsersCtrl'
+      controller: controllers.UsersCtrl
     })
     .when('/config', {
       template: require('../views/config.html'),
-      controller: 'ConfigCtrl'
+      controller: controllers.ConfigCtrl
     })
     .when('/transactions', {
       template: require('../views/transactions.html'),
-      controller: 'TransactionsCtrl'
+      controller: controllers.TransactionsCtrl
     })
     .when('/transactions/:transactionId', {
       template: require('../views/transactionDetails.html'),
-      controller: 'TransactionDetailsCtrl'
+      controller: controllers.TransactionDetailsCtrl
     })
     .when('/tasks', {
       template: require('../views/tasks.html'),
-      controller: 'TasksCtrl'
+      controller: controllers.TasksCtrl
     })
     .when('/tasks/:taskId', {
       template: require('../views/taskDetails.html'),
-      controller: 'TaskDetailsCtrl'
+      controller: controllers.TaskDetailsCtrl
     })
     .when('/groups', {
       template: require('../views/contactGroups.html'),
-      controller: 'ContactGroupsCtrl'
+      controller: controllers.ContactGroupsCtrl
     })
     .when('/login', {
       template: require('../views/login.html'),
-      controller: 'LoginCtrl'
+      controller: controllers.LoginCtrl
     })
     .when('/profile', {
       template: require('../views/profile.html'),
-      controller: 'ProfileCtrl'
+      controller: controllers.ProfileCtrl
     })
     .when('/mediators', {
       template: require('../views/mediators.html'),
-      controller: 'MediatorsCtrl'
+      controller: controllers.MediatorsCtrl
     })
     .when('/mediators/:urn', {
       template: require('../views/mediatorDetails.html'),
-      controller: 'MediatorDetailsCtrl'
+      controller: controllers.MediatorDetailsCtrl
     })
     .when('/logout', {
       template: require('../views/login.html'),
-      controller: 'LoginCtrl'
+      controller: controllers.LoginCtrl
     })
     .when('/visualizer', {
       template: require('../views/visualizer.html'),
-      controller: 'VisualizerCtrl'
+      controller: controllers.VisualizerCtrl
     })
     .when('/forgot-password', {
       template: require('../views/forgotPassword.html'),
-      controller: 'ForgotPasswordCtrl'
+      controller: controllers.ForgotPasswordCtrl
     })
     .when('/set-password/:token', {
       template: require('../views/setPassword.html'),
-      controller: 'SetPasswordCtrl'
+      controller: controllers.SetPasswordCtrl
     })
     .when('/certificates', {
       template: require('../views/certificates.html'),
-      controller: 'CertificatesCtrl'
+      controller: controllers.CertificatesCtrl
     })
     .when('/export-import', {
       template: require('../views/exportImport.html'),
-      controller: 'ExportImportCtrl'
+      controller: controllers.ExportImportCtrl
     })
     .when('/audits', {
       template: require('../views/audits.html'),
-      controller: 'AuditsCtrl'
+      controller: controllers.AuditsCtrl
     })
     .when('/audits/:auditId', {
       template: require('../views/auditDetails.html'),
-      controller: 'AuditDetailsCtrl'
+      controller: controllers.AuditDetailsCtrl
     })
     .when('/logs', {
       template: require('../views/logs.html'),
-      controller: 'LogsCtrl'
+      controller: controllers.LogsCtrl
     })
     .when('/about', {
       template: require('../views/about.html'),
-      controller: 'AboutCtrl'
+      controller: controllers.AboutCtrl
     })
     .otherwise({
       redirectTo: '/'

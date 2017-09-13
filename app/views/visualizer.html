@@ -53,7 +53,7 @@
               <!-- Server Alerts -->
 
               <div ng-show="loadingVisualizerError">
-                There seems to be issues with you visualizer settings. please configure them in the '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
+                There seems to be issues with you visualizer settings. please configure them in the '<a href="#!/profile" title="Visualizer Settings">Visualizer Settings</a>' tab and try again.
 
                 <div ng-repeat="errorMsg in loadingVisualizerErrorMsgs">
                   <span style="font-weight: bold; font-size: 14px;">{{errorMsg.section}}: </span>
@@ -62,7 +62,7 @@
               </div>
 
               <div ng-show="isUsingOldVisualizerSettings">
-                <strong>NEW</strong> The visualizer has been upgraded with new features! However this means you'll have to migrate your '<a href="#/profile" title="Visualizer Settings">Visualizer Settings</a>' in order to continue.
+                <strong>NEW</strong> The visualizer has been upgraded with new features! However this means you'll have to migrate your '<a href="#!/profile" title="Visualizer Settings">Visualizer Settings</a>' in order to continue.
               </div>
 
               <div ng-show="!loadingVisualizer && !loadingVisualizerError && !isUsingOldVisualizerSettings && visualizers.length !== 0">

@@ -4,6 +4,7 @@
 	"version": "1.10.0",
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.1",
+		"@uirouter/angularjs": "^1.0.6",
 		"angular": "^1.6.6",
 		"angular-bootstrap-colorpicker": "^3.0.31",
 		"angular-cookies": "^1.6.6",
