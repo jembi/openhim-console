@@ -6,7 +6,7 @@
   <div class="form-group" style="float: left;">
     <label style="display: block;">
       Store Request Body
-      <i ng-show="uiSettings.showTooltips" tooltip="Set whether the transaction request body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" uib-tooltip="Set whether the transaction request body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="btn-group" style="clear: both;">
       <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="true">Yes</label>
@@ -16,7 +16,7 @@
   <div class="form-group" style="float: left; margin-left: 20px;">
     <label style="display: block;">
       Store Response Body
-      <i ng-show="uiSettings.showTooltips" tooltip="Set whether the transaction response body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" uib-tooltip="Set whether the transaction response body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="btn-group" style="margin-bottom: 10px: clear: both;">
       <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="true">Yes</label>
@@ -32,7 +32,7 @@
     <div class="form-group" style="float: left;">
       <label style="display: block;">
         Automatically resend failed transactions?
-        <i ng-show="uiSettings.showTooltips" tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" btn-radio="true">Yes</label>
@@ -42,7 +42,7 @@
     <div class="form-group" style="float: left; margin-left: 20px;">
       <label style="display: block">
         How often?
-        <i ng-show="uiSettings.showTooltips" tooltip="The period (in minutes) to wait before resending transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="The period (in minutes) to wait before resending transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" ng-class="{ 'has-error' : ngError.autoRetryPeriodMinutes }" style="clear: both;">
         <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled" ng-model="channel.autoRetryPeriodMinutes" />
@@ -54,7 +54,7 @@
     <div class="form-group" style="float: left;">
       <label style="display: block;">
         Enable max number of attempts
-        <i ng-show="uiSettings.showTooltips" tooltip="The maximum number of times to retry transactions that are continuously failing" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="The maximum number of times to retry transactions that are continuously failing" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" btn-radio="true">Yes</label>
@@ -75,7 +75,7 @@
 <div ng-show="channel.responseBody" style="border-top: 1px solid #eee;">
   <h4>URL Rewriting</h4>
   <!-- Route Alerts -->
-  <alert ng-if="!urlRewriteAddEdit" ng-repeat="alert in alerts.urlRewrite" type="alert.type">{{alert.msg}}</alert>
+  <div uib-alert ng-if="!urlRewriteAddEdit" ng-repeat="alert in alerts.urlRewrite" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
   <!-- Route Alerts -->
 
   <div ng-if="urlRewriteAddEdit" class="addEditRoutes">
@@ -121,9 +121,9 @@
       <button type="button" class="btn btn-primary" ng-click="saveUrlRewrite( oldUrlRewriteIndex )" style="margin-left: 5px;">Set Rewrite Rule</button>
 
       <!-- hasErrors Alerts -->
-      <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsUrlRewrite" type="alert.type">
+      <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsUrlRewrite" ng-class="'alert-' + (alert.type || 'warning')">
         <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-      </alert>
+      </div>
       <!-- hasErrors Alerts -->
     </div>
   </div>
@@ -135,7 +135,7 @@
       <div class="form-group" style="float: left;">
         <label style="display: block;">
           URL Rewriting enabled?
-          <i ng-show="uiSettings.showTooltips" tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" uib-tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
           <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="true">Yes</label>
@@ -145,7 +145,7 @@
       <div class="form-group" style="float: left; margin-left: 20px;">
         <label style="display: block">
           Add Auto Rewrite Rules?
-          <i ng-show="uiSettings.showTooltips" tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" uib-tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
           <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="true">Yes</label>
@@ -154,7 +154,7 @@
       </div>
     </div>
 
-    <alert ng-if="channel.rewriteUrlsConfig.length == 0" type="'warning'">No URL Rewrite Rules have been added</alert>
+    <div uib-alert ng-if="channel.rewriteUrlsConfig.length == 0" type="'warning'">No URL Rewrite Rules have been added</div>
 
     <table class="table table-striped" ng-if="channel.rewriteUrlsConfig.length > 0">
       <thead>

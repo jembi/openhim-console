@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+import 'jquery'
 import 'angular'
 import 'angular-cookies'
 import 'angular-resource'
@@ -11,7 +12,7 @@ import 'angular-bootstrap-colorpicker'
 import '@kariudo/angular-fullscreen'
 import ngFileUpload from 'ng-file-upload'
 
-import { datetimepicker } from './external/angular-bootstrap-datetimepicker-directive'
+import { moduleName } from './external/angular-bootstrap-datetimepicker-directive'
 import { angularTaglist } from './external/angular-taglist-directive'
 
 import * as controllers from './controllers'
@@ -25,11 +26,10 @@ import * as defaultConfig from '../config/default.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'morris.js/morris.css'
 import 'highlight.js/styles/default.css'
-import '../styles/main.css'
+import '~/styles/main.css'
 import 'highlight.js/styles/github.css'
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import 'angular-bootstrap-colorpicker/css/colorpicker.css'
-
 export const app = angular
   .module('openhimConsoleApp', [
     'ngCookies',
@@ -40,7 +40,7 @@ export const app = angular
     'hljs',
     ngFileUpload,
     'colorpicker.module',
-    datetimepicker,
+    moduleName,
     angularTaglist,
     'FBAngular'
   ])

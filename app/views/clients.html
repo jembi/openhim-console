@@ -26,13 +26,13 @@
                   <tr>
                     <th width="50">#</th>
                     <th>Role
-                      <span tooltip="Edit Role Names" class="inTableEditColumn" ng-click="toggleEditRoleNames()">
+                      <span uib-tooltip="Edit Role Names" class="inTableEditColumn" ng-click="toggleEditRoleNames()">
                         <i class="cursorPointer glyphicon glyphicon-edit"></i>
                       </span>
                       <div style="width:150px;"></div>
                     </th>
                     <th>Clients
-                      <span tooltip="Edit the clients in each role. If all clients and channels are removed from a role it will be deleted." class="inTableEditColumn" ng-click="toggleEditClients()">
+                      <span uib-tooltip="Edit the clients in each role. If all clients and channels are removed from a role it will be deleted." class="inTableEditColumn" ng-click="toggleEditClients()">
                         <i class="cursorPointer glyphicon glyphicon-edit"></i>
                       </span>
                       <div style="width:100px;"></div>
@@ -158,11 +158,11 @@
           </div>
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
           <!-- Bottom Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Bottom Alerts -->
           <button class="btn btn-primary" ng-click="addClient()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Client</button>
         </div>

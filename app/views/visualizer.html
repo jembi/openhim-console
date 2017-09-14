@@ -32,9 +32,9 @@
                     <span>{{ vis.name }}</span>
                     <div class="pull-right" ng-if="selectedVis.name === vis.name || hover">
                       <div class="btn-group" role="group">
-                        <button tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="editVisualiser(vis); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
-                        <button tooltip="Edit" class="btn btn-warning btn-xs" ng-click="duplicateVisualiser(vis); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
-                        <button tooltip="Delete" class="btn btn-danger btn-xs" ng-click="confirmRemoveVis(vis, $index); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button uib-tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="editVisualiser(vis); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
+                        <button uib-tooltip="Edit" class="btn btn-warning btn-xs" ng-click="duplicateVisualiser(vis); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
+                        <button uib-tooltip="Delete" class="btn btn-danger btn-xs" ng-click="confirmRemoveVis(vis, $index); $event.stopPropagation();" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
                       </div>
                     </div>
                   </a>
@@ -49,7 +49,7 @@
               </div>
 
               <!-- Server Alerts -->
-              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Server Alerts -->
 
               <div ng-show="loadingVisualizerError">

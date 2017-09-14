@@ -1,7 +1,8 @@
-import * as $ from 'jquery'
+import 'eonasdan-bootstrap-datetimepicker'
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 
 // Just exports the module name
-export const datetimepicker = 'datetimepicker'
+export const moduleName = 'datetimepicker'
 angular
   .module('datetimepicker', [])
   .provider('datetimepicker', function () {
@@ -34,7 +35,7 @@ angular
         },
         link: function ($scope, $element, $attrs, ngModelCtrl) {
           let passedInOptions = $scope.$eval($attrs.datetimepickerOptions)
-          let options = $.extend({}, defaultOptions, passedInOptions)
+          let options = Object.assign({}, defaultOptions, passedInOptions)
 
           $element
             .on('dp.change', function (e) {

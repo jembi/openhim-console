@@ -1,17 +1,11 @@
 {
 	"version": "0.2.0",
 	"configurations": [
-    {
-      "name": ".NET Core Attach",
-      "type": "coreclr",
-      "request": "attach",
-      "processId": "${command:pickProcess}"
-    },  
 		{
 			"type": "chrome",
 			"request": "launch",
 			"name": "Launch Chrome against localhost",
-			"url": "http://localhost:9000",
+			"url": "http://localhost:9001",
 			"webRoot": "${workspaceRoot}"
 		}
 	]

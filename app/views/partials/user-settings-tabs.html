@@ -5,7 +5,7 @@
     <div class="settings_div">
       <label style="float: left">
         Transaction View
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
         <label class="btn btn-primary" ng-model="user.settings.list.tabview" btn-radio="'same'">Same Tab</label>
@@ -15,7 +15,7 @@
     <div class="settings_div">
       <label style="float: left">
         Auto-Update Transaction List
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
         <label class="btn btn-primary" ng-model="user.settings.list.autoupdate" btn-radio="true">Enabled</label>
@@ -30,7 +30,7 @@
     <div class="settings_div">
       <label style="float: left">
         Show Tooltips
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether to show tooltips, like this one" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether to show tooltips, like this one" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
         <label class="btn btn-primary" ng-model="user.settings.general.showTooltips" btn-radio="true">Yes</label>

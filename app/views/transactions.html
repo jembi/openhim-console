@@ -34,7 +34,7 @@
                 <div class="settings_div">
                   <label style="float: left">
                     Transaction View
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
@@ -44,7 +44,7 @@
                 <div class="settings_div">
                   <label style="float: left">
                     Auto-Update Transaction List
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
@@ -56,7 +56,7 @@
           </div>
 
           <!-- Bulk Rerun the server message -->
-          <alert ng-if="bulkRerunActive && transactions" type="'success'" class="alert ng-isolate-scope alert-success bulkRerunAlert">
+          <div uib-alert ng-if="bulkRerunActive && transactions" type="'success'" class="alert ng-isolate-scope alert-success bulkRerunAlert">
             <div style="margin-bottom: 10px;">
               <h2 style="margin: 5px;">You have opted to do a Bulk Rerun!</h2>
               <h3 ng-show="NoDateRange" style="margin: 20px;">No date range has been supplied, querying all transactions with the defined filters.</h3>
@@ -74,7 +74,7 @@
               <button class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
               <button class="btn btn-danger btn-lg" ng-click="bulkRerunCancel()" style="margin: 0px 5px;">Cancel</button>
             </div>
-          </alert>
+          </div>
 
           <!-- don't show tables if bulkRerunActive -->
           <div id="no-more-tables" ng-if="!bulkRerunActive">
@@ -154,11 +154,11 @@
             </div>
 
             <!-- server Alerts -->
-            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Server Alerts -->
 
             <!-- transaction Alerts -->
-            <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- transaction Alerts -->
           </div>
 

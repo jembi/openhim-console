@@ -30,7 +30,7 @@
                 <div class="settings_div">
                   <label style="float: left">
                     Transaction View
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether a task opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether a task opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
@@ -40,7 +40,7 @@
                 <div class="settings_div">
                   <label style="float: left">
                     Auto-Update Transaction List
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the task list will be updated automatically" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the task list will be updated automatically" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
@@ -92,12 +92,12 @@
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Created Date">{{task.created | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
                   <td>
                     <div ng-if="task.status=='Processing' || task.status=='Queued'">
-                      <button tooltip="Pause" class="btn btn-warning btn-xs" ng-click="pauseTask(task)"><i class="glyphicon glyphicon-pause"></i></button>
-                      <button tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                      <button uib-tooltip="Pause" class="btn btn-warning btn-xs" ng-click="pauseTask(task)"><i class="glyphicon glyphicon-pause"></i></button>
+                      <button uib-tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
                     </div>
                     <div ng-if="task.status=='Paused'">
-                      <button tooltip="Resume" class="btn btn-success btn-xs" ng-click="resumeTask(task)"><i class="glyphicon glyphicon-play"></i></button>
-                      <button tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
+                      <button uib-tooltip="Resume" class="btn btn-success btn-xs" ng-click="resumeTask(task)"><i class="glyphicon glyphicon-play"></i></button>
+                      <button uib-tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i class="glyphicon glyphicon-remove"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -114,11 +114,11 @@
           </div>
 
           <!-- Top Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Top Alerts -->
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
 

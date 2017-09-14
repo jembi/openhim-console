@@ -5,9 +5,9 @@
     Visualizations Management
 
     <!-- hasErrors Alerts -->
-    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+    <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-    </alert>
+    </div>
   </h4>
 </div>
 <div class="modal-body">
@@ -21,9 +21,9 @@
 <div class="modal-footer">
   <div>
     <!-- hasErrors Alerts -->
-    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+    <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-    </alert>
+    </div>
     <!-- hasErrors Alerts -->
     <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
     

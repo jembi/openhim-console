@@ -18,7 +18,7 @@
         </div>
 
         <!-- Transaction Alerts -->
-        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
 
         <!-- Transaction details -->
         <div class="panel-body" ng-show="transactionDetails">
@@ -145,7 +145,7 @@
                     <h4>Request body</h4>
                     <div class="hljsFormat" hljs source="transactionDetails.request.body"></div>
                     <transaction-body-downloader transaction-id="transactionDetails._id" path="'request'" style="margin-top: 10px;" class="pull-right"></transaction-body-downloader>
-                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);" tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
+                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Request', transactionDetails.request.body, transactionDetails.request.headers);" uib-tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
                   </div>
                 </div>
               </div>
@@ -187,10 +187,10 @@
                     <h4>Response body</h4>
                     <div class="hljsFormat" hljs source="transactionDetails.response.body"></div>
                     <transaction-body-downloader transaction-id="transactionDetails._id" path="'response'" style="margin-top: 10px;" class="pull-right"></transaction-body-downloader>
-                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);" tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
+                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);" uib-tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
                   </div>
                   <div ng-if="transactionDetails.error" style="display: inline-block; width: 100%; margin-top: 15px;">
-                    <h4>Internal Error<i ng-show="uiSettings.showTooltips" tooltip="An internal error occurred that prevented the OpenHIM from sending the transaction" class="glyphicon glyphicon-question-sign tooltip-wide iconInHeader"></i></h4>
+                    <h4>Internal Error<i ng-show="uiSettings.showTooltips" uib-tooltip="An internal error occurred that prevented the OpenHIM from sending the transaction" class="glyphicon glyphicon-question-sign tooltip-wide iconInHeader"></i></h4>
                     <div class="hljsFormat" hljs source="transactionDetails.error.message"></div>
                     <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Error', transactionDetails.error.stack);">View Error Details</button>
                   </div>

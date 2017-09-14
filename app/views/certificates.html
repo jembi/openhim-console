@@ -16,33 +16,33 @@
 
 
         <!-- Server Alerts -->
-        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Server Alerts -->
 
         <!-- WatchFSForCert message -->
-        <alert ng-repeat="alert in alerts.watchFSForCert" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.watchFSForCert" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- WatchFSForCert message -->
 
 
         <!-- Restart the server message -->
-        <alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+        <div uib-alert ng-if="serverRestartRequired" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
           <div style="margin-bottom: 10px;">
             When adding/updating a certificate, a server restart is required for it to be applied.<br />
             Please ensure that no critical transactions are running through the OpenHIM while restarting as these may be lost.<br><br>
           </div>
           <button class="btn btn-danger btn-lg" ng-click="restartServer()">Restart Server Now!</button>
           <button class="btn btn-danger btn-lg" ng-click="restartServerLater()">I'll manually restart later</button>
-        </alert>
+        </div>
 
-        <alert ng-if="serverRestartError" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 40px;">
+        <div uib-alert ng-if="serverRestartError" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 40px;">
           <div>Unable to restart the server. <br />Server Certificate and Server Key need to match</div>
-        </alert>
+        </div>
 
         <!-- Server busy restarting -->
-        <alert ng-if="serverRestarting" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
+        <div uib-alert ng-if="serverRestarting" class="alert ng-isolate-scope alert-danger" style="font-weight: bold; text-align: center; font-size: 16px;">
           <div style="margin-bottom: 10px;">The server is currently being restarted.</div>
           <div>Roughly <u>{{restartTimeout}}</u> seconds remain before the server will have restarted.</div>
-        </alert>
+        </div>
 
 
         <div class="exportSectionDiv" ng-show="!alerts.server">
@@ -116,7 +116,7 @@
               <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
               <!-- Server Certificate Alerts -->
-              <alert ng-repeat="alert in alerts.serverCert" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.serverCert" ng-class="'alert-' + (alert.type || 'warning')" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</div>
               <!-- Server Certificate Alerts -->
             </div>
 
@@ -128,11 +128,11 @@
               <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
               <!-- Server Certificate Alerts -->
-              <alert ng-repeat="alert in alerts.serverKey" type="alert.type" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.serverKey" ng-class="'alert-' + (alert.type || 'warning')" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</div>
               <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
                 <label><strong>Enter a passphrase (If required)</strong></label>
                 <label ng-if="currentServerCert.passphrase" style="float: right">
-                  <i tooltip-placement="top" tooltip="A password has been set for this key" class="glyphicon glyphicon-lock"></i>
+                  <i tooltip-placement="top" uib-tooltip="A password has been set for this key" class="glyphicon glyphicon-lock"></i>
                 </label>               
                 <input class="form-control pull-left" placeholder="Enter a passphrase here if the key requires one." type="password" ng-model="serverPassphrase" style="width: 70%;" />
                 <button class="btn btn-primary pull-right" ng-click="addPassphrase()" > Submit Passphrase</button>
@@ -149,7 +149,7 @@
 
 
             <!-- Server Certificate Alerts -->
-            <alert ng-repeat="alert in alerts.trustedCertDelete" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.trustedCertDelete" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Server Certificate Alerts -->
 
             <div id="no-more-tables">

@@ -2,115 +2,120 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>$title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>$title</title>
 </head>
 
 <body ng-cloak>
-	<!--[if lt IE 7]>
+  <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-	<div id="container">
-		<div id="header">
+  <div id="container">
+    <div id="header">
 
-			<!-- Header -->
-			<div class="header">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-5 titleDiv">
-							<!-- Logo -->
-							<div class="logo">
-								<h1><a href="#/transactions"><img src="images/openhim-logo-green.png" alt="Logo" />{{appTitle}}</a></h1>
-							</div>
-						</div>
+      <!-- Header -->
+      <div class="header">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5 titleDiv">
+              <!-- Logo -->
+              <div class="logo">
+                <h1>
+                  <a href="#/transactions">
+                    <span class="logo-image"></span>
+                    <span class="logo-title">{{appTitle}}</span>
+                  </a>
+                </h1>
+              </div>
+            </div>
 
-						<div ng-show="navMenuVisible === true">
-							<div class="float-right">
-								<div class="navbar navbar-inverse float-right" role=" banner">
-									<nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-										<ul class="nav navbar-nav">
-											<li class="dropdown">
-												<a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
-												<ul class="dropdown-menu animated fadeInUp">
-													<li><a href="#/profile">Profile</a></li>
-													<li><a href="#/about">About</a></li>
-													<li><a href="#/logout">Logout</a></li>
-												</ul>
-											</li>
-										</ul>
-									</nav>
-								</div>
-							</div>
+            <div ng-show="navMenuVisible === true">
+              <div class="float-right">
+                <div class="navbar navbar-inverse float-right" role=" banner">
+                  <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                    <ul class="nav navbar-nav">
+                      <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><span ng-bind="sessionUser"></span><b class="caret"></b></a>
+                        <ul class="dropdown-menu animated fadeInUp">
+                          <li><a href="#/profile">Profile</a></li>
+                          <li><a href="#/about">About</a></li>
+                          <li><a href="#/logout">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
 
-							<div class="topMenu float-right">
-								<div class="navbar navbar-inverse" role="banner">
-									<nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-										<ul class="nav navbar-nav">
-											<li class="dropdown">
-												<a href="" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
-												<ul class="dropdown-menu animated fadeInUp">
-													<li ng-class="{current: isCurrent('/')}"><a href="#"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
-													<li ng-class="{current: isCurrent('/transactions')}"><a href="#/transactions"><i class="glyphicon glyphicon-list-alt"></i> Transaction log</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/audits')}"><a href="#/audits"><i class="glyphicon glyphicon-book"></i> Audit Log</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Contact Lists</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificate</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
-													<li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/logs')}"><a href="#/logs"><i class="glyphicon glyphicon-cog"></i> Server Logs</a></li>
-												</ul>
-											</li>
-										</ul>
-									</nav>
-								</div>
-							</div>
+              <div class="topMenu float-right">
+                <div class="navbar navbar-inverse" role="banner">
+                  <nav class="navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
+                    <ul class="nav navbar-nav">
+                      <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
+                        <ul class="dropdown-menu animated fadeInUp">
+                          <li ng-class="{current: isCurrent('/')}"><a href="#"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+                          <li ng-class="{current: isCurrent('/transactions')}"><a href="#/transactions"><i class="glyphicon glyphicon-list-alt"></i> Transaction log</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/audits')}"><a href="#/audits"><i class="glyphicon glyphicon-book"></i> Audit Log</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/clients')}"><a href="#/clients"><i class="glyphicon glyphicon-th"></i> Clients</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/channels')}"><a href="#/channels"><i class="glyphicon glyphicon-random"></i> Channels</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/tasks')}"><a href="#/tasks"><i class="glyphicon glyphicon-repeat"></i> Tasks</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/visualizer')}"><a href="#/visualizer"><i class="glyphicon glyphicon-road"></i> Visualizer</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/groups')}"><a href="#/groups"><i class="glyphicon glyphicon-tasks"></i> Contact Lists</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/mediators')}"><a href="#/mediators"><i class="glyphicon glyphicon-link"></i> Mediators</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/users')}"><a href="#/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificate</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
+                          <li ng-show="userGroupAdmin" ng-class="{current: isCurrent('/logs')}"><a href="#/logs"><i class="glyphicon glyphicon-cog"></i> Server Logs</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-		<!-- Add your site or application content here -->
-		<div id="body" ng-view=""></div>
+    <!-- Add your site or application content here -->
+    <div id="body" ng-view=""></div>
 
-		<footer>
-			<div class="container">
-				<div class="copy text-center">
-					{{appFooterTitle}}<br /> Copyright&nbsp;&copy;&nbsp;
-					<script>
-						document.write(new Date().getFullYear());
-					</script>&nbsp;<a href='http://jembi.org'>Jembi Health Systems NPC</a><br />
-					<div>
-						<span ng-bind-html="appFooterPoweredBy"></span>
-						<a href="#/about" footer-version></a>
-					</div>
-				</div>
-			</div>
-		</footer>
+    <footer>
+      <div class="container">
+        <div class="copy text-center">
+          {{appFooterTitle}}<br /> Copyright&nbsp;&copy;&nbsp;
+          <script>
+            document.write(new Date().getFullYear());
+          </script>&nbsp;<a href='http://jembi.org'>Jembi Health Systems NPC</a><br />
+          <div>
+            <span ng-bind-html="appFooterPoweredBy"></span>
+            <a href="#/about" footer-version></a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-	</div>
+  </div>
 
-	$bundles
-	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-	<script>
-		(function (i, s, o, g, r, a, m) {
-			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-				(i[r].q = i[r].q || []).push(arguments)
-			}, i[r].l = 1 * new Date(); a = s.createElement(o),
-				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  $bundles
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-		ga('create', 'UA-XXXXX-X');
-		ga('send', 'pageview');
-	</script>
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+  </script>
 </body>
 
 </html>

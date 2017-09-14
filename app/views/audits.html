@@ -26,7 +26,7 @@
                 <div class="settings_div">
                   <label class="float-left">
                     Audit View
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether an audit opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether an audit opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign"></i>
                   </label>
                   <div class="btn-group float-left clear-both">
                     <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
@@ -36,7 +36,7 @@
                 <div class="settings_div">
                   <label style="float: left">
                     Auto-Update Audit List
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="If enabled, the audit list will be updated automatically whenever new audit come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the audit list will be updated automatically whenever new audit come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
@@ -83,11 +83,11 @@
               </div>
 
               <!-- Transaction Alerts -->
-              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Server Alerts -->
 
               <!-- transaction Alerts -->
-              <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Server Alerts -->
 
               <div class="transactionsButtonsDiv" ng-show="audits.length > 0">

@@ -14,7 +14,7 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Top Alerts -->
 
 
@@ -32,7 +32,7 @@
                   <tr>
                     <th width="90">
                       Priority
-                      <i ng-show="uiSettings.showTooltips" tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign"></i>
+                      <i ng-show="uiSettings.showTooltips" uib-tooltip="If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign"></i>
                     </th>
                     <th>Channel Name</th>
                     <th>Channel URL Pattern</th>
@@ -53,7 +53,7 @@
                     <span ng-if="!channel.priority">-</span>
                   </td>
                   <td data-title="Channel Name">
-                    <a tooltip={{channel.description}} ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
+                    <a uib-tooltip={{channel.description}} ng-if="channel.status!='deleted'" href="" ng-click="editChannel(channel)">{{ channel.name }}</a>
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
@@ -61,17 +61,17 @@
                   <td data-title="Access">
                     <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="">
                       
-                      <span ng-if="channel.allow" tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
+                      <span ng-if="channel.allow" uib-tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-th"></i>
                         <a>{{ channel.allow.join(', ') }}</a>
                       </span>
                       
-                      <span ng-if="channel.whitelist" tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
+                      <span ng-if="channel.whitelist" uib-tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-ok"></i>
                         <a>{{ channel.whitelist.join(', ') }}</a>
                       </span>
                       
-                      <span ng-if="channel.authType=='public'" tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
+                      <span ng-if="channel.authType=='public'" uib-tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-cloud-upload"></i>
                         <a > {{ channel.authType }}</a>
                       </span>
@@ -93,9 +93,9 @@
                   <td>
 
                     <div ng-if="channel.status!='deleted'">
-                      <button tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="duplicateChannel(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
-                      <button tooltip="Edit" class="btn btn-warning btn-xs" ng-click="editChannel(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
-                      <button tooltip="Delete" class="btn btn-danger btn-xs" ng-click="confirmDelete(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
+                      <button uib-tooltip="Duplicate" class="btn btn-info btn-xs" ng-click="duplicateChannel(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-file"></i></button>
+                      <button uib-tooltip="Edit" class="btn btn-warning btn-xs" ng-click="editChannel(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-pencil"></i></button>
+                      <button uib-tooltip="Delete" class="btn btn-danger btn-xs" ng-click="confirmDelete(channel)" tooltip-popup-delay="500"><i class="glyphicon glyphicon-remove"></i></button>
                     </div>
                     <div ng-if="channel.status=='deleted'">
                       <button class="btn btn-warning btn-xs" ng-click="confirmRestore(channel)"><i class="glyphicon glyphicon-repeat"></i></button>
@@ -113,11 +113,11 @@
           </div>
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
           <!-- Bottom Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Bottom Alerts -->
 
           <button class="btn btn-primary" ng-click="addChannel()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Channel</button>

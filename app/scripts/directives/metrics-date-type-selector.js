@@ -1,5 +1,5 @@
 import moment from 'moment'
-import * as metricsDateTypeSelectorView from '~/views/partials/metrics-date-type-selector.html'
+import metricsDateTypeSelectorView from '~/views/partials/metrics-date-type-selector.html'
 
 export function metricsDateTypeSelector () {
   return {
