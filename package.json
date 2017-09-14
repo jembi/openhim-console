@@ -67,6 +67,7 @@
 		"ng-file-upload": "^12.2.13",
 		"phantomjs-prebuilt": "^2.1.5",
 		"pretty-data": "^0.40.0",
+		"raphael": "^2.2.7",
 		"replace": "^0.3.0",
 		"sinon": "^1.17.4",
 		"sinon-chai": "2.8.0",

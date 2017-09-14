@@ -1,5 +1,9 @@
 import { viewPage } from '../utils'
+import raphael from 'raphael'
 import * as Morris from 'morris.js' // This needs to be replaced
+
+window.Raphael = raphael
+console.log(raphael)
 
 export function morrisLineChart ($parse) {
   return {
