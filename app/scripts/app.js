@@ -162,6 +162,6 @@ app.run(function ($rootScope, $http, $location, $window, $anchorScroll, Alerting
 
   /* ------------------------------CHECK USER SESSION--------------------------------- */
   // register listener to watch route changes
-  
+
   /* ------------------------------CHECK USER SESSION--------------------------------- */
 })

@@ -3,9 +3,9 @@ import { isBase64String, decodeBase64, beautifyIndent } from '../utils'
 export function AuditsContentModalCtrl ($scope, $uibModalInstance, auditData) {
   $scope.auditData = auditData
 
-	// is content view raw audit message
+  // is content view raw audit message
   if (auditData.type === 'Raw Audit Message') {
-		// transform body with indentation/formatting
+    // transform body with indentation/formatting
     let bodyTransform = beautifyIndent('application/xml', auditData.content)
     $scope.auditData.content = bodyTransform.content
     $scope.bodyTransformLang = bodyTransform.lang

@@ -1,4 +1,4 @@
-const { FuseBox, CSSPlugin, CSSResourcePlugin, WebIndexPlugin, HTMLPlugin, BabelPlugin, JSONPlugin, QuantumPlugin, CopyPlugin } = require('fuse-box')
+const { FuseBox, CSSPlugin, CSSResourcePlugin, WebIndexPlugin, HTMLPlugin, BabelPlugin, JSONPlugin, QuantumPlugin } = require('fuse-box')
 
 const isProduction = /prod/.test(process.env.NODE_ENV || 'dev')
 

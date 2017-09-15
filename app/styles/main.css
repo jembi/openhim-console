@@ -1259,7 +1259,7 @@ footer a {
 .nav-tabs > li > a { border-radius: 0px; }
 .form-control { border-radius: 0px; }
 .input-group-addon { border-radius: 0px; }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { background-color: #95AE32; }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,.btn-primary.active:hover, .open .dropdown-toggle.btn-primary { background-color: #95AE32; }
 .login-wrapper .box{ border-radius: 0px; }
 .login-wrapper{ margin: 100px auto 30px auto; }
 .login-wrapper .box .signup{ border-radius: 0px; }

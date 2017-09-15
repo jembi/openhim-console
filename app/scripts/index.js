@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import 'jquery'
+import 'bootstrap'
 import 'angular'
 import 'angular-cookies'
 import 'angular-resource'

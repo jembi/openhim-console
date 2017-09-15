@@ -289,7 +289,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     let refreshError = function (err) {
       // on error - Hide load more button and show error message
       $('#loadMoreBtn').hide()
-      Alertng.AlertAddServerMsg(err.status)
+      Alerting.AlertAddServerMsg(err.status)
     }
 
     $scope.applyFilterIfValidDate = function (date) {
@@ -335,7 +335,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
       $scope.audits = $.unique($scope.audits)
       if (audits.length < $scope.showlimit) {
         $('#loadMoreBtn').hide()
-        Alertng.AlertAddMsg('bottom', 'warning', 'There are no more audits to retrieve')
+        Alerting.AlertAddMsg('bottom', 'warning', 'There are no more audits to retrieve')
       }
 
       $scope.busyLoadingMore = false
@@ -344,7 +344,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     let loadMoreError = function (err) {
       // on error - Hide load more button and show error message
       $('#loadMoreBtn').hide()
-      Alertng.AlertAddServerMsg(err.status)
+      Alerting.AlertAddServerMsg(err.status)
     }
 
     // Refresh audits list
