@@ -198,107 +198,107 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
 app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
-      template: require('../views/dashboard.html'),
+      template: views.dashboard,
       controller: controllers.DashboardCtrl
     })
     .when('/channels', {
-      template: require('../views/channels.html'),
+      template: views.channels,
       controller: controllers.ChannelsCtrl
     })
     .when('/channels/:channelId', {
-      template: require('../views/channelMonitoring.html'),
+      template: views.channelMonitoring,
       controller: controllers.ChannelMonitoringCtrl
     })
     .when('/clients', {
-      template: require('../views/clients.html'),
+      template: views.clients,
       controller: controllers.ClientsCtrl
     })
     .when('/monitoring', {
-      template: require('../views/monitoring.html'),
+      template: views.monitoring,
       controller: controllers.MonitoringCtrl
     })
     .when('/users', {
-      template: require('../views/users.html'),
+      template: views.users,
       controller: controllers.UsersCtrl
     })
     .when('/config', {
-      template: require('../views/config.html'),
+      template: views.config,
       controller: controllers.ConfigCtrl
     })
     .when('/transactions', {
-      template: require('../views/transactions.html'),
+      template: views.transactions,
       controller: controllers.TransactionsCtrl
     })
     .when('/transactions/:transactionId', {
-      template: require('../views/transactionDetails.html'),
+      template: views.transactionDetails,
       controller: controllers.TransactionDetailsCtrl
     })
     .when('/tasks', {
-      template: require('../views/tasks.html'),
+      template: views.tasks,
       controller: controllers.TasksCtrl
     })
     .when('/tasks/:taskId', {
-      template: require('../views/taskDetails.html'),
+      template: views.taskDetails,
       controller: controllers.TaskDetailsCtrl
     })
     .when('/groups', {
-      template: require('../views/contactGroups.html'),
+      template: views.contactGroups,
       controller: controllers.ContactGroupsCtrl
     })
     .when('/login', {
-      template: require('../views/login.html'),
+      template: views.login,
       controller: controllers.LoginCtrl
     })
     .when('/profile', {
-      template: require('../views/profile.html'),
+      template: views.profile,
       controller: controllers.ProfileCtrl
     })
     .when('/mediators', {
-      template: require('../views/mediators.html'),
+      template: views.mediators,
       controller: controllers.MediatorsCtrl
     })
     .when('/mediators/:urn', {
-      template: require('../views/mediatorDetails.html'),
+      template: views.mediatorDetails,
       controller: controllers.MediatorDetailsCtrl
     })
     .when('/logout', {
-      template: require('../views/login.html'),
+      template: views.login,
       controller: controllers.LoginCtrl
     })
     .when('/visualizer', {
-      template: require('../views/visualizer.html'),
+      template: views.visualizer,
       controller: controllers.VisualizerCtrl
     })
     .when('/forgot-password', {
-      template: require('../views/forgotPassword.html'),
+      template: views.forgotPassword,
       controller: controllers.ForgotPasswordCtrl
     })
     .when('/set-password/:token', {
-      template: require('../views/setPassword.html'),
+      template: views.setPassword,
       controller: controllers.SetPasswordCtrl
     })
     .when('/certificates', {
-      template: require('../views/certificates.html'),
+      template: views.certificates,
       controller: controllers.CertificatesCtrl
     })
     .when('/export-import', {
-      template: require('../views/exportImport.html'),
+      template: views.exportImport,
       controller: controllers.ExportImportCtrl
     })
     .when('/audits', {
-      template: require('../views/audits.html'),
+      template: views.audits,
       controller: controllers.AuditsCtrl
     })
     .when('/audits/:auditId', {
-      template: require('../views/auditDetails.html'),
+      template: views.auditDetails,
       controller: controllers.AuditDetailsCtrl
     })
     .when('/logs', {
-      template: require('../views/logs.html'),
+      template: views.logs,
       controller: controllers.LogsCtrl
     })
     .when('/about', {
-      template: require('../views/about.html'),
+      template: views.about,
       controller: controllers.AboutCtrl
     })
     .otherwise({

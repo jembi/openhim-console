@@ -9,8 +9,8 @@
       <i ng-show="uiSettings.showTooltips" uib-tooltip="Set whether the transaction request body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="btn-group" style="clear: both;">
-      <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="true">Yes</label>
-      <label class="btn btn-primary" ng-model="channel.requestBody" btn-radio="false">No</label>
+      <label class="btn btn-primary" ng-model="channel.requestBody" uib-btn-radio="true">Yes</label>
+      <label class="btn btn-primary" ng-model="channel.requestBody" uib-btn-radio="false">No</label>
     </div>
   </div>
   <div class="form-group" style="float: left; margin-left: 20px;">
@@ -19,8 +19,8 @@
       <i ng-show="uiSettings.showTooltips" uib-tooltip="Set whether the transaction response body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="btn-group" style="margin-bottom: 10px: clear: both;">
-      <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="true">Yes</label>
-      <label class="btn btn-primary" ng-model="channel.responseBody" btn-radio="false">No</label>
+      <label class="btn btn-primary" ng-model="channel.responseBody" uib-btn-radio="true">Yes</label>
+      <label class="btn btn-primary" ng-model="channel.responseBody" uib-btn-radio="false">No</label>
     </div>
   </div>
 </div>
@@ -35,8 +35,8 @@
         <i ng-show="uiSettings.showTooltips" uib-tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" uib-btn-radio="false">No</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
@@ -57,8 +57,8 @@
         <i ng-show="uiSettings.showTooltips" uib-tooltip="The maximum number of times to retry transactions that are continuously failing" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" uib-btn-radio="false">No</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
@@ -138,8 +138,8 @@
           <i ng-show="uiSettings.showTooltips" uib-tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="true">Yes</label>
-          <label class="btn btn-primary" ng-model="channel.rewriteUrls" btn-radio="false">No</label>
+          <label class="btn btn-primary" ng-model="channel.rewriteUrls" uib-btn-radio="true">Yes</label>
+          <label class="btn btn-primary" ng-model="channel.rewriteUrls" uib-btn-radio="false">No</label>
         </div>
       </div>
       <div class="form-group" style="float: left; margin-left: 20px;">
@@ -148,8 +148,8 @@
           <i ng-show="uiSettings.showTooltips" uib-tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="true">Yes</label>
-          <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" btn-radio="false">No</label>
+          <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" uib-btn-radio="true">Yes</label>
+          <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" uib-btn-radio="false">No</label>
         </div>
       </div>
     </div>

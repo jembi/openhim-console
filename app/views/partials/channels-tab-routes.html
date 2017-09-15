@@ -19,15 +19,15 @@
       <div style="float: left;">
         <label>Primary Route</label><br />
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="true">Yes</label>
-          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="false">No</label>
+          <label class="btn btn-primary" ng-model="newRoute.primary" uib-btn-radio="true">Yes</label>
+          <label class="btn btn-primary" ng-model="newRoute.primary" uib-btn-radio="false">No</label>
         </div>
       </div>
       <div style="float: left; margin-left: 20px;">
         <label>Status</label><br />
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="newRoute.status" btn-radio="'enabled'">Enabled</label>
-          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" btn-radio="'disabled'">Disabled</label>
+          <label class="btn btn-primary" ng-model="newRoute.status" uib-btn-radio="'enabled'">Enabled</label>
+          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" uib-btn-radio="'disabled'">Disabled</label>
         </div>
       </div>
     </div>
@@ -36,16 +36,16 @@
     <div class="form-group" style="float: left;">
       <label>Route Type</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'http'">HTTP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'tcp'">TCP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'mllp'">MLLP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'http'">HTTP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'tcp'">TCP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'mllp'">MLLP</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
       <label>Route Secured</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-model="newRoute.secured" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="newRoute.secured" uib-btn-radio="false">No</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;" ng-if="newRoute.secured==true">
@@ -93,8 +93,8 @@
     <div class="form-group" style="float: left;">
       <label>Forward existing Authorization header</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="false">No</label>
       </div>
     </div>
   </div>

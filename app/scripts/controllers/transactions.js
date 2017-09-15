@@ -1,5 +1,7 @@
 import moment from 'moment'
 import { valueNotEmpty } from '../utils'
+import { transactionsRerunModal } from '~/views'
+import { TransactionsRerunModalCtrl } from './transactionsRerunModal'
 
 export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $interval, Api, Alerting) {
   /***************************************************/
@@ -9,6 +11,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   // remember when we loaded the page...
   let pageLoadDate = moment()
 
+  $scope.limits = [10, 20, 50, 100, 200, 500]
   // set default limit
   let defaultLimit = 20
   let defaultWasRerun = 'dont-filter'
@@ -809,8 +812,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     let transactionsSelected = $scope.transactionsSelected
     let rerunTransactionsSelected = $scope.rerunTransactionsSelected
     $uibModal.open({
-      templateUrl: 'views/transactionsRerunModal.html',
-      controller: 'TransactionsRerunModalCtrl',
+      template: transactionsRerunModal,
+      controller: TransactionsRerunModalCtrl,
       scope: $scope,
       resolve: {
         transactionsSelected: function () {

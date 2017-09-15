@@ -23,22 +23,20 @@
           <!-- Filter options -->
           <div class="transaction-filter-options">
 
-            <tabset class="transaction_settings_tabset" justified="false">
-              <tab>
-                <tab-heading>Filter Settings</tab-heading>
+            <uib-tabset class="transaction_settings_tabset" justified="false">
+              <uib-tab heading="Filter Settings">
                 <div ng-include="'views/partials/transaction-filter-settings.html'"></div>
-              </tab>
+              </uib-tab>
 
-              <tab>
-                <tab-heading>List Settings</tab-heading>
+              <uib-tab heading="List Settings">
                 <div class="settings_div">
                   <label style="float: left">
                     Transaction View
                     <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
-                    <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'same'">Same Tab</label>
-                    <label class="btn btn-primary" ng-model="settings.list.tabview" btn-radio="'new'">New Tab</label>
+                    <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'same'">Same Tab</label>
+                    <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'new'">New Tab</label>
                   </div>
                 </div>
                 <div class="settings_div">
@@ -47,12 +45,12 @@
                     <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                   <div class="btn-group" style="float: left; clear: both;">
-                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="true" ng-click="startPolling()">Enabled</label>
-                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" btn-radio="false" ng-click="stopPolling()">Disabled</label>
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="true" ng-click="startPolling()">Enabled</label>
+                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="false" ng-click="stopPolling()">Disabled</label>
                   </div>
                 </div>
-              </tab>
-            </tabset>            
+              </uib-tab>
+            </uib-tabset>            
           </div>
 
           <!-- Bulk Rerun the server message -->

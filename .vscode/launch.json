@@ -6,7 +6,9 @@
 			"request": "launch",
 			"name": "Launch Chrome against localhost",
 			"url": "http://localhost:9001",
-			"webRoot": "${workspaceRoot}"
+      "webRoot": "${workspaceRoot}",
+      "smartStep": true,
+      "showAsyncStacks": true
 		}
 	]
 }
