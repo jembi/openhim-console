@@ -24,12 +24,13 @@ import { objectVisitor, camelcaseToHtmlAttr } from './utils'
 import * as defaultConfig from '../config/default.json'
 
 import 'bootstrap/dist/css/bootstrap.css'
-import 'morris.js/morris.css'
-import 'highlight.js/styles/default.css'
 import '~/styles/main.css'
+import '~/styles/morris.css'
+import 'highlight.js/styles/default.css'
 import 'highlight.js/styles/github.css'
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import 'angular-bootstrap-colorpicker/css/colorpicker.css'
+
 export const app = angular
   .module('openhimConsoleApp', [
     'ngCookies',
