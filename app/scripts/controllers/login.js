@@ -8,7 +8,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   $scope.resetSuccess = false
 
   // if url "#/logout" is returned then destroy the session
-  if ($window.location.hash === '#/logout') {
+  if (/\/logout$/i.test($window.location.hash)) {
     localStorage.removeItem('consoleSession')
     $rootScope.sessionUser = null
     $rootScope.navMenuVisible = false
@@ -64,9 +64,9 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
           // redirect user to referringURL
           if ($rootScope.referringURL) {
-            $window.location = '#' + $rootScope.referringURL
+            $window.location = '#!' + $rootScope.referringURL
           } else { // default redirect to transactions page
-            $window.location = '#/transactions'
+            $window.location = '#!/transactions'
           }
         }
       } else {
