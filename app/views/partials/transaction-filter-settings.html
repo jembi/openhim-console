@@ -272,8 +272,9 @@
       </label>
       <select class="form-control" 
         ng-model="settings.filter.limit"
-        ng-change="applyFiltersToUrl()">
-        <option ng-repeat="limit in limits" value="{{limit}}">{{limit}}</option>
+        ng-change="applyFiltersToUrl()"
+        ng-options="limit as limit for limit in limits"
+        >
       </select>
     </div>
     <div class="settings_div" style="float: right;">
