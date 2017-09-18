@@ -1,3 +1,6 @@
+import { auditsContentModal } from '~/views'
+import { AuditsContentModalCtrl } from './'
+
 export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, AuditLookups) {
   /***************************************************/
   /**         Initial page load functions           **/
@@ -53,8 +56,8 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
 
   $scope.viewContentDetails = function (type, content) {
     $uibModal.open({
-      templateUrl: 'views/auditsContentModal.html',
-      controller: 'AuditsContentModalCtrl',
+      template: auditsContentModal,
+      controller: AuditsContentModalCtrl,
       resolve: {
         auditData: function () {
           return { type: type, content: content }

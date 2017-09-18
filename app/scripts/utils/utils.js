@@ -2,7 +2,7 @@ import 'moment-timezone'
 import moment from 'moment'
 
 import * as CryptoJS from 'crypto-js'
-import * as pd from 'pretty-data'
+import { pd } from 'pretty-data'
 
 export function valueEmpty (value) {
   return /^\s*$/.test(value || ' ')
@@ -56,6 +56,7 @@ export function returnContentType (objectHeaders) {
 }
 
 export function beautifyIndent (type, content) {
+  console.log('something', type)
   try {
     if (type.indexOf('text/xml') >= 0 || type.indexOf('application/xml') >= 0) {
       return { lang: 'xml', content: pd.xml(content, 2) }
@@ -74,6 +75,7 @@ export function beautifyIndent (type, content) {
       return { lang: 'xml', content: pd.xml(content, 2) }
     }
   } catch (err) {
+    console.log(err)
     return { lang: '', content: content }
   }
 

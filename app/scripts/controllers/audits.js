@@ -17,6 +17,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   let serverDiffTime = 0
   $scope.baseIndex = 0
   let pollPeriod = 5000
+  $scope.limits = [10, 50, 100, 200, 500]
 
   Api.AuditsFilterOptions.get(function (auditsFilterOptions) {
     $scope.auditsFilterOptions = auditsFilterOptions
@@ -37,7 +38,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     // setup default audits settings
     $scope.settings = {}
     $scope.settings.filter = {}
-    if ($location.search().limit) { $scope.settings.filter.limit = $location.search().limit } else { $scope.settings.filter.limit = 10 }
+    if ($location.search().limit) { $scope.settings.filter.limit = parseInt($location.search().limit, 10) } else { $scope.settings.filter.limit = 10 }
     if ($location.search().dateStart) { $scope.settings.filter.dateStart = $location.search().dateStart } else { $scope.settings.filter.dateStart = '' }
     if ($location.search().dateEnd) { $scope.settings.filter.dateEnd = $location.search().dateEnd } else { $scope.settings.filter.dateEnd = '' }
     $scope.settings.list = {}
@@ -284,189 +285,190 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     } else {
       // Show the load more button
       $('#loadMoreBtn').show()
-    };
-
-    let refreshError = function (err) {
-      // on error - Hide load more button and show error message
-      $('#loadMoreBtn').hide()
-      Alerting.AlertAddServerMsg(err.status)
     }
 
-    $scope.applyFilterIfValidDate = function (date) {
-      if (moment(date, 'YYYY-MM-DD', true).isValid()) {
-        $scope.applyFiltersToUrl()
-      }
-    }
-
-    $scope.applyFiltersToUrl = function () {
-      let curHashParams = window.location.hash
-      let filters = $scope.returnFilters('urlParams')
-      let newHash = '/audits?' + filters.substring(1)
-
-      // just refresh audits list - no new params
-      if (curHashParams === newHash) {
-        $scope.refreshAuditsList()
-      } else {
-        let absUrl = $location.absUrl()
-        let absUrlPath = $location.url()
-        let baseUrl = absUrl.replace(absUrlPath, '')
-        window.location = baseUrl + newHash
-      }
-    }
-
-    // Refresh audits list
-    $scope.refreshAuditsList = function () {
-      $scope.audits = null
-      Alerting.AlertReset()
-
-      // reset the showpage filter to start at 0
-      $scope.showpage = 0
-      $scope.showlimit = $scope.settings.filter.limit
-
-      Api.Audits.query($scope.returnFilters('filtersObject'), refreshSuccess, refreshError)
-    }
-    // run the audit list view for the first time
-    $scope.refreshAuditsList()
-
-    let loadMoreSuccess = function (audits) {
-      // on success
-      $scope.audits = $scope.audits.concat(audits)
-      // remove any duplicates objects found in the audits scope
-      $scope.audits = $.unique($scope.audits)
-      if (audits.length < $scope.showlimit) {
-        $('#loadMoreBtn').hide()
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are no more audits to retrieve')
-      }
-
-      $scope.busyLoadingMore = false
-    }
-
-    let loadMoreError = function (err) {
-      // on error - Hide load more button and show error message
-      $('#loadMoreBtn').hide()
-      Alerting.AlertAddServerMsg(err.status)
-    }
-
-    // Refresh audits list
-    $scope.loadMoreAudits = function () {
-      $scope.busyLoadingMore = true
-      Alerting.AlertReset()
-
-      $scope.showpage++
-
-      let filters = $scope.returnFilters('filtersObject')
-
-      if (!filters.filters['eventIdentification.eventDateTime']) {
-        // use page load time as an explicit end date
-        // this prevents issues with paging when new transactions come in, breaking the pages
-        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$lte': moment(pageLoadDate - serverDiffTime).format() })
-      }
-
-      Api.Audits.query(filters, loadMoreSuccess, loadMoreError)
-    }
-
-    // location provider - load audit details
-    $scope.viewAuditDetails = function (path, $event) {
-      // do audits details redirection when clicked on TD
-      if ($event.target.tagName === 'TD') {
-        let absUrl = $location.absUrl()
-        let absUrlPath = $location.url()
-        let baseUrl = absUrl.replace(absUrlPath, '')
-        let txUrl = baseUrl + '/' + path
-        if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
-          window.open(txUrl, '_blank')
-        } else {
-          $location.path(path)
-        }
-      }
-    }
-
-    // Clear filter data end refresh audits scope
-    $scope.clearFilters = function () {
-      $scope.settings.filter.limit = 10
-      $scope.settings.filter.dateStart = ''
-      $scope.settings.filter.dateEnd = ''
-      $scope.settings.list.tabview = 'same'
-
-      // get the filter params object before clearing them
-      let filterParamsBeforeClear = angular.copy($location.search())
-
-      // clear all filter parameters
-      $location.search({})
-
-      // get the filter params object after clearing them
-      let filterParamsAfterClear = angular.copy($location.search())
-
-      // if the filters object stays the same then call refresh function
-      // if filters object not the same then angular changes route and loads controller ( refresh )
-      if (angular.equals(filterParamsBeforeClear, filterParamsAfterClear)) {
-        $scope.refreshAuditsList()
-      }
-    }
-
-    /*************************************************************/
-    /**         Audits List and Detail view functions           **/
-    /*************************************************************/
-
-    /****************************************************/
-    /**         Poll for latest audits                 **/
-    /****************************************************/
-
-    let pollingInterval
-    let lastPollingCompleted = true
-
-    $scope.pollForLatest = function () {
-      let filters = $scope.returnFilters('filtersObject')
-
-      if (!filters.filters['eventIdentification.eventDateTime']) {
-        // only poll for latest if date filters are OFF
-        filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$gte': moment(lastUpdated).format(), '$lte': moment().format() })
-        lastUpdated = moment() - serverDiffTime
-
-        delete filters.filterPage
-        delete filters.filterLimit
-        lastPollingCompleted = false
-
-        Api.Audits.query(filters, function (audits) {
-          lastPollingCompleted = true
-          audits.forEach(function (audit) {
-            $scope.audits.unshift(audit)
-            $scope.baseIndex--
-          })
-        })
-      }
-    }
-
-    $scope.startPolling = function () {
-      if (!pollingInterval) {
-        pollingInterval = $interval(function () {
-          if (lastPollingCompleted) {
-            $scope.pollForLatest()
-          }
-        }, pollPeriod)
-      }
-    }
-
-    $scope.stopPolling = function () {
-      if (angular.isDefined(pollingInterval)) {
-        $interval.cancel(pollingInterval)
-        pollingInterval = undefined
-      }
-    }
-
-    // sync time with server
-    Api.Heartbeat.get(function (heartbeat) {
-      serverDiffTime = moment() - moment(heartbeat.now)
-      lastUpdated = moment() - serverDiffTime
-      if ($scope.settings.list.autoupdate) {
-        $scope.startPolling()
-      }
-    })
-
-    $scope.$on('$destroy', $scope.stopPolling)
-
-    /****************************************************/
-    /**         Poll for latest transactions           **/
     /****************************************************/
   }
+
+  let refreshError = function (err) {
+    // on error - Hide load more button and show error message
+    $('#loadMoreBtn').hide()
+    Alerting.AlertAddServerMsg(err.status)
+  }
+
+  $scope.applyFilterIfValidDate = function (date) {
+    if (moment(date, 'YYYY-MM-DD', true).isValid()) {
+      $scope.applyFiltersToUrl()
+    }
+  }
+
+  $scope.applyFiltersToUrl = function () {
+    let curHashParams = window.location.hash
+    let filters = $scope.returnFilters('urlParams')
+    let newHash = '/audits?' + filters.substring(1)
+
+    // just refresh audits list - no new params
+    if (curHashParams === newHash) {
+      $scope.refreshAuditsList()
+    } else {
+      let absUrl = $location.absUrl()
+      let absUrlPath = $location.url()
+      let baseUrl = absUrl.replace(absUrlPath, '')
+      window.location = baseUrl + newHash
+    }
+  }
+
+  // Refresh audits list
+  $scope.refreshAuditsList = function () {
+    $scope.audits = null
+    Alerting.AlertReset()
+
+    // reset the showpage filter to start at 0
+    $scope.showpage = 0
+    $scope.showlimit = $scope.settings.filter.limit
+
+    Api.Audits.query($scope.returnFilters('filtersObject'), refreshSuccess, refreshError)
+  }
+  // run the audit list view for the first time
+  $scope.refreshAuditsList()
+
+  let loadMoreSuccess = function (audits) {
+    // on success
+    $scope.audits = $scope.audits.concat(audits)
+    // remove any duplicates objects found in the audits scope
+    $scope.audits = $.unique($scope.audits)
+    if (audits.length < $scope.showlimit) {
+      $('#loadMoreBtn').hide()
+      Alerting.AlertAddMsg('bottom', 'warning', 'There are no more audits to retrieve')
+    }
+
+    $scope.busyLoadingMore = false
+  }
+
+  let loadMoreError = function (err) {
+    // on error - Hide load more button and show error message
+    $('#loadMoreBtn').hide()
+    Alerting.AlertAddServerMsg(err.status)
+  }
+
+  // Refresh audits list
+  $scope.loadMoreAudits = function () {
+    $scope.busyLoadingMore = true
+    Alerting.AlertReset()
+
+    $scope.showpage++
+
+    let filters = $scope.returnFilters('filtersObject')
+
+    if (!filters.filters['eventIdentification.eventDateTime']) {
+      // use page load time as an explicit end date
+      // this prevents issues with paging when new transactions come in, breaking the pages
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$lte': moment(pageLoadDate - serverDiffTime).format() })
+    }
+
+    Api.Audits.query(filters, loadMoreSuccess, loadMoreError)
+  }
+
+  // location provider - load audit details
+  $scope.viewAuditDetails = function (path, $event) {
+    // do audits details redirection when clicked on TD
+    if ($event.target.tagName === 'TD') {
+      let absUrl = $location.absUrl()
+      let absUrlPath = $location.url()
+      let baseUrl = absUrl.replace(absUrlPath, '')
+      let txUrl = baseUrl + '/' + path
+      if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
+        window.open(txUrl, '_blank')
+      } else {
+        $location.path(path)
+      }
+    }
+  }
+
+  // Clear filter data end refresh audits scope
+  $scope.clearFilters = function () {
+    $scope.settings.filter.limit = 10
+    $scope.settings.filter.dateStart = ''
+    $scope.settings.filter.dateEnd = ''
+    $scope.settings.list.tabview = 'same'
+
+    // get the filter params object before clearing them
+    let filterParamsBeforeClear = angular.copy($location.search())
+
+    // clear all filter parameters
+    $location.search({})
+
+    // get the filter params object after clearing them
+    let filterParamsAfterClear = angular.copy($location.search())
+
+    // if the filters object stays the same then call refresh function
+    // if filters object not the same then angular changes route and loads controller ( refresh )
+    if (angular.equals(filterParamsBeforeClear, filterParamsAfterClear)) {
+      $scope.refreshAuditsList()
+    }
+  }
+
+  /*************************************************************/
+  /**         Audits List and Detail view functions           **/
+  /*************************************************************/
+
+  /****************************************************/
+  /**         Poll for latest audits                 **/
+  /****************************************************/
+
+  let pollingInterval
+  let lastPollingCompleted = true
+
+  $scope.pollForLatest = function () {
+    let filters = $scope.returnFilters('filtersObject')
+
+    if (!filters.filters['eventIdentification.eventDateTime']) {
+      // only poll for latest if date filters are OFF
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$gte': moment(lastUpdated).format(), '$lte': moment().format() })
+      lastUpdated = moment() - serverDiffTime
+
+      delete filters.filterPage
+      delete filters.filterLimit
+      lastPollingCompleted = false
+
+      Api.Audits.query(filters, function (audits) {
+        lastPollingCompleted = true
+        audits.forEach(function (audit) {
+          $scope.audits.unshift(audit)
+          $scope.baseIndex--
+        })
+      })
+    }
+  }
+
+  $scope.startPolling = function () {
+    if (!pollingInterval) {
+      pollingInterval = $interval(function () {
+        if (lastPollingCompleted) {
+          $scope.pollForLatest()
+        }
+      }, pollPeriod)
+    }
+  }
+
+  $scope.stopPolling = function () {
+    if (angular.isDefined(pollingInterval)) {
+      $interval.cancel(pollingInterval)
+      pollingInterval = undefined
+    }
+  }
+
+  // sync time with server
+  Api.Heartbeat.get(function (heartbeat) {
+    serverDiffTime = moment() - moment(heartbeat.now)
+    lastUpdated = moment() - serverDiffTime
+    if ($scope.settings.list.autoupdate) {
+      $scope.startPolling()
+    }
+  })
+
+  $scope.$on('$destroy', $scope.stopPolling)
+
+  /****************************************************/
+  /**         Poll for latest transactions           **/
 }
