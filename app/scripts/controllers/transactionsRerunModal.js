@@ -1,3 +1,15 @@
+const MAX_BATCH_SIZE = 64
+
+function * getBatchSizes (currentBatchSize) {
+  yield { value: 1, label: 'One at a time' }
+
+  let currentValue = 2
+  while (currentValue <= Math.min(currentBatchSize, MAX_BATCH_SIZE)) {
+    yield { value: currentValue, label: `${currentValue} at a time` }
+    currentValue *= 2
+  }
+
+}
 export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Notify, Alerting, transactionsSelected, rerunTransactionsSelected) {
   $scope.rerunSuccess = false
   $scope.transactionsSelected = transactionsSelected
@@ -5,6 +17,7 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   $scope.taskSetup = {}
   $scope.taskSetup.batchSize = 1
   $scope.taskSetup.paused = false
+  $scope.batchSizes = Array.from(getBatchSizes(transactionsSelected.length))
 
   if (rerunTransactionsSelected === 1 && transactionsSelected.length === 1) {
     Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun')

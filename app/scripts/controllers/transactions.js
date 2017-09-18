@@ -67,7 +67,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   let attachUserFiltersToScope = function (filters) {
-    if (filters.limit && filters.limit !== 0) { $scope.settings.filter.limit = filters.limit }
+    if (filters.limit && filters.limit !== 0) { $scope.settings.filter.limit = parseInt(filters.limit, 10) }
     if (!isEmpty(filters.transaction)) { $scope.settings.filter.transaction = filters.transaction }
     if (!isEmpty(filters.orchestration)) { $scope.settings.filter.orchestration = filters.orchestration }
     if (!isEmpty(filters.route)) { $scope.settings.filter.route = filters.route }
