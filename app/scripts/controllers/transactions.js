@@ -424,7 +424,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     // details paging.
     let idList = transactions.map(function (tx) { return tx._id })
     sessionStorage.setItem('currTxList', angular.toJson(idList))
-    sessionStorage.setItem('currFilterURL', $location.url())
+    sessionStorage.setItem('currFilterURL', `!${$location.url()}`)
 
     if (transactions.length < $scope.settings.filter.limit) {
       $scope.loadMoreBtn = false

@@ -201,7 +201,7 @@
 
           <div class="row">
             <!-- Routes -->
-            <div ng-show="transactionDetails.routes">
+            <div ng-show="transactionDetails.routes.length > 0">
               <h3>Non-primary routes</h3>
               <div class="data-group no-more-tables">
                 <div class="data-value">
@@ -233,7 +233,7 @@
             </div>
 
             <!-- Orchestrations -->
-            <div ng-show="transactionDetails.orchestrations">
+            <div ng-show="transactionDetails.orchestrations.length > 0">
               <h3>Orchestrations</h3>
               <div class="data-group no-more-tables">
                 <div class="data-value">

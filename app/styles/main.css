@@ -755,7 +755,9 @@ body {
 .addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
 
 /*ng-cloak style to force no display at first load*/
-[ng-cloak]{ display: none !important; }
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 .primaryRoute { background: #428bca; color: #fff; }
 .editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }

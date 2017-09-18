@@ -1,6 +1,6 @@
-'use strict'
 import * as _ from 'lodash'
-import { buildBlob, saveAs } from '../utils'
+import { saveAs } from 'file-saver'
+import { buildBlob } from '../utils'
 
 export function transactionBodyDownloader (Api) {
   return {
@@ -11,8 +11,6 @@ export function transactionBodyDownloader (Api) {
       path: '='
     },
     link: function (scope) {
-      scope.downloadHandler = saveAs
-
       scope.download = function () {
         let onSuccess = function (trx) {
           let subTrx = _.get(trx, scope.path)
@@ -33,7 +31,7 @@ export function transactionBodyDownloader (Api) {
 
           let bodyBlob = buildBlob(subTrx.body, contentType)
           let filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
-          scope.downloadHandler(bodyBlob, filename)
+          saveAs(bodyBlob, filename)
         }
 
         let onError = function (err) {
