@@ -1,5 +1,9 @@
-import { beautifyIndent, returnContentType } from '../utils'
 import moment from 'moment'
+
+import { TransactionsRerunModalCtrl, TransactionsAddReqResModalCtrl, TransactionsBodyModalCtrl } from './'
+import { beautifyIndent, returnContentType } from '../utils'
+
+import { transactionsRerunModal, transactionsAddReqResModal, transactionsBodyModal } from '~/views'
 
 export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting) {
   /***************************************************/
@@ -172,8 +176,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
     }
 
     $uibModal.open({
-      templateUrl: 'views/transactionsRerunModal.html',
-      controller: 'TransactionsRerunModalCtrl',
+      template: transactionsRerunModal,
+      controller: TransactionsRerunModalCtrl,
       resolve: {
         transactionsSelected: function () {
           return transactionsSelected
@@ -195,8 +199,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
 
   $scope.viewAddReqResDetails = function (record, channel, recordType, index) {
     $uibModal.open({
-      templateUrl: 'views/transactionsAddReqResModal.html',
-      controller: 'TransactionsAddReqResModalCtrl',
+      template: transactionsAddReqResModal,
+      controller: TransactionsAddReqResModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         record: function () {
@@ -228,8 +232,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
 
   $scope.viewBodyDetails = function (type, content, headers) {
     $uibModal.open({
-      templateUrl: 'views/transactionsBodyModal.html',
-      controller: 'TransactionsBodyModalCtrl',
+      template: transactionsBodyModal,
+      controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {

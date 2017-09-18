@@ -51,7 +51,7 @@ export function returnContentType (objectHeaders) {
   if (objectHeaders == null) {
     return undefined
   }
-  const [contentKey = 'Content-Type'] = Object.keys(objectHeaders).filter(/content-type/i.test)
+  const [contentKey = 'Content-Type'] = Object.keys(objectHeaders).filter(k => /content-type/i.test(k))
   return objectHeaders[contentKey]
 }
 
