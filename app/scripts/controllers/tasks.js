@@ -9,7 +9,7 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
 
   // remember when we loaded the page...
   let pageLoadDate = moment()
-
+  $scope.limits = [10, 50, 100, 200, 500]
   // default settings
   $scope.showpage = 0
   $scope.showlimit = 10

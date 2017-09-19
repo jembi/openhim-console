@@ -1,5 +1,5 @@
 import './angular-taglist-directive.css'
-import * as template from './angular-taglist-directive.html'
+import template from './angular-taglist-directive.html'
 
 export const angularTaglist = 'angular_taglist_directive'
 

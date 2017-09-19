@@ -19,14 +19,12 @@
           <!-- Filter options -->
           <div class="transaction-filter-options">
 
-            <tabset class="transaction_settings_tabset" justified="false">
-              <tab>
-                <tab-heading>Filter Settings</tab-heading>
+            <uib-tabset class="transaction_settings_tabset" justified="false">
+              <uib-tab heading="Filter Settings">
                 <div ng-include="'views/partials/tasks-filter-settings.html'"></div>
-              </tab>
+              </uib-tab>
 
-              <tab>
-                <tab-heading>List Settings</tab-heading>
+              <uib-tab heading="List Settings">
                 <div class="settings_div">
                   <label style="float: left">
                     Transaction View
@@ -47,8 +45,8 @@
                     <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="false" ng-click="stopPolling()">Disabled</label>
                   </div>
                 </div>
-              </tab>
-            </tabset>            
+              </uib-tab>
+            </uib-tabset>            
           </div>
 
           <div id="no-more-tables">
@@ -81,10 +79,10 @@
 
                   </td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Progress">
-                    <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                    <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                    <uib-progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                    <uib-progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                    <uib-progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                    <uib-progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
                   </td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="transactions">{{getProcessedTotal(task)}} / {{task.totalTransactions}}</td>
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="User">{{task.user}}</td>

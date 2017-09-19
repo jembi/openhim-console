@@ -1,3 +1,6 @@
+import { channelsmodal, confirmModal } from '~/views'
+import { ChannelsModalCtrl, ConfirmModalCtrl } from './'
+
 export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   /* -------------------------Initial load & onChanged---------------------------- */
   let querySuccess = function (channels) {
@@ -25,8 +28,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/channelsmodal.html',
-      controller: 'ChannelsModalCtrl',
+      template: channelsmodal,
+      controller: ChannelsModalCtrl,
       resolve: {
         channel: function () { },
         channelDuplicate: function () { },
@@ -39,8 +42,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/channelsmodal.html',
-      controller: 'ChannelsModalCtrl',
+      template: channelsmodal,
+      controller: ChannelsModalCtrl,
       resolve: {
         channel: function () {
           return channel
@@ -57,8 +60,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/channelsmodal.html',
-      controller: 'ChannelsModalCtrl',
+      template: channelsmodal,
+      controller: ChannelsModalCtrl,
       resolve: {
         channel: function () { },
         channelDuplicate: function () {
@@ -92,8 +95,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject
@@ -132,8 +135,8 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return restoreObject

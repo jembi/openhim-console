@@ -52,12 +52,11 @@
       Limit:
       <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
-    <select class="form-control" ng-model="filters.limit" ng-change="applyFiltersToUrl()">
-      <option value="10">10</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="200">200</option>
-      <option value="500">500</option>
+    <select class="form-control" 
+      ng-model="filters.limit" 
+      ng-change="applyFiltersToUrl()"
+      ng-options="limit as limit for limit in limits"
+      >
     </select>
   </div>
 </div>

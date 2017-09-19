@@ -5,6 +5,7 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   /**         Initial page load functions           **/
   /***************************************************/
 
+  $scope.limits = [10, 50, 100, 200, 500]
   // default settings
   $scope.showpage = 1
   $scope.showlimit = 100
@@ -205,7 +206,7 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   }
 
   $scope.viewTransactionDetails = function (path) {
-    let baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#/'
+    let baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#!/'
     let txUrl = baseUrl + path
     if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
       window.open(txUrl, '_blank')

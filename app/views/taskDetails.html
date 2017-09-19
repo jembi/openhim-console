@@ -35,10 +35,10 @@
             <div class="data-group">
               <label>Progress: </label>
               <div class="data-value">
-                <progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                <progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                <progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></progressbar>
-                <progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></progressbar>
+                <uib-progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                <uib-progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                <uib-progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                <uib-progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
               </div>
             </div>
             <div class="data-group">
@@ -78,23 +78,72 @@
                 </div>
               </div>
             </div>
-            
-
-          
             <div class="data-group">
               <label>Original Transactions: </label>
 
               <!-- Filter options -->
               <div class="transaction-filter-options">
 
-                <tabset class="transaction_settings_tabset" justified="false">
-                  <tab>
-                    <tab-heading>Filter Settings</tab-heading>
-                    <div ng-include="'views/partials/taskDetails-filter-settings.html'"></div>
-                  </tab>
-
-                  <tab>
-                    <tab-heading>List Settings</tab-heading>
+                <uib-tabset class="transaction_settings_tabset" justified="false">
+                  <uib-tab heading="Filter Settings">
+                    <div class="auditFilterDiv">
+                      <label class="auditFilterDivLabel">Basic Filters: </label>
+                      <div class="settings_div" style="float: left; margin-right: 15px;">
+                        <label>Processing Status: </label>
+                        <select class="form-control" 
+                          ng-model="filters.tstatus" 
+                          ng-class="{formControlNotEmpty: filters.tstatus}"
+                          ng-change="applyFiltersToUrl()">
+                          <option value="">Don't filter</option>
+                          <option value="Queued">Show Queued</option>
+                          <option value="Processing">Show Processing</option>
+                          <option value="Failed">Show Failed</option>
+                          <option value="Completed">Show Completed</option>
+                        </select>
+                      </div>
+                      <div class="settings_div" style="float: left; margin-right: 15px;">
+                        <label>Rerun Status: </label>
+                        <select class="form-control" 
+                          ng-model="filters.rerunStatus" 
+                          ng-class="{formControlNotEmpty: filters.rerunStatus}"
+                          ng-change="applyFiltersToUrl()">
+                          <option value="">Don't filter</option>
+                          <option value="Failed">Show Failed</option>
+                          <option value="Processing">Show Processing</option>
+                          <option value="Completed">Show Completed</option>
+                          <option value="Completed with error(s)">Show Completed with error(s)</option>
+                          <option value="Successful">Show Successful</option>
+                        </select>
+                      </div>
+                      <div class="settings_div" style="float: left; margin-right: 15px;">
+                        <label>Has Errors: </label>
+                        <select class="form-control" 
+                          ng-model="filters.hasErrors" 
+                          ng-class="{formControlNotEmpty: filters.hasErrors}"
+                          ng-change="applyFiltersToUrl()">
+                          <option value="">Don't filter</option>
+                          <option value="yes">Yes</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                      <div class="settings_div" style="float: left;">
+                        <label>
+                          Limit: 
+                          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                        </label>
+                        <select class="form-control" 
+                          ng-model="filters.limit" 
+                          ng-change="applyFiltersToUrl()"
+                          ng-options="limit as limit for limit in limits"
+                          >
+                        </select>
+                      </div>
+                    </div>
+                    <div class="transactionsFilterRefreshDiv">
+                      <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+                    </div>
+                  </uib-tab>
+                  <uib-tab heading="List Settings">
                     <div class="settings_div">
                       <label style="float: left">
                         Transaction View
@@ -105,8 +154,8 @@
                         <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'new'">New Tab</label>
                       </div>
                     </div>
-                  </tab>
-                </tabset>
+                  </uib-tab>
+                </uib-tabset>
               </div>
               
 
@@ -174,7 +223,6 @@
                   {{page.pageNum}}
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
