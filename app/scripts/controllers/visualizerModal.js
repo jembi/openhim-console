@@ -1,3 +1,5 @@
+import * as visualizerConfig from '~/config/visualizer.json'
+
 export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
   $scope.ngError = {}
   $scope.validationRequiredMsg = 'This field is required.'
@@ -21,9 +23,8 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     $scope.visualizer = {}
 
     // load default visualizer config for new user
-    $http.get('config/visualizer.json').success(function (visualizerConfig) {
-      angular.extend($scope.visualizer, angular.copy(visualizerConfig))
-    })
+    //TODO : See if it's ok to have a compile step or if this setting needed to be changed whilst running
+    angular.extend($scope.visualizer, angular.copy(visualizerConfig))    
   }
 
   $scope.cancel = function () {
