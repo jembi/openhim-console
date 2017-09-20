@@ -40,7 +40,7 @@ describe('Controller: ClientsModalCtrl', function () {
     createController = function (client) {
       return $controller('ClientsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         client: client
       })
     }

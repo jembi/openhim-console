@@ -110,9 +110,9 @@ describe('Controller: VisualizerCtrl', function () {
   }]
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
-    modal = $modal
+    modal = $uibModal
 
     $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers)
 

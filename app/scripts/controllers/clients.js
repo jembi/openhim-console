@@ -1,3 +1,6 @@
+import { clientsmodal, confirmModal } from '~/views'
+import { ClientsModalCtrl, ConfirmModalCtrl } from './'
+
 export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Alerting, Notify) {
   let queryError = function (err) {
     Alerting.AlertAddServerMsg(err.status) // on error - add server error alert
@@ -42,8 +45,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $scope.serverRestarting = false
 
     $uibModal.open({
-      templateUrl: 'views/clientsmodal.html',
-      controller: 'ClientsModalCtrl',
+      template: clientsmodal,
+      controller: ClientsModalCtrl,
       resolve: {
         client: function () { }
       }
@@ -55,8 +58,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $scope.serverRestarting = false
 
     $uibModal.open({
-      templateUrl: 'views/clientsmodal.html',
-      controller: 'ClientsModalCtrl',
+      template: clientsmodal,
+      controller: ClientsModalCtrl,
       resolve: {
         client: function () {
           return client
@@ -359,8 +362,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject

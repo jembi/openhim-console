@@ -68,7 +68,7 @@ describe('Controller: UsersModalCtrl', function () {
     createController = function (user) {
       return $controller('UsersModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         user: user
       })
     }
