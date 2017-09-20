@@ -1,3 +1,5 @@
+import { transactionsBodyModal } from '~/views'
+import { TransactionsBodyModalCtrl } from './'
 export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $timeout, Api, Alerting, data) {
   /***************************************************/
   /**         Initial page load functions           **/
@@ -144,8 +146,8 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
 
   $scope.viewRecordDetails = function (type, content) {
     $uibModal.open({
-      templateUrl: 'views/transactionsBodyModal.html',
-      controller: 'TransactionsBodyModalCtrl',
+      template: transactionsBodyModal,
+      controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {

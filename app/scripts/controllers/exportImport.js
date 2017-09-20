@@ -1,4 +1,6 @@
 import { buildBlob } from '../utils'
+import { transactionsBodyModal, exportImportModal } from '~/views'
+import { TransactionsBodyModalCtrl, ExportImportModalCtrl } from './'
 
 export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   /***************************************************/
@@ -47,8 +49,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   let openValidationModal = function () {
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/exportImportModal.html',
-      controller: 'ExportImportModalCtrl',
+      template: exportImportModal,
+      controller: ExportImportModalCtrl,
       resolve: {
         data: function () { return $scope.validatedData }
       }
@@ -212,8 +214,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   $scope.viewRecordDetails = function (type, content) {
     $uibModal.open({
-      templateUrl: 'views/transactionsBodyModal.html',
-      controller: 'TransactionsBodyModalCtrl',
+      template: transactionsBodyModal,
+      controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
