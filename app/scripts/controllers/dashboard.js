@@ -1,173 +1,165 @@
-'use strict';
+'use strict'
 /* global moment:false */
-
 
 angular.module('openhimConsoleApp')
   .controller('DashboardCtrl', function ($scope, $modal, $location, $interval, Api, Alerting, Metrics) {
-
-    var noDataErrorMsg = 'There has been no transactions received for the queried timeframe';
-
+    var noDataErrorMsg = 'There has been no transactions received for the queried timeframe'
 
     $scope.selectedDateType = {
       period: '1d'
-    };
+    }
 
-    var dashboardInterval = $interval(function() {
-      $scope.updateMetrics();
-    }, 5000);
+    var dashboardInterval = $interval(function () {
+      $scope.updateMetrics()
+    }, 5000)
 
-
-    function loadMetricsSuccess(metrics) {
+    function loadMetricsSuccess (metrics) {
       if (metrics.length === 0) {
-        Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg);
-        Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg);
+        Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg)
+        Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg)
       } else {
         var round = function (d) {
-          return (d).toFixed(2);
-        };
-        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'Transactions');
-        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', 'Response Time (ms)', round);
+          return (d).toFixed(2)
+        }
+        $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'Transactions')
+        $scope.transactionResponseTimeData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'avgResp', 'Response Time (ms)', round)
       }
     }
 
-    function loadMetricsError(err) {
+    function loadMetricsError (err) {
       // add warning message when unable to get data
-      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
-      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('load', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
+      Alerting.AlertAddMsg('responseTime', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
     }
 
-    function updateTimeseriesMetrics() {
+    function updateTimeseriesMetrics () {
       // do API call here to pull load metrics
       Api.MetricsTimeseries.query({
         type: $scope.selectedDateType.type,
         startDate: moment($scope.selectedDateType.from).format(),
         endDate: moment($scope.selectedDateType.until).format()
-      }, loadMetricsSuccess, loadMetricsError);
+      }, loadMetricsSuccess, loadMetricsError)
     }
 
-
-    function updateChannelsBarChart(metrics) {
+    function updateChannelsBarChart (metrics) {
       // set scope variable for amount of active channels
-      $scope.activeChannels = metrics.length;
+      $scope.activeChannels = metrics.length
 
-      var channelsMap;
+      var channelsMap
 
       // create channelsMap for channels name reference
-      Api.Channels.query(function(channels){
-        channelsMap = {};
-        angular.forEach(channels, function(channel){
-          channelsMap[channel._id] = channel.name;
-        });
+      Api.Channels.query(function (channels) {
+        channelsMap = {}
+        angular.forEach(channels, function (channel) {
+          channelsMap[channel._id] = channel.name
+        })
 
         // define varables for graph data set
-        var channelGraphStack;
-        var channelsData = [];
-        var channelsKeys = [];
-        var channelsLabels = [];
-        var channelsColors = [];
+        var channelGraphStack
+        var channelsData = []
+        var channelsKeys = []
+        var channelsLabels = []
+        var channelsColors = []
 
         // loop through each channels found in result and construct graph objects
-        for (var i=0; i<metrics.length; i++) {
-          channelGraphStack = {};
+        for (var i = 0; i < metrics.length; i++) {
+          channelGraphStack = {}
 
           // create a link object for when the user clicks on the bar
-          channelGraphStack.link = 'channels/'+metrics[i]._id.channelID;
-          channelGraphStack.channel = channelsMap[metrics[i]._id.channelID];
+          channelGraphStack.link = 'channels/' + metrics[i]._id.channelID
+          channelGraphStack.channel = channelsMap[metrics[i]._id.channelID]
 
-          channelGraphStack.processing = metrics[i].processing;
+          channelGraphStack.processing = metrics[i].processing
 
           // only add these if it isnt yet present
           if (channelsKeys.indexOf('processing') === -1) {
-            channelsKeys.push('processing');
-            channelsLabels.push('Processing');
-            channelsColors.push('#777777');
+            channelsKeys.push('processing')
+            channelsLabels.push('Processing')
+            channelsColors.push('#777777')
           }
 
-          channelGraphStack.failed = metrics[i].failed;
+          channelGraphStack.failed = metrics[i].failed
 
           // only add these if it isnt yet present
           if (channelsKeys.indexOf('failed') === -1) {
-            channelsKeys.push('failed');
-            channelsLabels.push('Failed');
-            channelsColors.push('#d9534f');
+            channelsKeys.push('failed')
+            channelsLabels.push('Failed')
+            channelsColors.push('#d9534f')
           }
 
-          channelGraphStack.completed = metrics[i].completed;
+          channelGraphStack.completed = metrics[i].completed
 
           // only add these if it isnt yet present
           if (channelsKeys.indexOf('completed') === -1) {
-            channelsKeys.push('completed');
-            channelsLabels.push('Completed');
-            channelsColors.push('#f0ad4e');
+            channelsKeys.push('completed')
+            channelsLabels.push('Completed')
+            channelsColors.push('#f0ad4e')
           }
 
-          channelGraphStack.completedWErrors = metrics[i].completedWErrors;
+          channelGraphStack.completedWErrors = metrics[i].completedWErrors
 
           if (channelsKeys.indexOf('completedWErrors') === -1) {
-            channelsKeys.push('completedWErrors');
-            channelsLabels.push('Completed With Errors');
-            channelsColors.push('#5bc0de');
+            channelsKeys.push('completedWErrors')
+            channelsLabels.push('Completed With Errors')
+            channelsColors.push('#5bc0de')
           }
 
-          channelGraphStack.successful = metrics[i].successful;
+          channelGraphStack.successful = metrics[i].successful
 
           if (channelsKeys.indexOf('successful') === -1) {
-            channelsKeys.push('successful');
-            channelsLabels.push('Successful');
-            channelsColors.push('#5cb85c');
+            channelsKeys.push('successful')
+            channelsLabels.push('Successful')
+            channelsColors.push('#5cb85c')
           }
 
-          channelsData.push(channelGraphStack);
+          channelsData.push(channelGraphStack)
         }
 
-        $scope.channelsData = {data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true};
+        $scope.channelsData = {data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true}
       },
-      function(err){
-        Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data);
-      });
-
+        function (err) {
+          Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data)
+        })
     }
 
-    function channelMetricsSuccess(metrics) {
+    function channelMetricsSuccess (metrics) {
       if (metrics.length === 0) {
-        Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg);
+        Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg)
       } else {
-        updateChannelsBarChart(metrics);
+        updateChannelsBarChart(metrics)
       }
     }
 
-    function channelMetricsError(err) {
+    function channelMetricsError (err) {
       // add warning message when unable to get data
-      Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data);
+      Alerting.AlertAddMsg('status', 'danger', 'Transaction Load Error: ' + err.status + ' ' + err.data)
     }
 
-    function updateChannelMetrics() {
+    function updateChannelMetrics () {
       // do API call here to pull load metrics
       Api.MetricsChannels.query({
         startDate: moment($scope.selectedDateType.from).format(),
         endDate: moment($scope.selectedDateType.until).format()
-      }, channelMetricsSuccess, channelMetricsError);
+      }, channelMetricsSuccess, channelMetricsError)
     }
 
+    $scope.updateMetrics = function () {
+      Alerting.AlertReset('load')
+      Alerting.AlertReset('responseTime')
+      Alerting.AlertReset('status')
 
-    $scope.updateMetrics = function() {
-      Alerting.AlertReset('load');
-      Alerting.AlertReset('responseTime');
-      Alerting.AlertReset('status');
+      Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType)
+      updateTimeseriesMetrics()
+      updateChannelMetrics()
+    }
 
-      Metrics.refreshDatesForSelectedPeriod($scope.selectedDateType);
-      updateTimeseriesMetrics();
-      updateChannelMetrics();
-    };
+    $scope.updateMetrics()
 
-    $scope.updateMetrics();
-
-
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function () {
       // Make sure that the interval is destroyed too
       if (angular.isDefined(dashboardInterval)) {
-        $interval.cancel(dashboardInterval);
-        dashboardInterval = undefined;
+        $interval.cancel(dashboardInterval)
+        dashboardInterval = undefined
       }
-    });
-  });
+    })
+  })

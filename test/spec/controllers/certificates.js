@@ -1,25 +1,22 @@
-'use strict';
-/* jshint expr: true */
+'use strict'
 /* global sinon: false */
 
 describe('Controller: CertificatesCtrl', function () {
-
   // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
+  beforeEach(module('openhimConsoleApp'))
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
-    });
-  });
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+    })
+  })
 
-  var scope, createController, httpBackend, modalSpy;
+  var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
-
-    httpBackend = $httpBackend;
+    httpBackend = $httpBackend
 
     httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
       'validity': {
@@ -34,9 +31,8 @@ describe('Controller: CertificatesCtrl', function () {
       'locality': 'Durban',
       'state': 'KZN',
       'country': 'ZA'
-    });
-    httpBackend.when('PUT', new RegExp('.*/channels')).respond('Channel has been successfully updated');
-
+    })
+    httpBackend.when('PUT', new RegExp('.*/channels')).respond('Channel has been successfully updated')
 
     httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
       {
@@ -69,90 +65,83 @@ describe('Controller: CertificatesCtrl', function () {
           'end': '2024-03-16T13:46:48.000Z'
         }
       }
-    ]);
-    httpBackend.when('POST', new RegExp('.*/keystore/key')).respond('Current Server Certificate updated');
-    httpBackend.when('POST', new RegExp('.*/keystore/cert')).respond('Current Server Key updated');
-    httpBackend.when('POST', new RegExp('.*/keystore/ca/cert')).respond('Trusted Certificate Added');
-    httpBackend.when('POST', new RegExp('.*/keystore/passphrase')).respond('Current Server Password updated');
+    ])
+    httpBackend.when('POST', new RegExp('.*/keystore/key')).respond('Current Server Certificate updated')
+    httpBackend.when('POST', new RegExp('.*/keystore/cert')).respond('Current Server Key updated')
+    httpBackend.when('POST', new RegExp('.*/keystore/ca/cert')).respond('Trusted Certificate Added')
+    httpBackend.when('POST', new RegExp('.*/keystore/passphrase')).respond('Current Server Password updated')
 
-    modalSpy = sinon.spy($modal, 'open');
-    createController = function() {
-      scope = $rootScope.$new();
-      return $controller('CertificatesCtrl', { $scope: scope });
-    };
+    modalSpy = sinon.spy($modal, 'open')
+    createController = function () {
+      scope = $rootScope.$new()
+      return $controller('CertificatesCtrl', { $scope: scope })
+    }
+  }))
 
-  }));
-
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  afterEach(function () {
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  })
 
   it('should execute add a scope object for Current Certs and for Trusted Certs', function () {
-    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
-    createController();
-    httpBackend.flush();
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true})
+    createController()
+    httpBackend.flush()
 
-    scope.currentServerCert.should.have.property( 'commonName', 'test-client.jembi.org' );
-    scope.trustedCertificates.length.should.equal( 2 );
-    scope.certValidity.should.have.property( 'valid', true );
-  });
-
-
+    scope.currentServerCert.should.have.property('commonName', 'test-client.jembi.org')
+    scope.trustedCertificates.length.should.equal(2)
+    scope.certValidity.should.have.property('valid', true)
+  })
 
   it('should execute uploadCertificate() and import the certificate', function () {
-    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
-    createController();
-    httpBackend.flush();
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true})
+    createController()
+    httpBackend.flush()
 
-    scope.trustedCertificates.length.should.equal( 2 );
+    scope.trustedCertificates.length.should.equal(2)
 
-    var certificate = '-----BEGIN CERTIFICATE-----\nMIIEFTCCAv2gAwIBAgIJALAiF9OxCN0tMA0GCSqGSIb3DQEBBQUAMIGgMQswCQYD\nVQQGEwJaQTEMMAoGA1UECAwDS1pOMQ8wDQYDVQQHDAZEdXJiYW4xITAfBgNVBAoM\nGEplbWJpIEhlYWx0aCBTeXN0ZW1zIE5QQzEQMA4GA1UECwwHZUhlYWx0aDEeMBwG\nA1UEAwwVdGVzdC1jbGllbnQuamVtYmkub3JnMR0wGwYJKoZIhvcNAQkBFg5yeWFu\nQGplbWJpLm9yZzAeFw0xNDAzMTkxMzQ2NDhaFw0yNDAzMTYxMzQ2NDhaMIGgMQsw\nCQYDVQQGEwJaQTEMMAoGA1UECAwDS1pOMQ8wDQYDVQQHDAZEdXJiYW4xITAfBgNV\nBAoMGEplbWJpIEhlYWx0aCBTeXN0ZW1zIE5QQzEQMA4GA1UECwwHZUhlYWx0aDEe\nMBwGA1UEAwwVdGVzdC1jbGllbnQuamVtYmkub3JnMR0wGwYJKoZIhvcNAQkBFg5y\neWFuQGplbWJpLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPB\n9eSU9vASw7a+Dk79T92PpkdWcOy7Tt4AQXoepKJRy/ip3QKxPHLekSqRRQ12maZo\n7axsctB5EoI3bGpD/a/GukaS5BE5rt5g74G6iAC24RygeOv7H86U03l06XrTyRgk\n2DGw5LZVajjaFX9630eoBnoTPxLHmNHCV94I4c1cEMZrcS6kNXH/4jtuLJGjWy9p\np9A0D7Lf/egoMmQqBQ1RVc4f43OiCyhrCVMMb2WuDPctiXZrlXopB0OPLpQOv3WO\nEzeKhA88BLSH7+Iyj6BUPazCfVaKyfrqa6iSUiXYj8lJFBhN49Pd5oPHLb6YR2Ci\nbYZcgDhGmYryruofXBcCAwEAAaNQME4wHQYDVR0OBBYEFPmmVNZYuv2Ha3m1bRtk\nxfdkuCaMMB8GA1UdIwQYMBaAFPmmVNZYuv2Ha3m1bRtkxfdkuCaMMAwGA1UdEwQF\nMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAGqyp9cvxRtrzga0Z6+hY72Vk7nsQ5FP\nF7WZ7mT8FFbM4BhZb8lIdVx/BzA4tEpFuTrRqM1k5Rp9Nn90/4mz7XLacb6usq12\nMOv5TKCzt+rmvoQv/lgdIYU1167meHIUZMgRLSrd3/sT1+NgSisIrFROiRFNt2Th\n6+KOPVkU8zpbEX5pGoiIaunBcKnEyae/iqFJTKzHK9KSZAH7roJPnuc/m1ZuPyM1\n3s5k50m/dG1mBG8igRmtEWVIA14Qh1vWT2HMb1QtR4uiFHt6CSm7K4jfpDukLa+s\nVgFoA+CfqiFgWdK5xSJq89GA4xSBFUppMqcpNDNUgSfGt/U8TY/mfGE=\n-----END CERTIFICATE-----\n';
-    var totalFiles = 1;
-    var fileName = 'testCert.pem';
-    scope.uploadType = 'trustedCerts';
+    var certificate = '-----BEGIN CERTIFICATE-----\nMIIEFTCCAv2gAwIBAgIJALAiF9OxCN0tMA0GCSqGSIb3DQEBBQUAMIGgMQswCQYD\nVQQGEwJaQTEMMAoGA1UECAwDS1pOMQ8wDQYDVQQHDAZEdXJiYW4xITAfBgNVBAoM\nGEplbWJpIEhlYWx0aCBTeXN0ZW1zIE5QQzEQMA4GA1UECwwHZUhlYWx0aDEeMBwG\nA1UEAwwVdGVzdC1jbGllbnQuamVtYmkub3JnMR0wGwYJKoZIhvcNAQkBFg5yeWFu\nQGplbWJpLm9yZzAeFw0xNDAzMTkxMzQ2NDhaFw0yNDAzMTYxMzQ2NDhaMIGgMQsw\nCQYDVQQGEwJaQTEMMAoGA1UECAwDS1pOMQ8wDQYDVQQHDAZEdXJiYW4xITAfBgNV\nBAoMGEplbWJpIEhlYWx0aCBTeXN0ZW1zIE5QQzEQMA4GA1UECwwHZUhlYWx0aDEe\nMBwGA1UEAwwVdGVzdC1jbGllbnQuamVtYmkub3JnMR0wGwYJKoZIhvcNAQkBFg5y\neWFuQGplbWJpLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKPB\n9eSU9vASw7a+Dk79T92PpkdWcOy7Tt4AQXoepKJRy/ip3QKxPHLekSqRRQ12maZo\n7axsctB5EoI3bGpD/a/GukaS5BE5rt5g74G6iAC24RygeOv7H86U03l06XrTyRgk\n2DGw5LZVajjaFX9630eoBnoTPxLHmNHCV94I4c1cEMZrcS6kNXH/4jtuLJGjWy9p\np9A0D7Lf/egoMmQqBQ1RVc4f43OiCyhrCVMMb2WuDPctiXZrlXopB0OPLpQOv3WO\nEzeKhA88BLSH7+Iyj6BUPazCfVaKyfrqa6iSUiXYj8lJFBhN49Pd5oPHLb6YR2Ci\nbYZcgDhGmYryruofXBcCAwEAAaNQME4wHQYDVR0OBBYEFPmmVNZYuv2Ha3m1bRtk\nxfdkuCaMMB8GA1UdIwQYMBaAFPmmVNZYuv2Ha3m1bRtkxfdkuCaMMAwGA1UdEwQF\nMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAGqyp9cvxRtrzga0Z6+hY72Vk7nsQ5FP\nF7WZ7mT8FFbM4BhZb8lIdVx/BzA4tEpFuTrRqM1k5Rp9Nn90/4mz7XLacb6usq12\nMOv5TKCzt+rmvoQv/lgdIYU1167meHIUZMgRLSrd3/sT1+NgSisIrFROiRFNt2Th\n6+KOPVkU8zpbEX5pGoiIaunBcKnEyae/iqFJTKzHK9KSZAH7roJPnuc/m1ZuPyM1\n3s5k50m/dG1mBG8igRmtEWVIA14Qh1vWT2HMb1QtR4uiFHt6CSm7K4jfpDukLa+s\nVgFoA+CfqiFgWdK5xSJq89GA4xSBFUppMqcpNDNUgSfGt/U8TY/mfGE=\n-----END CERTIFICATE-----\n'
+    var totalFiles = 1
+    var fileName = 'testCert.pem'
+    scope.uploadType = 'trustedCerts'
 
     // execute the import function
-    scope.uploadCertificate( JSON.stringify( certificate ), totalFiles, fileName );
+    scope.uploadCertificate(JSON.stringify(certificate), totalFiles, fileName)
 
-    scope.certificateObject.should.have.property('$save');
-    scope.certificateObject.should.have.property('cert');
+    scope.certificateObject.should.have.property('$save')
+    scope.certificateObject.should.have.property('cert')
 
-    httpBackend.flush();
-
-  });
+    httpBackend.flush()
+  })
 
   it('should open a modal to confirm deletion of a Trusted Certificate', function () {
-    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
-    createController();
-    httpBackend.flush();
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true})
+    createController()
+    httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '');
-    scope.confirmDelete(scope.trustedCertificates[0]);
-    modalSpy.should.be.calledOnce;
-    httpBackend.flush();
-  });
-  
+    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
+    scope.confirmDelete(scope.trustedCertificates[0])
+    modalSpy.should.have.been.calledOnce()
+    httpBackend.flush()
+  })
+
   it('should add a passphrase', function () {
-    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true});
-    createController();
-    httpBackend.flush();
-    scope.serverPassphrase = 'password';
-    scope.addPassphrase();
-    scope.certificateObject.should.have.property('passphrase');
-    httpBackend.flush();
-  });
-  
-  it('should alert when the password is wrong', function () {
-    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': false});
-    createController();
-    httpBackend.flush();
-    scope.serverPassphrase = 'password';
-    scope.addPassphrase();
-    scope.certValidity.should.have.property( 'valid', false );
-    httpBackend.flush();
-  });
-  
-  
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': true})
+    createController()
+    httpBackend.flush()
+    scope.serverPassphrase = 'password'
+    scope.addPassphrase()
+    scope.certificateObject.should.have.property('passphrase')
+    httpBackend.flush()
+  })
 
-});
+  it('should alert when the password is wrong', function () {
+    httpBackend.when('GET', new RegExp('.*/keystore/validity')).respond({'valid': false})
+    createController()
+    httpBackend.flush()
+    scope.serverPassphrase = 'password'
+    scope.addPassphrase()
+    scope.certValidity.should.have.property('valid', false)
+    httpBackend.flush()
+  })
+})

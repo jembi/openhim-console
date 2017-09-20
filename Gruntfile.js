@@ -1,5 +1,5 @@
 // Generated on 2014-04-03 using generator-angular 0.8.0
-'use strict';
+'use strict'
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -8,18 +8,16 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
-
   // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt)
 
   // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+  require('time-grunt')(grunt)
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-    
     packageVersion: grunt.file.readJSON('package.json').version,
-    
+
     // Project settings
     yeoman: {
       // configurable paths
@@ -35,14 +33,12 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
         options: {
           livereload: true
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
+        files: ['test/spec/{,*/}*.js']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -94,24 +90,6 @@ module.exports = function (grunt) {
         options: {
           base: '<%= yeoman.dist %>'
         }
-      }
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
-      ],
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/spec/{,*/}*.js']
       }
     },
 
@@ -335,13 +313,12 @@ module.exports = function (grunt) {
         singleRun: true
       }
     }
-    
-  });
 
+  })
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'connect:dist:keepalive'])
     }
 
     grunt.task.run([
@@ -351,22 +328,21 @@ module.exports = function (grunt) {
       'autoprefixer',
       'connect:livereload',
       'watch'
-    ]);
-  });
+    ])
+  })
 
   grunt.registerTask('server', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
-  });
+    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.')
+    grunt.task.run(['serve:' + target])
+  })
 
   grunt.registerTask('test', [
     'clean:server',
-    'newer:jshint',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
     'karma'
-  ]);
+  ])
 
   grunt.registerTask('build', [
     'clean:dist',
@@ -382,11 +358,10 @@ module.exports = function (grunt) {
     'rev',
     'usemin',
     'htmlmin'
-  ]);
+  ])
 
   grunt.registerTask('default', [
     'test',
     'build'
-  ]);
-
-};
+  ])
+}

@@ -1,147 +1,138 @@
-'use strict';
+'use strict'
 angular.module('openhimConsoleApp')
   .controller('CertificatesModalCtrl', function ($rootScope, $scope, $modalInstance, $timeout, Api, Notify, Alerting, certType) {
+    var textFile = null
 
-    var textFile = null;
-
-    var notifyUser = function(){
+    var notifyUser = function () {
       // reset backing object and refresh certificate list
-      Notify.notify('certificatesChanged');
+      Notify.notify('certificatesChanged')
+    }
 
-    };
-
-    var NewBlob = function(data, datatype){
-      var out;
+    var NewBlob = function (data, datatype) {
+      var out
       try {
-        out = new Blob([data], {type: datatype});
-      }
-      catch (e) {
-
-        var BlobBuilder = function(){
-          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
-        };
+        out = new Blob([data], {type: datatype})
+      } catch (e) {
+        var BlobBuilder = function () {
+          window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder
+        }
 
         if (e.name === 'TypeError' && window.BlobBuilder) {
-          var bb = new BlobBuilder();
-          bb.append(data);
-          out = bb.getBlob(datatype);
-        }
-        else if (e.name === 'InvalidStateError') {
+          var bb = new BlobBuilder()
+          bb.append(data)
+          out = bb.getBlob(datatype)
+        } else if (e.name === 'InvalidStateError') {
           // InvalidStateError (tested on FF13 WinXP)
-          out = new Blob([data], {type: datatype});
-        }
-        else {
-          out = { error: 'Browser not supported for Blob creation' };
-          // We're screwed, blob constructor unsupported entirely
+          out = new Blob([data], {type: datatype})
+        } else {
+          out = { error: 'Browser not supported for Blob creation' }
+        // We're screwed, blob constructor unsupported entirely
         }
       }
-      return out;
-    };
+      return out
+    }
 
     var makeTextFile = function (text) {
-      var data = new NewBlob(text, 'application/text');
+      var data = new NewBlob(text, 'application/text')
       // if blob error exist
-      if ( data.error ){
-        return;
-      }else{
+      if (data.error) {
+
+      } else {
         if (textFile !== null) {
-          window.URL.revokeObjectURL(textFile);
+          window.URL.revokeObjectURL(textFile)
         }
-        return window.URL.createObjectURL(data);
+        return window.URL.createObjectURL(data)
       }
-    };
+    }
 
     var success = function (data) {
-
-      Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.');
-      var keyLink = makeTextFile(data.key);
-      $scope.downloadKeyLink = angular.copy(keyLink);
-      if (keyLink){
-        var certLink = makeTextFile(data.certificate);
-        if (certLink){
-          $scope.downloadCertLink = certLink;
+      Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.')
+      var keyLink = makeTextFile(data.key)
+      $scope.downloadKeyLink = angular.copy(keyLink)
+      if (keyLink) {
+        var certLink = makeTextFile(data.certificate)
+        if (certLink) {
+          $scope.downloadCertLink = certLink
         }
       }
 
-      notifyUser();
-    };
+      notifyUser()
+    }
 
-
-    $scope.downloadKeyFile = function(){
-      //reset download link and remove download button
-      $scope.downloadKeyLink = '';
-    };
-    $scope.downloadCertFile = function(){
-      //reset download link and remove download button
-      $scope.downloadCertLink = '';
-    };
+    $scope.downloadKeyFile = function () {
+      // reset download link and remove download button
+      $scope.downloadKeyLink = ''
+    }
+    $scope.downloadCertFile = function () {
+      // reset download link and remove download button
+      $scope.downloadCertLink = ''
+    }
 
     var error = function (err) {
       // add the success message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while creating the certificate: #' + err.status + ' - ' + err.data);
-      notifyUser();
-    };
+      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while creating the certificate: #' + err.status + ' - ' + err.data)
+      notifyUser()
+    }
 
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-
+      $modalInstance.dismiss('cancel')
+    }
 
     $scope.validateFormCertificates = function () {
       // reset hasErrors alert object
-      Alerting.AlertReset('hasErrors');
+      Alerting.AlertReset('hasErrors')
 
       // clear timeout if it has been set
-      $timeout.cancel( $scope.clearValidation );
+      $timeout.cancel($scope.clearValidation)
 
-      $scope.ngError = {};
-      $scope.ngError.hasErrors = false;
+      $scope.ngError = {}
+      $scope.ngError.hasErrors = false
 
       // certificate validity validation
-      if( !$scope.cert.days){
-        $scope.ngError.days = true;
-        $scope.ngError.hasErrors = true;
+      if (!$scope.cert.days) {
+        $scope.ngError.days = true
+        $scope.ngError.hasErrors = true
       }
       // commonName validation
-      if( !$scope.cert.commonName){
-        $scope.ngError.commonName = true;
-        $scope.ngError.hasErrors = true;
+      if (!$scope.cert.commonName) {
+        $scope.ngError.commonName = true
+        $scope.ngError.hasErrors = true
       }
 
       // country validation
       if ($scope.cert.country) {
-        if($scope.cert.country.length !== 2){
-          $scope.ngError.country = true;
-          $scope.ngError.hasErrors = true;
+        if ($scope.cert.country.length !== 2) {
+          $scope.ngError.country = true
+          $scope.ngError.hasErrors = true
         }
       }
-      $scope.cert.country = angular.uppercase($scope.cert.country);
-    };
+      $scope.cert.country = angular.uppercase($scope.cert.country)
+    }
 
     $scope.submitFormCertificate = function () {
-      $scope.validateFormCertificates();
+      $scope.validateFormCertificates()
       // save the client object if no errors are present
-      if ( $scope.ngError.hasErrors === false ){
-        $scope.save($scope.cert);
+      if ($scope.ngError.hasErrors === false) {
+        $scope.save($scope.cert)
       }
-    };
+    }
 
-    $scope.cert = new Api.Certificates();
-    $scope.cert.type = certType;
+    $scope.cert = new Api.Certificates()
+    $scope.cert.type = certType
 
     var saveCert = function (cert) {
       // set backup client object to check if cert has changed
-      $scope.keyName = cert.commonName + '.key.pem';
-      $scope.certName = cert.commonName + '.cert.crt';
-      $scope.certBackup = angular.copy(cert);
+      $scope.keyName = cert.commonName + '.key.pem'
+      $scope.certName = cert.commonName + '.cert.crt'
+      $scope.certBackup = angular.copy(cert)
       if ($scope.update) {
-        cert.$update(success, error);
+        cert.$update(success, error)
       } else {
-        cert.$save({}, success, error);
+        cert.$save({}, success, error)
       }
-    };
+    }
 
     $scope.save = function (cert) {
-      saveCert(cert);
-    };
-  });
+      saveCert(cert)
+    }
+  })
