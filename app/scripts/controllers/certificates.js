@@ -1,3 +1,6 @@
+import { certificateModal } from '~/views'
+import { CertificatesModalCtrl } from './'
+
 export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
   /***************************************************/
   /**         Initial page load functions           **/
@@ -318,8 +321,8 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     $scope.serverRestarting = false
 
     $uibModal.open({
-      templateUrl: 'views/certificateModal.html',
-      controller: 'CertificatesModalCtrl',
+      template: certificateModal,
+      controller: CertificatesModalCtrl,
       resolve: {
         cert: function () { },
         certType: function () {

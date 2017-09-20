@@ -2,8 +2,8 @@ import { isCoreVersionCompatible, getTimeForTimezone } from '../utils'
 
 export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
   $scope.aboutInfo = {}
-
   let success = function (result) {
+
     $scope.aboutInfo = result
     buildAboutInfoObject()
 

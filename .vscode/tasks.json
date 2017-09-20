@@ -9,8 +9,8 @@
       "problemMatcher": [
         {
           "owner": "standard",
-          "fileLocation":"absolute",
-          "pattern":[
+          "fileLocation": "absolute",
+          "pattern": [
             {
               "regexp": "^([^:]*):(\\d+):(\\d+): (.*)$",
               "file": 1,
@@ -21,6 +21,16 @@
           ]
         }
       ]
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
     }
   ]
 }

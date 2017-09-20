@@ -52,8 +52,8 @@
           <h3><strong>Import Data</strong></h3>
           <div class="importCollectionsDiv" >
           
-            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
-            <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+            <div ngf-drop ngf-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
+            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
             <div ng-if="files">
               <h3>Uploaded Files: </h3>

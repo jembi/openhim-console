@@ -40,7 +40,7 @@ const appBundle = fuse.bundle('app')
   .instructions('>scripts/index.js')
 
 if (!isProduction) {
-  appBundle.watch()
+  appBundle.watch().hmr({ reload: true })
 }
 
 fuse.run()

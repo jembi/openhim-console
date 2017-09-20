@@ -14,7 +14,6 @@
           <button class="btn btn-primary pull-right" ng-click="addCert('server')" ng-if="currentServerCert && currentServerCert.watchFSForCert == false" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Create Server Certificate</button>
         </div>
 
-
         <!-- Server Alerts -->
         <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Server Alerts -->
@@ -112,8 +111,8 @@
             <div style="float: left; width: 48%">
               <h4><strong>Upload Server Certificate</strong></h4>
 
-              <div ng-file-drop ng-file-select ng-model="serverCert" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate file here or click to upload</div>
-              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+              <div ngf-drop ngf-select ngf-multiple="true" ng-model="serverCert" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate file here or click to upload</div>
+              <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
               <!-- Server Certificate Alerts -->
               <div uib-alert ng-repeat="alert in alerts.serverCert" ng-class="'alert-' + (alert.type || 'warning')" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</div>
@@ -124,8 +123,8 @@
 
               <h4><strong>Upload Server Key</strong></h4>
 
-              <div ng-file-drop ng-file-select ng-model="serverKey" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate key file here or click to upload</div>
-              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+              <div ngf-drop ngf-select ngf-multiple="true" ng-model="serverKey" class="drop-box" style="padding: 10px" drag-over-class="dragover">Drop your certificate key file here or click to upload</div>
+              <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
               <!-- Server Certificate Alerts -->
               <div uib-alert ng-repeat="alert in alerts.serverKey" ng-class="'alert-' + (alert.type || 'warning')" style="margin: 20px 0px 0px 0px;">{{alert.msg}}</div>
@@ -190,8 +189,8 @@
 
             <div class="importCollectionsDiv" >
 
-              <div ng-file-drop ng-file-select ng-model="trustedCerts" class="drop-box" style="padding: 10px" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your certificate file here or click to upload</div>
-              <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+              <div ngf-drop ngf-select ngf-multiple="true" ng-model="trustedCerts" class="drop-box" style="padding: 10px" drag-over-class="dragover" allow-dir="true" ng-multiple="true">Drop your certificate file here or click to upload</div>
+              <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
             </div>
 
@@ -203,9 +202,8 @@
               </div>
               <div>
                 <label class="failedImportsLink">Failed Imports ( {{importFail}} )</label>
-
                 <div id="no-more-tables" ng-if="importFail">
-                  <table class="table table-bordered" style="100%">
+                  <table class="table table-bordered">
                     <thead>
                       <tr>
                         <th width="50">#</th>
