@@ -1,3 +1,6 @@
+import { visualizerModal, confirmModal } from '~/views'
+import { VisualizerModalCtrl, ConfirmModalCtrl } from './'
+
 import moment from 'moment'
 
 export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, login, Api, Alerting, Fullscreen) {
@@ -197,8 +200,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
-      templateUrl: 'views/visualizerModal.html',
-      controller: 'VisualizerModalCtrl',
+      template: visualizerModal,
+      controller: VisualizerModalCtrl,
       resolve: {
         visualizers: function () { return $scope.visualizers },
         visualizer: function () { return null },
@@ -213,8 +216,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
-      templateUrl: 'views/visualizerModal.html',
-      controller: 'VisualizerModalCtrl',
+      template: visualizerModal,
+      controller: VisualizerModalCtrl,
       resolve: {
         visualizers: function () { return $scope.visualizers },
         visualizer: function () { return null },
@@ -229,8 +232,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
     // open visualizer settings modal
     $uibModal.open({
-      templateUrl: 'views/visualizerModal.html',
-      controller: 'VisualizerModalCtrl',
+      template: visualizerModal,
+      controller: VisualizerModalCtrl,
       resolve: {
         visualizers: function () { return $scope.visualizers },
         visualizer: function () { return vis },
@@ -349,8 +352,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject
