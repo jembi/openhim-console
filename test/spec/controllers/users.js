@@ -16,7 +16,7 @@ describe('Controller: UsersCtrl', function () {
   var createController, httpBackend, scope, modalSpy
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
@@ -75,7 +75,7 @@ describe('Controller: UsersCtrl', function () {
       {'name': 'Sample JsonStub Channel 2', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txViewAcl': ['limited'], 'txViewFullAcl': [], 'txRerunAcl': ['limited'], 'routes': [{'host': 'jsonstub.com', 'port': 80}], '_id': '5322fe9d8b6add4b2b059aa3'}
     ])
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     scope = $rootScope.$new()
     createController = function () {

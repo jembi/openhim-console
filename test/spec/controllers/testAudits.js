@@ -17,7 +17,7 @@ describe('Controller: AuditsCtrl', function () {
   var scope, createController, httpBackend, modalSpy, auditsEndpoint // eslint-disable-line 
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/audits-filter-options')).respond(
@@ -91,7 +91,7 @@ describe('Controller: AuditsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() })
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

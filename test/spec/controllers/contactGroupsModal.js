@@ -35,7 +35,7 @@ describe('Controller: ContactGroupsModalCtrl', function () {
 
       return $controller('ContactGroupsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         contactGroup: contactGroup
       })
     }

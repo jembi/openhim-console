@@ -43,7 +43,7 @@ describe('Controller: ExportImportModalCtrl', function () {
     createController = function () {
       return $controller('ExportImportModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         data: data
       })
     }

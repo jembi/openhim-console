@@ -16,7 +16,7 @@ describe('Controller: CertificatesCtrl', function () {
   var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     httpBackend.when('GET', new RegExp('.*/keystore/cert')).respond({
@@ -72,7 +72,7 @@ describe('Controller: CertificatesCtrl', function () {
     httpBackend.when('POST', new RegExp('.*/keystore/ca/cert')).respond('Trusted Certificate Added')
     httpBackend.when('POST', new RegExp('.*/keystore/passphrase')).respond('Current Server Password updated')
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
     createController = function () {
       scope = $rootScope.$new()
       return $controller('CertificatesCtrl', { $scope: scope })

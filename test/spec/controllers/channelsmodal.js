@@ -66,7 +66,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     createController = function (channel, channelDuplicate) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: channel,
         channelDuplicate: channelDuplicate,
         tab: null
@@ -75,7 +75,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     createControllerRoutes = function () {
       return $controller('channelRoutesCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: null
       })
     }
@@ -276,7 +276,7 @@ describe('Controller: channelBasicInfoCtrl', function () {
     createControllerParent = function (channel, channelDuplicate) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: channel,
         channelDuplicate: channelDuplicate,
         tab: null
@@ -316,7 +316,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
     createControllerParent = function (channel) {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: channel,
         channelDuplicate: null,
         tab: null
@@ -384,7 +384,7 @@ describe('Controller: channelUserAccessCtrl', function () {
     createControllerParent = function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: null,
         channelDuplicate: null,
         tab: null
@@ -428,7 +428,7 @@ describe('Controller: channelDataControlCtrl', function () {
     createControllerParent = function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: null,
         channelDuplicate: null,
         tab: null
@@ -501,7 +501,7 @@ describe('Controller: channelRoutesCtrl', function () {
     createControllerParent = function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: null,
         channelDuplicate: null,
         tab: null
@@ -784,7 +784,7 @@ describe('Controller: channelAlertsCtrl', function () {
     createControllerParent = function () {
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         channel: null,
         channelDuplicate: null,
         tab: null

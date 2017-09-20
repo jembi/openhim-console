@@ -16,7 +16,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
   var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0')).respond({'_id': '5322fe9d8b6add4b2b059ff5', 'name': 'Transaction 1', 'urlPattern': 'sample/api', 'channelID': '5322fe9d8b6add4b2b059dd8', 'clientID': '5344fe7d8b6add4b2b069dd7'})
@@ -28,7 +28,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/clients/5344fe7d8b6add4b2b069dd7')).respond({'_id': '5344fe7d8b6add4b2b069dd7', 'clientID': 'test1', 'clientDomain': 'test1.openhim.org', 'name': 'Test 1', 'roles': ['test'], 'passwordAlgorithm': 'sha512', 'passwordHash': '1234', 'passwordSalt': '1234'})
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()
