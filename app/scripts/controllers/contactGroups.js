@@ -1,3 +1,6 @@
+import { contactGroupsModal, confirmModal } from '~/views'
+import { ContactGroupsModalCtrl, ConfirmModalCtrl } from './'
+
 export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   /************************************************/
   /**         Initial load & onChanged           **/
@@ -30,8 +33,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.addContactGroup = function () {
     Alerting.AlertReset()
     $uibModal.open({
-      templateUrl: 'views/contactGroupsModal.html',
-      controller: 'ContactGroupsModalCtrl',
+      template: contactGroupsModal,
+      controller: ContactGroupsModalCtrl,
       resolve: {
         contactGroup: function () {
         }
@@ -43,8 +46,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/contactGroupsModal.html',
-      controller: 'ContactGroupsModalCtrl',
+      template: contactGroupsModal,
+      controller: ContactGroupsModalCtrl,
       resolve: {
         contactGroup: function () {
           return contactGroup
@@ -91,8 +94,8 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject
