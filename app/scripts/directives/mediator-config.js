@@ -1,4 +1,4 @@
-import * as mediatorConfigView from '~/views/partials/mediator-config.html'
+import mediatorConfigView from '~/views/partials/mediator-config.html'
 // Mediator Config Directive
 //
 // Makes use of recursive rendering trick from here:

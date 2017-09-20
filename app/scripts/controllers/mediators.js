@@ -1,3 +1,6 @@
+import { confirmModal, mediatorConfigModal } from '~/views'
+import { ConfirmModalCtrl, MediatorConfigModalCtrl } from './'
+
 export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, MediatorDisplay) {
   /******************************************************************/
   /**   These are the functions for the Mediators initial load     **/
@@ -57,8 +60,8 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject
@@ -82,8 +85,8 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/mediatorConfigModal.html',
-      controller: 'MediatorConfigModalCtrl',
+      template: mediatorConfigModal,
+      controller: MediatorConfigModalCtrl,
       resolve: {
         mediator: function () {
           return mediator
