@@ -67,7 +67,7 @@
           <div ng-if="importStatus">
             <h3>Import Results: </h3>
 
-            <img src="images/loading.gif" alt="Loading..." ng-if="importStatus == 'progress'"/>
+            <span id="loading-spinner" alt="Loading..." ng-if="importStatus == 'progress'"></span>
             
             <label class="btn btn-primary" ng-click="showConflictModal()" ng-if="importStatus == 'resolvingConflicts'"><strong>Resolve Conflicts</strong></label>
 
@@ -119,7 +119,7 @@
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(exportCollections || alerts.server)">
-            <img src="images/loading.gif" alt="Loading..." />
+            <span id="loading" alt="Loading..."></span>
           </div>
 
           <!-- Server Alerts -->

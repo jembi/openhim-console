@@ -114,6 +114,15 @@ footer .copy{
   margin: 0 20px;
 }
 
+#loading-spinner {
+  display: inline-block;
+  height: 43px;
+  width: 140px;
+  background: url(../images/loading.gif) no-repeat;
+  background-size: contain;
+  margin: 0 20px;
+}
+
 .header .logo h1 a:hover{
    color:#fff;
    text-decoration:none;
