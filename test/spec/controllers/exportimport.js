@@ -209,7 +209,6 @@ describe('Controller: ExportImportCtrl', function () {
     scope.validateImportFile(expectedExportData)
 
     httpBackend.expect('POST', new RegExp('.*/metadata/validate'))
-    httpBackend.expect('GET', 'views/exportImportModal.html')
     httpBackend.flush()
   })
 
