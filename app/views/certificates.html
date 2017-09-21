@@ -237,7 +237,7 @@
           <!-- show loading gif when scope object empty and no server errors exist -->
           <!--<div class="loadingContainer" ng-show="!(currentServerCert || trustedCerts || certValidity || alerts.server)">-->
           <div class="loadingContainer" ng-show="!currentServerCert || !trustedCertificates || !certValidity || alerts.server">
-            <img src="images/loading.gif" alt="Loading..." />
+            <span id="loading-spinner" alt="Loading..."></span>
           </div>
 
 

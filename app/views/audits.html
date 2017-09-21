@@ -77,7 +77,7 @@
             <div>
               <!-- show loading gif when scope object empty and no server errors exist -->
               <div class="loadingContainer" ng-show="!(audits || alerts.server) || busyLoadingMore">
-                <img src="images/loading.gif" alt="Loading..." />
+                <span id="loading-spinner" alt="Loading..."></span>
               </div>
 
               <!-- Transaction Alerts -->
