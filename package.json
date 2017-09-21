@@ -54,6 +54,7 @@
 		"karma": "^1.1.1",
 		"karma-chrome-launcher": "^1.0.1",
 		"karma-mocha": "^1.3.0",
+		"karma-mocha-reporter": "^2.2.4",
 		"karma-ng-html2js-preprocessor": "^1.0.0",
 		"karma-ng-scenario": "^1.0.0",
 		"karma-phantomjs-launcher": "^1.0.1",
@@ -90,8 +91,9 @@
 	},
 	"scripts": {
 		"lint": "standard 'app/**/*.js'",
-		"lint:fix": "npm run lint -- --fix",
-		"test": "karma run",
+    "lint:fix": "npm run lint -- --fix",
+		"test": "karma start --single-run --browsers PhantomJS",
+		"test:watch": "karma start --auto-watch",
 		"start": "node fuse.js",
 		"version": "node versionManager.js && git add -u"
 	},

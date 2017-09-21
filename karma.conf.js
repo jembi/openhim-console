@@ -17,22 +17,25 @@ module.exports = function (config) {
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/moment/moment.js',
       'dist/app.js',
+      { pattern: 'dist/app.js.map', included: false, watched: false },
       'dist/index.html',
+      { pattern: 'dist/css-resources/*', watched: false, included: false, served: true, nocache: false },
       'test/spec/controllers/*.js'
     ],
+    proxies: {
+      '/css-resources/': 'http://localhost:8090/base/dist/css-resources/'
+    },
+    reporters: ['mocha'],
 
     // list of files / patterns to exclude
     exclude: [],
 
     // web server port
     port: 8090,
-
-    // level of logging
-    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    mochaReporter: {
+      showDiff: true,
+      output: 'autowatch'
+    }
 
     // Start these browsers, currently available:
     // - Chrome
@@ -42,10 +45,6 @@ module.exports = function (config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
-
-    // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: true
+    // browsers: ['PhantomJS']
   })
 }

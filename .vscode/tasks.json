@@ -31,6 +31,16 @@
         "isDefault": true
       },
       "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "test:watch",
+      "isBackground": true,
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": [] 
     }
   ]
 }

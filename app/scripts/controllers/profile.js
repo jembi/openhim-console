@@ -72,7 +72,8 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         $scope.user.settings.visualizer = {}
 
         // load default visualizer config for user with no visualizer settings
-        $http.get('config/visualizer.json').success(function (visualizerConfig) {
+
+        $http.get('config/visualizer.json').then(function (visualizerConfig) {
           angular.extend($scope.user.settings.visualizer, angular.copy(visualizerConfig))
         })
       } else {

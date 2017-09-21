@@ -1,4 +1,4 @@
-import * as visualizerConfig from '~/config/visualizer.json'
+import visualizerConfig from '~/config/visualizer.json'
 
 export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
   $scope.ngError = {}

@@ -1,6 +1,16 @@
 {
 	"version": "0.2.0",
 	"configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Test",
+      "url": "http://localhost:8090/debug.html",
+      "webRoot": "${workspaceRoot}",
+      "sourceMapPathOverrides": {
+        "app/*": "${workspaceRoot}/app/*"
+      }
+    },
 		{
 			"type": "chrome",
 			"request": "launch",
@@ -9,6 +19,6 @@
       "webRoot": "${workspaceRoot}",
       "smartStep": true,
       "showAsyncStacks": true
-		}
+    }
 	]
 }
