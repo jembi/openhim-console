@@ -1,4 +1,3 @@
-import './angular-taglist-directive.css'
 import template from './angular-taglist-directive.html'
 
 export const angularTaglist = 'angular_taglist_directive'

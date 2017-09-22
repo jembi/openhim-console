@@ -23,8 +23,8 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     $scope.visualizer = {}
 
     // load default visualizer config for new user
-    //TODO : See if it's ok to have a compile step or if this setting needed to be changed whilst running
-    angular.extend($scope.visualizer, angular.copy(visualizerConfig))    
+    // TODO : See if it's ok to have a compile step or if this setting needed to be changed whilst running
+    angular.extend($scope.visualizer, angular.copy(visualizerConfig))
   }
 
   $scope.cancel = function () {

@@ -24,7 +24,7 @@
 		"d3": "^3.5.17",
 		"eonasdan-bootstrap-datetimepicker": "^4.17.47",
 		"file-saver": "^1.3.3",
-		"fuse-box": "^2.3.1-beta.11",
+		"fuse-box": "^2.3.1-test.1",
 		"grunt": "~0.4.5",
 		"grunt-autoprefixer": "~2.2.0",
 		"grunt-bower-install": "~1.6.0",
@@ -67,6 +67,8 @@
 		"morris.js": "^0.5.0",
 		"ng-file-upload": "^12.2.13",
 		"phantomjs-prebuilt": "^2.1.5",
+		"postcss": "^6.0.11",
+		"postcss-import": "^11.0.0",
 		"pretty-data": "^0.40.0",
 		"raphael": "^2.2.7",
 		"replace": "^0.3.0",
@@ -91,7 +93,7 @@
 	},
 	"scripts": {
 		"lint": "standard 'app/**/*.js'",
-    "lint:fix": "npm run lint -- --fix",
+		"lint:fix": "npm run lint -- --fix",
 		"test": "karma start --single-run --browsers PhantomJS",
 		"test:watch": "karma start --auto-watch",
 		"start": "node fuse.js",
@@ -114,6 +116,7 @@
 	"dependencies": {
 		"angular-mocks": "^1.6.6",
 		"dirty-chai": "^2.0.1",
-		"karma-dirty-chai": "^1.0.2"
+		"karma-dirty-chai": "^1.0.2",
+		"postcss-cssnext": "^3.0.2"
 	}
 }

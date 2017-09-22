@@ -1,5 +1,4 @@
 import 'eonasdan-bootstrap-datetimepicker'
-import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
 
 // Just exports the module name
 export const moduleName = 'datetimepicker'

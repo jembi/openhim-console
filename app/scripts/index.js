@@ -1,3 +1,4 @@
+import '~/styles/main.css'
 import 'babel-polyfill'
 import 'bootstrap'
 import 'angular'
@@ -22,14 +23,6 @@ import * as views from '../views'
 import { objectVisitor, camelcaseToHtmlAttr } from './utils'
 
 import * as defaultConfig from '../config/default.json'
-
-import 'bootstrap/dist/css/bootstrap.css'
-import '~/styles/main.css'
-import '~/styles/morris.css'
-import 'highlight.js/styles/default.css'
-import 'highlight.js/styles/github.css'
-import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css'
-import 'angular-bootstrap-colorpicker/css/colorpicker.css'
 
 export const app = angular
   .module('openhimConsoleApp', [
@@ -307,16 +300,10 @@ app.config(function ($routeProvider) {
 })
 
 function main () {
-  const initInjector = angular.injector(['ng'])
-  const $http = initInjector.get('$http')
-  return $http.get('config/default.json')
-    .then(res => res.data, () => defaultConfig)
-    .then(data => {
-      app.constant('config', data)
-      angular.element(document).ready(function () {
-        angular.bootstrap(document, ['openhimConsoleApp'])
-      })
-    })
+  app.constant('config', defaultConfig)
+  angular.element(document).ready(function () {
+    angular.bootstrap(document, ['openhimConsoleApp'])
+  })
 }
 
 if (module.parent == null) {

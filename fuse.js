@@ -1,6 +1,7 @@
-const { FuseBox, CSSPlugin, CSSResourcePlugin, WebIndexPlugin, HTMLPlugin, BabelPlugin, JSONPlugin, QuantumPlugin } = require('fuse-box')
+const { FuseBox, CSSPlugin, CSSResourcePlugin, WebIndexPlugin, HTMLPlugin, BabelPlugin, JSONPlugin, QuantumPlugin, PostCSSPlugin } = require('fuse-box')
 
-const isProduction = /prod/.test(process.env.NODE_ENV || 'dev')
+// const isProduction = /prod/.test(process.env.NODE_ENV || 'dev')
+const isProduction = false
 
 const fuse = new FuseBox({
   homeDir: 'app/',
@@ -20,15 +21,27 @@ const fuse = new FuseBox({
   hash: isProduction,
   cache: !isProduction,
   plugins: [
-    [CSSResourcePlugin({
-      resolve: file => `/css-resources/${file}`,
-      dist: `${__dirname}/dist/css-resources/`
-    }), CSSPlugin()],
+    [
+      PostCSSPlugin(
+        [require('postcss-import')({ root: __dirname, path: ['app/styles'] })],
+        { sourceMaps: false }
+      ),
+      CSSResourcePlugin({
+        resolve: file => `/css-resources/${file}`,
+        dist: `${__dirname}/dist/css-resources/`,
+        sourceMaps: false
+      }),
+      CSSPlugin({
+        outFile: (file) => `dist/style.css`,
+        inject: false,
+        sourceMaps: false
+      })
+    ],
     JSONPlugin(),
     BabelPlugin(),
     HTMLPlugin({ useDefault: false }),
     WebIndexPlugin({ template: 'app/template.html' }),
-    isProduction && QuantumPlugin({ uglify: true, treeshake: true })
+    isProduction && QuantumPlugin({ uglify: { mangle: false }, treeshake: true, target: 'browser', bakeApiIntoBundle: 'app' })
   ]
 })
 
