@@ -1,7 +1,6 @@
 const { FuseBox, CSSPlugin, CSSResourcePlugin, WebIndexPlugin, HTMLPlugin, BabelPlugin, JSONPlugin, QuantumPlugin, PostCSSPlugin } = require('fuse-box')
 
-// const isProduction = /prod/.test(process.env.NODE_ENV || 'dev')
-const isProduction = false
+const isProduction = /prod/.test(process.env.NODE_ENV || 'dev')
 
 const fuse = new FuseBox({
   homeDir: 'app/',
@@ -41,7 +40,18 @@ const fuse = new FuseBox({
     BabelPlugin(),
     HTMLPlugin({ useDefault: false }),
     WebIndexPlugin({ template: 'app/template.html' }),
-    isProduction && QuantumPlugin({ uglify: { mangle: false }, treeshake: true, target: 'browser', bakeApiIntoBundle: 'app' })
+    isProduction && QuantumPlugin({
+      containedAPI: true,
+      uglify: {
+        mangle: false,
+        compress: {
+          drop_console: true,
+          keep_fnames: true
+        }
+      },
+      target: 'browser',
+      bakeApiIntoBundle: 'app'
+    })
   ]
 })
 

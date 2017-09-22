@@ -1,3 +1,6 @@
+import { usersmodal, confirmModal } from '~/views'
+import { UsersModalCtrl, ConfirmModalCtrl } from './'
+
 export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
   /* -------------------------Initial load & onChanged---------------------------- */
   let querySuccess = function (users) {
@@ -86,8 +89,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/usersmodal.html',
-      controller: 'UsersModalCtrl',
+      template: usersmodal,
+      controller: UsersModalCtrl,
       resolve: {
         user: function () {
         }
@@ -99,8 +102,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/usersmodal.html',
-      controller: 'UsersModalCtrl',
+      template: usersmodal,
+      controller: UsersModalCtrl,
       resolve: {
         user: function () {
           return user
@@ -121,8 +124,8 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return deleteObject

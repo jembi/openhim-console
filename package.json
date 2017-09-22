@@ -72,6 +72,7 @@
 		"pretty-data": "^0.40.0",
 		"raphael": "^2.2.7",
 		"replace": "^0.3.0",
+		"rimraf": "^2.6.2",
 		"sinon": "^1.17.4",
 		"sinon-chai": "2.8.0",
 		"standard": "^10.0.3",
@@ -96,7 +97,10 @@
 		"lint:fix": "npm run lint -- --fix",
 		"test": "karma start --single-run --browsers PhantomJS",
 		"test:watch": "karma start --auto-watch",
-		"start": "node fuse.js",
+		"clean": "rimraf dist/",
+		"start": "npm run clean; node fuse.js",
+		"prepare": "npm run build:prod",
+		"build:prod": "npm run clean; NODE_ENV=prod node fuse.js",
 		"version": "node versionManager.js && git add -u"
 	},
 	"repository": {
