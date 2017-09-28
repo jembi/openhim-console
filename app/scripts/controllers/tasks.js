@@ -1,6 +1,7 @@
-import $ from 'jquery'
 import moment from 'moment'
 import { valueNotEmpty } from '../utils'
+import { ConfirmModalCtrl } from './'
+import confirmModal from '~/views/confirmModal'
 
 export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alerting, $route) {
   /**********************************************/
@@ -285,8 +286,8 @@ export function TasksCtrl ($scope, $uibModal, $location, $interval, Api, Alertin
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return cancelObject

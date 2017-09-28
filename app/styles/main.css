@@ -1,13 +1,12 @@
-@import 'bootstrap/dist/css/bootstrap.css';
+@import '~bootstrap/dist/css/bootstrap.css';
 @import 'morris.css';
-@import 'highlight.js/styles/default.css';
-@import 'highlight.js/styles/github.css';
-@import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
-@import 'angular-bootstrap-colorpicker/css/colorpicker.css';
+@import '~highlight.js/styles/default.css';
+@import '~highlight.js/styles/github.css';
+@import '~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
+@import '~angular-bootstrap-colorpicker/css/colorpicker.css';
 @import 'angular-taglist-directive.css';
 
-html,
-body {
+html,body {
    margin:0;
    padding:0;
    height:100%;

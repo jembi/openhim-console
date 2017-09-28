@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 export function SidebarCtrl ($scope, $location) {
   $scope.isCurrent = function (path) {
     if (path.length > 1 && $location.path().substr(0, path.length) === path) {
@@ -13,8 +11,8 @@ export function SidebarCtrl ($scope, $location) {
 
   $(window).scroll(function (e) {
     // Get the position of the location where the scroller starts.
-    var scroller_anchor = $('.scollNavAnchor').offsetParent().scrollTop()
-    if (scroller_anchor >= 50) {
+    const scrollerAnchor = $('.scollNavAnchor').offsetParent().scrollTop()
+    if (scrollerAnchor >= 50) {
       // show the scroll to button
       $('#scrollToTop').css('display', 'block')
       $('.header').css('box-shadow', '0px 0px 10px #888')

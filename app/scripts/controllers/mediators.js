@@ -1,4 +1,5 @@
-import { confirmModal, mediatorConfigModal } from '~/views'
+import confirmModal from '~/views/confirmModal'
+import mediatorConfigModal from '~/views/mediatorConfigModal'
 import { ConfirmModalCtrl, MediatorConfigModalCtrl } from './'
 
 export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, MediatorDisplay) {

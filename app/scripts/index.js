@@ -1,7 +1,7 @@
 import '~/styles/main.css'
 import 'babel-polyfill'
-import 'bootstrap'
 import 'angular'
+import 'bootstrap'
 import 'angular-cookies'
 import 'angular-resource'
 import 'angular-sanitize'
@@ -19,8 +19,6 @@ import { angularTaglist } from './external/angular-taglist-directive'
 import * as controllers from './controllers'
 import * as directives from './directives'
 import * as services from './services'
-import * as views from '../views'
-import { objectVisitor, camelcaseToHtmlAttr } from './utils'
 
 import * as defaultConfig from '../config/default.json'
 
@@ -52,10 +50,19 @@ for (const service in services) {
 }
 
 app.run(function ($templateCache) {
-  for (const viewVisit of objectVisitor(views)) {
-    const viewPath = viewVisit.path.map(camelcaseToHtmlAttr).join('/')
-    $templateCache.put(`views/${viewPath}.html`, viewVisit.value)
-  }
+  $templateCache.put('views/partials/audit-filter-settings.html', require('~/views/partials/audit-filter-settings'))
+  $templateCache.put('views/partials/channels-tab-basic-info.html', require('~/views/partials/channels-tab-basic-info'))
+  $templateCache.put('views/partials/channels-tab-request-matching.html', require('~/views/partials/channels-tab-request-matching'))
+  $templateCache.put('views/partials/channels-tab-routes.html', require('~/views/partials/channels-tab-routes'))
+  $templateCache.put('views/partials/channels-tab-data-control.html', require('~/views/partials/channels-tab-data-control'))
+  $templateCache.put('views/partials/channels-tab-user-access.html', require('~/views/partials/channels-tab-user-access'))
+  $templateCache.put('views/partials/channels-tab-alerts.html', require('~/views/partials/channels-tab-alerts'))
+  $templateCache.put('views/partials/user-settings-tabs.html', require('~/views/partials/user-settings-tabs'))
+  $templateCache.put('views/partials/tasks-filter-settings.html', require('~/views/partials/tasks-filter-settings'))
+  $templateCache.put('views/partials/transaction-filter-settings.html', require('~/views/partials/transaction-filter-settings'))
+  $templateCache.put('views/partials/user-settings-tabs.html', require('~/views/partials/user-settings-tabs'))
+  $templateCache.put('views/partials/visualizer-settings.html', require('~/views/partials/visualizer-settings'))
+  $templateCache.put('views/sidebar.html', require('~/views/sidebar'))
 })
 
 app.run(function ($rootScope) {
@@ -191,107 +198,107 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
 app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
-      template: views.dashboard,
+      template: require('~/views/dashboard'),
       controller: controllers.DashboardCtrl
     })
     .when('/channels', {
-      template: views.channels,
+      template: require('~/views/channels'),
       controller: controllers.ChannelsCtrl
     })
     .when('/channels/:channelId', {
-      template: views.channelMonitoring,
+      template: require('~/views/channelMonitoring'),
       controller: controllers.ChannelMonitoringCtrl
     })
     .when('/clients', {
-      template: views.clients,
+      template: require('~/views/clients'),
       controller: controllers.ClientsCtrl
     })
     .when('/monitoring', {
-      template: views.monitoring,
+      template: require('~/views/monitoring'),
       controller: controllers.MonitoringCtrl
     })
     .when('/users', {
-      template: views.users,
+      template: require('~/views/users'),
       controller: controllers.UsersCtrl
     })
     .when('/config', {
-      template: views.config,
+      template: require('~/views/config'),
       controller: controllers.ConfigCtrl
     })
     .when('/transactions', {
-      template: views.transactions,
+      template: require('~/views/transactions'),
       controller: controllers.TransactionsCtrl
     })
     .when('/transactions/:transactionId', {
-      template: views.transactionDetails,
+      template: require('~/views/transactionDetails'),
       controller: controllers.TransactionDetailsCtrl
     })
     .when('/tasks', {
-      template: views.tasks,
+      template: require('~/views/tasks'),
       controller: controllers.TasksCtrl
     })
     .when('/tasks/:taskId', {
-      template: views.taskDetails,
+      template: require('~/views/taskDetails'),
       controller: controllers.TaskDetailsCtrl
     })
     .when('/groups', {
-      template: views.contactGroups,
+      template: require('~/views/contactGroups'),
       controller: controllers.ContactGroupsCtrl
     })
     .when('/login', {
-      template: views.login,
+      template: require('~/views/login'),
       controller: controllers.LoginCtrl
     })
     .when('/profile', {
-      template: views.profile,
+      template: require('~/views/profile'),
       controller: controllers.ProfileCtrl
     })
     .when('/mediators', {
-      template: views.mediators,
+      template: require('~/views/mediators'),
       controller: controllers.MediatorsCtrl
     })
     .when('/mediators/:urn', {
-      template: views.mediatorDetails,
+      template: require('~/views/mediatorDetails'),
       controller: controllers.MediatorDetailsCtrl
     })
     .when('/logout', {
-      template: views.login,
+      template: require('~/views/login'),
       controller: controllers.LoginCtrl
     })
     .when('/visualizer', {
-      template: views.visualizer,
+      template: require('~/views/visualizer'),
       controller: controllers.VisualizerCtrl
     })
     .when('/forgot-password', {
-      template: views.forgotPassword,
+      template: require('~/views/forgotPassword'),
       controller: controllers.ForgotPasswordCtrl
     })
     .when('/set-password/:token', {
-      template: views.setPassword,
+      template: require('~/views/setPassword'),
       controller: controllers.SetPasswordCtrl
     })
     .when('/certificates', {
-      template: views.certificates,
+      template: require('~/views/certificates'),
       controller: controllers.CertificatesCtrl
     })
     .when('/export-import', {
-      template: views.exportImport,
+      template: require('~/views/exportImport'),
       controller: controllers.ExportImportCtrl
     })
     .when('/audits', {
-      template: views.audits,
+      template: require('~/views/audits'),
       controller: controllers.AuditsCtrl
     })
     .when('/audits/:auditId', {
-      template: views.auditDetails,
+      template: require('~/views/auditDetails'),
       controller: controllers.AuditDetailsCtrl
     })
     .when('/logs', {
-      template: views.logs,
+      template: require('~/views/logs'),
       controller: controllers.LogsCtrl
     })
     .when('/about', {
-      template: views.about,
+      template: require('~/views/about'),
       controller: controllers.AboutCtrl
     })
     .otherwise({

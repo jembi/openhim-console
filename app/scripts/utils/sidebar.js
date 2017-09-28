@@ -1,7 +1,3 @@
-'use strict'
-
-import $ from 'jquery'
-
 export function toggleSubMenu (element) {
   let $li = $(element).parent('li')
   let $ul = $(element).next('ul')

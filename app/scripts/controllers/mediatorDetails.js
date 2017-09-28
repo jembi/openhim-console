@@ -1,3 +1,6 @@
+import mediatorConfigModal from '~/views/mediatorConfigModal'
+import { MediatorConfigModalCtrl } from './'
+
 export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $routeParams, Api, Alerting, MediatorDisplay) {
   let createParamDefMap = function (mediator) {
     let map = {}
@@ -33,8 +36,8 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
     Alerting.AlertReset()
 
     $uibModal.open({
-      templateUrl: 'views/mediatorConfigModal.html',
-      controller: 'MediatorConfigModalCtrl',
+      template: mediatorConfigModal,
+      controller: MediatorConfigModalCtrl,
       resolve: {
         mediator: function () {
           return $scope.mediatorDetails

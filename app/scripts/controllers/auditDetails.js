@@ -1,4 +1,4 @@
-import { auditsContentModal } from '~/views'
+import auditsContentModal from '~/views/auditsContentModal'
 import { AuditsContentModalCtrl } from './'
 
 export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, AuditLookups) {

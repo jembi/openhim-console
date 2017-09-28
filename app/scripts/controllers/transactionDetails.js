@@ -3,7 +3,9 @@ import moment from 'moment'
 import { TransactionsRerunModalCtrl, TransactionsAddReqResModalCtrl, TransactionsBodyModalCtrl } from './'
 import { beautifyIndent, returnContentType } from '../utils'
 
-import { transactionsRerunModal, transactionsAddReqResModal, transactionsBodyModal } from '~/views'
+import transactionsRerunModal from '~/views/transactionsRerunModal'
+import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
+import transactionsBodyModal from '~/views/transactionsBodyModal'
 
 export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting) {
   /***************************************************/

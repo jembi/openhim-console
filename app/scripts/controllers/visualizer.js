@@ -1,4 +1,5 @@
-import { visualizerModal, confirmModal } from '~/views'
+import visualizerModal from '~/views/visualizerModal'
+import confirmModal from '~/views/confirmModal'
 import { VisualizerModalCtrl, ConfirmModalCtrl } from './'
 
 import moment from 'moment'

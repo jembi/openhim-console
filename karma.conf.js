@@ -16,14 +16,14 @@ module.exports = function (config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/moment/moment.js',
-      'dist/app.js',
-      { pattern: 'dist/app.js.map', included: false, watched: false },
+      'dist/bundle.js',
+      { pattern: 'dist/bundle.js.map', included: false, watched: false },
       'dist/index.html',
-      { pattern: 'dist/css-resources/*', watched: false, included: false, served: true, nocache: false },
+      { pattern: 'dist/fonts/*', watched: false, included: false, served: true, nocache: false },
       'test/spec/controllers/*.js'
     ],
     proxies: {
-      '/css-resources/': 'http://localhost:8090/base/dist/css-resources/'
+      '/fonts/': 'http://localhost:8090/base/dist/fonts/'
     },
     reporters: ['mocha'],
 

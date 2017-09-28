@@ -1,4 +1,5 @@
-import { channelsmodal, confirmModal } from '~/views'
+import channelsmodal from '~/views/channelsmodal'
+import confirmModal from '~/views/confirmModal'
 import { ChannelsModalCtrl, ConfirmModalCtrl } from './'
 
 export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {

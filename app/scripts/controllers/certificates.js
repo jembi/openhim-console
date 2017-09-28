@@ -1,4 +1,4 @@
-import { certificateModal } from '~/views'
+import certificateModal from '~/views/certificateModal'
 import { CertificatesModalCtrl } from './'
 
 export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {

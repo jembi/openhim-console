@@ -1,5 +1,3 @@
-<!-- $rooScope.userGroupAdmin is configured in scripts/app.js -->
-
 <div class="scollNavAnchor"></div>
 <div ng-controller="SidebarCtrl" class="scollNav sidebar-div" role="navigation" >
   <div class="sidebar content-box">
@@ -18,8 +16,6 @@
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/certificates')}"><a href="#!/certificates"><i class="glyphicon glyphicon-certificate"></i> Certificates</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/export-import')}"><a href="#!/export-import"><i class="glyphicon glyphicon-transfer"></i> Export/Import</a></li>
       <li ng-if="userGroupAdmin" ng-class="{current: isCurrent('/logs')}"><a href="#!/logs"><i class="glyphicon glyphicon-cog"></i> Server Logs</a></li>
-      <!-- config page doesn't exist yet, uncomment when ready -->
-      <!-- <li ng-class="{current: isCurrent('/config')}"><a href="#!/config"><i class="glyphicon glyphicon-cog"></i> Config</a></li> -->
     </ul>
   </div>
 
@@ -28,21 +24,3 @@
   </button>
 
 </div>
-
-
-<script>
-  // This function will be executed when the user scrolls the page.
-  $(window).scroll(function(e) {
-    // Get the position of the location where the scroller starts.
-    var scroller_anchor = $(".scollNavAnchor").offset().top;
-    if ( scroller_anchor >= 50 ){
-      // show the scroll to button
-      $("#scrollToTop").css("display", "block");
-      $(".header").css("box-shadow", "0px 0px 10px #888");
-    }else{
-      // hide the scroll to button
-      $("#scrollToTop").css("display", "none");
-      $(".header").css("box-shadow", "none");
-    }
-  })
-</script>

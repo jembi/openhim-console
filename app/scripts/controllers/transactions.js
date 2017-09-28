@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { valueNotEmpty } from '../utils'
-import { transactionsRerunModal } from '~/views'
+import transactionsRerunModal from '~/views/transactionsRerunModal'
 import { TransactionsRerunModalCtrl } from './transactionsRerunModal'
 
 export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $interval, Api, Alerting) {

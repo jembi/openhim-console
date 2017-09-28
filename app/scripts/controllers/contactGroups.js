@@ -1,4 +1,5 @@
-import { contactGroupsModal, confirmModal } from '~/views'
+import contactGroupsModal from '~/views/contactGroupsModal'
+import confirmModal from '~/views/confirmModal'
 import { ContactGroupsModalCtrl, ConfirmModalCtrl } from './'
 
 export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {

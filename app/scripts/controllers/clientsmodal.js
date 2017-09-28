@@ -208,6 +208,11 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       $scope.ngError.hasErrors = true
     }
 
+    if ($scope.roles.map(r => r.name).indexOf($scope.client.clientID) !== -1) {
+      $scope.ngError.clientID = true
+      $scope.ngError.hasErrors = true
+    }
+
     // password/certificate validation (new user)
     if ($scope.update === false) {
       if (!$scope.client.certFingerprint && !$scope.temp.password) {

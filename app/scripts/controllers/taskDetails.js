@@ -1,3 +1,5 @@
+import confirmModal from '~/views/confirmModal'
+import { ConfirmModalCtrl } from './'
 import { valueNotEmpty } from '../utils'
 
 export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, $route) {
@@ -244,8 +246,8 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
-      controller: 'ConfirmModalCtrl',
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
       resolve: {
         confirmObject: function () {
           return cancelObject

@@ -15,14 +15,19 @@
 		"angular-sanitize": "^1.6.6",
 		"angular-ui-bootstrap": "^2.5.0",
 		"babel-core": "^6.26.0",
+		"babel-loader": "^7.1.2",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.0",
 		"bootstrap": "^3.3.7",
 		"bower": "^1.7.9",
 		"chai": "^3.5.0",
+		"clean-webpack-plugin": "^0.1.17",
 		"crypto-js": "^3.1.9-1",
+		"css-loader": "^0.28.7",
 		"d3": "^3.5.17",
 		"eonasdan-bootstrap-datetimepicker": "^4.17.47",
+		"extract-text-webpack-plugin": "^3.0.0",
+		"file-loader": "^0.11.2",
 		"file-saver": "^1.3.3",
 		"fuse-box": "^2.3.1-test.1",
 		"grunt": "~0.4.5",
@@ -48,9 +53,12 @@
 		"grunt-string-replace": "^1.3.0",
 		"grunt-svgmin": "~0.2.1",
 		"grunt-usemin": "~3.0.0",
+		"html-loader": "^0.5.1",
+		"html-webpack-plugin": "^2.30.1",
 		"jquery": "^3.2.1",
 		"jshint": "^2.9.2",
 		"jshint-stylish": "^2.2.0",
+		"json-loader": "^0.5.7",
 		"karma": "^1.1.1",
 		"karma-chrome-launcher": "^1.0.1",
 		"karma-mocha": "^1.3.0",
@@ -76,9 +84,13 @@
 		"sinon": "^1.17.4",
 		"sinon-chai": "2.8.0",
 		"standard": "^10.0.3",
+		"style-loader": "^0.18.2",
 		"time-grunt": "^1.4.0",
 		"typescript": "^2.5.2",
-		"uglify-js": "^3.1.0"
+		"uglify-js": "^3.1.2",
+		"uglifyjs-webpack-plugin": "^0.4.6",
+		"url-loader": "^0.5.9",
+		"webpack-bundle-analyzer": "^2.9.0"
 	},
 	"engines": {
 		"node": ">=0.12.0"
@@ -89,18 +101,19 @@
 			"localStorage",
 			"Blob",
 			"sessionStorage",
-			"FileReader"
+			"FileReader",
+			"$"
 		]
 	},
 	"scripts": {
+		"start": "webpack-dev-server",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
 		"test": "karma start --single-run --browsers PhantomJS",
 		"test:watch": "karma start --auto-watch",
 		"clean": "rimraf dist/",
-		"start": "npm run clean; node fuse.js",
 		"prepare": "npm run build:prod",
-		"build:prod": "npm run clean; NODE_ENV=prod node fuse.js",
+		"build:prod": "npm run clean; NODE_ENV=prod webpack",
 		"version": "node versionManager.js && git add -u"
 	},
 	"repository": {
@@ -121,6 +134,8 @@
 		"angular-mocks": "^1.6.6",
 		"dirty-chai": "^2.0.1",
 		"karma-dirty-chai": "^1.0.2",
-		"postcss-cssnext": "^3.0.2"
+		"postcss-cssnext": "^3.0.2",
+		"webpack": "^3.6.0",
+		"webpack-dev-server": "^2.8.2"
 	}
 }

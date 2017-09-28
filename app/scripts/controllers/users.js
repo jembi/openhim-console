@@ -1,4 +1,5 @@
-import { usersmodal, confirmModal } from '~/views'
+import usersmodal from '~/views/usersmodal'
+import confirmModal from '~/views/confirmModal'
 import { UsersModalCtrl, ConfirmModalCtrl } from './'
 
 export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {

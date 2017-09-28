@@ -40,7 +40,12 @@
         "kind": "test",
         "isDefault": true
       },
-      "problemMatcher": [] 
+      "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "build:prod",
+      "problemMatcher": []
     }
   ]
 }
