@@ -1,5 +1,5 @@
 language: node_js
-script: npm run build:prod
+before_script: npm run build:prod
 node_js:
   - 'lts/*'
 sudo: false
