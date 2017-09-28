@@ -2,17 +2,19 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const isProduction = /prod/i.test(process.NODE_ENV || 'dev')
+const isProduction = /prod/i.test(process.env.NODE_ENV || 'dev')
+
+if (isProduction) {
+  console.log('Creating production bundle')
+}
 
 const devServerConfig = {
   overlay: true
 }
-
-console.log('isProduction', isProduction)
 
 const config = {
   entry: './app/scripts/index',
@@ -85,7 +87,7 @@ const config = {
       }
     ]
   },
-  devtool: isProduction ? 'nosources-source-map' : 'source-map',
+  devtool: 'source-map',
   target: 'web',
   plugins: [
     new webpack.ProvidePlugin({
@@ -94,25 +96,29 @@ const config = {
       'window.jQuery': 'jquery'
     }),
     new HtmlWebpackPlugin({
-      template: 'template.ejs'
+      template: 'app/template.html'
     }),
     new ExtractTextPlugin('styles.css'),
-    new CleanWebpackPlugin(['dist'])
+    new CleanWebpackPlugin(['dist']),
+    new CopyWebpackPlugin([
+      { from: 'app/404.html' },
+      { from: 'app/favicon.ico' },
+      { from: 'app/robots.txt' },
+      {
+        context: 'app/config',
+        from: '*',
+        to: 'config/'
+      }
+    ])
   ]
 }
 
 if (isProduction) {
-  config.plugins.push(new UglifyJSPlugin({
-    extractComments: true,
-    uglifyOptions: {
-      ie8: false,
-      ecma: 5,
-      mangle: true,
-      output: {
-        comments: false
-      }
-    }
-  }), new BundleAnalyzerPlugin())
+  config.plugins.push(new MinifyPlugin({
+    mangle: false
+  }, {
+    comments: false
+  }))
 } else {
   config.devServer = devServerConfig
 }

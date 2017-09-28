@@ -8,8 +8,8 @@ function * getBatchSizes (currentBatchSize) {
     yield { value: currentValue, label: `${currentValue} at a time` }
     currentValue *= 2
   }
-
 }
+
 export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Notify, Alerting, transactionsSelected, rerunTransactionsSelected) {
   $scope.rerunSuccess = false
   $scope.transactionsSelected = transactionsSelected

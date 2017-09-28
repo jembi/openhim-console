@@ -307,10 +307,20 @@ app.config(function ($routeProvider) {
 })
 
 function main () {
-  app.constant('config', defaultConfig)
-  angular.element(document).ready(function () {
-    angular.bootstrap(document, ['openhimConsoleApp'])
-  })
+  const initInjector = angular.injector(['ng'])
+  const $http = initInjector.get('$http')
+  return $http.get('config/default.json')
+    .then((response) => {
+      app.constant('config', response.data)
+    }, () => {
+      app.constant('config', defaultConfig)
+      console.warn('No config found at "config/default.json" using default')
+    })
+    .finally(() => {
+      angular.element(document).ready(function () {
+        angular.bootstrap(document, ['openhimConsoleApp'])
+      })
+    })
 }
 
 if (module.parent == null) {

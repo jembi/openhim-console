@@ -94,11 +94,8 @@ describe('Controller: UsersCtrl', function () {
   it('should open a modal to confirm deletion of a user', function () {
     createController()
     httpBackend.flush()
-
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.users[0])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should open a modal to add a user', function () {

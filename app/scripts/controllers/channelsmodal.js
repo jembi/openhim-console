@@ -1,6 +1,5 @@
 import { getTimeForTimezone, getTimezoneOffset } from '../utils'
 
-
 export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate, tab) {
   function notifyUser () {
     // I have no idea what the correct channels changed is supposed to be
