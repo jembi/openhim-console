@@ -67,6 +67,7 @@ angular.module('openhimConsoleApp')
         $rootScope.validationRequiredMsg = 'This field is required!';
         $rootScope.validationPasswordConfirmMsg = 'Please confirm you password!';
         $rootScope.validationFormErrorsMsg = 'There appears to be some errors in your form. Please correct and try again.';
+        $rootScope.validateClientIDMsg = 'Either the client ID is same as role name or client ID required!';
 
       }
 

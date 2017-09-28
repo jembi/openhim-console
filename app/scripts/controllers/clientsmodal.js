@@ -206,6 +206,11 @@ angular.module('openhimConsoleApp')
         $scope.ngError.hasErrors = true;
       }
 
+      if ($scope.roles && $scope.roles.some(r => r.name === $scope.client.clientID)) {
+        $scope.ngError.clientID = true
+        $scope.ngError.hasErrors = true
+      }
+
       // name validation
       if( !$scope.client.name ){
         $scope.ngError.name = true;
