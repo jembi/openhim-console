@@ -196,6 +196,11 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       $scope.ngError.hasErrors = true
     }
 
+    if ($scope.roles && $scope.roles.some(r => r.name === $scope.client.clientID)) {
+      $scope.ngError.clientID = true
+      $scope.ngError.hasErrors = true
+    }
+
     // name validation
     if (!$scope.client.name) {
       $scope.ngError.name = true
@@ -205,11 +210,6 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     // roles validation
     if (!$scope.client.roles || $scope.client.roles.length === 0) {
       $scope.ngError.roles = true
-      $scope.ngError.hasErrors = true
-    }
-
-    if ($scope.roles.map(r => r.name).indexOf($scope.client.clientID) !== -1) {
-      $scope.ngError.clientID = true
       $scope.ngError.hasErrors = true
     }
 
