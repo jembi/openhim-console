@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global moment: false */
 
 describe('Controller: DashboardCtrl', function () {

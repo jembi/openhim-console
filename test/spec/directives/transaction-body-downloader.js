@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 
 describe('directive: transaction-body-downloader', function () {
   beforeEach(module('openhimConsoleApp'))

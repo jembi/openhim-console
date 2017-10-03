@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 
 describe('Service: Api', function () {
   // load the service's module

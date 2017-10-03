@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 'use strict'
-/* jshint expr: true */
 
 describe('Controller: ExportImportCtrl', function () {
   // load the controller's module

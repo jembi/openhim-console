@@ -1,5 +1,4 @@
 'use strict'
-/* jshint expr: true */
 /* global sinon: false */
 /* global moment:false */
 
