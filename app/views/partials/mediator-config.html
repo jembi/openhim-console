@@ -8,7 +8,7 @@
         <div class="col-sm-3">
           <label ng-if="def.displayName">
             {{def.displayName}}
-            <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-if="def.description" uib-tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <label ng-if="!def.displayName">{{def.param}}</label>
         </div><!-- col-sm-3 -->
@@ -24,8 +24,8 @@
 
           <div ng-if="def.type === 'bool'">
             <div class="btn-group" style="margin-bottom: 10px; clear: both;">
-              <label class="btn btn-primary" ng-model="config[def.param]" btn-radio="true">Yes</label>
-              <label class="btn btn-primary" ng-model="config[def.param]" btn-radio="false">No</label>
+              <label class="btn btn-primary" ng-model="config[def.param]" uib-btn-radio="true">Yes</label>
+              <label class="btn btn-primary" ng-model="config[def.param]" uib-btn-radio="false">No</label>
             </div>
           </div>
 
@@ -73,7 +73,7 @@
             <div ng-if="$index == 0">
               <label ng-if="def.displayName">
                 {{def.displayName}}
-                <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                <i ng-if="def.description" uib-tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
               </label>
               <label ng-if="!def.displayName">{{def.param}}</label>
             </div>
@@ -90,8 +90,8 @@
 
             <div ng-if="def.type === 'bool'">
               <div class="btn-group" style="margin-bottom: 10px; clear: both;">
-                <label class="btn btn-primary" ng-model="config[def.param][$index]" btn-radio="true">Yes</label>
-                <label class="btn btn-primary" ng-model="config[def.param][$index]" btn-radio="false">No</label>
+                <label class="btn btn-primary" ng-model="config[def.param][$index]" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-primary" ng-model="config[def.param][$index]" uib-btn-radio="false">No</label>
               </div>
             </div>
 
@@ -141,7 +141,7 @@
             <div ng-if="!config[def.param] || config[def.param].length == 0">
               <label ng-if="def.displayName">
                 {{def.displayName}}
-                <i ng-if="def.description" tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                <i ng-if="def.description" uib-tooltip="{{def.description}}" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
               </label>
               <label ng-if="!def.displayName">{{def.param}}</label>
             </div>

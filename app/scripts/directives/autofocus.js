@@ -1,8 +1,6 @@
 'use strict'
 
-// Common directive for Focus
-
-angular.module('openhimConsoleApp').directive('focus', function ($timeout) {
+export function focus ($timeout) {
   return {
     scope: {
       trigger: '@focus'
@@ -17,4 +15,4 @@ angular.module('openhimConsoleApp').directive('focus', function ($timeout) {
       })
     }
   }
-})
+}

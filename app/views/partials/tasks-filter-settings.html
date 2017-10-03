@@ -4,7 +4,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Status:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter rerun tasks by their status" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Select an option to filter rerun tasks by their status" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <select class="form-control"
       ng-model="filters.status"
@@ -21,7 +21,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       User:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select an option to filter rerun tasks by user" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Select an option to filter rerun tasks by user" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <select class="form-control"
       ng-model="filters.user"
@@ -35,7 +35,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Date:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Pick a date to filter rerun tasks by" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Pick a date to filter rerun tasks by" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <input
       datetimepicker
@@ -50,14 +50,13 @@
   <div class="settings_div" style="float: left;">
     <label>
       Limit:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
-    <select class="form-control" ng-model="filters.limit" ng-change="applyFiltersToUrl()">
-      <option value="10">10</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="200">200</option>
-      <option value="500">500</option>
+    <select class="form-control" 
+      ng-model="filters.limit" 
+      ng-change="applyFiltersToUrl()"
+      ng-options="limit as limit for limit in limits"
+      >
     </select>
   </div>
 </div>

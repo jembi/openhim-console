@@ -52,8 +52,8 @@
           <h3><strong>Import Data</strong></h3>
           <div class="importCollectionsDiv" >
           
-            <div ng-file-drop ng-file-select ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
-            <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+            <div ngf-drop ngf-select ngf-multiple="true" ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
+            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
 
             <div ng-if="files">
               <h3>Uploaded Files: </h3>
@@ -67,7 +67,7 @@
           <div ng-if="importStatus">
             <h3>Import Results: </h3>
 
-            <img src="images/loading.gif" alt="Loading..." ng-if="importStatus == 'progress'"/>
+            <span id="loading-spinner" alt="Loading..." ng-if="importStatus == 'progress'"></span>
             
             <label class="btn btn-primary" ng-click="showConflictModal()" ng-if="importStatus == 'resolvingConflicts'"><strong>Resolve Conflicts</strong></label>
 
@@ -119,15 +119,15 @@
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(exportCollections || alerts.server)">
-            <img src="images/loading.gif" alt="Loading..." />
+            <span id="loading-spinner" alt="Loading..."></span>
           </div>
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
           <!-- Bottom Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Bottom Alerts -->
 
         </div>

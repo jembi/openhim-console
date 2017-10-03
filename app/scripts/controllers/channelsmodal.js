@@ -1,10 +1,22 @@
-'use strict'
-/* global getTimeForTimezone:false */
-/* global getTimezoneOffset:false */
+import { getTimeForTimezone, getTimezoneOffset } from '../utils'
 
-var app = angular.module('openhimConsoleApp')
+export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate, tab) {
+  function notifyUser () {
+    // I have no idea what the correct channels changed is supposed to be
+    Notify.notify('channelsChanged')
+    $uibModalInstance.close()
+  };
 
-app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate, tab) {
+  function success () {
+    Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully')
+    notifyUser()
+  };
+
+  function error (err) {
+    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the mediator config: #' + err.status + ' - ' + err.data)
+    notifyUser()
+  };
+
   /****************************************************************/
   /**   These are the functions for the Channel initial load     **/
   /****************************************************************/
@@ -51,27 +63,13 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
 
   $scope.selectedTab = {}
   switch (tab) {
-    case 'Basic Info':
-      $scope.selectedTab.basicInfo = true
-      break
-    case 'Request Matching':
-      $scope.selectedTab.requestMatching = true
-      break
-    case 'Routes':
-      $scope.selectedTab.routes = true
-      break
-    case 'Data Control':
-      $scope.selectedTab.dataControl = true
-      break
-    case 'Access Control':
-      $scope.selectedTab.accessControl = true
-      break
-    case 'Alerts':
-      $scope.selectedTab.alerts = true
-      break
-    default:
-      $scope.selectedTab.basicInfo = true
-      break
+    case 'Basic Info': $scope.selectedTab.basicInfo = true; break
+    case 'Request Matching': $scope.selectedTab.requestMatching = true; break
+    case 'Routes': $scope.selectedTab.routes = true; break
+    case 'Data Control': $scope.selectedTab.dataControl = true; break
+    case 'Access Control': $scope.selectedTab.accessControl = true; break
+    case 'Alerts': $scope.selectedTab.alerts = true; break
+    default: $scope.selectedTab.basicInfo = true; break
   }
 
   /****************************************************************/
@@ -81,24 +79,6 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   /***************************************************************/
   /**   These are the functions for the Channel Modal Popup     **/
   /***************************************************************/
-
-  var notifyUser = function () {
-    // reset backing object and refresh users list
-    Notify.notify('channelsChanged')
-    $modalInstance.close()
-  }
-
-  var success = function () {
-    // add the success message
-    Alerting.AlertAddMsg('top', 'success', 'The channel has been saved successfully')
-    notifyUser()
-  }
-
-  var error = function (err) {
-    // add the success message
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channels\' details: #' + err.status + ' - ' + err.data)
-    notifyUser()
-  }
 
   $scope.saveOrUpdate = function (channel) {
     // add regex delimiter when true
@@ -156,7 +136,7 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   }
 
   $scope.cancel = function () {
-    $modalInstance.dismiss('cancel')
+    $uibModalInstance.dismiss('cancel')
   }
 
   /***************************************************************/
@@ -338,15 +318,14 @@ app.controller('ChannelsModalCtrl', function ($scope, $modalInstance, $timeout, 
   /***************************************************************************/
   /**   These are the general functions for the channel form validation     **/
   /***************************************************************************/
-})
+}
 
-// nested controller for the channel basic info tab
-app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Api, Notify, Alerting) {
-  var updateTime = function (timezone) {
+export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, Alerting) {
+  let updateTime = function (timezone) {
     $scope.aboutInfo.serverTime = getTimeForTimezone(timezone)
   }
 
-  var success = function (result) {
+  let success = function (result) {
     $scope.aboutInfo = result
     $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone)
     updateTime(result.serverTimezone)
@@ -355,18 +334,18 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Ap
     }, 1000)
   }
 
-  var error = function (err) {
+  let error = function (err) {
     Alerting.AlertAddServerMsg(err.status)
   }
 
   Api.About.get(success, error)
 
-  var setUrlPattern = function () {
+  let setUrlPattern = function () {
     $scope.channel.$promise.then(function () {
       // check if urlPattern has regex delimiters
-      var urlPatternLength = $scope.channel.urlPattern.length
+      let urlPatternLength = $scope.channel.urlPattern.length
       if ($scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength - 1) {
-        var urlPattern = $scope.channel.urlPattern
+        let urlPattern = $scope.channel.urlPattern
         // remove delimiters
         $scope.channel.urlPattern = urlPattern.slice(1, -1)
       } else {
@@ -402,10 +381,10 @@ app.controller('channelBasicInfoCtrl', function ($scope, $timeout, $interval, Ap
       $interval.cancel($scope.clock)
     }
   })
-})
+}
 
 // nested controller for the channel content matching tab
-app.controller('channelRequestMatchingCtrl', function ($scope, Api) {
+export function channelRequestMatchingCtrl ($scope, Api) {
   // object for the taglist roles
   $scope.taglistClientRoleOptions = []
   $scope.taglistUserRoleOptions = []
@@ -435,7 +414,7 @@ app.controller('channelRequestMatchingCtrl', function ($scope, Api) {
       })
     })
   },
-    function () { })
+    function () { /* server error - could not connect to API to get clients */ })
 
   // if update is true
   if ($scope.update) {
@@ -449,10 +428,10 @@ app.controller('channelRequestMatchingCtrl', function ($scope, Api) {
       }
     })
   }
-})
+}
 
 // nested controller for the channel - user access tab
-app.controller('channelUserAccessCtrl', function ($scope) {
+export function channelUserAccessCtrl ($scope) {
   // object for the taglist roles
   $scope.taglistUserRoleOptions = []
 
@@ -467,10 +446,10 @@ app.controller('channelUserAccessCtrl', function ($scope) {
       })
     })
   })
-})
+}
 
 // nested controller for the channel routes tab
-app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
+export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   /*************************************************/
   /**   Default Channel Routes configurations     **/
   /*************************************************/
@@ -506,12 +485,12 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     function () { /* server error - could not connect to API to get Trusted Certificates */ })
 
   /*************************************************/
-    /**   Default Channel Routes configurations     **/
-    /*************************************************/
+  /**   Default Channel Routes configurations     **/
+  /*************************************************/
 
   /****************************************/
-    /**   Functions for Channel Routes     **/
-    /****************************************/
+  /**   Functions for Channel Routes     **/
+  /****************************************/
 
   $scope.resetRouteErrors = function () {
     $scope.ngErrorRoute = {}
@@ -561,7 +540,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     $scope.oldRouteIndex = null
 
     // declare variable for primary route
-    var primary
+    let primary
 
     // create new route object
     if (type === 'new') {
@@ -606,17 +585,17 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     $scope.routeAddEdit = false
 
     // set defaults
-    var primary = false
-    var name = ''
-    var secured = false
-    var host = ''
-    var port = ''
-    var path = ''
-    var pathTransform = ''
-    var username = ''
-    var password = ''
-    var routeType = 'http'
-    var forwardAuthHeader = false
+    let primary = false
+    let name = ''
+    let secured = false
+    let host = ''
+    let port = ''
+    let path = ''
+    let pathTransform = ''
+    let username = ''
+    let password = ''
+    let routeType = 'http'
+    let forwardAuthHeader = false
 
     if ($scope.selected.mediatorRoute.endpoint.name) { name = $scope.selected.mediatorRoute.endpoint.name }
     if ($scope.selected.mediatorRoute.endpoint.secured) { secured = $scope.selected.mediatorRoute.endpoint.secured }
@@ -699,7 +678,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     }
 
     // port validation
-    var portError = $scope.checkIsPortValid($scope.newRoute.port)
+    let portError = $scope.checkIsPortValid($scope.newRoute.port)
     if (portError) {
       $scope.ngErrorRoute.port = true
       $scope.ngErrorRoute.portError = portError
@@ -707,7 +686,7 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     }
 
     // path/transform validation
-    var pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
+    let pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
     if (pathTransformError) {
       $scope.ngErrorRoute.pathTransform = true
       $scope.ngErrorRoute.pathTransformError = pathTransformError
@@ -758,13 +737,13 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     return false
   }
 
-  var isRouteEnabled = function (route) {
+  let isRouteEnabled = function (route) {
     return (typeof route.status === 'undefined' || route.status === null) || route.status === 'enabled'
   }
 
   $scope.noPrimaries = function () {
     if ($scope.channel.routes) {
-      for (var i = 0; i < $scope.channel.routes.length; i++) {
+      for (let i = 0; i < $scope.channel.routes.length; i++) {
         if (isRouteEnabled($scope.channel.routes[i]) && $scope.channel.routes[i].primary === true) {
           // atleast one primary so return false
           return false
@@ -778,9 +757,9 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
 
   $scope.multiplePrimaries = function () {
     if ($scope.channel.routes) {
-      var routes = $scope.channel.routes
-      var count = 0
-      for (var i = 0; i < routes.length; i++) {
+      let routes = $scope.channel.routes
+      let count = 0
+      for (let i = 0; i < routes.length; i++) {
         if (isRouteEnabled(routes[i]) && routes[i].primary === true) {
           count++
         }
@@ -814,9 +793,9 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
     // reset route errors
     $scope.resetRouteErrors()
 
-    var noRoutes = $scope.noRoutes()
-    var noPrimaries = $scope.noPrimaries()
-    var multiplePrimaries = $scope.multiplePrimaries()
+    let noRoutes = $scope.noRoutes()
+    let noPrimaries = $scope.noPrimaries()
+    let multiplePrimaries = $scope.multiplePrimaries()
 
     if (noRoutes || noPrimaries || multiplePrimaries) {
       $scope.ngError.hasRouteWarnings = true
@@ -836,10 +815,10 @@ app.controller('channelRoutesCtrl', function ($scope, $timeout, Api, Alerting) {
   /****************************************************/
   /**   Functions for Channel Routes Validations     **/
   /****************************************************/
-})
+}
 
 // nested controller for the channel routes tab
-app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerting) {
+export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
   // store settings
   if (!$scope.update) {
     // set default variables if new channel
@@ -986,7 +965,7 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
     }
 
     // fromPort validation
-    var fromPortError = $scope.checkIsPortValid($scope.newUrlRewrite.fromPort)
+    let fromPortError = $scope.checkIsPortValid($scope.newUrlRewrite.fromPort)
     if (fromPortError) {
       $scope.ngErrorUrlRewrite.fromPort = true
       $scope.ngErrorUrlRewrite.portError = fromPortError
@@ -1000,7 +979,7 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
     }
 
     // toPort validation
-    var toPortError = $scope.checkIsPortValid($scope.newUrlRewrite.toPort)
+    let toPortError = $scope.checkIsPortValid($scope.newUrlRewrite.toPort)
     if (toPortError) {
       $scope.ngErrorUrlRewrite.toPort = true
       $scope.ngErrorUrlRewrite.portError = toPortError
@@ -1058,10 +1037,10 @@ app.controller('channelDataControlCtrl', function ($scope, $timeout, Api, Alerti
   /*********************************************************/
   /**   Functions for Channel UrlRewrites Validations     **/
   /*********************************************************/
-})
+}
 
 // nested controller for the channel alerts tab
-app.controller('channelAlertsCtrl', function ($scope, Api) {
+export function channelAlertsCtrl ($scope, Api) {
   // watch parent scope for 'users' change
   $scope.$watch('users', function () {
     // setup usersMap options object
@@ -1081,8 +1060,8 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
     function () { /* server error - could not connect to API to get Alert Groups */ })
 
   /**********************************************************/
-    /**   These are the functions for the Channel Alerts     **/
-    /**********************************************************/
+  /**   These are the functions for the Channel Alerts     **/
+  /**********************************************************/
 
   // define the alerts backup object
   $scope.channelAlertsBackup = null
@@ -1228,4 +1207,4 @@ app.controller('channelAlertsCtrl', function ($scope, Api) {
   /****************************************************************/
   /**   These are the functions for the Channel Alert Groups     **/
   /****************************************************************/
-})
+}

@@ -1,11 +1,6 @@
-'use strict'
-/* global $:false */
-/* exported toggleSubMenu */
-
-// eslint-disable-next-line no-unused-vars
-function toggleSubMenu (element) {
-  var $li = $(element).parent('li')
-  var $ul = $(element).next('ul')
+export function toggleSubMenu (element) {
+  let $li = $(element).parent('li')
+  let $ul = $(element).next('ul')
 
   if ($li.hasClass('open')) {
     $ul.slideUp(350)

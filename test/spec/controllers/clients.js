@@ -15,7 +15,7 @@ describe('Controller: ClientsCtrl', function () {
   var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
@@ -37,7 +37,7 @@ describe('Controller: ClientsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*views/confirmModal.html')).respond({})
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()
@@ -63,10 +63,8 @@ describe('Controller: ClientsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmClientDelete(scope.clients[0])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should open a modal to add a client', function () {
@@ -232,6 +230,5 @@ describe('Controller: ClientsCtrl', function () {
 
     scope.confirmRoleDelete(role)
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 })

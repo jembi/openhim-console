@@ -15,7 +15,7 @@ describe('Controller: ChannelsCtrl', function () {
   var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
@@ -79,7 +79,7 @@ describe('Controller: ChannelsCtrl', function () {
       {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ])
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()
@@ -103,20 +103,16 @@ describe('Controller: ChannelsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.channels[0])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should open a modal to confirm restoration of a deleted channel', function () {
     createController()
     httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmRestore(scope.channels[2])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should open a modal to add a channel', function () {

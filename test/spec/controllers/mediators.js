@@ -1,4 +1,6 @@
 'use strict'
+/* jshint expr: true */
+/* global sinon: false */
 /* global moment: false */
 
 describe('Controller: MediatorsCtrl', function () {
@@ -21,10 +23,10 @@ describe('Controller: MediatorsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
@@ -65,6 +67,8 @@ describe('Controller: MediatorsCtrl', function () {
         '_uptime': 5443200 // over 2 months
       }
     ])
+
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

@@ -74,13 +74,13 @@
         <div class="checkbox" style="margin-top: 0px;">
           <label>
             <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
         </div>
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
         </div>
       </div>
@@ -94,9 +94,9 @@
   <div class="modal-footer">
 
     <!-- hasErrors Alerts -->
-    <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+    <div uib-alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-    </alert>
+    </div>
     <!-- hasErrors Alerts -->
 
     <div>

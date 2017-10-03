@@ -14,7 +14,7 @@
         <div ng-show="transactionsSelected.length > 1" style="margin-bottom: 15px;">You have selected a total of <strong>{{transactionsSelected.length}}</strong> transactions to be rerun. </div>
 
         <!-- Rerun Alerts -->
-        <alert ng-repeat="alert in alerts.rerun" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.rerun" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Rerun Alerts -->
 
         <div>Are you sure you wish to proceed with this operation?</div>
@@ -31,23 +31,18 @@
     <div ng-show="transactionsSelected.length > 1" ng-if="rerunSuccess != true" style="float: left;">
       <label style="float: left; margin: 10px 10px 0px 0px;">
         Batch size
-        <i style="right: -20px;" ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="The number of transactions that the task processor should run concurrently" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i style="right: -20px;" ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="The number of transactions that the task processor should run concurrently" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
-      <select style="float: left; width: auto; margin-left: 15px;" class="form-control" ng-model="taskSetup.batchSize">
-        <option value="1">One at a time</option>
-        <option ng-if="transactionsSelected.length >= 2" value="2">2 at a time</option>
-        <option ng-if="transactionsSelected.length >= 4" value="4">4 at a time</option>
-        <option ng-if="transactionsSelected.length >= 8" value="8">8 at a time</option>
-        <option ng-if="transactionsSelected.length >= 16" value="16">16 at a time</option>
-        <option ng-if="transactionsSelected.length >= 32" value="32">32 at a time</option>
-        <option ng-if="transactionsSelected.length >= 64" value="64">64 at a time</option>
+      <select style="float: left; width: auto; margin-left: 15px;" class="form-control" 
+      ng-model="taskSetup.batchSize"
+      ng-options="batch.value as batch.label for batch in batchSizes">
       </select>
     </div>
     <div ng-show="transactionsSelected.length > 0" ng-if="rerunSuccess != true" style="float: left;">
       <input style="float: left; margin: 10px 10px 0px 20px" id="taskSetupPaused" type="checkbox" ng-model="taskSetup.paused"/>
       <label style="float: left; margin: 10px 10px 0px 0px;" for="taskSetupPaused">
         Paused
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Do not start processing the task immediately" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Do not start processing the task immediately" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
     </div>
 

@@ -15,7 +15,7 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Top Alerts -->
         
         <div class="panel-body">
@@ -46,14 +46,14 @@
                   <td data-title="Description">{{ mediator.description }}</td>
                   <td data-title="Version">{{ mediator.version }}</td>
                   <td data-title="LastHeartbeat">
-                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" tooltip="{{mediator.lastHeartbeatDisplayExplain}}" class="label label-default">Never</span>
+                    <span ng-if="mediator.lastHeartbeatStatus === 'never'" uib-tooltip="{{mediator.lastHeartbeatDisplayExplain}}" class="label label-default">Never</span>
                     <span ng-if="mediator.lastHeartbeatStatus !== 'never'" class="label label-{{mediator.lastHeartbeatStatus}}" tooltip-html-unsafe="{{mediator._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
                     <div>
                     </div>
                   </td>
                   <td data-title="Uptime"><span ng-if="mediator._uptime" tooltip-html-unsafe="Startup time<br>{{mediator.uptimeSince | date:'yyyy-MM-dd HH:mm:ss'}}">{{ mediator.uptimeDisplay }}</td>
                   <td>
-                    <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)" tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
+                    <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)" uib-tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
                     <button class="btn btn-danger btn-xs" ng-click="confirmDelete(mediator)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>
@@ -63,15 +63,15 @@
             <div>
               <!-- show loading gif when scope object empty and no server errors exist -->
               <div class="loadingContainer" ng-show="!(mediators || alerts.server)">
-                <img src="images/loading.gif" alt="Loading..." />
+                <span id="loading-spinner" alt="Loading..."></span>
               </div>
 
               <!-- server Alerts -->
-              <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Server Alerts -->
 
               <!-- Mediators Alerts -->
-              <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Mediators Alerts -->
 
             </div>

@@ -40,7 +40,7 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
       modalInstance = sinon.spy()
       return $controller('TransactionsAddReqResModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         record: record,
         channel: channel,
         transactionId: record._id,

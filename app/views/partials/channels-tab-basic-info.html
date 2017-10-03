@@ -15,10 +15,10 @@
 <div class="form-group">
   <label style="display: block;">What type of channel do you want?</label>
   <div class="btn-group">
-    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'http'">HTTP</label>
-    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tcp'">TCP</label>
-    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'tls'">TLS</label>
-    <label class="btn btn-primary" ng-model="channel.type" btn-radio="'polling'">Polling</label>
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'http'">HTTP</label>
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tcp'">TCP</label>
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tls'">TLS</label>
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'polling'">Polling</label>
   </div>
 </div>
 
@@ -53,7 +53,7 @@
         <button type="button" class="btn btn-primary" ng-click="manuallyTriggerChannel()">Manually Trigger</button>
       </div>
       <div class="form-group" style="float: right;">
-        <alert ng-repeat="alert in alerts.manualTrigger" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.manualTrigger" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
 <div class="form-group-2columns">
   <label style="display: block;">Channel status</label>
   <div class="btn-group" style="margin-bottom: 10px">
-    <label class="btn btn-primary" ng-model="channel.status" btn-radio="'enabled'">Enabled</label>
-    <label class="btn btn-primary" ng-model="channel.status" btn-radio="'disabled'">Disabled</label>
+    <label class="btn btn-primary" ng-model="channel.status" uib-btn-radio="'enabled'">Enabled</label>
+    <label class="btn btn-primary" ng-model="channel.status" uib-btn-radio="'disabled'">Disabled</label>
   </div>
 </div>

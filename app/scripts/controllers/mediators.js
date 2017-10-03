@@ -1,97 +1,98 @@
-'use strict'
+import confirmModal from '~/views/confirmModal'
+import mediatorConfigModal from '~/views/mediatorConfigModal'
+import { ConfirmModalCtrl, MediatorConfigModalCtrl } from './'
 
-angular.module('openhimConsoleApp')
-  .controller('MediatorsCtrl', function ($scope, $modal, $location, Api, Alerting, MediatorDisplay) {
-    /******************************************************************/
-    /**   These are the functions for the Mediators initial load     **/
-    /******************************************************************/
+export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, MediatorDisplay) {
+  /******************************************************************/
+  /**   These are the functions for the Mediators initial load     **/
+  /******************************************************************/
 
-    var querySuccess = function (mediators) {
-      $scope.mediators = mediators
-      if (mediators.length === 0) {
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no mediators created')
-      } else {
-        MediatorDisplay.formatMediators(mediators)
-      }
+  let querySuccess = function (mediators) {
+    $scope.mediators = mediators
+    if (mediators.length === 0) {
+      Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no mediators created')
+    } else {
+      MediatorDisplay.formatMediators(mediators)
+    }
+  }
+
+  let queryError = function (err) {
+    // on error - add server error alert
+    Alerting.AlertAddServerMsg(err.status)
+  }
+
+  // do the initial request
+  Api.Mediators.query(querySuccess, queryError)
+
+  /******************************************************************/
+  /**   These are the functions for the Mediators initial load     **/
+  /******************************************************************/
+
+  // location provider - load transaction details
+  $scope.viewMediatorDetails = function (path, $event) {
+    // do mediators details redirection when clicked on TD
+    if ($event.target.tagName === 'TD') {
+      $location.path(path)
+    }
+  }
+
+  /***********************************/
+  /**   Delete Mediator Functions   **/
+  /***********************************/
+
+  let deleteSuccess = function () {
+    // On success
+    $scope.mediators = Api.Mediators.query(querySuccess, queryError)
+    Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully')
+  }
+
+  let deleteError = function (err) {
+    // add the error message
+    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data)
+  }
+
+  $scope.confirmDelete = function (mediator) {
+    Alerting.AlertReset()
+
+    let deleteObject = {
+      title: 'Delete Mediator',
+      button: 'Delete',
+      message: 'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
     }
 
-    var queryError = function (err) {
-      // on error - add server error alert
-      Alerting.AlertAddServerMsg(err.status)
-    }
-
-    // do the initial request
-    Api.Mediators.query(querySuccess, queryError)
-
-    /******************************************************************/
-    /**   These are the functions for the Mediators initial load     **/
-    /******************************************************************/
-
-    // location provider - load transaction details
-    $scope.viewMediatorDetails = function (path, $event) {
-      // do mediators details redirection when clicked on TD
-      if ($event.target.tagName === 'TD') {
-        $location.path(path)
-      }
-    }
-
-    /***********************************/
-    /**   Delete Mediator Functions   **/
-    /***********************************/
-
-    var deleteSuccess = function () {
-      // On success
-      $scope.mediators = Api.Mediators.query(querySuccess, queryError)
-      Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully')
-    }
-
-    var deleteError = function (err) {
-      // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data)
-    }
-
-    $scope.confirmDelete = function (mediator) {
-      Alerting.AlertReset()
-
-      var deleteObject = {
-        title: 'Delete Mediator',
-        button: 'Delete',
-        message: 'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
-      }
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/confirmModal.html',
-        controller: 'ConfirmModalCtrl',
-        resolve: {
-          confirmObject: function () {
-            return deleteObject
-          }
+    let modalInstance = $uibModal.open({
+      template: confirmModal,
+      controller: ConfirmModalCtrl,
+      resolve: {
+        confirmObject: function () {
+          return deleteObject
         }
-      })
+      }
+    })
 
-      modalInstance.result.then(function () {
-        // Delete confirmed - delete the user
-        mediator.$remove(deleteSuccess, deleteError)
-      }, function () {
-        // delete cancelled - do nothing
-      })
-    }
+    modalInstance.result.then(function () {
+      // Delete confirmed - delete the user
+      mediator.$remove(deleteSuccess, deleteError)
+    }, function () {
+      // delete cancelled - do nothing
+    })
+  }
 
-    /***********************************/
-    /**   Delete Mediator Functions   **/
-    /***********************************/
+  /***********************************/
+  /**   Delete Mediator Functions   **/
+  /***********************************/
 
-    $scope.editMediatorConfig = function (mediator) {
-      Alerting.AlertReset()
+  $scope.editMediatorConfig = function (mediator) {
+    Alerting.AlertReset()
 
-      $modal.open({
-        templateUrl: 'views/mediatorConfigModal.html',
-        controller: 'MediatorConfigModalCtrl',
-        resolve: {
-          mediator: function () {
-            return mediator
-          }
+    $uibModal.open({
+      template: mediatorConfigModal,
+      controller: MediatorConfigModalCtrl,
+      resolve: {
+        mediator: function () {
+          return mediator
         }
-      })
-    }
-  })
+      }
+    })
+  }
+}

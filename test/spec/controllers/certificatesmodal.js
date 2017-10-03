@@ -35,7 +35,7 @@ describe('Controller: CertificatesModalCtrl', function () {
       }
       return $controller('CertificatesModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         cert: cert,
         certType: 'client'
       })

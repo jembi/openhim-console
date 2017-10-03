@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 'use strict'
+/* jshint expr: true */
+/* global sinon: false */
 
 describe('Controller: AboutCtrl', function () {
   // load the controller's module
@@ -12,7 +14,7 @@ describe('Controller: AboutCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
 
   var coreResponse = {
     'currentCoreVersion': '3.0.0',
@@ -20,10 +22,12 @@ describe('Controller: AboutCtrl', function () {
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/about')).respond(coreResponse)
+
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()

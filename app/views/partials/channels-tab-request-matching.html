@@ -16,7 +16,7 @@
     <div class="addUrlRegexDelimiterDiv">
       <label>
         <input type="checkbox" ng-model="urlPattern.regex" style="margin-top: 0px; vertical-align: middle;" /> Auto-add<br />regex delimiters
-        <i ng-show="uiSettings.showTooltips" tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="This automatically adds start and ending anchors to the URL pattern regex. This is generally what you want." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
       </label>
     </div>
     <div class="has-error-msg" style="clear: both; margin-top: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
@@ -26,12 +26,12 @@
 <div class="form-group">
   <label>
     Is this channel publically accessible or should client authentication be required?
-    <i ng-show="uiSettings.showTooltips" tooltip="Private requires authentication and Public bypasses authentication protocols" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+    <i ng-show="uiSettings.showTooltips" uib-tooltip="Private requires authentication and Public bypasses authentication protocols" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
   </label>
   <div style="display: block;">
     <div class="btn-group">
-      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'private'">Private</label>
-      <label class="btn btn-primary" ng-model="channel.authType" btn-radio="'public'">Public</label>
+      <label class="btn btn-primary" ng-model="channel.authType" uib-btn-radio="'private'">Private</label>
+      <label class="btn btn-primary" ng-model="channel.authType" uib-btn-radio="'public'">Public</label>
     </div>
   </div>
 </div>
@@ -39,7 +39,7 @@
 <div class="form-group" ng-if="channel.authType == 'private'">
   <label>
     Are there any IP addresses that should ALWAYS be treated as authenticated?
-    <i ng-show="uiSettings.showTooltips" tooltip="Enter the IP's that are allowed to access the channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+    <i ng-show="uiSettings.showTooltips" uib-tooltip="Enter the IP's that are allowed to access the channel" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
   </label>
   <taglist tag-data="channel.whitelist"><input class="form-control" placeholder="Whitelisted IP addresses" type="text" ng-model="whitelist" /></taglist>
 </div>
@@ -53,7 +53,7 @@
 <div class="form-group" style="width: 23%">
   <label>
     Channel priority
-    <i ng-show="uiSettings.showTooltips" tooltip="Optional. If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+    <i ng-show="uiSettings.showTooltips" uib-tooltip="Optional. If a transaction gets matched to two or more channels, then it will get routed to the channel with the highest priority. A value of 1 is the highest possible priority and larger numbers indicate a lower priority." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
   </label>
   <input class="form-control" type="number" min="1" ng-model="channel.priority" />
 </div>
@@ -70,10 +70,10 @@
     <label>Do you want to match on request BODY content? </label>
     <div style="display: block;">
       <div class="btn-group" style="margin-bottom: 10px">
-        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'No matching'">No matching</label>
-        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'RegEx matching'">RegEx matching</label>
-        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'XML matching'">XML matching</label>
-        <label class="btn btn-primary" ng-model="matching.contentMatching" btn-radio="'JSON matching'">JSON matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" uib-btn-radio="'No matching'">No matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" uib-btn-radio="'RegEx matching'">RegEx matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" uib-btn-radio="'XML matching'">XML matching</label>
+        <label class="btn btn-primary" ng-model="matching.contentMatching" uib-btn-radio="'JSON matching'">JSON matching</label>
       </div>
     </div>
   </div>

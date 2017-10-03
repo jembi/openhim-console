@@ -152,7 +152,7 @@ describe('Controller: VisualizerModalCtrl', function () {
     createController = function (vis, dup) {
       return $controller('VisualizerModalCtrl', {
         $scope: scope,
-        $modalInstance: modalInstance,
+        $uibModalInstance: modalInstance,
         visualizers: visualizers,
         visualizer: vis,
         duplicate: dup

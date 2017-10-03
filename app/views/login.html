@@ -8,15 +8,15 @@
             <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="{{emailFocus}}">
             <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password" focus="{{passwordFocus}}">
             <div class="loginBoxLink">
-              <a href="#/forgot-password/{{ linkUserEmail }}">Forgot your password?</a>
+              <a href="#!/forgot-password/{{ linkUserEmail }}">Forgot your password?</a>
             </div>
 
             <!-- Login Alerts -->
-            <alert ng-repeat="alert in alerts.login" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Login Alerts -->
 
             <!-- Server Alerts -->
-            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Server Alerts -->
 
             <div class="action">
@@ -34,11 +34,11 @@
             <input ng-show="!resetSuccess" class="form-control" type="password" ng-model="passwordConfirm" placeholder="Confirm Password">
 
             <!-- Login Alerts -->
-            <alert ng-repeat="alert in alerts.login" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Login Alerts -->
 
             <!-- Server Alerts -->
-            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Server Alerts -->
 
             <div class="action" ng-show="!resetSuccess">

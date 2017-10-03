@@ -16,17 +16,17 @@ describe('Controller: TransactionsCtrl', function () {
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      {'_id': '5322fe9d8b6add4b2b059dd8', 'status': 'enabled', 'name': 'Sample JsonStub Channel 1', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['test'], 'routes': [{'host': 'jsonstub.com', 'port': 80, 'primary': true}]},
-      {'_id': '5322fe9d8b6add4b2b059aa3', 'status': 'deleted', 'name': 'Sample JsonStub Channel 2', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['testing'], 'routes': [{'host': 'jsonstub.com', 'port': 80}]}
+      { '_id': '5322fe9d8b6add4b2b059dd8', 'status': 'enabled', 'name': 'Sample JsonStub Channel 1', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['test'], 'routes': [{ 'host': 'jsonstub.com', 'port': 80, 'primary': true }] },
+      { '_id': '5322fe9d8b6add4b2b059aa3', 'status': 'deleted', 'name': 'Sample JsonStub Channel 2', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['testing'], 'routes': [{ 'host': 'jsonstub.com', 'port': 80 }] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
+      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users/*')).respond({
@@ -37,7 +37,7 @@ describe('Controller: TransactionsCtrl', function () {
       'passwordAlgorithm': 'sha512',
       'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
       'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
-      'groups': [ 'admin' ],
+      'groups': ['admin'],
       'settings': {
         'filter': {
           'endDate': '2016-08-17',
@@ -50,7 +50,7 @@ describe('Controller: TransactionsCtrl', function () {
           },
           'limit': 70
         },
-        'list': {'tabview': 'new'}
+        'list': { 'tabview': 'new' }
       }
     })
 
@@ -62,34 +62,34 @@ describe('Controller: TransactionsCtrl', function () {
         'status': 'Successful',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': { }, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': { }, 'status': 200 }
+        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
+        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
       }, {
         '_id': '660936d307756ef72b525222',
         'status': 'Successful',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful/successful', 'headers': { }, 'querystring': '', 'body': 'Successful Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': { }, 'status': 200 }
+        'request': { 'path': '/path/successful/successful', 'headers': {}, 'querystring': '', 'body': 'Successful Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
+        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
       }, {
         '_id': '770936d307756ef72b525333',
         'status': 'Processing',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': { }, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' }
+        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' }
       }, {
         '_id': '880936d307756ef72b525444',
         'status': 'Failed',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': { }, 'querystring': '', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': { }, 'status': 500 }
+        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': '', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
+        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 500 }
       }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() })
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()
@@ -129,7 +129,7 @@ describe('Controller: TransactionsCtrl', function () {
     httpBackend.flush()
 
     // the consoleSession object is setup with user profile in 'login.js'
-    scope.settings.filter.limit.should.equal('200')
+    scope.settings.filter.limit.should.equal(200)
     scope.settings.list.tabview.should.equal('new')
   })
 
@@ -266,16 +266,16 @@ describe('Controller: TransactionsCtrl', function () {
         'status': 'Successful',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': { }, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2017-08-25T11:55:38.953Z' },
-        'response': { 'timestamp': '2017-08-25T11:56:38.953Z', 'body': 'Body', 'headers': { }, 'status': 200 }
+        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2017-08-25T11:55:38.953Z' },
+        'response': { 'timestamp': '2017-08-25T11:56:38.953Z', 'body': 'Body', 'headers': {}, 'status': 200 }
       },
       {
         '_id': '550936d307756ef72b525555',
         'status': 'Successful',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': { }, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-07-15T15:26:59.417Z' },
-        'response': { 'timestamp': '2015-07-15T15:26:59.430Z', 'body': 'Body', 'headers': { }, 'status': 200 }
+        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-07-15T15:26:59.417Z' },
+        'response': { 'timestamp': '2015-07-15T15:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
       }
     ])
 
@@ -301,8 +301,8 @@ describe('Controller: TransactionsCtrl', function () {
         'status': 'Failed',
         'clientID': '5506aed5348ac60d23840a9e',
         'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': { }, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': { }, 'status': 500 }
+        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
+        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 500 }
       }
     )
 

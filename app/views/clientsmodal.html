@@ -20,7 +20,7 @@
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
           <label><span>*</span> Client ID</label>
           <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" focus="{{!update}}" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validateClientIDMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
           <label><span>*</span> Client Name</label>
@@ -81,7 +81,7 @@
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.password }">
           <label ng-if="client.passwordHash" style="float: right">
-            <i tooltip-placement="top" tooltip="A password has been set for this client" class="glyphicon glyphicon-lock"></i>
+            <i tooltip-placement="top" uib-tooltip="A password has been set for this client" class="glyphicon glyphicon-lock"></i>
           </label>
 
           <label><span>**</span> Basic Auth Password</label>
@@ -113,9 +113,9 @@
   <div class="modal-footer">
 
     <!-- hasErrors Alerts -->
-    <alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+    <div uib-alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-    </alert>
+    </div>
     <!-- hasErrors Alerts -->
 
     <div>

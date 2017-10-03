@@ -12,7 +12,7 @@
         </div>
 
         <!-- server Alerts -->
-        <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Server Alerts -->
 
         <div class="panel-body" ng-show="!alerts.server">
@@ -37,7 +37,7 @@
             </div>
 
             <!-- Transaction Load Alerts -->
-            <alert ng-repeat="alert in alerts.load" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.load" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Transaction Load Alerts -->
 
             <div class="panel-body" ng-if="!alerts.load">
@@ -56,7 +56,7 @@
             </div>
 
             <!-- Transaction ResponseTime Alerts -->
-            <alert ng-repeat="alert in alerts.responseTime" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.responseTime" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Transaction ResponseTime Alerts -->
 
             <div class="panel-body" ng-if="!alerts.responseTime">
@@ -75,7 +75,7 @@
             <div class="panel-body">
 
               <!-- Transaction Status Alerts -->
-              <alert ng-repeat="alert in alerts.status" type="alert.type">{{alert.msg}}</alert>
+              <div uib-alert ng-repeat="alert in alerts.status" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
               <!-- Transaction Status Alerts -->
 
               <div class="row" ng-if="!alerts.status">

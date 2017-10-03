@@ -15,7 +15,7 @@ describe('Controller: ContactGroupsCtrl', function () {
   var scope, createController, httpBackend, modalSpy
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
@@ -32,7 +32,7 @@ describe('Controller: ContactGroupsCtrl', function () {
       {firstname: 'User4444', lastname: 'User4444', email: 'user4@email.com'}
     ])
 
-    modalSpy = sinon.spy($modal, 'open')
+    modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
       scope = $rootScope.$new()
@@ -56,15 +56,12 @@ describe('Controller: ContactGroupsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.contactGroups[0])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should open a modal to add a contact group', function () {
     createController()
-    httpBackend.expectGET('views/contactGroupsModal.html').respond(200, '')
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.addContactGroup()
     modalSpy.should.have.been.calledOnce()
@@ -74,7 +71,6 @@ describe('Controller: ContactGroupsCtrl', function () {
 
   it('should open a modal to edit a contact group', function () {
     createController()
-    httpBackend.expectGET('views/contactGroupsModal.html').respond(200, '')
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.editContactGroup()
     modalSpy.should.have.been.calledOnce()

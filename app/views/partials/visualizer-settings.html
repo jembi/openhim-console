@@ -7,12 +7,12 @@
     <div class="settings_div has-error-key">
       <label style="float: left">
         <span>*</span> Visualizer Name
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the visualizer name (must be unique)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the visualizer name (must be unique)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <input class="form-control" placeholder="e.g. My Awesome Visualizer" type="text" ng-model="visualizer.name">
 
-      <alert ng-if="ngError.hasNoName"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
-      <alert ng-if="ngError.nameNotUnique"><i class="glyphicon glyphicon-warning-sign"></i>The visualizer name must be unique.</alert>
+      <div uib-alert ng-if="ngError.hasNoName"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      <div uib-alert ng-if="ngError.nameNotUnique"><i class="glyphicon glyphicon-warning-sign"></i>The visualizer name must be unique.</div>
     </div>
     <br>
     <br>
@@ -20,7 +20,7 @@
     <div class="settings_div has-error-key">
       <label style="float: left">
         <span>*</span> Components
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the components you wish to add to the visualizer. Components are shown above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Select the components you wish to add to the visualizer. Components are shown above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="width: 100%; clear: both;">
         <div id="no-more-tables" style="margin-top: 15px;">
@@ -71,7 +71,7 @@
               </tr>
             </tbody>
           </table>
-          <alert ng-if="ngError.hasNoComponents"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
+          <div uib-alert ng-if="ngError.hasNoComponents"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
       </div>
     </div>
@@ -79,14 +79,14 @@
     <div class="settings_div has-error-key">
       <label style="float: left">
         <span>*</span> Channels
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the channels you wish to add to the visualizer. Channels are shown below the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Select the channels you wish to add to the visualizer. Channels are shown below the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="width: 100%; clear: both;">
         <div id="no-more-tables" style="margin-top: 15px;">
           <select class="form-control" ng-options="channel as channel.name for channel in channels" ng-model="viewModel.addSelectChannel" ng-change="addSelectedChannel()">
             <option value="">Select Channel</option>
           </select>
-          <alert ng-if="ngError.hasNoChannels"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</alert>
+          <div uib-alert ng-if="ngError.hasNoChannels"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
           <br>
           <table class="table table-striped table-bordered">
             <thead>
@@ -111,7 +111,7 @@
     <div class="settings_div has-error-key">
       <label style="float: left">
         Mediators
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown just above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Select the mediators you wish to add to the visualizer. Mediators are shown just above the openhim-core." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="width: 100%; clear: both;">
         <select class="form-control" ng-options="mediator as mediator.name for mediator in mediators" ng-model="viewModel.addSelectMediator" ng-change="addSelectedMediator()">
@@ -157,7 +157,7 @@
         <span class="settings_div">
           <label style="float: left">
             Inactive Event Color
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set color value for Inactive Events (e.g #cccccc)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.inactive">
@@ -167,7 +167,7 @@
         <span class="settings_div">
           <label style="float: left">
             Active Event Color
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set color value for Active Events (e.g #419641)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.active">
@@ -177,7 +177,7 @@
         <span class="settings_div">
           <label style="float: left">
             Error Event Color
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set color value for Error Events (e.g #d9534f)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.error">
@@ -187,7 +187,7 @@
         <span class="settings_div">
           <label style="float: left">
             Event Text Color
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set color value for Events Text (e.g #000000)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input colorpicker="hex" class="form-control" type="text" ng-model="visualizer.color.text">
@@ -207,7 +207,7 @@
         <span class="settings_div">
           <label style="float: left">
             Responsive
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set whether the visualizer should resize automatically based on the screen size" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether the visualizer should resize automatically based on the screen size" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group" style="padding-top: 10px;">
             <label class="responsiveCheckboxLabel">
@@ -219,7 +219,7 @@
         <span class="settings_div">
           <label style="float: left">
             Width
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the width of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input class="form-control" type="text" ng-model="visualizer.size.width">
@@ -230,7 +230,7 @@
         <span class="settings_div">
           <label style="float: left">
             Height
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the height of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input class="form-control" type="text" ng-model="visualizer.size.height">
@@ -241,7 +241,7 @@
         <span class="settings_div">
           <label style="float: left">
             Padding
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the padding for the component boxes of the Visualizer (in Pixels)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
           </label>
           <div class="input-group">
             <input class="form-control" type="text" ng-model="visualizer.size.padding">
