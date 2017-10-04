@@ -2,6 +2,9 @@
 	"name": "openhim-console",
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
 	"version": "1.10.0",
+	"dependencies": {
+		"replace": "^0.3.0"
+	},
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.1",
 		"angular": "^1.6.6",
