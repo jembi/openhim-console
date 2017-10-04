@@ -1,22 +1,17 @@
-'use strict';
-/* global beautifyIndent:false */
-/* global returnContentType:false */
+import { beautifyIndent, returnContentType } from '../utils'
 
-angular.module('openhimConsoleApp')
-  .controller('TransactionsBodyModalCtrl', function ($scope, $modalInstance, bodyData) {
+export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, bodyData) {
+  $scope.bodyData = bodyData
 
-    $scope.bodyData = bodyData;
-
-    // transform body with indentation/formatting
-    if( $scope.bodyData.content ){
-      if ( bodyData.headers && returnContentType( bodyData.headers ) ){
-        var bodyTransform = beautifyIndent(returnContentType( bodyData.headers ), bodyData.content);
-        $scope.bodyData.content = bodyTransform.content;
-      }
+  // transform body with indentation/formatting
+  if ($scope.bodyData.content) {
+    if (bodyData.headers && returnContentType(bodyData.headers)) {
+      let bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
+      $scope.bodyData.content = bodyTransform.content
     }
+  }
 
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-
-  });
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}

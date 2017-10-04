@@ -1,102 +1,98 @@
-'use strict';
+export function Api ($rootScope, $resource, config) {
+  // fetch API server details
+  let protocol = config.protocol
+  let host = config.host
+  let port = config.port
+  let server = protocol + '://' + host + ':' + port
 
-angular.module('openhimConsoleApp')
-  .factory('Api', function ($rootScope, $resource, config) {
+  return {
+    Authenticate: $resource(server + '/authenticate/:email'),
 
-    // fetch API server details
-    var protocol = config.protocol;
-    var host = config.host;
-    var port = config.port;
-    var server = protocol + '://' + host + ':' + port;
+    Channels: $resource(server + '/channels/:channelId', { channelId: '@_id' }, {
+      update: { method: 'PUT' }
+    }),
 
-    return {
-      Authenticate: $resource( server + '/authenticate/:email' ),
+    TriggerPollingChannels: $resource(server + '/channels/:channelId/trigger', { channelId: '@_id' }, {}),
 
-      Channels: $resource( server + '/channels/:channelId', { channelId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
+    Roles: $resource(server + '/roles/:name', { name: '@name' }, {
+      update: { method: 'PUT' }
+    }),
 
-      TriggerPollingChannels: $resource( server + '/channels/:channelId/trigger', { channelId: '@_id' }, {}),
+    Users: $resource(server + '/users/:email', { email: '@email' }, {
+      update: { method: 'PUT' }
+    }),
 
-      Roles: $resource( server + '/roles/:name', { name: '@name' }, {
-        update: { method: 'PUT' }
-      }),
+    Clients: $resource(server + '/clients/:clientId/:property', { clientId: '@_id', property: '@property' }, {
+      update: { method: 'PUT' }
+    }),
 
-      Users: $resource( server + '/users/:email', { email: '@email' }, {
-        update: { method: 'PUT' }
-      }),
+    Transactions: $resource(server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
-      Clients: $resource( server + '/clients/:clientId/:property', { clientId: '@_id', property: '@property' }, {
-        update: { method: 'PUT' }
-      }),
+    Mediators: $resource(server + '/mediators/:urn', { urn: '@urn' }, {
+      update: { method: 'PUT' }
+    }),
+    MediatorConfig: $resource(server + '/mediators/:urn/config', { urn: '@urn' }, {
+      update: { method: 'PUT' }
+    }),
+    MediatorChannels: $resource(server + '/mediators/:urn/channels', { urn: '@urn' }),
 
-      Transactions: $resource( server + '/transactions/:transactionId', { transactionId: '@_id' }),
+    // add the metric endpoints
+    MetricsChannels: $resource(server + '/metrics/channels/:channelId'),
+    MetricsTimeseries: $resource(server + '/metrics/timeseries/:type'),
+    MetricsTimeseriesChannel: $resource(server + '/metrics/timeseries/:type/channels/:channelId'),
 
-      Mediators: $resource( server + '/mediators/:urn', { urn: '@urn' }, {
-        update: { method: 'PUT' }
-      }),
-      MediatorConfig: $resource( server + '/mediators/:urn/config', { urn: '@urn' }, {
-        update: { method: 'PUT' }
-      }),
-      MediatorChannels: $resource( server + '/mediators/:urn/channels', { urn: '@urn' }),
+    Tasks: $resource(server + '/tasks/:taskId', { taskId: '@_id' }, {
+      update: { method: 'PUT' }
+    }),
 
-      // add the metric endpoints
-      MetricsChannels: $resource( server + '/metrics/channels/:channelId' ),
-      MetricsTimeseries: $resource( server + '/metrics/timeseries/:type' ),
-      MetricsTimeseriesChannel: $resource( server + '/metrics/timeseries/:type/channels/:channelId' ),
+    ContactGroups: $resource(server + '/groups/:groupId', { groupId: '@_id' }, {
+      update: { method: 'PUT' }
+    }),
 
-      Tasks: $resource( server + '/tasks/:taskId', { taskId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
+    Events: $resource(server + '/events/:receivedTime'),
+    Heartbeat: $resource(server + '/heartbeat'),
 
-      ContactGroups: $resource( server + '/groups/:groupId', { groupId: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
+    // endpoint to restart the core server
+    Restart: $resource(server + '/restart', {}),
 
-      Events: $resource( server + '/events/:receivedTime'),
-      Heartbeat: $resource( server + '/heartbeat'),
+    // User Token
+    UserPasswordToken: $resource(server + '/token/:token', { token: '@token' }, {
+      update: { method: 'PUT' }
+    }),
 
-      // endpoint to restart the core server
-      Restart: $resource( server + '/restart', {}),
+    // user reset password request
+    UserPasswordResetRequest: $resource(server + '/password-reset-request/:email', { email: '@email' }, {}),
 
-      // User Token
-      UserPasswordToken: $resource( server + '/token/:token', { token: '@token' }, {
-        update: { method: 'PUT' }
-      }),
+    Keystore: $resource(server + '/keystore/:type/:property', { type: '@type', property: '@property' }, {
+      update: { method: 'PUT' }
+    }),
 
-      // user reset password request
-      UserPasswordResetRequest: $resource( server + '/password-reset-request/:email', { email: '@email' }, {}),
+    Certificates: $resource(server + '/certificates', {}),
 
-      Keystore: $resource( server + '/keystore/:type/:property', { type: '@type', property: '@property' }, {
-        update: { method: 'PUT' }
-      }),
+    // ATNA Audit log endpoint
+    Audits: $resource(server + '/audits/:auditId', { auditId: '@_id' }),
+    AuditsFilterOptions: $resource(server + '/audits-filter-options/', {}),
 
-      Certificates: $resource ( server + '/certificates' ,{}),
+    // Logs API
+    Logs: $resource(server + '/logs'),
 
-      // ATNA Audit log endpoint
-      Audits: $resource( server + '/audits/:auditId', { auditId: '@_id' }),
-      AuditsFilterOptions: $resource( server + '/audits-filter-options/', {}),
+    // Metadata API
+    Metadata: $resource(server + '/metadata', {}, {
+      save: { method: 'POST', isArray: true },
+      query: { method: 'GET', isArray: true }
+    }),
 
-      // Logs API
-      Logs: $resource(server + '/logs'),
+    MetadataValidation: $resource(server + '/metadata/validate', {}, {
+      save: { method: 'POST', isArray: true }
+    }),
 
-      // Metadata API
-      Metadata: $resource( server + '/metadata', {}, {
-        save: { method: 'POST', isArray: true },
-        query: { method: 'GET', isArray: true }
-      }),
+    // Visualizer API
+    Visualizers: $resource(server + '/visualizers/:id', { id: '@_id' }, {
+      update: { method: 'PUT' }
+    }),
 
-      MetadataValidation: $resource( server + '/metadata/validate', {}, {
-        save: { method: 'POST', isArray: true }
-      }),
+    // About page (versions) API
+    About: $resource(server + '/about')
 
-      // Visualizer API
-      Visualizers: $resource(server + '/visualizers/:id', { id: '@_id' }, {
-        update: { method: 'PUT' }
-      }),
-
-      // About page (versions) API
-      About: $resource( server + '/about')
-
-    };
-  });
+  }
+}

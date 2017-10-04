@@ -69,9 +69,9 @@
 <div class="modal-footer">
 
   <!-- hasErrors Alerts -->
-  <alert style="width: auto; float: left; text-align: left; margin: 0; padding: 8px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+  <div uib-alert style="width: auto; float: left; text-align: left; margin: 0; padding: 8px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
     <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-  </alert>
+  </div>
   <!-- hasErrors Alerts -->
 
   <div>

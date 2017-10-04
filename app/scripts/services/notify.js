@@ -1,12 +1,9 @@
-'use strict';
+export function Notify ($rootScope) {
+  const notifyService = {}
 
-angular.module('openhimConsoleApp')
-  .factory('Notify', function Notify($rootScope) {
-    var notifyService = {};
+  notifyService.notify = function (event) {
+    $rootScope.$broadcast(event)
+  }
 
-    notifyService.notify = function(event) {
-      $rootScope.$broadcast(event);
-    };
-
-    return notifyService;
-  });
+  return notifyService
+}

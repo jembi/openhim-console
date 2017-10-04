@@ -1,5 +1,5 @@
 <!-- Route Alerts -->
-<alert ng-if="!routeAddEdit" ng-repeat="alert in alerts.route" type="alert.type">{{alert.msg}}</alert>
+<div uib-alert ng-if="!routeAddEdit" ng-repeat="alert in alerts.route" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
 <!-- Route Alerts -->
 
 <p class="text-muted">
@@ -19,15 +19,15 @@
       <div style="float: left;">
         <label>Primary Route</label><br />
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="true">Yes</label>
-          <label class="btn btn-primary" ng-model="newRoute.primary" btn-radio="false">No</label>
+          <label class="btn btn-primary" ng-model="newRoute.primary" uib-btn-radio="true">Yes</label>
+          <label class="btn btn-primary" ng-model="newRoute.primary" uib-btn-radio="false">No</label>
         </div>
       </div>
       <div style="float: left; margin-left: 20px;">
         <label>Status</label><br />
         <div class="btn-group" style="clear: both;">
-          <label class="btn btn-primary" ng-model="newRoute.status" btn-radio="'enabled'">Enabled</label>
-          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" btn-radio="'disabled'">Disabled</label>
+          <label class="btn btn-primary" ng-model="newRoute.status" uib-btn-radio="'enabled'">Enabled</label>
+          <label ng-click="onRouteDisable(newRoute)" class="btn btn-primary" ng-model="newRoute.status" uib-btn-radio="'disabled'">Disabled</label>
         </div>
       </div>
     </div>
@@ -36,16 +36,16 @@
     <div class="form-group" style="float: left;">
       <label>Route Type</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'http'">HTTP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'tcp'">TCP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" btn-radio="'mllp'">MLLP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'http'">HTTP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'tcp'">TCP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'mllp'">MLLP</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;">
       <label>Route Secured</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="newRoute.secured" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-model="newRoute.secured" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="newRoute.secured" uib-btn-radio="false">No</label>
       </div>
     </div>
     <div class="form-group" style="float: left; margin-left: 20px;" ng-if="newRoute.secured==true">
@@ -93,8 +93,8 @@
     <div class="form-group" style="float: left;">
       <label>Forward existing Authorization header</label><br />
       <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" btn-radio="false">No</label>
+        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="false">No</label>
       </div>
     </div>
   </div>
@@ -104,9 +104,9 @@
     <button type="button" class="btn btn-primary" ng-click="saveRoute( oldRouteIndex )" style="margin-left: 5px;">Set Route</button>
 
     <!-- hasErrors Alerts -->
-    <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsRoute" type="alert.type">
+    <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsRoute" ng-class="'alert-' + (alert.type || 'warning')">
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-    </alert>
+    </div>
     <!-- hasErrors Alerts -->
   </div>
 </div>
@@ -131,13 +131,13 @@
         <td colspan="6">
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
             <span>{{ route.name }}</span>
-            <label ng-if="route.status == 'enabled'" tooltip="Enabled">
+            <label ng-if="route.status == 'enabled'" uib-tooltip="Enabled">
               <i class="glyphicon glyphicon-ok-circle" style="color: #3c763d;"></i>
             </label>
-            <label ng-if="route.status == 'disabled'" tooltip="Disabled">
+            <label ng-if="route.status == 'disabled'" uib-tooltip="Disabled">
               <i class="glyphicon glyphicon-remove-circle" style="color: #f0ad4e;"></i>
             </label>
-            <label ng-if="route.primary" tooltip="The primary route is the route from which the http response will be read and returned to the client." class="tooltip-wide">
+            <label ng-if="route.primary" uib-tooltip="The primary route is the route from which the http response will be read and returned to the client." class="tooltip-wide">
               <i class="glyphicon glyphicon-star" style="color: #428bca"></i>
             </label>
           </div>

@@ -1,20 +1,20 @@
 <form class="form-inline" role="form">
   <div class="form-group">
     <div class="btn-group">
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'1h'">1h</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'1d'">1d</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'1w'">1w</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'1m'">1m</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'1y'">1y</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'5y'">5y</label>
-      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" btn-radio="'custom'">Custom</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'1h'">1h</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'1d'">1d</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'1w'">1w</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'1m'">1m</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'1y'">1y</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'5y'">5y</label>
+      <label class="btn btn-primary" ng-change="onChange()" ng-model="selectedDateType.period" uib-btn-radio="'custom'">Custom</label>
     </div>
   </div>
   <div class="settings_div">
     <div ng-hide="selectedDateType.period !== 'custom'" class="form-group">
       <label>
         Breakdown
-        <i tooltip-placement="top" tooltip="The precision of the metrics to generate the graphs for" class="glyphicon glyphicon-question-sign"></i>
+        <i tooltip-placement="top" uib-tooltip="The precision of the metrics to generate the graphs for" class="glyphicon glyphicon-question-sign"></i>
       </label><br/>
       <select class="form-control" ng-model="selectedDateType.type" ng-change="customDateBreakdownChange()">
         <option ng-disabled="!optionsEnabled.minute" value="minute">minute</option>

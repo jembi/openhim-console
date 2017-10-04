@@ -1,16 +1,11 @@
-'use strict';
+export function ConfirmModalCtrl ($scope, $uibModalInstance, confirmObject) {
+  $scope.confirmObject = confirmObject
 
-angular.module('openhimConsoleApp')
-  .controller('ConfirmModalCtrl', function ($scope, $modalInstance, confirmObject) {
+  $scope.confirmed = function () {
+    $uibModalInstance.close()
+  }
 
-    $scope.confirmObject = confirmObject;
-
-    $scope.confirmed = function() {
-      $modalInstance.close();
-    };
-
-    $scope.cancelled = function () {
-      $modalInstance.dismiss('cancel');
-    };
-
-  });
+  $scope.cancelled = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}

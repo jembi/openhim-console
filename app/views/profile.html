@@ -14,7 +14,7 @@
 
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Top Alerts -->
 
 
@@ -86,13 +86,13 @@
                 <div class="checkbox" style="margin-top: 0px;">
                   <label>
                     <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                   </label>
                 </div>
               </div>
@@ -105,22 +105,22 @@
             </fieldset>
 
             <!-- Server Alerts -->
-            <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
             <!-- Server Alerts -->
 
             <button type="button" class="btn btn-primary" style="float: left;" ng-click="submitFormProfile()">Save changes</button>
 
             <!-- hasErrors Alerts -->
-            <alert style="float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;" ng-repeat="alert in alerts.hasErrors" type="alert.type">
+            <div uib-alert style="float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
               <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-            </alert>
+            </div>
             <!-- hasErrors Alerts -->
 
           </form>
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(user || alerts.server)">
-            <img src="images/loading.gif" alt="Loading..." />
+            <span id="loading-spinner" alt="Loading..."></span>
           </div>
 
         </div>

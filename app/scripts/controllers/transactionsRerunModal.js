@@ -1,36 +1,44 @@
-'use strict';
+const MAX_BATCH_SIZE = 64
 
-angular.module('openhimConsoleApp')
-  .controller('TransactionsRerunModalCtrl', function ($scope, $modalInstance, Api, Notify, Alerting, transactionsSelected, rerunTransactionsSelected) {
+function * getBatchSizes (currentBatchSize) {
+  yield { value: 1, label: 'One at a time' }
 
-    $scope.rerunSuccess = false;
-    $scope.transactionsSelected = transactionsSelected;
-    $scope.rerunTransactionsSelected = rerunTransactionsSelected;
-    $scope.taskSetup = {};
-    $scope.taskSetup.batchSize = 1;
-    $scope.taskSetup.paused = false;
+  let currentValue = 2
+  while (currentValue <= Math.min(currentBatchSize, MAX_BATCH_SIZE)) {
+    yield { value: currentValue, label: `${currentValue} at a time` }
+    currentValue *= 2
+  }
+}
 
-    if (rerunTransactionsSelected === 1 && transactionsSelected.length === 1) {
-      Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun');
-    } else if( rerunTransactionsSelected > 0 ) {
-      Alerting.AlertAddMsg('rerun', 'warning', rerunTransactionsSelected + ' of these transactions have already been rerun');
-    }
+export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Notify, Alerting, transactionsSelected, rerunTransactionsSelected) {
+  $scope.rerunSuccess = false
+  $scope.transactionsSelected = transactionsSelected
+  $scope.rerunTransactionsSelected = rerunTransactionsSelected
+  $scope.taskSetup = {}
+  $scope.taskSetup.batchSize = 1
+  $scope.taskSetup.paused = false
+  $scope.batchSizes = Array.from(getBatchSizes(transactionsSelected.length))
 
-    var onSuccess = function() {
-      // On success
-      Notify.notify('TasksChanged');
-      $scope.rerunSuccess = true;
-      $scope.$emit('transactionRerunSuccess');
-    };
+  if (rerunTransactionsSelected === 1 && transactionsSelected.length === 1) {
+    Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun')
+  } else if (rerunTransactionsSelected > 0) {
+    Alerting.AlertAddMsg('rerun', 'warning', rerunTransactionsSelected + ' of these transactions have already been rerun')
+  }
 
-    $scope.confirmRerun = function() {
-      var tIds = $scope.transactionsSelected;
-      $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused });
-      $scope.task.$save({}, onSuccess);
-    };
+  function onSuccess () {
+    // On success
+    Notify.notify('TasksChanged')
+    $scope.rerunSuccess = true
+    $scope.$emit('transactionRerunSuccess')
+  };
 
-    $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
-    };
+  $scope.confirmRerun = function () {
+    let tIds = $scope.transactionsSelected
+    $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused })
+    $scope.task.$save({}, onSuccess)
+  }
 
-  });
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel')
+  }
+}

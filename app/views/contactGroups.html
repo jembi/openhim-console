@@ -14,7 +14,7 @@
         </div>
 
         <!-- Top Alerts -->
-        <alert ng-repeat="alert in alerts.top" type="alert.type">{{alert.msg}}</alert>
+        <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
         <!-- Top Alerts -->
 
         <div class="panel-body">
@@ -44,15 +44,15 @@
 
           <!-- show loading gif when scope object empty and no server errors exist -->
           <div class="loadingContainer" ng-show="!(contactGroups || alerts.server)">
-            <img src="images/loading.gif" alt="Loading..." />
+            <span id="loading-spinner" alt="Loading..."></span>
           </div>
 
           <!-- Server Alerts -->
-          <alert ng-repeat="alert in alerts.server" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
           <!-- Bottom Alerts -->
-          <alert ng-repeat="alert in alerts.bottom" type="alert.type">{{alert.msg}}</alert>
+          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Bottom Alerts -->
 
           <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> Contact List</button>

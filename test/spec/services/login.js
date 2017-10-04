@@ -1,30 +1,28 @@
-'use strict';
-/* jshint expr: true */
+'use strict'
 
 describe('Service: login', function () {
-
   // load the service's module
-  beforeEach(module('openhimConsoleApp'));
+  beforeEach(module('openhimConsoleApp'))
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
-    });
-  });
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+    })
+  })
 
   // instantiate service
-  var login, httpBackend,Authinterceptor;
-  beforeEach(inject(function (_login_, $httpBackend,_Authinterceptor_) {
-    login = _login_;
+  var login, httpBackend, Authinterceptor
+  beforeEach(inject(function (_login_, $httpBackend, _Authinterceptor_) {
+    login = _login_
 
-    httpBackend = $httpBackend;
-    Authinterceptor = _Authinterceptor_;
+    httpBackend = $httpBackend
+    Authinterceptor = _Authinterceptor_
 
     httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
       salt: 'test-salt',
       ts: new Date(new Date().getTime() + 3600000).toISOString() // 1 hour ahead
-    });
+    })
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
       '__v': 0,
@@ -38,51 +36,49 @@ describe('Service: login', function () {
       'groups': [
         'admin'
       ]
-    });
-  }));
+    })
+  }))
 
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  afterEach(function () {
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  })
 
   it('should login a user and fetch the currently logged in user', function () {
-    httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'));
-    httpBackend.expectGET(new RegExp('.*/users/test@user.org'));
-    login.login('test@user.org', 'test-password', function(){});
-    
-    httpBackend.flush();
+    httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'))
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
+    login.login('test@user.org', 'test-password', function () {})
 
-    var user = login.getLoggedInUser();
+    httpBackend.flush()
 
-    user.should.exist;
-    user.should.have.property('email', 'test@user.org');
-    user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160');
+    var user = login.getLoggedInUser()
 
-  });
+    user.should.exist()
+    user.should.have.property('email', 'test@user.org')
+    user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
+  })
 
   it('should logout a user', function () {
-    login.logout();
-    var user = login.getLoggedInUser();
-    (user === null).should.be.true;
-  });
+    login.logout()
+    var user = login.getLoggedInUser()
+    ;expect((user === null)).to.be.true()
+  })
 
-  it('should have a timediff', function(){
-    login.login('test@user.org', 'test-password', function(){});
-    httpBackend.flush();
-    var user = Authinterceptor.getLoggedInUser();
-    user.should.have.property('timeDiff');
-  });
+  it('should have a timediff', function () {
+    login.login('test@user.org', 'test-password', function () {})
+    httpBackend.flush()
+    var user = Authinterceptor.getLoggedInUser()
+    user.should.have.property('timeDiff')
+  })
 
   it('should check if a user is currently logged in', function () {
-    login.isLoggedIn().should.be.false;
+    expect(login.isLoggedIn()).to.be.false()
 
-    login.login('test@user.org', 'test-password', function(){});
-    httpBackend.flush();
+    login.login('test@user.org', 'test-password', function () {})
+    httpBackend.flush()
 
-    login.isLoggedIn().should.be.true;
-    login.logout();
-    login.isLoggedIn().should.be.false;
-  });
-
-});
+    expect(login.isLoggedIn()).to.be.true()
+    login.logout()
+    expect(login.isLoggedIn()).to.be.false()
+  })
+})

@@ -1,6 +1,12 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+@import 'morris.css';
+@import '~highlight.js/styles/default.css';
+@import '~highlight.js/styles/github.css';
+@import '~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
+@import '~angular-bootstrap-colorpicker/css/colorpicker.css';
+@import 'angular-taglist-directive.css';
 
-html,
-body {
+html,body {
    margin:0;
    padding:0;
    height:100%;
@@ -98,6 +104,30 @@ footer .copy{
 .header .logo h1 a{
    color:#fff;
    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.logo-title{
+  display: inline-block;
+  position: relative;
+  top: -15px;
+}
+
+.logo-image{
+  display: inline-block;
+  height: 43px;
+  width: 140px;
+  background: url(../images/openhim-logo-green.png) no-repeat;
+  background-size: contain;
+  margin: 0 20px;
+}
+
+#loading-spinner {
+  display: inline-block;
+  height: 43px;
+  width: 140px;
+  background: url(../images/loading.gif) no-repeat;
+  background-size: contain;
+  margin: 0 20px;
 }
 
 .header .logo h1 a:hover{
@@ -741,7 +771,9 @@ body {
 .addUrlRegexDelimiterDiv label:hover { cursor: pointer; }
 
 /*ng-cloak style to force no display at first load*/
-[ng-cloak]{ display: none !important; }
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 .primaryRoute { background: #428bca; color: #fff; }
 .editable-input { padding: 5px; height: 25px; font-size: 12px; margin: 3px 0px !important; }
@@ -1245,7 +1277,7 @@ footer a {
 .nav-tabs > li > a { border-radius: 0px; }
 .form-control { border-radius: 0px; }
 .input-group-addon { border-radius: 0px; }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary { background-color: #95AE32; }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active,.btn-primary.active:hover, .open .dropdown-toggle.btn-primary,.btn-primary:active:hover { background-color: #95AE32; }
 .login-wrapper .box{ border-radius: 0px; }
 .login-wrapper{ margin: 100px auto 30px auto; }
 .login-wrapper .box .signup{ border-radius: 0px; }
@@ -1432,3 +1464,9 @@ label { position: relative; }
 
 .readable-text { font-size: 16px; }
 .notify-filters-applied { color: orange; }
+
+@media (min-width: 768px) {
+  .form-inline .form-control {
+      width:100%;
+  }
+}

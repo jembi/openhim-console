@@ -1,0 +1,6 @@
+<div class="taglist">
+  <span class="tag" data-ng-repeat="tag in tagData">
+  <a href data-ng-click="tagData.splice($index, 1)">x</a> <span>{{tag}}</span></span>
+  <div class="tag-input" ng-transclude></div>
+  <div class="tags_clear"></div>
+</div>

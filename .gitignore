@@ -1,4 +1,5 @@
 node_modules
+package-lock.json
 dist
 .tmp
 .sass-cache
@@ -18,4 +19,4 @@ packaging/Vagrantfile
 \#*\#
 **/.vagrant
 npm-debug.log
-Dockerfile
+.vscode

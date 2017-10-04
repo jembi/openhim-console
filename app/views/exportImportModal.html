@@ -84,9 +84,9 @@
   <div class="modal-footer">
     <div>
       <!-- hasErrors Alerts -->
-      <alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsImport" type="alert.type">
+      <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsImport" ng-class="'alert-' + (alert.type || 'warning')">
         <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
-      </alert>
+      </div>
       <!-- hasErrors Alerts -->
       <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
       <button type="button" class="btn btn-primary" ng-click="saveImport()">Import changes</button>

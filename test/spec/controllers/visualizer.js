@@ -1,20 +1,18 @@
-'use strict';
-/* jshint expr: true */
+'use strict'
 /* global sinon: false */
 
 describe('Controller: VisualizerCtrl', function () {
-
   // load the controller's module
-  beforeEach(module('openhimConsoleApp'));
+  beforeEach(module('openhimConsoleApp'))
 
   // setup config constant to be used for API server details
-  beforeEach(function(){
-    module('openhimConsoleApp', function($provide){
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' });
-    });
-  });
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+    })
+  })
 
-  var scope, createController, httpBackend, modal;
+  var scope, createController, httpBackend, modal
 
   var visualizers = [{
     'name': 'Test Visualizer 1',
@@ -108,37 +106,35 @@ describe('Controller: VisualizerCtrl', function () {
       }
     ],
     'mediators': []
-  }];
+  }]
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $modal) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+    httpBackend = $httpBackend
+    modal = $uibModal
 
-    httpBackend = $httpBackend;
-    modal = $modal;
+    $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers)
 
-    $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers);
+    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() })
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() });
+    $httpBackend.when('PUT', new RegExp('.*/users/test@user.org')).respond()
 
-    $httpBackend.when('PUT', new RegExp('.*/users/test@user.org')).respond();
+    createController = function () {
+      scope = $rootScope.$new()
+      return $controller('VisualizerCtrl', { $scope: scope })
+    }
+  }))
 
-    createController = function() {
-      scope = $rootScope.$new();
-      return $controller('VisualizerCtrl', { $scope: scope });
-    };
-
-  }));
-
-  afterEach(function() {
-    httpBackend.verifyNoOutstandingExpectation();
-    httpBackend.verifyNoOutstandingRequest();
-  });
+  afterEach(function () {
+    httpBackend.verifyNoOutstandingExpectation()
+    httpBackend.verifyNoOutstandingRequest()
+  })
 
   it('should add visualizer settings to the scope, defaulting to the first visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
     scope.visualizerSettings.should.deep.equal({
       'name': 'Test Visualizer 1',
@@ -191,140 +187,141 @@ describe('Controller: VisualizerCtrl', function () {
       'speed': 0,
       'maxSpeed': 5,
       'maxTimeout': 5000
-    });
-  });
+    })
+  })
 
   it('should add visualizer settings to the scope, defaulting to a user last viewed visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } });
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ 'email': 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } })
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2');
-  });
+    scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2')
+  })
 
   it('should load another visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.selectVis(visualizers[1]);
-    httpBackend.flush();
+    scope.selectVis(visualizers[1])
+    httpBackend.flush()
 
-    scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2');
-  });
+    scope.visualizerSettings.should.have.property('name', 'Test Visualizer 2')
+  })
 
   it('should update a users last viewed visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
     httpBackend.expect('PUT', new RegExp('.*/users/test@user.org'), function (data) {
-      return !!JSON.parse(data).settings.selectedVisualizer;
-    }).respond({});
-    scope.selectVis(visualizers[1]);
-    httpBackend.flush();
+      return !!JSON.parse(data).settings.selectedVisualizer
+    }).respond({})
+    scope.selectVis(visualizers[1])
+    httpBackend.flush()
 
-    var consoleSession = localStorage.getItem('consoleSession');
-    consoleSession = JSON.parse(consoleSession);
+    var consoleSession = localStorage.getItem('consoleSession')
+    consoleSession = JSON.parse(consoleSession)
 
-    consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal('Test Visualizer 2');
-  });
+    consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal('Test Visualizer 2')
+  })
 
   it('should open a modal to confirm deletion of a visualizer and remove a visualizer on confirmation', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open', function () {
       return {
         result: {
-          then: function(callback) {
-            callback();
+          then: function (callback) {
+            callback()
           }
         }
-      };
-    });
-    var vis = angular.copy(visualizers[0], vis);
-    vis.$remove = sinon.spy();
+      }
+    })
+    var vis
+    vis = angular.copy(visualizers[0], vis)
+    vis.$remove = sinon.spy()
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.confirmRemoveVis(vis, 0);
-    modalSpy.should.be.calledOnce;
-    vis.$remove.should.be.calledOnce;
-    scope.visualizers.length.should.be.equal(1);
-    scope.visualizers[0].should.have.property('name', 'Test Visualizer 2');
-  });
+    scope.confirmRemoveVis(vis, 0)
+    modalSpy.should.have.been.calledOnce()
+    vis.$remove.should.have.been.calledOnce()
+    scope.visualizers.length.should.be.equal(1)
+    scope.visualizers[0].should.have.property('name', 'Test Visualizer 2')
+  })
 
   it('should open a modal to confirm deletion of a visualizer and NOT remove a visualizer on cancellation', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open', function () {
       return {
         result: {
-          then: function(callback, cancel) {
-            cancel();
+          then: function (callback, cancel) {
+            cancel()
           }
         }
-      };
-    });
-    var vis = angular.copy(visualizers[0], vis);
-    vis.$remove = sinon.spy();
+      }
+    })
+    var vis
+    vis = angular.copy(visualizers[0], vis)
+    vis.$remove = sinon.spy()
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.confirmRemoveVis(vis, 0);
-    modalSpy.should.be.calledOnce;
-    vis.$remove.should.not.be.called;
-    scope.visualizers.length.should.be.equal(2);
-    scope.visualizers[0].should.have.property('name', 'Test Visualizer 1');
-  });
+    scope.confirmRemoveVis(vis, 0)
+    modalSpy.should.have.been.calledOnce()
+    vis.$remove.should.not.have.been.called()
+    scope.visualizers.length.should.be.equal(2)
+    scope.visualizers[0].should.have.property('name', 'Test Visualizer 1')
+  })
 
-  it('should open a modal to add a new visualizer', function (){
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+  it('should open a modal to add a new visualizer', function () {
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open', function () {
       return {
         result: {
-          then: function(callback, cancel) {
-            cancel();
+          then: function (callback, cancel) {
+            cancel()
           }
         }
-      };
-    });
+      }
+    })
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.addVisualiser();
-    modalSpy.should.be.calledOnce;
-  });
+    scope.addVisualiser()
+    modalSpy.should.have.been.calledOnce()
+  })
 
   it('should open a modal to edit a visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
-    var modalSpy = sinon.stub(modal, 'open');
+    var modalSpy = sinon.stub(modal, 'open')
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.editVisualiser();
-    modalSpy.should.be.calledOnce;
-  });
+    scope.editVisualiser()
+    modalSpy.should.have.been.calledOnce()
+  })
 
   it('should open a modal to duplicate a visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'});
+    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({'email': 'test@user.org'})
 
-    var modalSpy = sinon.stub(modal, 'open');
+    var modalSpy = sinon.stub(modal, 'open')
 
-    createController();
-    httpBackend.flush();
+    createController()
+    httpBackend.flush()
 
-    scope.duplicateVisualiser();
-    modalSpy.should.be.calledOnce;
-  });
-
-});
+    scope.duplicateVisualiser()
+    modalSpy.should.have.been.calledOnce()
+  })
+})
