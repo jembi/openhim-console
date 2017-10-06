@@ -1,6 +1,0 @@
-{
-	"editor.tabSize":2,
-  "editor.insertSpaces": true,
-  "javascript.validate.enable":false,
-  "javascript.format.insertSpaceBeforeFunctionParenthesis": true
-}
