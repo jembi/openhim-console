@@ -1,7 +1,18 @@
 language: node_js
 before_script: npm run build:prod
 after_success:
-  - .travis/build_docker.sh
+  - ".travis/build_docker.sh"
 node_js:
-  - 'lts/*'
+  - '8.6'
 sudo: false
+before_install:
+  - ".travis/setup.sh"
+deploy:
+  - provider: script
+    script: ".travis/deploy.sh test"
+    on:
+      branch: test
+  - provider: script
+    script: ".travis/deploy.sh staging"
+    on:
+      branch: staging

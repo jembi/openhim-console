@@ -2,12 +2,13 @@
   "version": "1.11.1",
   "minimumCoreVersion": "3.4.0",
   "protocol": "https",
-  "host": "localhost",
+  "host": "188.166.147.164",
   "port": 8080,
-  "title": "Admin Console",
+  "title": "Admin Console - Staging Environment ",
   "footerTitle": "OpenHIM Administration Console",
   "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
   "loginBanner": "",
   "mediatorLastHeartbeatWarningSeconds": 60,
   "mediatorLastHeartbeatDangerSeconds": 120
 }
+
