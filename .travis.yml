@@ -1,7 +1,10 @@
 language: node_js
 before_script: npm run build:prod
 after_success:
-  - .travis/build_docker.sh
+- ".travis/build_docker.sh"
 node_js:
-  - 'lts/*'
+- lts/*
 sudo: false
+before_install:
+- openssl aes-256-cbc -K $encrypted_454006dcd4e6_key -iv $encrypted_454006dcd4e6_iv
+  -in deploy_key.enc -out deploy_key -d
