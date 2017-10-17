@@ -46,3 +46,5 @@ req.end()
 
 // Keep version of console consistent throughout project
 replaceStringInline(/"version":"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}"/, `"version": "${currentConsoleVersion}"`, ['./app/config/default.json'])
+replaceStringInline(/"version":"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}"/, `"version": "${currentConsoleVersion}"`, ['./.travis/test.json'])
+replaceStringInline(/"version":"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}"/, `"version": "${currentConsoleVersion}"`, ['./.travis/staging.json'])
