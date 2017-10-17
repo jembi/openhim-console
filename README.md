@@ -74,6 +74,15 @@ For unit testing we are using [mocha](http://mochajs.org/) with [chai.js](http:/
 
 This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular generator](https://github.com/yeoman/generator-angular). You can find more detials about the command available by looking at the docs of those tools.
 
+
+Deployments
+------------
+
+All commits to the `master` branch will automatically trigger a build of the latest changes into a docker image on dockerhub. 
+
+All commits directly to `staging` or `test` will automatically build and deploy a docker image to the test and staging servers respectively.
+
+
 Contributing
 ------------
 
