@@ -59,6 +59,13 @@
         <div ng-controller="channelAlertsCtrl" ng-include="'views/partials/channels-tab-alerts.html'"></div>
       </uib-tab>
 
+      <!-- ************* TAB FOR CHANNEL LOGS ************** -->
+      <uib-tab class="{{ngError.logsTab === true ? 'has-error-tab' : ''}}" active="selectedTab.logs">
+        <uib-tab-heading>Logs</uib-tab-heading>
+        <h3>Audit Logs</h3>
+        <div ng-include="'views/partials/channels-tab-logs.html'"></div>
+      </uib-tab>
+
     </uib-tabset>
   </fieldset>
 </div>
