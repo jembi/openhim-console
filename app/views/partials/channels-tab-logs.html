@@ -1,0 +1,21 @@
+<div class="alert alert-warning" ng-if="channelAudits.length === 0">
+  No audits found
+</div>
+<table class="table table-striped" ng-if="channelAudits.length > 0">
+  <thead>
+      <tr>
+        <th style="width:100px;">Date</th>
+        <th style="width:150px;">User</th>
+        <th>Changes</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="audit in channelAudits | orderBy:['-date']">
+      <td data-title="Date">{{audit.date | date:'medium'}}</td>
+      <td data-title="User">{{audit.updatedBy.name}}</td>
+      <td data-title="Updates">
+        <audit-operation audit="audit" />
+      </td>
+    </tr>
+  </tbody>
+</table>

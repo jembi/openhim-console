@@ -9,7 +9,12 @@ export function Api ($rootScope, $resource, config) {
     Authenticate: $resource(server + '/authenticate/:email'),
 
     Channels: $resource(server + '/channels/:channelId', { channelId: '@_id' }, {
-      update: { method: 'PUT' }
+      update: { method: 'PUT' },
+      audits: {
+        method: 'GET',
+        url: server + '/channels/:channelId/audits',
+        isArray: true
+      }
     }),
 
     TriggerPollingChannels: $resource(server + '/channels/:channelId/trigger', { channelId: '@_id' }, {}),

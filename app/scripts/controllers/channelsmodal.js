@@ -17,6 +17,22 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     notifyUser()
   };
 
+  function filterEmptyAdds (operation) {
+    // Only filter adds
+    if (operation.op !== 'add') {
+      return true
+    }
+    // Filter null or undefined values
+    if (operation.value == null) {
+      return false
+    }
+    // Filter empty arrays
+    if (Array.isArray(operation.value) && operation.value.length === 0) {
+      return false
+    }
+    return true
+  }
+
   /****************************************************************/
   /**   These are the functions for the Channel initial load     **/
   /****************************************************************/
@@ -41,10 +57,17 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   },
     function () { /* server error - could not connect to API to get Users */ })
 
+  $scope.channelAudits = []
   if (channel) {
     $scope.update = true
     $scope.channel = Api.Channels.get({ channelId: channel._id }, function (channel) {
       $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0
+    })
+    Api.Channels.audits({ channelId: channel._id }, function(audits) {
+      for (const audit of audits) {
+        audit.ops = audit.ops.filter(filterEmptyAdds)
+      }
+      $scope.channelAudits = audits
     })
   } else {
     $scope.update = false
@@ -69,6 +92,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     case 'Data Control': $scope.selectedTab.dataControl = true; break
     case 'Access Control': $scope.selectedTab.accessControl = true; break
     case 'Alerts': $scope.selectedTab.alerts = true; break
+    case 'Logs': $scope.selectedTab.logs = true; break
     default: $scope.selectedTab.basicInfo = true; break
   }
 

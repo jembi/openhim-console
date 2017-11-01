@@ -1,0 +1,32 @@
+<button class="btn btn-xs btn-link pull-right" ng-click="toggleExpanded()">
+  {{expanded ? 'Hide' : 'Show'}}
+</button>
+<div>Made {{audit.ops.length}} change(s)</div>
+<ul style="margin-top:5px;padding-left:15px;" ng-if="expanded">
+  <li ng-repeat="op in audit.ops">
+    <div ng-switch="op.op">
+      <!-- Added a field -->
+      <div ng-switch-when="add">
+        <div ng-if="isObject(op.value)">
+          Added {{op.path}} with value:
+          <pre>{{op.value | json}}</pre>
+        </div>
+        <div ng-if="!isObject(op.value)">
+          Added {{op.path}} with value {{op.value | json}}
+        </div>
+      </div>
+      <!-- Replaced a field -->
+      <div ng-switch-when="replace">
+        <div ng-if="isObject(op.value)">
+          Replaced {{op.path}} with:
+          <pre>{{op.value | json}}</pre>
+        </div>
+        <div ng-if="!isObject(op.value)">
+          Replaced {{op.path}} with {{op.value | json}}
+        </div>
+      </div>
+      <!-- Removed a field -->
+      <div ng-switch-when="remove">Removed {{op.path}}</div>
+    </div>
+  </li>
+</ul>
