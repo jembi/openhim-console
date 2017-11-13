@@ -1,9 +1,9 @@
 import { viewPage } from '../utils'
 import raphael from 'raphael'
-import * as Morris from 'morris.js' // This needs to be replaced
+import 'morris.js'
 
 window.Raphael = raphael
-console.log(raphael)
+const { Morris } = window
 
 export function morrisLineChart ($parse) {
   return {
@@ -17,11 +17,11 @@ export function morrisLineChart ($parse) {
         let data = newVal
 
         if (data) {
-          // if morris bar chart exist then update it
+        // if morris bar chart exist then update it
           if (scope.morrisLineChart) {
             scope.morrisLineChart.setData(data.data)
           } else {
-            // create Morris Line Chart if it doesnt yet exist
+          // create Morris Line Chart if it doesnt yet exist
             scope.morrisLineChart = new Morris.Line({
               element: element,
               data: data.data,
@@ -50,11 +50,11 @@ export function morrisBarChart ($parse) {
         let data = newVal
 
         if (data) {
-          // if morris bar chart exist then update it
+        // if morris bar chart exist then update it
           if (scope.morrisBarChart) {
             scope.morrisBarChart.setData(data.data)
           } else {
-            // create Morris Bar Chart if it doesnt yet exist
+          // create Morris Bar Chart if it doesnt yet exist
             scope.morrisBarChart = new Morris.Bar({
               element: element,
               data: data.data,
@@ -69,7 +69,7 @@ export function morrisBarChart ($parse) {
               hideHover: 'auto'
             }).on('click', function (i, row) {
               if (row.link) {
-                // on status click direct user to channel metrics page
+              // on status click direct user to channel metrics page
                 viewPage(row.link)
               }
             })
@@ -91,9 +91,9 @@ export function morrisDonutChart ($parse) {
       scope.$watchCollection(exp, function (newVal) {
         let data = newVal
 
-        // we have to rebuild the morris chart else new colours won't get picked up
-        // in general this approach is a bit problematic with the other charts, so should be avoided
-        // (e.g. onClick events not getting cleared...)
+      // we have to rebuild the morris chart else new colours won't get picked up
+      // in general this approach is a bit problematic with the other charts, so should be avoided
+      // (e.g. onClick events not getting cleared...)
 
         elem.empty()
         if (data) {
@@ -102,7 +102,9 @@ export function morrisDonutChart ($parse) {
             data: data.data,
             colors: data.colors,
             resize: true,
-            formatter: function (y) { return y + '%' }
+            formatter: function (y) {
+              return y + '%'
+            }
           })
         }
       })

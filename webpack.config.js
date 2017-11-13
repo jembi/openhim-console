@@ -12,10 +12,6 @@ if (isProduction) {
   console.log('Creating production bundle')
 }
 
-const devServerConfig = {
-  overlay: true
-}
-
 const config = {
   entry: './app/scripts/index',
   output: {
@@ -25,7 +21,7 @@ const config = {
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.css', '.html'],
     alias: {
-      'morris.js': path.resolve(__dirname, 'node_modules/morris.js/morris.min.js'),
+      'morris.js': path.resolve(__dirname, 'node_modules/morris.js/morris.js'),
       '~': path.resolve(__dirname, 'app')
     }
   },
@@ -119,8 +115,6 @@ if (isProduction) {
   }, {
     comments: false
   }))
-} else {
-  config.devServer = devServerConfig
 }
 
 module.exports = config

@@ -63,7 +63,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     $scope.channel = Api.Channels.get({ channelId: channel._id }, function (channel) {
       $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0
     })
-    Api.Channels.audits({ channelId: channel._id }, function(audits) {
+    Api.Channels.audits({ channelId: channel._id }, function (audits) {
       for (const audit of audits) {
         audit.ops = audit.ops.filter(filterEmptyAdds)
       }
