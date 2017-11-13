@@ -64,7 +64,6 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   $scope.autoRetry.enableMaxAttempts = false
 
   $scope.methods = Object.assign({}, defaultHttpMethods)
-  $scope.httpMethodKeys = Object.keys(defaultHttpMethods)
 
   // get the users for the Channel taglist option and alert users - used in two child controllers
   Api.Users.query(function (users) {
