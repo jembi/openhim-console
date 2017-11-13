@@ -1,6 +1,6 @@
 import { getTimeForTimezone, getTimezoneOffset } from '../utils'
 
-let defaultHttpMethods = {
+const defaultHttpMethods = {
   GET: false,
   POST: false,
   DELETE: false,
@@ -64,6 +64,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   $scope.autoRetry.enableMaxAttempts = false
 
   $scope.methods = Object.assign({}, defaultHttpMethods)
+  $scope.httpMethodKeys = Object.keys(defaultHttpMethods)
 
   // get the users for the Channel taglist option and alert users - used in two child controllers
   Api.Users.query(function (users) {
@@ -389,7 +390,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
 function populateHttpMethods (channel, methods) {
   if (channel.methods) {
-    for (let channelMethod of channel.methods) {
+    for (const channelMethod of channel.methods) {
       if (channelMethod) {
         methods[channelMethod] = true
       }
