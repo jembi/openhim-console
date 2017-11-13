@@ -359,12 +359,8 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   }
 
   $scope.addHttpMethodsToChannel = function () {
-    $scope.channel.methods = []
-
-    Object.keys($scope.methods).forEach(function (key) {
-      if ($scope.methods[key]) {
-        $scope.channel.methods.push(key)
-      }
+    $scope.channel.methods = Object.keys($scope.methods).filter(function (key) {
+      return $scope.methods[key]
     })
   }
 
