@@ -931,8 +931,10 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       Api.Transactions.query(filters, function (transactions) {
         lastPollingCompleted = true
         transactions.reverse().forEach(function (trx) {
-          $scope.transactions.pop()
           $scope.transactions.unshift(trx)
+          if ($scope.transactions.length > $scope.settings.filter.limit) {
+            $scope.transactions.pop()
+          }
           $scope.baseIndex--
         })
       })
