@@ -22,6 +22,40 @@
   </div>
 </div>
 
+<div class="form-group-2columns" ng-show="channel.type == 'http'">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.methods }">
+    <label><span>*</span>Allowed HTTP methods:</label>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.POST" ng-checked="methods.POST">POST</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.GET" ng-checked="methods.GET">GET</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.OPTIONS" ng-checked="methods.OPTIONS">OPTIONS</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.HEAD" ng-checked="methods.HEAD">HEAD</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.PUT" ng-checked="methods.PUT">PUT</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.DELETE" ng-checked="methods.DELETE">DELETE</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.TRACE" ng-checked="methods.TRACE">TRACE</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.CONNECT" ng-checked="methods.CONNECT">CONNECT</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="methods.PATCH" ng-checked="methods.PATCH">PATCH</label>
+    </div>
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>    
+  </div>
+</div>
+
 <div class="form-group-2columns" ng-show="channel.type == 'tcp' || channel.type == 'tls'">
   <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
     <label><span>*</span> TCP Host</label>
