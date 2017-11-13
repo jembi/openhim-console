@@ -254,6 +254,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.channel.$update.should.have.been.called()
 
     scope.channel.should.have.property('name', 'ChannelName')
+    scope.channel.should.have.property('methods')
+    scope.channel.methods.length.should.equal(9)
     scope.channel.should.have.property('urlPattern', 'sample/api')
     scope.channel.should.have.property('matchContentXpath', 'XPath')
     scope.channel.should.have.property('matchContentValue', 'Value')
