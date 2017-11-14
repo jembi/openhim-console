@@ -19,7 +19,6 @@
         <!-- Top Alerts -->
         
         <div class="panel-body">
-
           <!-- Filter options -->
           <div class="transaction-filter-options">
 
@@ -37,16 +36,6 @@
                   <div class="btn-group" style="float: left; clear: both;">
                     <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'same'">Same Tab</label>
                     <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'new'">New Tab</label>
-                  </div>
-                </div>
-                <div class="settings_div">
-                  <label style="float: left">
-                    Auto-Update Transaction List
-                    <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-                  </label>
-                  <div class="btn-group" style="float: left; clear: both;">
-                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="true" ng-click="startPolling()">Enabled</label>
-                    <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="false" ng-click="stopPolling()">Disabled</label>
                   </div>
                 </div>
               </uib-tab>
