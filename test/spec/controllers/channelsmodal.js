@@ -24,8 +24,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
-      { 'group': 'Group 1', 'users': [ {'user': 'User 1', 'method': 'sms', 'maxAlerts': 'no max'}, {'user': 'User 2', 'method': 'email', 'maxAlerts': '1 per day'}, {'user': 'User 3', 'method': 'email', 'maxAlerts': '1 per hour'} ] },
-      { 'group': 'Group 2', 'users': [ {'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max'} ] }
+      { 'group': 'Group 1', 'users': [{ 'user': 'User 1', 'method': 'sms', 'maxAlerts': 'no max' }, { 'user': 'User 2', 'method': 'email', 'maxAlerts': '1 per day' }, { 'user': 'User 3', 'method': 'email', 'maxAlerts': '1 per hour' }] },
+      { 'group': 'Group 2', 'users': [{ 'user': 'User 4', 'method': 'email', 'maxAlerts': 'no max' }] }
     ])
 
     // http request used in routes controller
@@ -36,7 +36,7 @@ describe('Controller: ChannelsModalCtrl', function () {
         'name': 'Test 1 Mediator',
         'description': 'Test 1 Description',
         'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': ['xdlab'], 'type': 'http' }
         ],
         'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }]
       }, {
@@ -45,7 +45,7 @@ describe('Controller: ChannelsModalCtrl', function () {
         'name': 'Test 2 Mediator',
         'description': 'Test 2 Description',
         'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': ['xdlab'], 'type': 'http' }
         ],
         'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
       }
@@ -53,8 +53,8 @@ describe('Controller: ChannelsModalCtrl', function () {
 
     // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      {'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
-      {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' } },
+      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' } }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels/.+/audits$')).respond([])
@@ -146,7 +146,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}]
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
 
     // run the validate
     scope.validateFormChannels()
@@ -195,7 +195,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}]
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
@@ -219,7 +219,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}]
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
@@ -227,16 +227,61 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.channel.$save.should.have.been.called()
   })
 
-  it('should run submitFormChannels() and check any validation errors - TRUE - Should update the record', function () {
+  it('should run submitFormChannels() and check any validation errors - TRUE - Should create the record', function () {
+    createController()
+    httpBackend.flush()
+
+    scope.channel.$save = sinon.spy()
+
+    // update is false so create new channel
+    scope.update = false
+    scope.channel.type = 'http'
+    scope.channel.name = 'ChannelName'
+    scope.channel.urlPattern = 'sample/api'
+    scope.channel.allow = ['allow1', 'allow2']
+    scope.matching.contentMatching = 'XML matching'
+    scope.channel.matchContentXpath = 'XPath'
+    scope.channel.matchContentValue = 'Value'
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
+    // run the submit
+    scope.submitFormChannels()
+    scope.ngError.should.have.property('hasErrors', false)
+    scope.channel.should.have.property('methods')
+    scope.channel.methods.length.should.eql(9)
+    // default http methods should have been saved if none specified
+    scope.channel.methods.should.eql([
+      'GET',
+      'POST',
+      'DELETE',
+      'PUT',
+      'OPTIONS',
+      'HEAD',
+      'TRACE',
+      'CONNECT',
+      'PATCH'
+    ])
+    scope.channel.$save.should.have.been.called()
+  })
+
+  it('should run submitFormChannels() and check any validation errors - TRUE - Should not update the record', function () {
     createController()
     httpBackend.flush()
 
     scope.channel.$update = sinon.spy()
-
-    // update is false so create new channel
     scope.update = true
-
     scope.channel.type = 'http'
+
+    scope.methods = {
+      GET: false,
+      POST: false,
+      DELETE: false,
+      PUT: false,
+      OPTIONS: false,
+      HEAD: false,
+      TRACE: false,
+      CONNECT: false,
+      PATCH: false
+    }
     scope.channel.authType = 'private'
     scope.matching.showRequestMatching = true
     scope.channel.name = 'ChannelName'
@@ -246,7 +291,40 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true}]
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
+
+    // run the submit
+    scope.submitFormChannels()
+    scope.ngError.should.have.property('hasErrors', true)
+  })
+
+  it('should run submitFormChannels() and check any validation errors - TRUE - Should update the record', function () {
+    createController()
+    httpBackend.flush()
+    scope.channel.$update = sinon.spy()
+    scope.update = true
+    scope.channel.type = 'http'
+    scope.methods = {
+      GET: true,
+      POST: false,
+      DELETE: false,
+      PUT: false,
+      OPTIONS: false,
+      HEAD: false,
+      TRACE: false,
+      CONNECT: false,
+      PATCH: false
+    }
+    scope.channel.authType = 'private'
+    scope.matching.showRequestMatching = true
+    scope.channel.name = 'ChannelName'
+    scope.channel.urlPattern = 'sample/api'
+    scope.urlPattern.regex = false
+    scope.channel.allow = ['allow1', 'allow2']
+    scope.matching.contentMatching = 'XML matching'
+    scope.channel.matchContentXpath = 'XPath'
+    scope.channel.matchContentValue = 'Value'
+    scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
 
     // run the submit
     scope.submitFormChannels()
@@ -255,7 +333,9 @@ describe('Controller: ChannelsModalCtrl', function () {
 
     scope.channel.should.have.property('name', 'ChannelName')
     scope.channel.should.have.property('methods')
-    scope.channel.methods.length.should.equal(9)
+    scope.channel.methods.length.should.eql(1)
+    // only GET http method should be saved
+    scope.channel.methods[0].should.eql('GET')
     scope.channel.should.have.property('urlPattern', 'sample/api')
     scope.channel.should.have.property('matchContentXpath', 'XPath')
     scope.channel.should.have.property('matchContentValue', 'Value')
@@ -375,8 +455,8 @@ describe('Controller: channelUserAccessCtrl', function () {
       { 'firstname': 'Ordinary', 'surname': 'User', 'email': 'normal@openim.org', 'passwordAlgorithm': 'sample/api', 'passwordHash': '539aa778930879b01b37ff62', 'passwordSalt': '79b01b37ff62', 'groups': ['limited', 'tester'] }
     ])
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
+      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
     ])
 
     scope = $rootScope.$new()
@@ -475,7 +555,7 @@ describe('Controller: channelRoutesCtrl', function () {
         'name': 'Test 1 Mediator',
         'description': 'Test 1 Description',
         'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+          { 'name': 'Mediator Channel 1', 'urlPattern': '/channel1', 'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }], 'allow': ['xdlab'], 'type': 'http' }
         ],
         'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': 1111, 'primary': false, 'type': 'http' }]
       }, {
@@ -484,15 +564,15 @@ describe('Controller: channelRoutesCtrl', function () {
         'name': 'Test 2 Mediator',
         'description': 'Test 2 Description',
         'defaultChannelConfig': [
-          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': [ 'xdlab' ], 'type': 'http' }
+          { 'name': 'Mediator Channel 2', 'urlPattern': '/channnel2', 'routes': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': true, 'type': 'http' }], 'allow': ['xdlab'], 'type': 'http' }
         ],
         'endpoints': [{ 'name': 'Route', 'host': 'localhost', 'port': '2222', 'primary': false, 'type': 'http' }, { 'name': 'Route 2', 'host': 'localhost2', 'port': '3333', 'primary': false, 'type': 'http' }]
       }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      {'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' }},
-      {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
+      { 'country': 'US', 'state': 'Missouri', 'locality': 'St. Louis', 'organization': 'Mallinckrodt Institute of Radiology', 'organizationUnit': 'Electronic Radiology Lab', 'commonName': 'MIR2014-16', 'emailAddress': 'moultonr@mir.wustl.edu', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c4f', 'validity': { 'start': '2014-10-09T13:15:28.000Z', 'end': '2016-11-29T13:15:28.000Z' } },
+      { 'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' } }
     ])
 
     scope = $rootScope.$new()
@@ -801,6 +881,6 @@ describe('Controller: channelAlertsCtrl', function () {
     createControllerParent()
     createController()
     scope.channel.should.be.ok()
-  /* STILL NEEDED */
+    /* STILL NEEDED */
   })
 })
