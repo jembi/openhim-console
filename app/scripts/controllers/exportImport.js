@@ -1,6 +1,6 @@
 import { buildBlob } from '../utils'
-import exportImportModal from '~/views/transactionsBodyModal'
-import transactionsBodyModal from '~/views/exportImportModal'
+import exportImportModal from '~/views/exportImportModal'
+import transactionsBodyModal from '~/views/transactionsBodyModal'
 import { TransactionsBodyModalCtrl, ExportImportModalCtrl } from './'
 
 export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
