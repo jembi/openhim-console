@@ -22,6 +22,16 @@
   </div>
 </div>
 
+<div class="form-group-2columns" ng-show="channel.type == 'http'">
+    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.methods }">
+    <label><span>*</span>Allowed HTTP methods:</label>
+    <div class="checkbox" ng-repeat="(key, value) in methods">
+      <label><input type="checkbox" ng-model="methods[key]" />{{key}}</label>
+    </div>
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>    
+  </div>
+</div>
+
 <div class="form-group-2columns" ng-show="channel.type == 'tcp' || channel.type == 'tls'">
   <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
     <label><span>*</span> TCP Host</label>
