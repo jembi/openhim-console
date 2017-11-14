@@ -213,7 +213,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     }
   }
 
-  $scope.viewRecordDetails = function (type, content) {
+  $scope.viewRecordDetails = function (event, type, content) {
+    event.preventDefault()
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,

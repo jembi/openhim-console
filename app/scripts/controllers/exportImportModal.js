@@ -144,7 +144,8 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
     })
   }
 
-  $scope.viewRecordDetails = function (type, content) {
+  $scope.viewRecordDetails = function (event, type, content) {
+    event.preventDefault()
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
