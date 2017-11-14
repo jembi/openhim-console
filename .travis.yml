@@ -5,14 +5,3 @@ after_success:
 node_js:
   - '8.6'
 sudo: false
-before_install:
-  - ".travis/setup.sh"
-deploy:
-  - provider: script
-    script: ".travis/deploy.sh test"
-    on:
-      branch: test
-  - provider: script
-    script: ".travis/deploy.sh staging"
-    on:
-      branch: staging
