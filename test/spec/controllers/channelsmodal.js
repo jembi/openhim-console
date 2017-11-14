@@ -238,10 +238,6 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.channel.type = 'http'
     scope.channel.name = 'ChannelName'
     scope.channel.urlPattern = 'sample/api'
-    scope.channel.allow = ['allow1', 'allow2']
-    scope.matching.contentMatching = 'XML matching'
-    scope.channel.matchContentXpath = 'XPath'
-    scope.channel.matchContentValue = 'Value'
     scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
     // run the submit
     scope.submitFormChannels()
@@ -286,11 +282,6 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.showRequestMatching = true
     scope.channel.name = 'ChannelName'
     scope.channel.urlPattern = 'sample/api'
-    scope.urlPattern.regex = false
-    scope.channel.allow = ['allow1', 'allow2']
-    scope.matching.contentMatching = 'XML matching'
-    scope.channel.matchContentXpath = 'XPath'
-    scope.channel.matchContentValue = 'Value'
     scope.channel.routes = [{ 'name': 'testRoute', 'host': 'localhost', 'port': '80', 'path': '/sample/api', 'primary': true }]
 
     // run the submit
