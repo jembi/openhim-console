@@ -2,8 +2,9 @@ export function Api ($rootScope, $resource, config) {
   // fetch API server details
   let protocol = config.protocol
   let host = config.host
+  let hostPath = config.host_path.startsWith('/') ? config.host_path.replace(/\/$/, '') : '/' + config.host_path.replace(/\/$/, '')
   let port = config.port
-  let server = protocol + '://' + host + ':' + port
+  let server = protocol + '://' + host + ':' + port + hostPath
 
   return {
     Authenticate: $resource(server + '/authenticate/:email'),
