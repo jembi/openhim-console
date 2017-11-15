@@ -5,7 +5,7 @@ export function login (Api, Authinterceptor) {
 
   return {
     login: function (email, password, done) {
-      // fetch salt from openhim-core serer and work out password hash
+      // fetch salt from openhim-core server and work out password hash
       Api.Authenticate.get({ email: email }, function (authDetails) {
         // on success
         if (!authDetails.salt) {

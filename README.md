@@ -57,6 +57,7 @@ Visit the following link: `https://localhost:8080/authenticate/root@openhim.org`
 
 Developer guide
 ---------------
+To run this version of the console (v1.12.0-rc.1) requires a minimum version of [OpenHIM-Core v4.0.0-rc.5](https://github.com/jembi/openhim-core-js/releases/tag/v4.0.0-rc.5)
 
 Clone the repository and then run `npm install`
 
