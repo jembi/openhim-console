@@ -1,6 +1,6 @@
 import { buildBlob } from '../utils'
-import exportImportModal from '~/views/transactionsBodyModal'
-import transactionsBodyModal from '~/views/exportImportModal'
+import exportImportModal from '~/views/exportImportModal'
+import transactionsBodyModal from '~/views/transactionsBodyModal'
 import { TransactionsBodyModalCtrl, ExportImportModalCtrl } from './'
 
 export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
@@ -213,7 +213,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     }
   }
 
-  $scope.viewRecordDetails = function (type, content) {
+  $scope.viewRecordDetails = function (event, type, content) {
+    event.preventDefault()
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,

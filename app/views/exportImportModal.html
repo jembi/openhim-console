@@ -41,7 +41,7 @@
             <td data-title="Model">{{ import.model }}</td>
             <td data-title="UID">{{ import.uid }}</td>
             <td>
-              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
             </td>
             <td data-title="Status">{{ import.status }}</td>
           </tr>
@@ -61,7 +61,7 @@
               <div class="has-error-msg" ng-if="import.errMsg"><i class="glyphicon glyphicon-warning-sign"></i>{{import.errMsg}}</div>
             </td>
             <td>
-              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
             </td>
             <td class="importConflicts" data-title="Status">{{ import.status }}</td>
           </tr>
@@ -72,7 +72,7 @@
             <td data-title="Model">{{ import.model }}</td>
             <td data-title="UID">{{ import.uid }}</td>
             <td>
-              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+              <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
             </td>
             <td data-title="Status">{{ import.status }}</td>
           </tr>

@@ -102,7 +102,7 @@
                       <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
                       <td data-title="Model">{{ import.model }}</td>
                       <td>
-                        <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails('Record', import.record);">View Import Record</button>
+                        <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
                       </td>
                       <td data-title="Status">{{ import.status }}</td>
                       <td data-title="Error">{{ import.message }}</td>

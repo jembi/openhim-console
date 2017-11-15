@@ -1,4 +1,4 @@
-import { transactionsBodyModal } from '~/views/transactionsBodyModal'
+import transactionsBodyModal from '~/views/transactionsBodyModal'
 import { TransactionsBodyModalCtrl } from './'
 export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $timeout, Api, Alerting, data) {
   /***************************************************/
@@ -144,7 +144,8 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
     })
   }
 
-  $scope.viewRecordDetails = function (type, content) {
+  $scope.viewRecordDetails = function (event, type, content) {
+    event.preventDefault()
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
