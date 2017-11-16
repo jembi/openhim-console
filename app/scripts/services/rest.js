@@ -4,7 +4,7 @@ export function Api ($rootScope, $resource, config) {
   // fetch API server details
   const protocol = config.protocol
   const host = config.host
-  const hostPath = S(config.hostPath).ensureLeft('/').replace(/\/$/, '')
+  const hostPath = S(config.hostPath || '').ensureLeft('/').replace(/\/$/, '')
   const port = config.port
   const server = protocol + '://' + host + ':' + port + hostPath
 
