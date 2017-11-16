@@ -1,12 +1,10 @@
-const S = require('string')
-
 export function Api ($rootScope, $resource, config) {
   // fetch API server details
   const protocol = config.protocol
   const host = config.host
-  const hostPath = S(config.hostPath || '').ensureLeft('/').replace(/\/$/, '')
+  const hostPath = (config.hostPath || '').replace(/(^\/)|(\/$)/g, '')
   const port = config.port
-  const server = protocol + '://' + host + ':' + port + hostPath
+  const server = protocol + '://' + host + ':' + port + '/' + hostPath
 
   return {
     Authenticate: $resource(server + '/authenticate/:email'),
