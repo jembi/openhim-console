@@ -8,7 +8,7 @@ describe('Controller: TaskDetailsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
     })
   })
 
@@ -88,7 +88,7 @@ describe('Controller: TaskDetailsCtrl', function () {
     var task = [
       { '_id': '53e1eac5e907b57711509853', 'completedDate': '2014-08-11T11:57:15.145Z', 'remainingTransactions': 0, 'user': 'super@openim.org', 'created': '2014-08-11T11:57:10.253Z', 'transactions': [{ 'tid': '53e072e1ccbb302937ffb773', 'tstatus': 'Processing' }, { 'tid': '53e064d1ccbb302937ffb772', 'tstatus': 'Queued' }], 'status': 'Processing' }
     ]
-    
+
     scope.cancelTask(task)
     httpBackend.flush()
   })

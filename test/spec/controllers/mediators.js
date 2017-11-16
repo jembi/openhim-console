@@ -13,6 +13,7 @@ describe('Controller: MediatorsCtrl', function () {
       $provide.constant('config', {
         'protocol': 'https',
         'host': 'localhost',
+        'hostPath': '',
         'port': 8080,
         'title': 'Title',
         'footerTitle': 'FooterTitle',
@@ -23,7 +24,7 @@ describe('Controller: MediatorsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {

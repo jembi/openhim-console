@@ -12,6 +12,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
       $provide.constant('config', {
         'protocol': 'https',
         'host': 'localhost',
+        'hostPath': '',
         'port': 8080,
         'title': 'Title',
         'footerTitle': 'FooterTitle',
@@ -22,7 +23,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
     })
   })
 
-  var scope, createController, httpBackend, modalSpy // eslint-disable-line 
+  var scope, createController, httpBackend, modalSpy // eslint-disable-line
 
   var testMediator = {
     'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
