@@ -4,7 +4,7 @@ export function Api ($rootScope, $resource, config) {
   const host = config.host
   const hostPath = (config.hostPath || '').replace(/(^\/)|(\/$)/g, '')
   const port = config.port
-  const server = protocol + '://' + host + ':' + port + (/^\s+$/.test(hostPath) ? '/' + hostPath : '')
+  const server = protocol + '://' + host + ':' + port + (/^\s+$/.test(hostPath) ? '' : '/' + hostPath)
 
   return {
     Authenticate: $resource(server + '/authenticate/:email'),
