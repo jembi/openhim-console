@@ -2,7 +2,7 @@ export function Api ($rootScope, $resource, config) {
   // fetch API server details
   let protocol = config.protocol
   let host = config.host
-  let hostPath = config.host_path.startsWith('/') ? config.host_path.replace(/\/$/, '') : '/' + config.host_path.replace(/\/$/, '')
+  let hostPath = config.hostPath.startsWith('/') ? config.hostPath.replace(/\/$/, '') : '/' + config.hostPath.replace(/\/$/, '')
   let port = config.port
   let server = protocol + '://' + host + ':' + port + hostPath
 

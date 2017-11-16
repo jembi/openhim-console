@@ -12,7 +12,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
       $provide.constant('config', {
         'protocol': 'https',
         'host': 'localhost',
-        'host_path': '',
+        'hostPath': '',
         'port': 8080,
         'title': 'Title',
         'footerTitle': 'FooterTitle',
