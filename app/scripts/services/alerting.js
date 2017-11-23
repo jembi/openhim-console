@@ -16,7 +16,7 @@ export function Alerting ($rootScope) {
 
       const scopeAlerts = $rootScope.alerts[alertScope]
 
-      if (scopeAlerts.every(el => el.type !== alertType && el.msg !== alertMsg)) {
+      if (!scopeAlerts.some(el => el.type === alertType && el.msg === alertMsg)) {
         scopeAlerts.push(alertObject)
       }
     },
