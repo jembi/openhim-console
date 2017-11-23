@@ -35,12 +35,12 @@ export function login (Api, Authinterceptor) {
           })
         }
       }, function (err) {
-        // if error returns a status then server is active - user not authenticated
-        if (err.status) {
-          done('Authentication Failed')
-        } else {
-          // no status returned - server error occured
+        if (err.status < 100) {
+          // If the status is outside the possible http status range no then http error
           done('Internal Server Error')
+        } else {
+          // if error returns a status then server is active - user not authenticated
+          done('Authentication Failed')
         }
       })
     },
