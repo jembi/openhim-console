@@ -14,8 +14,11 @@ export function Alerting ($rootScope) {
       // create alertObject
       let alertObject = { type: alertType, msg: alertMsg }
 
-      // push alertObject to appropriate alertScope
-      $rootScope.alerts[alertScope].push(alertObject)
+      const scopeAlerts = $rootScope.alerts[alertScope]
+
+      if (!scopeAlerts.some(el => el.type === alertType && el.msg === alertMsg)) {
+        scopeAlerts.push(alertObject)
+      }
     },
     AlertAddServerMsg: function (errCode) {
       let alertMsg
