@@ -1470,3 +1470,7 @@ label { position: relative; }
       width:100%;
   }
 }
+
+.alert-dismissible .close{
+  right: 0;
+}
