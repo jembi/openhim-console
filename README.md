@@ -55,6 +55,16 @@ You will be prompted to change this.
 
 Visit the following link: `https://localhost:8080/authenticate/root@openhim.org` in Chrome. Make sure you are visiting this link from the system that is running the OpenHIM-core. Otherwise, replace `localhost` and `8080` with the appropriate OpenHIM-core server hostname and API port. You should see a message saying "Your connection is not private". Click "Advanced" and then click "Proceed". Once you have done this, you should see some JSON, you can ignore this and close the page. Ths will ignore the fact that the certificate is self-signed. Now, you should be able to go back to the Console login page and login. This problem will occur every now and then until you load a properly signed certificate into the OpenHIM-core server.
 
+### Docker
+
+If you are familiar with using Docker and Docker Compose, we have included a `docker-compose.yml` file in the `infrastructure` folder.
+
+To spin up a full OpenHIM environment, navigate to the `infrastructure` folder and execute: `docker-compose up`
+
+The console will be available on: `http://localhost:9090`
+
+Remember to accept the self-signed certificate from the back-end for first login: `https://localhost:9095/authenticate/root@openhim.org`
+
 Developer guide
 ---------------
 To run this version of the console (v1.12.0-rc.1) requires a minimum version of [OpenHIM-Core v4.0.0-rc.5](https://github.com/jembi/openhim-core-js/releases/tag/v4.0.0-rc.5)
@@ -79,7 +89,7 @@ This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular gene
 Deployments
 ------------
 
-All commits to the `master` branch will automatically trigger a build of the latest changes into a docker image on dockerhub. 
+All commits to the `master` branch will automatically trigger a build of the latest changes into a docker image on dockerhub.
 
 All commits directly to `staging` or `test` will automatically build and deploy a docker image to the test and staging servers respectively.
 
