@@ -201,11 +201,11 @@
         class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="input-daterange input-group" id="datepicker" style="width: 320px">
-      <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm:ss:SSSS', useCurrent: false, showClose: true }"
+      <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm:ss', useCurrent: false, showClose: true }"
         placeholder="start date" ng-model="settings.filter.startDate" type="text" class="form-control" name="start" ng-blur="applyStartDate(settings.filter.startDate)"
       />
       <span class="input-group-addon">to</span>
-      <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm:ss:SSSS', useCurrent: false, showClose: true }"
+      <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD HH:mm:ss', useCurrent: false, showClose: true }"
         placeholder="end date" ng-model="settings.filter.endDate" type="text" class="form-control" name="end" ng-blur="applyEndDate(settings.filter.endDate)"
       />
     </div>

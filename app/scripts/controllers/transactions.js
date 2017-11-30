@@ -243,7 +243,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   /*******************************************************************/
 
   let buildDateFilterObject = function (object, comparator, date) {
-    object[comparator] = moment(new Date(date)).format()
+    object[comparator] = moment(date).format()
   }
 
   // setup filter options
