@@ -95,6 +95,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
   $scope.validateVisualizer = function (viz, callback) {
     // reset hasErrors alert object
     Alerting.AlertReset('hasErrors')
+    let errorMessage
 
     // clear timeout if it has been set
     $timeout.cancel($scope.clearValidation)
@@ -105,6 +106,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     if (!viz.name) {
       $scope.ngError.hasNoName = true
       $scope.ngError.hasErrors = true
+      errorMessage = 'Give me a name please :)'
     } else {
       if (!$scope.update) {
         // the visualizer name must be unique
@@ -115,6 +117,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
         if (result.length > 0) {
           $scope.ngError.nameNotUnique = true
           $scope.ngError.hasErrors = true
+          errorMessage = 'Give me a unique name please :p'
         }
       }
     }
@@ -122,11 +125,13 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     if (viz.components === undefined || viz.components.length === 0) {
       $scope.ngError.hasErrors = true
       $scope.ngError.hasNoComponents = true
+      errorMessage = 'Give me a component please :D'
     }
 
     if (viz.channels === undefined || viz.channels.length === 0) {
       $scope.ngError.hasErrors = true
       $scope.ngError.hasNoChannels = true
+      errorMessage = 'Give me a channel please :}'
     }
 
     if ($scope.ngError.hasErrors) {
@@ -135,7 +140,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
         $scope.ngError = {}
         Alerting.AlertReset('hasErrors')
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', 'There are errors on the form.')
+      Alerting.AlertAddMsg('hasErrors', 'danger', errorMessage)
       const message = 'Error: Form has errors'
       callback(message)
     } else {
