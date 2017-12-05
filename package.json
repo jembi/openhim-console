@@ -79,10 +79,13 @@
 	"spec": {
 		"environment": {
 			"NODE_ENV": "production"
-		}
+		},
+		"post": [
+			"npm install -g http-server"
+		]
 	},
 	"scripts": {
-		"start": "NODE_ENV=dev webpack-dev-server --hot=false",
+		"start": "NODE_ENV=prod http-server /dist -p 9000",
 		"start:dev": "NODE_ENV=dev webpack-dev-server --hot=false",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
