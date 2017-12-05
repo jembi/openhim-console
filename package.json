@@ -3,8 +3,7 @@
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
 	"version": "1.12.0-rc.2",
 	"dependencies": {
-		"replace": "^0.3.0",
-		"speculate": "^1.7.4"
+		"replace": "^0.3.0"
 	},
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.1",
@@ -56,6 +55,7 @@
 		"raphael": "^2.2.7",
 		"sinon": "^1.17.4",
 		"sinon-chai": "2.8.0",
+		"speculate": "^1.7.4",
 		"standard": "^10.0.3",
 		"style-loader": "^0.19.0",
 		"url-loader": "^0.6.2",
@@ -83,6 +83,7 @@
 	},
 	"scripts": {
 		"start": "NODE_ENV=dev webpack-dev-server --hot=false",
+		"start:dev": "NODE_ENV=dev webpack-dev-server --hot=false",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
 		"test": "karma start --single-run --browsers PhantomJS",
