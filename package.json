@@ -3,7 +3,8 @@
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
 	"version": "1.12.0-rc.2",
 	"dependencies": {
-		"replace": "^0.3.0"
+		"replace": "^0.3.0",
+		"speculate": "^1.7.4"
 	},
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.1",
@@ -75,6 +76,11 @@
 			"$"
 		]
 	},
+	"spec": {
+		"environment": {
+			"NODE_ENV": "production"
+		}
+	},
 	"scripts": {
 		"start": "NODE_ENV=dev webpack-dev-server --hot=false",
 		"lint": "standard 'app/**/*.js'",
@@ -84,7 +90,8 @@
 		"prepare": "npm run build:prod",
 		"build": "webpack",
 		"build:prod": "NODE_ENV=prod webpack",
-		"version": "node versionManager.js && git add -u"
+		"version": "node versionManager.js && git add -u",
+		"spec": "speculate"
 	},
 	"repository": {
 		"type": "git",

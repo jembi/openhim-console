@@ -93,6 +93,43 @@ All commits to the `master` branch will automatically trigger a build of the lat
 
 All commits directly to `staging` or `test` will automatically build and deploy a docker image to the test and staging servers respectively.
 
+## Creating CentOS RPM package
+
+The build process for the RPM package is based off [this](https://github.com/bbc/speculate/wiki/Packaging-a-Node.js-project-as-an-RPM-for-CentOS-7) blog. The reason for using vagrant instead of docker is so that we can test the RPM package by running it as a service using SystemCtl - similar to how it will likely be used in a production environment. SystemCtl is not available out the box in docker containers.
+
+Refer to this [blog](https://developers.redhat.com/blog/2014/05/05/running-systemd-within-docker-container/) for a more detailed description of a possible work-around. This is not recommended since it is a hack. This is where vagrant comes in since it sets up an isolated VM.
+
+1. Setup environment
+
+Navigate to the infrastructure folder: `infrastructure/centos`
+
+```bash
+vagrant up
+```
+
+2. Install & Test package
+
+```bash
+sudo yum install -y ~/rpmbuild/RPMS/x86_64/openhim-console-{current_version}.x86_64.rpm
+sudo systemctl start openhim-console
+sudo systemctl status openhim-console
+curl https://localhost:8080/heartbeat -k
+```
+
+Note: In order for openhim-console to run successfully, you'll need to point it to a valid instance of Openhim-core or install it locally:
+
+3. If everything checks out then extract the RPM package by leaving the VM.
+
+Install Vagrant scp [plugin](https://github.com/invernizzi/vagrant-scp):
+```bash
+vagrant plugin install vagrant-scp
+```
+
+Then copy the file from the VM:
+
+```bash
+vagrant scp default:/home/vagrant/rpmbuild/RPMS/x86_64/{filename}.rpm .
+```
 
 Contributing
 ------------
