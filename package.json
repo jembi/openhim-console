@@ -88,7 +88,7 @@
 		]
 	},
 	"scripts": {
-		"start": "NODE_ENV=prod http-server /dist -p 9000",
+		"start": "NODE_ENV=prod http-server ./dist -p 9000",
 		"start:dev": "NODE_ENV=dev webpack-dev-server --hot=false",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
