@@ -18,11 +18,20 @@
       Store Response Body
       <i ng-show="uiSettings.showTooltips" uib-tooltip="Set whether the transaction response body should be saved" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
-    <div class="btn-group" style="margin-bottom: 10px: clear: both;">
+    <div class="btn-group" style="margin-bottom: 10px; clear: both;">
       <label class="btn btn-primary" ng-model="channel.responseBody" uib-btn-radio="true">Yes</label>
       <label class="btn btn-primary" ng-model="channel.responseBody" uib-btn-radio="false">No</label>
     </div>
   </div>
+</div>
+
+<div class="form-group" style="float: left; width: 45%" ng-class="{ 'has-error' : ngError.maxBodyAgeDays }">
+  <label style="display: block;">
+    Max Body Age
+    <i ng-show="uiSettings.showTooltips" uib-tooltip="Maximum age in days that the body from the request and response is kept" class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+  </label>
+  <input type="number" class="form-control" ng-model="channel.maxBodyAgeDays" ng-model-options="{allowInvalid: true}" ng-min="1">
+  <span ng-if="ngError.maxBodyAgeDays" class="help-text">Must be a number greater than 0</span>
 </div>
 
 <div ng-show="channel.requestBody" style="border-top: 1px solid #eee;">
@@ -32,7 +41,8 @@
     <div class="form-group" style="float: left;">
       <label style="display: block;">
         Automatically resend failed transactions?
-        <i ng-show="uiSettings.showTooltips" uib-tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="Allows the OpenHIM to periodically resend any transactions that have failed due to a connection error"
+          class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="channel.autoRetryEnabled" uib-btn-radio="true">Yes</label>
@@ -45,7 +55,8 @@
         <i ng-show="uiSettings.showTooltips" uib-tooltip="The period (in minutes) to wait before resending transactions" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" ng-class="{ 'has-error' : ngError.autoRetryPeriodMinutes }" style="clear: both;">
-        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled" ng-model="channel.autoRetryPeriodMinutes" />
+        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled" ng-model="channel.autoRetryPeriodMinutes"
+        />
       </div>
     </div>
   </div>
@@ -54,7 +65,8 @@
     <div class="form-group" style="float: left;">
       <label style="display: block;">
         Enable max number of attempts
-        <i ng-show="uiSettings.showTooltips" uib-tooltip="The maximum number of times to retry transactions that are continuously failing" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="The maximum number of times to retry transactions that are continuously failing"
+          class="glyphicon glyphicon-question-sign tooltip-wide"></i>
       </label>
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-disabled="!channel.autoRetryEnabled" ng-model="autoRetry.enableMaxAttempts" uib-btn-radio="true">Yes</label>
@@ -66,7 +78,8 @@
         Times
       </label>
       <div class="btn-group" ng-class="{ 'has-error' : ngError.maxAttempts }" style="clear: both;">
-        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled || !autoRetry.enableMaxAttempts" ng-model="channel.autoRetryMaxAttempts" />
+        <input class="form-control" type="number" min="1" max="302400" ng-disabled="!channel.autoRetryEnabled || !autoRetry.enableMaxAttempts"
+          ng-model="channel.autoRetryMaxAttempts" />
       </div>
     </div>
   </div>
@@ -83,34 +96,46 @@
 
     <div class="form-group-2columns">
       <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorUrlRewrite.fromHost }">
-        <label><span style="color: #a94442;">*</span> From Host</label>
+        <label>
+          <span style="color: #a94442;">*</span> From Host</label>
         <input ng-model="newUrlRewrite.fromHost" class="form-control" placeholder="From Host" type="text" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group" style="float: left; margin-left: 20px;" ng-class="{ 'has-error' : ngErrorUrlRewrite.fromPort }">
-        <label><span style="color: #a94442;">*</span> From Port</label><br />
+        <label>
+          <span style="color: #a94442;">*</span> From Port</label>
+        <br />
         <input ng-model="newUrlRewrite.fromPort" class="form-control" placeholder="From Port" type="text" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorUrlRewrite.portError}}</div>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorUrlRewrite.portError}}</div>
       </div>
     </div>
     <div class="form-group-2columns">
       <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorUrlRewrite.toHost }">
-        <label><span style="color: #a94442;">*</span> To Host</label>
+        <label>
+          <span style="color: #a94442;">*</span> To Host</label>
         <input ng-model="newUrlRewrite.toHost" class="form-control" placeholder="To Host" type="text" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
       <div class="form-group" style="float: left; margin-left: 20px;" ng-class="{ 'has-error' : ngErrorUrlRewrite.toPort }">
-        <label><span style="color: #a94442;">*</span> To Port</label><br />
+        <label>
+          <span style="color: #a94442;">*</span> To Port</label>
+        <br />
         <input ng-model="newUrlRewrite.toPort" class="form-control" placeholder="To Port" type="text" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorUrlRewrite.portError}}</div>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorUrlRewrite.portError}}</div>
       </div>
     </div>
     <div class="form-group-2columns">
       <div class="form-group" style="float: left;">
         <label>
           Path Transform
-          <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the path by using the following substitute expression format:<br /> s/from/to/g" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-        </label><br />
+          <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Transform the path by using the following substitute expression format:<br /> s/from/to/g"
+            class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </label>
+        <br />
         <input ng-model="newUrlRewrite.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
       </div>
     </div>
@@ -121,7 +146,8 @@
       <button type="button" class="btn btn-primary" ng-click="saveUrlRewrite( oldUrlRewriteIndex )" style="margin-left: 5px;">Set Rewrite Rule</button>
 
       <!-- hasErrors Alerts -->
-      <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsUrlRewrite" ng-class="'alert-' + (alert.type || 'warning')">
+      <div uib-alert style="display: inline-block; margin: 0px 0px 0px 5px; padding: 8px;" ng-repeat="alert in alerts.hasErrorsUrlRewrite"
+        ng-class="'alert-' + (alert.type || 'warning')">
         <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
       </div>
       <!-- hasErrors Alerts -->
@@ -135,7 +161,8 @@
       <div class="form-group" style="float: left;">
         <label style="display: block;">
           URL Rewriting enabled?
-          <i ng-show="uiSettings.showTooltips" uib-tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" uib-tooltip="URL rewriting allows the OpenHIM to look for URLs in a response and rewrite them so that they point to the correct location. These rules can be specified explicitly below."
+            class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
           <label class="btn btn-primary" ng-model="channel.rewriteUrls" uib-btn-radio="true">Yes</label>
@@ -145,7 +172,8 @@
       <div class="form-group" style="float: left; margin-left: 20px;">
         <label style="display: block">
           Add Auto Rewrite Rules?
-          <i ng-show="uiSettings.showTooltips" uib-tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" uib-tooltip="Determines whether automatic rewrite rules are used. These rules enabled URLs to be automatically rewritten for any URLs that points to a host that the OpenHIM proxies (any host on a primary route). These can be overridden by user specified rules if need be."
+            class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <div class="btn-group" style="clear: both;">
           <label class="btn btn-primary" ng-model="channel.addAutoRewriteRules" uib-btn-radio="true">Yes</label>
@@ -182,8 +210,12 @@
             </div>
 
             <div style="width: 8%; float: right; display: block;">
-              <button class="btn btn-warning btn-xs" ng-click="addEditUrlRewrite('edit', rewrite, $index)"><i class="glyphicon glyphicon-pencil"></i></button>
-              <button class="btn btn-danger btn-xs" ng-click="removeUrlRewrite($index)"><i class="glyphicon glyphicon-remove"></i></button>
+              <button class="btn btn-warning btn-xs" ng-click="addEditUrlRewrite('edit', rewrite, $index)">
+                <i class="glyphicon glyphicon-pencil"></i>
+              </button>
+              <button class="btn btn-danger btn-xs" ng-click="removeUrlRewrite($index)">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
             </div>
           </td>
 
