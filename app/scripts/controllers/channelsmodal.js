@@ -217,7 +217,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
       $scope.ngError.hasErrors = true
     }
 
-    if ($scope.channel.maxBodyAgeDays != null && $scope.channel.maxBodyAgeDays < 1) {
+    if ($scope.channel.maxBodyAgeDays != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 36500)) {
       $scope.ngError.maxBodyAgeDays = true
       $scope.ngError.dataControlTab = true
       $scope.ngError.hasErrors = true
