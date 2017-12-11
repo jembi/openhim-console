@@ -18,4 +18,3 @@ packaging/Vagrantfile
 **/.vagrant
 npm-debug.log
 .vscode
-.vagrant

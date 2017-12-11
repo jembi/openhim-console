@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const isProduction = /prod/i.test(process.env.NODE_ENV || 'dev')
@@ -94,6 +95,7 @@ const config = {
       template: 'app/template.html'
     }),
     new ExtractTextPlugin('styles.css'),
+    new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
       { from: 'app/404.html' },
       { from: 'app/favicon.ico' },
