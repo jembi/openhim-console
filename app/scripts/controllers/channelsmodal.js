@@ -223,6 +223,12 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
       $scope.ngError.hasErrors = true
     }
 
+    if ($scope.channel.timeout != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 3600000)) {
+      $scope.ngError.timeout = true
+      $scope.ngError.basicInfoTab = true
+      $scope.ngError.hasErrors = true
+    }
+
     switch ($scope.channel.type) {
       case 'http':
         if (!$scope.channel.methods || $scope.channel.methods.length === 0) {
