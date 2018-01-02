@@ -10,7 +10,10 @@ export function MediatorDisplay (config) {
       mediator.lastHeartbeatStatus = 'never'
       mediator.lastHeartbeatDisplayExplain = 'No heartbeats have ever been received from this mediator. Perhaps it doesn\'t support heartbeats.'
     } else {
-      if (secondsDiffNow() < config.mediatorLastHeartbeatWarningSeconds) {
+      if (moment(mediator._lastHeartbeat).isAfter(Date.now())) {
+        mediator.lastHeartbeatStatus = 'warning'
+        mediator.lastHeartbeatDisplayExplain = 'Heartbeat set in the future'
+      } else if (secondsDiffNow() < config.mediatorLastHeartbeatWarningSeconds) {
         mediator.lastHeartbeatStatus = 'success'
       } else if (secondsDiffNow() < config.mediatorLastHeartbeatDangerSeconds) {
         mediator.lastHeartbeatStatus = 'warning'
