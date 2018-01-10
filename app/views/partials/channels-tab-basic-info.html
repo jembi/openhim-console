@@ -76,3 +76,14 @@
     <label class="btn btn-primary" ng-model="channel.status" uib-btn-radio="'disabled'">Disabled</label>
   </div>
 </div>
+
+<div style="border-top: 1px solid #eee;">
+  <div class="form-group" style="width: 45%" ng-class="{ 'has-error' : ngError.timeout }">
+    <label style="display: block;">
+      Timeout ms
+      <i ng-show="uiSettings.showTooltips" uib-tooltip="Maximum time in ms that the request is allowed" class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+    </label>
+    <input type="number" class="form-control" ng-model="channel.timeout" ng-model-options="{allowInvalid: true}" ng-min="1">
+    <span ng-if="ngError.timeout" class="help-text">Must be a number greater than 0 or less than 3600000</span>
+  </div>
+</div>
