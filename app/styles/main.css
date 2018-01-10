@@ -918,6 +918,7 @@ body {
     float: left;
     margin: 10px 15px 10px 0px;
     position: relative;
+    width: 100%;
   }
 
   .auditFilterDivLabel {
