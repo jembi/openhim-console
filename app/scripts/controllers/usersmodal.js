@@ -1,12 +1,13 @@
 import { getHashAndSalt, isValidMSISDN } from '../utils'
 
-export function UsersModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api, login, Notify, Alerting, user) {
+export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout, Api, login, Notify, Alerting, user) {
   /*************************************************************/
   /**   These are the functions for the User initial load     **/
   /*************************************************************/
 
   // default - update is false
   $scope.update = false
+  $scope.phoneNumberTooltip = $sce.trustAsHtml('Accepted format: <br />27123456789 <br />( 5 - 15 digits )')
 
   // object for the taglist roles
   $scope.taglistUserRoleOptions = []

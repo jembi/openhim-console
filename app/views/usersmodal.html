@@ -38,7 +38,7 @@
       <div class="form-group" ng-class="{ 'has-error' : ngError.msisdn }">
         <label>
           Phone number (MSISDN format)
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Accepted format: <br />27123456789 <br />( 5 - 15 digits )" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="phoneNumberTooltip" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
         </label>
         <input class="form-control" type="text" ng-model="user.msisdn" />
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>MSISDN is not in the accepeted format: 27123456789 ( 5 - 15 digits )</div>
