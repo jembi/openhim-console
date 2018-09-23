@@ -1,5 +1,6 @@
 import certificateModal from '~/views/certificateModal'
 import { CertificatesModalCtrl } from './'
+import confirmModal from '~/views/confirmModal'
 
 export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
   /***************************************************/
@@ -253,7 +254,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     }
 
     let modalInstance = $uibModal.open({
-      templateUrl: 'views/confirmModal.html',
+      template: confirmModal,
       controller: 'ConfirmModalCtrl',
       resolve: {
         confirmObject: function () {
