@@ -119,10 +119,8 @@ describe('Controller: CertificatesCtrl', function () {
     createController()
     httpBackend.flush()
 
-    httpBackend.expectGET('views/confirmModal.html').respond(200, '')
     scope.confirmDelete(scope.trustedCertificates[0])
     modalSpy.should.have.been.calledOnce()
-    httpBackend.flush()
   })
 
   it('should add a passphrase', function () {
