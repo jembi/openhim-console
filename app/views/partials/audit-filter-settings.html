@@ -182,7 +182,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Date Range:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Select a start and end date to filter transactions by date.<br />(both dates are required)" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="'Select a start and end date to filter transactions by date.<br />(both dates are required)'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="input-daterange input-group" id="datepicker" style="width: 300px">
       <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="start date" ng-model="settings.filter.dateStart"
