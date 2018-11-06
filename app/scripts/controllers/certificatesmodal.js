@@ -104,7 +104,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
         $scope.ngError.hasErrors = true
       }
     }
-    $scope.cert.country = angular.uppercase($scope.cert.country)
+    $scope.cert.country = $scope.cert.country.toUpperCase()
   }
 
   $scope.submitFormCertificate = function () {
