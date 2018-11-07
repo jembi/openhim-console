@@ -4,7 +4,6 @@ export function channelUserAccessCtrl ($scope) {
 
   // watch parent scope for 'users' change
   $scope.$watch('users', function () {
-    console.log($scope.users)
     // setup user groups taglist options
     angular.forEach($scope.users, function (user) {
       angular.forEach(user.groups, function (group) {
