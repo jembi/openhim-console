@@ -210,55 +210,60 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
     // name validation
     if (!$scope.channel.name) {
-      $scope.ngError.name = true
-      $scope.ngError.basicInfoTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.basicInfoTab = true
+      $scope.ngError.name = true
     }
 
     if ($scope.channel.maxBodyAgeDays != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 36500)) {
-      $scope.ngError.maxBodyAgeDays = true
-      $scope.ngError.dataControlTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.dataControlTab = true
+      $scope.ngError.maxBodyAgeDays = true
     }
 
     if ($scope.channel.timeout != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 3600000)) {
-      $scope.ngError.timeout = true
-      $scope.ngError.basicInfoTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.basicInfoTab = true
+      $scope.ngError.timeout = true
     }
 
     switch ($scope.channel.type) {
       case 'http':
         if (!$scope.channel.methods || $scope.channel.methods.length === 0) {
+          $scope.ngError.hasErrors = true
           $scope.ngError.basicInfoTab = true
           $scope.ngError.methods = true
-          $scope.ngError.hasErrors = true
         }
         break
       case 'tcp':
         if (!$scope.channel.tcpHost) {
-          $scope.ngError.tcpHost = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.basicInfoTab = true
+          $scope.ngError.tcpHost = true
         }
         if (!$scope.channel.tcpPort || isNaN($scope.channel.tcpPort)) {
-          $scope.ngError.tcpPort = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.basicInfoTab = true
+          $scope.ngError.tcpPort = true
         }
         break
       case 'tls':
         if (!$scope.channel.tcpHost) {
-          $scope.ngError.tcpHost = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.basicInfoTab = true
+          $scope.ngError.tcpHost = true
         }
         if (!$scope.channel.tcpPort || isNaN($scope.channel.tcpPort)) {
-          $scope.ngError.tcpPort = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.basicInfoTab = true
+          $scope.ngError.tcpPort = true
         }
         break
       case 'polling':
         if (!$scope.channel.pollingSchedule) {
-          $scope.ngError.pollingSchedule = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.basicInfoTab = true
+          $scope.ngError.pollingSchedule = true
         }
         break
     }
@@ -266,9 +271,9 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     // roles validation
     if ($scope.channel.authType === 'private') {
       if (!$scope.channel.allow || $scope.channel.allow.length === 0) {
-        $scope.ngError.allow = true
-        $scope.ngError.requestMatchingTab = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.requestMatchingTab = true
+        $scope.ngError.allow = true
       }
     }
 
@@ -280,9 +285,9 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
     // urlPattern validation
     if (!$scope.channel.urlPattern) {
-      $scope.ngError.urlPattern = true
-      $scope.ngError.requestMatchingTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.requestMatchingTab = true
+      $scope.ngError.urlPattern = true
     }
 
     // reset contentMatching if request matching not visible
@@ -297,28 +302,28 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     switch ($scope.matching.contentMatching) {
       case 'RegEx matching':
         if (!$scope.channel.matchContentRegex) {
-          $scope.ngError.matchContentRegex = true
-          $scope.ngError.requestMatchingTab = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.requestMatchingTab = true
+          $scope.ngError.matchContentRegex = true
         }
         break
       case 'XML matching':
         if (!$scope.channel.matchContentXpath) {
-          $scope.ngError.matchContentXpath = true
-          $scope.ngError.requestMatchingTab = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.requestMatchingTab = true
+          $scope.ngError.matchContentXpath = true
         }
         if (!$scope.channel.matchContentValue) {
-          $scope.ngError.matchContentValue = true
-          $scope.ngError.requestMatchingTab = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.requestMatchingTab = true
+          $scope.ngError.matchContentValue = true
         }
         break
       case 'JSON matching':
         if (!$scope.channel.matchContentJson) {
-          $scope.ngError.matchContentJson = true
-          $scope.ngError.requestMatchingTab = true
           $scope.ngError.hasErrors = true
+          $scope.ngError.requestMatchingTab = true
+          $scope.ngError.matchContentJson = true
         }
         if (!$scope.channel.matchContentValue) {
           $scope.ngError.matchContentValue = true
@@ -330,28 +335,28 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
     // has route errors
     if ($scope.ngError.hasRouteWarnings) {
-      $scope.ngError.routesTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.routesTab = true
     }
 
     // has url rewrite errors
     if ($scope.ngError.hasUrlRewritesWarnings) {
-      $scope.ngError.dataControlTab = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.dataControlTab = true
     }
 
     // auto retry errors
     if ($scope.channel.autoRetryEnabled) {
       if (!$scope.channel.autoRetryPeriodMinutes || $scope.channel.autoRetryPeriodMinutes <= 0) {
-        $scope.ngError.autoRetryPeriodMinutes = true
-        $scope.ngError.dataControlTab = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.dataControlTab = true
+        $scope.ngError.autoRetryPeriodMinutes = true
       }
       if ($scope.autoRetry.enableMaxAttempts &&
         (!$scope.channel.autoRetryMaxAttempts || $scope.channel.autoRetryMaxAttempts <= 0)) {
-        $scope.ngError.maxAttempts = true
-        $scope.ngError.dataControlTab = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.dataControlTab = true
+        $scope.ngError.maxAttempts = true
       }
     }
 
