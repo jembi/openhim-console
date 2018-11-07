@@ -38,3 +38,4 @@ export * from './visualizer'
 export * from './visualizerModal'
 
 export * from './channel-tabs/basicInfo'
+export * from './channel-tabs/requestMatching'
