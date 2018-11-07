@@ -39,3 +39,4 @@ export * from './visualizerModal'
 
 export * from './channel-tabs/basicInfo'
 export * from './channel-tabs/requestMatching'
+export * from './channel-tabs/userAccess'
