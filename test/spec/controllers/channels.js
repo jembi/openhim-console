@@ -79,6 +79,8 @@ describe('Controller: ChannelsCtrl', function () {
       {'country': 'ZA', 'state': 'KZN', 'locality': 'Durban', 'organization': 'Jembi Health Systems NPC', 'organizationUnit': 'eHealth', 'commonName': 'openhim', 'emailAddress': 'ryan@jembi.org', 'data': '-----FAKE CERTIFICATE DATA-----', '_id': '54e1ca5afa069b5a7b938c50', 'validity': { 'start': '2014-11-25T12:52:21.000Z', 'end': '2016-10-30T12:52:21.000Z' }}
     ])
 
+    $httpBackend.when('GET', new RegExp('.*/about')).respond({"currentCoreVersion":"4.0.5","serverTimezone":"Africa/Johannesburg"})
+
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
