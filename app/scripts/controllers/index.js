@@ -36,3 +36,5 @@ export * from './users'
 export * from './usersmodal'
 export * from './visualizer'
 export * from './visualizerModal'
+
+export * from './channel-tabs/basicInfo'
