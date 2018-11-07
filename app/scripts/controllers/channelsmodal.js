@@ -1,5 +1,3 @@
-import { getTimeForTimezone, getTimezoneOffset } from '../utils'
-
 const defaultHttpMethods = {
   GET: false,
   POST: false,
