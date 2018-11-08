@@ -69,7 +69,7 @@
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <strong>Not able to rerun this transaction!</strong> The HTTP method is either POST, PUT or PATCH and request body was not saved.
                 </div>
-                <button id="rerun-popover" type="button" ng-show="childTransactions.length >= 1" class="btn btn-default" data-toggle="popover" data-placement="bottom" data-trigger="focus">Show reruns</button>
+                <button id="rerun-popover" type="button" ng-click="showTransactionsRerun()" ng-show="childTransactions.length >= 1" class="btn btn-default" data-toggle="popover" data-placement="bottom" data-trigger="focus">Show reruns</button>
                 <button ng-show="transactionDetails.parentID" class="btn btn-default" ng-click="viewTransactionDetails('/transactions/' + transactionDetails.parentID)">View Original Transaction</button>
                 <button class="btn btn-danger" ng-disabled="!rerunAllowed || !transactionDetails.canRerun" ng-click="confirmRerunTransactions();">Re-run Transaction</button>
               </div>
@@ -281,12 +281,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  $(function () {
-    $('#rerun-popover').popover({
-      content: function() { return $('#rerun-table').html() },
-      html: true
-    })
-  })
-</script>
