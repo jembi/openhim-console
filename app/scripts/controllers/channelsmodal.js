@@ -27,6 +27,10 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     notifyUser()
   };
 
+  function filterChannelAudits (item) {
+    return !((item.ops.length == 1) && (item.ops[0].path == '/lastBodyCleared'))
+  }
+
   function filterEmptyAdds (operation) {
     // Only filter adds
     if (operation.op !== 'add') {
@@ -77,6 +81,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
       populateHttpMethods(channel, $scope.methods)
     })
     Api.Channels.audits({ channelId: channel._id }, function (audits) {
+      audits = audits.filter(filterChannelAudits)
       for (const audit of audits) {
         audit.ops = audit.ops.filter(filterEmptyAdds)
       }
