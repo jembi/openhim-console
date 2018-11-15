@@ -246,6 +246,19 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
   }
 
   /********************************************************************/
+  /**               Show transactions that have been rerun                 **/
+  /********************************************************************/
+
+  $scope.showTransactionsRerun = function () {
+    $('#rerun-popover').popover({
+      content: function () { return $('#rerun-table').html() },
+      html: true
+    })
+
+    $('#rerun-popover').popover('show')
+  }
+
+  /********************************************************************/
   /**               Transactions View Body Functions                 **/
   /********************************************************************/
 }
