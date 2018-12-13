@@ -251,7 +251,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   $scope.showTransactionsRerun = function () {
     const data = $('#rerun-table').html()
-    
+
     $('#rerun-popover').popover({
       content: $compile(data)($scope),
       html: true
