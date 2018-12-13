@@ -7,7 +7,7 @@ import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
 
-export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting) {
+export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -250,8 +250,10 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
   /********************************************************************/
 
   $scope.showTransactionsRerun = function () {
+    const data = $('#rerun-table').html()
+    
     $('#rerun-popover').popover({
-      content: function () { return $('#rerun-table').html() },
+      content: $compile(data)($scope),
       html: true
     })
 
