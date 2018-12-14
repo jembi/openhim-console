@@ -249,15 +249,23 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /**               Show transactions that have been rerun                 **/
   /********************************************************************/
 
+  // Content function is called twice. This is a flag to check whether the function has been called already,
+  // if set to true second call does not happen
+  let contentCalled = false
+
   $scope.showTransactionsRerun = function () {
     const data = $('#rerun-table').html()
 
-    $('#rerun-popover').popover({
-      content: $compile(data)($scope),
-      html: true
-    })
+    if (!contentCalled) {
+      contentCalled = true
 
-    $('#rerun-popover').popover('show')
+      $('#rerun-popover').popover({
+        content: $compile(data)($scope),
+        html: true
+      })
+
+      $('#rerun-popover').popover('show')
+    }
   }
 
   /********************************************************************/
