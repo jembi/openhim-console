@@ -1,7 +1,9 @@
 language: node_js
 before_script: npm run build:prod
 after_success:
-  - ".travis/build_docker.sh"
+  - '.travis/build_docker.sh'
 node_js:
-  - '8.6'
+  - 'node'
+  - '10'
+  - '8'
 sudo: false
