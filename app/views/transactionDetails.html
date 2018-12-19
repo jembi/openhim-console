@@ -82,7 +82,7 @@
                 <p class="transactionsSummary">Number {{txNumber}} of {{txTotal}} transaction in the <a href="#{{currFilterURL}}">current filter</a>.</p>
               </div>
 
-              <div id="rerun-table" class="hide">
+              <script type="text/ng-template" id="rerun-table">
                 <!-- Table with all rerun the transaction logs -->
                 <table class="table table-striped">
                   <thead>
@@ -94,9 +94,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="table-list" ng-repeat="childTransaction in childTransactions" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)">
-                      <td data-title="URL"><span class="label label-default">{{childTransaction.request.method}}</span>{{ ' ' + childTransaction.request.host + ':' + childTransaction.request.port + childTransaction.request.path + childTransaction.request.querystring }}</td>
-                      <td data-title="Status">
+                    <tr class="table-list" ng-repeat="childTransaction in childTransactions">
+                      <td data-title="URL" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)"><span class="label label-default">{{childTransaction.request.method}}</span>{{ ' ' + childTransaction.request.host + ':' + childTransaction.request.port + childTransaction.request.path + childTransaction.request.querystring }}</td>
+                      <td data-title="Status" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)">
                         <div>
                           <span ng-if="childTransaction.status === 'Successful'" class="label label-success">Successful</span>
                           <span ng-if="childTransaction.status === 'Completed'" class="label label-success">Completed</span>
@@ -105,12 +105,12 @@
                           <span ng-if="childTransaction.status === 'Failed'" class="label label-danger">Failed</span>
                         </div>
                       </td>
-                      <td data-title="Request Time">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z' }}</td>
+                      <td data-title="Request Time" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)">{{ childTransaction.request.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss Z' }}</td>
                       <td data-title=""><a href="#!/transactions/{{childTransaction._id}}" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a></td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </script>
             </div>
           </div>
 
