@@ -8,3 +8,9 @@ node_js:
   - 'lts/dubnium'
   - 'node'
 sudo: false
+notifications:
+  slack:
+    rooms:
+      - jembihealthsystems:mlQYVFbijxcZkesCt7G5VBoM
+    on_success: change
+    on_failure: always
