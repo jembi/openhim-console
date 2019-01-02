@@ -7,7 +7,7 @@ import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
 
-export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting) {
+export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -249,13 +249,23 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $location, $routePara
   /**               Show transactions that have been rerun                 **/
   /********************************************************************/
 
-  $scope.showTransactionsRerun = function () {
-    $('#rerun-popover').popover({
-      content: function () { return $('#rerun-table').html() },
-      html: true
-    })
+  // Content function is called twice. This is a flag to check whether the function has been called already,
+  // if set to true second call does not happen
+  let contentCalled = false
 
-    $('#rerun-popover').popover('show')
+  $scope.showTransactionsRerun = function () {
+    const data = $('#rerun-table').html()
+
+    if (!contentCalled) {
+      contentCalled = true
+
+      $('#rerun-popover').popover({
+        content: $compile(data)($scope),
+        html: true
+      })
+
+      $('#rerun-popover').popover('show')
+    }
   }
 
   /********************************************************************/
