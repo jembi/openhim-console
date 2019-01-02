@@ -109,7 +109,10 @@ const config = {
 
 if (isProduction) {
   config.plugins.push(new MinifyPlugin({
-    mangle: false
+    consecutiveAdds: false,
+    guards: false,
+    mangle: false,
+    simplify: false
   }, {
     comments: false
   }))
