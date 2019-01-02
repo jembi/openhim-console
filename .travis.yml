@@ -1,7 +1,10 @@
 language: node_js
 before_script: npm run build:prod
 after_success:
-  - ".travis/build_docker.sh"
+  - npm run coverage
+  - '.travis/build_docker.sh'
 node_js:
-  - '8.6'
+  - 'lts/carbon'
+  - 'lts/dubnium'
+  - 'node'
 sudo: false
