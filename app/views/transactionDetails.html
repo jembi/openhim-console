@@ -6,14 +6,13 @@
     <div class="col-md-10">
 
       <div class="content-box-large">
-
         <!-- Heading -->
         <div class="panel-heading">
           <div class="panel-title">
             <h2>
               <i ng-if="transactionDetails.childIDs.length == 0" class="glyphicon glyphicon-tasks"></i>
-              <i ng-if="transactionDetails.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
-              <i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-retweet"></i>
+              <i ng-if="transactionDetails.childIDs.length > 0" class="glyphicon glyphicon-repeat" title="Has been rerun"></i>
+              <i ng-if="transactionDetails.parentID" class="glyphicon glyphicon-refresh" title="Is a rerun transaction"></i>
               &nbsp;Transaction details</h2>
           </div>
         </div>
