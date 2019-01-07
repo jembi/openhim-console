@@ -48,7 +48,7 @@
 		"karma-phantomjs-launcher": "^1.0.1",
 		"karma-sinon-chai": "1.2.3",
 		"lodash": "^4.17.11",
-		"mocha": "^2.5.3",
+		"mocha": "^5.2.0",
 		"moment": "^2.23.0",
 		"moment-timezone": "^0.5.23",
 		"morris.js": "^0.5.0",
