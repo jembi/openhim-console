@@ -18,7 +18,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   };
 
   function success () {
-    Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully')
+    Alerting.AlertAddMsg('top', 'success', 'The channel configuration was updated successfully')
     notifyUser()
   };
 
