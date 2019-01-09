@@ -18,12 +18,12 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   };
 
   function success () {
-    Alerting.AlertAddMsg('top', 'success', 'The mediator configuration was updated successfully')
+    Alerting.AlertAddMsg('top', 'success', 'The channel configuration was updated successfully')
     notifyUser()
   };
 
   function error (err) {
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the mediator config: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channel config: #' + err.status + ' - ' + err.data)
     notifyUser()
   };
 
