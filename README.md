@@ -11,7 +11,7 @@ This application provides a web application to configure and manage the [OpenHIM
 * Managing the security infrastructure
 * Importing and exporting OpenHIM server configuration
 
-See the [development roadmap](https://github.com/jembi/openhim-core-js/wiki/OpenHIM-core-Development-Roadmap) for more details on what is to come!
+See the [development road-map](https://github.com/jembi/openhim-core-js/wiki/OpenHIM-core-Development-Roadmap) for more details on what is to come!
 
 See [the documentation](https://github.com/jembi/openhim-console/wiki) for more details to get started.
 
@@ -35,10 +35,10 @@ Next, and this step is _vital_, you need to configure the console to point to yo
 ``` json
 {
   "protocol": "https",
-  "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publically accessible)
+  "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publicly accessible)
   "port": 8080, // change this to the API port of the OpenHIM-core server, default is 8080
-  "title": "OpenHIM Admin Console", // You may change this to customise the title of the OpenHIM-console instance
-  "footerTitle": "OpenHIM Administration Console", // You may change this to customise the footer of the OpenHIM-console instance
+  "title": "OpenHIM Admin Console", // You may change this to customize the title of the OpenHIM-console instance
+  "footerTitle": "OpenHIM Administration Console", // You may change this to customize the footer of the OpenHIM-console instance
   "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
   "loginBanner": "" // add text here that you want to appear on the login screen, if any.
 }
@@ -81,11 +81,11 @@ To run the unit tests run `grunt test`
 
 To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to `0.0.0.0` in order to access the site from outside.
 
-Note all changes will be automatically applied to the webapp and the page will be reloaded after each change. In addition JSHint will be run to provide information about errors or bad code style. The unit tests will also be automatically be run if JSHint does not find any errors.
+Note all changes will be automatically applied to the web-app and the page will be reloaded after each change. In addition JSHint will be run to provide information about errors or bad code style. The unit tests will also be automatically be run if JSHint does not find any errors.
 
 For unit testing we are using [mocha](http://mochajs.org/) with [chai.js](http://chaijs.com/api/bdd/) for assertions. We are using the BDD `should` style for chai as it more closely resembles the unit testing style that is being used for the [OpenHIM-core component](https://github.com/jembi/openhim-core-js)
 
-This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular generator](https://github.com/yeoman/generator-angular). You can find more detials about the command available by looking at the docs of those tools.
+This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular generator](https://github.com/yeoman/generator-angular). You can find more details about the command available by looking at the docs of those tools.
 
 ---
 
@@ -119,7 +119,7 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
     vagrant up --no-provision
     ```
 
-1. [Optional] The Vagrantfile provisions the VM with the latest source code from master and attempts to compile the RPM package for you. However in the event an error occurs, or if you prefer to have manual control over the process, then you'll need to do the following:
+1. [Optional] The Vagrant file provisions the VM with the latest source code from master and attempts to compile the RPM package for you. However in the event an error occurs, or if you prefer to have manual control over the process, then you'll need to do the following:
 
     * Remote into the VM: `vagrant ssh`
     * Download or sync all source code into VM.
@@ -182,6 +182,6 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
 
 ## Contributing
 
-You may view/add issues here: https://github.com/jembi/openhim-console/issues
+You may view/add issues here: <https://github.com/jembi/openhim-console/issues>
 
-To contibute code, please fork the repository and submit a pull request. The maintainers will review the code and merge it in if all is well.
+To contribute code, please fork the repository and submit a pull request. The maintainers will review the code and merge it in if all is well.
