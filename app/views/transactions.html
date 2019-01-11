@@ -97,8 +97,9 @@
                 <tr class="table-list" ng-repeat="transaction in transactions" ng-class="{transactionsNew: baseIndex + $index < 0}" ng-click='viewTransactionDetails("transactions/" + transaction._id, $event)'>
                   <td class="transactionsCheckboxTD">
                     <label>
-                      <input style="float: left" type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="channelsMap[transaction.channelID].rerun && transaction.canRerun" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
-                      <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat"></i>
+                      <input type="checkbox" ng-change="toggleTransactionSelection(transaction._id)" ng-if="channelsMap[transaction.channelID].rerun && transaction.canRerun" ng-checked="checkbox.checkAll" ng-model="checkBox" value="transaction._id"/>
+                      <i ng-if="transaction.childIDs.length > 0" class="glyphicon glyphicon-repeat" title="Has been rerun"></i>
+                      <i ng-if="transaction.parentID" class="glyphicon glyphicon-refresh" title="Is a rerun transaction"></i>
                     </label>
                   </td>
                   <td data-title="# {{ baseIndex + $index +1 }}" class="responsiveTransactionIndexCheckbox">
