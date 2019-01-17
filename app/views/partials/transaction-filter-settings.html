@@ -197,7 +197,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Date Range:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Select a start and end date to filter transactions by date.<br />(both dates are required)"
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="'Select a start and end date to filter transactions by date.<br />(both dates are required)'"
         class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <div class="input-daterange input-group" id="datepicker" style="width: 360px">
@@ -213,7 +213,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Limit:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile"
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="'Set the limit of how many transactions to display<br /><br />Tip: You can change your default limit in your user profile'"
         class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <select class="form-control" ng-model="settings.filter.limit" ng-change="applyFiltersToUrl()" ng-options="limit as limit for limit in limits">
@@ -222,7 +222,7 @@
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
       Show Reruns:
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" tooltip-html-unsafe="Set whether to show transactions that have been rerun"
+      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether to show transactions that have been rerun"
         class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
     <select class="form-control" ng-change="applyFiltersToUrl()" ng-model="settings.filter.transaction.wasRerun">
