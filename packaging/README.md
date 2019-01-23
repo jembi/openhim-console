@@ -1,5 +1,7 @@
-Debian Packaging for the OpenHIM-console
-========================================
+Packaging OpenHIM Console
+=====================================
+
+# Debian Packaging
 
 To create a debian package execute `./create-deb.sh`. This will run you through the process of creating a deb file. It can even upload a package to launchpad for inclusion in the ubuntu reposiotries if you so choose.
 
@@ -9,3 +11,14 @@ You must also have an environment variable set with the id of the key to use. Vi
 
 Login: openhie
 PPA: release
+
+# CentOS RPM Packaging
+
+Building the CentOS package makes uses of a CentOS docker container which runs various commands to build the package.
+
+Execute the `build-docker-centos-rpm.sh` bash script with a specific release version as an argument to build the RPM package on a specific release version.
+
+`build-docker-centos-rpm.sh 1.12.0` will build and RPM package for the 1.12.0 release of the OpenHIM Console
+
+Once the bash script has completed and cleaned up after itself, you will see the built rpm package in the directory of this script. The package will look something like:
+`openhim-console-1.12.0-1.x86_64.rpm`
