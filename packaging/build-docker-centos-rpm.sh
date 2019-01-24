@@ -1,3 +1,5 @@
+#!/bin/bash
+
 RELEASE_VERSION=$1
 if [ -z ${RELEASE_VERSION} ]
 then
