@@ -18,7 +18,7 @@ Building the CentOS package makes uses of a CentOS docker container which runs v
 
 Execute the `build-docker-centos-rpm.sh` bash script with a specific release version as an argument to build the RPM package on a specific release version.
 
-`build-docker-centos-rpm.sh 1.12.0` will build and RPM package for the 1.12.0 release of the OpenHIM Console
+`build-docker-centos-rpm.sh 1.13.0-rc.1` will build and RPM package for the 1.13.0-rc.1 release of the OpenHIM Console
 
 Once the bash script has completed and cleaned up after itself, you will see the built rpm package in the directory of this script. The package will look something like:
-`openhim-console-1.12.0-1.x86_64.rpm`
+`openhim-console-1.13.0-rc.1-1.x86_64.rpm`

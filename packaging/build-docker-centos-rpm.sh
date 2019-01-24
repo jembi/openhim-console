@@ -1,7 +1,7 @@
 RELEASE_VERSION=$1
 if [ -z ${RELEASE_VERSION} ]
 then
-  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.12.0'"
+  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.13.0-rc.1'"
   echo "https://github.com/jembi/openhim-console/releases"
   exit
 fi
@@ -32,8 +32,8 @@ docker exec -it $containerName sh -c "mkdir /openhim-console && curl -sL 'https:
 echo "npm install && npm install speculate && npm run build"
 docker exec -it $containerName sh -c "cd /openhim-console && npm install && npm install speculate && npm run build:prod && npm run spec"
 
-echo "Symlink the openhim-console/dist folder with the rpmbuild folder"
-docker exec -it $containerName sh -c "ln -s /openhim-console/dist ~/rpmbuild"
+echo "Symlink the openhim-console folder with the rpmbuild folder"
+docker exec -it $containerName sh -c "ln -s /openhim-console ~/rpmbuild"
 
 # if the Release Version incluldes a dash, apply workaround for rpmbuild to not break on dashes
 if [[ "${RELEASE_VERSION}" == *"-"* ]]
