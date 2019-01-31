@@ -102,7 +102,6 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     $scope.client = new Api.Clients()
     $scope.client.roles = []
   }
-//alert($scope.client+'\n'+$scope.client.name)
 
   /***************************************************************/
   /**   These are the functions for the Client initial load     **/
