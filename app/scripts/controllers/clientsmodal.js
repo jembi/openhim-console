@@ -22,11 +22,6 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   $scope.$watch('client', function () {
     Api.Roles.query(function (roles) {
       $scope.roles = roles
-      if ($scope.client.name) {
-        checkAssignedRoles()
-      } else {
-        $scope.client.roles = []
-      }
     })
   })
 
@@ -98,12 +93,16 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   // if client exist then update true
   if (client) {
     $scope.update = true
-    $scope.client = Api.Clients.get({ clientId: client._id }, function () { })
+    $scope.client = Api.Clients.get({ clientId: client._id }, function () {
+      checkAssignedRoles()
+    })
     // $scope.client = angular.copy(client);
   } else {
     $scope.update = false
     $scope.client = new Api.Clients()
+    $scope.client.roles = []
   }
+//alert($scope.client+'\n'+$scope.client.name)
 
   /***************************************************************/
   /**   These are the functions for the Client initial load     **/
