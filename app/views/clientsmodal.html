@@ -65,7 +65,7 @@
           <label><span>**</span> Assign Existing Roles</label>
           <br/>
           <span ng-repeat="role in roles">
-            <input type="checkbox" ng-model="requiredForNgChange" ng-checked="formData.assigned[role.name]" ng-change="toggleAssignedRoles(role.name)">{{role.name}}</input>
+            <input type="checkbox" ng-model="requiredForNgChange" ng-checked="formData.assigned[role.name]" ng-click="toggleAssignedRoles(role.name)">{{role.name}}</input>
             <br/>
           </span>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Assign Existing Roles</strong>' or '<strong>Add New Role</strong>' is required!</div>
