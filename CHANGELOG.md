@@ -1,5 +1,9 @@
 # Changelog
 
+## *v1.13.0 / 2019-02-04*
+
+## Final release
+
 ## *v1.13.0-rc.2 / 2019-02-01*
 
 ## Release candidate with bug fix and new script
