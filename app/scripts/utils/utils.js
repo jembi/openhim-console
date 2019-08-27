@@ -87,7 +87,7 @@ export function isCoreVersionCompatible (minVersion, actualVersion) {
   const v1 = minVersion.split('.')
   const v2 = actualVersion.split('.')
 
-  if (v1[0] === v2[0]) {
+  if (v1[0] <= v2[0]) {
     if (v1[1] <= v2[1]) {
       return true
     }
