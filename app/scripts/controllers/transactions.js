@@ -208,17 +208,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         if (userGroups.indexOf('admin') >= 0) {
           $scope.channelsMap[channel._id].rerun = true
         } else {
-          let i
-          for (i = 0; i < userGroups.length; ++i) {
-            if (channel.txRerunAcl.indexOf(userGroups[i]) >= 0) {
-              $scope.channelsMap[channel._id].rerun = true
-              break
-            }
-          }
-
-          if (i === userGroups.length) {
-            $scope.channelsMap[channel._id].rerun = false
-          }
+          const groupsAllowedToRerun = userGroups.filter(group => channel.txRerunAcl.includes(group))
+          $scope.channelsMap[channel._id].rerun = groupsAllowedToRerun.length > 0
         }
       } else {
         $scope.channelsMap[channel._id].rerun = false
