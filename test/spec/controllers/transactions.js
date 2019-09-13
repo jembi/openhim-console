@@ -313,4 +313,36 @@ describe('Controller: TransactionsCtrl', function () {
     scope.transactions[2]._id.should.equal('770936d307756ef72b525333')
     scope.transactions[2].status.should.equal('Failed')
   })
+
+  it('should check rerun permissions (non admin user should have permission on enabled channel)', function () {
+    // Change the userGroups from admin. The userGroups are stored in a session upon login. 
+    // They are used to determine if a user can rerun a channel's transactions
+    var session = localStorage.getItem('consoleSession')
+    localStorage.removeItem('consoleSession')
+    session = JSON.parse(session)
+    session.sessionUserGroups = ['test1', 'test', 'test2', 'test2']
+    localStorage.setItem('consoleSession', JSON.stringify(session))
+
+    createController()
+    httpBackend.flush()
+    
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', true)
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
+  })
+
+  it('should check rerun permissions (non admin user should not have permission on enabled channel)', function () {
+    // Change the userGroups from admin. The userGroups are stored in a session upon login. 
+    // They are used to determine if a user can rerun a channel's transactions
+    var session = localStorage.getItem('consoleSession')
+    localStorage.removeItem('consoleSession')
+    session = JSON.parse(session)
+    session.sessionUserGroups = ['test1', 'test2', 'test3', 'test4']
+    localStorage.setItem('consoleSession',JSON.stringify(session))
+
+    createController()
+    httpBackend.flush()
+
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', false)
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
+  })
 })
