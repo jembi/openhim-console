@@ -11,6 +11,18 @@ You must also have an environment variable set with the id of the key to use. Vi
 Login: openhie  
 PPA: release
 
+## Bundled Release
+
+A bundled release will ensure all the relevant dependencies are downloaded and bundled into a built version of the OpenHIM console. Only the relevant scripts needed to run the OpenHIM core is added to the bundled release.
+
+To create a new build release execute to the below command. This does assume that your Linux distribution has the `zip` and `tar` modules installed
+
+`./build-release-zip.sh <TAG>`
+
+E.g
+
+`./build-release-zip.sh v5.2.4`
+
 ## CentOS RPM Packaging
 
 Building the CentOS package makes uses of a CentOS docker container which runs various commands to build the package.
