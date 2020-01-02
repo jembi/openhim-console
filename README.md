@@ -19,7 +19,7 @@ See documentation and tutorials at [openhim.org](http://openhim.org).
 
 ## Getting started with the OpenHIM Console
 
-## Developer guide
+### Developer guide
 
 > First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
 
