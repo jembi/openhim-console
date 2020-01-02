@@ -99,13 +99,13 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
       if (parseInt(channelsResults[0].completed) !== 0) {
         value = parseInt(channelsResults[0].completed)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Completed', value: value, percent: percent, color: '#f0ad4e' })
+        channelsData.push({ label: 'Completed', value: value, percent: percent, color: '#EFC300' })
       }
 
       if (parseInt(channelsResults[0].completedWErrors) !== 0) {
         value = parseInt(channelsResults[0].completedWErrors)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#5bc0de' })
+        channelsData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#FB8B24' })
       }
 
       if (parseInt(channelsResults[0].successful) !== 0) {
