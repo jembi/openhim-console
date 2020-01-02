@@ -64,6 +64,8 @@ Visit the following link: `https://localhost:8080/authenticate/root@openhim.org`
 
 ## Developer guide
 
+> First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
+
 Clone the repository and then run
 
 ```sh
