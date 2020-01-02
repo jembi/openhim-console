@@ -11,7 +11,7 @@ This application provides a web application to configure and manage the [OpenHIM
 * Managing the security infrastructure
 * Importing and exporting OpenHIM server configuration
 
-See the [development road-map](https://jembiprojects.jira.com/wiki/spaces/OHI/pages/edit-v2/679575553) for more details on what is to come!
+See the [development road-map](http://openhim.org/docs/introduction/roadmap) for more details on what is to come!
 
 See documentation and tutorials at [openhim.org](http://openhim.org).
 
