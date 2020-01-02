@@ -19,9 +19,33 @@ See documentation and tutorials at [openhim.org](http://openhim.org).
 
 ## Getting started with the OpenHIM Console
 
-### Docker
+## Developer guide
 
-If you are familiar with using Docker and Docker Compose, we have included a `docker-compose.yml` file in the `infrastructure` folder.
+> First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
+
+Clone the repository and then run
+
+```sh
+npm install
+```
+
+To start up a development instance of the webapp run
+
+```sh
+npm start
+```
+
+For file changes to apply run `npm build` before starting the server.
+
+To run tests:
+
+```sh
+npm test
+```
+
+---
+
+### Docker
 
 To spin up a full OpenHIM environment, navigate to the `infrastructure` folder and execute: `docker-compose up`
 
@@ -59,32 +83,6 @@ You will be prompted to change this.
 > **Note:** You will have problems logging in if your OpenHIM server is still setup to use a self-signed certificate (the default). To get around this you can use the following workaround (the proper way to solve this is to upload a proper certificate into the OpenHIM-core):
 
 Visit the following link: `https://localhost:8080/authenticate/root@openhim.org` in Chrome. Make sure you are visiting this link from the system that is running the OpenHIM-core. Otherwise, replace `localhost` and `8080` with the appropriate OpenHIM-core server hostname and API port. You should see a message saying "**Your connection is not private**". Click "Advanced" and then click "Proceed". Once you have done this, you should see some JSON, you can ignore this and close the page. Ths will ignore the fact that the certificate is self-signed. Now, you should be able to go back to the Console login page and login. This problem will occur every now and then until you load a properly signed certificate into the OpenHIM-core server.
-
----
-
-## Developer guide
-
-> First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
-
-Clone the repository and then run
-
-```sh
-npm install
-```
-
-To start up a development instance of the webapp run
-
-```sh
-npm start
-```
-
-For file changes to apply run `npm build` before starting the server.
-
-To run tests:
-
-```sh
-npm test
-```
 
 ---
 
