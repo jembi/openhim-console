@@ -11,7 +11,7 @@ This application provides a web application to configure and manage the [OpenHIM
 * Managing the security infrastructure
 * Importing and exporting OpenHIM server configuration
 
-See the [development road-map](https://jembiprojects.jira.com/wiki/spaces/OHI/pages/edit-v2/679575553) for more details on what is to come!
+See the [development road-map](http://openhim.org/docs/introduction/roadmap) for more details on what is to come!
 
 See documentation and tutorials at [openhim.org](http://openhim.org).
 
@@ -19,9 +19,33 @@ See documentation and tutorials at [openhim.org](http://openhim.org).
 
 ## Getting started with the OpenHIM Console
 
-### Docker
+### Developer guide
 
-If you are familiar with using Docker and Docker Compose, we have included a `docker-compose.yml` file in the `infrastructure` folder.
+> First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
+
+Clone the repository and then run
+
+```sh
+npm install
+```
+
+To start up a development instance of the webapp run
+
+```sh
+npm start
+```
+
+For file changes to apply run `npm build` before starting the server.
+
+To run tests:
+
+```sh
+npm test
+```
+
+---
+
+### Docker
 
 To spin up a full OpenHIM environment, navigate to the `infrastructure` folder and execute: `docker-compose up`
 
