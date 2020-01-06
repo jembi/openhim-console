@@ -73,6 +73,12 @@ npm install
 To start up a development instance of the webapp run
 
 ```sh
+npm run start:dev
+```
+
+To start up a production instance run
+
+```sh
 npm start
 ```
 
