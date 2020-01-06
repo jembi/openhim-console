@@ -750,7 +750,16 @@ body {
 .load-metrics-line-graph { width: 49%; float: left; }
 .response-time-metrics-line-graph { width: 49%; float: right; }
 
-.label-primary, .label-success, .label-warning, .label-danger, .label-info, .label-default { font-size: 12px; }
+.label-completed {
+  background-color: #EFC300;
+}
+
+.label-completed-with-errors {
+  background-color: #FB8B24;
+}
+
+.label-primary, .label-success, .label-warning, .label-danger, .label-info, .label-default, .label-completed, .label-completed-with-errors { font-size: 12px; }
+
 .progress { margin: 0px; width: 90%; }
 
 #transaction-status-graph:hover { cursor: pointer; }

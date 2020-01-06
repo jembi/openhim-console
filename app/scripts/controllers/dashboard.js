@@ -91,7 +91,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
         if (channelsKeys.indexOf('completed') === -1) {
           channelsKeys.push('completed')
           channelsLabels.push('Completed')
-          channelsColors.push('#f0ad4e')
+          channelsColors.push('#EFC300')
         }
 
         channelGraphStack.completedWErrors = metrics[i].completedWErrors
@@ -99,7 +99,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
         if (channelsKeys.indexOf('completedWErrors') === -1) {
           channelsKeys.push('completedWErrors')
           channelsLabels.push('Completed With Errors')
-          channelsColors.push('#5bc0de')
+          channelsColors.push('#FB8B24')
         }
 
         channelGraphStack.successful = metrics[i].successful

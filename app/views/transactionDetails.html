@@ -36,9 +36,9 @@
                   <td>
                     <div>
                       <span ng-if="transactionDetails.status === 'Successful'" class="label label-success">Successful</span>
-                      <span ng-if="transactionDetails.status === 'Completed'" class="label label-success">Completed</span>
+                      <span ng-if="transactionDetails.status === 'Completed'" class="label label-completed">Completed</span>
                       <span ng-if="transactionDetails.status === 'Processing'" class="label label-info">Processing</span>
-                      <span ng-if="transactionDetails.status === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                      <span ng-if="transactionDetails.status === 'Completed with error(s)'" class="label label-completed-with-errors">Completed with error(s)</span>
                       <span ng-if="transactionDetails.status === 'Failed'" class="label label-danger">Failed</span>
                     </div>
                   </td>
@@ -99,9 +99,9 @@
                       <td data-title="Status" ng-click="viewTransactionDetails('/transactions/' + childTransaction._id, $event)">
                         <div>
                           <span ng-if="childTransaction.status === 'Successful'" class="label label-success">Successful</span>
-                          <span ng-if="childTransaction.status === 'Completed'" class="label label-success">Completed</span>
+                          <span ng-if="childTransaction.status === 'Completed'" class="label label-completed">Completed</span>
                           <span ng-if="childTransaction.status === 'Processing'" class="label label-info">Processing</span>
-                          <span ng-if="childTransaction.status === 'Completed with error(s)'" class="label label-warning">Completed with error(s)</span>
+                          <span ng-if="childTransaction.status === 'Completed with error(s)'" class="label label-completed-with-errors">Completed with error(s)</span>
                           <span ng-if="childTransaction.status === 'Failed'" class="label label-danger">Failed</span>
                         </div>
                       </td>
