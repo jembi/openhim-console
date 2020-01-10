@@ -1,5 +1,13 @@
 # Changelog
 
+## *v1.13.2 / 2019-09-16*
+
+* Fixed user and channel permissions issue
+
+## *v1.13.1 / 2019-09-05*
+
+* Update Dependencies
+
 ## *v1.13.0 / 2019-02-04*
 
 ## Final release

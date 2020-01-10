@@ -11,26 +11,55 @@ This application provides a web application to configure and manage the [OpenHIM
 * Managing the security infrastructure
 * Importing and exporting OpenHIM server configuration
 
-See the [development road-map](https://github.com/jembi/openhim-core-js/wiki/OpenHIM-core-Development-Roadmap) for more details on what is to come!
+See the [development road-map](http://openhim.org/docs/introduction/roadmap) for more details on what is to come!
 
-See [the documentation](https://github.com/jembi/openhim-console/wiki) for more details to get started.
-
-For additional information and tutorials see [openhim.org](http://openhim.org).
+See documentation and tutorials at [openhim.org](http://openhim.org).
 
 ---
 
 ## Getting started with the OpenHIM Console
 
-First ensure that you have the OpenHIM-core server up and running. The console communicates with the OpenHIM-core via its API to pull and display data. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md).
+### Developer guide
 
-Next, you need to pull down the latest release of the web app and deploy it to a web server (replace the X's in the below command to the latest release):
+> First ensure that you have the OpenHIM-core server up and running. See [details on how to get the OpenHIM-core setup](https://github.com/jembi/openhim-core-js/blob/master/README.md)
 
-``` bash
-wget https://github.com/jembi/openhim-console/releases/download/vX.X.X/openhim-console-vX.X.X.tar.gz
-tar -vxzf openhim-console-vX.X.X.tar.gz --directory /var/www/
+Clone the repository and then run
+
+```sh
+npm install
 ```
 
-Next, and this step is _vital_, you need to configure the console to point to your OpenHIM-core server. Locate `config/default.js` in the folder you extracted the OpenHIM console to and edit it as follows:
+To start up a development instance of the webapp run
+
+```sh
+npm start
+```
+
+For file changes to apply run `npm build` before starting the server.
+
+To run tests:
+
+```sh
+npm test
+```
+
+---
+
+### Docker
+
+To spin up a full OpenHIM environment, navigate to the `infrastructure` folder and execute: `docker-compose up`
+
+The config for the console is controlled via the `default.json` file in the config directory. The file is copied from your local repo on start up.
+
+To edit the file:
+
+```sh
+docker exec -it {console-container} sh
+
+vi config/default.json
+```
+
+Your file should look something like this:
 
 ``` json
 {
@@ -44,7 +73,7 @@ Next, and this step is _vital_, you need to configure the console to point to yo
 }
 ```
 
-Now, navigate to your web server and you should see the OpenHIM-console load (eg. `http://localhost/`) and login. The default username and password are:
+Now, navigate to your web server and you should see the OpenHIM-console load (eg. `http://localhost:9000`) and login. The default username and password are:
 
 * username: `root@openhim.org`
 * password: `openhim-password`
@@ -55,45 +84,41 @@ You will be prompted to change this.
 
 Visit the following link: `https://localhost:8080/authenticate/root@openhim.org` in Chrome. Make sure you are visiting this link from the system that is running the OpenHIM-core. Otherwise, replace `localhost` and `8080` with the appropriate OpenHIM-core server hostname and API port. You should see a message saying "**Your connection is not private**". Click "Advanced" and then click "Proceed". Once you have done this, you should see some JSON, you can ignore this and close the page. Ths will ignore the fact that the certificate is self-signed. Now, you should be able to go back to the Console login page and login. This problem will occur every now and then until you load a properly signed certificate into the OpenHIM-core server.
 
-### Docker
-
-If you are familiar with using Docker and Docker Compose, we have included a `docker-compose.yml` file in the `infrastructure` folder.
-
-To spin up a full OpenHIM environment, navigate to the `infrastructure` folder and execute: `docker-compose up`
-
-The console will be available on: `http://localhost:9090`
-
-Remember to accept the self-signed certificate from the back-end for first login: `https://localhost:9095/authenticate/root@openhim.org`
-
 ---
 
 ## Developer guide
 
-To run this version of the console (v1.12.0-rc.1) requires a minimum version of [OpenHIM-Core v4.0.0-rc.5](https://github.com/jembi/openhim-core-js/releases/tag/v4.0.0-rc.5)
+Clone the repository and then run
 
-Clone the repository and then run `npm install`
+```sh
+npm install
+```
 
-Install cli tools: `npm install -g grunt-cli grunt bower`
+To start up a development instance of the webapp run
 
-Install bower web components: `bower install`
+```sh
+npm run start:dev
+```
 
-To run the unit tests run `grunt test`
+To start up a production instance run
 
-To start up a development instance of the webapp run `grunt serve`. The hostname and port can be changed in `Gruntfile.js`. The hostname can be changed to `0.0.0.0` in order to access the site from outside.
+```sh
+npm start
+```
 
-Note all changes will be automatically applied to the web-app and the page will be reloaded after each change. In addition JSHint will be run to provide information about errors or bad code style. The unit tests will also be automatically be run if JSHint does not find any errors.
+For file changes to apply run `npm build` before starting the server.
 
-For unit testing we are using [mocha](http://mochajs.org/) with [chai.js](http://chaijs.com/api/bdd/) for assertions. We are using the BDD `should` style for chai as it more closely resembles the unit testing style that is being used for the [OpenHIM-core component](https://github.com/jembi/openhim-core-js)
+To run tests:
 
-This code was scaffolded using [Yeoman](http://yeoman.io/) and the [angular generator](https://github.com/yeoman/generator-angular). You can find more details about the command available by looking at the docs of those tools.
+```sh
+npm test
+```
 
 ---
 
 ## Deployments
 
 All commits to the `master` branch will automatically trigger a build of the latest changes into a docker image on dockerhub.
-
-All commits directly to `staging` or `test` will automatically build and deploy a docker image to the test and staging servers respectively.
 
 ---
 
