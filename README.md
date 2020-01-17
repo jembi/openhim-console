@@ -63,7 +63,7 @@ Your file should look something like this:
 
 ``` json
 {
-  "protocol": "https",
+  "protocol": "https", // Change the protocol to 'http' when the OpenHIM core API protocol is 'http'. The default OpenHIM core API protocol is 'https'
   "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publicly accessible)
   "port": 8080, // change this to the API port of the OpenHIM-core server, default is 8080
   "title": "OpenHIM Admin Console", // You may change this to customize the title of the OpenHIM-console instance
