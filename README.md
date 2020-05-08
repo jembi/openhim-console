@@ -57,12 +57,12 @@ To edit the file:
 #docker exec -it {console-container} bash
 docker exec -it openhim-console bash
 apt-get update && apt-get install vim -y
-vi /etc/openhim-console/app/config/default.json
+vi /usr/share/nginx/html/config/default.json
 ```
 Or the sed command can be used
 
 ```sh
- sed -i -e  "s/localhost/<yourDomainHere>/g" app/config/default.json
+ sed -i -e  "s/localhost/<yourDomainHere>/g" /usr/share/nginx/html/config/default.json
 
 ```
 
