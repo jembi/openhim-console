@@ -49,7 +49,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
       template: clientsmodal,
       controller: ClientsModalCtrl,
       resolve: {
-        client: function () { }
+        client: function () { },
+        tab: function () { }
       }
     })
   }
@@ -64,7 +65,8 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
       resolve: {
         client: function () {
           return client
-        }
+        },
+        tab: function () { }
       }
     })
   }
