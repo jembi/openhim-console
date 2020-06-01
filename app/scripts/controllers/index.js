@@ -43,3 +43,6 @@ export * from './channel-tabs/userAccess'
 export * from './channel-tabs/routes'
 export * from './channel-tabs/dataControl'
 export * from './channel-tabs/alerts'
+
+export * from './clients-tabs/basicInfo'
+export * from './clients-tabs/authentication'
