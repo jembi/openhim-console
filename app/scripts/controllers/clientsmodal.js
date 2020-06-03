@@ -13,6 +13,10 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   $scope.formData.assigned = {}
   $scope.formData.newClientRole = null
 
+  Api.AuthenticationTypes.query(function (authTypes) {
+    $scope.authTypes = authTypes
+  })
+
   let checkAssignedRoles = function () {
     for (let i = 0; i < $scope.client.roles.length; i++) {
       $scope.formData.assigned[$scope.client.roles[i]] = true
