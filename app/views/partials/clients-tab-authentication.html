@@ -9,9 +9,7 @@
     <p>
       The details of this auth mechanism are defined in the OpenHIM Core config.
     </p>
-    <p>
-      JWT authentication is <b>enabled</b>.
-    </p>
+    <p>JWT authentication is <b>enabled</b>.</p>
   </div>
   <div class="form-group" ng-show="authTypes.indexOf('jwt-auth') == -1">
     <p>
@@ -29,16 +27,25 @@
   </p>
   <!-- Add Client token validation and error -->
   <div ng-show="authTypes.indexOf('custom-token-auth') != -1">
-    <div class="form-group" ng-class="{ 'has-error' : ngError.clientTokenID }">
-      <label><span>**</span> Client Token Identifier</label>
+    <div
+      class="form-group"
+      ng-class="{ 'has-error' : ngError.customTokenID || ngError.duplicateCustomTokenID }"
+    >
+      <label><span>**</span> Custom Token Identifier</label>
       <input
         class="form-control"
+        ng-model="client.customTokenID"
         placeholder="Set/change Client Token ID..."
         type="text"
       />
       <div class="has-error-msg">
-        <i class="glyphicon glyphicon-warning-sign"></i>
-        '<strong>client token ID</strong>' is required!
+        <p ng-show="ngError.customTokenID">
+          <i class="glyphicon glyphicon-warning-sign"></i> At least one
+          authentication mechanism is required!
+        </p>
+        <p ng-show="ngError.duplicateCustomTokenID">
+          <i class="glyphicon glyphicon-warning-sign"></i> Custom Token ID must be unique
+        </p>
       </div>
     </div>
     <div class="form-group">
@@ -94,9 +101,8 @@
         <option value="" label="No client certificate"></option>
       </select>
       <div class="has-error-msg">
-        <i class="glyphicon glyphicon-warning-sign"></i>Either
-        '<strong>Certificate</strong>' or '<strong>Password</strong>' is
-        required!
+        <i class="glyphicon glyphicon-warning-sign"></i> At least one
+        authentication mechanism is required!
       </div>
     </div>
   </div>
@@ -140,9 +146,8 @@
         ng-model="temp.password"
       />
       <div class="has-error-msg">
-        <i class="glyphicon glyphicon-warning-sign"></i>Either
-        '<strong>Certificate</strong>' or '<strong>Password</strong>' is
-        required!
+        <i class="glyphicon glyphicon-warning-sign"></i> At least one
+        authentication mechanism is required!
       </div>
     </div>
     <div

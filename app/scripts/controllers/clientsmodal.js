@@ -198,6 +198,20 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       $scope.ngError.hasErrors = true
     }
 
+    if ($scope.client.customTokenID) {
+      for (let i = 0; i < $scope.clients.length; i++) {
+        if ($scope.clients[i].clientID !== $scope.client.clientID) {
+          if (
+            $scope.clients[i].customTokenID &&
+            $scope.clients[i].customTokenID == $scope.client.customTokenID
+            ) {
+            $scope.ngError.duplicateCustomTokenID = true
+            $scope.ngError.hasErrors = true
+          }
+        }
+      }
+    }
+
     // name validation
     if (!$scope.client.name) {
       $scope.ngError.name = true
@@ -212,14 +226,27 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
 
     // password/certificate validation (new user)
     if ($scope.update === false) {
-      if (!$scope.client.certFingerprint && !$scope.temp.password) {
+      if (
+        !$scope.client.certFingerprint &&
+        !$scope.temp.password &&
+        !$scope.client.customTokenID &&
+        $scope.authTypes.indexOf('jwt-auth') == -1
+      ) {
         $scope.ngError.certFingerprint = true
+        $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
       }
     } else {
-      if (!$scope.client.certFingerprint && !$scope.temp.password && !$scope.client.passwordHash) {
+      if (
+        !$scope.client.certFingerprint &&
+        !$scope.temp.password &&
+        !$scope.client.passwordHash &&
+        !$scope.client.customTokenID &&
+        $scope.authTypes.indexOf('jwt-auth') == -1
+        ) {
         $scope.ngError.certFingerprint = true
+        $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
       }
