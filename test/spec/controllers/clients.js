@@ -25,6 +25,8 @@ describe('Controller: ClientsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([])
 
+    $httpBackend.when('GET', new RegExp('.*/authentication/types')).respond(['basic-auth', 'jwt-auth', 'mutual-tls-auth', 'custom-token-auth'])
+
     $httpBackend.when('GET', new RegExp('.*/roles')).respond([
       {name: 'test', clients: ['test'], channels: ['test']}
     ])
