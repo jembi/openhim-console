@@ -25,12 +25,18 @@
     A custom token contains an ID used to verify the client. This ID is
     configured below. The value can be any unique string.
   </p>
-  <!-- Add Client token validation and error -->
   <div ng-show="authTypes.indexOf('custom-token-auth') != -1">
     <div
       class="form-group"
       ng-class="{ 'has-error' : ngError.customTokenID || ngError.duplicateCustomTokenID }"
     >
+      <label ng-if="client.customTokenSet" style="float: right;">
+        <i
+          tooltip-placement="top"
+          uib-tooltip="A custom token ID has been set for this client"
+          class="glyphicon glyphicon-lock"
+        ></i>
+      </label>
       <label><span>**</span> Custom Token Identifier</label>
       <input
         class="form-control"
@@ -44,13 +50,14 @@
           authentication mechanism is required!
         </p>
         <p ng-show="ngError.duplicateCustomTokenID">
-          <i class="glyphicon glyphicon-warning-sign"></i> Custom Token ID must be unique
+          <i class="glyphicon glyphicon-warning-sign"></i> Custom Token ID must
+          be unique
         </p>
       </div>
     </div>
     <div class="form-group">
       <!-- Add ng-click -->
-      <button type="button" class="btn btn-default">
+      <button type="button" class="btn btn-default" ng-click="generateUuid()">
         Generate UUID
       </button>
     </div>

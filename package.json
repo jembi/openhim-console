@@ -5,7 +5,8 @@
 	"dependencies": {
 		"@types/http-server": "^0.10.0",
 		"http-server": "^0.12.3",
-		"replace": "^1.2.0"
+		"replace": "^1.2.0",
+		"uuid": "^8.1.0"
 	},
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.2",

@@ -1,4 +1,5 @@
 import * as CryptoJS from 'crypto-js'
+import { v4 as uuidV4 } from 'uuid';
 
 export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, client) {
   /***************************************************************/
@@ -242,7 +243,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         !$scope.client.certFingerprint &&
         !$scope.temp.password &&
         !$scope.client.passwordHash &&
-        !$scope.client.customTokenID &&
+        !($scope.client.customTokenID || $scope.client.customTokenSet) &&
         $scope.authTypes.indexOf('jwt-auth') == -1
         ) {
         $scope.ngError.certFingerprint = true
