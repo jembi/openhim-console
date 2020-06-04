@@ -94,6 +94,16 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     $scope.client.customTokenID = uuidV4()
   }
 
+  $scope.removeCustomToken = function () {
+    $scope.client.customTokenSet = false
+    $scope.client.customTokenID = null
+  }
+
+  $scope.removeBasicAuth = function () {
+    $scope.client.passwordHash = null
+    $scope.client.passwordSalt = null
+  }
+
   // fetch the keystore for cert dropdown
   Api.Keystore.query({ type: 'ca' }, function (certs) {
     $scope.certs = certs
@@ -102,10 +112,8 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   // if client exist then update true
   if (client) {
     $scope.update = true
-    $scope.client = Api.Clients.get({ clientId: client._id }, function () {
-      checkAssignedRoles()
-    })
-    // $scope.client = angular.copy(client);
+    $scope.client = angular.copy(client)
+    checkAssignedRoles()
   } else {
     $scope.update = false
     $scope.client = new Api.Clients()
@@ -201,20 +209,6 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     if (!$scope.client.clientID) {
       $scope.ngError.clientID = true
       $scope.ngError.hasErrors = true
-    }
-
-    if ($scope.client.customTokenID) {
-      for (let i = 0; i < $scope.clients.length; i++) {
-        if ($scope.clients[i].clientID !== $scope.client.clientID) {
-          if (
-            $scope.clients[i].customTokenID &&
-            $scope.clients[i].customTokenID == $scope.client.customTokenID
-            ) {
-            $scope.ngError.duplicateCustomTokenID = true
-            $scope.ngError.hasErrors = true
-          }
-        }
-      }
     }
 
     // name validation

@@ -25,25 +25,37 @@
     A custom token contains an ID used to verify the client. This ID is
     configured below. The value can be any unique string.
   </p>
-  <div ng-show="authTypes.indexOf('custom-token-auth') != -1">
+  <div
+    class="form-group-2columns"
+    ng-show="authTypes.indexOf('custom-token-auth') != -1"
+  >
     <div
-      class="form-group"
+      class="form-group flex-column"
+      style="float: left;"
       ng-class="{ 'has-error' : ngError.customTokenID || ngError.duplicateCustomTokenID }"
     >
-      <label ng-if="client.customTokenSet" style="float: right;">
-        <i
-          tooltip-placement="top"
-          uib-tooltip="A custom token ID has been set for this client"
-          class="glyphicon glyphicon-lock"
-        ></i>
-      </label>
-      <label><span>**</span> Custom Token Identifier</label>
+      <div>
+        <label ng-show="client.customTokenSet" style="float: right;">
+          <i
+            tooltip-placement="top"
+            uib-tooltip="A custom token ID has been set for this client"
+            class="glyphicon glyphicon-lock"
+          ></i>
+        </label>
+        <label><span>**</span> Custom Token Identifier</label>
+      </div>
       <input
         class="form-control"
         ng-model="client.customTokenID"
         placeholder="Set/change Client Token ID..."
         type="text"
       />
+      <div style="margin-top: 10px;" ng-show="client.customTokenSet">
+        <button class="btn btn-warning btn-xs" ng-click="removeCustomToken()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <label> Remove Custom Token Details</label>
+      </div>
       <div class="has-error-msg">
         <p ng-show="ngError.customTokenID">
           <i class="glyphicon glyphicon-warning-sign"></i> At least one
@@ -55,17 +67,17 @@
         </p>
       </div>
     </div>
-    <div class="form-group">
-      <!-- Add ng-click -->
+    <div class="form-group flex-column" style="float: right;">
+      <label>UUID</label>
       <button type="button" class="btn btn-default" ng-click="generateUuid()">
-        Generate UUID
+        Generate
       </button>
+      <p class="text-muted" style="padding-top: 10px;">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        The UUID generated above will only be shown once, therefore store it
+        somewhere safe.
+      </p>
     </div>
-    <p class="text-muted">
-      <i class="glyphicon glyphicon-warning-sign"></i>
-      The UUID generated above will only be shown once, therefore store it
-      somewhere safe.
-    </p>
   </div>
   <div
     class="form-group"
@@ -152,6 +164,12 @@
         type="password"
         ng-model="temp.password"
       />
+      <div style="margin-top: 10px;" ng-show="client.passwordHash">
+        <button class="btn btn-warning btn-xs" ng-click="removeBasicAuth()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <label> Remove Basic Auth Details</label>
+      </div>
       <div class="has-error-msg">
         <i class="glyphicon glyphicon-warning-sign"></i> At least one
         authentication mechanism is required!
