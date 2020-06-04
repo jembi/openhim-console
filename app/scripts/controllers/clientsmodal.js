@@ -90,6 +90,10 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
+  $scope.generateUuid = function () {
+    $scope.client.customTokenID = uuidV4()
+  }
+
   // fetch the keystore for cert dropdown
   Api.Keystore.query({ type: 'ca' }, function (certs) {
     $scope.certs = certs
