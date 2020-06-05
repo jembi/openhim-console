@@ -54,9 +54,16 @@ The config for the console is controlled via the `default.json` file in the conf
 To edit the file:
 
 ```sh
-docker exec -it {console-container} sh
+#docker exec -it {console-container} bash
+docker exec -it openhim-console bash
+apt-get update && apt-get install vim -y
+vi /usr/share/nginx/html/config/default.json
+```
+Or the sed command can be used
 
-vi config/default.json
+```sh
+ sed -i -e  "s/localhost/<yourDomainHere>/g" /usr/share/nginx/html/config/default.json
+
 ```
 
 Your file should look something like this:
