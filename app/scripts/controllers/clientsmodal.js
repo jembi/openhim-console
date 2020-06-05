@@ -209,18 +209,21 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     if (!$scope.client.clientID) {
       $scope.ngError.clientID = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // name validation
     if (!$scope.client.name) {
       $scope.ngError.name = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // roles validation
     if (!$scope.client.roles || $scope.client.roles.length === 0) {
       $scope.ngError.roles = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // password/certificate validation (new user)
@@ -235,6 +238,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     } else {
       if (
@@ -248,6 +252,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     }
 
@@ -256,6 +261,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     }
 
