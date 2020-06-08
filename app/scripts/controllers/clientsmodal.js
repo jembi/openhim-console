@@ -270,7 +270,6 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         // clear errors after 5 seconds
         $scope.ngError = {}
         Alerting.AlertReset('hasErrors')
-
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
     }
