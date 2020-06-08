@@ -1,0 +1,202 @@
+<div style="border-top: 1px solid #eee;">
+  <h3>JSON Web Token (JWT)</h3>
+  <p class="text-muted">
+    JWTs are used to securely transmit information between a client and a server
+    as a JSON object. The information can be trusted because it is digitally
+    signed using a secret or public/private key pair.
+  </p>
+  <div class="form-group" ng-show="authTypes.indexOf('jwt-auth') != -1">
+    <p>
+      The details of this auth mechanism are defined in the OpenHIM Core config.
+    </p>
+    <p>JWT authentication is <b>enabled</b>.</p>
+  </div>
+  <div class="form-group" ng-show="authTypes.indexOf('jwt-auth') == -1">
+    <p>
+      <i class="glyphicon glyphicon-info-sign"></i> JWT authentication is
+      <b>disabled</b> on the OpenHIM Core.
+    </p>
+  </div>
+</div>
+
+<div style="border-top: 1px solid #eee;">
+  <h3>Custom Token</h3>
+  <p class="text-muted">
+    A custom token contains an ID used to verify the client. This ID is
+    configured below. The value can be any unique string.
+  </p>
+  <div
+    class="form-group-2columns"
+    ng-show="authTypes.indexOf('custom-token-auth') != -1"
+  >
+    <div
+      class="form-group flex-column"
+      style="float: left;"
+      ng-class="{ 'has-error' : ngError.customTokenID || ngError.duplicateCustomTokenID }"
+    >
+      <div>
+        <label ng-show="client.customTokenSet" style="float: right;">
+          <i
+            tooltip-placement="top"
+            uib-tooltip="A custom token ID has been set for this client"
+            class="glyphicon glyphicon-lock"
+          ></i>
+        </label>
+        <label><span>**</span> Custom Token Identifier</label>
+      </div>
+      <input
+        class="form-control"
+        ng-model="client.customTokenID"
+        placeholder="Set/change Client Token ID..."
+        type="text"
+      />
+      <div style="margin-top: 10px;" ng-show="client.customTokenSet">
+        <button class="btn btn-warning btn-xs" ng-click="removeCustomToken()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <label> Remove Custom Token Details</label>
+      </div>
+      <div class="has-error-msg">
+        <p ng-show="ngError.customTokenID">
+          <i class="glyphicon glyphicon-warning-sign"></i> At least one
+          authentication mechanism is required!
+        </p>
+        <p ng-show="ngError.duplicateCustomTokenID">
+          <i class="glyphicon glyphicon-warning-sign"></i> Custom Token ID must
+          be unique
+        </p>
+      </div>
+    </div>
+    <div class="form-group flex-column" style="float: right;">
+      <label>UUID</label>
+      <button type="button" class="btn btn-default" ng-click="generateUuid()">
+        Generate
+      </button>
+      <p class="text-muted" style="padding-top: 10px;">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        The UUID generated above will only be shown once, therefore store it
+        somewhere safe.
+      </p>
+    </div>
+  </div>
+  <div
+    class="form-group"
+    ng-show="authTypes.indexOf('custom-token-auth') == -1"
+  >
+    <p>
+      <i class="glyphicon glyphicon-info-sign"></i> Custom Token authentication
+      is <b>disabled</b> on OpenHIM Core.
+    </p>
+  </div>
+</div>
+
+<div style="border-top: 1px solid #eee;">
+  <h3>Mutual TLS</h3>
+  <p class="text-muted">
+    Mutual TLS involves setting up an encrypted channel between the server and
+    client. Both sides of the connection verify certificates. Below you can
+    provide the client's domain and certificate.
+  </p>
+
+  <div ng-show="authTypes.indexOf('mutual-tls-auth') != -1">
+    <div class="form-group" ng-class="{ 'has-error' : ngError.clientDomain }">
+      <label>Domain</label>
+      <input class="form-control" type="text" ng-model="client.clientDomain" />
+      <div class="has-error-msg">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        {{validationRequiredMsg}}
+      </div>
+    </div>
+    <div
+      class="form-group"
+      ng-class="{ 'has-error' : ngError.certFingerprint }"
+    >
+      <label><span>**</span> Client Certificate</label>
+      <select
+        class="form-control"
+        ng-options="cert.fingerprint as 'cn=' + cert.commonName + ', o=' + cert.organization for cert in certs"
+        ng-model="client.certFingerprint"
+      >
+        <option value="" label="No client certificate"></option>
+      </select>
+      <div class="has-error-msg">
+        <i class="glyphicon glyphicon-warning-sign"></i> At least one
+        authentication mechanism is required!
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-show="authTypes.indexOf('mutual-tls-auth') == -1">
+    <p>
+      <i class="glyphicon glyphicon-info-sign"></i> Mutual TLS authentication is
+      <b>disabled</b> on OpenHIM Core.
+    </p>
+  </div>
+</div>
+
+<div>
+  <h3>Basic Auth</h3>
+  <p class="text-muted">
+    Basic Auth requires a username and password for authentication. The username
+    is the ClientID. The password can be set below.
+  </p>
+
+  <div
+    class="form-group-2columns"
+    ng-show="authTypes.indexOf('basic-auth') != -1"
+  >
+    <div
+      class="form-group"
+      style="float: left;"
+      ng-class="{ 'has-error' : ngError.password }"
+    >
+      <label ng-if="client.passwordHash" style="float: right;">
+        <i
+          tooltip-placement="top"
+          uib-tooltip="A password has been set for this client"
+          class="glyphicon glyphicon-lock"
+        ></i>
+      </label>
+
+      <label><span>**</span> Basic Auth Password</label>
+      <input
+        class="form-control"
+        placeholder="Set/change password..."
+        type="password"
+        ng-model="temp.password"
+      />
+      <div style="margin-top: 10px;" ng-show="client.passwordHash">
+        <button class="btn btn-warning btn-xs" ng-click="removeBasicAuth()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <label> Remove Basic Auth Details</label>
+      </div>
+      <div class="has-error-msg">
+        <i class="glyphicon glyphicon-warning-sign"></i> At least one
+        authentication mechanism is required!
+      </div>
+    </div>
+    <div
+      class="form-group"
+      style="float: right;"
+      ng-class="{ 'has-error' : ngError.passwordConfirm }"
+    >
+      <label>Confirm Password</label>
+      <input
+        class="form-control"
+        placeholder="Confirm password..."
+        type="password"
+        ng-model="temp.passwordConfirm"
+      />
+      <div class="has-error-msg">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        {{validationPasswordConfirmMsg}}
+      </div>
+    </div>
+  </div>
+  <div class="form-group" ng-show="authTypes.indexOf('basic-auth') == -1">
+    <p>
+      <i class="glyphicon glyphicon-info-sign"></i> Basic authentication
+      <b>disabled</b> on OpenHIM Core.
+    </p>
+  </div>
+</div>

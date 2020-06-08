@@ -1485,3 +1485,8 @@ label { position: relative; }
 .alert-dismissible .close{
   right: 0;
 }
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}

@@ -29,6 +29,8 @@ describe('Controller: ClientsModalCtrl', function () {
       {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
     ])
 
+    $httpBackend.when('GET', new RegExp('.*/authentication/types')).respond(['basic-auth', 'mutual-tls-auth', 'custom-token-auth'])
+
     $httpBackend.when('GET', new RegExp('.*/roles$')).respond([{}])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([{commonName: 'test1'}, {commonName: 'test2'}])

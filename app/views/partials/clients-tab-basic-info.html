@@ -1,0 +1,63 @@
+<p class="text-muted">Describe some basic information about the client.</p>
+
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.clientID }">
+    <label><span>*</span> Client ID</label>
+    <input class="form-control" type="text" ng-model="client.clientID" ng-disabled="update" focus="{{!update}}" >
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.name }">
+    <label><span>*</span> Client Name</label>
+    <input class="form-control" type="text" ng-model="client.name" name="name" >
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  </div>
+</div>
+
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left;">
+    <label>Organization</label>
+    <input class="form-control" type="text" ng-model="client.organization">
+  </div>
+  <div class="form-group" style="float: right;">
+    <label>Software Name</label>
+    <input class="form-control" type="text" ng-model="client.softwareName">
+  </div>
+</div>
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left;">
+    <label>Description</label>
+    <input class="form-control" type="text" ng-model="client.description">
+  </div>
+  <div class="form-group" style="float: right;">
+    <label>Location</label>
+    <input class="form-control" type="text" ng-model="client.location">
+  </div>
+</div>
+<div class="form-group-2columns">
+  <div class="form-group" style="float: left;">
+    <label>Contact Person</label>
+    <input class="form-control" type="text" ng-model="client.contactPerson">
+  </div>
+  <div class="form-group" style="float: right;">
+    <label>Contact Person Email</label>
+    <input class="form-control" type="text" ng-model="client.contactPersonEmail">
+  </div>
+</div>
+
+<div class="form-group-2columns" ng-class="{ 'has-error' : ngError.roles }">
+  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.roles }">
+    <label><span>**</span> Assign Existing Roles</label>
+    <br/>
+    <span ng-repeat="role in roles">
+      <input type="checkbox" ng-model="requiredForNgChange" ng-checked="formData.assigned[role.name]" ng-click="toggleAssignedRoles(role.name)">{{role.name}}</input>
+      <br/>
+    </span>
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Assign Existing Roles</strong>' or '<strong>Add New Role</strong>' is required!</div>
+  </div>
+  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.roles }">
+    <label><span>**</span> Add New Role</label>
+    <input class="form-control" type="text" name="newRole" ng-model="formData.newClientRole" ng-blur="createNewRole()" ng-keyup="$event.keyCode == 13 && createNewRole()"/>
+    <div style="color:orange" ng-show="formData.duplicateNewRole"><i class="glyphicon glyphicon-warning-sign"></i>Role/Client already exists</div>
+    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Either '<strong>Assign Existing Roles</strong>' or '<strong>Add New Role</strong>' is required!</div>
+  </div>
+</div>

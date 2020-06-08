@@ -1,4 +1,5 @@
 import * as CryptoJS from 'crypto-js'
+import { v4 as uuidV4 } from 'uuid';
 
 export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, client) {
   /***************************************************************/
@@ -12,6 +13,10 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   $scope.formData = {}
   $scope.formData.assigned = {}
   $scope.formData.newClientRole = null
+
+  Api.AuthenticationTypes.query(function (authTypes) {
+    $scope.authTypes = authTypes
+  })
 
   let checkAssignedRoles = function () {
     for (let i = 0; i < $scope.client.roles.length; i++) {
@@ -85,6 +90,20 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
+  $scope.generateUuid = function () {
+    $scope.client.customTokenID = uuidV4()
+  }
+
+  $scope.removeCustomToken = function () {
+    $scope.client.customTokenSet = false
+    $scope.client.customTokenID = null
+  }
+
+  $scope.removeBasicAuth = function () {
+    $scope.client.passwordHash = null
+    $scope.client.passwordSalt = null
+  }
+
   // fetch the keystore for cert dropdown
   Api.Keystore.query({ type: 'ca' }, function (certs) {
     $scope.certs = certs
@@ -93,10 +112,8 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   // if client exist then update true
   if (client) {
     $scope.update = true
-    $scope.client = Api.Clients.get({ clientId: client._id }, function () {
-      checkAssignedRoles()
-    })
-    // $scope.client = angular.copy(client);
+    $scope.client = angular.copy(client)
+    checkAssignedRoles()
   } else {
     $scope.update = false
     $scope.client = new Api.Clients()
@@ -192,32 +209,50 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     if (!$scope.client.clientID) {
       $scope.ngError.clientID = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // name validation
     if (!$scope.client.name) {
       $scope.ngError.name = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // roles validation
     if (!$scope.client.roles || $scope.client.roles.length === 0) {
       $scope.ngError.roles = true
       $scope.ngError.hasErrors = true
+      $scope.ngError.clientBasicInfoTab = true
     }
 
     // password/certificate validation (new user)
     if ($scope.update === false) {
-      if (!$scope.client.certFingerprint && !$scope.temp.password) {
+      if (
+        !$scope.client.certFingerprint &&
+        !$scope.temp.password &&
+        !$scope.client.customTokenID &&
+        $scope.authTypes.indexOf('jwt-auth') == -1
+      ) {
         $scope.ngError.certFingerprint = true
+        $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     } else {
-      if (!$scope.client.certFingerprint && !$scope.temp.password && !$scope.client.passwordHash) {
+      if (
+        !$scope.client.certFingerprint &&
+        !$scope.temp.password &&
+        !$scope.client.passwordHash &&
+        !($scope.client.customTokenID || $scope.client.customTokenSet) &&
+        $scope.authTypes.indexOf('jwt-auth') == -1
+        ) {
         $scope.ngError.certFingerprint = true
+        $scope.ngError.customTokenID = true
         $scope.ngError.password = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     }
 
@@ -226,6 +261,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
+        $scope.ngError.clientAuthenticationTab = true
       }
     }
 
@@ -233,6 +269,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       $scope.clearValidation = $timeout(function () {
         // clear errors after 5 seconds
         $scope.ngError = {}
+        Alerting.AlertReset('hasErrors')
       }, 5000)
       Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
     }
