@@ -9,6 +9,8 @@ export function Api ($rootScope, $resource, config) {
   return {
     Authenticate: $resource(server + '/authenticate/:email'),
 
+    AuthenticationTypes: $resource(`${server}/authentication/types`),
+
     Channels: $resource(server + '/channels/:channelId', { channelId: '@_id' }, {
       update: { method: 'PUT' },
       audits: {

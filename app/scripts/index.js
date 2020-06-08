@@ -59,6 +59,8 @@ app.run(function ($templateCache) {
   $templateCache.put('views/partials/channels-tab-user-access.html', require('~/views/partials/channels-tab-user-access'))
   $templateCache.put('views/partials/channels-tab-alerts.html', require('~/views/partials/channels-tab-alerts'))
   $templateCache.put('views/partials/channels-tab-logs.html', require('~/views/partials/channels-tab-logs'))
+  $templateCache.put('views/partials/clients-tab-basic-info.html', require('~/views/partials/clients-tab-basic-info'))
+  $templateCache.put('views/partials/clients-tab-authentication.html', require('~/views/partials/clients-tab-authentication.html'))
   $templateCache.put('views/partials/user-settings-tabs.html', require('~/views/partials/user-settings-tabs'))
   $templateCache.put('views/partials/tasks-filter-settings.html', require('~/views/partials/tasks-filter-settings'))
   $templateCache.put('views/partials/transaction-filter-settings.html', require('~/views/partials/transaction-filter-settings'))
