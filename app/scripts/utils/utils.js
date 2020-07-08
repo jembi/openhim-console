@@ -61,7 +61,7 @@ export function beautifyIndent (type, content) {
       return { lang: 'xml', content: pd.xml(content, 2) }
     }
 
-    if (type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0 || type.indexOf('application/json+openhim') >= 0) {
+    if (type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0) {
       return { lang: 'json', content: pd.json(content, 2) }
     }
 
