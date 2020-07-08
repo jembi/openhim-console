@@ -51,18 +51,17 @@ export function returnContentType (objectHeaders) {
   if (objectHeaders == null) {
     return undefined
   }
-  const [contentKey = 'Content-Type'] = Object.keys(objectHeaders).filter(k => /content-type/i.test(k))
+  const [contentKey = 'Content-Type'] = Object.keys(objectHeaders).filter(k => /^content-type$/i.test(k))
   return objectHeaders[contentKey]
 }
 
 export function beautifyIndent (type, content) {
-  console.log('something', type)
   try {
     if (type.indexOf('text/xml') >= 0 || type.indexOf('application/xml') >= 0) {
       return { lang: 'xml', content: pd.xml(content, 2) }
     }
 
-    if (type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0) {
+    if (type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0 || type.indexOf('application/json+openhim') >= 0) {
       return { lang: 'json', content: pd.json(content, 2) }
     }
 
