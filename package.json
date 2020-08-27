@@ -57,7 +57,7 @@
 		"phantomjs-prebuilt": "^2.1.16",
 		"pretty-data": "^0.40.0",
 		"raphael": "^2.3.0",
-		"rimraf": "^2.7.1",
+		"rimraf": "^3.0.2",
 		"sinon": "^1.17.4",
 		"sinon-chai": "2.8.0",
 		"speculate": "^1.7.4",
