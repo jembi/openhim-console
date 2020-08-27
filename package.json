@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"@kariudo/angular-fullscreen": "^1.0.2",
-		"@types/rimraf": "^2.0.4",
+		"@types/rimraf": "^3.0.0",
 		"angular": "^1.8.0",
 		"angular-bootstrap-colorpicker": "^3.0.32",
 		"angular-cookies": "^1.8.0",
