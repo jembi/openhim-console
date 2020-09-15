@@ -58,7 +58,7 @@
 		"pretty-data": "^0.40.0",
 		"raphael": "^2.3.0",
 		"rimraf": "^3.0.2",
-		"sinon": "^1.17.4",
+		"sinon": "^2.1.0",
 		"sinon-chai": "2.8.0",
 		"speculate": "^2.1.1",
 		"standard": "^14.3.4",
@@ -94,7 +94,7 @@
 		]
 	},
 	"scripts": {
-		"start": "NODE_ENV=prod http-server ./dist -p 9000",
+		"start": "NODE_ENV=prod http-server ./dist -p 9900",
 		"start:dev": "NODE_ENV=dev webpack-dev-server --hot=true",
 		"clean": "rimraf dist",
 		"lint": "standard 'app/**/*.js'",

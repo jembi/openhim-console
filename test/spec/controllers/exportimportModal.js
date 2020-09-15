@@ -60,11 +60,11 @@ describe('Controller: ExportImportModalCtrl', function () {
     scope.validImports.length.should.equal(2)
   })
 
-  it('should execute saveImport() and import the data', sinon.test(function () {
+  it('should execute saveImport() and import the data', function () {
     createController()
 
     // used to check if
-    var spy = this.spy(modalInstance, 'close')
+    var spy = sinon.spy(modalInstance, 'close')
 
     // lets change some data in our data object before doing the import
     scope.conflicts.forEach(function (item) {
@@ -78,9 +78,9 @@ describe('Controller: ExportImportModalCtrl', function () {
 
     httpBackend.expect('POST', new RegExp('.*/metadata'))
     httpBackend.flush()
-  }))
+  })
 
-  it('should execute saveImport() and do not import data', sinon.test(function () {
+  it('should execute saveImport() and do not import data', function () {
     data.forEach(function (item) {
       item.status = 'Conflict'
     })
@@ -89,7 +89,7 @@ describe('Controller: ExportImportModalCtrl', function () {
     scope.conflicts.length.should.equal(6)
 
     // used to monitor when modal gets closed - indicates completion
-    var spy = this.spy(modalInstance, 'close')
+    var spy = sinon.spy(modalInstance, 'close')
 
     // lets change some data in our data object before doing the import
     scope.conflicts.forEach(function (item) {
@@ -100,7 +100,7 @@ describe('Controller: ExportImportModalCtrl', function () {
     scope.saveImport(function () {
       sinon.assert.calledOnce(spy)
     })
-  }))
+  })
 
   it('should execute validateImportFile() and return TRUE - no errors', function () {
     createController()
