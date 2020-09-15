@@ -232,7 +232,7 @@ describe('Controller: VisualizerCtrl', function () {
   it('should open a modal to confirm deletion of a visualizer and remove a visualizer on confirmation', function () {
     httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
 
-    var modalSpy = sinon.stub(modal, 'open', function () {
+    var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
         result: {
           then: function (callback) {
@@ -258,7 +258,7 @@ describe('Controller: VisualizerCtrl', function () {
   it('should open a modal to confirm deletion of a visualizer and NOT remove a visualizer on cancellation', function () {
     httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
 
-    var modalSpy = sinon.stub(modal, 'open', function () {
+    var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
         result: {
           then: function (callback, cancel) {
@@ -284,7 +284,7 @@ describe('Controller: VisualizerCtrl', function () {
   it('should open a modal to add a new visualizer', function () {
     httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
 
-    var modalSpy = sinon.stub(modal, 'open', function () {
+    var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
         result: {
           then: function (callback, cancel) {
