@@ -107,7 +107,7 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
     /* ----- Set Referring URL ----- */
 
     let paramsString = ''
-    let curRoute = $location.path()
+    const curRoute = $location.path()
 
     // check if parameters exist
     if (Object.keys($location.search()).length > 0) {
@@ -156,20 +156,20 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
         // session still active - update expires time
         currentTime = new Date()
         // add 2hours onto timestamp (2hours persistence time)
-        let expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
+        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // get sessionID
-        let sessionID = consoleSession.sessionID
-        let sessionUser = consoleSession.sessionUser
-        let sessionUserGroups = consoleSession.sessionUserGroups
-        let sessionUserSettings = consoleSession.sessionUserSettings
+        const sessionID = consoleSession.sessionID
+        const sessionUser = consoleSession.sessionUser
+        const sessionUserGroups = consoleSession.sessionUserGroups
+        const sessionUserSettings = consoleSession.sessionUserSettings
 
         // create session object
-        let consoleSessionObject = {
-          'sessionID': sessionID,
-          'sessionUser': sessionUser,
-          'sessionUserGroups': sessionUserGroups,
-          'sessionUserSettings': sessionUserSettings,
-          'expires': expireTime
+        const consoleSessionObject = {
+          sessionID: sessionID,
+          sessionUser: sessionUser,
+          sessionUserGroups: sessionUserGroups,
+          sessionUserSettings: sessionUserSettings,
+          expires: expireTime
         }
 
         // Put updated object into storage

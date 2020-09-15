@@ -10,13 +10,13 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   $scope.isCollapsed = true
 
   // remember when we loaded the page...
-  let pageLoadDate = moment()
+  const pageLoadDate = moment()
 
   // polling
   let lastUpdated
   let serverDiffTime = 0
   $scope.baseIndex = 0
-  let pollPeriod = 5000
+  const pollPeriod = 5000
   $scope.limits = [10, 50, 100, 200, 500]
 
   Api.AuditsFilterOptions.get(function (auditsFilterOptions) {
@@ -26,7 +26,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   })
 
   /* setup default filter options */
-  let setupAuditFilters = function () {
+  const setupAuditFilters = function () {
     // return results for the first page (10 results)
     $scope.showpage = 0
     $scope.showlimit = 10
@@ -78,7 +78,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   let consoleSession = localStorage.getItem('consoleSession')
   consoleSession = JSON.parse(consoleSession)
   $scope.consoleSession = consoleSession
-  let userSettings = consoleSession.sessionUserSettings
+  const userSettings = consoleSession.sessionUserSettings
 
   if (userSettings) {
     if (userSettings.filter) {
@@ -102,7 +102,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
   // setup filter options
   $scope.returnFilters = function (type) {
-    let filtersObject = {}
+    const filtersObject = {}
     let filterUrlParams = ''
     let filterDateStart, filterDateEnd
 
@@ -117,15 +117,15 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     filterDateStart = $scope.settings.filter.dateStart
     filterDateEnd = $scope.settings.filter.dateEnd
     if (filterDateStart && filterDateEnd) {
-      let startDate = moment(filterDateStart).format()
-      let endDate = moment(filterDateEnd).endOf('day').format()
-      filtersObject.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$gte': startDate, '$lte': endDate })
+      const startDate = moment(filterDateStart).format()
+      const endDate = moment(filterDateEnd).endOf('day').format()
+      filtersObject.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $gte: startDate, $lte: endDate })
     }
     if (filterDateStart) { filterUrlParams += '&dateStart=' + moment(filterDateStart).format('YYYY-MM-DD') }
     if (filterDateEnd) { filterUrlParams += '&dateEnd=' + moment(filterDateEnd).format('YYYY-MM-DD') }
 
     /* ----- filter by Patient ----- */
-    let patientID = $scope.filters.participantObjectIdentification.patientID.patientID
+    const patientID = $scope.filters.participantObjectIdentification.patientID.patientID
     let assigningAuth = $scope.filters.participantObjectIdentification.patientID.assigningAuth
     let assigningAuthID = $scope.filters.participantObjectIdentification.patientID.assigningAuthID
 
@@ -139,7 +139,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
 
     // add patientID filter
-    let participantPatientID = patientID + '\\^\\^\\^' + assigningAuth + '&' + assigningAuthID + '&.*'
+    const participantPatientID = patientID + '\\^\\^\\^' + assigningAuth + '&' + assigningAuthID + '&.*'
     if (valueNotEmpty(patientID) === true) {
       filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify(participantPatientID)
       filterUrlParams += '&patientID=' + patientID
@@ -148,10 +148,10 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     /* ----- filter by Event ----- */
     // add eventID filter
-    let eventTypeCode = $scope.filters.eventIdentification.eventTypeCode
+    const eventTypeCode = $scope.filters.eventIdentification.eventTypeCode
     if (valueNotEmpty(eventTypeCode) === true) {
       // construct object to query in mongo
-      let eventTypeArray = eventTypeCode.split('---')
+      const eventTypeArray = eventTypeCode.split('---')
       filtersObject.filters['eventIdentification.eventTypeCode.code'] = eventTypeArray[0]
       filtersObject.filters['eventIdentification.eventTypeCode.codeSystemName'] = eventTypeArray[1]
       filtersObject.filters['eventIdentification.eventTypeCode.displayName'] = eventTypeArray[2]
@@ -159,9 +159,9 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
 
     // add eventID filter
-    let eventID = $scope.filters.eventIdentification.eventID
+    const eventID = $scope.filters.eventIdentification.eventID
     if (valueNotEmpty(eventID) === true) {
-      let eventIDArray = eventID.split('---')
+      const eventIDArray = eventID.split('---')
       filtersObject.filters['eventIdentification.eventID.code'] = eventIDArray[0]
       filtersObject.filters['eventIdentification.eventID.codeSystemName'] = eventIDArray[1]
       filtersObject.filters['eventIdentification.eventID.displayName'] = eventIDArray[2]
@@ -169,14 +169,14 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
 
     // add eventActionCode filter
-    let eventActionCode = $scope.filters.eventIdentification.eventActionCode
+    const eventActionCode = $scope.filters.eventIdentification.eventActionCode
     if (valueNotEmpty(eventActionCode) === true) {
       filtersObject.filters['eventIdentification.eventActionCode'] = eventActionCode
       filterUrlParams += '&eventActionCode=' + eventActionCode
     }
 
     // add eventOutcomeIndicator filter
-    let eventOutcomeIndicator = $scope.filters.eventIdentification.eventOutcomeIndicator
+    const eventOutcomeIndicator = $scope.filters.eventIdentification.eventOutcomeIndicator
     if (valueNotEmpty(eventOutcomeIndicator) === true) {
       filtersObject.filters['eventIdentification.eventOutcomeIndicator'] = eventOutcomeIndicator
       filterUrlParams += '&eventOutcomeIndicator=' + eventOutcomeIndicator
@@ -185,30 +185,30 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     /* ----- filter by Active Participant ----- */
     // add userID filter
-    let userID = $scope.filters.activeParticipant.userID
+    const userID = $scope.filters.activeParticipant.userID
     if (valueNotEmpty(userID) === true) {
       filtersObject.filters['activeParticipant.userID'] = userID
       filterUrlParams += '&userID=' + userID
     }
 
     // add alternativeUserID filter
-    let alternativeUserID = $scope.filters.activeParticipant.alternativeUserID
+    const alternativeUserID = $scope.filters.activeParticipant.alternativeUserID
     if (valueNotEmpty(alternativeUserID) === true) {
       filtersObject.filters['activeParticipant.alternativeUserID'] = alternativeUserID
       filterUrlParams += '&alternativeUserID=' + alternativeUserID
     }
 
     // add networkAccessPointID filter
-    let networkAccessPointID = $scope.filters.activeParticipant.networkAccessPointID
+    const networkAccessPointID = $scope.filters.activeParticipant.networkAccessPointID
     if (valueNotEmpty(networkAccessPointID) === true) {
       filtersObject.filters['activeParticipant.networkAccessPointID'] = networkAccessPointID
       filterUrlParams += '&networkAccessPointID=' + networkAccessPointID
     }
 
     // add eventID filter
-    let roleIDCode = $scope.filters.activeParticipant.roleIDCode
+    const roleIDCode = $scope.filters.activeParticipant.roleIDCode
     if (valueNotEmpty(roleIDCode) === true) {
-      let roleIDCodeArray = roleIDCode.split('---')
+      const roleIDCodeArray = roleIDCode.split('---')
       filtersObject.filters['activeParticipant.roleIDCode.code'] = roleIDCodeArray[0]
       filtersObject.filters['activeParticipant.roleIDCode.codeSystemName'] = roleIDCodeArray[1]
       filtersObject.filters['activeParticipant.roleIDCode.displayName'] = roleIDCodeArray[2]
@@ -218,7 +218,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     /* ----- filter by Participant Object ----- */
     // add objectID filter
-    let objectID = $scope.filters.participantObjectIdentification.participantObjectID
+    const objectID = $scope.filters.participantObjectIdentification.participantObjectID
     if (valueNotEmpty(objectID) === true) {
       filterUrlParams += '&participantObjectID=' + objectID
 
@@ -231,9 +231,9 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
 
     // add objectIDTypeCode filter
-    let participantObjectIDTypeCode = $scope.filters.participantObjectIdentification.participantObjectIDTypeCode
+    const participantObjectIDTypeCode = $scope.filters.participantObjectIdentification.participantObjectIDTypeCode
     if (valueNotEmpty(participantObjectIDTypeCode) === true) {
-      let participantObjectIDTypeCodeArray = participantObjectIDTypeCode.split('---')
+      const participantObjectIDTypeCodeArray = participantObjectIDTypeCode.split('---')
       filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.code'] = participantObjectIDTypeCodeArray[0]
       filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.codeSystemName'] = participantObjectIDTypeCodeArray[1]
       filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.displayName'] = participantObjectIDTypeCodeArray[2]
@@ -241,14 +241,14 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
 
     // add objectDetailType filter
-    let objectDetailType = $scope.filters.participantObjectIdentification.participantObjectDetail.type
+    const objectDetailType = $scope.filters.participantObjectIdentification.participantObjectDetail.type
     if (valueNotEmpty(objectDetailType) === true) {
       filtersObject.filters['participantObjectIdentification.participantObjectDetail.type'] = objectDetailType
       filterUrlParams += '&participantObjectDetailType=' + objectDetailType
     }
 
     // add objectDetailValue filter
-    let objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value
+    const objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value
     if (valueNotEmpty(objectDetailValue) === true) {
       filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue
       filterUrlParams += '&participantObjectDetailValue=' + objectDetailValue
@@ -257,7 +257,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     /* ----- filter by Audit Source ----- */
     // add auditSource filter
-    let auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID
+    const auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID
     if (valueNotEmpty(auditSourceID) === true) {
       filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID
       filterUrlParams += '&auditSourceID=' + auditSourceID
@@ -273,7 +273,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     }
   }
 
-  let refreshSuccess = function (audits) {
+  const refreshSuccess = function (audits) {
     // on success
     $scope.audits = audits
 
@@ -290,7 +290,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     /****************************************************/
   }
 
-  let refreshError = function (err) {
+  const refreshError = function (err) {
     // on error - Hide load more button and show error message
     $('#loadMoreBtn').hide()
     Alerting.AlertAddServerMsg(err.status)
@@ -303,17 +303,17 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   }
 
   $scope.applyFiltersToUrl = function () {
-    let curHashParams = window.location.hash
-    let filters = $scope.returnFilters('urlParams')
-    let newHash = '/audits?' + filters.substring(1)
+    const curHashParams = window.location.hash
+    const filters = $scope.returnFilters('urlParams')
+    const newHash = '/audits?' + filters.substring(1)
 
     // just refresh audits list - no new params
     if (curHashParams === newHash) {
       $scope.refreshAuditsList()
     } else {
-      let absUrl = $location.absUrl()
-      let absUrlPath = $location.url()
-      let baseUrl = absUrl.replace(absUrlPath, '')
+      const absUrl = $location.absUrl()
+      const absUrlPath = $location.url()
+      const baseUrl = absUrl.replace(absUrlPath, '')
       window.location = baseUrl + newHash
     }
   }
@@ -332,7 +332,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   // run the audit list view for the first time
   $scope.refreshAuditsList()
 
-  let loadMoreSuccess = function (audits) {
+  const loadMoreSuccess = function (audits) {
     // on success
     $scope.audits = $scope.audits.concat(audits)
     // remove any duplicates objects found in the audits scope
@@ -345,7 +345,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     $scope.busyLoadingMore = false
   }
 
-  let loadMoreError = function (err) {
+  const loadMoreError = function (err) {
     // on error - Hide load more button and show error message
     $('#loadMoreBtn').hide()
     Alerting.AlertAddServerMsg(err.status)
@@ -358,12 +358,12 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     $scope.showpage++
 
-    let filters = $scope.returnFilters('filtersObject')
+    const filters = $scope.returnFilters('filtersObject')
 
     if (!filters.filters['eventIdentification.eventDateTime']) {
       // use page load time as an explicit end date
       // this prevents issues with paging when new transactions come in, breaking the pages
-      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$lte': moment(pageLoadDate - serverDiffTime).format() })
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $lte: moment(pageLoadDate - serverDiffTime).format() })
     }
 
     Api.Audits.query(filters, loadMoreSuccess, loadMoreError)
@@ -373,10 +373,10 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   $scope.viewAuditDetails = function (path, $event) {
     // do audits details redirection when clicked on TD
     if ($event.target.tagName === 'TD') {
-      let absUrl = $location.absUrl()
-      let absUrlPath = $location.url()
-      let baseUrl = absUrl.replace(absUrlPath, '')
-      let txUrl = baseUrl + '/' + path
+      const absUrl = $location.absUrl()
+      const absUrlPath = $location.url()
+      const baseUrl = absUrl.replace(absUrlPath, '')
+      const txUrl = baseUrl + '/' + path
       if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
         window.open(txUrl, '_blank')
       } else {
@@ -393,13 +393,13 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     $scope.settings.list.tabview = 'same'
 
     // get the filter params object before clearing them
-    let filterParamsBeforeClear = angular.copy($location.search())
+    const filterParamsBeforeClear = angular.copy($location.search())
 
     // clear all filter parameters
     $location.search({})
 
     // get the filter params object after clearing them
-    let filterParamsAfterClear = angular.copy($location.search())
+    const filterParamsAfterClear = angular.copy($location.search())
 
     // if the filters object stays the same then call refresh function
     // if filters object not the same then angular changes route and loads controller ( refresh )
@@ -420,11 +420,11 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   let lastPollingCompleted = true
 
   $scope.pollForLatest = function () {
-    let filters = $scope.returnFilters('filtersObject')
+    const filters = $scope.returnFilters('filtersObject')
 
     if (!filters.filters['eventIdentification.eventDateTime']) {
       // only poll for latest if date filters are OFF
-      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ '$gte': moment(lastUpdated).format(), '$lte': moment().format() })
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $gte: moment(lastUpdated).format(), $lte: moment().format() })
       lastUpdated = moment() - serverDiffTime
 
       delete filters.filterPage

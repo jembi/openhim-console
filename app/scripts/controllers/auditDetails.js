@@ -10,11 +10,11 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
   $scope.eventActionMap = AuditLookups.eventActionMap()
   $scope.eventOutcomeMap = AuditLookups.eventOutcomeMap()
 
-  let querySuccess = function (auditDetails) {
+  const querySuccess = function (auditDetails) {
     $scope.auditDetails = auditDetails
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -32,7 +32,7 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
 
   // setup filter options
   $scope.returnFilterObject = function () {
-    let filtersObject = {}
+    const filtersObject = {}
 
     filtersObject.filterPage = 0
     filtersObject.filterLimit = 0

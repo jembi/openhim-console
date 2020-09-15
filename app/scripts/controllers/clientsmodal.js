@@ -1,5 +1,5 @@
 import * as CryptoJS from 'crypto-js'
-import { v4 as uuidV4 } from 'uuid';
+import { v4 as uuidV4 } from 'uuid'
 
 export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, client) {
   /***************************************************************/
@@ -18,7 +18,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     $scope.authTypes = authTypes
   })
 
-  let checkAssignedRoles = function () {
+  const checkAssignedRoles = function () {
     for (let i = 0; i < $scope.client.roles.length; i++) {
       $scope.formData.assigned[$scope.client.roles[i]] = true
     }
@@ -30,7 +30,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     })
   })
 
-  let removeRole = function (roleName) {
+  const removeRole = function (roleName) {
     let index = -1
     for (let i = 0; i < $scope.client.roles.length; i++) {
       if ($scope.client.roles[i] === roleName) {
@@ -51,7 +51,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
-  let isDuplicateRole = function (role) {
+  const isDuplicateRole = function (role) {
     let isDuplicate = false
     for (let i = 0; i < $scope.roles.length; i++) {
       if ($scope.roles[i].name === role) {
@@ -65,7 +65,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     $scope.clients = clients
   })
 
-  let isClient = function (role) {
+  const isClient = function (role) {
     let isClient = false
     for (let i = 0; i < $scope.clients.length; i++) {
       if ($scope.clients[i].clientID === role) {
@@ -76,7 +76,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   }
 
   $scope.createNewRole = function () {
-    let newRole = $scope.formData.newClientRole
+    const newRole = $scope.formData.newClientRole
     if (newRole) {
       if (isDuplicateRole(newRole) || isClient(newRole)) {
         $scope.formData.duplicateNewRole = true
@@ -128,26 +128,26 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   /**   These are the functions for the Client Modal Popup     **/
   /**************************************************************/
 
-  let notifyUser = function () {
+  const notifyUser = function () {
     // reset backing object and refresh clients list
     Notify.notify('clientsChanged')
     Notify.notify('rolesChanged')
     $uibModalInstance.close()
   }
 
-  let success = function () {
+  const success = function () {
     // add the success message
     Alerting.AlertAddMsg('client', 'success', 'The client has been saved successfully')
     notifyUser()
   }
 
-  let error = function (err) {
+  const error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
 
-  let saveClient = function (client) {
+  const saveClient = function (client) {
     // set backup client object to check if cert has changed
     $scope.clientBackup = angular.copy(client)
     if ($scope.update) {
@@ -157,7 +157,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     }
   }
 
-  let setHashAndSave = function (client, hash, salt) {
+  const setHashAndSave = function (client, hash, salt) {
     if (typeof salt !== 'undefined' && salt !== null) {
       client.passwordSalt = salt
     }
@@ -165,12 +165,12 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     saveClient(client)
   }
 
-  let hashSHA512 = function (client, password) {
-    let salt = CryptoJS.lib.WordArray.random(16).toString()
-    let sha512 = CryptoJS.algo.SHA512.create()
+  const hashSHA512 = function (client, password) {
+    const salt = CryptoJS.lib.WordArray.random(16).toString()
+    const sha512 = CryptoJS.algo.SHA512.create()
     sha512.update(password)
     sha512.update(salt)
-    let hash = sha512.finalize()
+    const hash = sha512.finalize()
     client.passwordAlgorithm = 'sha512'
     setHashAndSave(client, hash.toString(CryptoJS.enc.Hex), salt)
   }
@@ -247,7 +247,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         !$scope.client.passwordHash &&
         !($scope.client.customTokenID || $scope.client.customTokenSet) &&
         $scope.authTypes.indexOf('jwt-auth') == -1
-        ) {
+      ) {
         $scope.ngError.certFingerprint = true
         $scope.ngError.customTokenID = true
         $scope.ngError.password = true

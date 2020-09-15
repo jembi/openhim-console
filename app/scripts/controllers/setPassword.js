@@ -10,12 +10,12 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
 
   $scope.passwordSetSuccessful = false
 
-  let setPassSuccess = function (user) {
+  const setPassSuccess = function (user) {
     $scope.user = user
     $scope.tokenType = user.tokenType
   }
 
-  let setPassError = function (err) {
+  const setPassError = function (err) {
     Alerting.AlertReset()
     // on error - add server error alert
     if (err.status === 404) {
@@ -39,7 +39,7 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
   /**   These are the functions for the Profile save process     **/
   /****************************************************************/
 
-  let success = function () {
+  const success = function () {
     $scope.goToTop()
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully. You will be redirected to the login screen shortly.')
@@ -51,7 +51,7 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
     }, 5000)
   }
 
-  let error = function (err) {
+  const error = function (err) {
     Alerting.AlertReset()
     // add the error message
     if (err.status === 410) {
@@ -63,11 +63,11 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
     }
   }
 
-  let saveUser = function (user) {
+  const saveUser = function (user) {
     Api.UserPasswordToken.update({ token: $routeParams.token }, user, success, error)
   }
 
-  let setHashAndSave = function (user, hash, salt) {
+  const setHashAndSave = function (user, hash, salt) {
     if (typeof salt !== 'undefined' && salt !== null) {
       user.passwordSalt = salt
     }
@@ -77,7 +77,7 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
 
   $scope.save = function (user, password) {
     if (password) {
-      let h = getHashAndSalt(password)
+      const h = getHashAndSalt(password)
       user.passwordAlgorithm = h.algorithm
       setHashAndSave(user, h.hash, h.salt, password)
     }

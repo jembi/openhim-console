@@ -4,14 +4,14 @@ import { ChannelsModalCtrl, ConfirmModalCtrl } from './'
 
 export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   /* -------------------------Initial load & onChanged---------------------------- */
-  let querySuccess = function (channels) {
+  const querySuccess = function (channels) {
     $scope.channels = channels
     if (channels.length === 0) {
       Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created')
     }
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -75,13 +75,13 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   /* -------------------------Add/edit user popup modal---------------------------- */
 
   /* --------------------------Delete Confirm---------------------------- */
-  let deleteSuccess = function () {
+  const deleteSuccess = function () {
     // On success
     $scope.channels = Api.Channels.query()
     Alerting.AlertAddMsg('top', 'success', 'The channel has been deleted successfully')
   }
 
-  let deleteError = function (err) {
+  const deleteError = function (err) {
     // add the error message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the channel: #' + err.status + ' - ' + err.data)
   }
@@ -89,13 +89,13 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.confirmDelete = function (channel) {
     Alerting.AlertReset()
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete Channel',
       button: 'Delete',
       message: 'Are you sure you wish to delete the channel "' + channel.name + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {
@@ -115,13 +115,13 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   /* ---------------------------Delete Confirm---------------------------- */
 
   /* --------------------------Restore Confirm---------------------------- */
-  let restoreSuccess = function () {
+  const restoreSuccess = function () {
     // On success
     $scope.channels = Api.Channels.query()
     Alerting.AlertAddMsg('top', 'success', 'The channel has been successfully restored')
   }
 
-  let restoreError = function (err) {
+  const restoreError = function (err) {
     // add the error message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while restoring the channel: #' + err.status + ' - ' + err.data)
   }
@@ -129,13 +129,13 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.confirmRestore = function (channel) {
     Alerting.AlertReset()
 
-    let restoreObject = {
+    const restoreObject = {
       title: 'Restore Channel',
       button: 'Restore',
       message: 'Are you sure you want to restore the deleted channel "' + channel.name + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {
@@ -157,7 +157,7 @@ export function ChannelsCtrl ($scope, $uibModal, Api, Alerting) {
   /* --------------------------Update priority Level---------------------------- */
   $scope.updateChannelPriority = function (channel, direction) {
     let newPriority
-    let curPriority = channel.priority
+    const curPriority = channel.priority
     if (!curPriority) {
       newPriority = $scope.getLowestPriority() + 1
     } else {

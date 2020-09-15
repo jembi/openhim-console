@@ -1,13 +1,13 @@
 import moment from 'moment'
 
 export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, $routeParams, Api, Alerting, Metrics) {
-  let noDataErrorMsg = 'There has been no transactions received for the queried timeframe'
+  const noDataErrorMsg = 'There has been no transactions received for the queried timeframe'
 
-  let channelSuccess = function (channel) {
+  const channelSuccess = function (channel) {
     $scope.channel = channel
   }
 
-  let channelError = function (err) {
+  const channelError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -28,7 +28,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
       Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg)
       Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg)
     } else {
-      let round = function (d) {
+      const round = function (d) {
         return (d).toFixed(2)
       }
       $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'Transactions')
@@ -51,18 +51,18 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
     }, loadMetricsSuccess, loadMetricsError)
   }
 
-  let updateChannelsBarChart = function (channelsData) {
+  const updateChannelsBarChart = function (channelsData) {
     // construct channels bar object for morris
-    let channelsBarData = []
+    const channelsBarData = []
     for (let i = 0; i < channelsData.length; i++) {
       channelsBarData.push({ label: channelsData[i].label, value: channelsData[i].value })
     }
     $scope.channelsBarData = { data: channelsBarData, xkey: 'label', ykeys: ['value'], labels: ['Total'] }
   }
 
-  let updateChannelsDonutChart = function (channelsData) {
-    let channelsDonutData = []
-    let channelsDonutColors = []
+  const updateChannelsDonutChart = function (channelsData) {
+    const channelsDonutData = []
+    const channelsDonutColors = []
     for (let i = 0; i < channelsData.length; i++) {
       channelsDonutData.push({ label: channelsData[i].label, value: channelsData[i].percent })
       channelsDonutColors.push(channelsData[i].color)
@@ -70,11 +70,11 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
     $scope.channelsDonutData = { data: channelsDonutData, colors: channelsDonutColors }
   }
 
-  let channelsMetricsSuccess = function (channelsResults) {
+  const channelsMetricsSuccess = function (channelsResults) {
     if (channelsResults.length === 0) {
       Alerting.AlertAddMsg('status', 'warning', noDataErrorMsg)
     } else {
-      let channelsData = []
+      const channelsData = []
       let totalTransactions = 0
       let value, percent
 
@@ -119,7 +119,7 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
     }
   }
 
-  let channelsMetricsError = function (err) {
+  const channelsMetricsError = function (err) {
     // add warning message when unable to get data
     Alerting.AlertAddMsg('status', 'danger', 'Transaction Channels Error: ' + err.status + ' ' + err.data)
   }

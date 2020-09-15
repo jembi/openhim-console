@@ -36,7 +36,7 @@ export function mediatorNestedConfigDisplay ($compile) {
     template: '<div/>',
     link: function (scope, element) {
       if (scope.config) {
-        element.append(`<div mediator-config-display config-defs="configDefs" config="config"></div>`)
+        element.append('<div mediator-config-display config-defs="configDefs" config="config"></div>')
         $compile(element.contents())(scope)
       }
     }

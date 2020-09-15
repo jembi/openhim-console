@@ -6,7 +6,7 @@ export function footerVersion (Api, config) {
     template: footerTemplate,
     scope: false,
     link: function (scope) {
-      let success = function (result) {
+      const success = function (result) {
         scope.footerCoreVersion = result.currentCoreVersion
         scope.footerConsoleVersion = config.version
         scope.footerVersionsCompatible = isCoreVersionCompatible(config.minimumCoreVersion, scope.footerCoreVersion)

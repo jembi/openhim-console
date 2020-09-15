@@ -9,12 +9,12 @@ export function morrisLineChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      let element = attrs.id
-      let exp = $parse(attrs.data)
+      const element = attrs.id
+      const exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        let data = newVal
+        const data = newVal
 
         if (data) {
         // if morris bar chart exist then update it
@@ -42,12 +42,12 @@ export function morrisBarChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      let element = attrs.id
-      let exp = $parse(attrs.data)
+      const element = attrs.id
+      const exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        let data = newVal
+        const data = newVal
 
         if (data) {
         // if morris bar chart exist then update it
@@ -84,16 +84,16 @@ export function morrisDonutChart ($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
-      let element = attrs.id
-      let exp = $parse(attrs.data)
+      const element = attrs.id
+      const exp = $parse(attrs.data)
 
       // on data change either create graph or update values
       scope.$watchCollection(exp, function (newVal) {
-        let data = newVal
+        const data = newVal
 
-      // we have to rebuild the morris chart else new colours won't get picked up
-      // in general this approach is a bit problematic with the other charts, so should be avoided
-      // (e.g. onClick events not getting cleared...)
+        // we have to rebuild the morris chart else new colours won't get picked up
+        // in general this approach is a bit problematic with the other charts, so should be avoided
+        // (e.g. onClick events not getting cleared...)
 
         elem.empty()
         if (data) {

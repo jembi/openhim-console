@@ -6,14 +6,14 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   /************************************************/
   /**         Initial load & onChanged           **/
   /************************************************/
-  let querySuccess = function (contactGroups) {
+  const querySuccess = function (contactGroups) {
     $scope.contactGroups = contactGroups
     if (contactGroups.length === 0) {
       Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no contact lists created')
     }
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -63,13 +63,13 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   /*******************************************/
   /**         Delete Confirmation           **/
   /*******************************************/
-  let deleteSuccess = function () {
+  const deleteSuccess = function () {
     // On success
     $scope.contactGroups = Api.ContactGroups.query()
     Alerting.AlertAddMsg('top', 'success', 'The contact list has been deleted successfully')
   }
 
-  let deleteError = function (err) {
+  const deleteError = function (err) {
     if (err.status === 409) {
       let warningMessage = 'Could not delete the contact list because it is associated with the following channels: '
       for (let i = 0; i < err.data.length; i++) {
@@ -88,13 +88,13 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   $scope.confirmDelete = function (contactGroup) {
     Alerting.AlertReset()
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete Contact Group',
       button: 'Delete',
       message: 'Are you sure you wish to delete the Contact list "' + contactGroup.group + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

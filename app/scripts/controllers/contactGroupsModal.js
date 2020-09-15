@@ -13,9 +13,9 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
       $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')'
     })
   },
-    function () {
-      // server error - could not connect to API to get channels
-    })
+  function () {
+    // server error - could not connect to API to get channels
+  })
 
   // get/set the contactGroup scope whether new or update
   if (contactGroup) {
@@ -34,25 +34,25 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
   /**   These are the functions for the contactGroup Modal Popup     **/
   /********************************************************************/
 
-  let notifyContactGroup = function () {
+  const notifyContactGroup = function () {
     // reset backing object and refresh users list
     Notify.notify('contactGroupChanged')
     $uibModalInstance.close()
   }
 
-  let success = function () {
+  const success = function () {
     // add the success message
     Alerting.AlertAddMsg('top', 'success', 'The contact list has been saved successfully')
     notifyContactGroup()
   }
 
-  let error = function (err) {
+  const error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact lists\' details: #' + err.status + ' - ' + err.data)
     notifyContactGroup()
   }
 
-  let saveContactGroup = function (contactGroup) {
+  const saveContactGroup = function (contactGroup) {
     if ($scope.update) {
       contactGroup.$update(success, error)
     } else {

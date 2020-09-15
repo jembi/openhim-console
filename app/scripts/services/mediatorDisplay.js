@@ -1,8 +1,8 @@
 import moment from 'moment'
 
 export function MediatorDisplay (config) {
-  let _formatMediator = function (mediator) {
-    let secondsDiffNow = function () {
+  const _formatMediator = function (mediator) {
+    const secondsDiffNow = function () {
       return Math.abs(Date.now() - moment(mediator._lastHeartbeat)) / 1000
     }
 

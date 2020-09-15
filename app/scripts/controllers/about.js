@@ -2,7 +2,7 @@ import { isCoreVersionCompatible, getTimeForTimezone } from '../utils'
 
 export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
   $scope.aboutInfo = {}
-  let success = function (result) {
+  const success = function (result) {
     $scope.aboutInfo = result
     buildAboutInfoObject()
 
@@ -12,7 +12,7 @@ export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
     }, 1000)
   }
 
-  let error = function (err) {
+  const error = function (err) {
     Alerting.AlertAddServerMsg(err.status)
   }
 
@@ -22,11 +22,11 @@ export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
     $scope.aboutInfo.serverTime = getTimeForTimezone(timezone)
   }
 
-  let buildAboutInfoObject = function () {
+  const buildAboutInfoObject = function () {
     $scope.aboutInfo.currentConsoleVersion = config.version
     $scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion
 
-    let maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1
+    const maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1
     $scope.aboutInfo.maximumCoreVersion = maxCoreMajorVersion + '.0.0'
 
     $scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion)

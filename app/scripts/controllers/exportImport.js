@@ -32,7 +32,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     $scope.showRecordOptions.Keystore = false
   }
 
-  let getMetadataSuccess = function (result) {
+  const getMetadataSuccess = function (result) {
     // Assign API collections to export options object
     $scope.exportCollections = result[0]
 
@@ -43,13 +43,13 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     $scope.resetExportOptions()
   }
 
-  let getMetadataError = function (err) {
+  const getMetadataError = function (err) {
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data)
   }
 
-  let openValidationModal = function () {
-    let modalInstance = $uibModal.open({
+  const openValidationModal = function () {
+    const modalInstance = $uibModal.open({
       template: exportImportModal,
       controller: ExportImportModalCtrl,
       resolve: {
@@ -91,7 +91,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   // function to toggle specific records
   $scope.toggleRecordExportSelection = function (model, record) {
-    let idx = $scope.selectedExports[model].indexOf(record)
+    const idx = $scope.selectedExports[model].indexOf(record)
 
     // is currently selected
     if (idx > -1) {
@@ -103,10 +103,10 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   }
   // function to remove certain properties from export object
   $scope.removeProperties = function (obj) {
-    let propertyID = '_id'
-    let propertyV = '__v'
+    const propertyID = '_id'
+    const propertyV = '__v'
 
-    for (let prop in obj) {
+    for (const prop in obj) {
       if (prop === propertyID || prop === propertyV) {
         delete obj[prop]
       } else if (typeof obj[prop] === 'object' || obj[prop] instanceof Array) {
@@ -127,9 +127,9 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     }
 
     // create the export script as a blob file
-    let makeTextFile = function (text) {
+    const makeTextFile = function (text) {
       // let data = new Blob([text], {type: 'application/json'});
-      let data = buildBlob(text, 'application/json')
+      const data = buildBlob(text, 'application/json')
 
       // if blob error exist
       if (data.error) {
@@ -149,7 +149,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     $scope.importScriptName = 'openhim-insert.json'
 
     // assign download link and show download button
-    let blobLink = makeTextFile(exportData)
+    const blobLink = makeTextFile(exportData)
     if (blobLink) {
       $scope.downloadLink = blobLink
     }
@@ -169,12 +169,12 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   /**         Import Functions           **/
   /****************************************/
 
-  let validateFail = function (err) {
+  const validateFail = function (err) {
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while validating the import: #' + err.status + ' - ' + err.data)
   }
 
-  let validateSuccess = function (result) {
+  const validateSuccess = function (result) {
     $scope.importStatus = 'resolvingConflicts'
     $scope.validatedData = result
 
@@ -195,7 +195,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   // function to upload the file
   $scope.upload = function (files) {
     if (files && files.length) {
-      let reader = new FileReader()
+      const reader = new FileReader()
 
       // onload function used by the reader
       reader.onload = function (event) {
@@ -205,7 +205,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
       // foreach uploaded file
       for (let i = 0; i < files.length; i++) {
-        let file = files[i]
+        const file = files[i]
 
         // when the file is read it triggers the onload event function above.
         reader.readAsText(file)

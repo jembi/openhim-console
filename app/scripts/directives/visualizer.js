@@ -6,9 +6,9 @@ export function visualizer ($parse) {
     template: '<div id="visualizer"></div>',
     link: function (scope, elem, attrs) {
       // initialize directive data elements
-      let data = $parse(attrs.visData)
-      let settings = $parse(attrs.visSettings)
-      let speedVal = $parse(attrs.visSpeed)
+      const data = $parse(attrs.visData)
+      const settings = $parse(attrs.visSettings)
+      const speedVal = $parse(attrs.visSpeed)
 
       // initialize global variables
       let components = []
@@ -69,7 +69,7 @@ export function visualizer ($parse) {
           .attr('height', h)
           .style('fill', inactiveColor)
 
-        let textSize = h / 3.5
+        const textSize = h / 3.5
         compText
           .attr('x', x + w / 2.0)
           .attr('y', y + h / 2.0 + textSize / 2.0)
@@ -80,10 +80,10 @@ export function visualizer ($parse) {
       }
 
       function setupRegistryComponent (compRect, compText, compConnector, index, text) {
-        let compW = visW / components.length - 2.0 * pad
-        let compH = visH / 4.0 - 2.0 * pad
-        let compX = index * compW + pad + index * pad * 2.0
-        let compY = 0 + pad
+        const compW = visW / components.length - 2.0 * pad
+        const compH = visH / 4.0 - 2.0 * pad
+        const compX = index * compW + pad + index * pad * 2.0
+        const compY = 0 + pad
 
         setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
 
@@ -97,19 +97,19 @@ export function visualizer ($parse) {
       }
 
       function setupMediatorComponent (compRect, compText, compConnector, index, text) {
-        let compW = visW / mediators.length - 2.0 * pad
-        let compH = visH / 4.0 - 2.0 * pad
-        let compX = index * compW + pad + index * pad * 2.0
-        let compY = himY - compH - 0.25 * pad
+        const compW = visW / mediators.length - 2.0 * pad
+        const compH = visH / 4.0 - 2.0 * pad
+        const compX = index * compW + pad + index * pad * 2.0
+        const compY = himY - compH - 0.25 * pad
 
         setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
       }
 
       function setupChannelText (compText, index, text) {
-        let compW = visW / channels.length - 2.0 * pad
-        let compH = (visH / 4.0 - 2.0 * pad) / 3.0
-        let compX = index * compW + pad + index * pad * 2.0
-        let compY = visH - pad
+        const compW = visW / channels.length - 2.0 * pad
+        const compH = (visH / 4.0 - 2.0 * pad) / 3.0
+        const compX = index * compW + pad + index * pad * 2.0
+        const compY = visH - pad
 
         compText
           .attr('x', compX + compW / 2.0)
@@ -276,8 +276,8 @@ export function visualizer ($parse) {
           return
         }
 
-        let baseTime = data[0].normalizedTimestamp
-        let isErrorStatus = function (status) {
+        const baseTime = data[0].normalizedTimestamp
+        const isErrorStatus = function (status) {
           return typeof status !== 'undefined' && status !== null && status.toLowerCase() === 'error'
         }
 
@@ -296,7 +296,7 @@ export function visualizer ($parse) {
           }
 
           if (event.mediator) {
-            let med = getMediatorRect(event)
+            const med = getMediatorRect(event)
             animateComp(med, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
           }
         })

@@ -12,8 +12,8 @@ export function transactionBodyDownloader (Api) {
     },
     link: function (scope) {
       scope.download = function () {
-        let onSuccess = function (trx) {
-          let subTrx = _.get(trx, scope.path)
+        const onSuccess = function (trx) {
+          const subTrx = _.get(trx, scope.path)
 
           let contentType = 'text/plain' // default
           if (subTrx.headers && subTrx.headers['content-type']) {
@@ -29,12 +29,12 @@ export function transactionBodyDownloader (Api) {
             extension = '.txt'
           }
 
-          let bodyBlob = buildBlob(subTrx.body, contentType)
-          let filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
+          const bodyBlob = buildBlob(subTrx.body, contentType)
+          const filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
           saveAs(bodyBlob, filename)
         }
 
-        let onError = function (err) {
+        const onError = function (err) {
           console.log(err)
         }
 

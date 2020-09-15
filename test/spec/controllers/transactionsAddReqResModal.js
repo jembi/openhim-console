@@ -8,7 +8,7 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -18,17 +18,17 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope) {
     createController = function () {
       record = {
-        'name': 'second',
-        '_id': '53df5d525b6d133c7de9eb56',
-        'response': {
-          'status': 301,
-          'body': 'this is dummy body content',
-          'timestamp': '2014-08-04T10:15:46.007Z'
+        name: 'second',
+        _id: '53df5d525b6d133c7de9eb56',
+        response: {
+          status: 301,
+          body: 'this is dummy body content',
+          timestamp: '2014-08-04T10:15:46.007Z'
         },
-        'request': {
-          'path': '/',
-          'querystring': '',
-          'method': 'GET'
+        request: {
+          path: '/',
+          querystring: '',
+          method: 'GET'
         }
       }
 

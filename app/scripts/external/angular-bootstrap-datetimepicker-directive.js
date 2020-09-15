@@ -24,7 +24,7 @@ angular
     'datetimepicker',
     function ($timeout,
       datetimepicker) {
-      let defaultOptions = datetimepicker.getOptions()
+      const defaultOptions = datetimepicker.getOptions()
 
       return {
         require: '?ngModel',
@@ -33,8 +33,8 @@ angular
           datetimepickerOptions: '@'
         },
         link: function ($scope, $element, $attrs, ngModelCtrl) {
-          let passedInOptions = $scope.$eval($attrs.datetimepickerOptions)
-          let options = Object.assign({}, defaultOptions, passedInOptions)
+          const passedInOptions = $scope.$eval($attrs.datetimepickerOptions)
+          const options = Object.assign({}, defaultOptions, passedInOptions)
 
           $element
             .on('dp.change', function (e) {

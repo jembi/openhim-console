@@ -52,7 +52,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     })
   }, function () { /* server error - could not connect to API to get Users */ })
 
-  let querySuccess = function (user) {
+  const querySuccess = function (user) {
     $scope.user = user
 
     // check visualizer settings properties exist
@@ -64,7 +64,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
       $scope.user.settings.list = {}
     }
 
-    let isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
+    const isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
       $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators
 
     if (!$scope.user.settings.visualizer || isUsingOldVisualizerSettings) {
@@ -92,7 +92,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         delete $scope.user.settings.visualizer.endpoints
 
         angular.forEach($scope.user.settings.visualizer.components, function (component) {
-          let split = component.event.split('-')
+          const split = component.event.split('-')
           if (split.length > 1) {
             component.eventType = split[0]
             component.eventName = split[1]
@@ -108,7 +108,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     }
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -124,13 +124,13 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   /**   These are the functions for the Profile save process     **/
   /****************************************************************/
 
-  let error = function (err) {
+  const error = function (err) {
     // add the error message
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data)
   }
 
-  let success = function (user, password) {
+  const success = function (user, password) {
     // update consoleSession with new userSettings
     $scope.consoleSession.sessionUserSettings = user.settings
     localStorage.setItem('consoleSession', JSON.stringify($scope.consoleSession))
@@ -153,8 +153,8 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.')
   }
 
-  let saveUser = function (user, password) {
-    let userObject = angular.copy(user)
+  const saveUser = function (user, password) {
+    const userObject = angular.copy(user)
     user.$update({}, function () {
       success(userObject, password)
 
@@ -163,7 +163,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     })
   }
 
-  let setHashAndSave = function (user, hash, salt, password) {
+  const setHashAndSave = function (user, hash, salt, password) {
     if (typeof salt !== 'undefined' && salt !== null) {
       user.passwordSalt = salt
     }
@@ -173,7 +173,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
 
   $scope.save = function (user, password) {
     if (password) {
-      let h = getHashAndSalt(password)
+      const h = getHashAndSalt(password)
       user.passwordAlgorithm = h.algorithm
 
       setHashAndSave(user, h.hash, h.salt, password)

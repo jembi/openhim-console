@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Alerting, Metrics) {
-  let noDataErrorMsg = 'There has been no transactions received for the queried timeframe'
+  const noDataErrorMsg = 'There has been no transactions received for the queried timeframe'
 
   $scope.selectedDateType = {
     period: '1d'
@@ -16,7 +16,7 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
       Alerting.AlertAddMsg('load', 'warning', noDataErrorMsg)
       Alerting.AlertAddMsg('responseTime', 'warning', noDataErrorMsg)
     } else {
-      let round = function (d) {
+      const round = function (d) {
         return (d).toFixed(2)
       }
       $scope.transactionLoadData = Metrics.buildLineChartData($scope.selectedDateType, metrics, 'total', 'Transactions')
@@ -54,10 +54,10 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
 
       // define varables for graph data set
       let channelGraphStack
-      let channelsData = []
-      let channelsKeys = []
-      let channelsLabels = []
-      let channelsColors = []
+      const channelsData = []
+      const channelsKeys = []
+      const channelsLabels = []
+      const channelsColors = []
 
       // loop through each channels found in result and construct graph objects
       for (let i = 0; i < metrics.length; i++) {
@@ -115,9 +115,9 @@ export function DashboardCtrl ($scope, $uibModal, $location, $interval, Api, Ale
 
       $scope.channelsData = { data: channelsData, xkey: 'channel', ykeys: channelsKeys, labels: channelsLabels, colors: channelsColors, stacked: true }
     },
-      function (err) {
-        Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data)
-      })
+    function (err) {
+      Alerting.AlertAddMsg('status', 'danger', 'Channel Load Error: ' + err.status + ' ' + err.data)
+    })
   }
 
   function channelMetricsSuccess (metrics) {

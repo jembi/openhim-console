@@ -162,9 +162,9 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     if (files && files.length) {
       $scope.serverRestartError = false
 
-      let fileWrappedImportread = function (file) {
+      const fileWrappedImportread = function (file) {
         return function (event) {
-          let data = event.target.result
+          const data = event.target.result
           // read the import script data and process
           $scope.uploadCertificate(data, files.length, file.name)
         }
@@ -174,9 +174,9 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
 
       // foreach uploaded file
       for (let i = 0; i < files.length; i++) {
-        let file = files[i]
+        const file = files[i]
 
-        let reader = new FileReader()
+        const reader = new FileReader()
         // onload function used by the reader
         reader.onload = fileWrappedImportread(file)
 
@@ -231,7 +231,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
   /**         Delete Functions           **/
   /****************************************/
 
-  let deleteSuccess = function () {
+  const deleteSuccess = function () {
     // On success
     $scope.resetCertificates()
     $scope.serverRestartRequired = true
@@ -239,7 +239,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     Alerting.AlertAddMsg('trustedCertDelete', 'success', 'The Trusted Certificate has been deleted successfully')
   }
 
-  let deleteError = function (err) {
+  const deleteError = function (err) {
     // add the error message
     Alerting.AlertAddMsg('trustedCertDelete', 'danger', 'An error has occurred while deleting the trusted certificate: #' + err.status + ' - ' + err.data)
   }
@@ -247,13 +247,13 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
   $scope.confirmDelete = function (cert) {
     Alerting.AlertReset()
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete Trusted Certificate',
       button: 'Delete',
       message: 'Are you sure you wish to delete the Trusted Certificate "' + cert.commonName + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: 'ConfirmModalCtrl',
       resolve: {
@@ -264,7 +264,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
     })
 
     modalInstance.result.then(function () {
-      let certToDelete = new Api.Keystore()
+      const certToDelete = new Api.Keystore()
       certToDelete.$remove({ type: 'ca', property: cert._id }, deleteSuccess, deleteError)
     }, function () {
       // delete cancelled - do nothing
@@ -286,7 +286,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
 
   // server restart confirm function
   $scope.restartServer = function () {
-    let restartServer = new Api.Restart()
+    const restartServer = new Api.Restart()
     restartServer.$save({}, function () {
       // restart request sent successfully
 
@@ -296,7 +296,7 @@ export function CertificatesCtrl ($scope, $interval, $uibModal, Api, Alerting) {
 
       // set estimate time for server restart - 10 seconds
       $scope.restartTimeout = 10
-      let restartInterval = $interval(function () {
+      const restartInterval = $interval(function () {
         // decrement the timer
         $scope.restartTimeout--
 

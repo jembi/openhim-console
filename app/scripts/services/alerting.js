@@ -12,7 +12,7 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      let alertObject = { type: alertType, msg: alertMsg }
+      const alertObject = { type: alertType, msg: alertMsg }
 
       const scopeAlerts = $rootScope.alerts[alertScope]
 
@@ -39,7 +39,7 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      let alertObject = { type: 'danger', msg: alertMsg }
+      const alertObject = { type: 'danger', msg: alertMsg }
 
       // push alertObject to appropriate alertScope
       $rootScope.alerts.server.push(alertObject)
