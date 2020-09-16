@@ -49,7 +49,7 @@
 		"karma-mocha-reporter": "^2.2.5",
 		"karma-sinon-chai": "^2.0.2",
 		"lodash": "^4.17.20",
-		"mocha": "^5.2.0",
+		"mocha": "^8.1.3",
 		"moment": "^2.28.0",
 		"moment-timezone": "^0.5.31",
 		"morris.js": "git+https://github.com/morrisjs/morris.js.git#77c24f6b70df2b23c7bd5d4d67240850d1b83005",
