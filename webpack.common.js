@@ -41,9 +41,15 @@ module.exports = {
         ]
       },
       {
-        test: /.jsx?$/,
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
         include: [path.resolve(__dirname, 'app')],
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       }
     ]
   },

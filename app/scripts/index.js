@@ -1,5 +1,5 @@
 import '~/styles/main.css'
-import 'babel-polyfill'
+import '@babel/polyfill'
 import 'angular'
 import 'bootstrap'
 import 'angular-cookies'

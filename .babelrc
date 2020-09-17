@@ -2,7 +2,7 @@
 	"sourceMaps": true,
 	"presets": [
 		[
-			"env",
+			"@babel/env",
 			{
 				"targets": {
 					"browsers": [
