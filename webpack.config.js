@@ -97,7 +97,7 @@ const config = {
       template: 'app/template.html'
     }),
     new ExtractTextPlugin('styles.css'),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin({patterns: [
       { from: 'app/404.html' },
       { from: 'app/favicon.ico' },
       { from: 'app/robots.txt' },
@@ -106,7 +106,7 @@ const config = {
         from: '*',
         to: 'config/'
       }
-    ])
+    ]})
   ]
 }
 
