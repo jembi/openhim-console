@@ -30,7 +30,7 @@
 		"chai": "^4.2.0",
 		"copy-webpack-plugin": "^6.1.0",
 		"crypto-js": "^4.0.0",
-		"css-loader": "^1.0.1",
+		"css-loader": "^4.3.0",
 		"d3": "^6.1.1",
 		"dirty-chai": "^2.0.1",
 		"eonasdan-bootstrap-datetimepicker": "^4.17.47",
