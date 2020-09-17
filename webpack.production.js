@@ -11,6 +11,9 @@ console.log('Creating production bundle')
 
 module.exports = merge(common, {
   mode: 'production',
+  optimization: {
+    minimize: false,
+  },
   module: {
     rules: [
       {
