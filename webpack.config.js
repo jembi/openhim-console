@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -64,18 +64,15 @@ const config = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: isProduction,
-                sourceMap: true
-              }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: !isProduction
             }
-          ]
-        })
+          },
+          'css-loader'
+        ]
       }
     ]
   },
@@ -96,7 +93,9 @@ const config = {
     new HtmlWebpackPlugin({
       template: 'app/template.html'
     }),
-    new ExtractTextPlugin('styles.css'),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css'
+    }),
     new CopyWebpackPlugin({patterns: [
       { from: 'app/404.html' },
       { from: 'app/favicon.ico' },
