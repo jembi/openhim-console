@@ -5,14 +5,20 @@ const common = require('./webpack.common.js')
 
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 console.log('Creating production bundle')
 
 module.exports = merge(common, {
   mode: 'production',
   optimization: {
-    minimize: false,
+    minimizer: [
+      new TerserPlugin({
+          terserOptions: {
+            mangle: false
+          }
+        })
+      ]
   },
   module: {
     rules: [
@@ -38,17 +44,5 @@ module.exports = merge(common, {
         ]
       }
     ]
-  },
-  plugins: [
-    new MinifyPlugin(
-      {
-      consecutiveAdds: false,
-      guards: false,
-      mangle: false,
-      simplify: false
-    },
-    {
-      comments: false
-    }
-  )]
+  }
 })
