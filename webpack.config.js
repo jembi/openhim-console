@@ -13,6 +13,7 @@ if (isProduction) {
 
 const config = {
   entry: './app/scripts/index',
+  mode: isProduction ? 'production' : 'development',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -43,10 +44,6 @@ const config = {
             }
           }
         ]
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       },
       {
         test: /\.html$/,
