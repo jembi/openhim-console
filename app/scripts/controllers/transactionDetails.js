@@ -14,13 +14,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   // get txList for paging
   let txList = JSON.parse(sessionStorage.getItem('currTxList'))
-
-  $scope.pagingEnabled = true
-  if (!txList) {
-    $scope.pagingEnabled = false
-  } else if (txList.indexOf($routeParams.transactionId) === -1) {
-    $scope.pagingEnabled = false
-  }
+  $scope.pagingEnabled = (!txList || txList.indexOf($routeParams.transactionId) === -1) ? false : true
 
   $scope.next = null
   $scope.prev = null
