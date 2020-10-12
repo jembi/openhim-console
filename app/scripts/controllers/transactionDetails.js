@@ -57,17 +57,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       (transactionDetails.response && transactionDetails.response.timestamp)) {
       let diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
 
-      if (diff >= 1000) {
-        // display in seconds
-        let round = function (value, decimalPlaces) {
-          return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
-        }
-
-        transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s'
-      } else {
-        // display in milliseconds
-        transactionDetails.transactionTime = diff + ' ms'
-      }
+      transactionDetails.transactionTime = diff >= 1000 ? (Math.round(diff / 1000.0) + 's') : (diff + 'ms')
     }
 
     let consoleSession = localStorage.getItem('consoleSession')
