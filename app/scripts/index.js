@@ -225,10 +225,6 @@ app.config(function ($routeProvider) {
       template: require('~/views/users'),
       controller: controllers.UsersCtrl
     })
-    .when('/config', {
-      template: require('~/views/config'),
-      controller: controllers.ConfigCtrl
-    })
     .when('/transactions', {
       template: require('~/views/transactions'),
       controller: controllers.TransactionsCtrl
