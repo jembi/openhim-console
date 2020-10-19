@@ -94,7 +94,7 @@
 	},
 	"scripts": {
 		"start": "NODE_ENV=prod http-server ./dist -p 9000",
-		"start:dev": "NODE_ENV=dev webpack-dev-server --hot=true",
+		"start:dev": "NODE_ENV=dev webpack-dev-server --config webpack.development.js",
 		"clean": "rimraf dist",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
