@@ -7,7 +7,7 @@ import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
 
-export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting) {
+export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting, config) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -33,23 +33,75 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
   }
 
+  /*
+    Default length of transaction response or request body returned is less than 1024
+    The following flags are used to determine whether the full transaction request or response body has been retrieved
+  */
+  const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
+  $scope.partialResponseBody = false
+  $scope.partialRequestBody = false
+
+  const retrieveBodyProperties = function (response) {
+    const properties = {}
+    const contentRange = response.headers('content-range') ? response.headers('content-range') : ''
+    const match = contentRange.match(/\d+/g)
+
+    if (match && match[0]) properties.start = match[0]
+    if (match && match[1]) properties.end = match[1]
+    if (match && match[2]) properties.bodyLength = match[2]
+
+    return properties
+  }
+
   let querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
 
-    // transform request body with indentation/formatting
-    if (transactionDetails.request && transactionDetails.request.body) {
-      if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-        let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
-        $scope.transactionDetails.request.body = requestTransform.content
+    if (transactionDetails.request && transactionDetails.request.bodyId) {
+      $scope.retrieveTransactionRequestBody = function (start=0, end=defaultLengthOfBodyToDisplay) {
+        Api.TransactionBodies($routeParams.transactionId, transactionDetails.request.bodyId, start, end).then(response => {
+          const { start, end, bodyLength } = retrieveBodyProperties(response)
+
+          if (start && end && bodyLength) {
+            $scope.requestBodyStart = start
+            $scope.requestBodyEnd = end
+            $scope.requestBodyLength = bodyLength
+
+            if ((bodyLength - end) > 1) {
+              $scope.partialRequestBody = true
+            }
+          }
+
+          if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
+            let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
+            $scope.transactionDetails.request.body = requestTransform.content
+          }
+        }).catch(queryError)
       }
+      $scope.retrieveTransactionRequestBody()
     }
 
-    // transform response body with indentation/formatting
-    if (transactionDetails.response && transactionDetails.response.body) {
-      if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-        let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
-        $scope.transactionDetails.response.body = responseTransform.content
+    if (transactionDetails.response && transactionDetails.response.bodyId) {
+      $scope.retrieveTransactionResponseBody = function (start=0, end=defaultLengthOfBodyToDisplay) {
+        Api.TransactionBodies($routeParams.transactionId, transactionDetails.response.bodyId, start, end).then(response => {
+          const { start, end, bodyLength } = retrieveBodyProperties(response)
+
+          if (start && end && bodyLength) {
+            $scope.responseBodyStart = start
+            $scope.responseBodyEnd = end
+            $scope.responseBodyLength = bodyLength
+
+            if ((bodyLength - end) > 1) {
+              $scope.partialResponseBody = true
+            }
+          }
+
+          if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
+            let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
+            $scope.transactionDetails.response.body = responseTransform.content
+          }
+        }).catch(queryError)
       }
+      $scope.retrieveTransactionResponseBody()
     }
 
     // calculate total transaction time
@@ -101,7 +153,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   }
 
   // get the Data for the supplied ID and store in 'transactionsDetails' object
-  Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError)
+  Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'full' }, querySuccess, queryError)
 
   /***************************************************/
   /**         Initial page load functions           **/
