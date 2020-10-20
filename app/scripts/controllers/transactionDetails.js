@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 import { TransactionsRerunModalCtrl, TransactionsAddReqResModalCtrl, TransactionsBodyModalCtrl } from './'
-import { beautifyIndent, returnContentType } from '../utils'
+import { beautifyIndent, returnContentType, retrieveBodyProperties } from '../utils'
 
 import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
@@ -40,18 +40,6 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
   $scope.partialResponseBody = false
   $scope.partialRequestBody = false
-
-  const retrieveBodyProperties = function (response) {
-    const properties = {}
-    const contentRange = response.headers('content-range') ? response.headers('content-range') : ''
-    const match = contentRange.match(/\d+/g)
-
-    if (match && match[0]) properties.start = match[0]
-    if (match && match[1]) properties.end = match[1]
-    if (match && match[2]) properties.bodyLength = match[2]
-
-    return properties
-  }
 
   let querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
