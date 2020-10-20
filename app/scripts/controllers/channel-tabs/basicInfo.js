@@ -1,11 +1,11 @@
 import { getTimeForTimezone, getTimezoneOffset } from '../../utils'
 
 export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, Alerting) {
-  let updateTime = function (timezone) {
+  const updateTime = function (timezone) {
     $scope.aboutInfo.serverTime = getTimeForTimezone(timezone)
   }
 
-  let success = function (result) {
+  const success = function (result) {
     $scope.aboutInfo = result
     $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone)
     updateTime(result.serverTimezone)
@@ -14,18 +14,18 @@ export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, 
     }, 1000)
   }
 
-  let error = function (err) {
+  const error = function (err) {
     Alerting.AlertAddServerMsg(err.status)
   }
 
   Api.About.get(success, error)
 
-  let setUrlPattern = function () {
+  const setUrlPattern = function () {
     $scope.channel.$promise.then(function () {
       // check if urlPattern has regex delimiters
-      let urlPatternLength = $scope.channel.urlPattern.length
+      const urlPatternLength = $scope.channel.urlPattern.length
       if ($scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength - 1) {
-        let urlPattern = $scope.channel.urlPattern
+        const urlPattern = $scope.channel.urlPattern
         // remove delimiters
         $scope.channel.urlPattern = urlPattern.slice(1, -1)
       } else {

@@ -13,7 +13,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /***************************************************/
 
   // get txList for paging
-  let txList = JSON.parse(sessionStorage.getItem('currTxList'))
+  const txList = JSON.parse(sessionStorage.getItem('currTxList'))
 
   $scope.pagingEnabled = true
   if (!txList) {
@@ -25,7 +25,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   $scope.next = null
   $scope.prev = null
   if ($scope.pagingEnabled) {
-    let currTxIndex = txList.indexOf($routeParams.transactionId)
+    const currTxIndex = txList.indexOf($routeParams.transactionId)
 
     $scope.txNumber = currTxIndex + 1
     $scope.txTotal = txList.length
@@ -39,13 +39,13 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
   }
 
-  let querySuccess = function (transactionDetails) {
+  const querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
 
     // transform request body with indentation/formatting
     if (transactionDetails.request && transactionDetails.request.body) {
       if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-        let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
+        const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
         $scope.transactionDetails.request.body = requestTransform.content
       }
     }
@@ -53,7 +53,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     // transform response body with indentation/formatting
     if (transactionDetails.response && transactionDetails.response.body) {
       if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-        let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
+        const responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
         $scope.transactionDetails.response.body = responseTransform.content
       }
     }
@@ -61,11 +61,11 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     // calculate total transaction time
     if ((transactionDetails.request && transactionDetails.request.timestamp) &&
       (transactionDetails.response && transactionDetails.response.timestamp)) {
-      let diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
+      const diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
 
       if (diff >= 1000) {
         // display in seconds
-        let round = function (value, decimalPlaces) {
+        const round = function (value, decimalPlaces) {
           return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
         }
 
@@ -111,7 +111,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -129,7 +129,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   // setup filter options
   $scope.returnFilterObject = function () {
-    let filtersObject = {}
+    const filtersObject = {}
 
     filtersObject.filterPage = 0
     filtersObject.filterLimit = 0
@@ -145,9 +145,9 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       // on success
       $scope.childTransactions = values
     },
-      function (err) {
-        Alerting.AlertAddServerMsg(err.status)
-      })
+    function (err) {
+      Alerting.AlertAddServerMsg(err.status)
+    })
   }
   // run the transaction list view for the first time
   $scope.fetchChildTransactions()
@@ -167,7 +167,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /****************************************************************/
 
   $scope.confirmRerunTransactions = function () {
-    let transactionsSelected = [$scope.transactionDetails._id]
+    const transactionsSelected = [$scope.transactionDetails._id]
     let rerunTransactionsSelected = 0
 
     // check if transaction has child IDs (It has been rerun before)

@@ -1,6 +1,6 @@
 export function toggleSubMenu (element) {
-  let $li = $(element).parent('li')
-  let $ul = $(element).next('ul')
+  const $li = $(element).parent('li')
+  const $ul = $(element).next('ul')
 
   if ($li.hasClass('open')) {
     $ul.slideUp(350)

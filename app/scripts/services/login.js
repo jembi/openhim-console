@@ -16,10 +16,10 @@ export function login (Api, Authinterceptor) {
           userProfile.serverTimeStamp = new Date(authDetails.ts).getTime()
           userProfile.timeDiff = userProfile.serverTimeStamp - userProfile.clientTimeStamp
 
-          let sha512 = CryptoJS.algo.SHA512.create()
+          const sha512 = CryptoJS.algo.SHA512.create()
           sha512.update(authDetails.salt)
           sha512.update(password)
-          let hash = sha512.finalize()
+          const hash = sha512.finalize()
 
           userProfile.email = email
           userProfile.passwordHash = hash.toString(CryptoJS.enc.Hex)

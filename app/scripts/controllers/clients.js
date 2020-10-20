@@ -3,20 +3,20 @@ import confirmModal from '~/views/confirmModal'
 import { ClientsModalCtrl, ConfirmModalCtrl } from './'
 
 export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Alerting, Notify) {
-  let queryError = function (err) {
+  const queryError = function (err) {
     Alerting.AlertAddServerMsg(err.status) // on error - add server error alert
   }
 
   /* -------------------------Load Clients---------------------------- */
-  let clientQuerySuccess = function (clients) {
+  const clientQuerySuccess = function (clients) {
     $scope.clients = clients
     if (clients.length === 0) {
       Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no clients created')
     }
   }
 
-  let loadRoles = function () {
-    let roleQuerySuccess = function (roles) {
+  const loadRoles = function () {
+    const roleQuerySuccess = function (roles) {
       $scope.roles = roles
       if (roles.length === 0) {
         Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no roles created')
@@ -28,7 +28,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     Api.Roles.query(roleQuerySuccess, queryError) // request roles
 
     $scope.$on('rolesChanged', function () {
-      Api.Roles.query(roleQuerySuccess, queryError)  // listen for changed roles and reload roles
+      Api.Roles.query(roleQuerySuccess, queryError) // listen for changed roles and reload roles
     })
   }
 
@@ -76,12 +76,12 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   $scope.newRoles = []
   $scope.newRolesIndex = 0
 
-  let apiCall = function (method, parameters, body, callback) {
-    let success = function () {
+  const apiCall = function (method, parameters, body, callback) {
+    const success = function () {
       callback(null, body)
     }
 
-    let error = function (err) {
+    const error = function (err) {
       callback(err)
     }
 
@@ -99,7 +99,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   }
 
   /* -------------------------Load Channels---------------------------- */
-  let channelQuerySuccess = function (channels) {
+  const channelQuerySuccess = function (channels) {
     $scope.channels = channels
     if (channels.length === 0) {
       Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no channels created')
@@ -114,13 +114,13 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   /* -------------------------Load Roles---------------------------- */
   $scope.$watch('channels', function (newVal) {
     if (newVal) {
-      loadRoles()  // channels need to be loaded before roles to set up the table columns
+      loadRoles() // channels need to be loaded before roles to set up the table columns
     }
   })
   /* -------------------------End Load Roles---------------------------- */
 
   /* -------------------------Assign Clients to Roles---------------------------- */
-  let buildClientsRolesObject = function () {
+  const buildClientsRolesObject = function () {
     $scope.clientRoles = {}
     angular.forEach($scope.roles, function (role) {
       for (let i = 0; i < role.clients.length; i++) {
@@ -129,7 +129,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     })
   }
 
-  let buildChannelsRolesObject = function () {
+  const buildChannelsRolesObject = function () {
     $scope.channelRoles = {}
     angular.forEach($scope.channels, function (channel) {
       angular.forEach($scope.roles, function (role) {
@@ -142,7 +142,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     })
   }
 
-  let waitForRoles = function () {
+  const waitForRoles = function () {
     $scope.$watch('roles', function (newVal) {
       if (newVal) {
         buildClientsRolesObject()
@@ -160,7 +160,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     }
   })
 
-  let editRoleCallback = function (err) {
+  const editRoleCallback = function (err) {
     if (err) {
       Alerting.AlertReset()
       return Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while saving the roles\' details: #' + err.status + ' - ' + err.data)
@@ -173,10 +173,10 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     if (!role.clients) {
       role.clients = []
     }
-    role.clients.push({ '_id': client._id, 'name': client.clientID })
+    role.clients.push({ _id: client._id, name: client.clientID })
     $scope.clientRoles[client.clientID + role.name] = true
 
-    let updateBody = angular.copy(role)
+    const updateBody = angular.copy(role)
     updateBody.name = undefined
     if (save) {
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
@@ -195,7 +195,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     }
     role.clients.splice(index, 1)
 
-    let updateBody = angular.copy(role)
+    const updateBody = angular.copy(role)
     updateBody.name = undefined
     if (save) {
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
@@ -212,10 +212,10 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     if (!role.channels) {
       role.channels = [] // if the role has no channels, initialize the array
     }
-    role.channels.push({ '_id': channel._id, 'name': channel.name })
+    role.channels.push({ _id: channel._id, name: channel.name })
     $scope.channelRoles[channel.name + role.name] = true
 
-    let updateBody = angular.copy(role)
+    const updateBody = angular.copy(role)
     updateBody.name = undefined
     if (save) {
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
@@ -233,7 +233,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     }
     role.channels.splice(index, 1)
 
-    let updateBody = angular.copy(role)
+    const updateBody = angular.copy(role)
     updateBody.name = undefined
     if (save) {
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
@@ -251,7 +251,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
           throw new Error('break')
         }
       })
-      let updateBody = {}
+      const updateBody = {}
       updateBody.name = role.displayName
       $scope.nameSaved[role.displayName] = true
       apiCall('update', { name: role.name }, updateBody, editRoleCallback)
@@ -283,7 +283,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     if (!role.clients) {
       role.clients = [] // if the role has no clients, initialize the array
     }
-    role.clients.push({ '_id': client._id, 'name': client.clientID })
+    role.clients.push({ _id: client._id, name: client.clientID })
     $scope.clientRoles[client.clientID + role.name] = true
   }
 
@@ -295,11 +295,11 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     if (!role.channels) {
       role.channels = [] // if the role has no channels, initialize the array
     }
-    role.channels.push({ '_id': channel._id, 'name': channel.name })
+    role.channels.push({ _id: channel._id, name: channel.name })
     $scope.channelRoles[channel.name + role.name] = true
   }
 
-  let saveNewRoleCallback = function (err, role) {
+  const saveNewRoleCallback = function (err, role) {
     if (err) {
       Alerting.AlertReset()
       return Alerting.AlertAddMsg('role', 'danger', 'Saving new role failed: ' + err.data)
@@ -326,7 +326,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     $scope.newRoles.splice(spliceIndex, 1)
   }
 
-  let removeRoleCallback = function (err) {
+  const removeRoleCallback = function (err) {
     if (err) {
       Alerting.AlertReset()
       return Alerting.AlertAddMsg('role', 'danger', 'An error has occurred while deleting the role: #' + err.status + ' - ' + err.data)
@@ -337,7 +337,7 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     Alerting.AlertAddMsg('role', 'success', 'The role has been deleted successfully')
   }
 
-  let removeRole = function (role) {
+  const removeRole = function (role) {
     apiCall('remove', { name: role.name }, null, removeRoleCallback)
     let spliceIndex = -1
     for (let i = 0; i < $scope.roles.length; i++) {
@@ -352,17 +352,17 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
   /* -------------------------End Edit Roles---------------------------- */
 
   /* ------------------------Delete Confirm---------------------------- */
-  let confirmDelete = function (object, objectType, callback) {
+  const confirmDelete = function (object, objectType, callback) {
     Alerting.AlertReset()
     $scope.serverRestarting = false
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete ' + objectType,
       button: 'Delete',
       message: 'Are you sure you wish to delete the "' + objectType + '": "' + object.name + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {
@@ -380,13 +380,13 @@ export function ClientsCtrl ($rootScope, $scope, $uibModal, $interval, Api, Aler
     })
   }
 
-  let clientDeleteSuccess = function () {
+  const clientDeleteSuccess = function () {
     $scope.clients = Api.Clients.query()
     Alerting.AlertReset()
     Alerting.AlertAddMsg('client', 'success', 'The client has been deleted successfully')
   }
 
-  let clientDeleteError = function (err) {
+  const clientDeleteError = function (err) {
     Alerting.AlertReset()
     Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while deleting the client: #' + err.status + ' - ' + err.data)
   }

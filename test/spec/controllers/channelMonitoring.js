@@ -8,7 +8,7 @@ describe('Controller: ChannelMonitoringCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -24,18 +24,18 @@ describe('Controller: ChannelMonitoringCtrl', function () {
 
     var channelsData = [{ completed: 2, completedWErrors: 0, failed: 3, processing: 0, successful: 16 }]
 
-    var timeLoadData = [{ 'total': 34, 'avgResp': 2881.91, 'timestamp': daysAgo(6).format() },
-      { 'total': 73, 'avgResp': 1313.57, 'timestamp': daysAgo(5).format() },
-      { 'total': 17, 'avgResp': 3761.57, 'timestamp': daysAgo(4).format() },
-      { 'total': 72, 'avgResp': 3545.57, 'timestamp': daysAgo(3).format() },
-      { 'total': 45, 'avgResp': 1233.57, 'timestamp': daysAgo(2).format() },
-      { 'total': 47, 'avgResp': 4564.57, 'timestamp': daysAgo(1).format() },
-      { 'total': 4, 'avgResp': 3553.34, 'timestamp': daysAgo(0).format() }]
+    var timeLoadData = [{ total: 34, avgResp: 2881.91, timestamp: daysAgo(6).format() },
+      { total: 73, avgResp: 1313.57, timestamp: daysAgo(5).format() },
+      { total: 17, avgResp: 3761.57, timestamp: daysAgo(4).format() },
+      { total: 72, avgResp: 3545.57, timestamp: daysAgo(3).format() },
+      { total: 45, avgResp: 1233.57, timestamp: daysAgo(2).format() },
+      { total: 47, avgResp: 4564.57, timestamp: daysAgo(1).format() },
+      { total: 4, avgResp: 3553.34, timestamp: daysAgo(0).format() }]
 
     $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/hour/channels/5322fe9d8b6add4b2b059dd8')).respond([])
     $httpBackend.when('GET', new RegExp('.*/metrics/timeseries/day/channels/5322fe9d8b6add4b2b059dd8')).respond(timeLoadData)
     $httpBackend.when('GET', new RegExp('.*/metrics/channels/5322fe9d8b6add4b2b059dd8')).respond(channelsData)
-    $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({'_id': '5322fe9d8b6add4b2b059dd8', 'name': 'Sample JsonStub Channel 1', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'routes': [{'host': 'jsonstub.com', 'port': 80, 'primary': true}]})
+    $httpBackend.when('GET', new RegExp('.*/channels/5322fe9d8b6add4b2b059dd8')).respond({ _id: '5322fe9d8b6add4b2b059dd8', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }] })
 
     createController = function () {
       scope = $rootScope.$new()

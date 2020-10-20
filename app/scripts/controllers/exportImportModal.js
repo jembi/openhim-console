@@ -48,13 +48,13 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
   /****************************************/
 
   // import failed function
-  let importFail = function (err) {
+  const importFail = function (err) {
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred during the import: #' + err.status + ' - ' + err.data)
   }
 
   // import success function
-  let importSuccess = function (data, callback) {
+  const importSuccess = function (data, callback) {
     $scope.importStatus = 'done'
     $uibModalInstance.close(data)
     if (callback) { callback() }
@@ -71,7 +71,7 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
     // update the uid for each
     angular.forEach($scope.conflicts, function (item) {
       if (item.action && item.action === 'duplicate') {
-        let err = 'Needs to be different to original uid.'
+        const err = 'Needs to be different to original uid.'
         if (item.model === 'Channels' && item.record.name === item.uid) { item.errMsg = err } else if (item.model === 'Clients' && item.record.clientID === item.uid) { item.errMsg = err } else if (item.model === 'Mediators' && item.record.urn === item.uid) { item.errMsg = err } else if (item.model === 'Users' && item.record.email === item.uid) { item.errMsg = err } else if (item.model === 'ContactGroups' && item.record.groups === item.uid) { item.errMsg = err }
       }
     })
@@ -104,12 +104,12 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
 
         // setup data object
         $scope.resolvedData = {
-          'Channels': [],
-          'Clients': [],
-          'Mediators': [],
-          'Users': [],
-          'ContactGroups': [],
-          'Keystore': []
+          Channels: [],
+          Clients: [],
+          Mediators: [],
+          Users: [],
+          ContactGroups: [],
+          Keystore: []
         }
 
         angular.forEach($scope.conflicts, function (item) {

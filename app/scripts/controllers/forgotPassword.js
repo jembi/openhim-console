@@ -16,7 +16,7 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
   $scope.submitRequest = function () {
     // reset alert object
     Alerting.AlertReset()
-    let userEmail = $scope.userEmail
+    const userEmail = $scope.userEmail
 
     if (!userEmail) {
       Alerting.AlertAddMsg('forgotPassword', 'danger', 'Please provide your email address')

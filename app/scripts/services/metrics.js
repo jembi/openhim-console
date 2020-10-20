@@ -32,22 +32,22 @@ export function Metrics () {
     },
 
     buildLineChartData: function (selectedPeriod, metrics, key, label, valueFormatter) {
-      let graphData = []
-      let from = moment(selectedPeriod.from)
-      let until = moment(selectedPeriod.until)
-      let unit = selectedPeriod.type + 's'
+      const graphData = []
+      const from = moment(selectedPeriod.from)
+      const until = moment(selectedPeriod.until)
+      const unit = selectedPeriod.type + 's'
       let avgResponseTimeTotal = 0
 
       let loadTotal = 0
       let avgResponseTime = 0
 
-      let diff = Math.abs(from.diff(until, unit))
+      const diff = Math.abs(from.diff(until, unit))
       for (let i = 0; i <= diff; i++) {
-        let timestamp = from.clone().add(i, unit)
+        const timestamp = from.clone().add(i, unit)
         let value = 0
 
         for (let j = 0; j < metrics.length; j++) {
-          let ts = moment(metrics[j].timestamp)
+          const ts = moment(metrics[j].timestamp)
 
           if (timestamp.isSame(ts, selectedPeriod.type)) {
             value = metrics[j][key]

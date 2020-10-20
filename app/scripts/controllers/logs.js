@@ -6,7 +6,7 @@ export function LogsCtrl ($scope, $location, Api) {
   }
 
   let lastFetch
-  let locParams = $location.search()
+  const locParams = $location.search()
   $scope.params = angular.equals({}, locParams) ? { level: 'info' } : locParams
   $scope.logs = ''
   let linesAdded = 0
@@ -31,7 +31,7 @@ export function LogsCtrl ($scope, $location, Api) {
     untilDate = moment($scope.params.until).format()
   }
 
-  let localParam = {
+  const localParam = {
     from: fromDate,
     until: untilDate,
     level: $scope.params.level
@@ -46,8 +46,8 @@ export function LogsCtrl ($scope, $location, Api) {
   })
 
   function fetchMoreLogs () {
-    let now = new Date()
-    let localParam = {
+    const now = new Date()
+    const localParam = {
       from: new Date(lastFetch).toISOString(),
       until: now.toISOString(),
       level: $scope.params.level
@@ -65,15 +65,15 @@ export function LogsCtrl ($scope, $location, Api) {
     })
   }
 
-  let autoUpdateInterval = setInterval(function () {
+  const autoUpdateInterval = setInterval(function () {
     if ($scope.autoupdate) {
       fetchMoreLogs()
     }
   }, 1000)
 
-  let scrollInterval = setInterval(function () {
+  const scrollInterval = setInterval(function () {
     if ($scope.tailLogs === true) {
-      let textarea = document.getElementById('textarea')
+      const textarea = document.getElementById('textarea')
       // scroll to bottom
       textarea.scrollTop = textarea.scrollHeight
     }

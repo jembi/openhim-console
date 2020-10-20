@@ -15,7 +15,7 @@ export function channelAlertsCtrl ($scope, Api) {
       $scope.groupsMap[group._id] = group.group
     })
   },
-    function () { /* server error - could not connect to API to get Alert Groups */ })
+  function () { /* server error - could not connect to API to get Alert Groups */ })
 
   /**********************************************************/
   /**   These are the functions for the Channel Alerts     **/

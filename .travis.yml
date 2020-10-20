@@ -4,7 +4,7 @@ after_success:
   - npm run coverage
   - '.travis/build_docker.sh'
 node_js:
-  - 'lts/carbon'
+  - 'lts/erbium'
   - 'lts/dubnium'
   - 'node'
 sudo: false

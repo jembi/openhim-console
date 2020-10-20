@@ -28,7 +28,7 @@ export function channelRequestMatchingCtrl ($scope, Api) {
       })
     })
   },
-    function () { /* server error - could not connect to API to get clients */ })
+  function () { /* server error - could not connect to API to get clients */ })
 
   // if update is true
   if ($scope.update) {

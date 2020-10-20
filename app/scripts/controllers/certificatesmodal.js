@@ -1,22 +1,22 @@
 export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, certType) {
-  let textFile = null
+  const textFile = null
 
   function notifyUser () {
     // reset backing object and refresh certificate list
     Notify.notify('certificatesChanged')
   }
 
-  let NewBlob = function (data, datatype) {
+  const NewBlob = function (data, datatype) {
     let out
     try {
       out = new Blob([data], { type: datatype })
     } catch (e) {
-      let BlobBuilder = function () {
+      const BlobBuilder = function () {
         window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder
       }
 
       if (e.name === 'TypeError' && window.BlobBuilder) {
-        let bb = new BlobBuilder()
+        const bb = new BlobBuilder()
         bb.append(data)
         out = bb.getBlob(datatype)
       } else if (e.name === 'InvalidStateError') {
@@ -30,8 +30,8 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
     return out
   }
 
-  let makeTextFile = function (text) {
-    let data = new NewBlob(text, 'application/text')
+  const makeTextFile = function (text) {
+    const data = new NewBlob(text, 'application/text')
     // if blob error exist
     if (data.error) {
 
@@ -43,12 +43,12 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
     }
   }
 
-  let success = function (data) {
+  const success = function (data) {
     Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.')
-    let keyLink = makeTextFile(data.key)
+    const keyLink = makeTextFile(data.key)
     $scope.downloadKeyLink = angular.copy(keyLink)
     if (keyLink) {
-      let certLink = makeTextFile(data.certificate)
+      const certLink = makeTextFile(data.certificate)
       if (certLink) {
         $scope.downloadCertLink = certLink
       }
@@ -66,7 +66,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
     $scope.downloadCertLink = ''
   }
 
-  let error = function (err) {
+  const error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while creating the certificate: #' + err.status + ' - ' + err.data)
     notifyUser()
@@ -118,7 +118,7 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   $scope.cert = new Api.Certificates()
   $scope.cert.type = certType
 
-  let saveCert = function (cert) {
+  const saveCert = function (cert) {
     // set backup client object to check if cert has changed
     $scope.keyName = cert.commonName + '.key.pem'
     $scope.certName = cert.commonName + '.cert.crt'

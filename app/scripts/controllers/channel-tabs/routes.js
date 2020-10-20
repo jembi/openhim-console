@@ -19,7 +19,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     angular.forEach(mediators, function (mediator) {
       // foreach endpoint in the mediator
       angular.forEach(mediator.endpoints, function (endpoint) {
-        $scope.mediatorRoutes.push({ 'fullName': mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint })
+        $scope.mediatorRoutes.push({ fullName: mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint })
       })
     })
   }, function () { /* server error - could not connect to API to get Mediators */ })
@@ -31,7 +31,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
       $scope.trustedCerts.push({ _id: cert._id, commonName: 'cn=' + cert.commonName })
     })
   },
-    function () { /* server error - could not connect to API to get Trusted Certificates */ })
+  function () { /* server error - could not connect to API to get Trusted Certificates */ })
 
   /*************************************************/
   /**   Default Channel Routes configurations     **/
@@ -227,7 +227,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     }
 
     // port validation
-    let portError = $scope.checkIsPortValid($scope.newRoute.port)
+    const portError = $scope.checkIsPortValid($scope.newRoute.port)
     if (portError) {
       $scope.ngErrorRoute.port = true
       $scope.ngErrorRoute.portError = portError
@@ -235,7 +235,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     }
 
     // path/transform validation
-    let pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
+    const pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
     if (pathTransformError) {
       $scope.ngErrorRoute.pathTransform = true
       $scope.ngErrorRoute.pathTransformError = pathTransformError
@@ -286,7 +286,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     return false
   }
 
-  let isRouteEnabled = function (route) {
+  const isRouteEnabled = function (route) {
     return (typeof route.status === 'undefined' || route.status === null) || route.status === 'enabled'
   }
 
@@ -306,7 +306,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
 
   $scope.multiplePrimaries = function () {
     if ($scope.channel.routes) {
-      let routes = $scope.channel.routes
+      const routes = $scope.channel.routes
       let count = 0
       for (let i = 0; i < routes.length; i++) {
         if (isRouteEnabled(routes[i]) && routes[i].primary === true) {
@@ -342,9 +342,9 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     // reset route errors
     $scope.resetRouteErrors()
 
-    let noRoutes = $scope.noRoutes()
-    let noPrimaries = $scope.noPrimaries()
-    let multiplePrimaries = $scope.multiplePrimaries()
+    const noRoutes = $scope.noRoutes()
+    const noPrimaries = $scope.noPrimaries()
+    const multiplePrimaries = $scope.multiplePrimaries()
 
     if (noRoutes || noPrimaries || multiplePrimaries) {
       $scope.ngError.hasRouteWarnings = true
