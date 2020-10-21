@@ -38,7 +38,11 @@ export function Api ($rootScope, $resource, $http, config) {
 
     TransactionBodies: function(transactionId, bodyId, start, end) {
       const headers = {}
-      if (end > start) headers.range = `bytes=${start}-${end}`
+      if (
+        end &&
+        end &&
+        end > start
+      ) headers.range = `bytes=${start}-${end}`
 
       return $http({
         method: 'GET',
