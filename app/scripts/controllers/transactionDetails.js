@@ -256,14 +256,16 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /**               Transactions View Body Functions                 **/
   /********************************************************************/
 
-  $scope.viewBodyDetails = function (type, content, headers) {
+  $scope.viewBodyDetails = function (type, content, headers, bodyId) {
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: headers }
+          return {
+            type: type, content: content, headers: headers, transactionId: $routeParams.transactionId, bodyId
+          }
         }
       }
     })
