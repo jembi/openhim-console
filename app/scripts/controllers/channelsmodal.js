@@ -67,7 +67,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   Api.Users.query(function (users) {
     $scope.users = users
   },
-    function () { /* server error - could not connect to API to get Users */ })
+  function () { /* server error - could not connect to API to get Users */ })
 
   $scope.channelAudits = []
   if (channel) {

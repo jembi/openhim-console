@@ -7,7 +7,7 @@ describe('Controller: LogsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -21,18 +21,18 @@ describe('Controller: LogsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/logs')).respond([
       {
-        'label': 'worker1',
-        'meta': {},
-        'level': 'info',
-        'timestamp': '2015-10-29T09:40:31.536Z',
-        'message': 'Some message'
+        label: 'worker1',
+        meta: {},
+        level: 'info',
+        timestamp: '2015-10-29T09:40:31.536Z',
+        message: 'Some message'
       },
       {
-        'label': 'worker1',
-        'meta': {},
-        'level': 'info',
-        'timestamp': '2015-10-29T09:40:39.128Z',
-        'message': 'Another message'
+        label: 'worker1',
+        meta: {},
+        level: 'info',
+        timestamp: '2015-10-29T09:40:39.128Z',
+        message: 'Another message'
       }
     ])
 

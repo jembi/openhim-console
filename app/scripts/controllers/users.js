@@ -4,7 +4,7 @@ import { UsersModalCtrl, ConfirmModalCtrl } from './'
 
 export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
   /* -------------------------Initial load & onChanged---------------------------- */
-  let querySuccess = function (users) {
+  const querySuccess = function (users) {
     $scope.users = users
     if (users.length === 0) {
       Alerting.AlertReset()
@@ -14,21 +14,21 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     /* ----- Users Channels matrix ----- */
     // Query all channels for Users Channels matrix table
     Api.Channels.query(function (channels) {
-      let usersArray = []
-      let channelsArray = []
+      const usersArray = []
+      const channelsArray = []
 
       // loop through channels to create channels map
       angular.forEach(channels, function (channnel) {
         if (typeof channnel.status === 'undefined' || channnel.status !== 'deleted') {
-          channelsArray.push({ 'id': channnel._id, 'name': channnel.name })
+          channelsArray.push({ id: channnel._id, name: channnel.name })
         }
       })
 
       // loop through all users
       angular.forEach(users, function (user) {
-        let allowedChannels = []
-        let allowedChannelsRerun = []
-        let allowedChannelsBody = []
+        const allowedChannels = []
+        const allowedChannelsRerun = []
+        const allowedChannelsBody = []
 
         // loop through channels to determine if user has permissions
         angular.forEach(channels, function (channel) {
@@ -51,7 +51,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
           })
         })
 
-        usersArray.push({ 'user': user, 'allowedChannels': allowedChannels, 'allowedChannelsBody': allowedChannelsBody, 'allowedChannelsRerun': allowedChannelsRerun })
+        usersArray.push({ user: user, allowedChannels: allowedChannels, allowedChannelsBody: allowedChannelsBody, allowedChannelsRerun: allowedChannelsRerun })
       })
 
       $scope.usersChannelsMatrix = {}
@@ -61,7 +61,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     /* ----- Users Channels matrix ----- */
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertReset()
     Alerting.AlertAddServerMsg(err.status)
@@ -118,13 +118,13 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
   $scope.confirmDelete = function (user) {
     Alerting.AlertReset()
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete User',
       button: 'Delete',
       message: 'Are you sure you wish to delete the user "' + user.firstname + ' ' + user.surname + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {
@@ -150,7 +150,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     })
   }
 
-  let deleteSuccess = function () {
+  const deleteSuccess = function () {
     // On success - if current user was deleted, logout
     if ($scope.sessionUserDeleted) {
       $window.location = '#/logout'
@@ -162,7 +162,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully')
   }
 
-  let deleteError = function (err) {
+  const deleteError = function (err) {
     // add the error message
     Alerting.AlertReset()
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data)

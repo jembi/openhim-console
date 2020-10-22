@@ -6,7 +6,7 @@ import moment from 'moment'
 
 export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, login, Api, Alerting, Fullscreen) {
   // initialize global variables
-  let settingsStore = {} // a place the push current settings when switching to fullscreen
+  const settingsStore = {} // a place the push current settings when switching to fullscreen
   let visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad, user, consoleSession
 
   $scope.loadingVisualizer = false
@@ -15,19 +15,19 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   $scope.isUsingOldVisualizerSettings = false
 
   // function to start the visualizer
-  let startVisualizer = function startVisualizer () {
+  const startVisualizer = function startVisualizer () {
     Api.Heartbeat.get(function (heartbeat) {
       diffTime = Date.now() - moment(heartbeat.now)
       $scope.play()
     })
   }
 
-  let loadVisualizer = function (visSettings) {
+  const loadVisualizer = function (visSettings) {
     $scope.loadingVisualizer = true
     let visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout
-    let components = []
-    let channels = []
-    let mediators = []
+    const components = []
+    const channels = []
+    const mediators = []
 
     if (visSettings.endpoints && !visSettings.mediators) {
       $scope.isUsingOldVisualizerSettings = true
@@ -151,7 +151,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // function to cancel the update interval
-  let cancelVisualizerUpdateInterval = function () {
+  const cancelVisualizerUpdateInterval = function () {
     if (angular.isDefined(visualizerUpdateInterval)) {
       $interval.cancel(visualizerUpdateInterval)
       visualizerUpdateInterval = undefined
@@ -329,7 +329,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // remove visualizer functions
-  let removeVisualizer = function (vis, i) {
+  const removeVisualizer = function (vis, i) {
     $scope.visualizers.splice(i, 1)
     if (vis === $scope.selectedVis) {
       if ($scope.visualizers.length === 0) {
@@ -346,13 +346,13 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   $scope.confirmRemoveVis = function (vis, i) {
     Alerting.AlertReset()
 
-    let deleteObject = {
+    const deleteObject = {
       title: 'Delete Visualizer',
       button: 'Delete',
       message: 'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
     }
 
-    let modalInstance = $uibModal.open({
+    const modalInstance = $uibModal.open({
       template: confirmModal,
       controller: ConfirmModalCtrl,
       resolve: {

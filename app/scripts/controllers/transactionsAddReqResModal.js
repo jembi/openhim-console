@@ -36,7 +36,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         }
 
         if (record.request.headers && returnContentType(record.request.headers)) {
-          let requestTransform = beautifyIndent(returnContentType(record.request.headers), response.data)
+          const requestTransform = beautifyIndent(returnContentType(record.request.headers), response.data)
           $scope.record.request.body = requestTransform.content
           $scope.requestTransformLang = requestTransform.lang
         }
@@ -62,7 +62,7 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         }
 
         if (record.response.headers && returnContentType(record.response.headers)) {
-          let responseTransform = beautifyIndent(returnContentType(record.response.headers), response.data)
+          const responseTransform = beautifyIndent(returnContentType(record.response.headers), response.data)
           $scope.record.response.body = responseTransform.content
           $scope.responseTransformLang = responseTransform.lang
         }

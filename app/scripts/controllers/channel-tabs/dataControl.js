@@ -145,7 +145,7 @@ export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
     }
 
     // fromPort validation
-    let fromPortError = $scope.checkIsPortValid($scope.newUrlRewrite.fromPort)
+    const fromPortError = $scope.checkIsPortValid($scope.newUrlRewrite.fromPort)
     if (fromPortError) {
       $scope.ngErrorUrlRewrite.fromPort = true
       $scope.ngErrorUrlRewrite.portError = fromPortError
@@ -159,7 +159,7 @@ export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
     }
 
     // toPort validation
-    let toPortError = $scope.checkIsPortValid($scope.newUrlRewrite.toPort)
+    const toPortError = $scope.checkIsPortValid($scope.newUrlRewrite.toPort)
     if (toPortError) {
       $scope.ngErrorUrlRewrite.toPort = true
       $scope.ngErrorUrlRewrite.portError = toPortError

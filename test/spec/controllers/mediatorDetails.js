@@ -10,15 +10,15 @@ describe('Controller: MediatorDetailsCtrl', function () {
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
       $provide.constant('config', {
-        'protocol': 'https',
-        'host': 'localhost',
-        'hostPath': '',
-        'port': 8080,
-        'title': 'Title',
-        'footerTitle': 'FooterTitle',
-        'footerPoweredBy': 'FooterPoweredBy',
-        'mediatorLastHeartbeatWarningSeconds': 60,
-        'mediatorLastHeartbeatDangerSeconds': 120
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy',
+        mediatorLastHeartbeatWarningSeconds: 60,
+        mediatorLastHeartbeatDangerSeconds: 120
       })
     })
   })
@@ -26,22 +26,22 @@ describe('Controller: MediatorDetailsCtrl', function () {
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
 
   var testMediator = {
-    'urn': 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
-    'version': '0.0.1',
-    'name': 'Test 1 Mediator',
-    'description': 'Test 1 Description',
-    'defaultChannelConfig': [
+    urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+    version: '0.0.1',
+    name: 'Test 1 Mediator',
+    description: 'Test 1 Description',
+    defaultChannelConfig: [
       {
-        'name': 'Mediator Channel 1',
-        'urlPattern': '/channel1',
-        'routes': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
-        'allow': [ 'xdlab' ],
-        'type': 'http'
+        name: 'Mediator Channel 1',
+        urlPattern: '/channel1',
+        routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+        allow: ['xdlab'],
+        type: 'http'
       }
     ],
-    'endpoints': [{ 'name': 'Route 1', 'host': 'localhost', 'port': '1111', 'primary': true, 'type': 'http' }],
-    '_lastHeartbeat': new Date(),
-    '_uptime': 3600
+    endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+    _lastHeartbeat: new Date(),
+    _uptime: 3600
   }
 
   // Initialize the controller and a mock scope
@@ -94,12 +94,12 @@ describe('Controller: MediatorDetailsCtrl', function () {
   })
 
   it('should construct a config def map by parameter', function () {
-    testMediator.configDefs = [ {
+    testMediator.configDefs = [{
       displayName: 'Param 1',
       description: 'Param 1 description',
       param: 'param1',
       type: 'string'
-    } ]
+    }]
 
     testMediator.config = {
       param1: 'val1'

@@ -33,8 +33,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   $scope.validateLogin = function () {
     // reset alert object
     Alerting.AlertReset()
-    let loginEmail = $scope.loginEmail
-    let loginPassword = $scope.loginPassword
+    const loginEmail = $scope.loginEmail
+    const loginPassword = $scope.loginPassword
 
     if (!loginEmail || !loginPassword) {
       Alerting.AlertAddMsg('login', 'danger', 'Please provide your login credentials')
@@ -100,11 +100,11 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       }
     }
 
-    let password = angular.copy($scope.password)
+    const password = angular.copy($scope.password)
 
     // do the initial request
     Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      let h = getHashAndSalt(password)
+      const h = getHashAndSalt(password)
       user.passwordAlgorithm = h.algorithm
 
       if (typeof h.salt !== 'undefined' && h.salt !== null) {
@@ -152,27 +152,27 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       /* ------------------Set sessionID and expire timestamp------------------ */
 
       // get the logged in user details
-      let userProfile = login.getLoggedInUser()
+      const userProfile = login.getLoggedInUser()
       // check if userProfile exists
       if (!userProfile.groups) {
         return 'Logged in user could not be found!'
       } else {
-        let currentTime = new Date()
+        const currentTime = new Date()
         // add 2hours onto timestamp (2hours persistence time)
-        let expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
+        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // generate random sessionID
-        let sessionID = Math.random().toString(36).slice(2).toUpperCase()
+        const sessionID = Math.random().toString(36).slice(2).toUpperCase()
 
-        let sessionUserGroups = userProfile.groups
-        let sessionUserSettings = userProfile.settings
+        const sessionUserGroups = userProfile.groups
+        const sessionUserSettings = userProfile.settings
 
         // create session object
-        let consoleSessionObject = {
-          'sessionID': sessionID,
-          'sessionUser': loginEmail,
-          'sessionUserGroups': sessionUserGroups,
-          'sessionUserSettings': sessionUserSettings,
-          'expires': expireTime
+        const consoleSessionObject = {
+          sessionID: sessionID,
+          sessionUser: loginEmail,
+          sessionUserGroups: sessionUserGroups,
+          sessionUserSettings: sessionUserSettings,
+          expires: expireTime
         }
 
         // Put the object into storage

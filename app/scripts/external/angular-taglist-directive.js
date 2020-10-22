@@ -18,7 +18,7 @@ angular.module(angularTaglist, []).directive('taglist', ['$timeout', function ($
           element[0].getElementsByTagName('input')[0].focus()
         })
 
-        let input = angular.element(element[0].getElementsByTagName('div')[0].getElementsByTagName('input')[0])
+        const input = angular.element(element[0].getElementsByTagName('div')[0].getElementsByTagName('input')[0])
 
         input.bind('blur', function () {
           if (scope.taglistBlurTimeout) {
@@ -50,7 +50,7 @@ angular.module(angularTaglist, []).directive('taglist', ['$timeout', function ($
           if (!scope.tagData) {
             scope.tagData = []
           }
-          let val = element.value.trim()
+          const val = element.value.trim()
           if (val.length === 0) {
             return
           }

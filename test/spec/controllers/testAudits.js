@@ -10,7 +10,7 @@ describe('Controller: AuditsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -21,75 +21,77 @@ describe('Controller: AuditsCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/audits-filter-options')).respond(
-      {'eventType': [{ 'code': 'ITI-9', 'displayName': 'PIX Read', 'codeSystemName': 'IHE Transactions' }],
-        'eventID': [{ 'code': '222', 'displayName': 'Read', 'codeSystemName': 'DCM' }],
-        'activeParticipantRoleID': [{ 'code': '110152', 'displayName': 'Destination', 'codeSystemName': 'DCM' }],
-        'participantObjectIDTypeCode': [{ 'code': '2', 'displayName': 'PatientNumber', 'codeSystemName': 'RFC-3881' }],
-        'auditSourceID': ['openhim']}
+      {
+        eventType: [{ code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }],
+        eventID: [{ code: '222', displayName: 'Read', codeSystemName: 'DCM' }],
+        activeParticipantRoleID: [{ code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }],
+        participantObjectIDTypeCode: [{ code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }],
+        auditSourceID: ['openhim']
+      }
     )
 
     auditsEndpoint = $httpBackend.when('GET', new RegExp('.*/audits'))
     auditsEndpoint.respond([
       {
-        'rawMessage': 'This will be the raw ATNA message that gets received to be used as a backup reference',
-        'eventIdentification': {
-          'eventDateTime': '2015-02-17T15:38:25.282+02:00',
-          'eventOutcomeIndicator': '0',
-          'eventActionCode': 'R',
-          'eventID': { 'code': '222', 'displayName': 'Read', 'codeSystemName': 'DCM' },
-          'eventTypeCode': { 'code': 'ITI-9', 'displayName': 'PIX Read', 'codeSystemName': 'IHE Transactions' }
+        rawMessage: 'This will be the raw ATNA message that gets received to be used as a backup reference',
+        eventIdentification: {
+          eventDateTime: '2015-02-17T15:38:25.282+02:00',
+          eventOutcomeIndicator: '0',
+          eventActionCode: 'R',
+          eventID: { code: '222', displayName: 'Read', codeSystemName: 'DCM' },
+          eventTypeCode: { code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }
         },
-        'activeParticipant': [
+        activeParticipant: [
           {
-            'userID': 'pix|pix',
-            'alternativeUserID': '2100',
-            'userIsRequestor': 'false',
-            'networkAccessPointID': 'localhost',
-            'networkAccessPointTypeCode': '1',
-            'roleIDCode': { 'code': '110152', 'displayName': 'Destination', 'codeSystemName': 'DCM' }
+            userID: 'pix|pix',
+            alternativeUserID: '2100',
+            userIsRequestor: 'false',
+            networkAccessPointID: 'localhost',
+            networkAccessPointTypeCode: '1',
+            roleIDCode: { code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }
           }
         ],
-        'auditSourceIdentification': { 'auditSourceID': 'openhim' },
-        'participantObjectIdentification': [
+        auditSourceIdentification: { auditSourceID: 'openhim' },
+        participantObjectIdentification: [
           {
-            'participantObjectID': '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
-            'participantObjectTypeCode': '1',
-            'participantObjectTypeCodeRole': '1',
-            'participantObjectIDTypeCode': { 'code': '2', 'displayName': 'PatientNumber', 'codeSystemName': 'RFC-3881' }
+            participantObjectID: '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
+            participantObjectTypeCode: '1',
+            participantObjectTypeCodeRole: '1',
+            participantObjectIDTypeCode: { code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }
           }
         ]
       }, {
-        'rawMessage': 'This will be the raw ATNA message that gets received to be used as a backup reference',
-        'eventIdentification': {
-          'eventDateTime': '2015-02-17T15:38:25.282+02:00',
-          'eventOutcomeIndicator': '0',
-          'eventActionCode': 'R',
-          'eventID': { 'code': '222', 'displayName': 'Read', 'codeSystemName': 'DCM' },
-          'eventTypeCode': { 'code': 'ITI-9', 'displayName': 'PIX Read', 'codeSystemName': 'IHE Transactions' }
+        rawMessage: 'This will be the raw ATNA message that gets received to be used as a backup reference',
+        eventIdentification: {
+          eventDateTime: '2015-02-17T15:38:25.282+02:00',
+          eventOutcomeIndicator: '0',
+          eventActionCode: 'R',
+          eventID: { code: '222', displayName: 'Read', codeSystemName: 'DCM' },
+          eventTypeCode: { code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }
         },
-        'activeParticipant': [
+        activeParticipant: [
           {
-            'userID': 'pix|pix',
-            'alternativeUserID': '2100',
-            'userIsRequestor': 'false',
-            'networkAccessPointID': 'localhost',
-            'networkAccessPointTypeCode': '1',
-            'roleIDCode': { 'code': '110152', 'displayName': 'Destination', 'codeSystemName': 'DCM' }
+            userID: 'pix|pix',
+            alternativeUserID: '2100',
+            userIsRequestor: 'false',
+            networkAccessPointID: 'localhost',
+            networkAccessPointTypeCode: '1',
+            roleIDCode: { code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }
           }
         ],
-        'auditSourceIdentification': { 'auditSourceID': 'openhim' },
-        'participantObjectIdentification': [
+        auditSourceIdentification: { auditSourceID: 'openhim' },
+        participantObjectIdentification: [
           {
-            'participantObjectID': '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
-            'participantObjectTypeCode': '1',
-            'participantObjectTypeCodeRole': '1',
-            'participantObjectIDTypeCode': { 'code': '2', 'displayName': 'PatientNumber', 'codeSystemName': 'RFC-3881' }
+            participantObjectID: '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
+            participantObjectTypeCode: '1',
+            participantObjectTypeCodeRole: '1',
+            participantObjectIDTypeCode: { code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }
           }
         ]
       }
     ])
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() })
+    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -170,12 +172,12 @@ describe('Controller: AuditsCtrl', function () {
 
     auditsEndpoint.respond([
       {
-        'eventIdentification': {
-          'eventDateTime': new Date(),
-          'eventOutcomeIndicator': '0'
+        eventIdentification: {
+          eventDateTime: new Date(),
+          eventOutcomeIndicator: '0'
         },
-        'auditSourceIdentification': { 'auditSourceID': 'test2' },
-        'rawMessage': 'auto-added'
+        auditSourceIdentification: { auditSourceID: 'test2' },
+        rawMessage: 'auto-added'
       }
     ])
 

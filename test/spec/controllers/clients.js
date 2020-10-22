@@ -8,7 +8,7 @@ describe('Controller: ClientsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -19,8 +19,8 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      {clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'},
-      {clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234'}
+      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
+      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([])
@@ -28,7 +28,7 @@ describe('Controller: ClientsCtrl', function () {
     $httpBackend.when('GET', new RegExp('.*/authentication/types')).respond(['basic-auth', 'jwt-auth', 'mutual-tls-auth', 'custom-token-auth'])
 
     $httpBackend.when('GET', new RegExp('.*/roles')).respond([
-      {name: 'test', clients: ['test'], channels: ['test']}
+      { name: 'test', clients: ['test'], channels: ['test'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([])
@@ -83,9 +83,9 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
   })
 
-  var client = {clientID: 'test'}
-  var role = {name: 'test', displayName: 'dispTest'}
-  var channel = {name: 'test'}
+  var client = { clientID: 'test' }
+  var role = { name: 'test', displayName: 'dispTest' }
+  var channel = { name: 'test' }
 
   it('should assign a role to a client', function () {
     createController()
@@ -204,8 +204,8 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
 
     scope.newRoles = []
-    scope.newRoles[0] = {name: 'test'}
-    scope.newRoles[1] = {name: 'test2'}
+    scope.newRoles[0] = { name: 'test' }
+    scope.newRoles[1] = { name: 'test2' }
 
     scope.saveNewRole(role)
     httpBackend.flush()
@@ -218,8 +218,8 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
 
     scope.newRoles = []
-    scope.newRoles[0] = {name: 'test'}
-    scope.newRoles[1] = {name: 'test2'}
+    scope.newRoles[0] = { name: 'test' }
+    scope.newRoles[1] = { name: 'test2' }
 
     scope.removeNewRole(role)
     scope.newRoles.length.should.equal(1)

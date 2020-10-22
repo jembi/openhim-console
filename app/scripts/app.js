@@ -1,12 +1,12 @@
 import * as defaultConfig from '../config/default.json'
 
-let app = angular.module('openhimConsoleApp');
+const app = angular.module('openhimConsoleApp');
 
 // function to boostrap the app manually - used to first get config data before angular initializes
 (function () {
   function fetchData () {
-    let initInjector = angular.injector(['ng'])
-    let $http = initInjector.get('$http')
+    const initInjector = angular.injector(['ng'])
+    const $http = initInjector.get('$http')
 
     return $http.get('config/default.json').then(function (response) {
       app.constant('config', response.data)
@@ -55,10 +55,6 @@ app.config(function ($routeProvider) {
     .when('/users', {
       template: require('../views/users.html'),
       controller: 'UsersCtrl'
-    })
-    .when('/config', {
-      template: require('../views/config.html'),
-      controller: 'ConfigCtrl'
     })
     .when('/transactions', {
       template: require('../views/transactions.html'),

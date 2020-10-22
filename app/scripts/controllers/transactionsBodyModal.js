@@ -9,7 +9,7 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Al
   // transform body with indentation/formatting
   if ($scope.bodyData && $scope.bodyData.content) {
     if (bodyData.headers && returnContentType(bodyData.headers)) {
-      let bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
+      const bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
       $scope.bodyData.content = bodyTransform.content
     }
   }

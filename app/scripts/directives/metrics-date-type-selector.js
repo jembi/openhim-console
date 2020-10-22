@@ -24,14 +24,14 @@ export function metricsDateTypeSelector () {
       }
 
       function processOptions () {
-        let from = moment(scope.selectedDateType.from)
-        let until = moment(scope.selectedDateType.until)
+        const from = moment(scope.selectedDateType.from)
+        const until = moment(scope.selectedDateType.until)
 
-        let diff = function (unit) {
+        const diff = function (unit) {
           return Math.abs(from.diff(until, unit))
         }
 
-        let maxBreakdown = 120
+        const maxBreakdown = 120
 
         if (from.isAfter(until)) {
           scope.selectedDateType.from = scope.selectedDateType.until

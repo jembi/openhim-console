@@ -12,8 +12,8 @@ export function transactionBodyDownloader (Api, Alerting) {
     },
     link: function (scope) {
       scope.download = function () {
-        let onSuccess = function (trx) {
-          let subTrx = _.get(trx, scope.path)
+        const onSuccess = function (trx) {
+          const subTrx = _.get(trx, scope.path)
 
           let contentType = 'text/plain' // default
           if (subTrx.headers && subTrx.headers['content-type']) {
@@ -31,8 +31,8 @@ export function transactionBodyDownloader (Api, Alerting) {
 
           if(subTrx.bodyId) {
             Api.TransactionBodies(trx._id, subTrx.bodyId).then(response => {
-              let bodyBlob = buildBlob(response.data, contentType)
-              let filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
+              const bodyBlob = buildBlob(response.data, contentType)
+              const filename = scope.transactionId + '_' + _.camelCase(scope.path) + extension
               saveAs(bodyBlob, filename)
             }).catch(onError)
           } else {
@@ -40,7 +40,7 @@ export function transactionBodyDownloader (Api, Alerting) {
           }
         }
 
-        let onError = function (err) {
+        const onError = function (err) {
           Alerting.AlertAddServerMsg(err.status)
         }
 

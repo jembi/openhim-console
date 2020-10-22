@@ -7,7 +7,7 @@ describe('Controller: LoginCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -31,28 +31,32 @@ describe('Controller: LoginCtrl', function () {
     httpBackend.when('GET', new RegExp('.*/authenticate/incorrect@user.org')).respond({})
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
-      '__v': 0,
-      '_id': '539846c240f2eb682ffeca4b',
-      'email': 'test@user.org',
-      'firstname': 'test',
-      'passwordAlgorithm': 'sha512',
-      'passwordHash': '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
-      'passwordSalt': 'test-salt',
-      'surname': 'test',
-      'groups': [ 'admin' ],
-      'settings': { 'filter': {'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
-        'list': {'tabview': 'new'} }
+      __v: 0,
+      _id: '539846c240f2eb682ffeca4b',
+      email: 'test@user.org',
+      firstname: 'test',
+      passwordAlgorithm: 'sha512',
+      passwordHash: '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
+      passwordSalt: 'test-salt',
+      surname: 'test',
+      groups: ['admin'],
+      settings: {
+        filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
+        list: { tabview: 'new' }
+      }
     }, {
-      '_id': '349274c136f2eb682aodye4c',
-      'email': 'root@openhim.org',
-      'firstname': 'Super',
-      'surname': 'User',
-      'passwordAlgorithm': 'sha512',
-      'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
-      'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
-      'groups': [ 'admin' ],
-      'settings': { 'filter': {'status': 'Successful', 'channel': '5322fe9d8b6add4b2b059dd8', 'limit': '200'},
-        'list': {'tabview': 'new'} }
+      _id: '349274c136f2eb682aodye4c',
+      email: 'root@openhim.org',
+      firstname: 'Super',
+      surname: 'User',
+      passwordAlgorithm: 'sha512',
+      passwordHash: '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
+      passwordSalt: 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
+      groups: ['admin'],
+      settings: {
+        filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
+        list: { tabview: 'new' }
+      }
     })
 
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')

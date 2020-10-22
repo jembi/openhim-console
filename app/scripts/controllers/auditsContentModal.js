@@ -6,7 +6,7 @@ export function AuditsContentModalCtrl ($scope, $uibModalInstance, auditData) {
   // is content view raw audit message
   if (auditData.type === 'Raw Audit Message') {
     // transform body with indentation/formatting
-    let bodyTransform = beautifyIndent('application/xml', auditData.content)
+    const bodyTransform = beautifyIndent('application/xml', auditData.content)
     $scope.auditData.content = bodyTransform.content
     $scope.bodyTransformLang = bodyTransform.lang
   } else {

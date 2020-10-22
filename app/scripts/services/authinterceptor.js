@@ -5,19 +5,19 @@ export function Authinterceptor () {
   user = JSON.parse(user)
 
   return {
-    'setLoggedInUser': function (u) {
+    setLoggedInUser: function (u) {
       user = u
       localStorage.setItem('loggedOnUser', JSON.stringify(user))
     },
-    'getLoggedInUser': function () {
+    getLoggedInUser: function () {
       let user = localStorage.getItem('loggedOnUser')
       user = JSON.parse(user)
       return user
     },
-    'request': function (config) {
+    request: function (config) {
       if (user) {
-        let passwordhash = user.passwordHash
-        let requestSalt = CryptoJS.lib.WordArray.random(16).toString()
+        const passwordhash = user.passwordHash
+        const requestSalt = CryptoJS.lib.WordArray.random(16).toString()
         let requestTS = new Date().toISOString()
         try {
           /**
@@ -28,13 +28,13 @@ export function Authinterceptor () {
         } catch (e) {
           console.log('Authinterceptor: ' + e.message)
         }
-        let username = user.email
+        const username = user.email
 
-        let sha512 = CryptoJS.algo.SHA512.create()
+        const sha512 = CryptoJS.algo.SHA512.create()
         sha512.update(passwordhash)
         sha512.update(requestSalt)
         sha512.update(requestTS)
-        let hash = sha512.finalize()
+        const hash = sha512.finalize()
 
         config.headers['auth-username'] = username
         config.headers['auth-ts'] = requestTS

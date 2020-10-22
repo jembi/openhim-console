@@ -99,12 +99,12 @@ export function buildBlob (data, datatype) {
   try {
     out = new Blob([data], { type: datatype })
   } catch (e) {
-    let BlobBuilder = function () {
+    const BlobBuilder = function () {
       window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder
     }
 
     if (e.name === 'TypeError' && window.BlobBuilder) {
-      let bb = new BlobBuilder()
+      const bb = new BlobBuilder()
       bb.append(data)
       out = bb.getBlob(datatype)
     } else if (e.name === 'InvalidStateError') {

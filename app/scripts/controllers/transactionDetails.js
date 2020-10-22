@@ -13,13 +13,13 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /***************************************************/
 
   // get txList for paging
-  let txList = JSON.parse(sessionStorage.getItem('currTxList'))
+  const txList = JSON.parse(sessionStorage.getItem('currTxList'))
   $scope.pagingEnabled = (!txList || txList.indexOf($routeParams.transactionId) === -1) ? false : true
 
   $scope.next = null
   $scope.prev = null
   if ($scope.pagingEnabled) {
-    let currTxIndex = txList.indexOf($routeParams.transactionId)
+    const currTxIndex = txList.indexOf($routeParams.transactionId)
 
     $scope.txNumber = currTxIndex + 1
     $scope.txTotal = txList.length
@@ -41,7 +41,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   $scope.partialResponseBody = false
   $scope.partialRequestBody = false
 
-  let querySuccess = function (transactionDetails) {
+  const querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
 
     if (transactionDetails.request && transactionDetails.request.bodyId) {
@@ -60,7 +60,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
           }
 
           if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-            let requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
+            const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
             $scope.transactionDetails.request.body = requestTransform.content
           }
         }).catch(queryError)
@@ -84,7 +84,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
           }
 
           if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-            let responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
+            const responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
             $scope.transactionDetails.response.body = responseTransform.content
           }
         }).catch(queryError)
@@ -95,7 +95,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     // calculate total transaction time
     if ((transactionDetails.request && transactionDetails.request.timestamp) &&
       (transactionDetails.response && transactionDetails.response.timestamp)) {
-      let diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
+      const diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
 
       transactionDetails.transactionTime = diff >= 1000 ? (Math.round(diff / 1000.0) + 's') : (diff + 'ms')
     }
@@ -135,7 +135,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }
@@ -153,7 +153,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   // setup filter options
   $scope.returnFilterObject = function () {
-    let filtersObject = {}
+    const filtersObject = {}
 
     filtersObject.filterPage = 0
     filtersObject.filterLimit = 0
@@ -169,9 +169,9 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       // on success
       $scope.childTransactions = values
     },
-      function (err) {
-        Alerting.AlertAddServerMsg(err.status)
-      })
+    function (err) {
+      Alerting.AlertAddServerMsg(err.status)
+    })
   }
   // run the transaction list view for the first time
   $scope.fetchChildTransactions()
@@ -191,7 +191,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /****************************************************************/
 
   $scope.confirmRerunTransactions = function () {
-    let transactionsSelected = [$scope.transactionDetails._id]
+    const transactionsSelected = [$scope.transactionDetails._id]
     let rerunTransactionsSelected = 0
 
     // check if transaction has child IDs (It has been rerun before)

@@ -2,8 +2,8 @@ import mediatorConfigModal from '~/views/mediatorConfigModal'
 import { MediatorConfigModalCtrl } from './'
 
 export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $routeParams, Api, Alerting, MediatorDisplay) {
-  let createParamDefMap = function (mediator) {
-    let map = {}
+  const createParamDefMap = function (mediator) {
+    const map = {}
     if (mediator.config) {
       Object.keys(mediator.config).map(function (param) {
         map[param] = mediator.configDefs.filter(function (def) {
@@ -14,13 +14,13 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
     return map
   }
 
-  let querySuccess = function (mediatorDetails) {
+  const querySuccess = function (mediatorDetails) {
     MediatorDisplay.formatMediator(mediatorDetails)
     $scope.mediatorDetails = mediatorDetails
     $scope.mediatorDefsMap = createParamDefMap(mediatorDetails)
   }
 
-  let queryError = function (err) {
+  const queryError = function (err) {
     // on error - add server error alert
     Alerting.AlertAddServerMsg(err.status)
   }

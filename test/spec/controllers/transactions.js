@@ -9,7 +9,7 @@ describe('Controller: TransactionsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'hostPath': '', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -20,8 +20,8 @@ describe('Controller: TransactionsCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      { '_id': '5322fe9d8b6add4b2b059dd8', 'status': 'enabled', 'name': 'Sample JsonStub Channel 1', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['test'], 'routes': [{ 'host': 'jsonstub.com', 'port': 80, 'primary': true }] },
-      { '_id': '5322fe9d8b6add4b2b059aa3', 'status': 'deleted', 'name': 'Sample JsonStub Channel 2', 'urlPattern': 'sample/api', 'allow': ['PoC'], 'txRerunAcl': ['testing'], 'routes': [{ 'host': 'jsonstub.com', 'port': 80 }] }
+      { _id: '5322fe9d8b6add4b2b059dd8', status: 'enabled', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }] },
+      { _id: '5322fe9d8b6add4b2b059aa3', status: 'deleted', name: 'Sample JsonStub Channel 2', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['testing'], routes: [{ host: 'jsonstub.com', port: 80 }] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
@@ -30,27 +30,27 @@ describe('Controller: TransactionsCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users/*')).respond({
-      '_id': '349274c136f2eb682aodye4c',
-      'email': 'root@openhim.org',
-      'firstname': 'Super',
-      'surname': 'User',
-      'passwordAlgorithm': 'sha512',
-      'passwordHash': '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
-      'passwordSalt': 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
-      'groups': ['admin'],
-      'settings': {
-        'filter': {
-          'endDate': '2016-08-17',
-          'startDate': '2016-08-16',
-          'orchestration': {},
-          'route': {},
-          'transaction': {
-            'status': 'Failed',
-            'wasRerun': 'yes'
+      _id: '349274c136f2eb682aodye4c',
+      email: 'root@openhim.org',
+      firstname: 'Super',
+      surname: 'User',
+      passwordAlgorithm: 'sha512',
+      passwordHash: '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
+      passwordSalt: 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
+      groups: ['admin'],
+      settings: {
+        filter: {
+          endDate: '2016-08-17',
+          startDate: '2016-08-16',
+          orchestration: {},
+          route: {},
+          transaction: {
+            status: 'Failed',
+            wasRerun: 'yes'
           },
-          'limit': 70
+          limit: 70
         },
-        'list': { 'tabview': 'new' }
+        list: { tabview: 'new' }
       }
     })
 
@@ -58,36 +58,36 @@ describe('Controller: TransactionsCtrl', function () {
 
     $httpBackend.when('GET', new RegExp('.*/transactions\\?(filterLimit|filterPage)')).respond([
       {
-        '_id': '550936d307756ef72b525111',
-        'status': 'Successful',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
+        _id: '550936d307756ef72b525111',
+        status: 'Successful',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 }
       }, {
-        '_id': '660936d307756ef72b525222',
-        'status': 'Successful',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful/successful', 'headers': {}, 'querystring': '', 'body': 'Successful Successful', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
+        _id: '660936d307756ef72b525222',
+        status: 'Successful',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/successful/successful', headers: {}, querystring: '', body: 'Successful Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 }
       }, {
-        '_id': '770936d307756ef72b525333',
-        'status': 'Processing',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' }
+        _id: '770936d307756ef72b525333',
+        status: 'Processing',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' }
       }, {
-        '_id': '880936d307756ef72b525444',
-        'status': 'Failed',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': '', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 500 }
+        _id: '880936d307756ef72b525444',
+        status: 'Failed',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/failed', headers: {}, querystring: '', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 }
       }
     ])
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ 'now': Date.now() })
+    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -262,20 +262,20 @@ describe('Controller: TransactionsCtrl', function () {
 
     httpBackend.when('GET', new RegExp('.*/transactions')).respond([
       {
-        '_id': '59a010234c3c346c24d01f6e',
-        'status': 'Successful',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2017-08-25T11:55:38.953Z' },
-        'response': { 'timestamp': '2017-08-25T11:56:38.953Z', 'body': 'Body', 'headers': {}, 'status': 200 }
+        _id: '59a010234c3c346c24d01f6e',
+        status: 'Successful',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2017-08-25T11:55:38.953Z' },
+        response: { timestamp: '2017-08-25T11:56:38.953Z', body: 'Body', headers: {}, status: 200 }
       },
       {
-        '_id': '550936d307756ef72b525555',
-        'status': 'Successful',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/successful', 'headers': {}, 'querystring': 'test=testing', 'body': 'Successful', 'method': 'GET', 'timestamp': '2015-07-15T15:26:59.417Z' },
-        'response': { 'timestamp': '2015-07-15T15:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 200 }
+        _id: '550936d307756ef72b525555',
+        status: 'Successful',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-07-15T15:26:59.417Z' },
+        response: { timestamp: '2015-07-15T15:26:59.430Z', body: 'Body', headers: {}, status: 200 }
       }
     ])
 
@@ -297,12 +297,12 @@ describe('Controller: TransactionsCtrl', function () {
 
     httpBackend.when('GET', new RegExp('.*/transactions/770936d307756ef72b525333')).respond(
       {
-        '_id': '770936d307756ef72b525333',
-        'status': 'Failed',
-        'clientID': '5506aed5348ac60d23840a9e',
-        'channelID': '550933dbbc9814c82b12fd16',
-        'request': { 'path': '/path/failed', 'headers': {}, 'querystring': 'test=world', 'body': 'Failed', 'method': 'GET', 'timestamp': '2015-03-18T08:26:59.417Z' },
-        'response': { 'timestamp': '2015-03-18T08:26:59.430Z', 'body': 'Body', 'headers': {}, 'status': 500 }
+        _id: '770936d307756ef72b525333',
+        status: 'Failed',
+        clientID: '5506aed5348ac60d23840a9e',
+        channelID: '550933dbbc9814c82b12fd16',
+        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 }
       }
     )
 
@@ -315,7 +315,7 @@ describe('Controller: TransactionsCtrl', function () {
   })
 
   it('should check rerun permissions (non admin user should have permission on enabled channel)', function () {
-    // Change the userGroups from admin. The userGroups are stored in a session upon login. 
+    // Change the userGroups from admin. The userGroups are stored in a session upon login.
     // They are used to determine if a user can rerun a channel's transactions
     var session = localStorage.getItem('consoleSession')
     localStorage.removeItem('consoleSession')
@@ -325,19 +325,19 @@ describe('Controller: TransactionsCtrl', function () {
 
     createController()
     httpBackend.flush()
-    
+
     scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', true)
     scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
   })
 
   it('should check rerun permissions (non admin user should not have permission on enabled channel)', function () {
-    // Change the userGroups from admin. The userGroups are stored in a session upon login. 
+    // Change the userGroups from admin. The userGroups are stored in a session upon login.
     // They are used to determine if a user can rerun a channel's transactions
     var session = localStorage.getItem('consoleSession')
     localStorage.removeItem('consoleSession')
     session = JSON.parse(session)
     session.sessionUserGroups = ['test1', 'test2', 'test3', 'test4']
-    localStorage.setItem('consoleSession',JSON.stringify(session))
+    localStorage.setItem('consoleSession', JSON.stringify(session))
 
     createController()
     httpBackend.flush()

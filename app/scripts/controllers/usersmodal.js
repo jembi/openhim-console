@@ -79,13 +79,13 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
   /**   These are the functions for the User Modal Popup     **/
   /************************************************************/
 
-  let notifyUser = function () {
+  const notifyUser = function () {
     // reset backing object and refresh users list
     Notify.notify('usersChanged')
     $uibModalInstance.close()
   }
 
-  let success = function (user, password) {
+  const success = function (user, password) {
     let consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
 
@@ -119,14 +119,14 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
     }
   }
 
-  let error = function (err) {
+  const error = function (err) {
     // add the success message
     Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' details: #' + err.status + ' - ' + err.data)
     notifyUser()
   }
 
-  let saveUser = function (user, password) {
-    let userObject = angular.copy(user)
+  const saveUser = function (user, password) {
+    const userObject = angular.copy(user)
     if ($scope.update) {
       user.$update(function () {
         success(userObject, password)
@@ -136,7 +136,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
     }
   }
 
-  let setHashAndSave = function (user, hash, salt, password) {
+  const setHashAndSave = function (user, hash, salt, password) {
     if (typeof salt !== 'undefined' && salt !== null) {
       user.passwordSalt = salt
     }
@@ -146,7 +146,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
 
   $scope.save = function (user, password) {
     if (password) {
-      let h = getHashAndSalt(password)
+      const h = getHashAndSalt(password)
       user.passwordAlgorithm = h.algorithm
       setHashAndSave(user, h.hash, h.salt, password)
     } else {

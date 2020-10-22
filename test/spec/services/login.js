@@ -7,7 +7,7 @@ describe('Service: login', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { 'protocol': 'https', 'host': 'localhost', 'port': 8080, 'title': 'Title', 'footerTitle': 'FooterTitle', 'footerPoweredBy': 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
     })
   })
 
@@ -25,15 +25,15 @@ describe('Service: login', function () {
     })
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
-      '__v': 0,
-      '_id': '539846c240f2eb682ffeca4b',
-      'email': 'test@user.org',
-      'firstname': 'test',
-      'passwordAlgorithm': 'sha512',
-      'passwordHash': '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
-      'passwordSalt': 'test-salt',
-      'surname': 'test',
-      'groups': [
+      __v: 0,
+      _id: '539846c240f2eb682ffeca4b',
+      email: 'test@user.org',
+      firstname: 'test',
+      passwordAlgorithm: 'sha512',
+      passwordHash: '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
+      passwordSalt: 'test-salt',
+      surname: 'test',
+      groups: [
         'admin'
       ]
     })
@@ -61,7 +61,7 @@ describe('Service: login', function () {
   it('should logout a user', function () {
     login.logout()
     var user = login.getLoggedInUser()
-    ;expect((user === null)).to.be.true()
+    expect((user === null)).to.be.true()
   })
 
   it('should have a timediff', function () {
