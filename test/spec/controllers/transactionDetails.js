@@ -9,7 +9,7 @@ describe('Controller: TransactionDetailsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy', defaultLengthOfBodyToDisplay: 100 })
     })
   })
 
@@ -19,7 +19,18 @@ describe('Controller: TransactionDetailsCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0')).respond({ _id: '5322fe9d8b6add4b2b059ff5', name: 'Transaction 1', urlPattern: 'sample/api', channelID: '5322fe9d8b6add4b2b059dd8', clientID: '5344fe7d8b6add4b2b069dd7' })
+    $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0/bodies/12345')).respond('<body>', {'Content-Range': 'bytes 0-5/6'})
+
+    $httpBackend.when('GET', new RegExp('.*/transactions/538ed0867962a27d5df259b0')).respond({ _id: '5322fe9d8b6add4b2b059ff5', name: 'Transaction 1', urlPattern: 'sample/api', channelID: '5322fe9d8b6add4b2b059dd8', clientID: '5344fe7d8b6add4b2b069dd7', request: {
+      headers: {
+        'Content-Type': 'text/plain'
+      }, bodyId: '12345' },
+      response: {
+        headers: {
+          'Content-Type': 'text/plain'
+        }, bodyId: '12345'
+      }
+    })
     $httpBackend.when('GET', new RegExp('.*/transactions?.*')).respond([{ name: 'Transaction 5', urlPattern: 'sample/api', _id: '5322fe9d8b6add4b2basd979', parentID: '5322fe9d8b6add4b2b059ff5' }])
 
     $httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ _id: '539846c240f2eb682ffeca4b', email: 'test@user.org', firstname: 'test', surname: 'test', groups: ['admin', 'test', 'other'] })
@@ -65,5 +76,31 @@ describe('Controller: TransactionDetailsCtrl', function () {
     scope.client.clientID.should.equal('test1')
     scope.client.clientDomain.should.equal('test1.openhim.org')
     scope.client.roles.length.should.equal(1)
+  })
+
+  it('should set the flags partialResponseBody and partialRequestBody', function () {
+    createController()
+    httpBackend.flush()
+
+    scope.should.have.property('requestBodyStart')
+    scope.should.have.property('responseBodyStart')
+    scope.should.have.property('requestBodyEnd')
+    scope.should.have.property('responseBodyEnd')
+    scope.should.have.property('requestBodyLength')
+    scope.should.have.property('responseBodyLength')
+    scope.should.have.property('partialResponseBody')
+    scope.should.have.property('partialRequestBody')
+  })
+
+  it('should fetch the transaction request body', function () {
+    createController()
+    httpBackend.flush()
+    scope.transactionDetails.request.body.should.equal('<body>')
+  })
+
+  it('should fetch the transaction response body', function () {
+    createController()
+    httpBackend.flush()
+    scope.transactionDetails.request.body.should.equal('<body>')
   })
 })
