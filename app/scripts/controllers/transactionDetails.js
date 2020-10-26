@@ -40,6 +40,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
   $scope.partialResponseBody = false
   $scope.partialRequestBody = false
+  $scope.responseBodyRangeProperties = {}
+  $scope.requestBodyRangeProperties = {}
 
   const querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
@@ -49,14 +51,15 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
         Api.TransactionBodies($routeParams.transactionId, transactionDetails.request.bodyId, start, end).then(response => {
           const { start, end, bodyLength } = retrieveBodyProperties(response)
 
-          if (start && end && bodyLength) {
-            $scope.requestBodyStart = start
-            $scope.requestBodyEnd = end
-            $scope.requestBodyLength = bodyLength
+          if (bodyLength && end && (bodyLength - end) > 1) {
+            $scope.partialRequestBody = true
+          }
 
-            if ((bodyLength - end) > 1) {
-              $scope.partialRequestBody = true
-            }
+          $scope.requestBodyRangeProperties = {
+            partial: $scope.partialRequestBody,
+            start: start ? start : '',
+            end: end ? end : '',
+            bodyLength: bodyLength ? bodyLength : ''
           }
 
           if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
@@ -73,14 +76,15 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
         Api.TransactionBodies($routeParams.transactionId, transactionDetails.response.bodyId, start, end).then(response => {
           const { start, end, bodyLength } = retrieveBodyProperties(response)
 
-          if (start && end && bodyLength) {
-            $scope.responseBodyStart = start
-            $scope.responseBodyEnd = end
-            $scope.responseBodyLength = bodyLength
+          if (bodyLength && end && (bodyLength - end) > 1) {
+            $scope.partialResponseBody = true
+          }
 
-            if ((bodyLength - end) > 1) {
-              $scope.partialResponseBody = true
-            }
+          $scope.responseBodyRangeProperties = {
+            partial: $scope.partialResponseBody,
+            start: start ? start : '',
+            end: end ? end : '',
+            bodyLength: bodyLength ? bodyLength : ''
           }
 
           if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
@@ -256,7 +260,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /**               Transactions View Body Functions                 **/
   /********************************************************************/
 
-  $scope.viewBodyDetails = function (type, content, headers, bodyId) {
+  $scope.viewBodyDetails = function (type, content, headers, bodyId, bodyRangeProperties) {
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
@@ -264,8 +268,15 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       resolve: {
         bodyData: function () {
           return {
-            type: type, content: content, headers: headers, transactionId: $routeParams.transactionId, bodyId
+            type: type, content: content, headers: headers,
+            transactionId: $routeParams.transactionId, bodyId, bodyRangeProperties
           }
+        },
+        Api: function () {
+          return Api
+        },
+        Alerting: function () {
+          return Alerting
         }
       }
     })
