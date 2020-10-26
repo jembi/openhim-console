@@ -70,6 +70,8 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
 
         if (bodyLength && end && (bodyLength - end) > 1) {
           $scope.partialRecordResponseBody = true
+        } else {
+          $scope.partialRecordResponseBody = true
         }
         $scope.recordResponseBodyStart = start ? start : ''
         $scope.recordResponseBodyEnd = end ? end : ''

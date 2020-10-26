@@ -37,6 +37,8 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Ap
 
           if ((bodyLength - end) > 1) {
             $scope.partialBody = true
+          } else{
+            $scope.partialBody = false
           }
         }
 
