@@ -30,7 +30,7 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
         }, bodyId: '12345'
       }
     })
-    createController = function () {
+    createController = function (requestBody=null, responseBody=null) {
       record = {
         name: 'second',
         _id: '538ed0867962a27d5df259b0',
@@ -49,6 +49,9 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
         }
       }
 
+      if (requestBody) record.request.body = requestBody
+      if (responseBody) record.response.body = responseBody
+
       channel = {
         type: 'http'
       }
@@ -62,6 +65,20 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
         channel: channel,
         transactionId: record._id,
         recordType: 'routes',
+        bodyRangeProperties: {
+          response: {
+            start: 0,
+            end: 10,
+            bodyLength: 14,
+            partial: true
+          },
+          request: {
+            start: 0,
+            end: 10,
+            bodyLength: 14,
+            partial: true
+          }
+        },
         index: 0
       })
     }
@@ -92,6 +109,22 @@ describe('Controller: TransactionsAddReqResModalCtrl', function () {
   it('should attach the record\'s response and request body flags', function () {
     createController()
     httpBackend.flush()
+
+    scope.should.have.property('recordRequestBodyStart')
+    scope.should.have.property('recordResponseBodyStart')
+    scope.should.have.property('recordRequestBodyEnd')
+    scope.should.have.property('recordResponseBodyEnd')
+    scope.should.have.property('recordRequestBodyLength')
+    scope.should.have.property('recordResponseBodyLength')
+    scope.should.have.property('partialRecordResponseBody')
+    scope.should.have.property('partialRecordRequestBody')
+  })
+
+  it('should attach the record\'s response and request body and properties when they already exist (no api call to retrieve)', function () {
+    createController('The request body', 'The response body')
+
+    scope.record.response.body.should.equal('The response body')
+    scope.record.request.body.should.equal('The request body')
 
     scope.should.have.property('recordRequestBodyStart')
     scope.should.have.property('recordResponseBodyStart')

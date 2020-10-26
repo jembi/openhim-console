@@ -78,18 +78,26 @@ describe('Controller: TransactionDetailsCtrl', function () {
     scope.client.roles.length.should.equal(1)
   })
 
-  it('should set the flags partialResponseBody and partialRequestBody', function () {
+  it('should add the request body range properties', function () {
     createController()
     httpBackend.flush()
 
-    scope.should.have.property('requestBodyStart')
-    scope.should.have.property('responseBodyStart')
-    scope.should.have.property('requestBodyEnd')
-    scope.should.have.property('responseBodyEnd')
-    scope.should.have.property('requestBodyLength')
-    scope.should.have.property('responseBodyLength')
-    scope.should.have.property('partialResponseBody')
-    scope.should.have.property('partialRequestBody')
+    scope.should.have.property('requestBodyRangeProperties')
+    scope.requestBodyRangeProperties.should.have.property('partial')
+    scope.requestBodyRangeProperties.should.have.property('start')
+    scope.requestBodyRangeProperties.should.have.property('end')
+    scope.requestBodyRangeProperties.should.have.property('bodyLength')
+  })
+
+  it('should add the response body range properties', function () {
+    createController()
+    httpBackend.flush()
+
+    scope.should.have.property('responseBodyRangeProperties')
+    scope.responseBodyRangeProperties.should.have.property('partial')
+    scope.responseBodyRangeProperties.should.have.property('start')
+    scope.responseBodyRangeProperties.should.have.property('end')
+    scope.responseBodyRangeProperties.should.have.property('bodyLength')
   })
 
   it('should fetch the transaction request body', function () {
