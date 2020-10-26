@@ -10,7 +10,7 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Ap
     $scope.partialBody = properties.partial
     $scope.bodyStart = properties.start
     $scope.bodyEnd = properties.end
-    $scope.bodyEnd = properties.end
+    $scope.bodyLength = properties.bodyLength
   }
 
   // transform body with indentation/formatting
