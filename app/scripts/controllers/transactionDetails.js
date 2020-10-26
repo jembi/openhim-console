@@ -247,6 +247,12 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
         },
         index: function () {
           return index
+        },
+        bodyRangeProperties: function () {
+          return {
+            response: $scope.responseBodyRangeProperties,
+            request: $scope.requestBodyRangeProperties
+          }
         }
       }
     })
