@@ -39,7 +39,7 @@ export function Api ($rootScope, $resource, $http, config) {
     TransactionBodies: function(transactionId, bodyId, start, end) {
       const headers = {}
       if (
-        end &&
+        start &&
         end &&
         end > start
       ) headers.range = `bytes=${start}-${end}`
