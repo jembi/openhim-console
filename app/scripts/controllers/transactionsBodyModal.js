@@ -1,11 +1,18 @@
 import { beautifyIndent, returnContentType, retrieveBodyProperties } from '../utils'
-import { Api } from '../services/rest'
 
-export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Alerting, bodyData) {
+export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Api, Alerting, bodyData) {
   $scope.bodyData = bodyData
   const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
 
-  $scope.partialBody = false
+  if ($scope.bodyData && $scope.bodyData.bodyRangeProperties) {
+    const properties = $scope.bodyData.bodyRangeProperties
+
+    $scope.partialBody = properties.partial
+    $scope.bodyStart = properties.start
+    $scope.bodyEnd = properties.end
+    $scope.bodyEnd = properties.end
+  }
+
   // transform body with indentation/formatting
   if ($scope.bodyData && $scope.bodyData.content) {
     if (bodyData.headers && returnContentType(bodyData.headers)) {
@@ -41,7 +48,6 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Al
         Alerting.AlertAddServerMsg(err.status)
       })
     }
-    $scope.retrieveBodyData()
   }
 
   $scope.cancel = function () {
