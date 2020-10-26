@@ -277,12 +277,6 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
             type: type, content: content, headers: headers,
             transactionId: $routeParams.transactionId, bodyId, bodyRangeProperties
           }
-        },
-        Api: function () {
-          return Api
-        },
-        Alerting: function () {
-          return Alerting
         }
       }
     })
