@@ -4,7 +4,7 @@ import {
   retrieveBodyProperties
 } from '../utils'
 
-export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, Api, config, record, channel, transactionId, recordType, index) {
+export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, Api, config, record, channel, transactionId, recordType, index, bodyRangeProperties) {
   $scope.record = record
   $scope.channel = channel // optional
   $scope.viewFullBody = false
@@ -25,15 +25,14 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       Api.TransactionBodies(transactionId, record.request.bodyId, start, end).then(response => {
         const { start, end, bodyLength } = retrieveBodyProperties(response)
 
-        if (start && end && bodyLength) {
-          $scope.recordRequestBodyStart = start
-          $scope.recordRequestBodyEnd = end
-          $scope.recordRequestBodyLength = bodyLength
-
-          if ((bodyLength - end) > 1) {
-            $scope.partialRecordRequestBody = true
-          }
+        if (bodyLength && end && (bodyLength - end) > 1) {
+          $scope.partialRecordRequestBody = true
+        } else {
+          $scope.partialRecordRequestBody = false
         }
+        $scope.recordRequestBodyStart = start ? start : ''
+        $scope.recordRequestBodyEnd = end ? end : ''
+        $scope.recordRequestBodyLength = bodyLength ? bodyLength : ''
 
         if (record.request.headers && returnContentType(record.request.headers)) {
           const requestTransform = beautifyIndent(returnContentType(record.request.headers), response.data)
@@ -42,7 +41,25 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         }
       })
     }
-    $scope.retrieveRecordRequestBody()
+
+    if (record.request && record.request.body) {
+      if (record.request.headers && returnContentType(record.request.headers)) {
+        const requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
+        $scope.record.request.body = requestTransform.content
+        $scope.requestTransformLang = requestTransform.lang
+      }
+
+      if (bodyRangeProperties && bodyRangeProperties.request) {
+        const { partial, start, end, bodyLength } = bodyRangeProperties.request
+
+        $scope.partialRecordRequestBody = partial
+        $scope.recordRequestBodyStart = start ? start : ''
+        $scope.recordRequestBodyEnd = end ? end : ''
+        $scope.recordRequestBodyLength = bodyLength ? bodyLength : ''
+      }
+    } else {
+      $scope.retrieveRecordRequestBody()
+    }
   }
 
   // transform response body with indentation/formatting
@@ -51,15 +68,14 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       Api.TransactionBodies(transactionId, record.response.bodyId, start, end).then(response => {
         const { start, end, bodyLength } = retrieveBodyProperties(response)
 
-        if (start && end && bodyLength) {
-          $scope.recordResponseBodyStart = start
-          $scope.recordResponseBodyEnd = end
-          $scope.recordResponseBodyLength = bodyLength
-
-          if ((bodyLength - end) > 1) {
-            $scope.partialRecordResponseBody = true
-          }
+        if (bodyLength && end && (bodyLength - end) > 1) {
+          $scope.partialRecordResponseBody = true
+        } else {
+          $scope.partialRecordResponseBody = true
         }
+        $scope.recordResponseBodyStart = start ? start : ''
+        $scope.recordResponseBodyEnd = end ? end : ''
+        $scope.recordResponseBodyLength = bodyLength ? bodyLength : ''
 
         if (record.response.headers && returnContentType(record.response.headers)) {
           const responseTransform = beautifyIndent(returnContentType(record.response.headers), response.data)
@@ -68,7 +84,25 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         }
       })
     }
-    $scope.retrieveRecordResponseBody()
+
+    if (record.response && record.response.body) {
+      if (record.response.headers && returnContentType(record.response.headers)) {
+        const responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
+        $scope.record.response.body = responseTransform.content
+        $scope.responseTransformLang = responseTransform.lang
+      }
+
+      if (bodyRangeProperties && bodyRangeProperties.response) {
+        const { partial, start, end, bodyLength } = bodyRangeProperties.request
+
+        $scope.partialRecordResponseBody = partial
+        $scope.recordResponseBodyStart = start ? start : ''
+        $scope.recordResponseBodyEnd = end ? end : ''
+        $scope.recordResponseBodyLength = bodyLength ? bodyLength : ''
+      }
+    } else {
+      $scope.retrieveRecordResponseBody()
+    }
   }
 
   $scope.toggleFullView = function (type, bodyContent, contentType) {
