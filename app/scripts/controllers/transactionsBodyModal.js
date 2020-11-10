@@ -1,6 +1,6 @@
 import { beautifyIndent, returnContentType, retrieveBodyProperties } from '../utils'
 
-export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Api, Alerting, bodyData) {
+export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api, Alerting, bodyData) {
   $scope.bodyData = bodyData
   const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
 
@@ -26,7 +26,11 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Ap
     $scope.bodyData.transactionId &&
     $scope.bodyData.bodyId
   ) {
-    $scope.retrieveBodyData = function (start=0, end=defaultLengthOfBodyToDisplay) {
+    const DEFAULT_MAX_LENGTH = 2048
+    const FULL_LENGTH = 9999999999999
+    const DEFAULT_MIN_LENGTH = 0
+
+    $scope.retrieveBodyData = function (start = 0, end = defaultLengthOfBodyToDisplay) {
       Api.TransactionBodies($scope.bodyData.transactionId, $scope.bodyData.bodyId, start, end).then(response => {
         const { start, end, bodyLength } = retrieveBodyProperties(response)
 
@@ -45,13 +49,13 @@ export function TransactionsBodyModalCtrl ($scope, $uibModalInstance, config, Ap
         Alerting.AlertAddServerMsg(err.status)
       })
     }
-    
+
     $scope.loadMore = function () {
-      $scope.retrieveBodyData(0, 2048)
+      $scope.retrieveBodyData(DEFAULT_MIN_LENGTH, DEFAULT_MAX_LENGTH)
     }
-  
+
     $scope.loadFull = function () {
-      $scope.retrieveBodyData(0, 9999999999999)
+      $scope.retrieveBodyData(DEFAULT_MIN_LENGTH, FULL_LENGTH)
     }
   }
 

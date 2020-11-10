@@ -62,6 +62,8 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
             bodyLength: bodyLength ? bodyLength : ''
           }
 
+          $scope.transactionDetails.request.requestBodyRangeProperties = $scope.requestBodyRangeProperties
+
           if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
             const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
             $scope.transactionDetails.request.body = requestTransform.content
