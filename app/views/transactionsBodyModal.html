@@ -7,7 +7,11 @@
   <div class="route-detail-container">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <div class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+        <div ng-show="!busyLoadingMore" class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+      </div>
+
+      <div class="loadingContainer" ng-show="busyLoadingMore">
+        <span id="loading-spinner" alt="Loading..."></span>
       </div>
     </div>
     <div ng-if="partialBody" class="pull-right" style="margin-top: 10px">
