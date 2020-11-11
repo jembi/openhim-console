@@ -26,10 +26,6 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
     $scope.bodyData.transactionId &&
     $scope.bodyData.bodyId
   ) {
-    const DEFAULT_MAX_LENGTH = 2048
-    const FULL_LENGTH = 9999999999999
-    const DEFAULT_MIN_LENGTH = 0
-
     $scope.retrieveBodyData = function (start = 0, end = defaultLengthOfBodyToDisplay) {
       Api.TransactionBodies($scope.bodyData.transactionId, $scope.bodyData.bodyId, start, end).then(response => {
         const { start, end, bodyLength } = retrieveBodyProperties(response)
@@ -45,17 +41,18 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
           let bodyTransform = beautifyIndent(returnContentType(bodyData.headers), response.data)
           $scope.bodyData.content = bodyTransform.content
         }
-      }).catch(err => {
-        Alerting.AlertAddServerMsg(err.status)
-      })
+      }).catch(err => Alerting.AlertAddServerMsg(err.status))
     }
 
-    $scope.loadMore = function () {
-      $scope.retrieveBodyData(DEFAULT_MIN_LENGTH, DEFAULT_MAX_LENGTH)
-    }
+    $scope.loadMore = (function (bodyEnd) {
+      return function () {
+        bodyEnd *= 2
+        $scope.retrieveBodyData(0, bodyEnd)
+      }
+    })(1024)
 
     $scope.loadFull = function () {
-      $scope.retrieveBodyData(DEFAULT_MIN_LENGTH, FULL_LENGTH)
+      $scope.retrieveBodyData(0, $scope.bodyLength)
     }
   }
 
