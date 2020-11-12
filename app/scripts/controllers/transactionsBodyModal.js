@@ -26,6 +26,8 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
     $scope.bodyData.transactionId &&
     $scope.bodyData.bodyId
   ) {
+    $scope.formatContent = false
+    $scope.formatButtonText = 'Format'
     $scope.retrieveBodyData = function (start = 0, end = defaultLengthOfBodyToDisplay) {
       $scope.busyLoadingMore = true
       Api.TransactionBodies($scope.bodyData.transactionId, $scope.bodyData.bodyId, start, end).then(response => {
@@ -56,6 +58,11 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
 
     $scope.loadFull = function () {
       $scope.retrieveBodyData(0, $scope.bodyLength)
+    }
+
+    $scope.toggleFormatContent = function () {
+      $scope.formatContent = !$scope.formatContent
+      $scope.formatButtonText = $scope.formatContent ? 'Remove formatting' : 'Format'
     }
   }
 

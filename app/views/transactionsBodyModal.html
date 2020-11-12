@@ -7,16 +7,18 @@
   <div class="route-detail-container">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <div ng-show="!busyLoadingMore" class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+        <div ng-show="!busyLoadingMore && formatContent" class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+        <div ng-show="!busyLoadingMore && !formatContent" class="hljsFormat hljsFormatFull">{{bodyData.content}}</div>
       </div>
 
       <div class="loadingContainer" ng-show="busyLoadingMore">
         <span id="loading-spinner" alt="Loading..."></span>
       </div>
     </div>
-    <div ng-if="partialBody" class="pull-right" style="margin-top: 10px">
-      <button type="button" class="btn btn-primary" ng-click="loadMore()" style="margin-right: 10px">Load more</button>
-      <button type="button" class="btn btn-primary" ng-click="loadFull()">Load full body</button>
+    <div class="pull-right" style="margin-top: 10px">
+      <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadMore()" style="margin-right: 10px">Load more</button>
+      <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadFull()">Load full body</button>
+      <button type="button" class="btn btn-primary" ng-click="toggleFormatContent()">{{formatButtonText}}</button>
     </div>
   </div>
 </div>
