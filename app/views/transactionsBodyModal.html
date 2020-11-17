@@ -15,6 +15,11 @@
         <span id="loading-spinner" alt="Loading..."></span>
       </div>
     </div>
+    <div class="pull-left" style="margin-top:10px" ng-if="partialBody">
+      <div class="alert alert-warning">
+        <strong>Warning!</strong> this transaction body data might take a while to format.
+      </div>
+    </div>
     <div class="pull-right" style="margin-top: 10px">
       <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadMore()" style="margin-right: 10px">Load more</button>
       <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadFull()">Load full body</button>
