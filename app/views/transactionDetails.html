@@ -187,7 +187,7 @@
                     <h4>Response body</h4>
                     <div class="hljsFormat" hljs source="transactionDetails.response.body"></div>
                     <transaction-body-downloader transaction-id="transactionDetails._id" path="'response'" style="margin-top: 10px;" class="pull-right"></transaction-body-downloader>
-                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers);" uib-tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
+                    <button style="margin-top: 10px;" class="btn btn-primary pull-right" ng-click="viewBodyDetails('Response', transactionDetails.response.body, transactionDetails.response.headers, transactionDetails.request.bodyId, transactionDetails.request.requestBodyRangeProperties);" uib-tooltip="View body details"><i class="glyphicon glyphicon-new-window"></i></button>
                   </div>
                   <div ng-if="transactionDetails.error" style="display: inline-block; width: 100%; margin-top: 15px;">
                     <h4>Internal Error<i ng-show="uiSettings.showTooltips" uib-tooltip="An internal error occurred that prevented the OpenHIM from sending the transaction" class="glyphicon glyphicon-question-sign tooltip-wide iconInHeader"></i></h4>
