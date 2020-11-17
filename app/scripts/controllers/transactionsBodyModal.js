@@ -51,10 +51,10 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
 
     $scope.loadMore = (function (bodyEnd) {
       return function () {
-        bodyEnd *= 2
+        bodyEnd += config.defaultLengthOfBodyToDisplay
         $scope.retrieveBodyData(0, bodyEnd)
       }
-    })(1024)
+    })(config.defaultLengthOfBodyToDisplay)
 
     $scope.loadFull = function () {
       $scope.retrieveBodyData(0, $scope.bodyLength)
