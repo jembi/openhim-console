@@ -5,7 +5,7 @@ import { buildBlob } from '../utils'
 export function transactionBodyDownloader (Api, Alerting) {
   return {
     restrict: 'EA',
-    template: '<div class="btn btn-primary" ng-click="download()" tooltip="Download body"><i class="glyphicon glyphicon-download-alt"></i></div>',
+    template: '<div class="btn btn-primary" ng-click="download()" uib-tooltip="Download body"><i class="glyphicon glyphicon-download-alt" style="margin-right: 5px"></i>Download</div>',
     scope: {
       transactionId: '=',
       path: '='

@@ -62,7 +62,7 @@ export function beautifyIndent (type, content) {
     }
 
     if (type.indexOf('text/json') >= 0 || type.indexOf('application/json') >= 0) {
-      return { lang: 'json', content: content }
+      return { lang: 'json', content: pd.json(content, 2) }
     }
 
     if (type.indexOf('text/html') >= 0 || type.indexOf('application/html') >= 0) {

@@ -1,3 +1,4 @@
+import size from 'filesize'
 import { beautifyIndent, returnContentType, retrieveBodyProperties } from '../utils'
 
 export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api, Alerting, bodyData) {
@@ -11,12 +12,20 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
     $scope.bodyStart = properties.start
     $scope.bodyEnd = properties.end
     $scope.bodyLength = properties.bodyLength
+
+    let bodySize = size((properties.end - properties.start) + 1) // Include the starting point as a value
+    let bodySizeFull = size(properties.bodyLength)
+    $scope.bodySizeIndicator = bodySize === bodySizeFull
+      ? bodySizeFull
+      : `${bodySize} of ${bodySizeFull}`
   }
 
   // transform body with indentation/formatting
   if ($scope.bodyData && $scope.bodyData.content) {
     if (bodyData.headers && returnContentType(bodyData.headers)) {
-      const bodyTransform = beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
+      const bodyTransform = $scope.partialBody
+        ? { content: bodyData.content }
+        : beautifyIndent(returnContentType(bodyData.headers), bodyData.content)
       $scope.bodyData.content = bodyTransform.content
     }
   }
@@ -38,6 +47,11 @@ export function TransactionsBodyModalCtrl($scope, $uibModalInstance, config, Api
           $scope.bodyEnd = end
           $scope.bodyLength = bodyLength
           $scope.partialBody = (bodyLength - end) > 1
+          let bodySize = size((end - start) + 1) // Include the starting point as a value
+          let bodySizeFull = size(bodyLength)
+          $scope.bodySizeIndicator = bodySize === bodySizeFull
+            ? bodySizeFull
+            : `${bodySize} of ${bodySizeFull}`
         }
 
         if (bodyData.headers && returnContentType(bodyData.headers)) {
