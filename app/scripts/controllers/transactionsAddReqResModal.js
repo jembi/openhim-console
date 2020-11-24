@@ -9,11 +9,8 @@ import { TransactionsBodyModalCtrl } from './'
 export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, Api, config, record, channel, transactionId, recordType, index, bodyRangeProperties, $routeParams) {
   $scope.record = record
   $scope.channel = channel // optional
-  $scope.viewFullBody = false
-  $scope.viewFullBodyType = null
-  $scope.viewFullBodyContent = null
-  $scope.fullBodyTransformLang = null
   $scope.transactionId = transactionId
+  $scope.recordTypeName = recordType.charAt(0).toUpperCase() + recordType.slice(1, -1)
   $scope.recordPathRequest = recordType + '[' + index + '].request'
   $scope.recordPathResponse = recordType + '[' + index + '].response'
 
@@ -58,7 +55,6 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       if (record.request.headers && returnContentType(record.request.headers)) {
         const requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
         $scope.record.request.body = requestTransform.content
-        $scope.requestTransformLang = requestTransform.lang
       }
 
       if (bodyRangeProperties && bodyRangeProperties.request) {
@@ -120,7 +116,6 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       if (record.response.headers && returnContentType(record.response.headers)) {
         const responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
         $scope.record.response.body = responseTransform.content
-        $scope.responseTransformLang = responseTransform.lang
       }
 
       if (bodyRangeProperties && bodyRangeProperties.response) {

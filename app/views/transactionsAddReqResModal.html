@@ -1,20 +1,18 @@
 <div class="modal-header">
   <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
-  <h3 class="modal-title" ng-show="!viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}</h3>
-  <h3 class="modal-title" ng-show="viewFullBody"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}: {{viewFullBodyType}} Body</h3>
+  <h3 class="modal-title"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;{{record.name}}</h3>
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
 
-  <div class="row" ng-show="!viewFullBody">
+  <div class="row">
     <!-- Request, left -->
     <div class="col-md-6">
       <div class="panel panel-default sml-margin transaction-req-res-height">
         <div class="panel-heading">
-          <h3 class="panel-title">Request</h3>
+          <h3 class="panel-title">{{recordTypeName}} Request</h3>
         </div>
         <div class="panel-body">
-
           <h4>
             <div ng-if="channel">
               <span class="label label-default" ng-if="channel.type === 'http'">{{record.request.method}}</span>
@@ -47,8 +45,8 @@
             <button
               style="margin-top: 10px; margin-right: 5px;"
               class="btn btn-primary pull-right"
-              ng-click="viewBodyDetails('Orchestration Request', record.request.body, record.request.headers, record.request.bodyId, record.request.requestBodyRangeProperties);"
-              uib-tooltip="View orchestration body details">
+              ng-click="viewBodyDetails(recordTypeName + ' Request', record.request.body, record.request.headers, record.request.bodyId, record.request.requestBodyRangeProperties);"
+              uib-tooltip="View {{recordTypeName}} body details">
               <i class="glyphicon glyphicon-new-window"></i>
               View
             </button>
@@ -64,7 +62,7 @@
     <div class="col-md-6" ng-if="record.response">
       <div class="panel panel-default sml-margin transaction-req-res-height">
         <div class="panel-heading">
-          <h3 class="panel-title">Response</h3>
+          <h3 class="panel-title">{{recordTypeName}} Response</h3>
         </div>
         <div class="panel-body">
           <div ng-if="channel"><h4>
@@ -107,8 +105,8 @@
             <button
               style="margin-top: 10px; margin-right: 5px;"
               class="btn btn-primary pull-right"
-              ng-click="viewBodyDetails('Orchestration Response', record.response.body, record.response.headers, record.response.bodyId, record.response.responseBodyRangeProperties);"
-              uib-tooltip="View orchestration error">
+              ng-click="viewBodyDetails(recordTypeName + ' Response', record.response.body, record.response.headers, record.response.bodyId, record.response.responseBodyRangeProperties);"
+              uib-tooltip="View {{recordTypeName}} body details">
               <i class="glyphicon glyphicon-new-window"></i>
               View
             </button>
@@ -119,8 +117,8 @@
             <button
               style="margin-top: 10px; margin-right: 5px;"
               class="btn btn-primary pull-right"
-              ng-click="viewBodyDetails('Orchestration Response Error', record.response.body, record.response.headers, record.response.bodyId, record.response.responseBodyRangeProperties);"
-              uib-tooltip="View orchestration error">
+              ng-click="viewBodyDetails(recordTypeName + ' Response Error', record.error.stack, record.response.headers, record.response.bodyId, record.response.responseBodyRangeProperties);"
+              uib-tooltip="View {{recordTypeName}} error">
               <i class="glyphicon glyphicon-new-window"></i>
               View
             </button>
@@ -129,13 +127,4 @@
       </div>
     </div>
   </div>
-
-  <div class="route-detail-container" ng-show="viewFullBody">
-    <div class="data-group left-indent">
-      <div class="data-value" style="padding-left: 0">
-        <div class="hljsFormat hljsFormatFull" hljs source="viewFullBodyContent"></div>
-      </div>
-    </div>
-  </div>
-
 </div>

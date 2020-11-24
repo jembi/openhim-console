@@ -1,6 +1,6 @@
 <div class="modal-header">
   <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
-  <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body ({{bodySizeIndicator}})</h3>
+  <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body <span ng-if="bodySizeIndicator">({{bodySizeIndicator}})</span></h3>
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
