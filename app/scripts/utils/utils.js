@@ -178,9 +178,10 @@ export function retrieveBodyProperties (response) {
   const contentRange = response.headers('content-range') ? response.headers('content-range') : ''
   const match = contentRange.match(/\d+/g)
 
-  if (match && match[0]) properties.start = match[0]
-  if (match && match[1]) properties.end = match[1]
-  if (match && match[2]) properties.bodyLength = match[2]
-
+  if (match) {
+    if (match[0]) properties.start = [0]
+    if (match[1]) properties.end = match[1]
+    if (match[2]) properties.bodyLength = match[2]
+  }
   return properties
 }

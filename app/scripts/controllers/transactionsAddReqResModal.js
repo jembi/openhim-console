@@ -3,15 +3,14 @@ import {
   returnContentType,
   retrieveBodyProperties
 } from '../utils'
+import transactionsBodyModal from '~/views/transactionsBodyModal'
+import { TransactionsBodyModalCtrl } from './'
 
-export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, Api, config, record, channel, transactionId, recordType, index, bodyRangeProperties) {
+export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInstance, Api, config, record, channel, transactionId, recordType, index, bodyRangeProperties, $routeParams) {
   $scope.record = record
   $scope.channel = channel // optional
-  $scope.viewFullBody = false
-  $scope.viewFullBodyType = null
-  $scope.viewFullBodyContent = null
-  $scope.fullBodyTransformLang = null
   $scope.transactionId = transactionId
+  $scope.recordTypeName = recordType.charAt(0).toUpperCase() + recordType.slice(1, -1)
   $scope.recordPathRequest = recordType + '[' + index + '].request'
   $scope.recordPathResponse = recordType + '[' + index + '].response'
 
@@ -34,10 +33,20 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         $scope.recordRequestBodyEnd = end ? end : ''
         $scope.recordRequestBodyLength = bodyLength ? bodyLength : ''
 
+        $scope.requestBodyRangeProperties = {
+          partial: $scope.partialRecordRequestBody,
+          start: start ? start : '',
+          end: end ? end : '',
+          bodyLength: bodyLength ? bodyLength : ''
+        }
+
+        $scope.record.request.requestBodyRangeProperties = $scope.requestBodyRangeProperties
+
         if (record.request.headers && returnContentType(record.request.headers)) {
-          const requestTransform = beautifyIndent(returnContentType(record.request.headers), response.data)
+          const requestTransform = $scope.partialRequestBody
+            ? { content: response.data }
+            : beautifyIndent(returnContentType(record.request.headers), response.data)
           $scope.record.request.body = requestTransform.content
-          $scope.requestTransformLang = requestTransform.lang
         }
       })
     }
@@ -46,7 +55,6 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       if (record.request.headers && returnContentType(record.request.headers)) {
         const requestTransform = beautifyIndent(returnContentType(record.request.headers), record.request.body)
         $scope.record.request.body = requestTransform.content
-        $scope.requestTransformLang = requestTransform.lang
       }
 
       if (bodyRangeProperties && bodyRangeProperties.request) {
@@ -56,6 +64,15 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         $scope.recordRequestBodyStart = start ? start : ''
         $scope.recordRequestBodyEnd = end ? end : ''
         $scope.recordRequestBodyLength = bodyLength ? bodyLength : ''
+
+        $scope.requestBodyRangeProperties = {
+          partial: $scope.partialRecordRequestBody,
+          start: start ? start : '',
+          end: end ? end : '',
+          bodyLength: bodyLength ? bodyLength : ''
+        }
+
+        $scope.record.request.requestBodyRangeProperties = $scope.requestBodyRangeProperties
       }
     } else {
       $scope.retrieveRecordRequestBody()
@@ -71,16 +88,26 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
         if (bodyLength && end && (bodyLength - end) > 1) {
           $scope.partialRecordResponseBody = true
         } else {
-          $scope.partialRecordResponseBody = true
+          $scope.partialRecordResponseBody = false
         }
         $scope.recordResponseBodyStart = start ? start : ''
         $scope.recordResponseBodyEnd = end ? end : ''
         $scope.recordResponseBodyLength = bodyLength ? bodyLength : ''
 
-        if (record.response.headers && returnContentType(record.response.headers)) {
-          const responseTransform = beautifyIndent(returnContentType(record.response.headers), response.data)
+        $scope.responseBodyRangeProperties = {
+          partial: $scope.partialRecordResponseBody,
+          start: start ? start : '',
+          end: end ? end : '',
+          bodyLength: bodyLength ? bodyLength : ''
+        }
+
+        $scope.record.response.responseBodyRangeProperties = $scope.responseBodyRangeProperties
+
+        if (record.request.headers && returnContentType(record.response.headers)) {
+          const responseTransform = $scope.partialResponseBody
+            ? { content: response.data }
+            : beautifyIndent(returnContentType(record.response.headers), response.data)
           $scope.record.response.body = responseTransform.content
-          $scope.responseTransformLang = responseTransform.lang
         }
       })
     }
@@ -89,7 +116,6 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
       if (record.response.headers && returnContentType(record.response.headers)) {
         const responseTransform = beautifyIndent(returnContentType(record.response.headers), record.response.body)
         $scope.record.response.body = responseTransform.content
-        $scope.responseTransformLang = responseTransform.lang
       }
 
       if (bodyRangeProperties && bodyRangeProperties.response) {
@@ -105,20 +131,28 @@ export function TransactionsAddReqResModalCtrl ($scope, $uibModal, $uibModalInst
     }
   }
 
-  $scope.toggleFullView = function (type, bodyContent, contentType) {
-    // if both parameters supplied - view body message
-    if (type && bodyContent) {
-      $scope.viewFullBody = true
-      $scope.viewFullBodyType = type
-      $scope.viewFullBodyContent = bodyContent
-      $scope.fullBodyTransformLang = contentType
-    } else {
-      $scope.viewFullBody = false
-    }
-  }
-
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel')
+  }
+
+  /********************************************************************/
+  /**               Transactions View Body Functions                 **/
+  /********************************************************************/
+
+  $scope.viewBodyDetails = function (type, content, headers, bodyId, bodyRangeProperties) {
+    $uibModal.open({
+      template: transactionsBodyModal,
+      controller: TransactionsBodyModalCtrl,
+      windowClass: 'modal-fullview',
+      resolve: {
+        bodyData: function () {
+          return {
+            type: type, content: content, headers: headers,
+            transactionId: $routeParams.transactionId, bodyId, bodyRangeProperties
+          }
+        }
+      }
+    })
   }
 
   /*********************************************************************/

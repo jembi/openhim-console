@@ -62,8 +62,12 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
             bodyLength: bodyLength ? bodyLength : ''
           }
 
+          $scope.transactionDetails.request.requestBodyRangeProperties = $scope.requestBodyRangeProperties
+
           if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-            const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
+            const requestTransform = $scope.partialRequestBody
+              ? { content: response.data }
+              : beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
             $scope.transactionDetails.request.body = requestTransform.content
           }
         }).catch(queryError)
@@ -87,8 +91,12 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
             bodyLength: bodyLength ? bodyLength : ''
           }
 
+          $scope.transactionDetails.response.responseBodyRangeProperties = $scope.responseBodyRangeProperties
+
           if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-            const responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
+            const responseTransform = $scope.partialResponseBody
+              ? { content: response.data }
+              : beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
             $scope.transactionDetails.response.body = responseTransform.content
           }
         }).catch(queryError)
