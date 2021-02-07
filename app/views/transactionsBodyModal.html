@@ -1,14 +1,29 @@
 <div class="modal-header">
   <button type="button" class="btn btn-default" ng-click="cancel()" style="float: right;">Close</button>
-  <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body</h3>
+  <h3 class="modal-title"><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;{{bodyData.type}} Body <span ng-if="bodySizeIndicator">({{bodySizeIndicator}})</span></h3>
 </div>
 
 <div class="modal-body" style="width: 100%; display: inline-block;">
   <div class="route-detail-container">
     <div class="data-group left-indent">
       <div class="data-value" style="padding-left: 0">
-        <div class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+        <div ng-show="!busyLoadingMore && formatContent" class="hljsFormat hljsFormatFull" hljs source="bodyData.content"></div>
+        <div ng-show="!busyLoadingMore && !formatContent" class="hljsFormat hljsFormatFull">{{bodyData.content}}</div>
       </div>
+
+      <div class="loadingContainer" ng-show="busyLoadingMore">
+        <span id="loading-spinner" alt="Loading..."></span>
+      </div>
+    </div>
+    <div class="pull-left" style="margin-top:10px" ng-if="partialBody">
+      <div class="alert alert-warning">
+        <strong>Warning!</strong> this transaction body data might take a while to format.
+      </div>
+    </div>
+    <div class="pull-right" style="margin-top: 10px">
+      <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadMore()">Load more</button>
+      <button ng-if="partialBody" type="button" class="btn btn-primary" ng-click="loadFull()">Load full body</button>
+      <button type="button" class="btn btn-primary" ng-click="toggleFormatContent()">{{formatButtonText}}</button>
     </div>
   </div>
 </div>

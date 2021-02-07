@@ -1,4 +1,4 @@
-export function Api ($rootScope, $resource, config) {
+export function Api ($rootScope, $resource, $http, config) {
   // fetch API server details
   const protocol = config.protocol
   const host = config.host
@@ -35,6 +35,20 @@ export function Api ($rootScope, $resource, config) {
     }),
 
     Transactions: $resource(server + '/transactions/:transactionId', { transactionId: '@_id' }),
+
+    TransactionBodies: function(transactionId, bodyId, start, end) {
+      const headers = {}
+      if (end > start) {
+        headers.range = `bytes=${start}-${end}`
+      }
+
+      return $http({
+        method: 'GET',
+        url: `${server}/transactions/${transactionId}/bodies/${bodyId}`,
+        headers,
+        transformResponse: []
+      })
+    },
 
     Mediators: $resource(server + '/mediators/:urn', { urn: '@urn' }, {
       update: { method: 'PUT' }

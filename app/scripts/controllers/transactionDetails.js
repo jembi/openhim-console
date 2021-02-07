@@ -1,26 +1,20 @@
 import moment from 'moment'
 
 import { TransactionsRerunModalCtrl, TransactionsAddReqResModalCtrl, TransactionsBodyModalCtrl } from './'
-import { beautifyIndent, returnContentType } from '../utils'
+import { beautifyIndent, returnContentType, retrieveBodyProperties } from '../utils'
 
 import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
 
-export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting) {
+export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting, config) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
 
   // get txList for paging
   const txList = JSON.parse(sessionStorage.getItem('currTxList'))
-
-  $scope.pagingEnabled = true
-  if (!txList) {
-    $scope.pagingEnabled = false
-  } else if (txList.indexOf($routeParams.transactionId) === -1) {
-    $scope.pagingEnabled = false
-  }
+  $scope.pagingEnabled = (!txList || txList.indexOf($routeParams.transactionId) === -1) ? false : true
 
   $scope.next = null
   $scope.prev = null
@@ -39,23 +33,75 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     }
   }
 
+  /*
+    Default length of transaction response or request body returned is less than 1024
+    The following flags are used to determine whether the full transaction request or response body has been retrieved
+  */
+  const defaultLengthOfBodyToDisplay = config.defaultLengthOfBodyToDisplay
+  $scope.partialResponseBody = false
+  $scope.partialRequestBody = false
+  $scope.responseBodyRangeProperties = {}
+  $scope.requestBodyRangeProperties = {}
+
   const querySuccess = function (transactionDetails) {
     $scope.transactionDetails = transactionDetails
 
-    // transform request body with indentation/formatting
-    if (transactionDetails.request && transactionDetails.request.body) {
-      if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-        const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
-        $scope.transactionDetails.request.body = requestTransform.content
+    if (transactionDetails.request && transactionDetails.request.bodyId) {
+      $scope.retrieveTransactionRequestBody = function (start=0, end=defaultLengthOfBodyToDisplay) {
+        Api.TransactionBodies($routeParams.transactionId, transactionDetails.request.bodyId, start, end).then(response => {
+          const { start, end, bodyLength } = retrieveBodyProperties(response)
+
+          if (bodyLength && end && (bodyLength - end) > 1) {
+            $scope.partialRequestBody = true
+          }
+
+          $scope.requestBodyRangeProperties = {
+            partial: $scope.partialRequestBody,
+            start: start ? start : '',
+            end: end ? end : '',
+            bodyLength: bodyLength ? bodyLength : ''
+          }
+
+          $scope.transactionDetails.request.requestBodyRangeProperties = $scope.requestBodyRangeProperties
+
+          if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
+            const requestTransform = $scope.partialRequestBody
+              ? { content: response.data }
+              : beautifyIndent(returnContentType(transactionDetails.request.headers), response.data)
+            $scope.transactionDetails.request.body = requestTransform.content
+          }
+        }).catch(queryError)
       }
+      $scope.retrieveTransactionRequestBody()
     }
 
-    // transform response body with indentation/formatting
-    if (transactionDetails.response && transactionDetails.response.body) {
-      if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-        const responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
-        $scope.transactionDetails.response.body = responseTransform.content
+    if (transactionDetails.response && transactionDetails.response.bodyId) {
+      $scope.retrieveTransactionResponseBody = function (start=0, end=defaultLengthOfBodyToDisplay) {
+        Api.TransactionBodies($routeParams.transactionId, transactionDetails.response.bodyId, start, end).then(response => {
+          const { start, end, bodyLength } = retrieveBodyProperties(response)
+
+          if (bodyLength && end && (bodyLength - end) > 1) {
+            $scope.partialResponseBody = true
+          }
+
+          $scope.responseBodyRangeProperties = {
+            partial: $scope.partialResponseBody,
+            start: start ? start : '',
+            end: end ? end : '',
+            bodyLength: bodyLength ? bodyLength : ''
+          }
+
+          $scope.transactionDetails.response.responseBodyRangeProperties = $scope.responseBodyRangeProperties
+
+          if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
+            const responseTransform = $scope.partialResponseBody
+              ? { content: response.data }
+              : beautifyIndent(returnContentType(transactionDetails.response.headers), response.data)
+            $scope.transactionDetails.response.body = responseTransform.content
+          }
+        }).catch(queryError)
       }
+      $scope.retrieveTransactionResponseBody()
     }
 
     // calculate total transaction time
@@ -63,17 +109,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       (transactionDetails.response && transactionDetails.response.timestamp)) {
       const diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
 
-      if (diff >= 1000) {
-        // display in seconds
-        const round = function (value, decimalPlaces) {
-          return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
-        }
-
-        transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s'
-      } else {
-        // display in milliseconds
-        transactionDetails.transactionTime = diff + ' ms'
-      }
+      transactionDetails.transactionTime = diff >= 1000 ? (Math.round(diff / 1000.0) + 's') : (diff + 'ms')
     }
 
     let consoleSession = localStorage.getItem('consoleSession')
@@ -117,7 +153,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   }
 
   // get the Data for the supplied ID and store in 'transactionsDetails' object
-  Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError)
+  Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'full' }, querySuccess, queryError)
 
   /***************************************************/
   /**         Initial page load functions           **/
@@ -219,6 +255,12 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
         },
         index: function () {
           return index
+        },
+        bodyRangeProperties: function () {
+          return {
+            response: $scope.responseBodyRangeProperties,
+            request: $scope.requestBodyRangeProperties
+          }
         }
       }
     })
@@ -232,14 +274,17 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   /**               Transactions View Body Functions                 **/
   /********************************************************************/
 
-  $scope.viewBodyDetails = function (type, content, headers) {
+  $scope.viewBodyDetails = function (type, content, headers, bodyId, bodyRangeProperties) {
     $uibModal.open({
       template: transactionsBodyModal,
       controller: TransactionsBodyModalCtrl,
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: headers }
+          return {
+            type: type, content: content, headers: headers,
+            transactionId: $routeParams.transactionId, bodyId, bodyRangeProperties
+          }
         }
       }
     })

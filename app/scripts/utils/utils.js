@@ -172,3 +172,16 @@ export function * objectVisitor (visitObj, visitPath = []) {
     }
   }
 }
+
+export function retrieveBodyProperties (response) {
+  const properties = {}
+  const contentRange = response.headers('content-range') ? response.headers('content-range') : ''
+  const match = contentRange.match(/\d+/g)
+
+  if (match) {
+    if (match[0]) properties.start = [0]
+    if (match[1]) properties.end = match[1]
+    if (match[2]) properties.bodyLength = match[2]
+  }
+  return properties
+}
