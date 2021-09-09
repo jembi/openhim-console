@@ -108,7 +108,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   }
 
   $scope.checkPatientID = function (patientID) {
-    return new RegExp('^[\\d\\w]*$').test(patientID) //PatientID should be alpha numerical only
+    return new RegExp('^[\\d\\w\\-]*$').test(patientID) //PatientID should only be alpha numerical and may contain hyphens
   }
 
   // setup filter options
