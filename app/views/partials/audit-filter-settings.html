@@ -156,8 +156,9 @@
       Patient ID:
       <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Supply a value to filter transactions by Patient ID" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
     </label>
-    <input type="text" class="form-control" ng-model="filters.participantObjectIdentification.patientID.patientID" ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.patientID}"
-      ng-blur="applyFiltersToUrl()">
+    <input type="text" class="form-control" id="patientID" name="patientID" ng-model="filters.participantObjectIdentification.patientID.patientID" ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.patientID}"
+      ng-blur="applyFilterIfValidPatientID(filters.participantObjectIdentification.patientID.patientID)">
+      <p ng-show="!validPatientID" style="color: #a94442">Special characters not allowed, except for hyphens(-)</p>
   </div>
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
@@ -186,10 +187,13 @@
     </label>
     <div class="input-daterange input-group" id="datepicker" style="width: 300px">
       <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="start date" ng-model="settings.filter.dateStart"
-        type="text" class="form-control" name="start" ng-change="applyFilterIfValidDate(settings.filter.dateStart)" />
+        type="text" class="form-control" name="start" ng-change="applyFilterIfValidStartDate(settings.filter.dateStart)" />
       <span class="input-group-addon">to</span>
       <input datetimepicker datetimepicker-options="{ format: 'YYYY-MM-DD', useCurrent: false }" placeholder="end date" ng-model="settings.filter.dateEnd"
-        type="text" class="form-control" name="end" ng-change="applyFilterIfValidDate(settings.filter.dateEnd)" />
+        type="text" class="form-control" name="end" ng-change="applyFilterIfValidEndDate(settings.filter.dateEnd)" />
+    </div>
+    <div>
+      <p ng-show="!validStartDate || !validEndDate" style="color: #a94442">Only dates with format "YYYY-MM-DD" allowed</p>
     </div>
   </div>
   <div class="settings_div" style="float: left;">

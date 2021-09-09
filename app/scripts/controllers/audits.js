@@ -18,6 +18,9 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   $scope.baseIndex = 0
   const pollPeriod = 5000
   $scope.limits = [10, 50, 100, 200, 500]
+  $scope.validPatientID = true;
+  $scope.validStartDate = true;
+  $scope.validEndDate = true;
 
   Api.AuditsFilterOptions.get(function (auditsFilterOptions) {
     $scope.auditsFilterOptions = auditsFilterOptions
@@ -100,6 +103,14 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   /**         Audits List and Detail view functions           **/
   /*************************************************************/
 
+  $scope.checkDate = function (date) {
+    return moment(date, 'YYYY-MM-DD', true).isValid()
+  }
+
+  $scope.checkPatientID = function (patientID) {
+    return new RegExp('^[\\d\\w\\-]*$').test(patientID) //PatientID should only be alpha numerical and may contain hyphens
+  }
+
   // setup filter options
   $scope.returnFilters = function (type) {
     const filtersObject = {}
@@ -114,8 +125,8 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     filtersObject.filters = {}
 
     // date filter
-    filterDateStart = $scope.settings.filter.dateStart
-    filterDateEnd = $scope.settings.filter.dateEnd
+    filterDateStart = $scope.checkDate($scope.settings.filter.dateStart) ? $scope.settings.filter.dateStart : null
+    filterDateEnd = $scope.checkDate($scope.settings.filter.dateEnd) ? $scope.settings.filter.dateEnd : null
     if (filterDateStart && filterDateEnd) {
       const startDate = moment(filterDateStart).format()
       const endDate = moment(filterDateEnd).endOf('day').format()
@@ -125,7 +136,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if (filterDateEnd) { filterUrlParams += '&dateEnd=' + moment(filterDateEnd).format('YYYY-MM-DD') }
 
     /* ----- filter by Patient ----- */
-    const patientID = $scope.filters.participantObjectIdentification.patientID.patientID
+    const patientID = $scope.checkPatientID($scope.filters.participantObjectIdentification.patientID.patientID) ? $scope.filters.participantObjectIdentification.patientID.patientID : null
     let assigningAuth = $scope.filters.participantObjectIdentification.patientID.assigningAuth
     let assigningAuthID = $scope.filters.participantObjectIdentification.patientID.assigningAuthID
 
@@ -296,9 +307,38 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     Alerting.AlertAddServerMsg(err.status)
   }
 
-  $scope.applyFilterIfValidDate = function (date) {
-    if (moment(date, 'YYYY-MM-DD', true).isValid()) {
+  $scope.applyFilterIfValidPatientID = function (patientID) {
+    if($scope.checkPatientID(patientID)){
       $scope.applyFiltersToUrl()
+      $scope.validPatientID = true
+    }
+    else{
+      $scope.validPatientID = false
+      $scope.filters.participantObjectIdentification.patientID.patientID = null
+    }
+  }
+
+  $scope.applyFilterIfValidStartDate = function (date) {
+    if ($scope.checkDate(date)) {
+      $scope.validStartDate = true
+      $scope.applyFiltersToUrl()
+    }
+    else
+    {      
+      $scope.validStartDate = false;
+      $scope.settings.filter.dateStart = null
+    }
+  }
+
+  $scope.applyFilterIfValidEndDate = function (date) {
+    if ($scope.checkDate(date)) {
+      $scope.validEndDate = true
+      $scope.applyFiltersToUrl()
+    }
+    else
+    {      
+      $scope.validEndDate = false;
+      $scope.settings.filter.dateEnd = null
     }
   }
 
