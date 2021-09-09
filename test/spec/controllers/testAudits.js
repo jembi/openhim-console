@@ -130,8 +130,8 @@ describe('Controller: AuditsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    var startDate = '2015-03-09T00:00:00+00:00'
-    var endDate = '2015-03-09T00:00:00+00:00'
+    var startDate = '2015-03-09'
+    var endDate = '2015-03-09'
 
     scope.settings.filter.limit = 10
     scope.settings.filter.dateStart = moment(startDate).format()
