@@ -158,7 +158,7 @@
     </label>
     <input type="text" class="form-control" id="patientID" name="patientID" ng-model="filters.participantObjectIdentification.patientID.patientID" ng-class="{formControlNotEmpty: filters.participantObjectIdentification.patientID.patientID}"
       ng-blur="applyFilterIfValidPatientID(filters.participantObjectIdentification.patientID.patientID)">
-      <p ng-show="!validPatientID" style="color: #a94442">Special characters not allowed</p>
+      <p ng-show="!validPatientID" style="color: #a94442">Special characters not allowed, except for hyphens(-)</p>
   </div>
   <div class="settings_div" style="float: left; margin-right: 15px;">
     <label>
