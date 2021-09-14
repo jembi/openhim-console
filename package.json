@@ -1,7 +1,7 @@
 {
 	"name": "openhim-console",
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"dependencies": {
 		"@types/http-server": "^0.10.1",
 		"filesize": "^6.4.0",
