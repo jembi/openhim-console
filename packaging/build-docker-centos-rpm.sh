@@ -23,7 +23,7 @@ echo "Install needed packages: "
 docker exec -it $containerName sh -c "yum install -y git rpm-build redhat-rpm-config gcc-c++ make"
 
 echo "Install needed packages: "
-docker exec -it $containerName sh -c "curl --silent --location https://rpm.nodesource.com/setup_10.x | bash -"
+docker exec -it $containerName sh -c "curl --silent --location https://rpm.nodesource.com/setup_14.x | bash -"
 
 echo "Install needed packages: "
 docker exec -it $containerName sh -c "yum install -y nodejs"
