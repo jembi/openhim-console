@@ -14,7 +14,7 @@ shift;
 echo "NB!"
 echo "To create the tagged build, various git interactions need to take place. "
 echo "This will create a temporary branch as well as remove any changes you have havent yet committed"
-read -p "Do you wish to proceed? [Y/y]" -n 1 -r
+read -p "Do you wish to proceed? [y/N]" -n 1 -r
 
 echo ""
 

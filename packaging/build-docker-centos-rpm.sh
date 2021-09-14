@@ -3,7 +3,7 @@
 RELEASE_VERSION=$1
 if [ -z ${RELEASE_VERSION} ]
 then
-  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.13.0-rc.1'"
+  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.14.3'"
   echo "https://github.com/jembi/openhim-console/releases"
   exit
 fi
@@ -23,7 +23,7 @@ echo "Install needed packages: "
 docker exec -it $containerName sh -c "yum install -y git rpm-build redhat-rpm-config gcc-c++ make"
 
 echo "Install needed packages: "
-docker exec -it $containerName sh -c "curl --silent --location https://rpm.nodesource.com/setup_10.x | bash -"
+docker exec -it $containerName sh -c "curl --silent --location https://rpm.nodesource.com/setup_14.x | bash -"
 
 echo "Install needed packages: "
 docker exec -it $containerName sh -c "yum install -y nodejs"
