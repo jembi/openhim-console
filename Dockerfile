@@ -1,24 +1,17 @@
 # Openhim Console Dockerfile for latest changes
-FROM ubuntu:20.04
+FROM node:14.17-alpine
+RUN apk upgrade --update-cache --available
+RUN apk add git
 
-WORKDIR /etc/
+RUN mkdir -p /app
+WORKDIR /app
 
-# Update apt-repo list and install prerequisits
-RUN apt-get update
-RUN apt-get install -y git
-RUN apt-get install -y bzip2
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
-
-# Clone Openhim-console repo
-RUN git clone https://github.com/jembi/openhim-console.git
-
-WORKDIR /etc/openhim-console
-
+COPY package.json /app
+COPY . .
 # Install dependencies and build
-RUN npm install webpack && npm install webpack-cli
-RUN npm i
+RUN npm install
+RUN npm install webpack-dev-server && npm install webpack webpack-cli --save-dev
+
 RUN npm run build
 RUN npm i -g http-server 
 
