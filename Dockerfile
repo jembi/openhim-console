@@ -1,5 +1,5 @@
 # Openhim Console Dockerfile for latest changes
-FROM node:14.17-alpine
+FROM node:14.17-alpine as build
 RUN apk upgrade --update-cache --available
 RUN apk add git
 
@@ -11,10 +11,8 @@ COPY . .
 
 # Install dependencies and build
 RUN npm install
-RUN npm install webpack-dev-server && npm install webpack webpack-cli --save-dev
 
-RUN npm run build
-RUN npm i -g http-server 
+FROM nginx:mainline-alpine
+WORKDIR /usr/share/nginx/html
 
-# Host and run server
-CMD http-server ./dist -p 80
+COPY --from=build /app/dist  /usr/share/nginx/html
