@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY package.json /app
 COPY . .
+
 # Install dependencies and build
 RUN npm install
 RUN npm install webpack-dev-server && npm install webpack webpack-cli --save-dev
