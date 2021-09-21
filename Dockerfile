@@ -1,12 +1,10 @@
 # Openhim Console Dockerfile for latest changes
 FROM node:14.17-alpine as build
-RUN apk upgrade --update-cache --available
 RUN apk add git
 
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY package.json /app
 COPY . .
 
 # Install dependencies and build
