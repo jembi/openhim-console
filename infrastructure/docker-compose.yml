@@ -14,7 +14,7 @@ services:
 
   openhim-core:
     container_name: openhim-core
-    image: openhim-alpinev3-multi-staged
+    image: jembi/openhim-core:latest
     restart: unless-stopped
     environment:
       mongo_url: "mongodb://mongo-db/openhim-dev"
@@ -34,7 +34,7 @@ services:
 
   openhim-console:
     container_name: openhim-console
-    image: openhim-console-alpinev1
+    image: jembi/openhim-console:latest
     restart: unless-stopped
     networks:
       - openhim
