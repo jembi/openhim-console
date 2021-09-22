@@ -9,6 +9,8 @@ COPY . .
 
 RUN npm install
 
+RUN npm run prepare
+
 # Serve built project with nginx
 FROM nginx:mainline-alpine
 
