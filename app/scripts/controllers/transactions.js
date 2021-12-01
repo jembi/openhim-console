@@ -843,6 +843,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
           }
         }
       })
+
+      // reverse the array so that the earliest transactions are rerun first
+      $scope.transactionsSelected.reverse()
     } else {
       $scope.transactionsSelected = []
       $scope.rerunTransactionsSelected = 0
