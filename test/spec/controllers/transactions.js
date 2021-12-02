@@ -20,8 +20,8 @@ describe('Controller: TransactionsCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      { _id: '5322fe9d8b6add4b2b059dd8', status: 'enabled', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }] },
-      { _id: '5322fe9d8b6add4b2b059aa3', status: 'deleted', name: 'Sample JsonStub Channel 2', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['testing'], routes: [{ host: 'jsonstub.com', port: 80 }] }
+      { _id: '5322fe9d8b6add4b2b059dd8', status: 'enabled', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], rerun: true },
+      { _id: '5322fe9d8b6add4b2b059aa3', status: 'deleted', name: 'Sample JsonStub Channel 2', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['testing'], routes: [{ host: 'jsonstub.com', port: 80 }], rerun: true }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
@@ -61,29 +61,33 @@ describe('Controller: TransactionsCtrl', function () {
         _id: '550936d307756ef72b525111',
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 }
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 },
+        canRerun: true
       }, {
         _id: '660936d307756ef72b525222',
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/successful/successful', headers: {}, querystring: '', body: 'Successful Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 }
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 },
+        canRerun: true
       }, {
         _id: '770936d307756ef72b525333',
         status: 'Processing',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
-        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' }
+        channelID: '5322fe9d8b6add4b2b059dd8',
+        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
+        canRerun: true
       }, {
         _id: '880936d307756ef72b525444',
         status: 'Failed',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/failed', headers: {}, querystring: '', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 }
+        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 },
+        canRerun: true
       }
     ])
 
@@ -265,7 +269,7 @@ describe('Controller: TransactionsCtrl', function () {
         _id: '59a010234c3c346c24d01f6e',
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2017-08-25T11:55:38.953Z' },
         response: { timestamp: '2017-08-25T11:56:38.953Z', body: 'Body', headers: {}, status: 200 }
       },
@@ -273,7 +277,7 @@ describe('Controller: TransactionsCtrl', function () {
         _id: '550936d307756ef72b525555',
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-07-15T15:26:59.417Z' },
         response: { timestamp: '2015-07-15T15:26:59.430Z', body: 'Body', headers: {}, status: 200 }
       }
@@ -300,7 +304,7 @@ describe('Controller: TransactionsCtrl', function () {
         _id: '770936d307756ef72b525333',
         status: 'Failed',
         clientID: '5506aed5348ac60d23840a9e',
-        channelID: '550933dbbc9814c82b12fd16',
+        channelID: '5322fe9d8b6add4b2b059dd8',
         request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
         response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 }
       }
@@ -312,6 +316,20 @@ describe('Controller: TransactionsCtrl', function () {
     // only status should change, position in array must be the same
     scope.transactions[2]._id.should.equal('770936d307756ef72b525333')
     scope.transactions[2].status.should.equal('Failed')
+  })
+
+  it('should ensure transaction are reversed in toggleCheckAll so earliest transactions rerun first', function () {
+    createController()
+    httpBackend.flush()
+
+    scope.checkbox.checkAll = true
+    scope.toggleCheckedAll()
+
+    scope.transactionsSelected.should.have.length(4)
+    scope.transactionsSelected[0].should.equal('880936d307756ef72b525444')
+    scope.transactionsSelected[1].should.equal('770936d307756ef72b525333')
+    scope.transactionsSelected[2].should.equal('660936d307756ef72b525222')
+    scope.transactionsSelected[3].should.equal('550936d307756ef72b525111')
   })
 
   it('should check rerun permissions (non admin user should have permission on enabled channel)', function () {

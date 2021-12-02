@@ -4,9 +4,7 @@ after_success:
   - npm run coverage
   - '.travis/build_docker.sh'
 node_js:
-  - 'lts/erbium'
-  - 'lts/dubnium'
-  - 'node'
+  - 'lts/gallium'
 sudo: false
 notifications:
   slack:
