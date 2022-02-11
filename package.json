@@ -39,7 +39,7 @@
 		"html-webpack-plugin": "^4.5.2",
 		"jquery": "^3.6.0",
 		"json-loader": "^0.5.7",
-		"karma": "^5.2.3",
+		"karma": "^6.3.14",
 		"karma-chrome-launcher": "^3.1.0",
 		"karma-dirty-chai": "^2.0.0",
 		"karma-mocha": "^2.0.1",
