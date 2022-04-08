@@ -48,7 +48,7 @@
 		"lodash": "^4.17.21",
 		"mini-css-extract-plugin": "^0.11.3",
 		"mocha": "^8.4.0",
-		"moment": "^2.29.1",
+		"moment": "^2.29.2",
 		"moment-timezone": "^0.5.33",
 		"morris.js": "git+https://github.com/morrisjs/morris.js.git#77c24f6b70df2b23c7bd5d4d67240850d1b83005",
 		"ng-file-upload": "^12.2.13",
