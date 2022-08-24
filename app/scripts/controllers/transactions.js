@@ -413,18 +413,23 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   const refreshSuccess = function (transactions) {
     // on success
-    $scope.transactions = transactions
+    if (transactions.count) {
+      $scope.transactions = transactions.transactions
+      $scope.transactionsCount = transactions.count
+    } else {
+      $scope.transactions = transactions
+    }
 
     // save latest returned transaction to session storage for use in transaction
     // details paging.
-    const idList = transactions.map(function (tx) { return tx._id })
+    const idList = $scope.transactions.map(function (tx) { return tx._id })
     sessionStorage.setItem('currTxList', angular.toJson(idList))
     sessionStorage.setItem('currFilterURL', `!${$location.url()}`)
 
-    if (transactions.length < $scope.settings.filter.limit) {
+    if ($scope.transactions.length < $scope.settings.filter.limit) {
       $scope.loadMoreBtn = false
 
-      if (transactions.length === 0) {
+      if ($scope.transactions.length === 0) {
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters')
       }
     } else {
@@ -611,13 +616,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         // set filter limit to default defaultBulkRerunLimit
         returnFilters.filterLimit = $scope.defaultBulkRerunLimit
 
-        // remove filterPage because no pagination needed
-        delete returnFilters.filterPage
-
         // set bulkrerunActive true to show rerun information
         $scope.bulkRerunActive = true
-
-        Api.Transactions.query(returnFilters, refreshSuccess, refreshError)
+        Api.Transactions.get(returnFilters, refreshSuccess, refreshError)
       } else {
         //  do normal transaction API call for transactions
         Api.Transactions.query($scope.returnFilters(), refreshSuccess, refreshError)
