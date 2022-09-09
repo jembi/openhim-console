@@ -36,6 +36,8 @@ export function Api ($rootScope, $resource, config) {
 
     Transactions: $resource(server + '/transactions/:transactionId', { transactionId: '@_id' }),
 
+    BulkReruns: $resource(server + '/bulkrerun'),
+
     Mediators: $resource(server + '/mediators/:urn', { urn: '@urn' }, {
       update: { method: 'PUT' }
     }),

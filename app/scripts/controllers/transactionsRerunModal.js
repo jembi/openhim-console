@@ -32,25 +32,6 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
     $scope.$emit('transactionRerunSuccess')
   };
 
-  const onError = function (err) {
-    Alerting.AlertAddServerMsg(err.status)
-  }
-
-  const onFetchTransactions = function (transactions) {
-    const tIds = transactions.map(function (tx) { return tx._id })
-    createTask(tIds, () => {})
-  }
-
-  const createRerunTasks = function(filters, numOfTransactions) {
-    const pages = Math.ceil(numOfTransactions/filters.filterLimit)
-
-    for (let index = 0; index < pages; index++) {
-      filters.filterPage = index
-      Api.Transactions.query(filters, onFetchTransactions, onError)
-    }
-    onSuccess()
-  }
-
   function createTask (tIds, onSuccess) {
     $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused })
     $scope.task.$save({}, onSuccess)
@@ -59,10 +40,11 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   $scope.confirmRerun = function () {
     if ($scope.bulkRerunActive) {
       const filters = $scope.returnFilters()
-      filters.filterLimit = $scope.defaultBulkRerunLimit
-      filters.filterPage = 0
+      filters.pauseQueue = $scope.taskSetup.paused
+      filters.batchSize = $scope.taskSetup.batchSize
 
-      createRerunTasks(filters, $scope.transactionsCount)
+      $scope.rerunTasks = new Api.BulkReruns(filters)
+      $scope.rerunTasks.$save({}, onSuccess)
     } else {
       createTask($scope.transactionsSelected, onSuccess)
     }
