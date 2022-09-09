@@ -11,7 +11,7 @@
 
       <h4 ng-show="transactionsSelected.length > 0">
         <div ng-show="transactionsSelected.length === 1" style="margin-bottom: 15px;">You have selected that transaction <strong>#{{transactionsSelected[0]}}</strong> should be rerun. </div>
-        <div ng-show="transactionsSelected.length > 1" style="margin-bottom: 15px;">You have selected a total of <strong>{{transactionsSelected.length}}</strong> transactions to be rerun. </div>
+        <div ng-show="transactionsSelected.length > 1" style="margin-bottom: 15px;">You have selected a total of <strong>{{bulkRerunActive ? transactionsCount : transactionsSelected.length}}</strong> transactions to be rerun. </div>
 
         <!-- Rerun Alerts -->
         <div uib-alert ng-repeat="alert in alerts.rerun" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
@@ -24,7 +24,7 @@
     <div ng-if="rerunSuccess === true">
       <h4 ng-show="transactionsSelected.length === 1">Your selected transaction has been added to the queue to be rerun.</h4>
       <h4 ng-show="transactionsSelected.length > 1">Your selected transactions have been added to the queue to be rerun.</h4>
-    </div>      
+    </div>
 
   </div>
   <div class="modal-footer">
