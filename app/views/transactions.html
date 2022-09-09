@@ -48,17 +48,12 @@
               <h2 style="margin: 5px;">You have opted to do a Bulk Rerun!</h2>
               <h3 ng-show="NoDateRange" style="margin: 20px;">No date range has been supplied, querying all transactions with the defined filters.</h3>
 
-              <h3 style="margin: 20px;" ng-if="transactionsSelected.length == defaultBulkRerunLimit">
-                A default limit of <strong><u>{{defaultBulkRerunLimit}}</u></strong> has been set on Bulk Rerun transactions. <br />
-                Would you like to proceed with the first <strong><u>{{defaultBulkRerunLimit}}</u></strong> transactions matched?
-              </h3>
-
-              <h3 style="margin: 20px;" ng-if="transactionsSelected.length < defaultBulkRerunLimit">
-                Your filters returned a total of <strong><u>{{transactionsSelected.length}}</u></strong> transactions that can be re-run
+              <h3 style="margin: 20px;">
+                Your filters returned a total of <strong><u>{{transactionsCount}}</u></strong> transactions that can be re-run
               </h3>
             </div>
-            <div ng-if="transactionsSelected.length > 0">
-              <button class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
+            <div>
+              <button ng-if="bulkRerunActive" class="btn btn-primary btn-lg" ng-click="bulkRerunContinue()" style="margin: 0px 5px;">Continue...</button>
               <button class="btn btn-danger btn-lg" ng-click="bulkRerunCancel()" style="margin: 0px 5px;">Cancel</button>
             </div>
           </div>
@@ -72,7 +67,7 @@
               </button>
 
               <button class="btn btn-primary" ng-click="bulkRerunInitiate();" style="float: left; margin-left: 15px;">
-                <i class="glyphicon glyphicon-repeat"></i> Re-run all transaction that match current filters
+                <i class="glyphicon glyphicon-repeat"></i> Re-run all transactions that match current filters
               </button>
             </div>
 
