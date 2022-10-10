@@ -414,7 +414,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   const refreshSuccess = function (transactions) {
     // on success
     if (transactions.count) {
-      $scope.transactions = transactions.transactions
+      $scope.transactions = []
       $scope.transactionsCount = transactions.count
     } else {
       $scope.transactions = transactions
@@ -429,7 +429,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if ($scope.transactions.length < $scope.settings.filter.limit) {
       $scope.loadMoreBtn = false
 
-      if ($scope.transactions.length === 0) {
+      if ($scope.transactions.length === 0 && !transactions.count) {
         Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters')
       }
     } else {

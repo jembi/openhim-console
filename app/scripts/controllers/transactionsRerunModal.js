@@ -17,7 +17,9 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   $scope.taskSetup = {}
   $scope.taskSetup.batchSize = 1
   $scope.taskSetup.paused = false
-  $scope.batchSizes = Array.from(getBatchSizes(transactionsSelected.length))
+  $scope.batchSizes = Array.from(
+    getBatchSizes($scope.transactionsCount ? $scope.transactionsCount : transactionsSelected.length)
+  )
 
   if (rerunTransactionsSelected === 1 && transactionsSelected.length === 1) {
     Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun')
