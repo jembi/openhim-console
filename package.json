@@ -30,7 +30,7 @@
 		"copy-webpack-plugin": "^6.4.1",
 		"crypto-js": "^4.1.1",
 		"css-loader": "^4.3.0",
-		"d3": "^6.7.0",
+		"d3": "^7.6.1",
 		"dirty-chai": "^2.0.1",
 		"eonasdan-bootstrap-datetimepicker": "^4.17.49",
 		"file-loader": "^6.2.0",
