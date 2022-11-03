@@ -17,7 +17,9 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
   $scope.taskSetup = {}
   $scope.taskSetup.batchSize = 1
   $scope.taskSetup.paused = false
-  $scope.batchSizes = Array.from(getBatchSizes(transactionsSelected.length))
+  $scope.batchSizes = Array.from(
+    getBatchSizes($scope.transactionsCount ? $scope.transactionsCount : transactionsSelected.length)
+  )
 
   if (rerunTransactionsSelected === 1 && transactionsSelected.length === 1) {
     Alerting.AlertAddMsg('rerun', 'warning', 'This transaction has already been rerun')
@@ -32,10 +34,23 @@ export function TransactionsRerunModalCtrl ($scope, $uibModalInstance, Api, Noti
     $scope.$emit('transactionRerunSuccess')
   };
 
-  $scope.confirmRerun = function () {
-    const tIds = $scope.transactionsSelected
+  function createTask (tIds, onSuccess) {
     $scope.task = new Api.Tasks({ tids: tIds, batchSize: $scope.taskSetup.batchSize, paused: $scope.taskSetup.paused })
     $scope.task.$save({}, onSuccess)
+  }
+
+  $scope.confirmRerun = function () {
+    if ($scope.bulkRerunActive) {
+      const filters = $scope.returnFilters()
+      filters.pauseQueue = $scope.taskSetup.paused
+      filters.batchSize = $scope.taskSetup.batchSize
+
+      $scope.rerunTasks = new Api.BulkReruns(filters)
+      $scope.rerunTasks.$save({}, onSuccess)
+    } else {
+      createTask($scope.transactionsSelected, onSuccess)
+    }
+    $scope.rerunSuccess = true
   }
 
   $scope.cancel = function () {
