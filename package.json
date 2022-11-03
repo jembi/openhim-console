@@ -47,7 +47,7 @@
 		"karma-sinon-chai": "^2.0.2",
 		"lodash": "^4.17.21",
 		"mini-css-extract-plugin": "^0.11.3",
-		"mocha": "^8.4.0",
+		"mocha": "^10.1.0",
 		"moment": "^2.29.1",
 		"moment-timezone": "^0.5.33",
 		"morris.js": "git+https://github.com/morrisjs/morris.js.git#77c24f6b70df2b23c7bd5d4d67240850d1b83005",
