@@ -1,4 +1,5 @@
-import { getHashAndSalt } from '../utils'
+import { getHashAndSalt, parseQuery } from '../utils'
+import { keycloak } from '../services/keycloak'
 
 export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
   $scope.config = config
@@ -12,6 +13,61 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     localStorage.removeItem('consoleSession')
     $rootScope.sessionUser = null
     $rootScope.navMenuVisible = false
+  } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
+    // Check if we got the OAuth code in the URL back from KeyCloak
+    const queryString = $window.location.hash.replace('#!/login#', '');
+    const params = parseQuery(queryString);
+    const { code, session_state: sessionState, state } = params;
+
+    if (code && sessionState && state) {
+      let localTime = new Date().getTime();
+
+      login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
+        // reset alert object
+        Alerting.AlertReset()
+        if (result === 'Authentication Success' && userProfile) {
+          localTime = (localTime + new Date().getTime()) / 2;
+
+          const jwt = userProfile.jwt;
+
+          // Initialize KeyCloak
+          keycloak
+            .init({
+              token: jwt.access_token,
+              refreshToken: jwt.refresh_token,
+              idToken: jwt.id_token,
+            })
+            .then(function (authenticated) {
+              if (!authenticated) {
+                throw new Error('Unable to initialize KeyCloak');
+              }
+              // Create the session for the logged in user
+              keycloak.timeSkew = Math.floor(localTime / 1000) - keycloak.tokenParsed.iat
+
+              const expiresIn = keycloak.tokenParsed.exp - Math.ceil(new Date().getTime() / 1000) + keycloak.timeSkew;
+
+              $scope.createUserSession(userProfile.email, expiresIn)
+
+              // redirect user to referringURL
+              if ($rootScope.referringURL) {
+                $window.location = '#!' + $rootScope.referringURL
+              } else { // default redirect to transactions page
+                $window.location = '#!/transactions'
+              }
+            })
+            .catch(function () {
+              Alerting.AlertAddMsg('login', 'danger', 'Unable to Sign in with KeyCloak. Please try again')
+            });
+          
+        } else {
+          if (result === 'Internal Server Error') {
+            $scope.coreConnectionError = true
+          } else {
+            Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again')
+          }
+        }
+      })
+    }
   }
 
   $scope.loginEmail = ''
@@ -144,7 +200,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     })
   }
 
-  $scope.createUserSession = function (loginEmail) {
+  $scope.createUserSession = function (loginEmail, expiresIn) {
     // check if email supplied
     if (!loginEmail) {
       return 'No Email supplied!'
@@ -158,8 +214,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         return 'Logged in user could not be found!'
       } else {
         const currentTime = new Date()
-        // add 2hours onto timestamp (2hours persistence time)
-        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
+        // If not provided (local provider), expires in 2 hours
+        const expireTime = expiresIn || new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // generate random sessionID
         const sessionID = Math.random().toString(36).slice(2).toUpperCase()
 
@@ -182,4 +238,23 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       /* ------------------Set sessionID and expire timestamp------------------ */
     }
   }
+
+  $scope.signInWithKeyCloak = function () {
+    keycloak
+      .init({
+        onLoad: "login-required",
+        // must match to the configured value in keycloak
+        redirectUri: 'http://localhost:9000',   
+        // this will solved the error 
+        checkLoginIframe: false
+      })
+      .then(function (authenticated) {
+        console.log(arguments)
+        alert(authenticated ? "authenticated" : "not authenticated");
+      })
+      .catch(function () {
+        console.log(arguments)
+        alert("failed to initialize");
+      });
+  };
 }

@@ -9,6 +9,10 @@ export function Api ($rootScope, $resource, config) {
   return {
     Authenticate: $resource(server + '/authenticate/:email'),
 
+    SingleSignOn: $resource(server + '/oauth/:provider', { provider: '@_provider' }, {
+      getToken: { method: 'POST' },
+    }),
+
     AuthenticationTypes: $resource(`${server}/authentication/types`),
 
     Channels: $resource(server + '/channels/:channelId', { channelId: '@_id' }, {
