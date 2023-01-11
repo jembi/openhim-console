@@ -11,5 +11,9 @@
   "loginBanner": "",
   "mediatorLastHeartbeatWarningSeconds": 60,
   "mediatorLastHeartbeatDangerSeconds": 120,
-  "ssoEnabled": true
+  "showLoginForm": true,
+  "ssoEnabled": true,
+  "keyCloakUrl": "http://localhost:9080",
+  "keyCloakRealm": "platform-realm",
+  "keyCloakClientId": "openhim-oauth"
 }

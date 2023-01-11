@@ -1,7 +1,18 @@
-import Keycloak from 'keycloak-js';
+import Keycloak from "keycloak-js";
 
-export const keycloak = new Keycloak({
-  url: 'http://localhost:9080',
-  realm: 'platform-realm',
-  clientId: 'openhim-oauth',
-});
+let keycloakInstance = null;
+
+export function keycloak(config) {
+  // Init SSO with keycloak
+  if (config.ssoEnabled) {
+    if (!keycloakInstance) {
+      // return a single instance of keycloak
+      keycloakInstance = new Keycloak({
+        url: config.keyCloakUrl,
+        realm: config.keyCloakRealm,
+        clientId: config.keyCloakClientId,
+      });
+    }
+  }
+  return keycloakInstance;
+}

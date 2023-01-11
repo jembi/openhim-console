@@ -1,7 +1,6 @@
 import { getHashAndSalt, parseQuery } from '../utils'
-import { keycloak } from '../services/keycloak'
 
-export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
+export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config, keycloak) {
   $scope.config = config
   $scope.emailFocus = true
   $scope.passwordFocus = false
@@ -11,15 +10,20 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   // if url "#/logout" is returned then destroy the session
   if (/\/logout$/i.test($window.location.hash)) {
     localStorage.removeItem('consoleSession')
+    localStorage.removeItem('loggedOnUser')
+    if ($rootScope.sessionUser.provider === 'keycloak') {
+      keycloak.logout()
+    }
     $rootScope.sessionUser = null
     $rootScope.navMenuVisible = false
+
   } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
     // Check if we got the OAuth code in the URL back from KeyCloak
     const queryString = $window.location.hash.replace('#!/login#', '');
     const params = parseQuery(queryString);
     const { code, session_state: sessionState, state } = params;
-
-    if (code && sessionState && state) {
+    const isKeyCloakRedirect = code && sessionState && state;
+    if (isKeyCloakRedirect) {
       let localTime = new Date().getTime();
 
       login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
@@ -243,18 +247,9 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     keycloak
       .init({
         onLoad: "login-required",
-        // must match to the configured value in keycloak
-        redirectUri: 'http://localhost:9000',   
-        // this will solved the error 
+        // Must match to the configured value in keycloak
+        redirectUri: $window.location.origin,
         checkLoginIframe: false
-      })
-      .then(function (authenticated) {
-        console.log(arguments)
-        alert(authenticated ? "authenticated" : "not authenticated");
-      })
-      .catch(function () {
-        console.log(arguments)
-        alert("failed to initialize");
       });
   };
 }

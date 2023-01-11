@@ -1,6 +1,6 @@
 import * as CryptoJS from 'crypto-js'
 
-export function Authinterceptor () {
+export function Authinterceptor (keycloak) {
   let user = localStorage.getItem('loggedOnUser')
   user = JSON.parse(user)
 
@@ -45,7 +45,7 @@ export function Authinterceptor () {
           config.headers['auth-salt'] = requestSalt
           config.headers['auth-username'] = user.email
         } else if (user.provider === 'keycloak') {
-          config.headers['auth-token'] = user.jwt.access_token
+          config.headers['auth-token'] = keycloak.token
         } else {
           throw new Error('Invalid authentication provider.')
         }

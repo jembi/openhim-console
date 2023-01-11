@@ -102,7 +102,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Alerting, config) {
   }
 })
 
-app.run(function ($rootScope, $location, $anchorScroll, $window) {
+app.run(function ($rootScope, $location, $anchorScroll) {
   $rootScope.$on('$routeChangeStart', function () {
     /* ----- Set Referring URL ----- */
 
@@ -312,9 +312,38 @@ function main () {
   return $http.get('config/default.json')
     .then((response) => {
       app.constant('config', response.data)
+      return response.data
     }, () => {
       app.constant('config', defaultConfig)
       console.warn('No config found at "config/default.json" using default')
+      return defaultConfig
+    }).then((config) => {
+      const consoleSession = JSON.parse(localStorage.getItem('consoleSession'))
+      if (config.ssoEnabled && consoleSession) {
+        // Retrieve the session from storage
+        const currentTime = (new Date()).toISOString()
+        if (currentTime < consoleSession.expires) {
+          const sessionUser = services.Authinterceptor().getLoggedInUser()
+          if (sessionUser && sessionUser.provider === 'keycloak') {
+            // Initialize KeyCloak
+            const jwt = sessionUser.jwt;
+            return services.keycloak(config)
+              .init({
+                token: jwt.access_token,
+                refreshToken: jwt.refresh_token,
+                idToken: jwt.id_token,
+              }).then((authenticated) => {
+                if (authenticated) {
+                  console.log('Successfully initialized KeyCloak with existing token')
+                } else {
+                  console.warn('Unable to authenticate the user using existing token')
+                }
+              }).catch((err) => {
+                console.error('Something went wrong with KeyCloak token intialization', err)
+              })
+          }
+        }
+      }
     })
     .finally(() => {
       angular.element(document).ready(function () {
