@@ -1,4 +1,4 @@
-import { isValidMSISDN, getHashAndSalt } from '../utils'
+import { isValidMSISDN } from '../utils'
 
 export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $location, Api, Alerting) {
   /***************************************************/
@@ -63,25 +63,13 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
     }
   }
 
-  const saveUser = function (user) {
-    Api.UserPasswordToken.update({ token: $routeParams.token }, user, success, error)
-  }
-
-  const setHashAndSave = function (user, hash, salt) {
-    if (typeof salt !== 'undefined' && salt !== null) {
-      user.passwordSalt = salt
-    }
-    user.passwordHash = hash
-    saveUser(user)
-  }
-
   $scope.save = function (user, password) {
     if (password) {
-      const h = getHashAndSalt(password)
-      user.passwordAlgorithm = h.algorithm
-      setHashAndSave(user, h.hash, h.salt, password)
+      const userObject = {...angular.copy(user), password}
+      Api.UserPasswordToken.update({ token: $routeParams.token }, userObject, success, error)
     }
   }
+
 
   /****************************************************************/
   /**   These are the functions for the Profile save process     **/

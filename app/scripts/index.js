@@ -79,6 +79,7 @@ app.run(function ($rootScope) {
 
 app.config(function ($httpProvider, $compileProvider) {
   $httpProvider.interceptors.push('Authinterceptor')
+  $httpProvider.defaults.withCredentials = true;
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/)
 })
 
@@ -102,7 +103,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Alerting, config) {
   }
 })
 
-app.run(function ($rootScope, $location, $anchorScroll, $window) {
+app.run(function ($rootScope, $location, $anchorScroll, $window, $cookies) {
   $rootScope.$on('$routeChangeStart', function () {
     /* ----- Set Referring URL ----- */
 
@@ -147,7 +148,7 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
       // check if session has expired
       let currentTime = new Date()
       currentTime = currentTime.toISOString()
-      if (currentTime >= consoleSession.expires) {
+      if (currentTime >= consoleSession.expires || !$cookies.get("koa.sess")) {
         localStorage.removeItem('consoleSession')
 
         // session expired - user needs to log in
@@ -175,7 +176,6 @@ app.run(function ($rootScope, $location, $anchorScroll, $window) {
         // Put updated object into storage
         localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
         $rootScope.sessionUser = sessionUser
-        $rootScope.passwordHash = $rootScope.passwordHash || false
 
         if (sessionUserSettings && sessionUserSettings.general) {
           $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips

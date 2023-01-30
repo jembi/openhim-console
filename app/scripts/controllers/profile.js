@@ -1,4 +1,4 @@
-import { isValidMSISDN, getHashAndSalt } from '../utils'
+import { isValidMSISDN } from '../utils'
 
 export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   /****************************************************************/
@@ -153,33 +153,14 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.')
   }
 
-  const saveUser = function (user, password) {
-    const userObject = angular.copy(user)
-    user.$update({}, function () {
+  $scope.save = function (user, password) {
+    const userObject = {...angular.copy(user), id: user._id, password}
+    Api.Users.update(userObject,  function (res) {
       success(userObject, password)
 
       // rootScope function to scroll to top
       $scope.goToTop()
     })
-  }
-
-  const setHashAndSave = function (user, hash, salt, password) {
-    if (typeof salt !== 'undefined' && salt !== null) {
-      user.passwordSalt = salt
-    }
-    user.passwordHash = hash
-    saveUser(user, password)
-  }
-
-  $scope.save = function (user, password) {
-    if (password) {
-      const h = getHashAndSalt(password)
-      user.passwordAlgorithm = h.algorithm
-
-      setHashAndSave(user, h.hash, h.salt, password)
-    } else {
-      saveUser(user, '')
-    }
   }
 
   /****************************************************************/

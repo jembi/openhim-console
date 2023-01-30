@@ -936,7 +936,7 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
           }
           $scope.baseIndex--
         })
-      })
+      }, loadMoreError)
     }
   }
 

@@ -1,4 +1,4 @@
-import { getHashAndSalt, isValidMSISDN } from '../utils'
+import { isValidMSISDN } from '../utils'
 
 export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout, Api, login, Notify, Alerting, user) {
   /*************************************************************/
@@ -125,34 +125,19 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
     notifyUser()
   }
 
-  const saveUser = function (user, password) {
-    const userObject = angular.copy(user)
+  $scope.save = function (user, password) {
     if ($scope.update) {
-      user.$update(function () {
+      const userObject = {...angular.copy(user), id: user._id, password}
+      Api.Users.update(userObject,  function () {
         success(userObject, password)
+        // rootScope function to scroll to top
+        $scope.goToTop()
       }, error)
     } else {
       user.$save({ email: '' }, success, error)
     }
   }
 
-  const setHashAndSave = function (user, hash, salt, password) {
-    if (typeof salt !== 'undefined' && salt !== null) {
-      user.passwordSalt = salt
-    }
-    user.passwordHash = hash
-    saveUser(user, password)
-  }
-
-  $scope.save = function (user, password) {
-    if (password) {
-      const h = getHashAndSalt(password)
-      user.passwordAlgorithm = h.algorithm
-      setHashAndSave(user, h.hash, h.salt, password)
-    } else {
-      saveUser(user, '')
-    }
-  }
 
   /************************************************************/
   /**   These are the functions for the User Modal Popup     **/

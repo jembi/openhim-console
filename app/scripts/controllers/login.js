@@ -1,5 +1,3 @@
-import { getHashAndSalt } from '../utils'
-
 export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
   $scope.config = config
   $scope.emailFocus = true
@@ -9,6 +7,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
   // if url "#/logout" is returned then destroy the session
   if (/\/logout$/i.test($window.location.hash)) {
+    login.logout()
     localStorage.removeItem('consoleSession')
     $rootScope.sessionUser = null
     $rootScope.navMenuVisible = false
@@ -104,19 +103,12 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     // do the initial request
     Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      const h = getHashAndSalt(password)
-      user.passwordAlgorithm = h.algorithm
-
-      if (typeof h.salt !== 'undefined' && h.salt !== null) {
-        user.passwordSalt = h.salt
-      }
-      user.passwordHash = h.hash
-
+      const newUserInfo = { email: user.email, id: user._id, password };
       // save the new root password
-      user.$update({}, function () {
+      Api.Users.update(newUserInfo, function () {
         // re-login with new credentials
-        login.login('root@openhim.org', password, function (loggedIn) {
-          if (loggedIn) {
+        login.login('root@openhim.org', password, function (result) {
+          if (result === 'Authentication Success') {
             // Create the session for the logged in user
             $scope.createUserSession('root@openhim.org')
 
