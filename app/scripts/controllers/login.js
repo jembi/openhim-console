@@ -1,4 +1,6 @@
-export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
+import { parseQuery } from '../utils'
+
+export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config, keycloak) {
   $scope.config = config
   $scope.emailFocus = true
   $scope.passwordFocus = false
@@ -9,8 +11,41 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   if (/\/logout$/i.test($window.location.hash)) {
     login.logout()
     localStorage.removeItem('consoleSession')
+    localStorage.removeItem('loggedOnUser')
+    if ($rootScope.sessionUser.provider === 'keycloak') {
+      keycloak.logout()
+    }
     $rootScope.sessionUser = null
     $rootScope.navMenuVisible = false
+  } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
+    // Check if we got the OAuth code in the URL back from KeyCloak
+    const queryString = $window.location.hash.replace('#!/login#', '');
+    const params = parseQuery(queryString);
+    const { code, session_state: sessionState, state } = params;
+
+    const isKeyCloakRedirect = code && sessionState && state;
+    if (isKeyCloakRedirect) {
+      login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
+        // reset alert object
+        Alerting.AlertReset()
+        if (result === 'Authentication Success' && userProfile) {
+          // Create the session for the logged in user
+          $scope.createUserSession(userProfile.email)
+          // redirect user to referringURL
+          if ($rootScope.referringURL) {
+            $window.location = '#!' + $rootScope.referringURL
+          } else { // default redirect to transactions page
+            $window.location = '#!/transactions'
+          }
+        } else {
+          if (result === 'Internal Server Error') {
+            $scope.coreConnectionError = true
+          } else {
+            Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again')
+          }
+        }
+      })
+    }
   }
 
   $scope.loginEmail = ''
@@ -174,4 +209,14 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       /* ------------------Set sessionID and expire timestamp------------------ */
     }
   }
+
+  $scope.signInWithKeyCloak = function () {
+    keycloak
+      .init({
+        onLoad: "login-required",
+        // Must match to the configured value in keycloak
+        redirectUri: $window.location.origin,
+        checkLoginIframe: false
+      });
+  };
 }

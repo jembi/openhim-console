@@ -7,8 +7,12 @@ export function Api ($rootScope, $resource, config) {
   const server = protocol + '://' + host + ':' + port + (/^\s*$/.test(hostPath) ? '' : '/' + hostPath)
 
   return {
-    Authenticate: $resource(server + '/authenticate/local', {}, {
-      save: { method: 'POST', withCredentials: true },
+    AuthenticateLocal: $resource(server + '/authenticate/local', {}, {
+      save: { method: 'POST' },
+    }),
+
+    AuthenticateOpenid: $resource(server + '/authenticate/openid', {}, {
+      getToken: { method: 'POST' },
     }),
     
     Logout: $resource(server + '/logout'),

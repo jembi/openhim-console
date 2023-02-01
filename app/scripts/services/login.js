@@ -4,7 +4,7 @@ export function login (Api, Authinterceptor) {
   return {
     login: function (email, password, done) {
       // fetch salt from openhim-core server and work out password hash
-      Api.Authenticate.save({ username: email, password }, function () {
+      Api.AuthenticateLocal.save({ username: email, password }, function () {
         // on success
         // notify the authInterceptor of a logged in user
         // Verify that you can make authenticated requests
@@ -28,6 +28,25 @@ export function login (Api, Authinterceptor) {
           }
         }
       );
+    },
+    loginWithKeyCloak: function (code, sessionState, state, done) {
+      // fetch salt from openhim-core server and work out password hash
+      Api.AuthenticateOpenid.getToken({ code, sessionState, state }, function (authDetails) {
+        userProfile.email = authDetails.user.email
+        userProfile.groups = authDetails.user.groups
+        userProfile.provider = 'keycloak'
+        // notify the authInterceptor of a logged in user
+        Authinterceptor.setLoggedInUser(userProfile)
+        done('Authentication Success', userProfile)
+      }, function (err) {
+        if (err.status < 100) {
+          // If the status is outside the possible http status range no then http error
+          done('Internal Server Error')
+        } else {
+          // if error returns a status then server is active - user not authenticated
+          done('Authentication Failed')
+        }
+      })
     },
     logout: function () {
       Api.Logout.get(

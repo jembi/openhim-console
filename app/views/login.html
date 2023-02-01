@@ -4,7 +4,7 @@
       <div class="box">
         <div class="content-wrap" ng-show="!rootPasswordReset">
           <h6>Sign In</h6>
-          <form ng-submit="validateLogin()">
+          <form ng-submit="validateLogin()" ng-show="config.showLoginForm">
             <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="{{emailFocus}}">
             <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password" focus="{{passwordFocus}}">
             <div class="loginBoxLink">
@@ -23,6 +23,13 @@
               <input type="submit" class="btn btn-primary signup" value="Login" />
             </div>
           </form>
+          <div ng-show="config.ssoEnabled">
+            <hr/>
+            <button ng-click="signInWithKeyCloak()" class="btn btn-primary">
+              <i class="glyphicon glyphicon-lock"></i>
+              Sign-In with KeyCloak
+            </button>
+          </div>
         </div>
 
 
