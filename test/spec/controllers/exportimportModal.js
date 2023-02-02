@@ -13,7 +13,16 @@ describe('Controller: ExportImportModalCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalInstance, data
-
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
   var expectedResponse = [
     { model: 'Clients', record: { _id: '5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Updated', message: 'Successfully inserted Clients with name', uid: 'test1' },
     { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }, status: 'Updated', message: '', uid: 'normal@openim.org' }
@@ -40,6 +49,9 @@ describe('Controller: ExportImportModalCtrl', function () {
     ]
 
     createController = function () {
+      httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+      httpBackend.flush()
+
       return $controller('ExportImportModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,

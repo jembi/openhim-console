@@ -13,7 +13,16 @@ describe('Controller: ExportImportCtrl', function () {
   })
 
   var scope, createController, httpBackend
-
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
   var expectedExportData = [{
     Channels: [
       { name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], _id: '5322fe9d8b6add4b2b059ff5' },
@@ -58,6 +67,8 @@ describe('Controller: ExportImportCtrl', function () {
     ])
 
     createController = function () {
+      httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('ExportImportCtrl', { $scope: scope })
     }

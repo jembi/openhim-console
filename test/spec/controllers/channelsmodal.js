@@ -1,6 +1,17 @@
 'use strict'
 /* global sinon:false */
 
+var meResponse = {
+  user: {
+    email: 'test@user.org',
+    firstname: 'test',
+    surname: 'test',
+    groups: [
+      'admin'
+    ]
+  }
+}
+
 describe('Controller: ChannelsModalCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
@@ -64,6 +75,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     var modalInstance = sinon.spy()
 
     createController = function (channel, channelDuplicate) {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -73,6 +86,8 @@ describe('Controller: ChannelsModalCtrl', function () {
       })
     }
     createControllerRoutes = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelRoutesCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -454,6 +469,8 @@ describe('Controller: channelUserAccessCtrl', function () {
 
     var modalInstance = sinon.spy()
     createControllerParent = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -463,6 +480,8 @@ describe('Controller: channelUserAccessCtrl', function () {
       })
     }
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelUserAccessCtrl', {
         $scope: scope
       })
@@ -570,6 +589,8 @@ describe('Controller: channelRoutesCtrl', function () {
 
     var modalInstance = sinon.spy()
     createControllerParent = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -579,6 +600,8 @@ describe('Controller: channelRoutesCtrl', function () {
       })
     }
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelRoutesCtrl', {
         $scope: scope
       })

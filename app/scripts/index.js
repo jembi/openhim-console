@@ -189,6 +189,10 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           }
         }
       }
+    }, function() {
+      localStorage.removeItem('consoleSession')
+  
+      $location.path('/login')
     })
   })
 })

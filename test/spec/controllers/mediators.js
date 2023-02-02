@@ -25,6 +25,16 @@ describe('Controller: MediatorsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -72,6 +82,8 @@ describe('Controller: MediatorsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('MediatorsCtrl', { $scope: scope })
     }
