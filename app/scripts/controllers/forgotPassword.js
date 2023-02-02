@@ -25,20 +25,14 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
     } else {
       Alerting.AlertAddMsg('forgotPassword', 'warning', 'Busy checking your credentials...')
 
-      // autheticate valid email address
-      Api.Authenticate.get({ email: userEmail }, function () {
-        // send request to API - create token/expiry for email user
-        Api.UserPasswordResetRequest.get({ email: userEmail }, function () {
-          Alerting.AlertReset()
-          Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...')
-          $scope.showFormCtrl = false
-        }, function () {
-          Alerting.AlertReset()
-          Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator')
-        })
+      // send request to API - create token/expiry for email user
+      Api.UserPasswordResetRequest.get({ email: userEmail }, function () {
+        Alerting.AlertReset()
+        Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...')
+        $scope.showFormCtrl = false
       }, function () {
         Alerting.AlertReset()
-        Alerting.AlertAddMsg('forgotPassword', 'danger', 'Could not authenticate email address')
+        Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator')
       })
     }
   }

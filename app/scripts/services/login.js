@@ -6,7 +6,6 @@ export function login (Api, $rootScope) {
       // fetch salt from openhim-core server and work out password hash
       Api.Authenticate.save({ username: email, password }, function () {
         // on success
-        // notify the authInterceptor of a logged in user
         // Verify that you can make authenticated requests
         Api.Users.get({ email: email }, function (profile) {
           userProfile = profile
@@ -18,8 +17,7 @@ export function login (Api, $rootScope) {
         
       }, function (err) {
         if (err.status < 100) {
-          // If the status is outside the possible http status range no then http error
-
+            // If the status is outside the possible http status range no then http error
             done('Internal Server Error');
           } else {
             // if error returns a status then server is active - user not authenticated
