@@ -137,10 +137,10 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     modalInstance.result.then(function () {
       // Delete confirmed - check if current user deleted themself, set flag, then delete user
       $scope.sessionUserDeleted = false
-      let sessionUser = localStorage.getItem('loggedOnUser')
-      sessionUser = JSON.parse(sessionUser)
+      let consoleSession = localStorage.getItem('consoleSession')
+      consoleSession = JSON.parse(consoleSession)
 
-      if (sessionUser.email === user.email) {
+      if (consoleSession.sessionUser === user.email) {
         $scope.sessionUserDeleted = true
       }
 

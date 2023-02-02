@@ -1,4 +1,4 @@
-export function login (Api, Authinterceptor) {
+export function login (Api, $rootScope) {
   let userProfile = {}
 
   return {
@@ -10,7 +10,6 @@ export function login (Api, Authinterceptor) {
         // Verify that you can make authenticated requests
         Api.Users.get({ email: email }, function (profile) {
           userProfile = profile
-          Authinterceptor.setLoggedInUser(userProfile)
           done('Authentication Success')
         }, function () {
           // Throw error upon failure
@@ -29,16 +28,19 @@ export function login (Api, Authinterceptor) {
         }
       );
     },
-    logout: function () {
+    logout: function (done) {
       Api.Logout.get(
         {},
         function () {
-          console.log('Logout Successfull');
-        },function (err) {
-          console.log(err);
+          userProfile = null;
+          $rootScope.sessionUser = null
+          $rootScope.navMenuVisible = false
+          localStorage.removeItem('consoleSession')
+          done('Logout Successful')
+        },function () {
+          done('Internal Server Error');
         },
       );
-      userProfile = null;
     },
     getLoggedInUser: function () {
       return userProfile

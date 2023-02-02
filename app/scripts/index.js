@@ -12,6 +12,7 @@ import 'angular-file-upload'
 import 'angular-bootstrap-colorpicker'
 import '@kariudo/angular-fullscreen'
 import ngFileUpload from 'ng-file-upload'
+import { v4 as uuidV4 } from 'uuid'
 
 import { moduleName } from './external/angular-bootstrap-datetimepicker-directive'
 import { angularTaglist } from './external/angular-taglist-directive'
@@ -103,7 +104,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Alerting, config) {
   }
 })
 
-app.run(function ($rootScope, $location, $anchorScroll, $window, $cookies) {
+app.run(function ($rootScope, $location, $anchorScroll, Api) {
   $rootScope.$on('$routeChangeStart', function () {
     /* ----- Set Referring URL ----- */
 
@@ -138,31 +139,18 @@ app.run(function ($rootScope, $location, $anchorScroll, $window, $cookies) {
 
     // Retrieve the session from storage
     let consoleSession = localStorage.getItem('consoleSession')
-    consoleSession = JSON.parse(consoleSession)
 
-    // check if session exists
-    if (consoleSession) {
-      // set the nav menu to show
-      $rootScope.navMenuVisible = true
+    Api.Me.get(function (authDetails) {
+      if(authDetails.user) {
+        consoleSession = authDetails.user
+        // set the nav menu to show
+        $rootScope.navMenuVisible = true
 
-      // check if session has expired
-      let currentTime = new Date()
-      currentTime = currentTime.toISOString()
-      if (currentTime >= consoleSession.expires || !$cookies.get("koa.sess")) {
-        localStorage.removeItem('consoleSession')
-
-        // session expired - user needs to log in
-        $location.path('/login')
-      } else {
-        // session still active - update expires time
-        currentTime = new Date()
-        // add 2hours onto timestamp (2hours persistence time)
-        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // get sessionID
-        const sessionID = consoleSession.sessionID
-        const sessionUser = consoleSession.sessionUser
-        const sessionUserGroups = consoleSession.sessionUserGroups
-        const sessionUserSettings = consoleSession.sessionUserSettings
+        const sessionID = uuidV4()
+        const sessionUser = consoleSession.email
+        const sessionUserGroups = consoleSession.groups
+        const sessionUserSettings = consoleSession.settings
 
         // create session object
         const consoleSessionObject = {
@@ -170,7 +158,6 @@ app.run(function ($rootScope, $location, $anchorScroll, $window, $cookies) {
           sessionUser: sessionUser,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
-          expires: expireTime
         }
 
         // Put updated object into storage
@@ -187,15 +174,22 @@ app.run(function ($rootScope, $location, $anchorScroll, $window, $cookies) {
         } else {
           $rootScope.userGroupAdmin = false
         }
+      } else {
+        if(consoleSession) {
+          localStorage.removeItem('consoleSession')
+  
+          // session expired - user needs to log in
+          $location.path('/login')
+        } else {
+          const page = $location.path() === '/' ? $location.hash() : $location.path()
+          // if not 'set-password' page
+          if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
+            // No session - user needs to log in
+            $location.path('/login')
+          }
+        }
       }
-    } else {
-      const page = $location.path() === '/' ? $location.hash() : $location.path()
-      // if not 'set-password' page
-      if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
-        // No session - user needs to log in
-        $location.path('/login')
-      }
-    }
+    })
   })
 })
 
