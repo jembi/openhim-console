@@ -44,7 +44,7 @@ export function login (Api, $rootScope) {
       return userProfile
     },
     isLoggedIn: function () {
-      return userProfile !== null
+      return userProfile !== null && Object.keys(userProfile).length > 0
     }
   }
 }
