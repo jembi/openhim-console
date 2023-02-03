@@ -40,8 +40,8 @@ describe('Controller: ChannelsCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([

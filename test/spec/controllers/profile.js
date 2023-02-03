@@ -89,14 +89,13 @@ describe('Controller: ProfileCtrl', function () {
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
 
     createController = function () {
-      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+      httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+      httpBackend.flush(1)
 
       scope = $rootScope.$new()
       scope.consoleSession = {}
       scope.consoleSession.sessionUser = 'test@user.org'
-      scope.user = {
-        $update: sinon.spy()
-      }
+      scope.user = {}
       return $controller('ProfileCtrl', {
         $scope: scope
       })
@@ -109,8 +108,9 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should fetch a user profile', function () {
-    httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
     createController()
+    httpBackend.expectGET(new RegExp('.*/me'))
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
     httpBackend.flush()
 
     scope.user.should.have.property('email', 'test@user.org')
@@ -122,8 +122,9 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should test for all validation and return TRUE - hasErrors', function () {
+    httpBackend.expectGET(new RegExp('.*/me'))
     createController()
-
+    
     // only admin can edit profile groups
     scope.userGroupAdmin = true
 
@@ -135,6 +136,7 @@ describe('Controller: ProfileCtrl', function () {
 
     // Should check all form validations and create object ngError.hasErrors with value true.
     scope.validateFormProfile()
+
     scope.ngError.should.have.property('hasErrors', true)
     scope.ngError.should.have.property('firstname', true)
     scope.ngError.should.have.property('surname', true)
@@ -164,6 +166,7 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should save the user profile with updated details', function () {
+    httpBackend.expectGET(new RegExp('.*/me'))
     createController()
 
     scope.user.email = 'test@user.org'

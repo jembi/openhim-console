@@ -194,10 +194,6 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           $location.path('/login')
         }
       }
-    }, function() {
-      localStorage.removeItem('consoleSession')
-  
-      $location.path('/login')
     })
   })
 })

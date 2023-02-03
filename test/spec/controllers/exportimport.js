@@ -34,8 +34,8 @@ describe('Controller: ExportImportCtrl', function () {
       { _id: '4567fe9d8b6addd83l559ff8', clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
     ],
     Users: [
-      { _id: '6380fe9d8b6addd83l559fs7', firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { _id: '6380fe9d8b6addd83l559fs7', firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ],
     ContactGroups: [
       { _id: '5555fe9d8b6addd83l559sf6', group: 'Group 1', users: [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }, { user: 'User 2', method: 'email', maxAlerts: '1 per day' }, { user: 'User 3', method: 'email', maxAlerts: '1 per hour' }] },
@@ -49,7 +49,7 @@ describe('Controller: ExportImportCtrl', function () {
 
   var expectedImportReponse = [
     { model: 'Clients', record: { _id: '5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Updated', message: 'Successfully inserted Clients with name', uid: 'test1' },
-    { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }, status: 'Updated', message: '', uid: 'normal@openim.org' }
+    { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }, status: 'Updated', message: '', uid: 'normal@openim.org' }
   ]
 
   // Initialize the controller and a mock scope
@@ -63,7 +63,7 @@ describe('Controller: ExportImportCtrl', function () {
 
     httpBackend.when('POST', new RegExp('.*/metadata/validate')).respond([
       { model: 'Clients', record: { _id: '5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Updated', message: 'Successfully inserted Clients with name', uid: 'test1' },
-      { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }, status: 'Inserted', message: '', uid: 'normal@openim.org' }
+      { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }, status: 'Inserted', message: '', uid: 'normal@openim.org' }
     ])
 
     createController = function () {

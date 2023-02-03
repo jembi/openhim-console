@@ -30,8 +30,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
@@ -457,8 +457,8 @@ describe('Controller: channelUserAccessCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited', 'tester'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited', 'tester'] }
     ])
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
       { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
@@ -554,8 +554,8 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend = $httpBackend
     // http request used in main parent controller
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
