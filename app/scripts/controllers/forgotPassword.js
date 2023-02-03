@@ -30,9 +30,13 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
         Alerting.AlertReset()
         Alerting.AlertAddMsg('forgotPassword', 'info', 'Password reset email has been sent...')
         $scope.showFormCtrl = false
-      }, function () {
+      }, function (err) {
         Alerting.AlertReset()
-        Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator')
+        if(err.status == 404) {
+          Alerting.AlertAddMsg('forgotPassword', 'danger', 'Could not authenticate email address')
+        } else {
+          Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator')
+        }
       })
     }
   }

@@ -175,18 +175,23 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           $rootScope.userGroupAdmin = false
         }
       } else {
-        if(consoleSession) {
-          localStorage.removeItem('consoleSession')
-  
-          // session expired - user needs to log in
+        localStorage.removeItem('consoleSession')
+
+        // session expired - user needs to log in
+        $location.path('/login')
+      }
+    }, function() {
+      if(consoleSession) {
+        localStorage.removeItem('consoleSession')
+
+        // session expired - user needs to log in
+        $location.path('/login')
+      } else {
+        const page = $location.path() === '/' ? $location.hash() : $location.path()
+        // if not 'set-password' page
+        if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
+          // No session - user needs to log in
           $location.path('/login')
-        } else {
-          const page = $location.path() === '/' ? $location.hash() : $location.path()
-          // if not 'set-password' page
-          if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
-            // No session - user needs to log in
-            $location.path('/login')
-          }
         }
       }
     })
