@@ -7,6 +7,8 @@ export function Api ($rootScope, $resource, config) {
   const server = protocol + '://' + host + ':' + port + (/^\s*$/.test(hostPath) ? '' : '/' + hostPath)
 
   return {
+    Me: $resource(server + '/me'),
+
     AuthenticateLocal: $resource(server + '/authenticate/local', {}, {
       save: { method: 'POST' },
     }),

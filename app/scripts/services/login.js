@@ -1,4 +1,4 @@
-export function login (Api, Authinterceptor) {
+export function login (Api, $rootScope) {
   let userProfile = {}
 
   return {
@@ -6,11 +6,9 @@ export function login (Api, Authinterceptor) {
       // fetch salt from openhim-core server and work out password hash
       Api.AuthenticateLocal.save({ username: email, password }, function () {
         // on success
-        // notify the authInterceptor of a logged in user
         // Verify that you can make authenticated requests
         Api.Users.get({ email: email }, function (profile) {
           userProfile = profile
-          Authinterceptor.setLoggedInUser(userProfile)
           done('Authentication Success')
         }, function () {
           // Throw error upon failure
@@ -19,8 +17,7 @@ export function login (Api, Authinterceptor) {
         
       }, function (err) {
         if (err.status < 100) {
-          // If the status is outside the possible http status range no then http error
-
+            // If the status is outside the possible http status range no then http error
             done('Internal Server Error');
           } else {
             // if error returns a status then server is active - user not authenticated
@@ -48,22 +45,25 @@ export function login (Api, Authinterceptor) {
         }
       })
     },
-    logout: function () {
+    logout: function (done) {
       Api.Logout.get(
         {},
         function () {
-          console.log('Logout Successfull');
-        },function (err) {
-          console.log(err);
+          userProfile = null;
+          $rootScope.sessionUser = null
+          $rootScope.navMenuVisible = false
+          localStorage.removeItem('consoleSession')
+          done('Logout Successful')
+        },function () {
+          done('Internal Server Error');
         },
       );
-      userProfile = null;
     },
     getLoggedInUser: function () {
       return userProfile
     },
     isLoggedIn: function () {
-      return userProfile !== null
+      return userProfile !== null && Object.keys(userProfile).length > 0
     }
   }
 }
