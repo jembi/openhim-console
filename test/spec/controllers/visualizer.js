@@ -13,7 +13,16 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   var scope, createController, httpBackend, modal
-
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
   var visualizers = [{
     name: 'Test Visualizer 1',
     components: [
@@ -120,6 +129,8 @@ describe('Controller: VisualizerCtrl', function () {
     $httpBackend.when('PUT', new RegExp('.*/users/test@user.org')).respond()
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('VisualizerCtrl', { $scope: scope })
     }

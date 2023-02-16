@@ -14,6 +14,16 @@ describe('Controller: AuditDetailsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -55,6 +65,8 @@ describe('Controller: AuditDetailsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('AuditDetailsCtrl', { $scope: scope, $routeParams: { auditId: '538ed0867962a27d5df259b0' } })
     }

@@ -20,7 +20,8 @@ module.exports = function (config) {
       { pattern: 'dist/bundle.js.map', included: false, watched: false },
       'dist/index.html',
       { pattern: 'dist/fonts/*', watched: false, included: false, served: true, nocache: false },
-      'test/spec/controllers/*.js'
+      'test/spec/controllers/*.js',
+      'test/spec/services/*.js'
     ],
     proxies: {
       '/fonts/': 'http://localhost:8090/base/dist/fonts/'

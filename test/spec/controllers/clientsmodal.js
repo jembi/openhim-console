@@ -19,6 +19,16 @@ describe('Controller: ClientsModalCtrl', function () {
     _id: '553516b69fdbfc281db58efd',
     roles: ['role1', 'role2']
   }
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -39,6 +49,8 @@ describe('Controller: ClientsModalCtrl', function () {
     var modalInstance = sinon.spy()
 
     createController = function (client) {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ClientsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,

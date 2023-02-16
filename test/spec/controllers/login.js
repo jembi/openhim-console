@@ -24,20 +24,11 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend = $httpBackend
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({ salt: 'test-salt', ts: new Date().getTime() })
-
-    httpBackend.when('GET', new RegExp('.*/authenticate/root@openhim.org')).respond({ salt: 'test-salt', ts: new Date().getTime() })
-
-    httpBackend.when('GET', new RegExp('.*/authenticate/incorrect@user.org')).respond({})
-
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
       __v: 0,
       _id: '539846c240f2eb682ffeca4b',
       email: 'test@user.org',
       firstname: 'test',
-      passwordAlgorithm: 'sha512',
-      passwordHash: '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
-      passwordSalt: 'test-salt',
       surname: 'test',
       groups: ['admin'],
       settings: {
@@ -49,9 +40,6 @@ describe('Controller: LoginCtrl', function () {
       email: 'root@openhim.org',
       firstname: 'Super',
       surname: 'User',
-      passwordAlgorithm: 'sha512',
-      passwordHash: '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
-      passwordSalt: 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
       groups: ['admin'],
       settings: {
         filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
@@ -62,6 +50,9 @@ describe('Controller: LoginCtrl', function () {
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
 
     createController = function () {
+      httpBackend.when('GET', new RegExp('.*/me')).respond(404)
+      httpBackend.flush()
+
       scope = $rootScope.$new()
       return $controller('LoginCtrl', { $scope: scope })
     }
@@ -85,19 +76,19 @@ describe('Controller: LoginCtrl', function () {
 
     // once all fields supplied, check if user exist based on credentials
     it('should run entire login process and return an error message for incorrect login credentials', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/incorrect@user.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(401)
 
       createController()
 
       scope.loginEmail = 'incorrect@user.org'
       scope.loginPassword = 'incorrect-password'
       scope.validateLogin()
-
+      
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
       scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
-
+      
       httpBackend.flush()
 
       // One error should exist - 'Busy checking login credentials'
@@ -112,8 +103,7 @@ describe('Controller: LoginCtrl', function () {
 
     // process correct credentials and log user and create the session - Testing Complete Process
     it('should run entire login process and login a user and fetch the currently logged in user', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'))
-      httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
       createController()
 
@@ -137,14 +127,15 @@ describe('Controller: LoginCtrl', function () {
 
       user.should.exist()
       user.should.have.property('email', 'test@user.org')
-      user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
     })
   })
 
   describe('*resetRootPassword() tests', function () {
     it('should run the resetRootPassword() function return error for not all fields being supplied', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'))
-      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
+
+      // httpBackend.expectGET(new RegExp('.*/authenticate/local'))
+      // httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
 
       createController()
       scope.rootPasswordReset.should.equal(false)
@@ -177,8 +168,7 @@ describe('Controller: LoginCtrl', function () {
     })
 
     it('should run the resetRootPassword() function return error for password not matching', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'))
-      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
       createController()
       scope.rootPasswordReset.should.equal(false)
@@ -190,6 +180,8 @@ describe('Controller: LoginCtrl', function () {
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
       scope.validateLogin()
+
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(401)
 
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
@@ -211,8 +203,7 @@ describe('Controller: LoginCtrl', function () {
     })
 
     it('should run the resetRootPassword() function return error for new password being same as default one', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'))
-      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
       createController()
       scope.rootPasswordReset.should.equal(false)
@@ -245,8 +236,7 @@ describe('Controller: LoginCtrl', function () {
     })
 
     it('should run the resetRootPassword() function and update the root users password', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/root@openhim.org'))
-      httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
       createController()
       scope.rootPasswordReset.should.equal(false)
@@ -289,7 +279,7 @@ describe('Controller: LoginCtrl', function () {
   describe('*checkLoginCredentials() tests', function () {
     // process the checkLoginCredentials() function - user should be invalid and error thrown
     it('should run the checkLoginCredentials() function and return error with incorrect login details', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/incorrect@user.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(401)
       createController()
 
       // user should be empty before valid login
@@ -313,8 +303,8 @@ describe('Controller: LoginCtrl', function () {
 
     // process the checkLoginCredentials() function - user should be valid and logged in - session created
     it('should run the checkLoginCredentials() function and login successfully', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'))
-      httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
+
       createController()
 
       // user should be empty before valid login
@@ -331,7 +321,6 @@ describe('Controller: LoginCtrl', function () {
 
       user.should.exist()
       user.should.have.property('email', 'test@user.org')
-      user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
     })
   })
 
@@ -361,7 +350,7 @@ describe('Controller: LoginCtrl', function () {
 
     // process the createUserSession() function and create user session successfully
     it('should run the createUserSession() function and create a user session successfully', function () {
-      httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'))
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
       createController()
       login.login('test@user.org', 'test-password', function () {
@@ -371,7 +360,6 @@ describe('Controller: LoginCtrl', function () {
         // check that user is created
         user.should.exist()
         user.should.have.property('email', 'test@user.org')
-        user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
 
         // creeate the session object to store session data
         scope.createUserSession('test@user.org')
