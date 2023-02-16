@@ -151,6 +151,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
         const sessionUser = consoleSession.email
         const sessionUserGroups = consoleSession.groups
         const sessionUserSettings = consoleSession.settings
+        const sessionProvider = consoleSession.provider
 
         // create session object
         const consoleSessionObject = {
@@ -158,11 +159,13 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           sessionUser: sessionUser,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
+          sessionProvider: sessionProvider,
         }
 
         // Put updated object into storage
         localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
         $rootScope.sessionUser = sessionUser
+        $rootScope.sessionProvider = sessionProvider
 
         if (sessionUserSettings && sessionUserSettings.general) {
           $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips
@@ -308,6 +311,15 @@ app.config(function ($routeProvider) {
 function main () {
   const initInjector = angular.injector(['ng'])
   const $http = initInjector.get('$http')
+
+  const $window = initInjector.get("$window")
+
+  // Redirect user to login page if it is a Keycloak redirect URL
+  const KeycloakRedirectedUrlRegex = /state=([\da-zA-Z\.-]+)&session_state=([\da-zA-Z\.-]+)&code=([\da-zA-Z\.-]+)/g
+  if (KeycloakRedirectedUrlRegex.test($window.location.hash)) {
+    $window.location = '#!/login' + $window.location.hash
+  }
+
   return $http.get('config/default.json')
     .then((response) => {
       app.constant('config', response.data)

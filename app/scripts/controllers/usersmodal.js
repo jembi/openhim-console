@@ -103,7 +103,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
             notifyUser()
           } else {
             // add the error message
-            Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials')
+            Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with your new credentials')
             notifyUser()
           }
         })

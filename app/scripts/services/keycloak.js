@@ -3,6 +3,7 @@ import Keycloak from "keycloak-js";
 let keycloakInstance = null;
 
 export function keycloak(config) {
+  let keycloakState = ""
   // Init SSO with keycloak
   if (config.ssoEnabled) {
     if (!keycloakInstance) {
@@ -14,5 +15,13 @@ export function keycloak(config) {
       });
     }
   }
-  return keycloakInstance;
+  return {
+    keycloakInstance,
+    setKeycloakState: function (state) {
+      keycloakState = state
+    },
+    getKeycloakState: function () {
+      return keycloakState
+    }
+  };
 }

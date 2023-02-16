@@ -1,4 +1,4 @@
-export function login (Api, $rootScope) {
+export function login (Api, $rootScope, keycloak) {
   let userProfile = {}
 
   return {
@@ -29,12 +29,8 @@ export function login (Api, $rootScope) {
     loginWithKeyCloak: function (code, sessionState, state, done) {
       // fetch salt from openhim-core server and work out password hash
       Api.AuthenticateOpenid.getToken({ code, sessionState, state }, function (authDetails) {
-        userProfile.email = authDetails.user.email
-        userProfile.groups = authDetails.user.groups
-        userProfile.provider = 'keycloak'
-        // notify the authInterceptor of a logged in user
-        Authinterceptor.setLoggedInUser(userProfile)
-        done('Authentication Success', userProfile)
+        userProfile = authDetails.user
+        done('Authentication Success', authDetails.user)
       }, function (err) {
         if (err.status < 100) {
           // If the status is outside the possible http status range no then http error
@@ -49,6 +45,12 @@ export function login (Api, $rootScope) {
       Api.Logout.get(
         {},
         function () {
+          // Cleanup of keycloak session
+          const keycloakState = keycloak.getKeycloakState()
+          if ($rootScope.sessionUser && $rootScope.sessionProvider === 'keycloak' && keycloakState) {
+            localStorage.removeItem(`kc-callback-${keycloakState}`)
+          }
+
           userProfile = null;
           $rootScope.sessionUser = null
           $rootScope.navMenuVisible = false

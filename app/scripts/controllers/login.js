@@ -9,14 +9,14 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
   // if url "#/logout" is returned then destroy the session
   if (/\/logout$/i.test($window.location.hash)) {
-    login.logout()
-    localStorage.removeItem('consoleSession')
-    localStorage.removeItem('loggedOnUser')
-    if ($rootScope.sessionUser.provider === 'keycloak') {
-      keycloak.logout()
-    }
-    $rootScope.sessionUser = null
-    $rootScope.navMenuVisible = false
+    login.logout(function (result) {
+      if (result !== 'Logout Successful') {
+        // reset alert object
+        Alerting.AlertReset()
+        Alerting.AlertAddServerMsg()
+      }
+    })
+
   } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
     // Check if we got the OAuth code in the URL back from KeyCloak
     const queryString = $window.location.hash.replace('#!/login#', '');
@@ -25,6 +25,9 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     const isKeyCloakRedirect = code && sessionState && state;
     if (isKeyCloakRedirect) {
+      keycloak.setKeycloakState(state)
+      console.log(keycloak.getKeycloakState())
+
       login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
         // reset alert object
         Alerting.AlertReset()
@@ -176,7 +179,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     if (!loginEmail) {
       return 'No Email supplied!'
     } else {
-      /* ------------------Set sessionID and expire timestamp------------------ */
+      /* ------------------Set sessionID------------------ */
 
       // get the logged in user details
       const userProfile = login.getLoggedInUser()
@@ -184,14 +187,11 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       if (!userProfile.groups) {
         return 'Logged in user could not be found!'
       } else {
-        const currentTime = new Date()
-        // add 2hours onto timestamp (2hours persistence time)
-        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // generate random sessionID
         const sessionID = Math.random().toString(36).slice(2).toUpperCase()
-
         const sessionUserGroups = userProfile.groups
         const sessionUserSettings = userProfile.settings
+        const sessionProvider = userProfile.provider
 
         // create session object
         const consoleSessionObject = {
@@ -199,20 +199,19 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           sessionUser: loginEmail,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
-          expires: expireTime
+          sessionProvider: sessionProvider
         }
 
         // Put the object into storage
         localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
       }
 
-      /* ------------------Set sessionID and expire timestamp------------------ */
+      /* ------------------Set sessionID------------------ */
     }
   }
 
   $scope.signInWithKeyCloak = function () {
-    keycloak
-      .init({
+    keycloak.keycloakInstance.init({
         onLoad: "login-required",
         // Must match to the configured value in keycloak
         redirectUri: $window.location.origin,
