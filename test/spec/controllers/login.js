@@ -26,6 +26,9 @@ describe('Controller: LoginCtrl', function () {
 
     keycloak = _keycloak_
 
+    // Override function to prevent page reload
+    keycloak.keycloakInstance.init = () => {}
+
     httpBackend = $httpBackend
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
@@ -61,7 +64,6 @@ describe('Controller: LoginCtrl', function () {
         config.ssoEnabled = false
       }
       if(options.window) {
-        $window.onbeforeunload = sinon.spy()
         $window = options.window
       }
 
