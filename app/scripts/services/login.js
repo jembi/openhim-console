@@ -14,17 +14,16 @@ export function login (Api, $rootScope, keycloak) {
           // Throw error upon failure
           done('Authentication Failed')
         })
-        
       }, function (err) {
         if (err.status < 100) {
-            // If the status is outside the possible http status range no then http error
-            done('Internal Server Error');
-          } else {
-            // if error returns a status then server is active - user not authenticated
-            done('Authentication Failed');
-          }
+          // If the status is outside the possible http status range no then http error
+          done('Internal Server Error')
+        } else {
+          // if error returns a status then server is active - user not authenticated
+          done('Authentication Failed')
         }
-      );
+      }
+      )
     },
     loginWithKeyCloak: function (code, sessionState, state, done) {
       // fetch salt from openhim-core server and work out password hash
@@ -51,15 +50,15 @@ export function login (Api, $rootScope, keycloak) {
             localStorage.removeItem(`kc-callback-${keycloakState}`)
           }
 
-          userProfile = null;
+          userProfile = null
           $rootScope.sessionUser = null
           $rootScope.navMenuVisible = false
           localStorage.removeItem('consoleSession')
           done('Logout Successful')
-        },function () {
-          done('Internal Server Error');
-        },
-      );
+        }, function () {
+          done('Internal Server Error')
+        }
+      )
     },
     getLoggedInUser: function () {
       return userProfile

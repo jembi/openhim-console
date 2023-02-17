@@ -134,9 +134,6 @@ describe('Controller: LoginCtrl', function () {
     it('should run the resetRootPassword() function return error for not all fields being supplied', function () {
       httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
-      // httpBackend.expectGET(new RegExp('.*/authenticate/local'))
-      // httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
-
       createController()
       scope.rootPasswordReset.should.equal(false)
 

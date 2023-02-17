@@ -80,7 +80,7 @@ app.run(function ($rootScope) {
 
 app.config(function ($httpProvider, $compileProvider) {
   $httpProvider.interceptors.push('Authinterceptor')
-  $httpProvider.defaults.withCredentials = true;
+  $httpProvider.defaults.withCredentials = true
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/)
 })
 
@@ -141,7 +141,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     let consoleSession = localStorage.getItem('consoleSession')
 
     Api.Me.get(function (authDetails) {
-      if(authDetails.user) {
+      if (authDetails.user) {
         consoleSession = authDetails.user
         // set the nav menu to show
         $rootScope.navMenuVisible = true
@@ -159,7 +159,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           sessionUser: sessionUser,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
-          sessionProvider: sessionProvider,
+          sessionProvider: sessionProvider
         }
 
         // Put updated object into storage
@@ -183,8 +183,8 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
         // session expired - user needs to log in
         $location.path('/login')
       }
-    }, function() {
-      if(consoleSession) {
+    }, function () {
+      if (consoleSession) {
         localStorage.removeItem('consoleSession')
 
         // session expired - user needs to log in
@@ -312,7 +312,7 @@ function main () {
   const initInjector = angular.injector(['ng'])
   const $http = initInjector.get('$http')
 
-  const $window = initInjector.get("$window")
+  const $window = initInjector.get('$window')
 
   // Redirect user to login page if it is a Keycloak redirect URL
   const KeycloakRedirectedUrlRegex = /state=([\da-zA-Z\.-]+)&session_state=([\da-zA-Z\.-]+)&code=([\da-zA-Z\.-]+)/g

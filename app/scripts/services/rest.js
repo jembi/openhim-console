@@ -10,13 +10,13 @@ export function Api ($rootScope, $resource, config) {
     Me: $resource(server + '/me'),
 
     AuthenticateLocal: $resource(server + '/authenticate/local', {}, {
-      save: { method: 'POST' },
+      save: { method: 'POST' }
     }),
 
     AuthenticateOpenid: $resource(server + '/authenticate/openid', {}, {
-      getToken: { method: 'POST' },
+      getToken: { method: 'POST' }
     }),
-    
+
     Logout: $resource(server + '/logout'),
 
     AuthenticationTypes: $resource(`${server}/authentication/types`),

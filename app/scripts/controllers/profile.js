@@ -154,8 +154,8 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   }
 
   $scope.save = function (user, password) {
-    const userObject = {...angular.copy(user), id: user._id, password}
-    Api.Users.update(userObject,  function () {
+    const userObject = { ...angular.copy(user), id: user._id, password }
+    Api.Users.update(userObject, function () {
       success(userObject, password)
 
       // rootScope function to scroll to top

@@ -1,9 +1,9 @@
-import Keycloak from "keycloak-js";
+import Keycloak from 'keycloak-js'
 
-let keycloakInstance = null;
+let keycloakInstance = null
 
-export function keycloak(config) {
-  let keycloakState = ""
+export function keycloak (config) {
+  let keycloakState = ''
   // Init SSO with keycloak
   if (config.ssoEnabled) {
     if (!keycloakInstance) {
@@ -11,8 +11,8 @@ export function keycloak(config) {
       keycloakInstance = new Keycloak({
         url: config.keyCloakUrl,
         realm: config.keyCloakRealm,
-        clientId: config.keyCloakClientId,
-      });
+        clientId: config.keyCloakClientId
+      })
     }
   }
   return {
@@ -23,5 +23,5 @@ export function keycloak(config) {
     getKeycloakState: function () {
       return keycloakState
     }
-  };
+  }
 }

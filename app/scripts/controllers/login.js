@@ -16,14 +16,13 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         Alerting.AlertAddServerMsg()
       }
     })
-
   } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
     // Check if we got the OAuth code in the URL back from KeyCloak
-    const queryString = $window.location.hash.replace('#!/login#', '');
-    const params = parseQuery(queryString);
-    const { code, session_state: sessionState, state } = params;
+    const queryString = $window.location.hash.replace('#!/login#', '')
+    const params = parseQuery(queryString)
+    const { code, session_state: sessionState, state } = params
 
-    const isKeyCloakRedirect = code && sessionState && state;
+    const isKeyCloakRedirect = code && sessionState && state
     if (isKeyCloakRedirect) {
       keycloak.setKeycloakState(state)
       console.log(keycloak.getKeycloakState())
@@ -141,7 +140,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     // do the initial request
     Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      const newUserInfo = { email: user.email, id: user._id, password };
+      const newUserInfo = { email: user.email, id: user._id, password }
       // save the new root password
       Api.Users.update(newUserInfo, function () {
         // re-login with new credentials
@@ -212,10 +211,10 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
   $scope.signInWithKeyCloak = function () {
     keycloak.keycloakInstance.init({
-        onLoad: "login-required",
-        // Must match to the configured value in keycloak
-        redirectUri: $window.location.origin,
-        checkLoginIframe: false
-      });
-  };
+      onLoad: 'login-required',
+      // Must match to the configured value in keycloak
+      redirectUri: $window.location.origin,
+      checkLoginIframe: false
+    })
+  }
 }

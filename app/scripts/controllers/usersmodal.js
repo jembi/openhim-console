@@ -127,8 +127,8 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
 
   $scope.save = function (user, password) {
     if ($scope.update) {
-      const userObject = {...angular.copy(user), id: user._id, password}
-      Api.Users.update(userObject,  function () {
+      const userObject = { ...angular.copy(user), id: user._id, password }
+      Api.Users.update(userObject, function () {
         success(userObject, password)
         // rootScope function to scroll to top
         $scope.goToTop()
@@ -137,7 +137,6 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
       user.$save({ email: '' }, success, error)
     }
   }
-
 
   /************************************************************/
   /**   These are the functions for the User Modal Popup     **/

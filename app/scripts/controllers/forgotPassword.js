@@ -32,7 +32,7 @@ export function ForgotPasswordCtrl ($scope, $location, Alerting, Api) {
         $scope.showFormCtrl = false
       }, function (err) {
         Alerting.AlertReset()
-        if(err.status == 404) {
+        if (err.status === 404) {
           Alerting.AlertAddMsg('forgotPassword', 'danger', 'Could not authenticate email address')
         } else {
           Alerting.AlertAddMsg('forgotPassword', 'danger', 'An error occurred while trying to request a password reset. Please contact your system administrator')

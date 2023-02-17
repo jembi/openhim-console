@@ -65,11 +65,10 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
 
   $scope.save = function (user, password) {
     if (password) {
-      const userObject = {...angular.copy(user), password}
+      const userObject = { ...angular.copy(user), password }
       Api.UserPasswordToken.update({ token: $routeParams.token }, userObject, success, error)
     }
   }
-
 
   /****************************************************************/
   /**   These are the functions for the Profile save process     **/

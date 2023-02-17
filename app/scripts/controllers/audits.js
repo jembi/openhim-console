@@ -18,9 +18,9 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   $scope.baseIndex = 0
   const pollPeriod = 5000
   $scope.limits = [10, 50, 100, 200, 500]
-  $scope.validPatientID = true;
-  $scope.validStartDate = true;
-  $scope.validEndDate = true;
+  $scope.validPatientID = true
+  $scope.validStartDate = true
+  $scope.validEndDate = true
 
   Api.AuditsFilterOptions.get(function (auditsFilterOptions) {
     $scope.auditsFilterOptions = auditsFilterOptions
@@ -108,7 +108,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   }
 
   $scope.checkPatientID = function (patientID) {
-    return new RegExp('^[\\d\\w\\-]*$').test(patientID) //PatientID should only be alpha numerical and may contain hyphens
+    return new RegExp('^[\\d\\w\\-]*$').test(patientID) // PatientID should only be alpha numerical and may contain hyphens
   }
 
   // setup filter options
@@ -308,11 +308,10 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   }
 
   $scope.applyFilterIfValidPatientID = function (patientID) {
-    if($scope.checkPatientID(patientID)){
+    if ($scope.checkPatientID(patientID)) {
       $scope.applyFiltersToUrl()
       $scope.validPatientID = true
-    }
-    else{
+    } else {
       $scope.validPatientID = false
       $scope.filters.participantObjectIdentification.patientID.patientID = null
     }
@@ -322,10 +321,8 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if ($scope.checkDate(date)) {
       $scope.validStartDate = true
       $scope.applyFiltersToUrl()
-    }
-    else
-    {      
-      $scope.validStartDate = false;
+    } else {
+      $scope.validStartDate = false
       $scope.settings.filter.dateStart = null
     }
   }
@@ -334,10 +331,8 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if ($scope.checkDate(date)) {
       $scope.validEndDate = true
       $scope.applyFiltersToUrl()
-    }
-    else
-    {      
-      $scope.validEndDate = false;
+    } else {
+      $scope.validEndDate = false
       $scope.settings.filter.dateEnd = null
     }
   }
