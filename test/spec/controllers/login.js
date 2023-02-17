@@ -61,6 +61,7 @@ describe('Controller: LoginCtrl', function () {
         config.ssoEnabled = false
       }
       if(options.window) {
+        $window.onbeforeunload = sinon.spy()
         $window = options.window
       }
 
