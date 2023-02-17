@@ -26,7 +26,6 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     const isKeyCloakRedirect = code && sessionState && state;
     if (isKeyCloakRedirect) {
       keycloak.setKeycloakState(state)
-      console.log(keycloak.getKeycloakState())
 
       login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
         // reset alert object
