@@ -10,15 +10,6 @@
             <div class="loginBoxLink">
               <a href="#!/forgot-password/{{ linkUserEmail }}">Forgot your password?</a>
             </div>
-
-            <!-- Login Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-            <!-- Login Alerts -->
-
-            <!-- Server Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-            <!-- Server Alerts -->
-
             <div class="action">
               <input type="submit" class="btn btn-primary signup" value="Login" />
             </div>
@@ -30,6 +21,17 @@
               Sign-In with KeyCloak
             </button>
           </div>
+          <hr/>
+          <!-- Login Alerts -->
+          <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+          <!-- Login Alerts -->
+
+          <!-- Server Alerts -->
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+          <!-- Server Alerts -->
+          <div ng-show="!config.ssoEnabled && !config.showLoginForm" class="alert alert-danger">
+            Login is not enabled. Please contact your system administrator.
+          </div>    
         </div>
 
 

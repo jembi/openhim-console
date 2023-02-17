@@ -25,7 +25,6 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     const isKeyCloakRedirect = code && sessionState && state
     if (isKeyCloakRedirect) {
       keycloak.setKeycloakState(state)
-      console.log(keycloak.getKeycloakState())
 
       login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
         // reset alert object
@@ -43,7 +42,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           if (result === 'Internal Server Error') {
             $scope.coreConnectionError = true
           } else {
-            Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again')
+            Alerting.AlertAddMsg('login', 'danger', 'Sign-in with Keycloak failed. Please try again')
           }
         }
       })
@@ -210,11 +209,15 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   }
 
   $scope.signInWithKeyCloak = function () {
-    keycloak.keycloakInstance.init({
-      onLoad: 'login-required',
-      // Must match to the configured value in keycloak
-      redirectUri: $window.location.origin,
-      checkLoginIframe: false
-    })
+    if (config.ssoEnabled) {
+      keycloak.keycloakInstance.init({
+        onLoad: 'login-required',
+        // Must match to the configured value in keycloak
+        redirectUri: $window.location.origin,
+        checkLoginIframe: false
+      })
+    } else {
+      Alerting.AlertAddMsg('login', 'danger', 'Sign-in with Keycloak is disabled. Please contact the server administrator.')
+    }
   }
 }
