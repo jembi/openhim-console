@@ -22,6 +22,9 @@ import * as services from './services'
 
 import * as defaultConfig from '../config/default.json'
 
+import singleSpaAngularJS from 'single-spa-angularjs'
+import singleSpaCss from 'single-spa-css'
+
 export const app = angular
   .module('openhimConsoleApp', [
     'ngCookies',
@@ -88,6 +91,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Alerting, config) {
   $rootScope.uiSettings.showTooltips = true
 
   $rootScope.appTitle = config.title
+  document.title = config.title
   $rootScope.appFooterTitle = config.footerTitle
   $rootScope.appFooterPoweredBy = config.footerPoweredBy
   $rootScope.footerConsoleVersion = null
@@ -306,7 +310,7 @@ app.config(function ($routeProvider) {
     })
 })
 
-function main () {
+function bootstrapConfig() {
   const initInjector = angular.injector(['ng'])
   const $http = initInjector.get('$http')
   return $http.get('config/default.json')
@@ -316,13 +320,20 @@ function main () {
       app.constant('config', defaultConfig)
       console.warn('No config found at "config/default.json" using default')
     })
-    .finally(() => {
-      angular.element(document).ready(function () {
-        angular.bootstrap(document, ['openhimConsoleApp'])
-      })
-    })
 }
 
-if (module.parent == null) {
-  main()
-}
+const ngLifecycles = singleSpaAngularJS({
+  angular: angular,
+  mainAngularModule: 'openhimConsoleApp',
+  uiRouter: false,
+  preserveGlobal: false,
+  template: '<div id="body" ng-view=""></div>'
+})
+
+const cssLifecycles = singleSpaCss({
+  cssUrls: ['http://localhost:9000/styles.css']
+})
+
+export const bootstrap = [cssLifecycles.bootstrap, bootstrapConfig, ngLifecycles.bootstrap]
+export const mount = [cssLifecycles.mount, ngLifecycles.mount]
+export const unmount = [ngLifecycles.unmount, cssLifecycles.unmount]

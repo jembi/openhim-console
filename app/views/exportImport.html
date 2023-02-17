@@ -1,136 +1,145 @@
 <div class="page-content">
   <div class="row">
-    <!-- include the sidebar -->
-    <div ng-include="'views/sidebar.html'"></div>
-    <div class="col-md-10">
-      <div class="content-box-large">
-        <div class="panel-heading">
-          <div class="panel-title">
-            <h2><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;Export/Import</h2>
-            <p class="text-muted">
-              Import and export the OpenHIM's configuration as desired. The configuration will be written out to or read in from a JSON file.
-            </p>
-          </div>
+
+    <div class="content-box-large">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <h2><i class="glyphicon glyphicon-transfer"></i>&nbsp;&nbsp;Export/Import</h2>
+          <p class="text-muted">
+            Import and export the OpenHIM's configuration as desired. The configuration will be written out to or read
+            in from a JSON file.
+          </p>
+        </div>
+      </div>
+
+      <!-- Top Alerts -->
+      <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        {{alert.msg}}
+      </div>
+      <!-- Top Alerts -->
+
+      <div class="exportSectionDiv">
+
+        <h3><strong>Export Data</strong></h3>
+        <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
+          <button class="btn btn-primary" ng-click="createExportFile()" ng-show="!alerts.server"><i
+              class="glyphicon glyphicon-export"></i> Generate Export Script</button>
+
+          <a ng-if="downloadLink" download="{{importScriptName}}" class="btn btn-primary" ng-href="{{downloadLink}}"
+            ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
         </div>
 
-        <!-- Top Alerts -->
-        <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            {{alert.msg}}
-        </div>
-        <!-- Top Alerts -->
-        
-        <div class="exportSectionDiv">
-
-          <h3><strong>Export Data</strong></h3>
-          <div style=" float: left; clear: both; width: 100%; margin-bottom: 10px;">
-            <button class="btn btn-primary" ng-click="createExportFile()" ng-show="!alerts.server"><i class="glyphicon glyphicon-export"></i> Generate Export Script</button>
-
-            <a ng-if="downloadLink" download="{{importScriptName}}" class="btn btn-primary" ng-href="{{downloadLink}}" ng-click="downloadExportFile()"><i class="glyphicon glyphicon-export"></i> Download Export Script</a>
-          </div>
-          
-          <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
-            <label class="exportModelTitle">
-              <input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}" ng-change="toggleCollectionExportSelection(model, collectionData)" />All {{model}}
-              <i ng-if="showRecordOptions[model]" class="glyphicon glyphicon-chevron-up"></i>
-              <i ng-if="!showRecordOptions[model]" class="glyphicon glyphicon-chevron-down"></i>
-            </label>
-            <div ng-if="showRecordOptions[model] && model!='Keystore'">
-              <div ng-repeat="record in collectionData | orderBy:['name','firstname','group']">
-                <label class="exportRecordTitle">
-                  <input type="checkbox" ng-model="checkBox" value="{{record}}" ng-change="toggleRecordExportSelection(model, record)" />
-                  <span ng-if="model=='Users'">{{record.firstname}} {{record.surname}} </span>
-                  <span ng-if="model=='ContactGroups'">{{record.group}} </span>
-                  <span ng-if="model=='Channels' || model=='Clients' || model=='Mediators'">{{record.name}} </span>
-                </label>
-              </div>
+        <div class="exportCollectionsDiv" ng-repeat="(model, collectionData) in exportCollections">
+          <label class="exportModelTitle">
+            <input type="checkbox" ng-checked="true" ng-model="checkBox" value="{{collectionData}}"
+              ng-change="toggleCollectionExportSelection(model, collectionData)" />All {{model}}
+            <i ng-if="showRecordOptions[model]" class="glyphicon glyphicon-chevron-up"></i>
+            <i ng-if="!showRecordOptions[model]" class="glyphicon glyphicon-chevron-down"></i>
+          </label>
+          <div ng-if="showRecordOptions[model] && model!='Keystore'">
+            <div ng-repeat="record in collectionData | orderBy:['name','firstname','group']">
+              <label class="exportRecordTitle">
+                <input type="checkbox" ng-model="checkBox" value="{{record}}"
+                  ng-change="toggleRecordExportSelection(model, record)" />
+                <span ng-if="model=='Users'">{{record.firstname}} {{record.surname}} </span>
+                <span ng-if="model=='ContactGroups'">{{record.group}} </span>
+                <span ng-if="model=='Channels' || model=='Clients' || model=='Mediators'">{{record.name}} </span>
+              </label>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="importSectionDiv">
-          <h3><strong>Import Data</strong></h3>
-          <div class="importCollectionsDiv" >
-          
-            <div ngf-drop ngf-select ngf-multiple="true" ng-model="files" class="drop-box" drag-over-class="dragover" allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import your configurations</div>
-            <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+      <div class="importSectionDiv">
+        <h3><strong>Import Data</strong></h3>
+        <div class="importCollectionsDiv">
 
-            <div ng-if="files">
-              <h3>Uploaded Files: </h3>
-              <ul style="margin: 20px 0px 10px 0px;">
-                <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
-              </ul>
-            </div>
-            
+          <div ngf-drop ngf-select ngf-multiple="true" ng-model="files" class="drop-box" drag-over-class="dragover"
+            allow-dir="true" ng-accept="'.json,'" ng-multiple="true">Drop your export file here or click to import
+            your configurations</div>
+          <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+          <div ng-if="files">
+            <h3>Uploaded Files: </h3>
+            <ul style="margin: 20px 0px 10px 0px;">
+              <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
+            </ul>
           </div>
 
-          <div ng-if="importStatus">
-            <h3>Import Results: </h3>
+        </div>
 
-            <span id="loading-spinner" alt="Loading..." ng-if="importStatus == 'progress'"></span>
-            
-            <label class="btn btn-primary" ng-click="showConflictModal()" ng-if="importStatus == 'resolvingConflicts'"><strong>Resolve Conflicts</strong></label>
+        <div ng-if="importStatus">
+          <h3>Import Results: </h3>
 
-            <div ng-if="!areThereAnyImports()" class="med-no-config">
-              <center>
-                <span>There is nothing to import for this file.</span>
-              </center>
+          <span id="loading-spinner" alt="Loading..." ng-if="importStatus == 'progress'"></span>
+
+          <label class="btn btn-primary" ng-click="showConflictModal()"
+            ng-if="importStatus == 'resolvingConflicts'"><strong>Resolve Conflicts</strong></label>
+
+          <div ng-if="!areThereAnyImports()" class="med-no-config">
+            <center>
+              <span>There is nothing to import for this file.</span>
+            </center>
+          </div>
+
+
+          <div ng-if="importStatus == 'done' && areThereAnyImports()">
+            <div>
+              <label class="successfulImports">Successfull Imports: {{ numberOfSuccessfulImports() }}</label>
+            </div>
+            <div>
+              <label class="failedImports">Failed Imports: {{ numberOfFailedImports() }}</label>
             </div>
 
-
-            <div ng-if="importStatus == 'done' && areThereAnyImports()">
-              <div>
-                <label class="successfulImports">Successfull Imports: {{ numberOfSuccessfulImports() }}</label>
-              </div>
-              <div>
-                <label class="failedImports">Failed Imports: {{ numberOfFailedImports() }}</label>
-              </div>
-
-              <div id="no-more-tables">
-                <table class="table table-bordered" style="width:100%" ng-if="numberOfSuccessfulImports() > 0">
-                  <thead>
-                    <tr>
-                      <th width="50">#</th>
-                      <th>Model</th>
-                      <th>Record</th>
-                      <th>Status</th>
-                      <th>Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="successfulImports" ng-repeat="import in importResults">
-                      <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                      <td data-title="Model">{{ import.model }}</td>
-                      <td>
-                        <button style="margin-top:3px;" class="btn btn-primary" ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
-                      </td>
-                      <td data-title="Status">{{ import.status }}</td>
-                      <td data-title="Error">{{ import.message }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div id="no-more-tables">
+              <table class="table table-bordered" style="width:100%" ng-if="numberOfSuccessfulImports() > 0">
+                <thead>
+                  <tr>
+                    <th width="50">#</th>
+                    <th>Model</th>
+                    <th>Record</th>
+                    <th>Status</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="successfulImports" ng-repeat="import in importResults">
+                    <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                    <td data-title="Model">{{ import.model }}</td>
+                    <td>
+                      <button style="margin-top:3px;" class="btn btn-primary"
+                        ng-click="viewRecordDetails($event, 'Record', import.record);">View Import Record</button>
+                    </td>
+                    <td data-title="Status">{{ import.status }}</td>
+                    <td data-title="Error">{{ import.message }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+      </div>
 
 
-        <div class="panel-body">
+      <div class="panel-body">
 
-          <!-- show loading gif when scope object empty and no server errors exist -->
-          <div class="loadingContainer" ng-show="!(exportCollections || alerts.server)">
-            <span id="loading-spinner" alt="Loading..."></span>
-          </div>
-
-          <!-- Server Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-          <!-- Server Alerts -->
-
-          <!-- Bottom Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-          <!-- Bottom Alerts -->
-
+        <!-- show loading gif when scope object empty and no server errors exist -->
+        <div class="loadingContainer" ng-show="!(exportCollections || alerts.server)">
+          <span id="loading-spinner" alt="Loading..."></span>
         </div>
+
+        <!-- Server Alerts -->
+        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
+          {{alert.msg}}</div>
+        <!-- Server Alerts -->
+
+        <!-- Bottom Alerts -->
+        <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">
+          {{alert.msg}}</div>
+        <!-- Bottom Alerts -->
+
       </div>
     </div>
   </div>

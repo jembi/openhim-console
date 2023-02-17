@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   entry: './app/scripts/index',
   output: {
+    libraryTarget: 'system',
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
@@ -74,5 +75,9 @@ module.exports = {
       from: '*',
       to: 'config/'
     }
-  ]})]
+  ]
+  })],
+  externals: {
+    '@Jembi/test-microfrontend': '@Jembi/test-microfrontend'
+  }
 }

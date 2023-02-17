@@ -1,105 +1,95 @@
 <div class="page-content">
   <div class="row">
-    <!-- include the sidebar -->
-    <div ng-include="'views/sidebar.html'"></div>
-    <div class="col-md-10">
-      <div class="content-box-large">
 
-        <div class="panel-heading">
-          <div class="panel-title" style="float: inherit">
-            <h2><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Channel: {{channel.name}}</h2>
+    <div class="content-box-large">
+
+      <div class="panel-heading">
+        <div class="panel-title" style="float: inherit">
+          <h2><i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;Channel: {{channel.name}}</h2>
+        </div>
+      </div>
+
+      <!-- server Alerts -->
+      <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
+      </div>
+      <!-- Server Alerts -->
+
+      <div class="panel-body" ng-show="!alerts.server">
+        <div class="content-box-large bordered-box">
+          <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
+        </div>
+
+        <div style="margin-bottom: 20px;" ng-if="transactionLoadData.loadTotal || transactionLoadData.avgResponseTime">
+          <div class="panel-body">
+            <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
+              Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
+            </div>
+            <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
+              Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
+            </div>
           </div>
         </div>
 
-        <!-- server Alerts -->
-        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-        <!-- Server Alerts -->
-
-        <div class="panel-body" ng-show="!alerts.server">
-          <div class="content-box-large bordered-box">
-            <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
+        <div class="content-box-large load-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
+          <div class="panel-heading">
+            <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
           </div>
 
-          <div style="margin-bottom: 20px;" ng-if="transactionLoadData.loadTotal || transactionLoadData.avgResponseTime">
-            <div class="panel-body">
-              <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
-                Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
-              </div>
-              <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
-                Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
-              </div>
+          <!-- Transaction Load Alerts -->
+          <div uib-alert ng-repeat="alert in alerts.load" ng-class="'alert-' + (alert.type || 'warning')">
+            {{alert.msg}}</div>
+          <!-- Transaction Load Alerts -->
+
+          <div class="panel-body" ng-if="!alerts.load">
+            <div morris-line-chart id="load-graph" data="transactionLoadData" style="height: 250px;">
             </div>
           </div>
 
-          <div class="content-box-large load-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
-            <div class="panel-heading">
-              <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
-            </div>
+        </div>
 
-            <!-- Transaction Load Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.load" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-            <!-- Transaction Load Alerts -->
-
-            <div class="panel-body" ng-if="!alerts.load">
-              <div morris-line-chart
-                id="load-graph" 
-                data="transactionLoadData"
-                style="height: 250px;">
-              </div>
-            </div>
-
+        <div class="content-box-large response-time-metrics-line-graph"
+          style="border: 1px solid #ccc; margin-bottom: 20px;">
+          <div class="panel-heading">
+            <div class="panel-title">Average Response Time (ms)</div>
           </div>
 
-          <div class="content-box-large response-time-metrics-line-graph" style="border: 1px solid #ccc; margin-bottom: 20px;">
-            <div class="panel-heading">
-              <div class="panel-title">Average Response Time (ms)</div>
-            </div>
+          <!-- Transaction ResponseTime Alerts -->
+          <div uib-alert ng-repeat="alert in alerts.responseTime" ng-class="'alert-' + (alert.type || 'warning')">
+            {{alert.msg}}</div>
+          <!-- Transaction ResponseTime Alerts -->
 
-            <!-- Transaction ResponseTime Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.responseTime" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-            <!-- Transaction ResponseTime Alerts -->
-
-            <div class="panel-body" ng-if="!alerts.responseTime">
-              <div morris-line-chart
-                id="response-time-graph" 
-                data="transactionResponseTimeData"
-                style="height: 250px;">
-              </div>
+          <div class="panel-body" ng-if="!alerts.responseTime">
+            <div morris-line-chart id="response-time-graph" data="transactionResponseTimeData" style="height: 250px;">
             </div>
           </div>
+        </div>
 
-          <div class="content-box-large" style="clear: both; border: 1px solid #ccc;">
-            <div class="panel-heading">
-              <div class="panel-title">Transaction Status</div>
-            </div>
-            <div class="panel-body">
+        <div class="content-box-large" style="clear: both; border: 1px solid #ccc;">
+          <div class="panel-heading">
+            <div class="panel-title">Transaction Status</div>
+          </div>
+          <div class="panel-body">
 
-              <!-- Transaction Status Alerts -->
-              <div uib-alert ng-repeat="alert in alerts.status" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
-              <!-- Transaction Status Alerts -->
+            <!-- Transaction Status Alerts -->
+            <div uib-alert ng-repeat="alert in alerts.status" ng-class="'alert-' + (alert.type || 'warning')">
+              {{alert.msg}}</div>
+            <!-- Transaction Status Alerts -->
 
-              <div class="row" ng-if="!alerts.status">
-                <div class="col-md-9">
-                  <div morris-bar-chart
-                    id="status-bar" 
-                    data="channelsBarData"
-                    style="height: 250px;">
-                  </div>
+            <div class="row" ng-if="!alerts.status">
+              <div class="col-md-9">
+                <div morris-bar-chart id="status-bar" data="channelsBarData" style="height: 250px;">
                 </div>
-                <div class="col-md-3">
-                  <div morris-donut-chart
-                    id="status-donut"
-                    data="channelsDonutData"
-                    style="height: 250px;">
-                  </div>
+              </div>
+              <div class="col-md-3">
+                <div morris-donut-chart id="status-donut" data="channelsDonutData" style="height: 250px;">
                 </div>
               </div>
             </div>
           </div>
-
-        </div>          
+        </div>
 
       </div>
+
     </div>
   </div>
 </div>
