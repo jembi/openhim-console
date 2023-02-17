@@ -14,6 +14,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         // reset alert object
         Alerting.AlertReset()
         Alerting.AlertAddServerMsg()
+      } else {
+        $window.location = '#!/login'
       }
     })
   } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
