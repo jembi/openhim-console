@@ -1,0 +1,15 @@
+<single-spa-router>
+  <main>
+    <application name="@jembi/openhim-header"></application>
+    <div style="display: flex">
+      <nav style="min-width: 250px">
+        <application name="@jembi/openhim-sidebar"></application>
+      </nav>
+      <route default>
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+    </div>
+  </main>
+</single-spa-router>

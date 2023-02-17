@@ -1,0 +1,23 @@
+{
+  "components": [],
+  "channels": [],
+  "mediators": [],
+  "color": {
+    "inactive": "#cccccc",
+    "active": "#4cae4c",
+    "error": "#d43f3a",
+    "text": "#000000"
+  },
+  "size": {
+    "responsive": true,
+    "width": 1000,
+    "height": 400,
+    "padding": 20
+  },
+  "time": {
+    "updatePeriod": 200,
+    "minDisplayPeriod": 500,
+    "maxSpeed": 5,
+    "maxTimeout": 5000
+  }
+}
