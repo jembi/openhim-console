@@ -124,7 +124,7 @@ describe('Controller: ProfileCtrl', function () {
   it('should test for all validation and return TRUE - hasErrors', function () {
     httpBackend.expectGET(new RegExp('.*/me'))
     createController()
-    
+
     // only admin can edit profile groups
     scope.userGroupAdmin = true
 

@@ -23,7 +23,7 @@ describe('Service: login', function () {
     httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond({
       body: "User Authenticated successfully"
     })
-    
+
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
       __v: 0,
       _id: '539846c240f2eb682ffeca4b',

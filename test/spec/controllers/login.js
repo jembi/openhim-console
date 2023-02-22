@@ -83,12 +83,11 @@ describe('Controller: LoginCtrl', function () {
       scope.loginEmail = 'incorrect@user.org'
       scope.loginPassword = 'incorrect-password'
       scope.validateLogin()
-      
+
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
       scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
-      
       httpBackend.flush()
 
       // One error should exist - 'Busy checking login credentials'
@@ -133,9 +132,6 @@ describe('Controller: LoginCtrl', function () {
   describe('*resetRootPassword() tests', function () {
     it('should run the resetRootPassword() function return error for not all fields being supplied', function () {
       httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
-
-      // httpBackend.expectGET(new RegExp('.*/authenticate/local'))
-      // httpBackend.expectGET(new RegExp('.*/users/root@openhim.org'))
 
       createController()
       scope.rootPasswordReset.should.equal(false)
