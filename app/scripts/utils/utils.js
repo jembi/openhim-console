@@ -23,18 +23,6 @@ export function decodeBase64 (stringToBeDecoded) {
   return decodeBase64Value
 }
 
-export function getHashAndSalt (stringToBeHashed) {
-  const salt = CryptoJS.lib.WordArray.random(16).toString()
-  const sha512 = CryptoJS.algo.SHA512.create()
-  sha512.update(salt)
-  sha512.update(stringToBeHashed)
-  const hash = sha512.finalize()
-  return {
-    hash: hash.toString(CryptoJS.enc.Hex),
-    salt: salt,
-    algorithm: 'sha512'
-  }
-}
 
 // location provider
 export function viewPage (path) {

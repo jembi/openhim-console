@@ -13,6 +13,16 @@ describe('Controller: ChannelsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -30,8 +40,8 @@ describe('Controller: ChannelsCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
@@ -84,6 +94,8 @@ describe('Controller: ChannelsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('ChannelsCtrl', { $scope: scope })
     }

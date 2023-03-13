@@ -1,5 +1,3 @@
-import { getHashAndSalt } from '../utils'
-
 export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
   $scope.config = config
   $scope.emailFocus = true
@@ -9,9 +7,13 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
   // if url "#/logout" is returned then destroy the session
   if (/\/logout$/i.test($window.location.hash)) {
-    localStorage.removeItem('consoleSession')
-    $rootScope.sessionUser = null
-    $rootScope.navMenuVisible = false
+    login.logout(function (result) {
+      if (result !== 'Logout Successful') {
+        // reset alert object
+        Alerting.AlertReset()
+        Alerting.AlertAddServerMsg()
+      }
+    })
   }
 
   $scope.loginEmail = ''
@@ -104,19 +106,12 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     // do the initial request
     Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      const h = getHashAndSalt(password)
-      user.passwordAlgorithm = h.algorithm
-
-      if (typeof h.salt !== 'undefined' && h.salt !== null) {
-        user.passwordSalt = h.salt
-      }
-      user.passwordHash = h.hash
-
+      const newUserInfo = { email: user.email, id: user._id, password };
       // save the new root password
-      user.$update({}, function () {
+      Api.Users.update(newUserInfo, function () {
         // re-login with new credentials
-        login.login('root@openhim.org', password, function (loggedIn) {
-          if (loggedIn) {
+        login.login('root@openhim.org', password, function (result) {
+          if (result === 'Authentication Success') {
             // Create the session for the logged in user
             $scope.createUserSession('root@openhim.org')
 
@@ -149,7 +144,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     if (!loginEmail) {
       return 'No Email supplied!'
     } else {
-      /* ------------------Set sessionID and expire timestamp------------------ */
+      /* ------------------Set sessionID------------------ */
 
       // get the logged in user details
       const userProfile = login.getLoggedInUser()
@@ -157,12 +152,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       if (!userProfile.groups) {
         return 'Logged in user could not be found!'
       } else {
-        const currentTime = new Date()
-        // add 2hours onto timestamp (2hours persistence time)
-        const expireTime = new Date(currentTime.getTime() + (2 * 1000 * 60 * 60))
         // generate random sessionID
         const sessionID = Math.random().toString(36).slice(2).toUpperCase()
-
         const sessionUserGroups = userProfile.groups
         const sessionUserSettings = userProfile.settings
 
@@ -172,14 +163,13 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           sessionUser: loginEmail,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
-          expires: expireTime
         }
 
         // Put the object into storage
         localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
       }
 
-      /* ------------------Set sessionID and expire timestamp------------------ */
+      /* ------------------Set sessionID------------------ */
     }
   }
 }

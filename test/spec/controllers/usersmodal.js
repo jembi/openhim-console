@@ -13,6 +13,16 @@ describe('Controller: UsersModalCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -50,9 +60,11 @@ describe('Controller: UsersModalCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users$')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'], settings: {} },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'], settings: {} }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'], settings: {} },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'], settings: {} }
     ])
+
+    httpBackend.when('PUT', new RegExp('.*/users/new@user.com')).respond(201)
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
       { name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], _id: '5322fe9d8b6add4b2b059dd8' },
@@ -63,8 +75,11 @@ describe('Controller: UsersModalCtrl', function () {
 
     scope = $rootScope.$new()
     var modalInstance = sinon.spy()
+    modalInstance.close = () => {}
 
     createController = function (user) {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('UsersModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -175,8 +190,6 @@ describe('Controller: UsersModalCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.user.$update = sinon.spy()
-
     // update is false so create new user
     scope.update = true
 
@@ -191,11 +204,9 @@ describe('Controller: UsersModalCtrl', function () {
     scope.temp.passwordConfirm = 'passwordtest'
 
     scope.submitFormUsers()
+    httpBackend.flush()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.user.$update.should.have.been.called()
 
-    scope.user.should.have.property('passwordSalt')
-    scope.user.should.have.property('passwordHash')
     scope.user.should.have.property('firstname', 'John')
     scope.user.should.have.property('surname', 'Doe')
     scope.user.should.have.property('dailyReport', true)

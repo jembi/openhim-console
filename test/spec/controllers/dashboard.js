@@ -13,6 +13,16 @@ describe('Controller: DashboardCtrl', function () {
   })
 
   var scope, createController, httpBackend, timeLoadDataHours, timeLoadDataDays
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   function hoursAgo (hours) {
     return moment().subtract(hours, 'hours').startOf('hour')
@@ -47,6 +57,8 @@ describe('Controller: DashboardCtrl', function () {
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([{ _id: '5322fe9d8b6add4b2b059dd8', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }] }])
 
     createController = function () {
+      httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('DashboardCtrl', { $scope: scope })
     }

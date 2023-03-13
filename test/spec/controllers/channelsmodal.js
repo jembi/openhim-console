@@ -1,6 +1,17 @@
 'use strict'
 /* global sinon:false */
 
+var meResponse = {
+  user: {
+    email: 'test@user.org',
+    firstname: 'test',
+    surname: 'test',
+    groups: [
+      'admin'
+    ]
+  }
+}
+
 describe('Controller: ChannelsModalCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
@@ -19,8 +30,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
@@ -64,6 +75,8 @@ describe('Controller: ChannelsModalCtrl', function () {
     var modalInstance = sinon.spy()
 
     createController = function (channel, channelDuplicate) {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -73,6 +86,8 @@ describe('Controller: ChannelsModalCtrl', function () {
       })
     }
     createControllerRoutes = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelRoutesCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -442,8 +457,8 @@ describe('Controller: channelUserAccessCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited', 'tester'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited', 'tester'] }
     ])
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
       { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
@@ -454,6 +469,8 @@ describe('Controller: channelUserAccessCtrl', function () {
 
     var modalInstance = sinon.spy()
     createControllerParent = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -463,6 +480,8 @@ describe('Controller: channelUserAccessCtrl', function () {
       })
     }
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelUserAccessCtrl', {
         $scope: scope
       })
@@ -535,8 +554,8 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend = $httpBackend
     // http request used in main parent controller
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
@@ -570,6 +589,8 @@ describe('Controller: channelRoutesCtrl', function () {
 
     var modalInstance = sinon.spy()
     createControllerParent = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('ChannelsModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
@@ -579,6 +600,8 @@ describe('Controller: channelRoutesCtrl', function () {
       })
     }
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('channelRoutesCtrl', {
         $scope: scope
       })

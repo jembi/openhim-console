@@ -12,16 +12,16 @@ describe('Service: login', function () {
   })
 
   // instantiate service
-  var login, httpBackend, Authinterceptor
-  beforeEach(inject(function (_login_, $httpBackend, _Authinterceptor_) {
+  var login, httpBackend
+  beforeEach(inject(function (_login_, $httpBackend) {
     login = _login_
 
     httpBackend = $httpBackend
-    Authinterceptor = _Authinterceptor_
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/.*')).respond({
-      salt: 'test-salt',
-      ts: new Date(new Date().getTime() + 3600000).toISOString() // 1 hour ahead
+    httpBackend.when('GET', new RegExp('.*/me')).respond(404)
+    
+    httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond({
+      body: "User Authenticated successfully"
     })
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
@@ -29,14 +29,13 @@ describe('Service: login', function () {
       _id: '539846c240f2eb682ffeca4b',
       email: 'test@user.org',
       firstname: 'test',
-      passwordAlgorithm: 'sha512',
-      passwordHash: '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
-      passwordSalt: 'test-salt',
       surname: 'test',
       groups: [
         'admin'
       ]
     })
+   
+    httpBackend.when('GET', new RegExp('.*/logout')).respond(201)
   }))
 
   afterEach(function () {
@@ -45,40 +44,41 @@ describe('Service: login', function () {
   })
 
   it('should login a user and fetch the currently logged in user', function () {
-    httpBackend.expectGET(new RegExp('.*/authenticate/test@user.org'))
+    httpBackend.expectPOST(new RegExp('.*/authenticate/local'))
     httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
+    
     login.login('test@user.org', 'test-password', function () {})
-
     httpBackend.flush()
 
     var user = login.getLoggedInUser()
 
     user.should.exist()
     user.should.have.property('email', 'test@user.org')
-    user.should.have.property('passwordHash', '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160')
   })
 
   it('should logout a user', function () {
-    login.logout()
+    httpBackend.expectGET(new RegExp('.*/logout'))
+
+    login.logout(function () {})
+    httpBackend.flush()
+
     var user = login.getLoggedInUser()
     expect((user === null)).to.be.true()
-  })
-
-  it('should have a timediff', function () {
-    login.login('test@user.org', 'test-password', function () {})
-    httpBackend.flush()
-    var user = Authinterceptor.getLoggedInUser()
-    user.should.have.property('timeDiff')
+    expect(login.isLoggedIn()).to.be.false()
   })
 
   it('should check if a user is currently logged in', function () {
+    httpBackend.flush()
     expect(login.isLoggedIn()).to.be.false()
 
     login.login('test@user.org', 'test-password', function () {})
     httpBackend.flush()
 
     expect(login.isLoggedIn()).to.be.true()
-    login.logout()
+    
+    login.logout(function () {})
+    httpBackend.flush()
+
     expect(login.isLoggedIn()).to.be.false()
   })
 })
