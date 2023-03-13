@@ -13,6 +13,16 @@ describe('Controller: CertificatesModalCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -29,6 +39,9 @@ describe('Controller: CertificatesModalCtrl', function () {
     var modalInstance = sinon.spy()
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+      $httpBackend.flush()
+
       var cert
       cert = {
         $save: sinon.spy()

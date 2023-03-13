@@ -13,42 +13,18 @@ describe('Service: Authinterceptor', function () {
   })
 
   // instantiate service
-  var Authinterceptor
-  beforeEach(inject(function (_Authinterceptor_) {
+  var Authinterceptor, location
+  beforeEach(inject(function (_Authinterceptor_, $location) {
     Authinterceptor = _Authinterceptor_
+    location = $location
   }))
 
-  var u = {
-    email: 'test-user',
-    passwordHash: 'test-hash',
-    timeDiff: new Date().getTime()
-  }
-
-  it('should add add authentication details to each request config', function () {
-    Authinterceptor.setLoggedInUser(u)
-
-    var config = {}
-    config.headers = {}
-    config = Authinterceptor.request(config)
-
-    config.headers['auth-username'].should.be.eql(u.email)
-    config.headers['auth-ts'].should.exist()
-    config.headers['auth-salt'].should.exist()
-    config.headers['auth-token'].should.exist()
-
-    var sha512 = CryptoJS.algo.SHA512.create()
-    sha512.update(u.passwordHash)
-    sha512.update(config.headers['auth-salt'])
-    sha512.update(config.headers['auth-ts'])
-    var hash = sha512.finalize()
-
-    config.headers['auth-token'].should.eql(hash.toString(CryptoJS.enc.Hex))
-  })
-
-  it('should set the logged in user', function () {
-    Authinterceptor.setLoggedInUser(u)
-    var u2 = Authinterceptor.getLoggedInUser()
-
-    u.should.be.eql(u2)
+  it('should redirect to login page if not authorised', function () {
+    var response = {
+      status: 401
+    }
+    Authinterceptor.responseError(response)
+    var currentLocation = location.path();
+    currentLocation.should.be.equal('/login')
   })
 })

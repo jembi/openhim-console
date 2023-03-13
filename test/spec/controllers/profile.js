@@ -13,15 +13,22 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    httpBackend.when('GET', new RegExp('.*/authenticate/test@user.org')).respond({
-      salt: 'test-salt',
-      ts: 'test-ts'
-    })
+    httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(201)
 
     httpBackend.when('GET', new RegExp('config/visualizer.json')).respond({
       components: [],
@@ -59,9 +66,6 @@ describe('Controller: ProfileCtrl', function () {
       _id: '539846c240f2eb682ffeca4b',
       email: 'test@user.org',
       firstname: 'test',
-      passwordAlgorithm: 'sha512',
-      passwordHash: '7d0d1a30d16f5343e3390fe9ef1dd61539a7f797267e0d2241ed22390dfc9743091244ddb2463df2f1adf6df3c355876ed34c6523f1e8d3b7f16f4b2afc8c160',
-      passwordSalt: 'test-salt',
       surname: 'test',
       weeklyAlert: true,
       dailyAlert: true,
@@ -73,8 +77,8 @@ describe('Controller: ProfileCtrl', function () {
     })
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'], settings: {} },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'], settings: {} }
+      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'], settings: {} },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'], settings: {} }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
@@ -85,12 +89,13 @@ describe('Controller: ProfileCtrl', function () {
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
 
     createController = function () {
+      httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+      httpBackend.flush(1)
+
       scope = $rootScope.$new()
       scope.consoleSession = {}
       scope.consoleSession.sessionUser = 'test@user.org'
-      scope.user = {
-        $update: sinon.spy()
-      }
+      scope.user = {}
       return $controller('ProfileCtrl', {
         $scope: scope
       })
@@ -103,8 +108,9 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should fetch a user profile', function () {
-    httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
     createController()
+    httpBackend.expectGET(new RegExp('.*/me'))
+    httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
     httpBackend.flush()
 
     scope.user.should.have.property('email', 'test@user.org')
@@ -116,6 +122,7 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should test for all validation and return TRUE - hasErrors', function () {
+    httpBackend.expectGET(new RegExp('.*/me'))
     createController()
 
     // only admin can edit profile groups
@@ -129,6 +136,7 @@ describe('Controller: ProfileCtrl', function () {
 
     // Should check all form validations and create object ngError.hasErrors with value true.
     scope.validateFormProfile()
+
     scope.ngError.should.have.property('hasErrors', true)
     scope.ngError.should.have.property('firstname', true)
     scope.ngError.should.have.property('surname', true)
@@ -158,6 +166,7 @@ describe('Controller: ProfileCtrl', function () {
   })
 
   it('should save the user profile with updated details', function () {
+    httpBackend.expectGET(new RegExp('.*/me'))
     createController()
 
     scope.user.email = 'test@user.org'
@@ -170,13 +179,10 @@ describe('Controller: ProfileCtrl', function () {
     scope.temp.password = 'password'
     scope.temp.passwordConfirm = 'password'
 
-    // Should submit the form with supplied values annd save the user with new password salt/hash
+    // Should submit the form with supplied values annd save the user with new password
     scope.submitFormProfile()
-    scope.user.$update.should.have.been.called()
     scope.ngError.should.have.property('hasErrors', false)
 
-    scope.user.should.have.property('passwordSalt')
-    scope.user.should.have.property('passwordHash')
     scope.user.should.have.property('firstname', 'Jane')
     scope.user.should.have.property('surname', 'Doe')
     scope.user.should.have.property('weeklyAlert', true)

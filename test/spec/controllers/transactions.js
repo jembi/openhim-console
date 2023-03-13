@@ -14,6 +14,22 @@ describe('Controller: TransactionsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ],
+      settings: {
+        filter: {
+          limit: 200
+        },
+        list: { tabview: 'new' }
+      }
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -25,8 +41,8 @@ describe('Controller: TransactionsCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
-      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
+      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'] },
+      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users/*')).respond({
@@ -34,9 +50,6 @@ describe('Controller: TransactionsCtrl', function () {
       email: 'root@openhim.org',
       firstname: 'Super',
       surname: 'User',
-      passwordAlgorithm: 'sha512',
-      passwordHash: '943a856bba65aad6c639d5c8d4a11fc8bb7fe9de62ae307aec8cf6ae6c1faab722127964c71db4bdd2ea2cdf60c6e4094dcad54d4522ab2839b65ae98100d0fb',
-      passwordSalt: 'd9bcb40e-ae65-478f-962e-5e5e5e7d0a01',
       groups: ['admin'],
       settings: {
         filter: {
@@ -96,6 +109,8 @@ describe('Controller: TransactionsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('TransactionsCtrl', { $scope: scope })
     }
@@ -139,6 +154,7 @@ describe('Controller: TransactionsCtrl', function () {
 
   it('should clear filters and apply to the session', function () {
     createController()
+    httpBackend.flush()
 
     scope.clearFilters()
     httpBackend.flush()
@@ -163,6 +179,7 @@ describe('Controller: TransactionsCtrl', function () {
 
   it("should apply user's default settings to the session", function () {
     createController()
+    httpBackend.flush()
 
     scope.applyDefaultFilters()
     httpBackend.flush()

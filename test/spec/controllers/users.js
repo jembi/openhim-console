@@ -13,6 +13,16 @@ describe('Controller: UsersCtrl', function () {
   })
 
   var createController, httpBackend, scope, modalSpy
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -52,18 +62,12 @@ describe('Controller: UsersCtrl', function () {
       firstname: 'Super',
       surname: 'User',
       email: 'super@openhim.org',
-      passwordAlgorithm: 'sample/api',
-      passwordHash: '539aa778930879b01b37ff62',
-      passwordSalt: '79b01b37ff62',
       groups: ['admin'],
       settings: {}
     }, {
       firstname: 'Ordinary',
       surname: 'User',
       email: 'normal@openhim.org',
-      passwordAlgorithm: 'sample/api',
-      passwordHash: '539aa778930879b01b37ff62',
-      passwordSalt: '79b01b37ff62',
       groups: ['limited'],
       settings: {}
     }
@@ -78,6 +82,8 @@ describe('Controller: UsersCtrl', function () {
 
     scope = $rootScope.$new()
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('UsersCtrl', { $scope: scope })
     }

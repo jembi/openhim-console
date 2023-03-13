@@ -24,7 +24,16 @@ describe('Controller: MediatorDetailsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy // eslint-disable-line
-
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
   var testMediator = {
     urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
     version: '0.0.1',
@@ -55,6 +64,8 @@ describe('Controller: MediatorDetailsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('MediatorDetailsCtrl', { $scope: scope, $routeParams: { urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE' } })
     }

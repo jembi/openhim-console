@@ -13,6 +13,16 @@ describe('Controller: TasksCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -24,13 +34,15 @@ describe('Controller: TasksCtrl', function () {
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openhim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openhim.org', passwordAlgorithm: 'sample/api', passwordHash: '539aa778930879b01b37ff62', passwordSalt: '79b01b37ff62', groups: ['limited'] }
+      { firstname: 'Super', surname: 'User', email: 'super@openhim.org', groups: ['admin'] },
+      { firstname: 'Ordinary', surname: 'User', email: 'normal@openhim.org', groups: ['limited'] }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       var route = {
         reload: sinon.spy()

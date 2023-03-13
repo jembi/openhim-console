@@ -13,6 +13,16 @@ describe('Controller: ContactGroupsModalCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -29,6 +39,8 @@ describe('Controller: ContactGroupsModalCtrl', function () {
         $update: sinon.spy(),
         _id: '553516b69fdbfc281db58efd'
       }
+
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       $httpBackend.when('GET', new RegExp('.*/groups/.+')).respond(contactGroup)
 
