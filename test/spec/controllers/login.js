@@ -102,12 +102,11 @@ describe('Controller: LoginCtrl', function () {
       scope.loginEmail = 'incorrect@user.org'
       scope.loginPassword = 'incorrect-password'
       scope.validateLogin()
-      
+
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
       scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
-      
       httpBackend.flush()
 
       // One error should exist - 'Busy checking login credentials'
