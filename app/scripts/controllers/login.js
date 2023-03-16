@@ -211,15 +211,11 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   }
 
   $scope.signInWithKeyCloak = function () {
-    if (config.ssoEnabled) {
-      keycloak.keycloakInstance.init({
-        onLoad: 'login-required',
-        // Must match to the configured value in keycloak
-        redirectUri: $window.location.origin,
-        checkLoginIframe: false
-      })
-    } else {
-      Alerting.AlertAddMsg('login', 'danger', 'Sign-in with Keycloak is disabled. Please contact the server administrator.')
-    }
+    keycloak.keycloakInstance.init({
+      onLoad: 'login-required',
+      // Must match to the configured value in keycloak
+      redirectUri: $window.location.origin,
+      checkLoginIframe: false
+    })
   }
 }

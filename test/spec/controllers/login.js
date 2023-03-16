@@ -410,15 +410,6 @@ describe('Controller: LoginCtrl', function () {
 
   // Testing the signInWithKeyCloak() function
   describe('*signInWithKeyCloak() tests', function () {
-
-    it('should not be able to sign in with keycloak if ssoEnabled config is set to false', function () {
-      createController({ ssoEnabled: false })
-      scope.signInWithKeyCloak()
-      scope.alerts.login.length.should.equal(1)
-      scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('Sign-in with Keycloak is disabled. Please contact the server administrator.')
-    })
-
     it('should init keycloak if ssoEnabled config is set to true', function () {
       createController({ ssoEnabled: true })
       scope.signInWithKeyCloak()
