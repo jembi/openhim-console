@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,6 +26,10 @@ const theme = createTheme({
   }
 });
 
+const GrowingDiv = styled.div`
+  flex-grow: 1
+`
+
 export default function ButtonAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -41,39 +46,40 @@ export default function ButtonAppBar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              OpenHIM Console
-            </Typography>
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem component={Link} href="#!/profile">Profile</MenuItem>
-                  <MenuItem component={Link} href="#!/logout">Logout</MenuItem>
-                </Menu>
-              </div>
+            <a href="#!/transactions">
+              <img height={50} src="/images/openhim-logo-green.png"></img>
+            </a>
+            <GrowingDiv></GrowingDiv>
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem component={Link} href="#!/profile">Profile</MenuItem>
+                <MenuItem component={Link} href="#!/logout">Logout</MenuItem>
+              </Menu>
+            </div>
           </Toolbar>
         </AppBar>
       </Box>
