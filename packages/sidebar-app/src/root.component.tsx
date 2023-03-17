@@ -5,9 +5,9 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { createTheme } from '@mui/material/styles';
+import { useState, useEffect } from 'react';
 
 const theme = createTheme({
   typography: {
@@ -27,6 +27,23 @@ const theme = createTheme({
 });
 
 export default function Root(props) {
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    async function fetchMe() {
+      const res1 = await fetch('/config/default.json')
+      const { protocol, host, hostPath, port } = await res1.json()
+      const res2 = await fetch(`${protocol}://${host}:${port}${(/^\s*$/.test(hostPath) ? '' : '/' + hostPath)}/me`, { credentials: 'include' })
+      const me = await res2.json()
+      console.log(me)
+      console.log(me.user.groups.includes('admin'))
+
+      setIsAdmin(me.user.groups.includes('admin'))
+    }
+
+    fetchMe()
+  })
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper' }}>
@@ -41,61 +58,65 @@ export default function Root(props) {
               <ListItemText primary="Transaction Log" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/audits">
-              <ListItemText primary="Audit Log" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/clients">
-              <ListItemText primary="Clients" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/channels">
-              <ListItemText primary="Channels" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/tasks">
-              <ListItemText primary="Tasks" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/visualizer">
-              <ListItemText primary="Visualizer" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/groups">
-              <ListItemText primary="Contact Lists" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/mediators">
-              <ListItemText primary="Mediators" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/users">
-              <ListItemText primary="Users" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/certificates">
-              <ListItemText primary="Certificates" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/export-import">
-              <ListItemText primary="Import/Export" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="/#!/logs">
-              <ListItemText primary="Server Logs" />
-            </ListItemButton>
-          </ListItem>
+          {isAdmin && (
+            <>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/audits">
+                  <ListItemText primary="Audit Log" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/clients">
+                  <ListItemText primary="Clients" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/channels">
+                  <ListItemText primary="Channels" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/tasks">
+                  <ListItemText primary="Tasks" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/visualizer">
+                  <ListItemText primary="Visualizer" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/groups">
+                  <ListItemText primary="Contact Lists" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/mediators">
+                  <ListItemText primary="Mediators" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/users">
+                  <ListItemText primary="Users" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/certificates">
+                  <ListItemText primary="Certificates" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/export-import">
+                  <ListItemText primary="Import/Export" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton component="a" href="/#!/logs">
+                  <ListItemText primary="Server Logs" />
+                </ListItemButton>
+              </ListItem>
+            </>
+          )}
           <Divider />
           <ListItem disablePadding>
             <ListItemButton component="a" href="/#!/about">

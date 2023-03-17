@@ -2,12 +2,86 @@
   <main>
     <application name="@jembi/openhim-header"></application>
     <div style="display: flex">
-      <nav style="min-width: 250px">
-        <application name="@jembi/openhim-sidebar"></application>
-      </nav>
       <route default>
+        <route path="#!" exact="true">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/transactions">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/audits">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/clients">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/channels">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/tasks">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/visualizer">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/groups">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/mediators">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/users">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/certificates">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/export-import">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/logs">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/about">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
+        <route path="#!/profile">
+          <nav style="min-width: 250px">
+            <application name="@jembi/openhim-sidebar"></application>
+          </nav>
+        </route>
         <div style="flex-grow: 1">
-          <application name="@jembi/legacy-console"></application>
+          <nav style="min-width: 250px">
+            <application name="@jembi/legacy-console"></application>
+          </nav>
         </div>
       </route>
     </div>
