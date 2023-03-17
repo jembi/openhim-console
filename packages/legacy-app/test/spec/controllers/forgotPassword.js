@@ -17,11 +17,14 @@ describe('Controller: ForgotPasswordCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/authenticate/fake@email.com')).respond(404)
-    $httpBackend.when('GET', new RegExp('.*/authenticate/test@test.com')).respond({ salt: 'test-salt', ts: 'test-ts' })
     $httpBackend.when('GET', new RegExp('.*/password-reset-request/test@test.com')).respond('Successfully set user token/expiry for password reset.')
+    $httpBackend.when('GET', new RegExp('.*/password-reset-request/fake@email.com')).respond(404)
 
     createController = function () {
+      // Shouldn't be authenticating when requesting for password reset
+      httpBackend.when('GET', new RegExp('.*/me')).respond(404)
+      httpBackend.flush()
+      
       scope = $rootScope.$new()
       return $controller('ForgotPasswordCtrl', { $scope: scope })
     }

@@ -3,10 +3,19 @@
 describe('directive: transaction-body-downloader', function () {
   beforeEach(module('openhimConsoleApp'))
 
+  // setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
+
   var scope, compileDirective, httpBackend
 
   beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
+
+    httpBackend.when('GET', new RegExp('.*/me')).respond(404)
 
     compileDirective = function (transactionId, path) {
       var _scope = $rootScope.$new()

@@ -13,6 +13,16 @@ describe('Controller: ClientsCtrl', function () {
   })
 
   var scope, createController, httpBackend, modalSpy
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
@@ -42,6 +52,8 @@ describe('Controller: ClientsCtrl', function () {
     modalSpy = sinon.spy($uibModal, 'open')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('ClientsCtrl', { $scope: scope })
     }

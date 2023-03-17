@@ -12,6 +12,16 @@ describe('Controller: LogsCtrl', function () {
   })
 
   var scope, createController, httpBackend, location, rootScope
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $location) {
@@ -37,6 +47,8 @@ describe('Controller: LogsCtrl', function () {
     ])
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       return $controller('LogsCtrl', { $scope: scope })
     }
@@ -58,6 +70,9 @@ describe('Controller: LogsCtrl', function () {
 
   it('should send data range in ISO 8601 format', function () {
     location.search({ level: 'debug', from: '2015-11-03 10:50', until: '2015-11-03 11:00' })
+    httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+    httpBackend.flush()
+
     rootScope.$apply()
 
     httpBackend.expectGET(new RegExp('.*/logs\\?from=2015-11-03T10:50:00.*&level=debug&until=2015-11-03T11:00:00.*'))
@@ -68,12 +83,18 @@ describe('Controller: LogsCtrl', function () {
 
   it('should reset the scope', function () {
     location.search({ level: 'debug', from: '2015-11-03 10:50', until: '2015-11-03 11:00' })
+    httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+    httpBackend.flush()
+
     rootScope.$apply()
 
     createController()
     httpBackend.flush()
     scope.reset()
 
+    httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+    httpBackend.flush()
+    
     scope.params.level.should.equal('info')
     expect(scope.params.from).to.not.exist()
     expect(scope.params.until).to.not.exist()

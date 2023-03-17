@@ -12,6 +12,16 @@ describe('Controller: SetPasswordCtrl', function () {
   })
 
   var scope, createController, httpBackend
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
@@ -27,6 +37,8 @@ describe('Controller: SetPasswordCtrl', function () {
     $httpBackend.when('PUT', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond('Successfully set new user password.')
 
     createController = function () {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       scope = $rootScope.$new()
       scope.user = { }
       return $controller('SetPasswordCtrl', { $scope: scope, $routeParams: { token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU' } })
@@ -98,8 +110,6 @@ describe('Controller: SetPasswordCtrl', function () {
     scope.submitFormSetPassword()
     scope.ngError.should.have.property('hasErrors', false)
 
-    scope.user.should.have.property('passwordSalt')
-    scope.user.should.have.property('passwordHash')
     scope.user.should.have.property('firstname', 'John')
     scope.user.should.have.property('surname', 'Smith')
     scope.user.should.have.property('msisdn', '27123456789')

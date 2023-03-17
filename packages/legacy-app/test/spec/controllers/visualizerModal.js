@@ -128,6 +128,17 @@ describe('Controller: VisualizerModalCtrl', function () {
     mediators: []
   }]
 
+  var meResponse = {
+    user: {
+      email: 'test@user.org',
+      firstname: 'test',
+      surname: 'test',
+      groups: [
+        'admin'
+      ]
+    }
+  }
+
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
@@ -150,6 +161,8 @@ describe('Controller: VisualizerModalCtrl', function () {
     }
 
     createController = function (vis, dup) {
+      $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
+
       return $controller('VisualizerModalCtrl', {
         $scope: scope,
         $uibModalInstance: modalInstance,
