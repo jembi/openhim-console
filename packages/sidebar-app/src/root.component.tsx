@@ -31,12 +31,16 @@ export default function Root(props) {
 
   useEffect(() => {
     async function fetchMe() {
-      const res1 = await fetch('/config/default.json')
-      const { protocol, host, hostPath, port } = await res1.json()
-      const res2 = await fetch(`${protocol}://${host}:${port}${(/^\s*$/.test(hostPath) ? '' : '/' + hostPath)}/me`, { credentials: 'include' })
-      const me = await res2.json()
-      console.log(me)
-      console.log(me.user.groups.includes('admin'))
+      const resConf = await fetch('/config/default.json')
+      if (!resConf.ok) {
+        return console.error('[sidebar-app] Failed to fetch OpenHIM console config')
+      }
+      const { protocol, host, hostPath, port } = await resConf.json()
+      const resMe = await fetch(`${protocol}://${host}:${port}${(/^\s*$/.test(hostPath) ? '' : '/' + hostPath)}/me`, { credentials: 'include' })
+      if (!resMe.ok) {
+        return console.error('[sidebar-app] Failed to fetch user profile')
+      }
+      const me = await resMe.json()
 
       setIsAdmin(me.user.groups.includes('admin'))
     }
