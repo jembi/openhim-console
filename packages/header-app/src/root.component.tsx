@@ -76,8 +76,8 @@ export default function ButtonAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem component={Link} href="#!/profile">Profile</MenuItem>
-                <MenuItem component={Link} href="#!/logout">Logout</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} href="#!/profile">Profile</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} href="#!/logout">Logout</MenuItem>
               </Menu>
             </div>
           </Toolbar>
