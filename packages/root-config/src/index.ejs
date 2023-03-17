@@ -44,7 +44,16 @@
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js" as="script">
 
   <!-- Add your organization's prod import map URL to this script's src  -->
-  <!-- <script type="systemjs-importmap" src="/importmap.json"></script> -->
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "@jembi/root-config": "./jembi-root-config.js",
+        "@jembi/openhim-sidebar": "./jembi-openhim-sidebar.js",
+        "@jembi/openhim-header": "./jembi-openhim-header.js",
+        "@jembi/legacy-console": "./bundle.js"
+      }
+    }
+  </script>
 
   <% if (isLocal) { %>
   <script type="systemjs-importmap">

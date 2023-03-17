@@ -16,7 +16,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.css', '.html'],
     alias: {
-      'morris.js': path.resolve(__dirname, 'node_modules/morris.js/morris.js'),
+      'morris.js': path.resolve(__dirname, '../../node_modules/morris.js/morris.js'),
       '~': path.resolve(__dirname, 'app')
     }
   },
