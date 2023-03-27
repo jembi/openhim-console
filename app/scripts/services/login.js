@@ -46,7 +46,7 @@ export function login (Api, $rootScope, keycloak) {
         function () {
           // Cleanup of keycloak session
           const keycloakState = keycloak.getKeycloakState()
-          if ($rootScope.sessionUser && $rootScope.sessionProvider === 'keycloak' && keycloakState) {
+          if ($rootScope.sessionUser && $rootScope.sessionProvider === 'openid' && keycloakState) {
             localStorage.removeItem(`kc-callback-${keycloakState}`)
           }
 
