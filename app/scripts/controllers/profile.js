@@ -160,7 +160,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
 
       // rootScope function to scroll to top
       $scope.goToTop()
-    })
+    }, error)
   }
 
   /****************************************************************/
