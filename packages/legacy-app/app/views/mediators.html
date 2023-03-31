@@ -1,0 +1,93 @@
+<div class="page-content">
+  <div class="row">
+
+    <div class="content-box-large">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <h2><i class="glyphicon glyphicon-link"></i>&nbsp;&nbsp;Mediators</h2>
+          <p class="text-muted">
+            Mediators are add on services that run separately from the OpenHIM. They register themselves with the
+            OpenHIM and once that is done they will be displayed here and their configuration details may be modified.
+            Also, if a mediator is registered it will allow you to easily add routes that point to it in the channel
+            configuration.
+          </p>
+        </div>
+      </div>
+
+      <!-- Top Alerts -->
+      <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
+      </div>
+      <!-- Top Alerts -->
+
+      <div class="panel-body">
+
+        <div id="no-more-tables">
+          <!-- Table with all the transaction logs -->
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>URN</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Version</th>
+                <th>Last Heartbeat</th>
+                <th>Uptime at Heartbeat</th>
+                <th width="80"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-list" ng-repeat="mediator in mediators | orderBy:['name']"
+                ng-click='viewMediatorDetails("/mediators/" + mediator.urn, $event)'>
+                <td data-title="# {{ $index +1 }}" class="responsiveTransactionIndexCheckbox">
+                  <span>{{ $index +1 }}</span>
+                </td>
+                <td data-title="URN">{{ mediator.urn }}</td>
+                <td data-title="Name">{{ mediator.name }}</td>
+                <td data-title="Description">{{ mediator.description }}</td>
+                <td data-title="Version">{{ mediator.version }}</td>
+                <td data-title="LastHeartbeat">
+                  <span ng-if="mediator.lastHeartbeatStatus === 'never'"
+                    uib-tooltip="{{mediator.lastHeartbeatDisplayExplain}}" class="label label-default">Never</span>
+                  <span ng-if="mediator.lastHeartbeatStatus !== 'never'"
+                    class="label label-{{mediator.lastHeartbeatStatus}}"
+                    tooltip-html-unsafe="{{mediator._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediator.lastHeartbeatDisplayExplain}}">{{mediator.lastHeartbeatDisplay}}</span>
+                  <div>
+                  </div>
+                </td>
+                <td data-title="Uptime"><span ng-if="mediator._uptime"
+                    tooltip-html-unsafe="Startup time<br>{{mediator.uptimeSince | date:'yyyy-MM-dd HH:mm:ss'}}">{{
+                    mediator.uptimeDisplay }}</td>
+                <td>
+                  <button class="btn btn-info btn-xs" ng-click="editMediatorConfig(mediator)"
+                    uib-tooltip="configure mediator"><i class="glyphicon glyphicon-cog"></i></button>
+                  <button class="btn btn-danger btn-xs" ng-click="confirmDelete(mediator)"><i
+                      class="glyphicon glyphicon-remove"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div>
+            <!-- show loading gif when scope object empty and no server errors exist -->
+            <div class="loadingContainer" ng-show="!(mediators || alerts.server)">
+              <span id="loading-spinner" alt="Loading..."></span>
+            </div>
+
+            <!-- server Alerts -->
+            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
+              {{alert.msg}}</div>
+            <!-- Server Alerts -->
+
+            <!-- Mediators Alerts -->
+            <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">
+              {{alert.msg}}</div>
+            <!-- Mediators Alerts -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

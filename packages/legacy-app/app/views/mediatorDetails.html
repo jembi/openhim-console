@@ -1,0 +1,111 @@
+<div class="page-content">
+  <div class="row">
+
+    <div class="content-box-large">
+      <div class="panel-heading">
+        <div class="panel-title" style="float: inherit">
+          <h2>
+            <i class="glyphicon glyphicon-link"></i>
+            &nbsp;Mediator: {{mediatorDetails.name}}
+          </h2>
+        </div>
+      </div>
+
+      <!-- Server Alerts -->
+      <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
+      </div>
+      <!-- Server Alerts -->
+
+      <div class="panel-body" ng-show="mediatorDetails">
+
+        <table class="table table-striped transactionTable" style="margin-top: 20px">
+          <tr>
+            <td><strong>URN: </strong></td>
+            <td>{{mediatorDetails.urn}}</td>
+          </tr>
+          <tr>
+            <td><strong>Name: </strong></td>
+            <td>{{mediatorDetails.name}}</td>
+          </tr>
+          <tr>
+            <td><strong>Description: </strong></td>
+            <td>{{mediatorDetails.description}}</td>
+          </tr>
+          <tr>
+            <td><strong>Version: </strong></td>
+            <td>{{mediatorDetails.version}}</td>
+          </tr>
+          <tr>
+            <td><strong>Last Heartbeat: </strong></td>
+            <td>
+              <span ng-if="mediatorDetails.lastHeartbeatStatus === 'never'" class="label label-default"
+                uib-tooltip="{{mediatorDetails.lastHeartbeatDisplayExplain}}">Never</span>
+              <span ng-if="mediatorDetails.lastHeartbeatStatus !== 'never'"
+                class="label label-{{mediatorDetails.lastHeartbeatStatus}}"
+                tooltip-html-unsafe="{{mediatorDetails._lastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}<br>{{mediatorDetails.lastHeartbeatDisplayExplain}}">{{mediatorDetails.lastHeartbeatDisplay}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Uptime at last heartbeat: </strong></td>
+            <td><span ng-if="mediatorDetails._uptime"
+                tooltip-html-unsafe="Startup time<br>{{mediatorDetails.uptimeSince | date:'yyyy-MM-dd HH:mm:ss'}}">{{mediatorDetails.uptimeDisplay}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Endpoints: </strong></td>
+            <td style="padding: 0px;">
+
+              <table class="table table-striped transactionTable" style="margin-bottom: 0px;">
+                <tr>
+                  <th style="border-top: 0px">Name</th>
+                  <th style="border-top: 0px">Host</th>
+                  <th style="border-top: 0px">Port</th>
+                  <th style="border-top: 0px">Type</th>
+                </tr>
+                <tr ng-repeat="endpoints in mediatorDetails.endpoints">
+                  <td style="width: 25%">{{endpoints.name}}</td>
+                  <td style="width: 25%">{{endpoints.host}}</td>
+                  <td style="width: 25%">{{endpoints.port}}</td>
+                  <td style="width: 25%">{{endpoints.type}}</td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Configuration </strong>
+              <button ng-hide="!mediatorDetails.configDefs || mediatorDetails.configDefs.length === 0"
+                class="btn btn-info btn-xs" ng-click="editMediatorConfig()" uib-tooltip="configure mediator"><i
+                  class="glyphicon glyphicon-cog"></i></button>
+            </td>
+            <td>
+              <div mediator-config-display config-defs="mediatorDetails.configDefs" config="mediatorDetails.config" />
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Default channels</strong> <i class="glyphicon glyphicon-question-sign"
+                uib-tooltip="Mediator channels are default channel definitions that work well with this mediator, you may choose whether to install these or not"></i>
+            </td>
+            <td style="padding: 0px;">
+              <table class="table table-striped">
+                <tr>
+                  <th>Name</th>
+                  <th>URL Pattern</th>
+                  <th>Description</th>
+                </tr>
+                <tr ng-repeat="channel in mediatorDetails.defaultChannelConfig">
+                  <td>{{channel.name}}</td>
+                  <td>{{channel.urlPattern}}</td>
+                  <td>{{channel.description}}</td>
+                  <td><button class="btn btn-xs btn-success" uib-tooltip="Install this channel"
+                      ng-click="addChannel(channel.name)"><i class="glyphicon glyphicon-plus"></i></button></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

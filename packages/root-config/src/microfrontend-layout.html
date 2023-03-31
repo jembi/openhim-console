@@ -1,0 +1,57 @@
+<single-spa-router>
+  <main>
+    <application name="@jembi/openhim-header"></application>
+    <div style="display: flex">
+      <route default>
+        <route path="#!" exact="true">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/transactions">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/audits">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/clients">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/channels">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/tasks">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/visualizer">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/groups">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/mediators">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/users">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/certificates">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/export-import">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/logs">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/about">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <route path="#!/profile">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+    </div>
+  </main>
+</single-spa-router>

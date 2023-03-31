@@ -1,0 +1,154 @@
+<div class="page-content">
+  <div class="row">
+
+    <div class="content-box-large">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <h2><i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;Rerun Tasks</h2>
+          <p class="text-muted">
+            View current and previous tasks that rerun a set of selected transaction. Transaction reruns can be
+            executed from the transaction log. These tasks track the current task status and display information about
+            which transactions are part of each rerun task.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel-body">
+
+        <!-- Filter options -->
+        <div class="transaction-filter-options">
+
+          <uib-tabset class="transaction_settings_tabset" justified="false">
+            <uib-tab heading="Filter Settings">
+              <div ng-include="'views/partials/tasks-filter-settings.html'"></div>
+            </uib-tab>
+
+            <uib-tab heading="List Settings">
+              <div class="settings_div">
+                <label style="float: left">
+                  Transaction View
+                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
+                    uib-tooltip="Set whether a task opens in the 'Same Tab' or in a 'New Tab'"
+                    class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                </label>
+                <div class="btn-group" style="float: left; clear: both;">
+                  <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'same'">Same
+                    Tab</label>
+                  <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'new'">New
+                    Tab</label>
+                </div>
+              </div>
+              <div class="settings_div">
+                <label style="float: left">
+                  Auto-Update Transaction List
+                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
+                    uib-tooltip="If enabled, the task list will be updated automatically"
+                    class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                </label>
+                <div class="btn-group" style="float: left; clear: both;">
+                  <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="true"
+                    ng-click="startPolling()">Enabled</label>
+                  <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="false"
+                    ng-click="stopPolling()">Disabled</label>
+                </div>
+              </div>
+            </uib-tab>
+          </uib-tabset>
+        </div>
+
+        <div id="no-more-tables">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th width="50">#</th>
+                <th>Status</th>
+                <th width="300">Progress</th>
+                <th>Transactions</th>
+                <th>User</th>
+                <th>Execution Time</th>
+                <th>Created Date</th>
+                <th width="80"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="task in tasks | filter:filter | orderBy:'created':true" class="table-list">
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="#{{ baseIndex + $index +1 }}">
+                  <span ng-if="baseIndex + $index < 0">-</span>
+                  <span ng-if="baseIndex + $index >= 0">{{ baseIndex + $index +1 }}</span>
+                </td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Status">
+
+                  <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
+                  <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
+                  <span ng-if="task.status === 'Queued'" class="label label-info">Queued</span>
+                  <span ng-if="task.status === 'Paused'" class="label label-primary">Paused</span>
+                  <span ng-if="task.status === 'Cancelled'" class="label label-danger">Cancelled</span>
+
+                </td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Progress">
+                  <uib-progressbar ng-if="task.status === 'Completed'" class="progress-striped"
+                    max="task.totalTransactions" animate="false" value="getProcessedTotal(task)"
+                    type="success"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                  <uib-progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'"
+                    class="progress-striped active" max="task.totalTransactions" animate="false"
+                    value="getProcessedTotal(task)"
+                    type="warning"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                  <uib-progressbar ng-if="task.status === 'Paused'" class="progress-striped"
+                    max="task.totalTransactions" animate="false" value="getProcessedTotal(task)"
+                    type="default"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                  <uib-progressbar ng-if="task.status === 'Cancelled'" class="progress-striped"
+                    max="task.totalTransactions" animate="false" value="getProcessedTotal(task)"
+                    type="danger"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                </td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="transactions">
+                  {{getProcessedTotal(task)}} / {{task.totalTransactions}}</td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="User">{{task.user}}</td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Execution Time">
+                  {{getExecutionTime(task)}} s</td>
+                <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Created Date">{{task.created |
+                  date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+                <td>
+                  <div ng-if="task.status=='Processing' || task.status=='Queued'">
+                    <button uib-tooltip="Pause" class="btn btn-warning btn-xs" ng-click="pauseTask(task)"><i
+                        class="glyphicon glyphicon-pause"></i></button>
+                    <button uib-tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i
+                        class="glyphicon glyphicon-remove"></i></button>
+                  </div>
+                  <div ng-if="task.status=='Paused'">
+                    <button uib-tooltip="Resume" class="btn btn-success btn-xs" ng-click="resumeTask(task)"><i
+                        class="glyphicon glyphicon-play"></i></button>
+                    <button uib-tooltip="Cancel" class="btn btn-danger btn-xs" ng-click="cancelTask(task)"><i
+                        class="glyphicon glyphicon-remove"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="loadMoreBtn" class="btn btn-primary" ng-click="loadMoreTasks();"><i
+            class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+
+
+        <!-- show loading gif when scope object empty and no server errors exist -->
+        <div class="loadingContainer" ng-show="!(tasks || alerts.server)">
+          <span id="loading-spinner" alt="Loading..."></span>
+        </div>
+
+        <!-- Top Alerts -->
+        <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">
+          {{alert.msg}}</div>
+        <!-- Top Alerts -->
+
+        <!-- Server Alerts -->
+        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
+          {{alert.msg}}</div>
+        <!-- Server Alerts -->
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
