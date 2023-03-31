@@ -1,16 +1,16 @@
 {
-  "name": "root",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "devDependencies": {
-    "lerna": "^6.5.1",
-    "jquery": "^3.6.0"
-  },
-  "scripts": {
-    "start": "npx lerna run start",
-    "build": "npx lerna run build",
-    "test": "npx lerna run test"
-  }
+	"name": "root",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"lerna": "^6.5.1",
+		"jquery": "^3.6.0"
+	},
+	"scripts": {
+		"start": "npx lerna run start",
+		"build": "npx lerna run build",
+		"test": "npx lerna run test"
+	}
 }

@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@types/http-server": "^0.10.1",
 		"http-server": "^0.12.3",
+		"keycloak-js": "^20.0.3",
 		"replace": "^1.2.1",
 		"single-spa": "^5.9.4",
 		"single-spa-angularjs": "^4.3.1",

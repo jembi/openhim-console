@@ -10,5 +10,10 @@
   "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
   "loginBanner": "",
   "mediatorLastHeartbeatWarningSeconds": 60,
-  "mediatorLastHeartbeatDangerSeconds": 120
+  "mediatorLastHeartbeatDangerSeconds": 120,
+  "showLoginForm": true,
+  "ssoEnabled": true,
+  "keyCloakUrl": "http://localhost:9088",
+  "keyCloakRealm": "platform-realm",
+  "keyCloakClientId": "openhim-oauth"
 }

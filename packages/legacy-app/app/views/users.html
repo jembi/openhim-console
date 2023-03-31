@@ -14,8 +14,7 @@
 
       <!-- Top Alerts -->
       <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.top">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         {{alert.msg}}
       </div>
       <!-- Top Alerts -->
@@ -27,26 +26,20 @@
           <div class="usersChannelsMatrixLegendDiv">
             <title>Legend:</title>
             <div>
-              <span uib-tooltip="User allowed to view transactions"><i
-                  class="isAllowed glyphicon glyphicon-eye-open"></i></span>
-              <span uib-tooltip="User NOT allowed to view transactions"><i
-                  class="isNotAllowed glyphicon glyphicon-eye-open"></i></span>
+              <span uib-tooltip="User allowed to view transactions"><i class="isAllowed glyphicon glyphicon-eye-open"></i></span>
+              <span uib-tooltip="User NOT allowed to view transactions"><i class="isNotAllowed glyphicon glyphicon-eye-open"></i></span>
               Allowed to View Transactions
             </div>
 
             <div>
-              <span uib-tooltip="User allowed to view transaction's body"><i
-                  class="isAllowed glyphicon glyphicon-book"></i></span>
-              <span uib-tooltip="User NOT allowed to view transaction's body"><i
-                  class="isNotAllowed glyphicon glyphicon-book"></i></span>
+              <span uib-tooltip="User allowed to view transaction's body"><i class="isAllowed glyphicon glyphicon-book"></i></span>
+              <span uib-tooltip="User NOT allowed to view transaction's body"><i class="isNotAllowed glyphicon glyphicon-book"></i></span>
               Allowed to View a Transaction's Body
             </div>
 
             <div>
-              <span uib-tooltip="User allowed to rerun transactions"><i
-                  class="isAllowed glyphicon glyphicon-repeat"></i></span>
-              <span uib-tooltip="User NOT allowed to rerun transactions"><i
-                  class="isNotAllowed glyphicon glyphicon-repeat"></i></span>
+              <span uib-tooltip="User allowed to rerun transactions"><i class="isAllowed glyphicon glyphicon-repeat"></i></span>
+              <span uib-tooltip="User NOT allowed to rerun transactions"><i class="isNotAllowed glyphicon glyphicon-repeat"></i></span>
               Allowed to Rerun Transactions
             </div>
           </div>
@@ -58,59 +51,56 @@
                   <th width="50">#</th>
                   <th>Email</th>
                   <th>Name</th>
+                  <th>Provider</th>
                   <th>Permission Groups</th>
-                  <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']"
-                    style="text-align: center;">{{channel.name}}</th>
+                  <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" style="text-align: center;">{{channel.name}}</th>
                   <th width="80"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="user in usersChannelsMatrix.users | orderBy:['user']">
-                  <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
+                  <td data-title="#{{ $index +1 }}"><span id="counter">
+                      {{ $index +1 }}</span></td>
                   <td data-title="User" style="max-width: none;">
-                    <a href="" ng-click="editUser(user.user)">{{ user.user.email }}</a>
-                    <span ng-if="user.user.locked" style="color: #d9534f"
-                      tooltip-html-unsafe="This user is currently locked<br />They will need to set their password or admin needs to set it for them"><i
-                        class="glyphicon glyphicon-lock"></i></span>
+                    <a href="" ng-click="editUser(user.user)">
+                      {{ user.user.email }}</a>
+                    <span ng-if="user.user.locked" style="color: #d9534f" tooltip-html-unsafe="This user is currently locked<br />They will need to set their password or admin needs to set it for them"><i class="glyphicon glyphicon-lock"></i></span>
                   </td>
-                  <td data-title="Name">{{ user.user.firstname }} {{ user.user.surname }}</td>
-                  <td data-title="Permission Group"><span ng-repeat="group in user.user.groups"> {{ group }}{{$last ?
-                      '' : ', '}} </span></td>
-                  <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']"
-                    data-title="{{channel.name}}" class="usersChannelsMatrixTD">
+                  <td data-title="Name">
+                    {{ user.user.firstname }}
+                    {{ user.user.surname }}
+                  </td>
+                  <td data-title="Provider">
+                    {{ user.user.provider }}
+                  </td>
+                  <td data-title="Permission Group"><span ng-repeat="group in user.user.groups">
+                      {{ group }}{{$last ? '' : ', '}} </span></td>
+                  <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD">
 
                     <!-- show if channel is allowed -->
-                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannels)"
-                      class="isAllowed glyphicon glyphicon-eye-open"></i>
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannels)" class="isAllowed glyphicon glyphicon-eye-open"></i>
 
                     <!-- show if channel is NOT allowed -->
-                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannels)"
-                      class="isNotAllowed glyphicon glyphicon-eye-open"></i>
-
-
-                    <!-- show if channel is allowed -->
-                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsBody)"
-                      class="isAllowed glyphicon glyphicon-book"></i>
-
-                    <!-- show if channel is NOT allowed -->
-                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsBody)"
-                      class="isNotAllowed glyphicon glyphicon-book"></i>
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannels)" class="isNotAllowed glyphicon glyphicon-eye-open"></i>
 
 
                     <!-- show if channel is allowed -->
-                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsRerun)"
-                      class="isAllowed glyphicon glyphicon-repeat"></i>
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsBody)" class="isAllowed glyphicon glyphicon-book"></i>
 
                     <!-- show if channel is NOT allowed -->
-                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsRerun)"
-                      class="isNotAllowed glyphicon glyphicon-repeat"></i>
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsBody)" class="isNotAllowed glyphicon glyphicon-book"></i>
+
+
+                    <!-- show if channel is allowed -->
+                    <i ng-show="isAllowedChannel(channel.id, user.allowedChannelsRerun)" class="isAllowed glyphicon glyphicon-repeat"></i>
+
+                    <!-- show if channel is NOT allowed -->
+                    <i ng-show="!isAllowedChannel(channel.id, user.allowedChannelsRerun)" class="isNotAllowed glyphicon glyphicon-repeat"></i>
 
                   </td>
                   <td>
-                    <button class="btn btn-warning btn-xs" ng-click="editUser(user.user)"><i
-                        class="glyphicon glyphicon-pencil"></i></button>
-                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(user.user)"><i
-                        class="glyphicon glyphicon-remove"></i></button>
+                    <button class="btn btn-warning btn-xs" ng-click="editUser(user.user)"><i class="glyphicon glyphicon-pencil"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-click="confirmDelete(user.user)"><i class="glyphicon glyphicon-remove"></i></button>
                   </td>
                 </tr>
                 </tr>
@@ -126,22 +116,19 @@
 
         <!-- Server Alerts -->
         <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.server">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{alert.msg}}
         </div>
         <!-- Server Alerts -->
 
         <!-- Bottom Alerts -->
         <div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.bottom">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           {{alert.msg}}
         </div>
         <!-- Bottom Alerts -->
 
-        <button class="btn btn-primary" ng-click="addUser()" ng-show="!alerts.server"><i
-            class="glyphicon glyphicon-plus"></i> User</button>
+        <button class="btn btn-primary" ng-click="addUser()" ng-show="!alerts.server"><i class="glyphicon glyphicon-plus"></i> User</button>
       </div>
     </div>
   </div>

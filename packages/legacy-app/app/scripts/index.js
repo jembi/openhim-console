@@ -12,10 +12,10 @@ import 'angular-file-upload'
 import 'angular-bootstrap-colorpicker'
 import '@kariudo/angular-fullscreen'
 import ngFileUpload from 'ng-file-upload'
-import { v4 as uuidV4 } from 'uuid'
+import {v4 as uuidV4} from 'uuid'
 
-import { moduleName } from './external/angular-bootstrap-datetimepicker-directive'
-import { angularTaglist } from './external/angular-taglist-directive'
+import {moduleName} from './external/angular-bootstrap-datetimepicker-directive'
+import {angularTaglist} from './external/angular-taglist-directive'
 
 import * as controllers from './controllers'
 import * as directives from './directives'
@@ -26,20 +26,19 @@ import * as defaultConfig from '../config/default.json'
 import singleSpaAngularJS from 'single-spa-angularjs'
 import singleSpaCss from 'single-spa-css'
 
-export const app = angular
-  .module('openhimConsoleApp', [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
-    'ngRoute',
-    'ui.bootstrap',
-    'hljs',
-    ngFileUpload,
-    'colorpicker.module',
-    moduleName,
-    angularTaglist,
-    'FBAngular'
-  ])
+export const app = angular.module('openhimConsoleApp', [
+  'ngCookies',
+  'ngResource',
+  'ngSanitize',
+  'ngRoute',
+  'ui.bootstrap',
+  'hljs',
+  ngFileUpload,
+  'colorpicker.module',
+  moduleName,
+  angularTaglist,
+  'FBAngular'
+])
 
 for (const controller in controllers) {
   app.controller(controller, controllers[controller])
@@ -54,22 +53,70 @@ for (const service in services) {
 }
 
 app.run(function ($templateCache) {
-  $templateCache.put('views/partials/audit-filter-settings.html', require('~/views/partials/audit-filter-settings'))
-  $templateCache.put('views/partials/audit-operation.html', require('~/views/partials/audit-operation'))
-  $templateCache.put('views/partials/channels-tab-basic-info.html', require('~/views/partials/channels-tab-basic-info'))
-  $templateCache.put('views/partials/channels-tab-request-matching.html', require('~/views/partials/channels-tab-request-matching'))
-  $templateCache.put('views/partials/channels-tab-routes.html', require('~/views/partials/channels-tab-routes'))
-  $templateCache.put('views/partials/channels-tab-data-control.html', require('~/views/partials/channels-tab-data-control'))
-  $templateCache.put('views/partials/channels-tab-user-access.html', require('~/views/partials/channels-tab-user-access'))
-  $templateCache.put('views/partials/channels-tab-alerts.html', require('~/views/partials/channels-tab-alerts'))
-  $templateCache.put('views/partials/channels-tab-logs.html', require('~/views/partials/channels-tab-logs'))
-  $templateCache.put('views/partials/clients-tab-basic-info.html', require('~/views/partials/clients-tab-basic-info'))
-  $templateCache.put('views/partials/clients-tab-authentication.html', require('~/views/partials/clients-tab-authentication.html'))
-  $templateCache.put('views/partials/user-settings-tabs.html', require('~/views/partials/user-settings-tabs'))
-  $templateCache.put('views/partials/tasks-filter-settings.html', require('~/views/partials/tasks-filter-settings'))
-  $templateCache.put('views/partials/transaction-filter-settings.html', require('~/views/partials/transaction-filter-settings'))
-  $templateCache.put('views/partials/user-settings-tabs.html', require('~/views/partials/user-settings-tabs'))
-  $templateCache.put('views/partials/visualizer-settings.html', require('~/views/partials/visualizer-settings'))
+  $templateCache.put(
+    'views/partials/audit-filter-settings.html',
+    require('~/views/partials/audit-filter-settings')
+  )
+  $templateCache.put(
+    'views/partials/audit-operation.html',
+    require('~/views/partials/audit-operation')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-basic-info.html',
+    require('~/views/partials/channels-tab-basic-info')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-request-matching.html',
+    require('~/views/partials/channels-tab-request-matching')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-routes.html',
+    require('~/views/partials/channels-tab-routes')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-data-control.html',
+    require('~/views/partials/channels-tab-data-control')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-user-access.html',
+    require('~/views/partials/channels-tab-user-access')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-alerts.html',
+    require('~/views/partials/channels-tab-alerts')
+  )
+  $templateCache.put(
+    'views/partials/channels-tab-logs.html',
+    require('~/views/partials/channels-tab-logs')
+  )
+  $templateCache.put(
+    'views/partials/clients-tab-basic-info.html',
+    require('~/views/partials/clients-tab-basic-info')
+  )
+  $templateCache.put(
+    'views/partials/clients-tab-authentication.html',
+    require('~/views/partials/clients-tab-authentication.html')
+  )
+  $templateCache.put(
+    'views/partials/user-settings-tabs.html',
+    require('~/views/partials/user-settings-tabs')
+  )
+  $templateCache.put(
+    'views/partials/tasks-filter-settings.html',
+    require('~/views/partials/tasks-filter-settings')
+  )
+  $templateCache.put(
+    'views/partials/transaction-filter-settings.html',
+    require('~/views/partials/transaction-filter-settings')
+  )
+  $templateCache.put(
+    'views/partials/user-settings-tabs.html',
+    require('~/views/partials/user-settings-tabs')
+  )
+  $templateCache.put(
+    'views/partials/visualizer-settings.html',
+    require('~/views/partials/visualizer-settings')
+  )
   $templateCache.put('views/sidebar.html', require('~/views/sidebar'))
 })
 
@@ -83,7 +130,7 @@ app.run(function ($rootScope) {
 
 app.config(function ($httpProvider, $compileProvider) {
   $httpProvider.interceptors.push('Authinterceptor')
-  $httpProvider.defaults.withCredentials = true;
+  $httpProvider.defaults.withCredentials = true
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|file|blob):/)
 })
 
@@ -129,7 +176,13 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     }
 
     // success redirect happens on login.js controller - ignore these routes
-    if (curRoute !== '/' && curRoute.indexOf('/login') === -1 && curRoute !== '/logout' && curRoute.indexOf('/forgot-password') === -1 && curRoute.indexOf('/set-password') === -1) {
+    if (
+      curRoute !== '/' &&
+      curRoute.indexOf('/login') === -1 &&
+      curRoute !== '/logout' &&
+      curRoute.indexOf('/forgot-password') === -1 &&
+      curRoute.indexOf('/set-password') === -1
+    ) {
       $rootScope.referringURL = curRoute + paramsString
     }
 
@@ -144,61 +197,76 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     // Retrieve the session from storage
     let consoleSession = localStorage.getItem('consoleSession')
 
-    Api.Me.get(function (authDetails) {
-      if(authDetails.user) {
-        consoleSession = authDetails.user
-        // set the nav menu to show
-        $rootScope.navMenuVisible = true
+    Api.Me.get(
+      function (authDetails) {
+        if (authDetails.user) {
+          consoleSession = authDetails.user
+          // set the nav menu to show
+          $rootScope.navMenuVisible = true
 
-        // get sessionID
-        const sessionID = uuidV4()
-        const sessionUser = consoleSession.email
-        const sessionUserGroups = consoleSession.groups
-        const sessionUserSettings = consoleSession.settings
+          // get sessionID
+          const sessionID = uuidV4()
+          const sessionUser = consoleSession.email
+          const sessionUserGroups = consoleSession.groups
+          const sessionUserSettings = consoleSession.settings
+          const sessionProvider = consoleSession.provider
 
-        // create session object
-        const consoleSessionObject = {
-          sessionID: sessionID,
-          sessionUser: sessionUser,
-          sessionUserGroups: sessionUserGroups,
-          sessionUserSettings: sessionUserSettings,
-        }
+          // create session object
+          const consoleSessionObject = {
+            sessionID: sessionID,
+            sessionUser: sessionUser,
+            sessionUserGroups: sessionUserGroups,
+            sessionUserSettings: sessionUserSettings,
+            sessionProvider: sessionProvider
+          }
 
-        // Put updated object into storage
-        localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
-        $rootScope.sessionUser = sessionUser
+          // Put updated object into storage
+          localStorage.setItem(
+            'consoleSession',
+            JSON.stringify(consoleSessionObject)
+          )
+          $rootScope.sessionUser = sessionUser
+          $rootScope.sessionProvider = sessionProvider
 
-        if (sessionUserSettings && sessionUserSettings.general) {
-          $rootScope.uiSettings.showTooltips = sessionUserSettings.general.showTooltips
-        }
+          if (sessionUserSettings && sessionUserSettings.general) {
+            $rootScope.uiSettings.showTooltips =
+              sessionUserSettings.general.showTooltips
+          }
 
-        // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
-        if (sessionUserGroups.indexOf('admin') >= 0) {
-          $rootScope.userGroupAdmin = true
+          // Check logged in users' group permission and set userGroupAdmin to true if user is a admin
+          if (sessionUserGroups.indexOf('admin') >= 0) {
+            $rootScope.userGroupAdmin = true
+          } else {
+            $rootScope.userGroupAdmin = false
+          }
         } else {
-          $rootScope.userGroupAdmin = false
-        }
-      } else {
-        localStorage.removeItem('consoleSession')
+          localStorage.removeItem('consoleSession')
 
-        // session expired - user needs to log in
-        $location.path('/login')
-      }
-    }, function() {
-      if(consoleSession) {
-        localStorage.removeItem('consoleSession')
-
-        // session expired - user needs to log in
-        $location.path('/login')
-      } else {
-        const page = $location.path() === '/' ? $location.hash() : $location.path()
-        // if not 'set-password' page
-        if (page.indexOf('set-password') !== 1 && page.indexOf('forgot-password') !== 1 && page.indexOf('login') !== 1) {
-          // No session - user needs to log in
+          // session expired - user needs to log in
           $location.path('/login')
         }
+      },
+      function () {
+        if (consoleSession) {
+          localStorage.removeItem('consoleSession')
+
+          // session expired - user needs to log in
+          $location.path('/login')
+        } else {
+          const page =
+            $location.path() === '/' ? $location.hash() : $location.path()
+          // if not 'set-password' page
+          if (
+            page.indexOf('set-password') !== 1 &&
+            page.indexOf('forgot-password') !== 1 &&
+            page.indexOf('login') !== 1
+          ) {
+            // No session - user needs to log in
+            $location.path('/login')
+          }
+        }
       }
-    })
+    )
   })
 })
 
@@ -312,13 +380,25 @@ app.config(function ($routeProvider) {
 function bootstrapConfig() {
   const initInjector = angular.injector(['ng'])
   const $http = initInjector.get('$http')
-  return $http.get('config/default.json')
-    .then((response) => {
+
+  const $window = initInjector.get('$window')
+
+  // Redirect user to login page if it is a Keycloak redirect URL
+  const KeycloakRedirectedUrlRegex =
+    /state=([\da-zA-Z\.-]+)&session_state=([\da-zA-Z\.-]+)&code=([\da-zA-Z\.-]+)/g
+  if (KeycloakRedirectedUrlRegex.test($window.location.hash)) {
+    $window.location = '#!/login' + $window.location.hash
+  }
+
+  return $http.get('config/default.json').then(
+    response => {
       app.constant('config', response.data)
-    }, () => {
+    },
+    () => {
       app.constant('config', defaultConfig)
       console.warn('No config found at "config/default.json" using default')
-    })
+    }
+  )
 }
 
 const ngLifecycles = singleSpaAngularJS({
@@ -330,9 +410,13 @@ const ngLifecycles = singleSpaAngularJS({
 })
 
 const cssLifecycles = singleSpaCss({
-  cssUrls: ['http://localhost:9000/styles.css']
+  cssUrls: ['http://localhost:9001/styles.css']
 })
 
-export const bootstrap = [cssLifecycles.bootstrap, bootstrapConfig, ngLifecycles.bootstrap]
+export const bootstrap = [
+  cssLifecycles.bootstrap,
+  bootstrapConfig,
+  ngLifecycles.bootstrap
+]
 export const mount = [cssLifecycles.mount, ngLifecycles.mount]
 export const unmount = [ngLifecycles.unmount, cssLifecycles.unmount]

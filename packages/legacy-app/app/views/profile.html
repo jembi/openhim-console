@@ -12,8 +12,8 @@
 
 
       <!-- Top Alerts -->
-      <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
-      </div>
+      <div uib-alert ng-show="sessionProvider === 'openid'" ng-class="'alert-info'">User supplied by OpenID Connect provider. Certain fields are disabled and can only be updated on the authentication provider.</div>
+      <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
       <!-- Top Alerts -->
 
 
@@ -34,42 +34,34 @@
             <div class="form-group-2columns">
               <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.firstname }">
                 <label><span>*</span> First Name</label>
-                <input class="form-control" type="text" ng-model="user.firstname" />
-                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
-                </div>
+                <input class="form-control" type="text" ng-model="user.firstname" ng-disabled="sessionProvider === 'openid'" />
+                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
               </div>
               <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.surname }">
                 <label><span>*</span> Surname</label>
-                <input class="form-control" type="text" ng-model="user.surname" />
-                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
-                </div>
+                <input class="form-control" type="text" ng-model="user.surname" ng-disabled="sessionProvider === 'openid'" />
+                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
               </div>
             </div>
 
             <div class="form-group" ng-class="{ 'has-error' : ngError.msisdn }">
               <label>
                 Phone number (MSISDN format)
-                <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
-                  uib-tooltip-html="'Accepted format: <br />27123456789 <br />( 5 - 15 digits )'"
-                  class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="'Accepted format: <br />27123456789 <br />( 5 - 15 digits )'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
               </label>
               <input class="form-control" type="text" ng-model="user.msisdn" />
-              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
-              </div>
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
 
             <!-- if user is admin -->
-            <div ng-show="userGroupAdmin" class="form-group" ng-class="{ 'has-error' : ngError.groups }">
+            <div ng-show="userGroupAdmin && sessionProvider !== 'openid'" class="form-group" ng-class="{ 'has-error' : ngError.groups }">
               <label><span>*</span> Groups</label>
-              <taglist tag-data="user.groups" taglist-blur-timeout="200"><input class="form-control"
-                  placeholder="Enter a group and press enter..." type="text" ng-model="roles"
-                  typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
-              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
-              </div>
+              <taglist tag-data="user.groups" taglist-blur-timeout="200"><input class="form-control" placeholder="Enter a group and press enter..." type="text" ng-model="roles" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
+              <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
             </div>
 
             <!-- if user is NOT admin -->
-            <div ng-show="!userGroupAdmin" class="form-group">
+            <div ng-show="!userGroupAdmin || sessionProvider === 'openid'" class="form-group">
               <label>Groups</label>
               <div class="allowedRolesStaticDiv">
                 <span ng-repeat="group in user.groups">{{group}}</span>
@@ -80,13 +72,12 @@
             <div class="form-group-2columns">
               <div class="form-group" style="float: left;">
                 <label>Password</label>
-                <input class="form-control" type="password" ng-model="temp.password" />
+                <input class="form-control" type="password" ng-model="temp.password" ng-disabled="sessionProvider === 'openid'" />
               </div>
               <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
                 <label>Confirm password</label>
-                <input class="form-control" type="password" ng-model="temp.passwordConfirm" />
-                <div class="has-error-msg"><i
-                    class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
+                <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-disabled="sessionProvider === 'openid'" />
+                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
               </div>
             </div>
             <div class="form-group">
@@ -94,17 +85,13 @@
               <div class="checkbox" style="margin-top: 0px;">
                 <label>
                   <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
-                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
-                    uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view."
-                    class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                 </label>
               </div>
               <div class="checkbox">
                 <label>
                   <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
-                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
-                    uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view."
-                    class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
                 </label>
               </div>
             </div>
@@ -117,16 +104,13 @@
           </fieldset>
 
           <!-- Server Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
-            {{alert.msg}}</div>
+          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
           <!-- Server Alerts -->
 
-          <button type="button" class="btn btn-primary" style="float: left;" ng-click="submitFormProfile()">Save
-            changes</button>
+          <button type="button" class="btn btn-primary" style="float: left;" ng-click="submitFormProfile()">Save changes</button>
 
           <!-- hasErrors Alerts -->
-          <div uib-alert style="float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;"
-            ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
+          <div uib-alert style="float: left; text-align: left; margin: 0; padding: 8px; margin-left: 20px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
             <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
           </div>
           <!-- hasErrors Alerts -->
