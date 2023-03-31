@@ -15,22 +15,25 @@
       <span>*</span> Indicates a required field<br />
     </div>
 
+    <div uib-alert ng-show="user.provider === 'openid'" ng-class="'alert-info'">User supplied by OpenID Connect provider. Certain fields are disabled and can only be updated on the authentication provider.</div>
+
+
     <fieldset>
       <div class="form-group" ng-class="{ 'has-error' : ngError.email }">
         <label><span>*</span> Email</label>
-        <input class="form-control" type="text" ng-model="user.email" ng-disabled="update" focus="{{!update}}" />
+        <input class="form-control" type="text" ng-model="user.email" ng-disabled="update || user.provider === 'openid'" focus="{{!update}}"/>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
       </div>
 
       <div class="form-group-2columns">
         <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.firstname }">
           <label><span>*</span> First Name</label>
-          <input class="form-control" type="text" ng-model="user.firstname" />
+          <input class="form-control" type="text" ng-model="user.firstname" ng-disabled="user.provider === 'openid'"/>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.surname }">
           <label><span>*</span> Surname</label>
-          <input class="form-control" type="text" ng-model="user.surname" />
+          <input class="form-control" type="text" ng-model="user.surname" ng-disabled="user.provider === 'openid'"/>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
         </div>
       </div>
@@ -44,21 +47,28 @@
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>MSISDN is not in the accepeted format: 27123456789 ( 5 - 15 digits )</div>
       </div>
 
-      <div class="form-group" ng-class="{ 'has-error' : ngError.groups }">
+      <div ng-show="user.provider !== 'openid'" class="form-group" ng-class="{ 'has-error' : ngError.groups }">
         <label><span>*</span> Permission Groups</label>
         <taglist tag-data="user.groups" taglist-blur-timeout="200"><input class="form-control" placeholder="Enter a group and press enter..." type="text" ng-model="roles" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
         <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
+
+      <div ng-show="user.provider === 'openid'" class="form-group">
+        <label>Groups</label>
+        <div class="allowedRolesStaticDiv">
+          <span ng-repeat="group in user.groups">{{group}}</span>
+        </div>
       </div>
 
       <!-- Password fields - only on update -->
       <div class="form-group-2columns" ng-show="update" >
         <div class="form-group" style="float: left;">
           <label>Password</label>
-          <input class="form-control" type="password" ng-model="temp.password" ng-required='!update' />
+          <input class="form-control" type="password" ng-model="temp.password" ng-required='!update' ng-disabled="user.provider === 'openid'"/>
         </div>
         <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
           <label>Confirm password</label>
-          <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-required='!update' />
+          <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-required='!update' ng-disabled="user.provider === 'openid'"/>
           <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
         </div>
       </div>

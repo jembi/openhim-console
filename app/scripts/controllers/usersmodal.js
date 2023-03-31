@@ -103,7 +103,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
             notifyUser()
           } else {
             // add the error message
-            Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with you new credentials')
+            Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with your new credentials')
             notifyUser()
           }
         })
@@ -127,8 +127,8 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
 
   $scope.save = function (user, password) {
     if ($scope.update) {
-      const userObject = {...angular.copy(user), id: user._id, password}
-      Api.Users.update(userObject,  function () {
+      const userObject = { ...angular.copy(user), id: user._id, password }
+      Api.Users.update(userObject, function () {
         success(userObject, password)
         // rootScope function to scroll to top
         $scope.goToTop()
@@ -137,7 +137,6 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
       user.$save({ email: '' }, success, error)
     }
   }
-
 
   /************************************************************/
   /**   These are the functions for the User Modal Popup     **/

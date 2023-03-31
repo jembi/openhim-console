@@ -1,4 +1,6 @@
-export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config) {
+import { parseQuery } from '../utils'
+
+export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config, keycloak) {
   $scope.config = config
   $scope.emailFocus = true
   $scope.passwordFocus = false
@@ -12,8 +14,41 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         // reset alert object
         Alerting.AlertReset()
         Alerting.AlertAddServerMsg()
+      } else {
+        $window.location = '#!/login'
       }
     })
+  } else if (config.ssoEnabled && /\/login#/i.test($window.location.hash)) {
+    // Check if we got the OAuth code in the URL back from KeyCloak
+    const queryString = $window.location.hash.replace('#!/login#', '')
+    const params = parseQuery(queryString)
+    const { code, session_state: sessionState, state } = params
+
+    const isKeyCloakRedirect = code && sessionState && state
+    if (isKeyCloakRedirect) {
+      keycloak.setKeycloakState(state)
+
+      login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
+        // reset alert object
+        Alerting.AlertReset()
+        if (result === 'Authentication Success' && userProfile) {
+          // Create the session for the logged in user
+          $scope.createUserSession(userProfile.email)
+          // redirect user to referringURL
+          if ($rootScope.referringURL) {
+            $window.location = '#!' + $rootScope.referringURL
+          } else { // default redirect to transactions page
+            $window.location = '#!/transactions'
+          }
+        } else {
+          if (result === 'Internal Server Error') {
+            $scope.coreConnectionError = true
+          } else {
+            Alerting.AlertAddMsg('login', 'danger', 'Sign-in with Keycloak failed. Please try again')
+          }
+        }
+      })
+    }
   }
 
   $scope.loginEmail = ''
@@ -106,7 +141,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     // do the initial request
     Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      const newUserInfo = { email: user.email, id: user._id, password };
+      const newUserInfo = { email: user.email, id: user._id, password }
       // save the new root password
       Api.Users.update(newUserInfo, function () {
         // re-login with new credentials
@@ -156,6 +191,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         const sessionID = Math.random().toString(36).slice(2).toUpperCase()
         const sessionUserGroups = userProfile.groups
         const sessionUserSettings = userProfile.settings
+        const sessionProvider = userProfile.provider
 
         // create session object
         const consoleSessionObject = {
@@ -163,6 +199,7 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           sessionUser: loginEmail,
           sessionUserGroups: sessionUserGroups,
           sessionUserSettings: sessionUserSettings,
+          sessionProvider: sessionProvider
         }
 
         // Put the object into storage
@@ -171,5 +208,14 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
       /* ------------------Set sessionID------------------ */
     }
+  }
+
+  $scope.signInWithKeyCloak = function () {
+    keycloak.keycloakInstance.init({
+      onLoad: 'login-required',
+      // Must match to the configured value in keycloak
+      redirectUri: $window.location.origin,
+      checkLoginIframe: false
+    })
   }
 }
