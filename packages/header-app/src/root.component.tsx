@@ -64,7 +64,7 @@ export default function ButtonAppBar() {
         <OpenHIMMenu></OpenHIMMenu>
       </Drawer>
       <Box sx={{flexGrow: 1}}>
-        <AppBar position="static">
+        <AppBar position="static" elevation={0}>
           <Toolbar>
             <IconButton
               color="inherit"
