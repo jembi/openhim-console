@@ -1,3 +1,11 @@
+const validCodes = [
+  100, 101, 102, 103, 200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300,
+  301, 302, 303, 304, 307, 308, 400, 401, 403, 404, 405, 406, 407, 408, 409,
+  410, 411, 412, 413, 414, 415, 416, 417, 421, 422, 423, 424, 425, 426, 428,
+  429, 431, 451, 500, 501, 502, 503, 504, 505, 506, 507, 508, 511,
+];
+const validRangeCodes = ["1**", "2**", "3**", "4**", "5**"];
+
 export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   /*************************************************/
   /**   Default Channel Routes configurations     **/
@@ -114,7 +122,9 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         password: '',
         type: 'http',
         status: 'enabled',
-        forwardAuthHeader: false
+        forwardAuthHeader: false,
+        waitPrimaryResponse: false,
+        statusCodesCheck: ''
       }
     } else if (type === 'edit') {
       // show add/edit box
@@ -220,26 +230,50 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
       $scope.ngErrorRoute.hasErrors = true
     }
 
-    // host validation
-    if (!$scope.newRoute.host) {
-      $scope.ngErrorRoute.host = true
+    // Status codes validation
+    const codeError = $scope.checkIsStatusCodesValid($scope.newRoute.statusCodesCheck)
+    if (codeError) {
+      $scope.ngErrorRoute.statusCodesCheck = true
+      $scope.ngErrorRoute.statusCodesCheckError = codeError
       $scope.ngErrorRoute.hasErrors = true
     }
 
-    // port validation
-    const portError = $scope.checkIsPortValid($scope.newRoute.port)
-    if (portError) {
-      $scope.ngErrorRoute.port = true
-      $scope.ngErrorRoute.portError = portError
-      $scope.ngErrorRoute.hasErrors = true
-    }
+    // HTTP route type validation
+    if ($scope.newRoute.type === 'http') {
+      // host validation
+      if (!$scope.newRoute.host) {
+        $scope.ngErrorRoute.host = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
 
-    // path/transform validation
-    const pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
-    if (pathTransformError) {
-      $scope.ngErrorRoute.pathTransform = true
-      $scope.ngErrorRoute.pathTransformError = pathTransformError
-      $scope.ngErrorRoute.hasErrors = true
+      // port validation
+      const portError = $scope.checkIsPortValid($scope.newRoute.port)
+      if (portError) {
+        $scope.ngErrorRoute.port = true
+        $scope.ngErrorRoute.portError = portError
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // path/transform validation
+      const pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
+      if (pathTransformError) {
+        $scope.ngErrorRoute.pathTransform = true
+        $scope.ngErrorRoute.pathTransformError = pathTransformError
+        $scope.ngErrorRoute.hasErrors = true
+      }
+    }
+    // KAFKA route type validation
+    if ($scope.newRoute.type === 'kafka') {
+      // brokers validation
+      if (!$scope.newRoute.brokers) {
+        $scope.ngErrorRoute.brokers = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
+      // topic name validation
+      if (!$scope.newRoute.topic) {
+        $scope.ngErrorRoute.topic = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
     }
 
     if ($scope.ngErrorRoute.hasErrors) {
@@ -274,6 +308,24 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     if (route.path && route.pathTransform) {
       // return error message
       return 'Cant supply both!'
+    }
+  }
+
+  // validate status codes provided
+  $scope.checkIsStatusCodesValid = function (value) {
+    if (value !== '' && value !== undefined) {
+      const codes = value.split(',')
+      for (const code of codes) {
+        if (!code.includes("*")) {
+          if (!validCodes.includes(Number(code)) || isNaN(Number(code))) {
+            return `${code} not a valid status code!`
+          }
+        } else {
+          if (!validRangeCodes.includes(code)) {
+            return `${code} not a valid range of codes! valid options: ${validRangeCodes}`
+          }
+        }
+      }
     }
   }
 
