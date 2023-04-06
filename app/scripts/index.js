@@ -141,14 +141,14 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     let consoleSession = localStorage.getItem('consoleSession')
 
     // Initialize the route to /login if there is no consoleSession
-    if (!consoleSession && curRoute.indexOf('login') !== 1 && curRoute.indexOf('set-password') !== 1 && curRoute.indexOf('forgot-password') !== 1) {
+    if (curRoute && !consoleSession && curRoute.indexOf('login') !== 1 && curRoute.indexOf('set-password') !== 1 && curRoute.indexOf('forgot-password') !== 1) {
       $location.path('/login')
     }
 
     Api.Me.get(function (authDetails) {
       if (authDetails.user) {
         // ConsoleSession was deleted but the user still have a session
-        if ($location.path() !== curRoute && curRoute.indexOf('login') !== 1) {
+        if (curRoute && curRoute !== $location.path() && curRoute.indexOf('login') !== 1) {
           $location.path($rootScope.referringURL)
         }
 
