@@ -23,7 +23,7 @@ export function Alerting ($rootScope) {
     AlertAddServerMsg: function (errCode) {
       let alertMsg
       switch (errCode) {
-        case 401: 
+        case 401:
           alertMsg = 'The request is not authorised by the server. Please try to log in again.'
           break
         case 403:

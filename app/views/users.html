@@ -52,6 +52,7 @@
                     <th width="50">#</th>
                     <th>Email</th>
                     <th>Name</th>
+                    <th>Provider</th>
                     <th>Permission Groups</th>
                     <th ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" style="text-align: center;">{{channel.name}}</th>
                     <th width="80"></th>
@@ -65,6 +66,7 @@
                       <span ng-if="user.user.locked" style="color: #d9534f" tooltip-html-unsafe="This user is currently locked<br />They will need to set their password or admin needs to set it for them"><i class="glyphicon glyphicon-lock"></i></span>
                     </td>
                     <td data-title="Name">{{ user.user.firstname }} {{ user.user.surname }}</td>
+                    <td data-title="Provider">{{ user.user.provider }}</td>
                     <td data-title="Permission Group"><span ng-repeat="group in user.user.groups"> {{ group }}{{$last ? '' : ', '}} </span></td>
                     <td style="min-width: 80px" ng-repeat="channel in usersChannelsMatrix.channels | orderBy:['name']" data-title="{{channel.name}}" class="usersChannelsMatrixTD" >
 

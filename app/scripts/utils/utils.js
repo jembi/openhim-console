@@ -23,7 +23,6 @@ export function decodeBase64 (stringToBeDecoded) {
   return decodeBase64Value
 }
 
-
 // location provider
 export function viewPage (path) {
   const url = window.location.href + path
@@ -159,4 +158,13 @@ export function * objectVisitor (visitObj, visitPath = []) {
       }
     }
   }
+}
+
+export function parseQuery (queryString) {
+  const pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&')
+  return pairs.reduce((acc, curr) => {
+    const [key, value] = curr.split('=')
+    acc[decodeURIComponent(key)] = decodeURIComponent(value || '')
+    return acc
+  }, {})
 }

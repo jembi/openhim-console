@@ -7,20 +7,27 @@ describe('Controller: LoginCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy', "ssoEnabled": true, keyCloakUrl: "http://urlExample:9088", keyCloakRealm: "exampleRealm", keyCloakClientId: "exampleID" })
     })
   })
 
   // instantiate service
   // var login, httpBackend
-  var scope, login, createController, httpBackend
+  var scope, login, createController, httpBackend, keycloak, window
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _login_, $httpBackend) {
+  beforeEach(inject(function ($controller, $rootScope, _login_, $httpBackend, _keycloak_, $window) {
     // reset localStorage session variable
     localStorage.removeItem('consoleSession')
 
     login = _login_
+
+    window = $window
+
+    keycloak = _keycloak_
+
+    // Override function to prevent page reload
+    keycloak.keycloakInstance.init = () => {}
 
     httpBackend = $httpBackend
 
@@ -48,13 +55,23 @@ describe('Controller: LoginCtrl', function () {
     })
 
     httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
+    httpBackend.when('GET', new RegExp('.*/logout')).respond(200)
 
-    createController = function () {
+    createController = function (options = {}) {
+      let config = {ssoEnabled: true}
+
+      if(!options.ssoEnabled) {
+        config.ssoEnabled = false
+      }
+      if(options.window) {
+        $window = options.window
+      }
+
       httpBackend.when('GET', new RegExp('.*/me')).respond(404)
       httpBackend.flush()
 
       scope = $rootScope.$new()
-      return $controller('LoginCtrl', { $scope: scope })
+      return $controller('LoginCtrl', { $scope: scope, config, keycloak, $window})
     }
   }))
 
@@ -72,6 +89,8 @@ describe('Controller: LoginCtrl', function () {
       scope.loginPassword = ''
       scope.validateLogin()
       scope.alerts.login.length.should.equal(1)
+      scope.alerts.login[0].type.should.equal('danger')
+      scope.alerts.login[0].msg.should.equal('Please provide your login credentials')
     })
 
     // once all fields supplied, check if user exist based on credentials
@@ -287,12 +306,33 @@ describe('Controller: LoginCtrl', function () {
 
       httpBackend.flush()
 
-      // One error should exist - 'Busy checking login credentials'
+      // One error should exist - 'The supplied credentials were incorrect. Please try again'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
       scope.alerts.login[0].msg.should.equal('The supplied credentials were incorrect. Please try again')
 
       // user should not exist if incorrect login credentials
+      user = login.getLoggedInUser()
+      user.should.be.empty()
+    })
+
+    it('should run the checkLoginCredentials() function and return error with server errors (< 100 code status)', function () {
+      // Trigger a server issue
+      httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond(80)
+      createController()
+
+      // user should be empty before valid login
+      var user = login.getLoggedInUser()
+      user.should.be.empty()
+
+      // check if login credentials valid and log the user in - User should not be logged in
+      scope.checkLoginCredentials('incorrect@user.org', 'incorrect-password')
+
+      httpBackend.flush()
+
+      scope.coreConnectionError.should.equal(true)
+
+      // user should not exist if there is a server error
       user = login.getLoggedInUser()
       user.should.be.empty()
     })
@@ -365,6 +405,122 @@ describe('Controller: LoginCtrl', function () {
       })
 
       httpBackend.flush()
+    })
+  })
+
+  // Testing the signInWithKeyCloak() function
+  describe('*signInWithKeyCloak() tests', function () {
+    it('should init keycloak if ssoEnabled config is set to true', function () {
+      createController({ ssoEnabled: true })
+      scope.signInWithKeyCloak()
+
+      scope.alerts.should.not.have.property("login")
+    })
+
+    it('should login after getting the redirected url', function () {
+      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond({ user: {
+        __v: 0,
+        _id: '539846c240f2eb682ffeca4b',
+        email: 'test@user.org',
+        firstname: 'test',
+        surname: 'test',
+        groups: ['admin'],
+        provider: 'keycloak',
+        settings: {
+          filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
+          list: { tabview: 'new' }
+        }
+    }})
+
+      let window = {}
+
+      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
+  
+      const expectedSession = {
+        sessionUser: 'test@user.org',
+        sessionUserGroups: ['admin'],
+        sessionProvider: "keycloak",
+        sessionUserSettings:  {
+          filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
+          list: { tabview: 'new' }
+        }
+      }
+
+      createController({ ssoEnabled: true, window })
+      httpBackend.flush()
+      
+      const consoleSession = JSON.parse(localStorage.getItem('consoleSession'))
+
+      expectedSession.sessionUser.should.equal(consoleSession.sessionUser)
+      expectedSession.sessionProvider.should.equal(consoleSession.sessionProvider)
+      expectedSession.sessionUserGroups[0].should.equal(consoleSession.sessionUserGroups[0])
+      expectedSession.sessionUserSettings.should.deep.equal(consoleSession.sessionUserSettings)
+
+      // user should exist
+      var user = login.getLoggedInUser()
+      user.should.exist()
+      user.should.have.property('email', 'test@user.org')
+    })
+
+    it('should return an error message if login failed after getting the redirected url', function () {
+      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond(401)
+
+      let window = {}
+      
+      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
+
+      createController({ ssoEnabled: true, window })
+      httpBackend.flush()
+
+
+      // One error should exist - 'The supplied credentials were incorrect. Please try again'
+      scope.alerts.login.length.should.equal(1)
+      scope.alerts.login[0].type.should.equal('danger')
+      scope.alerts.login[0].msg.should.equal('Sign-in with Keycloak failed. Please try again')
+
+      // user should not exist if incorrect login credentials
+      var user = login.getLoggedInUser()
+      user.should.be.empty()
+    })
+
+    it('should return an server error if login failed after getting the redirected url (<100 status code)', function () {
+      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond(90)
+
+      let window = {}
+      
+      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
+
+      createController({ ssoEnabled: true, window })
+      httpBackend.flush()
+
+      scope.coreConnectionError.should.equal(true)
+
+      // user should not exist if incorrect login credentials
+      var user = login.getLoggedInUser()
+      user.should.be.empty()
+    })
+  })
+
+  // Testing the Logout functionnality
+  describe('*Logout() tests', function () {
+    // Logout of a local login
+    it('should logout when local provider and remove session', function () {
+      const sessionExample = {
+        sessionID: "sessionId", 
+        sessionUser: "test@test.org",
+        sessionUserGroups: [],
+        sessionProvider: "local"
+      }
+      localStorage.setItem('consoleSession', sessionExample)
+
+      let window = {}
+      window.location = { hash: '#/logout'}
+
+      createController({ ssoEnabled: true, window })
+      httpBackend.flush()
+
+      const consoleSession = localStorage.getItem('consoleSession')
+      expect(consoleSession === null).to.be.true()
     })
   })
 })

@@ -31,6 +31,11 @@ module.exports = function (config) {
     // list of files / patterns to exclude
     exclude: [],
 
+    captureTimeout: 300000,
+    browserDisconnectTolerance: 3, 
+    browserDisconnectTimeout : 300000,
+    browserNoActivityTimeout : 300000,
+
     // web server port
     port: 8090,
     mochaReporter: {
