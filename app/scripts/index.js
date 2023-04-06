@@ -141,7 +141,7 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     let consoleSession = localStorage.getItem('consoleSession')
 
     // Initialize the route to /login if there is no consoleSession
-    if (!consoleSession) {
+    if (!consoleSession && curRoute.indexOf('login') !== 1 && curRoute.indexOf('set-password') !== 1 && curRoute.indexOf('forgot-password') !== 1) {
       $location.path('/login')
     }
 
