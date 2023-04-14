@@ -54,8 +54,8 @@
       </select>
     </div>
   </div>
-  <div class="form-group-2columns" style="display: inline-block; width: 100%">
-    <div class="form-group" style="float: left;" ng-show="newRoute.primary==false">
+  <div ng-show="newRoute.primary==false" class="form-group-2columns" style="display: inline-block; width: 100%">
+    <div class="form-group" style="float: left;">
       <label>Wait for the response of the primary route</label><br />
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="newRoute.waitPrimaryResponse" uib-btn-radio="true">Yes</label>
@@ -117,15 +117,20 @@
     </div>
   </div>
   <div ng-show="newRoute.type=='kafka'">
-    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.brokers }">
-      <label><span>*</span> Brokers</label>
-      <input class="form-control" placeholder="e.g. kafka-01:9092,kafka-02:9092" type="text" ng-model="newRoute.brokers" />
+    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaClientId }">
+      <label><span>*</span> Client ID</label>
+      <input class="form-control" placeholder="e.g. openhim-route" type="text" ng-model="newRoute.kafkaClientId" />
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
     </div>
-    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.topic }">
-      <label><span>*</span> Topic Name</label>
-      <input class="form-control" placeholder="e.g. 2xx-topic" type="text" ng-model="newRoute.topic" />
+    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaBrokers }">
+      <label><span>*</span> Brokers</label>
+      <input class="form-control" placeholder="e.g. kafka-01:9092,kafka-02:9092" type="text" ng-model="newRoute.kafkaBrokers" />
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaTopic }">
+      <label><span>*</span> Topic Name</label>
+      <input class="form-control" placeholder="e.g. 2xx-topic" type="text" ng-model="newRoute.kafkaTopic" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.kafkaTopicError}}</div>
     </div>
   </div>
 
@@ -184,7 +189,7 @@
               <span>{{ route.port }}</span>
             </span>
             <span ng-show="route.type=='kafka'">
-              <span>{{ route.brokers }}</span>
+              <span>{{ route.kafkaBrokers }}</span>
             </span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
@@ -193,7 +198,7 @@
               <span>{{ route.pathTransform }}</span>
             </span>
             <span ng-show="route.type=='kafka'">
-              <span>{{ route.topic }}</span>
+              <span>{{ route.kafkaTopic }}</span>
             </span>
           </div>
 

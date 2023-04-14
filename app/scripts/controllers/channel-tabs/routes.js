@@ -123,8 +123,11 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         type: 'http',
         status: 'enabled',
         forwardAuthHeader: false,
+        kafkaClientId: '',
+        kafkaBrokers: '',
+        kafkaTopic: '',
         waitPrimaryResponse: false,
-        statusCodesCheck: ''
+        statusCodesCheck: '',
       }
     } else if (type === 'edit') {
       // show add/edit box
@@ -264,14 +267,16 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     }
     // KAFKA route type validation
     if ($scope.newRoute.type === 'kafka') {
-      // brokers validation
-      if (!$scope.newRoute.brokers) {
-        $scope.ngErrorRoute.brokers = true
+      // kafka Brokers validation
+      if (!$scope.newRoute.kafkaBrokers) {
+        $scope.ngErrorRoute.kafkaBrokers = true
         $scope.ngErrorRoute.hasErrors = true
       }
-      // topic name validation
-      if (!$scope.newRoute.topic) {
-        $scope.ngErrorRoute.topic = true
+      // kafka topic validation
+      const kafkaTopicError = $scope.checkIskafkaTopicValid($scope.newRoute.kafkaTopic)
+      if (kafkaTopicError) {
+        $scope.ngErrorRoute.kafkaTopic = true
+        $scope.ngErrorRoute.kafkaTopicError = kafkaTopicError
         $scope.ngErrorRoute.hasErrors = true
       }
     }
@@ -308,6 +313,22 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     if (route.path && route.pathTransform) {
       // return error message
       return 'Cant supply both!'
+    }
+  }
+
+  // check if topic name is valid by kafka
+  $scope.checkIskafkaTopicValid = function (value) {
+    if (value) {
+      if(value.length > 255) {
+        return 'Max length is 255 characters!'
+      }
+      for(let char of value) {
+        if(!/[a-zA-Z0-9\\._\\-]/.test(char)) {
+          return 'Not valid topic name! Only letters, numbers, . (dot), _ (underscore), - (minus) can use used!'
+        }
+      }
+    } else {
+      return 'This field is required!'
     }
   }
 
