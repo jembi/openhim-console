@@ -124,7 +124,6 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         status: 'enabled',
         forwardAuthHeader: false,
         kafkaClientId: '',
-        kafkaBrokers: '',
         kafkaTopic: '',
         waitPrimaryResponse: false,
         statusCodesCheck: '',
@@ -267,11 +266,6 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     }
     // KAFKA route type validation
     if ($scope.newRoute.type === 'kafka') {
-      // kafka Brokers validation
-      if (!$scope.newRoute.kafkaBrokers) {
-        $scope.ngErrorRoute.kafkaBrokers = true
-        $scope.ngErrorRoute.hasErrors = true
-      }
       // kafka topic validation
       const kafkaTopicError = $scope.checkIskafkaTopicValid($scope.newRoute.kafkaTopic)
       if (kafkaTopicError) {

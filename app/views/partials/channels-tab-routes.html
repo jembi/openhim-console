@@ -122,11 +122,6 @@
       <input class="form-control" placeholder="e.g. openhim-route" type="text" ng-model="newRoute.kafkaClientId" />
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
     </div>
-    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaBrokers }">
-      <label><span>*</span> Brokers</label>
-      <input class="form-control" placeholder="e.g. kafka-01:9092,kafka-02:9092" type="text" ng-model="newRoute.kafkaBrokers" />
-      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-    </div>
     <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaTopic }">
       <label><span>*</span> Topic Name</label>
       <input class="form-control" placeholder="e.g. 2xx-topic" type="text" ng-model="newRoute.kafkaTopic" />
@@ -153,7 +148,7 @@
       <tr style="font-weight: bold">
         <th>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Status | Primary</div>
-          <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured</div>
+          <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured | Conditional</div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port | Brokers</div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform | Topic</div>
           <div style="width: 8%; float: right; display: block;"></div>
@@ -182,14 +177,13 @@
 
             <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span>
             <span ng-if="route.secured==false" class="btn-danger btn-xs">Unsecured</span>
+            
+            <span ng-if="route.waitPrimaryResponse==true" class="btn-warning btn-xs">Conditional</span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
             <span ng-show="route.type=='http'">
               <span>{{ route.host }}</span>
               <span>{{ route.port }}</span>
-            </span>
-            <span ng-show="route.type=='kafka'">
-              <span>{{ route.kafkaBrokers }}</span>
             </span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
