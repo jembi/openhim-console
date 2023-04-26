@@ -76,7 +76,14 @@ Your file should look something like this:
   "title": "OpenHIM Admin Console", // You may change this to customize the title of the OpenHIM-console instance
   "footerTitle": "OpenHIM Administration Console", // You may change this to customize the footer of the OpenHIM-console instance
   "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
-  "loginBanner": "" // add text here that you want to appear on the login screen, if any.
+  "loginBanner": "", // add text here that you want to appear on the login screen, if any.
+  "showLoginForm": true, // this could be disabled in favor of a SSO using keycloak
+  "mediatorLastHeartbeatWarningSeconds": 60, // Mediator heartbeat check intervals to issue a warning status
+  "mediatorLastHeartbeatDangerSeconds": 120, // Mediator heartbeat check intervals to issue a danger status
+  "ssoEnabled": false, // enable SSO with Keycloak
+  "keyCloakUrl": "http://localhost:9088", // Keycloak URL
+  "keyCloakRealm": "platform-realm", // Keycloak Realm name
+  "keyCloakClientId": "openhim-oauth" // Keycloak client ID
 }
 ```
 
