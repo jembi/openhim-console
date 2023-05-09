@@ -211,11 +211,9 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   }
 
   $scope.signInWithKeyCloak = function () {
-    keycloak.keycloakInstance.init({
-      onLoad: 'login-required',
+    keycloak.keycloakInstance.login({
       // Must match to the configured value in keycloak
       redirectUri: $window.location.origin,
-      checkLoginIframe: false
     })
   }
 }
