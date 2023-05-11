@@ -310,7 +310,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
       }
       for(let char of value) {
         if(!/[a-zA-Z0-9\\._\\-]/.test(char)) {
-          return 'Not valid topic name! Only letters, numbers, . (dot), _ (underscore), - (minus) can use used!'
+          return 'Not valid topic name! Only letters, numbers, . (dot), _ (underscore), - (minus) can be used!'
         }
       }
     } else {
