@@ -65,7 +65,7 @@
     <div class="form-group" style="float: left; margin-left: 20px;" ng-show="newRoute.waitPrimaryResponse==true" ng-class="{ 'has-error' : ngErrorRoute.statusCodesCheck }">
       <label>
         Send request when matching status code
-        <i ng-show="uiSettings.showTooltips" uib-tooltip="Request will be sent to the second route unless the response status of the primary route match one of these status codes. A single value or a list are both accepted. A list should be comma separated (single status codes e.g. 200,201, range e.g. 2**,3**,  mixture of both e.g. 204,3**)." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="Request will NOT be sent to the secondary route(s) unless the response status of the primary route match one of these status codes. A single value or a list are both accepted. A list should be comma separated (single status codes e.g. 200,201, range e.g. 2**,3**,  mixture of both e.g. 204,3**)." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
       </label><br />
       <input class="form-control" placeholder="e.g. 2**,404,500" type="text" ng-model="newRoute.statusCodesCheck" />
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.statusCodesCheckError}}</div>
