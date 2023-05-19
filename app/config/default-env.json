@@ -12,7 +12,7 @@
   "mediatorLastHeartbeatWarningSeconds": 60,
   "mediatorLastHeartbeatDangerSeconds": 120,
   "showLoginForm": true,
-  "ssoEnabled": "${KC_OPENHIM_SSO_ENABLED}",
+  "ssoEnabled": ${KC_OPENHIM_SSO_ENABLED},
   "keyCloakUrl": "${KC_FRONTEND_URL}",
   "keyCloakRealm": "${KC_REALM_NAME}",
   "keyCloakClientId": "${KC_OPENHIM_CLIENT_ID}"

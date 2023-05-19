@@ -1,6 +1,6 @@
 node_modules
 infrastructure
-!infrastructure/google-cloud-run/start-nginx.sh
+!infrastructure/google-cloud-run/docker-entrypoint.sh
 packaging
 test
 Dockerfile

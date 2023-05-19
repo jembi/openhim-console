@@ -19,8 +19,8 @@ WORKDIR /usr/share/nginx/html
 
 COPY --from=build /app/dist  ./
 
-COPY infrastructure/google-cloud-run/start-nginx.sh /usr/bin/start-nginx.sh
+COPY ./infrastructure/google-cloud-run/docker-entrypoint.sh /usr/local/bin/
 
-RUN chmod +x /usr/bin/start-nginx.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT [ "start-nginx.sh" ]
+ENTRYPOINT [ "/bin/sh", "/usr/local/bin/docker-entrypoint.sh" ]
