@@ -149,8 +149,8 @@
         <th>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Status | Primary</div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured | Conditional</div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port | Brokers</div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform | Topic</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port | Topic</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform</div>
           <div style="width: 8%; float: right; display: block;"></div>
         </th>
       </tr>
@@ -185,14 +185,14 @@
               <span>{{ route.host }}</span>
               <span>{{ route.port }}</span>
             </span>
+            <span ng-show="route.type=='kafka'">
+              <span>{{ route.kafkaTopic }}</span>
+            </span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
             <span ng-show="route.type=='http'">
               <span>{{ route.path }}</span>
               <span>{{ route.pathTransform }}</span>
-            </span>
-            <span ng-show="route.type=='kafka'">
-              <span>{{ route.kafkaTopic }}</span>
             </span>
           </div>
 
