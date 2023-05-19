@@ -1,5 +1,6 @@
 node_modules
 infrastructure
+!infrastructure/google-cloud-run/start-nginx.sh
 packaging
 test
 Dockerfile
