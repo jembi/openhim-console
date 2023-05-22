@@ -1,6 +1,5 @@
 node_modules
 infrastructure
-!infrastructure/google-cloud-run/docker-entrypoint.sh
 packaging
 test
 Dockerfile
