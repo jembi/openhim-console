@@ -13,6 +13,7 @@ export function keycloak (config) {
         realm: config.keyCloakRealm,
         clientId: config.keyCloakClientId
       })
+      keycloakInstance.init({ checkLoginIframe: false })
     }
   }
   return {
