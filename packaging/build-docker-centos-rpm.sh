@@ -3,7 +3,7 @@
 RELEASE_VERSION=$1
 if [ -z ${RELEASE_VERSION} ]
 then
-  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.16.1'"
+  echo "You need so specify the release version you wish to build: e.g './build-docker-centos-rpm.sh 1.17.0'"
   echo "https://github.com/jembi/openhim-console/releases"
   exit
 fi
