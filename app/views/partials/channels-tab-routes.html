@@ -37,11 +37,10 @@
       <label>Route Type</label><br />
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'http'">HTTP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'tcp'">TCP</label>
-        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'mllp'">MLLP</label>
+        <label class="btn btn-primary" ng-model="newRoute.type" uib-btn-radio="'kafka'">KAFKA</label>
       </div>
     </div>
-    <div class="form-group" style="float: left; margin-left: 20px;">
+    <div class="form-group" style="float: left; margin-left: 20px;" ng-if="newRoute.type=='http'">
       <label>Route Secured</label><br />
       <div class="btn-group" style="clear: both;">
         <label class="btn btn-primary" ng-model="newRoute.secured" uib-btn-radio="true">Yes</label>
@@ -55,47 +54,78 @@
       </select>
     </div>
   </div>
-  <div class="form-group-2columns">
-    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorRoute.host }">
-      <label><span style="color: #a94442;">*</span> Host</label>
-      <input ng-model="newRoute.host" class="form-control" placeholder="Route Host" type="text" />
+  <div ng-show="newRoute.primary==false" class="form-group-2columns" style="display: inline-block; width: 100%">
+    <div class="form-group" style="float: left;">
+      <label>Wait for the response of the primary route</label><br />
+      <div class="btn-group" style="clear: both;">
+        <label class="btn btn-primary" ng-model="newRoute.waitPrimaryResponse" uib-btn-radio="true">Yes</label>
+        <label class="btn btn-primary" ng-model="newRoute.waitPrimaryResponse" uib-btn-radio="false">No</label>
+      </div>
+    </div>
+    <div class="form-group" style="float: left; margin-left: 20px;" ng-show="newRoute.waitPrimaryResponse==true" ng-class="{ 'has-error' : ngErrorRoute.statusCodesCheck }">
+      <label>
+        Send request when matching status code
+        <i ng-show="uiSettings.showTooltips" uib-tooltip="Request will NOT be sent to the secondary route(s) unless the response status of the primary route match one of these status codes. A single value or a list are both accepted. A list should be comma separated (single status codes e.g. 200,201, range e.g. 2**,3**,  mixture of both e.g. 204,3**)." class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+      </label><br />
+      <input class="form-control" placeholder="e.g. 2**,404,500" type="text" ng-model="newRoute.statusCodesCheck" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.statusCodesCheckError}}</div>
+    </div>
+  </div>
+  <div ng-show="newRoute.type=='http'">
+    <div class="form-group-2columns">
+      <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngErrorRoute.host }">
+        <label><span style="color: #a94442;">*</span> Host</label>
+        <input ng-model="newRoute.host" class="form-control" placeholder="Route Host" type="text" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+      </div>
+      <div class="form-group" style="float: left; margin-left: 20px;" ng-class="{ 'has-error' : ngErrorRoute.port }">
+        <label><span style="color: #a94442;">*</span> Port</label><br />
+        <input ng-model="newRoute.port" class="form-control" placeholder="Route Port" type="text" />
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.portError}}</div>
+      </div>
+    </div>
+    <div class="form-group-2columns" ng-class="{ 'has-error' : ngErrorRoute.pathTransform }">
+      <div class="form-group" style="float: left;">
+        <label><span style="color: #a94442;">**</span> Route Path</label>
+        <input ng-model="newRoute.path" class="form-control" placeholder="Route Path" type="text" />
+      </div>
+      <div class="form-group" style="float: left; margin-left: 20px;">
+        <label>
+          <span style="color: #a94442;">**</span> Route Path Transform
+          <i ng-show="uiSettings.showTooltips" uib-tooltip-html="'Transform the route path by using the following substitute expression format:<br /> s/from/to/g'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        </label><br />
+        <input ng-model="newRoute.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
+      </div>
+      <div class="has-error-msg" style="clear: both; margin-bottom: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.pathTransformError}}</div>
+    </div>
+    <div class="form-group-2columns">
+      <div class="form-group" style="float: left;">
+        <label>Basic Authentication Username</label>
+        <input ng-model="newRoute.username" ng-disabled="newRoute.forwardAuthHeader" class="form-control" placeholder="Basic Authentication Username" type="text" />
+      </div>
+      <div class="form-group" style="float: left; margin-left: 20px;">
+        <label>Basic Authentication Password</label><br />
+        <input ng-model="newRoute.password" ng-disabled="newRoute.forwardAuthHeader" class="form-control" placeholder="Basic Authentication Password" type="text" />
+      </div>
+      <div class="form-group" style="float: left;">
+        <label>Forward existing Authorization header</label><br />
+        <div class="btn-group" style="clear: both;">
+          <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="true">Yes</label>
+          <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="false">No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-show="newRoute.type=='kafka'">
+    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaClientId }">
+      <label><span>*</span> Client ID</label>
+      <input class="form-control" placeholder="e.g. openhim-route" type="text" ng-model="newRoute.kafkaClientId" />
       <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
     </div>
-    <div class="form-group" style="float: left; margin-left: 20px;" ng-class="{ 'has-error' : ngErrorRoute.port }">
-      <label><span style="color: #a94442;">*</span> Port</label><br />
-      <input ng-model="newRoute.port" class="form-control" placeholder="Route Port" type="text" />
-      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.portError}}</div>
-    </div>
-  </div>
-  <div class="form-group-2columns" ng-class="{ 'has-error' : ngErrorRoute.pathTransform }">
-    <div class="form-group" style="float: left;">
-      <label><span style="color: #a94442;">**</span> Route Path</label>
-      <input ng-model="newRoute.path" class="form-control" placeholder="Route Path" type="text" />
-    </div>
-    <div class="form-group" style="float: left; margin-left: 20px;">
-      <label>
-        <span style="color: #a94442;">**</span> Route Path Transform
-        <i ng-show="uiSettings.showTooltips" uib-tooltip-html="'Transform the route path by using the following substitute expression format:<br /> s/from/to/g'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
-      </label><br />
-      <input ng-model="newRoute.pathTransform" class="form-control" placeholder="s/from/to/g " type="text" />
-    </div>
-    <div class="has-error-msg" style="clear: both; margin-bottom: 5px;"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.pathTransformError}}</div>
-  </div>
-  <div class="form-group-2columns">
-    <div class="form-group" style="float: left;">
-      <label>Basic Authentication Username</label>
-      <input ng-model="newRoute.username" ng-disabled="newRoute.forwardAuthHeader" class="form-control" placeholder="Basic Authentication Username" type="text" />
-    </div>
-    <div class="form-group" style="float: left; margin-left: 20px;">
-      <label>Basic Authentication Password</label><br />
-      <input ng-model="newRoute.password" ng-disabled="newRoute.forwardAuthHeader" class="form-control" placeholder="Basic Authentication Password" type="text" />
-    </div>
-    <div class="form-group" style="float: left;">
-      <label>Forward existing Authorization header</label><br />
-      <div class="btn-group" style="clear: both;">
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="true">Yes</label>
-        <label class="btn btn-primary" ng-model="newRoute.forwardAuthHeader" uib-btn-radio="false">No</label>
-      </div>
+    <div class="form-group" ng-class="{ 'has-error' : ngErrorRoute.kafkaTopic }">
+      <label><span>*</span> Topic Name</label>
+      <input class="form-control" placeholder="e.g. 2xx-topic" type="text" ng-model="newRoute.kafkaTopic" />
+      <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{ngErrorRoute.kafkaTopicError}}</div>
     </div>
   </div>
 
@@ -118,8 +148,8 @@
       <tr style="font-weight: bold">
         <th>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Name | Status | Primary</div>
-          <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured</div>
-          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port</div>
+          <div style="width: 18%; float: left; display: block; margin-right: 1%;">Type | Secured | Conditional</div>
+          <div style="width: 23%; float: left; display: block; margin-right: 1%;">Host | Port | Topic</div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">Path/Transform</div>
           <div style="width: 8%; float: right; display: block;"></div>
         </th>
@@ -143,19 +173,27 @@
           </div>
           <div style="width: 18%; float: left; display: block; margin-right: 1%;">
             <span ng-if="route.type=='http'" class="btn-info btn-xs">HTTP</span>
-            <span ng-if="route.type=='tcp'" class="btn-warning btn-xs">TCP</span>
-            <span ng-if="route.type=='mllp'" class="btn-primary btn-xs">MLLP</span>
+            <span ng-if="route.type=='kafka'" class="btn-warning btn-xs">KAFKA</span>
 
-            <span ng-if="route.secured==true" class="btn-success btn-xs">Secured</span>
-            <span ng-if="route.secured==false" class="btn-danger btn-xs">Unsecured</span>
+            <span ng-if="route.secured==true && route.type=='http'" class="btn-success btn-xs">Secured</span>
+            <span ng-if="route.secured==false && route.type=='http'" class="btn-danger btn-xs">Unsecured</span>
+            
+            <span ng-if="route.waitPrimaryResponse==true" class="btn-warning btn-xs">Conditional</span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
-            <span>{{ route.host }}</span>
-            <span>{{ route.port }}</span>
+            <span ng-show="route.type=='http'">
+              <span>{{ route.host }}</span>
+              <span>{{ route.port }}</span>
+            </span>
+            <span ng-show="route.type=='kafka'">
+              <span>{{ route.kafkaTopic }}</span>
+            </span>
           </div>
           <div style="width: 23%; float: left; display: block; margin-right: 1%;">
-            <span>{{ route.path }}</span>
-            <span>{{ route.pathTransform }}</span>
+            <span ng-show="route.type=='http'">
+              <span>{{ route.path }}</span>
+              <span>{{ route.pathTransform }}</span>
+            </span>
           </div>
 
 

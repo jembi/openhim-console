@@ -114,7 +114,11 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         password: '',
         type: 'http',
         status: 'enabled',
-        forwardAuthHeader: false
+        forwardAuthHeader: false,
+        kafkaClientId: '',
+        kafkaTopic: '',
+        waitPrimaryResponse: false,
+        statusCodesCheck: '',
       }
     } else if (type === 'edit') {
       // show add/edit box
@@ -220,26 +224,47 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
       $scope.ngErrorRoute.hasErrors = true
     }
 
-    // host validation
-    if (!$scope.newRoute.host) {
-      $scope.ngErrorRoute.host = true
+    // Status codes validation
+    const codeError = $scope.checkIsStatusCodesValid($scope.newRoute.statusCodesCheck)
+    if (codeError) {
+      $scope.ngErrorRoute.statusCodesCheck = true
+      $scope.ngErrorRoute.statusCodesCheckError = codeError
       $scope.ngErrorRoute.hasErrors = true
     }
 
-    // port validation
-    const portError = $scope.checkIsPortValid($scope.newRoute.port)
-    if (portError) {
-      $scope.ngErrorRoute.port = true
-      $scope.ngErrorRoute.portError = portError
-      $scope.ngErrorRoute.hasErrors = true
-    }
+    // HTTP route type validation
+    if ($scope.newRoute.type === 'http') {
+      // host validation
+      if (!$scope.newRoute.host) {
+        $scope.ngErrorRoute.host = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
 
-    // path/transform validation
-    const pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
-    if (pathTransformError) {
-      $scope.ngErrorRoute.pathTransform = true
-      $scope.ngErrorRoute.pathTransformError = pathTransformError
-      $scope.ngErrorRoute.hasErrors = true
+      // port validation
+      const portError = $scope.checkIsPortValid($scope.newRoute.port)
+      if (portError) {
+        $scope.ngErrorRoute.port = true
+        $scope.ngErrorRoute.portError = portError
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // path/transform validation
+      const pathTransformError = $scope.checkPathTransformPathSet($scope.newRoute)
+      if (pathTransformError) {
+        $scope.ngErrorRoute.pathTransform = true
+        $scope.ngErrorRoute.pathTransformError = pathTransformError
+        $scope.ngErrorRoute.hasErrors = true
+      }
+    }
+    // KAFKA route type validation
+    if ($scope.newRoute.type === 'kafka') {
+      // kafka topic validation
+      const kafkaTopicError = $scope.checkIskafkaTopicValid($scope.newRoute.kafkaTopic)
+      if (kafkaTopicError) {
+        $scope.ngErrorRoute.kafkaTopic = true
+        $scope.ngErrorRoute.kafkaTopicError = kafkaTopicError
+        $scope.ngErrorRoute.hasErrors = true
+      }
     }
 
     if ($scope.ngErrorRoute.hasErrors) {
@@ -274,6 +299,37 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     if (route.path && route.pathTransform) {
       // return error message
       return 'Cant supply both!'
+    }
+  }
+
+  // check if topic name is valid by kafka
+  $scope.checkIskafkaTopicValid = function (value) {
+    if (value) {
+      if(value.length > 255) {
+        return 'Max length is 255 characters!'
+      }
+      for(let char of value) {
+        if(!/[a-zA-Z0-9\\._\\-]/.test(char)) {
+          return 'Not valid topic name! Only letters, numbers, . (dot), _ (underscore), - (minus) can be used!'
+        }
+      }
+    } else {
+      return 'This field is required!'
+    }
+  }
+
+  // validate status codes provided
+  $scope.checkIsStatusCodesValid = function (value) {
+    if (value !== '' && value !== undefined) {
+      const codes = value.split(',')
+      for (const code of codes) {
+        const validRangeCodes = ["1**", "2**", "3**", "4**", "5**"];
+        if (Number(code) <= 100 || Number(code) >= 599) {
+          return `${code} not a valid status code!`
+        } else if (code.includes('*') && !validRangeCodes.includes(code)) {
+          return `${code} not a valid range of codes! valid options: ${validRangeCodes}`
+        }
+      }
     }
   }
 
