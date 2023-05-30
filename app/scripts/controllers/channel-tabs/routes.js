@@ -19,7 +19,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     angular.forEach(mediators, function (mediator) {
       // foreach endpoint in the mediator
       angular.forEach(mediator.endpoints, function (endpoint) {
-        $scope.mediatorRoutes.push({ fullName: mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint })
+        $scope.mediatorRoutes.push({ fullName: mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint })
       })
     })
   }, function () { /* server error - could not connect to API to get Mediators */ })
@@ -109,7 +109,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         port: '',
         path: '',
         pathTransform: '',
-        primary: primary,
+        primary,
         username: '',
         password: '',
         type: 'http',
@@ -164,18 +164,18 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
 
     // add mediator to channel.routes array
     $scope.channel.routes.push({
-      name: name,
-      secured: secured,
-      host: host,
-      port: port,
-      path: path,
-      pathTransform: pathTransform,
-      primary: primary,
-      username: username,
-      password: password,
+      name,
+      secured,
+      host,
+      port,
+      path,
+      pathTransform,
+      primary,
+      username,
+      password,
       type: routeType,
       status: 'enabled',
-      forwardAuthHeader: forwardAuthHeader
+      forwardAuthHeader
     })
   }
 

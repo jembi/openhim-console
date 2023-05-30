@@ -152,7 +152,7 @@ export function ExportImportModalCtrl ($scope, $uibModalInstance, $uibModal, $ti
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: { 'content-type': 'application/json' } }
+          return { type, content, headers: { 'content-type': 'application/json' } }
         }
       }
     })

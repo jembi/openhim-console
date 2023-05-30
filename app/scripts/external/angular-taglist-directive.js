@@ -11,7 +11,7 @@ angular.module(angularTaglist, []).directive('taglist', ['$timeout', function ($
       taglistBlurTimeout: '='
     },
     transclude: true,
-    template: template,
+    template,
     compile: function (tElement, tAttrs, transcludeFn) {
       return function (scope, element, attrs) {
         element.bind('click', function () {

@@ -165,11 +165,11 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
 
         // create session object
         const consoleSessionObject = {
-          sessionID: sessionID,
-          sessionUser: sessionUser,
-          sessionUserGroups: sessionUserGroups,
-          sessionUserSettings: sessionUserSettings,
-          sessionProvider: sessionProvider
+          sessionID,
+          sessionUser,
+          sessionUserGroups,
+          sessionUserSettings,
+          sessionProvider
         }
 
         // Put updated object into storage

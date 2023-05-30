@@ -7,7 +7,7 @@ export function login (Api, $rootScope, keycloak) {
       Api.AuthenticateLocal.save({ username: email, password }, function () {
         // on success
         // Verify that you can make authenticated requests
-        Api.Users.get({ email: email }, function (profile) {
+        Api.Users.get({ email }, function (profile) {
           userProfile = profile
           done('Authentication Success')
         }, function () {

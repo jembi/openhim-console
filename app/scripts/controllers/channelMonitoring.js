@@ -87,31 +87,31 @@ export function ChannelMonitoringCtrl ($scope, $uibModal, $interval, $location, 
       if (parseInt(channelsResults[0].processing) !== 0) {
         value = parseInt(channelsResults[0].processing)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Processing', value: value, percent: percent, color: '#777777' })
+        channelsData.push({ label: 'Processing', value, percent, color: '#777777' })
       }
 
       if (parseInt(channelsResults[0].failed) !== 0) {
         value = parseInt(channelsResults[0].failed)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Failed', value: value, percent: percent, color: '#d9534f' })
+        channelsData.push({ label: 'Failed', value, percent, color: '#d9534f' })
       }
 
       if (parseInt(channelsResults[0].completed) !== 0) {
         value = parseInt(channelsResults[0].completed)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Completed', value: value, percent: percent, color: '#EFC300' })
+        channelsData.push({ label: 'Completed', value, percent, color: '#EFC300' })
       }
 
       if (parseInt(channelsResults[0].completedWErrors) !== 0) {
         value = parseInt(channelsResults[0].completedWErrors)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Completed With Error (s)', value: value, percent: percent, color: '#FB8B24' })
+        channelsData.push({ label: 'Completed With Error (s)', value, percent, color: '#FB8B24' })
       }
 
       if (parseInt(channelsResults[0].successful) !== 0) {
         value = parseInt(channelsResults[0].successful)
         percent = (100 / totalTransactions * value).toFixed(2)
-        channelsData.push({ label: 'Successful', value: value, percent: percent, color: '#5cb85c' })
+        channelsData.push({ label: 'Successful', value, percent, color: '#5cb85c' })
       }
 
       updateChannelsBarChart(channelsData)
