@@ -1,0 +1,19 @@
+{
+  "version": "1.14.4",
+  "minimumCoreVersion": "5.2.0",
+  "protocol": "${OPENHIM_CONSOLE_PROTOCOL}",
+  "host": "${OPENHIM_CORE_MEDIATOR_HOSTNAME}",
+  "hostPath": "${OPENHIM_CONSOLE_HOSTPATH}",
+  "port": "${OPENHIM_MEDIATOR_API_PORT}",
+  "title": "Admin Console",
+  "footerTitle": "OpenHIM Administration Console",
+  "footerPoweredBy": "<a href='http://openhim.org/' target='_blank'>Powered by OpenHIM</a>",
+  "loginBanner": "",
+  "mediatorLastHeartbeatWarningSeconds": ${OPENHIM_MEDIATOR_HEALTH_WARNING_TIMEOUT},
+  "mediatorLastHeartbeatDangerSeconds": ${OPENHIM_MEDIATOR_HEALTH_DANGER_TIMEOUT},
+  "showLoginForm": ${OPENHIM_CONSOLE_SHOW_LOGIN},
+  "ssoEnabled": ${KC_OPENHIM_SSO_ENABLED},
+  "keyCloakUrl": "${KC_FRONTEND_URL}",
+  "keyCloakRealm": "${KC_REALM_NAME}",
+  "keyCloakClientId": "${KC_OPENHIM_CLIENT_ID}"
+}
