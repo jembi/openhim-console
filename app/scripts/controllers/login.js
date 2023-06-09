@@ -144,32 +144,25 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       const newUserInfo = { email: user.email, id: user._id, password }
       // save the new root password
       Api.Users.update(newUserInfo, function () {
-        // logout to clear the current session which used the default root password
-        login.logout(function (result) {
-          if (result === 'Logout Successful') {
-            // re-login with new credentials
-            login.login('root@openhim.org', password, function (result) {
-              if (result === 'Authentication Success') {
-                // Create the session for the logged in user
-                $scope.createUserSession('root@openhim.org')
-    
-                $scope.password = ''
-                $scope.passwordConfirm = ''
-    
-                $scope.resetSuccess = true
-    
-                Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.')
-                Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.')
-                $timeout(function () {
-                  // redirect user to landing page (transactions)
-                  $window.location = '#/transactions'
-                }, 5000)
-              } else {
-                // add the error message
-                Alerting.AlertAddServerMsg()
-              }
-            })
+        // re-login with new credentials
+        login.login('root@openhim.org', password, function (result) {
+          if (result === 'Authentication Success') {
+            // Create the session for the logged in user
+            $scope.createUserSession('root@openhim.org')
+
+            $scope.password = ''
+            $scope.passwordConfirm = ''
+
+            $scope.resetSuccess = true
+
+            Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.')
+            Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.')
+            $timeout(function () {
+              // redirect user to landing page (transactions)
+              $window.location = '#/transactions'
+            }, 5000)
           } else {
+            // add the error message
             Alerting.AlertAddServerMsg()
           }
         })
