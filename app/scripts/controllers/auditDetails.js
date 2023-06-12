@@ -60,7 +60,7 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
       controller: AuditsContentModalCtrl,
       resolve: {
         auditData: function () {
-          return { type: type, content: content }
+          return { type, content }
         }
       }
     })

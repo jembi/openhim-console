@@ -28,9 +28,7 @@ module.exports = merge(common, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: true
-            }
+            options: {}
           },
           'css-loader'
         ]
@@ -39,9 +37,9 @@ module.exports = merge(common, {
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: [path.join(__dirname, 'app')],
-    compress: true,
+    static: path.resolve(__dirname, 'app'),
     port: 9000,
-    watchContentBase: true
-  }
+    open: true,
+    hot: true
+}
 })

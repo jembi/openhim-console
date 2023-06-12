@@ -62,11 +62,11 @@ export function beautifyIndent (type, content) {
     }
   } catch (err) {
     console.log(err)
-    return { lang: '', content: content }
+    return { lang: '', content }
   }
 
   // if not applicable then return as is
-  return { lang: '', content: content }
+  return { lang: '', content }
 }
 
 export function isCoreVersionCompatible (minVersion, actualVersion) {

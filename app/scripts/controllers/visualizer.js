@@ -107,22 +107,22 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     $scope.visualizerData = []
     $scope.visualizerSettings = {
       name: visSettings.name,
-      components: components,
-      channels: channels,
-      mediators: mediators,
-      visResponsive: visResponsive,
-      visW: visW,
-      visH: visH,
-      pad: pad,
-      inactiveColor: inactiveColor,
-      activeColor: activeColor,
-      errorColor: errorColor,
-      textColor: textColor,
-      updatePeriod: updatePeriod,
-      minDisplayPeriod: minDisplayPeriod,
+      components,
+      channels,
+      mediators,
+      visResponsive,
+      visW,
+      visH,
+      pad,
+      inactiveColor,
+      activeColor,
+      errorColor,
+      textColor,
+      updatePeriod,
+      minDisplayPeriod,
       speed: $scope.visualizerSpeed,
-      maxSpeed: maxSpeed,
-      maxTimeout: maxTimeout
+      maxSpeed,
+      maxTimeout
     }
 
     // check if visualizer should be loaded - no errors found

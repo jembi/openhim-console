@@ -239,7 +239,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: headers }
+          return { type, content, headers }
         }
       }
     })

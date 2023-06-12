@@ -51,7 +51,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
           })
         })
 
-        usersArray.push({ user: user, allowedChannels: allowedChannels, allowedChannelsBody: allowedChannelsBody, allowedChannelsRerun: allowedChannelsRerun })
+        usersArray.push({ user, allowedChannels, allowedChannelsBody, allowedChannelsRerun })
       })
 
       $scope.usersChannelsMatrix = {}

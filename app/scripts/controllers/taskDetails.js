@@ -54,7 +54,7 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
       if (showpage === i) {
         status = 'active'
       }
-      $scope.pagesArray.push({ pageNum: i, status: status })
+      $scope.pagesArray.push({ pageNum: i, status })
     }
   }
 

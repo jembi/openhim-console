@@ -221,7 +221,7 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: { 'content-type': 'application/json' } }
+          return { type, content, headers: { 'content-type': 'application/json' } }
         }
       }
     })

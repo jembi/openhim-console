@@ -235,7 +235,7 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
       // if patientID set then update query to include 'AND' operator
       if (valueNotEmpty(patientID) === true) {
-        filtersObject.filters['participantObjectIdentification.participantObjectID'] = { type: 'AND', patientID: participantPatientID, objectID: objectID }
+        filtersObject.filters['participantObjectIdentification.participantObjectID'] = { type: 'AND', patientID: participantPatientID, objectID }
       } else {
         filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify(objectID)
       }
