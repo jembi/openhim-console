@@ -1,7 +1,7 @@
 {
 	"name": "openhim-console",
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
-	"version": "1.18.0",
+	"version": "1.18.1",
 	"dependencies": {
 		"http-server": "^14.1.1",
 		"keycloak-js": "^20.0.3",
