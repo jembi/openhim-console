@@ -117,8 +117,12 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         forwardAuthHeader: false,
         kafkaClientId: '',
         kafkaTopic: '',
+        rabbitmqHost: '',
+        rabbitmqUsername: '',
+        rabbitmqPassword: '',
+        rabbitmqExchangeName: '',
         waitPrimaryResponse: false,
-        statusCodesCheck: '',
+        statusCodesCheck: ''
       }
     } else if (type === 'edit') {
       // show add/edit box
@@ -259,11 +263,50 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     // KAFKA route type validation
     if ($scope.newRoute.type === 'kafka') {
       // kafka topic validation
-      const kafkaTopicError = $scope.checkIskafkaTopicValid($scope.newRoute.kafkaTopic)
+      const kafkaTopicError = $scope.checkIskafkaTopicOrRabbitExchangeIsValid($scope.newRoute.kafkaTopic)
       if (kafkaTopicError) {
         $scope.ngErrorRoute.kafkaTopic = true
         $scope.ngErrorRoute.kafkaTopicError = kafkaTopicError
         $scope.ngErrorRoute.hasErrors = true
+      }
+    }
+
+    // RABBITMQ route type validation
+    if ($scope.newRoute.type === 'rabbitmq') {
+      console.log(`exchange name ${$scope.newRoute.rabbitmqExchangeName}`)
+
+      // rabbitmq host check
+      if (!$scope.newRoute.rabbitmqHost) {
+        $scope.ngErrorRoute.rabbitmqHost = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // rabbitmq username check
+      if (!$scope.newRoute.rabbitmqUsername) {
+        $scope.ngErrorRoute.rabbitmqUsername = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // rabbitmq password check
+      if (!$scope.newRoute.rabbitmqPassword) {
+        $scope.ngErrorRoute.rabbitmqPassword = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // rabbitmq exchange name check
+      if (!$scope.newRoute.rabbitmqExchangeName) {
+        $scope.ngErrorRoute.rabbitmqExchangeName = true
+        $scope.ngErrorRoute.hasErrors = true
+      }
+
+      // rabbitmq exchange name validation
+      if ($scope.newRoute.rabbitmqExchangeName) {
+        const rabbitmqExchangeNameError = $scope.checkIskafkaTopicOrRabbitExchangeIsValid($scope.newRoute.rabbitmqExchangeName)
+        if (rabbitmqExchangeNameError) {
+          $scope.ngErrorRoute.rabbitmqExchangeName = true
+          $scope.ngErrorRoute.rabbitmqExchangeNameError = rabbitmqExchangeNameError
+          $scope.ngErrorRoute.hasErrors = true
+        }
       }
     }
 
@@ -303,7 +346,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   }
 
   // check if topic name is valid by kafka
-  $scope.checkIskafkaTopicValid = function (value) {
+  $scope.checkIskafkaTopicOrRabbitExchangeIsValid = function (value) {
     if (value) {
       if(value.length > 255) {
         return 'Max length is 255 characters!'

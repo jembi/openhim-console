@@ -93,6 +93,7 @@
 		]
 	},
 	"scripts": {
+		"start:watch": "npm run build && npm run start",
 		"start": "http-server ./dist -p 9000",
 		"start:dev": "webpack-dev-server --config webpack.development.js",
 		"clean": "rimraf dist",
