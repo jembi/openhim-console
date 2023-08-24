@@ -273,8 +273,6 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
 
     // RABBITMQ route type validation
     if ($scope.newRoute.type === 'rabbitmq') {
-      console.log(`exchange name ${$scope.newRoute.rabbitmqExchangeName}`)
-
       // rabbitmq host check
       if (!$scope.newRoute.rabbitmqHost) {
         $scope.ngErrorRoute.rabbitmqHost = true
