@@ -152,7 +152,7 @@
             </div>
 
             <!-- Response, right -->
-            <div class="col-md-6" ng-if="transactionDetails.response">
+            <div class="col-md-6" ng-if="transactionDetails.response || transactionDetails.error">
               <div class="panel panel-default sml-margin transaction-req-res-height">
                 <div class="panel-heading">
                   <h3 class="panel-title">Response</h3>
