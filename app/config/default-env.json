@@ -1,5 +1,5 @@
 {
-  "version": "1.18.2",
+  "version": "1.19.0",
   "minimumCoreVersion": "5.2.0",
   "protocol": "${OPENHIM_CONSOLE_PROTOCOL}",
   "host": "${OPENHIM_CORE_MEDIATOR_HOSTNAME}",
