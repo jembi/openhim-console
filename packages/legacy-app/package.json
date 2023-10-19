@@ -1,5 +1,5 @@
 {
-	"name": "openhim-console",
+	"name": "@jembi/legacy-console",
 	"description": "This application provides a web application to configure and manage the OpenHIM-core component.",
 	"version": "1.15.0",
 	"dependencies": {
