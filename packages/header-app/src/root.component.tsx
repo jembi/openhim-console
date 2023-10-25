@@ -6,14 +6,11 @@ import {createTheme, ThemeProvider} from '@mui/material/styles'
 import {green} from '@mui/material/colors'
 import {
   AccountCircle,
-  Dashboard,
-  Diversity1,
   Menu as MenuIcon
 } from '@mui/icons-material'
 import {Divider, Drawer, IconButton, Link, Menu, MenuItem} from '@mui/material'
 import React from 'react'
 import {OpenHIMMenu} from '@jembi/openhim-sidebar'
-import DashboardIcon from '@mui/icons-material/Dashboard'
 import LogoutIcon from '@mui/icons-material/Logout'
 import EditIcon from '@mui/icons-material/Edit'
 import {ListItemIcon} from '@mui/material'
