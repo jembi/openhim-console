@@ -7,6 +7,7 @@ import apiClient from '../../utils/apiClient'
 import AddNewAppDialog from '../AddAppDialog/AddAppDialog'
 import CustomSkeleton from '../CustomSkeleton/CustomSkeleton'
 import AppList from '../AppsList/AppsList'
+import EmptyState from '../EmptyState/EmptyState'
 
 function PortalHome() {
   const [apps, setApps] = useState([])
@@ -16,14 +17,13 @@ function PortalHome() {
   useEffect(() => {
     apiClient.get('/apps').then(response => {
       setApps(response.data)
+      const uniqueCategories = Array.from(
+        new Set(response.data.map(app => app.category))
+      )
+      setCategories(uniqueCategories)
       setLoading(false)
     })
   }, [])
-
-  useEffect(() => {
-    const uniqueCategories = Array.from(new Set(apps.map(app => app.category)))
-    setCategories(uniqueCategories)
-  }, [apps])
 
   return (
     <div>
@@ -42,6 +42,11 @@ function PortalHome() {
       <section id="CategoriesSection">
         {loading ? (
           <CustomSkeleton />
+        ) : apps.length === 0 ? (
+          <EmptyState
+            header="You don't have any registered apps to display yet"
+            description="Start by adding a new app to your portal."
+          />
         ) : (
           <AppList categories={categories} apps={apps} />
         )}
