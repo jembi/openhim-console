@@ -12,7 +12,7 @@ function CustomSkeleton() {
           style={{marginBottom: 6}}
         />
       </Grid>
-      {[0, 1].map(value => (
+      {["AppCard-Skeleton-1", "AppCard-Skeleton-2"].map(value => (
         <Grid item xs={8} sm={4} md={4} sx={{mb: 3}} key={value}>
           <Card sx={{maxWidth: 345, m: 1}}>
             <CardHeader
