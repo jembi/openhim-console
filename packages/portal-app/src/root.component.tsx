@@ -5,12 +5,10 @@ import theme from './utils/theme'
 
 export default function PortalRootApp(props) {
   return (
-    <div>
+    <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <React.StrictMode>
-          <Portal />
-        </React.StrictMode>
+        <Portal />
       </ThemeProvider>
-    </div>
+    </React.StrictMode>
   )
 }

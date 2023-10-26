@@ -1,6 +1,5 @@
-import {Avatar, Card, IconButton, CardActionArea, Button} from '@mui/material'
+import {Avatar, Card, IconButton, CardActionArea} from '@mui/material'
 import CardHeader from '@mui/material/CardHeader'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import LaunchIcon from '@mui/icons-material/Launch'
 import AppsIcon from '@mui/icons-material/Apps'
 
@@ -32,19 +31,16 @@ const AppCard = ({
             action={
               <div>
                 {applicationType == 'link' && (
-                  <IconButton aria-label="launch">
-                    <Button
-                      href={applicationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <LaunchIcon />
-                    </Button>
+                  <IconButton
+                    aria-label="launch"
+                    href={applicationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="large"
+                    color="primary"
+                  >
+                    <LaunchIcon />
                   </IconButton>
-                  /*
-                  <IconButton aria-label="settings">
-                    <MoreVertIcon />
-                  </IconButton>*/
                 )}
               </div>
             }

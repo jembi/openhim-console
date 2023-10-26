@@ -1,25 +1,19 @@
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import {
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup
-} from '@mui/material'
+import {FormLabel, InputLabel, MenuItem, Radio, RadioGroup} from '@mui/material'
 import Select from '@mui/material/Select'
 
-const Form = ({ formInputs, setAppData }) => {
-    /**
+const Form = ({formInputs, setAppData}) => {
+  /**
    * Handles input change event and updates app data state accordingly.
    * @param event - The input change event.
    */
-    const handleInputsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newInputs = {...formInputs}
-      newInputs[event.target.name] = event.target.value
-      setAppData(newInputs)
-    }
+  const handleInputsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newInputs = {...formInputs}
+    newInputs[event.target.name] = event.target.value
+    setAppData(newInputs)
+  }
   return (
     <div>
       <FormControl required>

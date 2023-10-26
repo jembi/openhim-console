@@ -1,6 +1,6 @@
 import {Box, Typography} from '@mui/material'
 import React from 'react'
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from '@mui/icons-material/Info'
 
 interface EmptyStateProps {
   header: string
@@ -9,14 +9,13 @@ interface EmptyStateProps {
 
 const EmptyState: React.FC<EmptyStateProps> = ({header, description}) => {
   return (
-      <Box
-        justifyContent="center"
-        alignItems="center"
-        height="100vh">
-      <Typography align='center'><InfoIcon color='info' /></Typography>
-      <Typography align='center'>{header}</Typography>
-      <Typography align='center'>{description}</Typography>
-      </Box>
+    <Box justifyContent="center" alignItems="center" height="100vh">
+      <Typography align="center">
+        <InfoIcon color="info" />
+      </Typography>
+      <Typography align="center">{header}</Typography>
+      <Typography align="center">{description}</Typography>
+    </Box>
   )
 }
 

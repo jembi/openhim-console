@@ -12,7 +12,7 @@ const AppsList = ({categories, apps}: any) => {
 
   return (
     <div>
-      <Grid container spacing={2} sx={{mt: 5, pl:10}}>
+      <Grid container spacing={2} sx={{mt: 5, pl: 10}}>
         {categories.map(category => (
           <React.Fragment key={category}>
             {groupedApps[category].length > 0 && (
@@ -22,15 +22,15 @@ const AppsList = ({categories, apps}: any) => {
             )}
             {groupedApps[category].map((app: any) => (
               <React.Fragment key={app.name}>
-              <Grid item xs={12} sm={4} md={3} sx={{m: 1}}>
-                <AppCard
-                  applicationIcon={app.icon}
-                  applicationDescription={app.description}
-                  applicationType={app.type}
-                  applicationName={app.name}
-                  applicationUrl={app.url}
-                />
-              </Grid>
+                <Grid item xs={12} sm={4} md={3} sx={{m: 1}}>
+                  <AppCard
+                    applicationIcon={app.icon}
+                    applicationDescription={app.description}
+                    applicationType={app.type}
+                    applicationName={app.name}
+                    applicationUrl={app.url}
+                  />
+                </Grid>
               </React.Fragment>
             ))}
           </React.Fragment>
