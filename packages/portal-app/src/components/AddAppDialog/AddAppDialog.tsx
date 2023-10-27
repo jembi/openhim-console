@@ -65,6 +65,9 @@ const AddNewAppDialog = ({apps, setApps}) => {
    */
   const addNewApp = async e => {
     e.preventDefault()
+    appData.name = appData.name.trim()
+    appData.description = appData.description.trim()
+    appData.url = appData.url.trim()
     try {
       const response = await apiClient.post('/apps', appData)
       const SuccessMessage = (
@@ -95,7 +98,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
         )
       } else {
         console.log('Error adding app')
-        console.log(error)
+        console.log(error.response.data.error)
       }
     }
   }
