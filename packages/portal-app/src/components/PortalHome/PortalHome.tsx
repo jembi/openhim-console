@@ -26,10 +26,10 @@ function PortalHome() {
   }, [])
 
   return (
-    <div>
+    <Box mt={"5%"} ml={"10%"} mr={"10%"}>
       <section id="alertSection"></section>
       <section id="PortalHeader">
-        <Grid sx={{ml: 5, mt: 5}}>
+        <Grid sx={{ml: 0, mt: 0}}>
           <Box width="100%" display="flex" justifyContent="space-between">
             <Typography variant="h2" color={green[700]}>
               Portal
@@ -51,7 +51,7 @@ function PortalHome() {
           <AppList categories={categories} apps={apps} />
         )}
       </section>
-    </div>
+    </Box>
   )
 }
 

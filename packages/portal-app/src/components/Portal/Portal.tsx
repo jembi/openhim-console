@@ -1,4 +1,4 @@
-import PortalHome from './PortalHome'
+import PortalHome from '../PortalHome/PortalHome'
 
 const Portal = () => {
   return <PortalHome />
