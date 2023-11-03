@@ -10,11 +10,15 @@ interface EmptyStateProps {
 const EmptyState: React.FC<EmptyStateProps> = ({header, description}) => {
   return (
     <Box justifyContent="center" alignItems="center" height="100vh">
-      <Typography align="center">
-        <InfoIcon color="info" />
+      <Typography align="center" variant="h1">
+        <InfoIcon fontSize="large" color="info" />
       </Typography>
-      <Typography align="center">{header}</Typography>
-      <Typography align="center">{description}</Typography>
+      <Typography variant="h5" align="center">
+        {header}
+      </Typography>
+      <Typography variant="subtitle1" align="center">
+        {description}
+      </Typography>
     </Box>
   )
 }
