@@ -8,12 +8,11 @@ import {
   AccountCircle,
   Menu as MenuIcon
 } from '@mui/icons-material'
-import {Divider, Drawer, IconButton, Link, Menu, MenuItem} from '@mui/material'
+import {Divider, Drawer, IconButton, Link, Menu, MenuItem, ListItemIcon} from '@mui/material'
 import React from 'react'
 import {OpenHIMMenu} from '@jembi/openhim-sidebar'
 import LogoutIcon from '@mui/icons-material/Logout'
 import EditIcon from '@mui/icons-material/Edit'
-import {ListItemIcon} from '@mui/material'
 import AppsIcon from '@mui/icons-material/Apps';
 
 const theme = createTheme({
@@ -112,7 +111,7 @@ export default function ButtonAppBar() {
                   href="#!/profile"
                 >
                   <ListItemIcon>
-                    <EditIcon></EditIcon>
+                    <EditIcon/>
                   </ListItemIcon>
                   Profile
                 </MenuItem>
@@ -122,7 +121,7 @@ export default function ButtonAppBar() {
                   href="#!/portal"
                 >
                   <ListItemIcon>
-                    <AppsIcon></AppsIcon>
+                    <AppsIcon/>
                   </ListItemIcon>
                   Portal
                 </MenuItem>
@@ -133,7 +132,7 @@ export default function ButtonAppBar() {
                   href="#!/logout"
                 >
                   <ListItemIcon>
-                    <LogoutIcon></LogoutIcon>
+                    <LogoutIcon/>
                   </ListItemIcon>
                   Logout
                 </MenuItem>
