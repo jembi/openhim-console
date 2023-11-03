@@ -1,6 +1,5 @@
 import {useState} from 'react'
 import ReactDOM from 'react-dom'
-
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -11,12 +10,13 @@ import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import AddIcon from '@mui/icons-material/Add'
 import Alert from '@mui/material/Alert'
-
+import {Box, Stack} from '@mui/material'
 import {useTheme, styled} from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
-import Form from '../CustomForm/Form'
-import apiClient from '../../utils/apiClient'
+import {useForm, FormProvider} from 'react-hook-form'
+import {registerNewApp} from '../../utils/apiClient'
+import FormFields from '../FormFields/FormFields'
+import AlertSection from '../AlertSection/AlertSection'
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
   '& .MuiDialogContent-root': {
@@ -35,9 +35,6 @@ const AddNewAppDialog = ({apps, setApps}) => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
 
-  /**
-   * Sets the `open` state to `true` when the dialog is clicked.
-   */
   const [open, setOpen] = useState(false)
   const handleClickOpen = () => {
     setOpen(true)
@@ -45,6 +42,8 @@ const AddNewAppDialog = ({apps, setApps}) => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const [alertState, setAlertState] = useState(null)
 
   const FormInitialState = {
     name: '',
@@ -58,28 +57,18 @@ const AddNewAppDialog = ({apps, setApps}) => {
   }
   const [appData, setAppData] = useState(FormInitialState)
 
-  /**
-   * Adds a new app by making a POST request to the '/apps' endpoint based on the user inputs.
-   * If the request is successful, a success message is displayed and the app is added to the list of apps.
-   * If the app already exists, an error message is displayed.
-   */
-  const addNewApp = async e => {
-    e.preventDefault()
-    appData.name = appData.name.trim()
-    appData.description = appData.description.trim()
-    appData.url = appData.url.trim()
+  const addNewApp = async appData => {
     try {
-      const response = await apiClient.post('/apps', appData)
+      const newApp = await registerNewApp(appData)
+      setApps([...apps, newApp])
+      setAlertState(null)
       const SuccessMessage = (
-        <div>
+        <Box paddingBottom={5}>
           <Alert severity="success">App was registered successfully</Alert>
-        </div>
+        </Box>
       )
-      ReactDOM.render(
-        SuccessMessage,
-        document.getElementById('DialogAlertSection')
-      )
-      setApps([...apps, response.data])
+      ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))
+      setOpen(false)
       setAppData(FormInitialState)
     } catch (error) {
       if (
@@ -87,20 +76,24 @@ const AddNewAppDialog = ({apps, setApps}) => {
         error.response.status === 400 &&
         error.response.data.error.includes('E11000')
       ) {
-        const alertMessage = (
-          <div>
-            <Alert severity="error">App already exists</Alert>
-          </div>
-        )
-        ReactDOM.render(
-          alertMessage,
-          document.getElementById('DialogAlertSection')
-        )
+        setAlertState({
+          severity: 'error',
+          message: 'App already exists'
+        })
       } else {
-        console.log('Error adding app')
-        console.log(error.response.data.error)
+        setAlertState({
+          severity: 'error',
+          message: 'Failed to add app. Please try again.'
+        })
       }
     }
+  }
+
+  const methods = useForm({
+    defaultValues: FormInitialState
+  })
+  const onSubmit = data => {
+    addNewApp(data)
   }
 
   return (
@@ -135,13 +128,19 @@ const AddNewAppDialog = ({apps, setApps}) => {
         >
           <CloseIcon />
         </IconButton>
-        <div id="DialogAlertSection"></div>
+        {alertState && <AlertSection {...alertState} />}
         <DialogContent dividers>
-          <Form formInputs={appData} setAppData={setAppData}></Form>
+          <FormProvider {...methods}>
+            <form id="AddNewAppForm" onSubmit={methods.handleSubmit(onSubmit)}>
+              <Stack spacing={2} minWidth={538}>
+                <FormFields />
+              </Stack>
+            </form>
+          </FormProvider>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" onClick={addNewApp}>
+          <Button form="AddNewAppForm" type="submit" variant="contained">
             Save
           </Button>
         </DialogActions>

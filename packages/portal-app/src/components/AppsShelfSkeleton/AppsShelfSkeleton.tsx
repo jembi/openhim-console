@@ -1,7 +1,7 @@
 import Skeleton from '@mui/material/Skeleton'
 import {Grid, Card, CardHeader} from '@mui/material'
 
-function CustomSkeleton() {
+function AppShelfSkeleton() {
   return (
     <Grid container spacing={2} sx={{ml: 5, mt: 5}}>
       <Grid item xs={12}>
@@ -33,14 +33,14 @@ function CustomSkeleton() {
                 />
               }
               subheader={<Skeleton animation="wave" height={10} width="40%" />}
-            ></CardHeader>
+            />
           </Card>
-          <Skeleton width={345} />
-          <Skeleton width={345} />
+          <Skeleton sx={{maxWidth: 345}} />
+          <Skeleton sx={{maxWidth: 345}} />
         </Grid>
       ))}
     </Grid>
   )
 }
 
-export default CustomSkeleton
+export default AppShelfSkeleton

@@ -2,27 +2,20 @@ import React from 'react'
 import {Grid, Typography} from '@mui/material'
 import AppCard from '../AppCard/AppCard'
 
-const AppsList = ({categories, apps}: any) => {
-  const groupedApps = {}
-  categories.forEach(category => {
-    groupedApps[category] = apps.filter(
-      app => app.category === category && app.showInPortal
-    )
-  })
-
+const AppsShelf = ({appsGroupedByCat}: any) => {
   return (
     <div>
-      <Grid container spacing={2} >
-        {categories.map(category => (
+      <Grid container spacing={2}>
+        {Object.entries(appsGroupedByCat).map(([category, apps]) => (
           <React.Fragment key={category}>
-            {groupedApps[category].length > 0 && (
-              <Grid item xs={12} sx={{mt: "10px", pl: 0}} >
-                <Typography variant='overline'>{category}</Typography>
+            {category.length > 0 && (
+              <Grid item xs={12} sx={{mt: '10px', pl: 0}}>
+                <Typography variant="overline">{category}</Typography>
               </Grid>
             )}
-            {groupedApps[category].map((app: any) => (
+            {(apps as any[]).map((app: any) => (
               <React.Fragment key={app.name}>
-                <Grid item xs={12} sm={4} md={3} sx={{m: 0}}>
+                <Grid item xs={12} md={4} sm={8} sx={{m: 0}}>
                   <AppCard
                     applicationIcon={app.icon}
                     applicationDescription={app.description}
@@ -40,4 +33,4 @@ const AppsList = ({categories, apps}: any) => {
   )
 }
 
-export default AppsList
+export default AppsShelf
