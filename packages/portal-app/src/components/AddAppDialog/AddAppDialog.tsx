@@ -55,12 +55,12 @@ const AddNewAppDialog = ({apps, setApps}) => {
     showInPortal: true,
     showInSideBar: false
   }
-  const [appData, setAppData] = useState(FormInitialState)
+  const [FormData, setFormData] = useState(FormInitialState)
 
-  const addNewApp = async appData => {
+  const addNewApp = async FormData => {
     try {
-      const newApp = await registerNewApp(appData)
-      setApps([...apps, newApp])
+      const response = await registerNewApp(FormData)
+      setApps([...apps, response])
       setAlertState(null)
       const SuccessMessage = (
         <Box paddingBottom={5}>
@@ -69,7 +69,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
       )
       ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))
       setOpen(false)
-      setAppData(FormInitialState)
+      setFormData(FormInitialState)
     } catch (error) {
       if (
         error.response &&
