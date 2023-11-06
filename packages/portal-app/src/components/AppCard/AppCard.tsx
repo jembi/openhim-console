@@ -1,51 +1,47 @@
-import {Avatar, Card, IconButton, CardActionArea} from '@mui/material'
+import {Avatar, Card, IconButton, CardActionArea, Link} from '@mui/material'
 import CardHeader from '@mui/material/CardHeader'
 import LaunchIcon from '@mui/icons-material/Launch'
 import AppsIcon from '@mui/icons-material/Apps'
+import AppCardActionsMenu from './AppCardActionsMenu'
 
-const AppCard = ({
-  applicationIcon,
-  applicationName,
-  applicationDescription,
-  applicationType,
-  applicationUrl
-}) => {
+const AppCard = ({app}) => {
   return (
     <div>
       <Card sx={{maxWidth: '400px'}}>
-        <CardActionArea href={applicationUrl}>
+        <CardActionArea>
           <CardHeader
+            href={app.url}
             avatar={
-              <Avatar variant="rounded" aria-label="application icon">
-                {applicationIcon ? (
-                  <img
-                    src={applicationIcon}
-                    alt="application icon"
-                    width={24}
-                  />
-                ) : (
-                  <AppsIcon fontSize="large" />
-                )}
-              </Avatar>
+              <Link href={app.url} target="_blank" rel="noopener noreferrer">
+                <Avatar variant="rounded" aria-label="application icon">
+                  {app.icon ? (
+                    <img src={app.icon} alt="application icon" width={24} />
+                  ) : (
+                    <AppsIcon fontSize="large" />
+                  )}
+                </Avatar>
+              </Link>
             }
             action={
               <div>
-                {applicationType == 'link' && (
+                {app.type == 'link' && (
                   <IconButton
                     aria-label="launch"
-                    href={applicationUrl}
+                    href={app.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     size="large"
                     color="primary"
+                    edge="end"
                   >
                     <LaunchIcon />
                   </IconButton>
                 )}
+                <AppCardActionsMenu app={app} />
               </div>
             }
-            title={applicationName}
-            subheader={applicationDescription}
+            title={app.name}
+            subheader={app.description}
           />
         </CardActionArea>
       </Card>

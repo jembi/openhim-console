@@ -52,3 +52,23 @@ const registerNewApp = async appData => {
   }
 }
 export {registerNewApp}
+
+const deleteApp = async appId => {
+  try {
+    const response = await apiClient.delete(`/apps/${appId}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+export {deleteApp}
+
+const updateApp = async (appId, appData) => {
+  try {
+    const response = await apiClient.put(`/apps/${appId}`, appData)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+export {updateApp}

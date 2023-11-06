@@ -16,13 +16,7 @@ const AppsShelf = ({appsGroupedByCat}: any) => {
             {(apps as any[]).map((app: any) => (
               <React.Fragment key={app.name}>
                 <Grid item xs={12} md={4} sm={8} sx={{m: 0}}>
-                  <AppCard
-                    applicationIcon={app.icon}
-                    applicationDescription={app.description}
-                    applicationType={app.type}
-                    applicationName={app.name}
-                    applicationUrl={app.url}
-                  />
+                  <AppCard app={app} />
                 </Grid>
               </React.Fragment>
             ))}
