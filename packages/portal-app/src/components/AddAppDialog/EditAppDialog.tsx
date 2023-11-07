@@ -1,16 +1,12 @@
 import {useState} from 'react'
 import ReactDOM from 'react-dom'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import EditIcon from '@mui/icons-material/Edit'
-import Alert from '@mui/material/Alert'
-import {Box, Stack} from '@mui/material'
+import {Box, Stack, Alert, Button, Dialog, DialogTitle} from '@mui/material'
 import {useTheme, styled} from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import {useForm, FormProvider} from 'react-hook-form'
@@ -66,7 +62,7 @@ const EditNewAppDialog = forwardRef((app: any, ref) => {
       setAlertState(null)
       const SuccessMessage = (
         <Box paddingBottom={5}>
-          <Alert severity="success">App was registered successfully</Alert>
+          <Alert severity="success">App was updated successfully</Alert>
         </Box>
       )
       ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))

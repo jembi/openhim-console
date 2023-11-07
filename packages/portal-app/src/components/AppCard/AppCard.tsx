@@ -8,7 +8,6 @@ const AppCard = ({app}) => {
   return (
     <div>
       <Card sx={{maxWidth: '400px'}}>
-        <CardActionArea>
           <CardHeader
             href={app.url}
             avatar={
@@ -40,10 +39,17 @@ const AppCard = ({app}) => {
                 <AppCardActionsMenu app={app} />
               </div>
             }
-            title={app.name}
-            subheader={app.description}
+            title={
+              <Link color="inherit" underline="hover" href={app.url}>
+                {app.name}
+              </Link>
+            }
+            subheader={
+              <Link color="inherit" underline="hover" href={app.url}>
+                {app.description}
+              </Link>
+            }
           />
-        </CardActionArea>
       </Card>
     </div>
   )

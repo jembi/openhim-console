@@ -71,7 +71,7 @@ const AppCardActionsMenu = ({app}) => {
       >
         <MenuItem onClick={handleClose} component={Link} id="editAppAction">
           <ListItemIcon>
-            <EditNewAppDialog ref={childRef} app={app}></EditNewAppDialog>
+            <EditNewAppDialog ref={childRef} app={app}/>
           </ListItemIcon>
           Edit
         </MenuItem>
