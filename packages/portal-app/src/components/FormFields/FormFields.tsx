@@ -6,8 +6,9 @@ import FormInputRadioGroup from './FormFieldsComponents/FormInputRadio'
 import {FormInputDropdown} from './FormFieldsComponents/FormInputDropDown'
 
 const FormFields = () => {
-  const {register, control, formState} = useFormContext()
+  const {register, control, formState, watch} = useFormContext()
   const {errors} = formState
+  const typeCheck = watch('type')
 
   return (
     <>
@@ -53,52 +54,69 @@ const FormFields = () => {
         type="text"
         fullWidth
         variant="outlined"
-        required
         name="description"
         error={!!errors.description}
         helperText={errors.description?.message}
         {...register('description', {
-          required: true,
           maxLength: {
             value: 70,
             message: 'Description should be at most 70 characters long'
           }
         })}
       />
-      <TextField
-        margin="dense"
-        multiline
-        id="url"
-        label="URL"
-        type="url"
-        fullWidth
-        variant="outlined"
-        name="url"
-        required
-        error={!!errors.url}
-        helperText={errors.url?.message}
-        {...register('url', {
-          required: true,
-          pattern: {
-            value:
-              /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/,
-            message: 'Invalid URL'
-          }
-        })}
-      />
-      <TextField
-        margin="dense"
-        multiline
-        id="icon"
-        label="Icon"
-        type="url"
-        fullWidth
-        variant="outlined"
-        name="icon"
-        error={!!errors.icon}
-        helperText={errors.icon?.message}
-        {...register('icon')}
-      />
+      {typeCheck === 'link' && (
+        <TextField
+          margin="dense"
+          multiline
+          id="url"
+          label="URL"
+          type="url"
+          fullWidth
+          variant="outlined"
+          name="url"
+          required
+          error={!!errors.url}
+          helperText={errors.url?.message}
+          {...register('url', {
+            required: true,
+            pattern: {
+              value:
+                /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/,
+              message: 'Invalid URL'
+            }
+          })}
+        />
+      )}
+      {typeCheck === 'link' && (
+        <TextField
+          margin="dense"
+          multiline
+          id="icon"
+          label="Icon"
+          type="url"
+          fullWidth
+          variant="outlined"
+          name="icon"
+          error={!!errors.icon}
+          helperText={errors.icon?.message}
+          {...register('icon')}
+        />
+      )}
+      {typeCheck === 'embedded' && (
+        <TextField
+          margin="dense"
+          multiline
+          id="page"
+          label="Page"
+          type="page"
+          fullWidth
+          variant="outlined"
+          name="page"
+          error={!!errors.url}
+          helperText={errors.url?.message}
+          {...register('url')}
+        />
+      )}
     </>
   )
 }
