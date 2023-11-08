@@ -1,19 +1,18 @@
-import {useState} from 'react'
-import ReactDOM from 'react-dom'
+import {useState, forwardRef, useImperativeHandle, useRef} from 'react'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import EditIcon from '@mui/icons-material/Edit'
-import {Box, Stack, Alert, Button, Dialog, DialogTitle} from '@mui/material'
+import {Stack, Button, Dialog, DialogTitle} from '@mui/material'
 import {useTheme, styled} from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import {useSnackbar} from 'notistack'
 import {useForm, FormProvider} from 'react-hook-form'
 import {updateApp} from '../../utils/apiClient'
 import FormFields from '../FormFields/FormFields'
 import AlertSection from '../AlertSection/AlertSection'
-import {forwardRef, useImperativeHandle, useRef} from 'react'
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
   '& .MuiDialogContent-root': {
@@ -25,6 +24,8 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 }))
 
 const EditNewAppDialog = forwardRef((app: any, ref) => {
+  const {enqueueSnackbar} = useSnackbar()
+
   /**
    * Determines whether the AddAppDialog should be set to full screen mode or not based on the current breakpoint.
    * @returns {boolean} A boolean value indicating whether the screen is in full screen mode or not.
@@ -60,12 +61,7 @@ const EditNewAppDialog = forwardRef((app: any, ref) => {
     try {
       const updatedApp = await updateApp(appData._id, appData)
       setAlertState(null)
-      const SuccessMessage = (
-        <Box paddingBottom={5}>
-          <Alert severity="success">App was updated successfully</Alert>
-        </Box>
-      )
-      ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))
+      enqueueSnackbar('App was updated successfully', {variant: 'success'})
       setOpen(false)
       setAppData(FormInitialState)
     } catch (error) {

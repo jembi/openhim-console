@@ -1,21 +1,16 @@
-import {
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Link,
-  Box,
-  Alert
-} from '@mui/material'
+import {IconButton, ListItemIcon, Menu, MenuItem, Link} from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {Delete} from '@mui/icons-material'
 import React from 'react'
-import {deleteApp, updateApp} from '../../utils/apiClient'
-import ReactDOM from 'react-dom'
+import {deleteApp} from '../../utils/apiClient'
 import EditNewAppDialog from '../AddAppDialog/EditAppDialog'
 import {useRef} from 'react'
+import {useSnackbar} from 'notistack'
 
 const AppCardActionsMenu = ({app}) => {
+  /* Alert - Snackbar */
+  const {enqueueSnackbar} = useSnackbar()
+
   const childRef = useRef(null)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -31,20 +26,10 @@ const AppCardActionsMenu = ({app}) => {
     } else if (target.id === 'deleteAppAction') {
       try {
         deleteApp(app._id)
-        const SuccessMessage = (
-          <Box paddingBottom={5}>
-            <Alert severity="success">App was deleted successfully</Alert>
-          </Box>
-        )
-        ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))
+        enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       } catch (error) {
         console.error(error)
-        const ErrorMessage = (
-          <Box paddingBottom={5}>
-            <Alert severity="error">Unable to delete App</Alert>
-          </Box>
-        )
-        ReactDOM.render(ErrorMessage, document.getElementById('alertSection'))
+        enqueueSnackbar('Unable to delete App', {variant: 'error'})
       }
     }
   }
@@ -71,7 +56,7 @@ const AppCardActionsMenu = ({app}) => {
       >
         <MenuItem onClick={handleClose} component={Link} id="editAppAction">
           <ListItemIcon>
-            <EditNewAppDialog ref={childRef} app={app}/>
+            <EditNewAppDialog ref={childRef} app={app} />
           </ListItemIcon>
           Edit
         </MenuItem>

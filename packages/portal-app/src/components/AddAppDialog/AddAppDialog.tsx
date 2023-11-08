@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import ReactDOM from 'react-dom'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -9,7 +8,6 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import AddIcon from '@mui/icons-material/Add'
-import Alert from '@mui/material/Alert'
 import {Box, Stack} from '@mui/material'
 import {useTheme, styled} from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -17,6 +15,7 @@ import {useForm, FormProvider} from 'react-hook-form'
 import {registerNewApp} from '../../utils/apiClient'
 import FormFields from '../FormFields/FormFields'
 import AlertSection from '../AlertSection/AlertSection'
+import {useSnackbar} from 'notistack'
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
   '& .MuiDialogContent-root': {
@@ -28,6 +27,9 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 }))
 
 const AddNewAppDialog = ({apps, setApps}) => {
+  /* Alert - Snackbar */
+  const {enqueueSnackbar} = useSnackbar()
+
   /**
    * Determines whether the AddAppDialog should be set to full screen mode or not based on the current breakpoint.
    * @returns {boolean} A boolean value indicating whether the screen is in full screen mode or not.
@@ -61,13 +63,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
     try {
       const response = await registerNewApp(FormData)
       setApps([...apps, response])
-      setAlertState(null)
-      const SuccessMessage = (
-        <Box paddingBottom={5}>
-          <Alert severity="success">App was registered successfully</Alert>
-        </Box>
-      )
-      ReactDOM.render(SuccessMessage, document.getElementById('alertSection'))
+      enqueueSnackbar('App was registered successfully', {variant: 'success'})
       setOpen(false)
       setFormData(FormInitialState)
     } catch (error) {
@@ -97,9 +93,9 @@ const AddNewAppDialog = ({apps, setApps}) => {
   }
 
   return (
-    <div>
-      <IconButton aria-label="add app" onClick={handleClickOpen}>
-        <AddIcon />
+    <Box alignItems={'center'} display={'flex'}>
+      <IconButton aria-label="add app" onClick={handleClickOpen} size='small' color='primary'>
+        <AddIcon /> ADD
       </IconButton>
       <BootstrapDialog
         onClose={handleClose}
@@ -145,7 +141,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
           </Button>
         </DialogActions>
       </BootstrapDialog>
-    </div>
+    </Box>
   )
 }
 
