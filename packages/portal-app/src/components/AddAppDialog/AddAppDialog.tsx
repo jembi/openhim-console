@@ -54,8 +54,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
     type: '',
     category: '',
     url: '',
-    showInPortal: true,
-    showInSideBar: false
+    showInPortal: true
   }
   const [FormData, setFormData] = useState(FormInitialState)
 
@@ -94,7 +93,12 @@ const AddNewAppDialog = ({apps, setApps}) => {
 
   return (
     <Box alignItems={'center'} display={'flex'}>
-      <IconButton aria-label="add app" onClick={handleClickOpen} size='small' color='primary'>
+      <IconButton
+        aria-label="add app"
+        onClick={handleClickOpen}
+        size="small"
+        color="primary"
+      >
         <AddIcon /> ADD
       </IconButton>
       <BootstrapDialog
