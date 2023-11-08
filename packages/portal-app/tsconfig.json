@@ -5,6 +5,6 @@
     "declarationDir": "dist"
   },
   "files": ["src/jembi-openhim-portal.tsx"],
-  "include": ["src/**/*/*", "src/utils/*"],
+  "include": ["src/**/**/*", "src/utils/*"],
   "exclude": ["src/**/*.test*"]
 }
