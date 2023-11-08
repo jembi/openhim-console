@@ -114,7 +114,14 @@ const FormFields = () => {
           name="page"
           error={!!errors.url}
           helperText={errors.url?.message}
-          {...register('url')}
+          {...register('url', {
+            required: true,
+            pattern: {
+              value:
+                /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/,
+              message: 'Invalid URL'
+            }
+          })}
         />
       )}
     </>
