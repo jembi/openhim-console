@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-//const API_URL = 'https://localhost:8080/'
-const API_URL = process.env.REACT_APP_API_BASE_URL;
+// set REACT_APP_OPENHIM_API_BASE_URL Env var to https://localhost:8080/ if running locally
+const API_URL = process.env.REACT_APP_OPENHIM_API_BASE_URL;
 
 const apiClient = axios.create({
   withCredentials: true,
