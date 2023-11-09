@@ -35,6 +35,7 @@
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
     "dotenv": "^16.3.1",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-ts-react-important-stuff": "^3.0.0",
