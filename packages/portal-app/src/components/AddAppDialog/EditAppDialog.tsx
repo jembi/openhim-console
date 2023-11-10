@@ -60,6 +60,7 @@ const EditNewAppDialog = forwardRef((app: any, ref) => {
   const editApp = async appData => {
     try {
       const updatedApp = await updateApp(appData._id, appData)
+      app.onSuccess.handleUpdateApp(updatedApp)
       setAlertState(null)
       enqueueSnackbar('App was updated successfully', {variant: 'success'})
       setOpen(false)

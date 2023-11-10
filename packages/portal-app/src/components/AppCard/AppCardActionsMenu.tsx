@@ -7,7 +7,7 @@ import EditNewAppDialog from '../AddAppDialog/EditAppDialog'
 import {useRef} from 'react'
 import {useSnackbar} from 'notistack'
 
-const AppCardActionsMenu = ({app}) => {
+const AppCardActionsMenu = ({app, onSuccess}) => {
   /* Alert - Snackbar */
   const {enqueueSnackbar} = useSnackbar()
 
@@ -25,7 +25,8 @@ const AppCardActionsMenu = ({app}) => {
       childRef.current.handleClickOpen()
     } else if (target.id === 'deleteAppAction') {
       try {
-        deleteApp(app._id)
+        const response = deleteApp(app._id)
+        onSuccess.handleDeleteApp(app)
         enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       } catch (error) {
         console.error(error)
@@ -56,7 +57,7 @@ const AppCardActionsMenu = ({app}) => {
       >
         <MenuItem onClick={handleClose} component={Link} id="editAppAction">
           <ListItemIcon>
-            <EditNewAppDialog ref={childRef} app={app} />
+            <EditNewAppDialog ref={childRef} app={app} onSuccess={onSuccess} />
           </ListItemIcon>
           Edit
         </MenuItem>

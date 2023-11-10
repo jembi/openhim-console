@@ -4,7 +4,7 @@ import LaunchIcon from '@mui/icons-material/Launch'
 import AppsIcon from '@mui/icons-material/Apps'
 import AppCardActionsMenu from './AppCardActionsMenu'
 
-const AppCard = ({app}) => {
+const AppCard = ({app, onSuccess}) => {
   return (
     <div>
       <Card sx={{maxWidth: '400px'}}>
@@ -36,7 +36,7 @@ const AppCard = ({app}) => {
                   <LaunchIcon />
                 </IconButton>
               )}
-              <AppCardActionsMenu app={app} />
+              <AppCardActionsMenu app={app} onSuccess={onSuccess} />
             </div>
           }
           title={

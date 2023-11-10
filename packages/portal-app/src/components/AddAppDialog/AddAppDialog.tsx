@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -26,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
   }
 }))
 
-const AddNewAppDialog = ({apps, setApps}) => {
+const AddNewAppDialog = ({onSuccess}) => {
   /* Alert - Snackbar */
   const {enqueueSnackbar} = useSnackbar()
 
@@ -51,7 +51,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
     name: '',
     description: '',
     icon: '',
-    type: '',
+    type: 'embedded',
     category: '',
     url: '',
     showInPortal: true
@@ -61,10 +61,10 @@ const AddNewAppDialog = ({apps, setApps}) => {
   const addNewApp = async FormData => {
     try {
       const response = await registerNewApp(FormData)
-      setApps([...apps, response])
       enqueueSnackbar('App was registered successfully', {variant: 'success'})
       setOpen(false)
       setFormData(FormInitialState)
+      onSuccess(response)
     } catch (error) {
       if (
         error.response &&
@@ -104,7 +104,7 @@ const AddNewAppDialog = ({apps, setApps}) => {
       <BootstrapDialog
         onClose={handleClose}
         open={open}
-        color="#1976d21a"
+        color="primary"
         aria-labelledby="customized-dialog-title"
         fullScreen={fullScreen}
       >
