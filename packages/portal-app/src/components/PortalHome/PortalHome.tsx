@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
-import {Box, Grid, Typography, Divider, Alert} from '@mui/material'
+import {Box, Grid, Typography, Divider} from '@mui/material'
 import green from '@mui/material/colors/green'
-import AddNewAppDialog from '../AddAppDialog/AddAppDialog'
 import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
@@ -23,21 +22,6 @@ function PortalHome() {
     },
     {}
   )
-
-  const handleNewApp = newApp => setApps([...portalApps, newApp])
-  const handleDeleteApp = deletedApp => {
-    const updatedApps = portalApps.filter(app => app._id !== deletedApp._id)
-    setApps(updatedApps)
-  }
-  const handleUpdateApp = updatedApp => {
-    const updatedApps = portalApps.map(app => {
-      if (app._id === updatedApp._id) {
-        return updatedApp
-      }
-      return app
-    })
-    setApps(updatedApps)
-  }
 
   async function loadContent() {
     try {
@@ -63,7 +47,6 @@ function PortalHome() {
             <Typography variant="h2" color={green[700]}>
               Portal
             </Typography>
-            <AddNewAppDialog onSuccess={handleNewApp} />
           </Box>
         </Grid>
         <Divider sx={{mb: 3}} />
@@ -77,10 +60,7 @@ function PortalHome() {
             description="Start by adding a new app to your portal."
           />
         ) : (
-          <AppsShelf
-            appsGroupedByCat={appsGroupedByCat}
-            onSuccess={{handleUpdateApp, handleDeleteApp}}
-          />
+          <AppsShelf appsGroupedByCat={appsGroupedByCat} />
         )}
       </section>
     </Box>

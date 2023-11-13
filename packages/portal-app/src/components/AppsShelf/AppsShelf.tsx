@@ -2,7 +2,7 @@ import React from 'react'
 import {Grid, Typography} from '@mui/material'
 import AppCard from '../AppCard/AppCard'
 
-const AppsShelf = ({appsGroupedByCat, onSuccess}) => {
+const AppsShelf = ({appsGroupedByCat}) => {
   return (
     <div>
       <Grid container spacing={2}>
@@ -16,7 +16,7 @@ const AppsShelf = ({appsGroupedByCat, onSuccess}) => {
             {(apps as any[]).map((app: any) => (
               <React.Fragment key={app.name}>
                 <Grid item xs={12} md={4} sm={8} sx={{m: 0}}>
-                  <AppCard app={app} onSuccess={onSuccess} />
+                  <AppCard app={app} />
                 </Grid>
               </React.Fragment>
             ))}

@@ -21,37 +21,3 @@ async function fetchApps() {
   }
 }
 export {fetchApps}
-
-const registerNewApp = async appData => {
-  appData.name = appData.name.trim()
-  appData.description = appData.description.trim()
-  appData.url = appData.url.trim()
-  appData.icon = appData.icon.trim()
-  try {
-    const response = await apiClient.post('/apps', appData)
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}
-export {registerNewApp}
-
-const deleteApp = async appId => {
-  try {
-    const response = await apiClient.delete(`/apps/${appId}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}
-export {deleteApp}
-
-const updateApp = async (appId, appData) => {
-  try {
-    const response = await apiClient.put(`/apps/${appId}`, appData)
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}
-export {updateApp}
