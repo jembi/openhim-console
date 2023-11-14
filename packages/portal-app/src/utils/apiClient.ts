@@ -17,7 +17,7 @@ async function fetchApps() {
     const portalApps = response.data.filter(app => app.showInPortal)
     return portalApps
   } catch (error) {
-    console.error('Unable to fetch apps', error)
+    throw error
   }
 }
 export {fetchApps}

@@ -1,26 +1,34 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import {Box, Grid, Typography, Divider} from '@mui/material'
 import green from '@mui/material/colors/green'
 import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
 import {fetchApps} from '../../utils/apiClient'
+import {useSnackbar} from 'notistack'
 
 function PortalHome() {
   const [isLoading, setLoading] = useState(true)
   const [portalApps, setApps] = useState([])
+  const {enqueueSnackbar} = useSnackbar()
 
   /* extract unique categories */
-  const uniqueCategories = Array.from(
-    new Set(portalApps.map(app => app.category))
+
+  const uniqueCategories = useMemo(
+    () => Array.from(new Set(portalApps.map(app => app.category))),
+    [portalApps]
   )
   /* group apps by category */
-  const appsGroupedByCat = uniqueCategories.reduce(
-    (acc: {[key: string]: any}, category) => {
-      const appsToDisplay = portalApps.filter(app => app.category === category)
-      return {...acc, [category.toString()]: appsToDisplay}
-    },
-    {}
+
+  const appsGroupedByCat = useMemo(
+    () =>
+      uniqueCategories.reduce((acc: {[key: string]: any}, category) => {
+        const appsToDisplay = portalApps.filter(
+          app => app.category === category
+        )
+        return {...acc, [category.toString()]: appsToDisplay}
+      }, {}),
+    [uniqueCategories, portalApps]
   )
 
   async function loadContent() {
@@ -28,7 +36,8 @@ function PortalHome() {
       const updatedPortalApps = await fetchApps()
       setApps(updatedPortalApps)
     } catch (error) {
-      console.error(error)
+      enqueueSnackbar('Unable to fetch apps', {variant: 'error'})
+      setApps([]) // Clear the apps list on error
     } finally {
       setLoading(false)
     }
