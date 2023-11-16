@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {ThemeProvider} from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import {DataGrid, GridColDef} from '@mui/x-data-grid'
-import {Avatar, Button, Divider, Paper, Stack, Typography} from '@mui/material'
+import {Avatar, Button, Paper, Stack, Switch, Typography} from '@mui/material'
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported'
 import LinearProgress from '@mui/material/LinearProgress'
 import './app.css'
@@ -12,10 +12,9 @@ import {fetchApps} from './utils/api'
 function Toolbar() {
   return (
     <section id="apps-toolbar">
-      <Typography p={1} variant="h4">
+      <Typography p={2} variant="h4">
         Manage Apps
       </Typography>
-      <Divider />
       <Stack direction="row" spacing={2} p={2}>
         <Button disabled variant="contained" color="primary" size="medium">
           Add
@@ -49,7 +48,6 @@ export default function PortalAdminRoot(props) {
     {
       field: 'icon',
       headerName: 'Icon',
-
       type: 'string',
       align: 'center',
       renderCell: params => (
@@ -58,7 +56,7 @@ export default function PortalAdminRoot(props) {
           aria-label="application icon"
           alt="application icon"
           src={params.value}
-          sx={{backgroundColor: 'gray'}}
+          sx={{backgroundColor: 'gray', width: 32, height: 32}}
         >
           <ImageNotSupportedIcon />
         </Avatar>
@@ -91,12 +89,34 @@ export default function PortalAdminRoot(props) {
     {
       field: 'showInPortal',
       headerName: 'Show In Portal',
-      type: 'boolean'
+      type: 'boolean',
+      renderCell: params => (
+        <Switch
+          disabled
+          checked={params.value}
+          onChange={() => {
+            // handle switch toggle
+          }}
+          name="showInPortal"
+          inputProps={{'aria-label': 'Show In Side Bar'}}
+        />
+      )
     },
     {
       field: 'showInSideBar',
       headerName: 'Show In Side Bar',
-      type: ''
+      type: 'boolean',
+      renderCell: params => (
+        <Switch
+          disabled
+          checked={params.value}
+          onChange={() => {
+            // handle switch toggle
+          }}
+          name="showInSideBar"
+          inputProps={{'aria-label': 'Show In Side Bar'}}
+        />
+      )
     },
     {
       field: 'access_roles',
