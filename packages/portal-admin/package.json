@@ -1,7 +1,7 @@
 {
-  "name": "@jembi/openhim-portal",
+  "name": "@jembi/portal-admin",
   "scripts": {
-    "start": "webpack serve --port 8502",
+    "start": "webpack serve --port 8503",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently npm:build:*",
     "build:webpack": "webpack --mode=production",
@@ -24,18 +24,10 @@
     "@babel/runtime": "^7.15.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
-    "@types/jest": "^27.0.1",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.19",
-    "@types/systemjs": "^6.1.1",
     "@types/testing-library__jest-dom": "^5.14.1",
-    "@types/webpack-env": "^1.16.2",
     "babel-jest": "^27.0.6",
     "concurrently": "^6.2.1",
     "cross-env": "^7.0.3",
-    "depcheck": "^1.4.7",
-    "dotenv": "^16.3.1",
-    "dotenv-webpack": "^8.0.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-ts-react-important-stuff": "^3.0.0",
@@ -56,17 +48,21 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.11.9",
-    "@mui/material": "^5.11.9",
-    "axios": "^1.5.1",
-    "notistack": "^3.0.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.18",
+    "@mui/x-data-grid": "^6.18.1",
+    "@types/jest": "^27.0.1",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/systemjs": "^6.1.1",
+    "@types/webpack-env": "^1.16.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.47.0",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"
   },
-  "types": "dist/jembi-openhim-portal.d.ts"
+  "types": "dist/jembi-portal-admin.d.ts"
 }

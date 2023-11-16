@@ -1,11 +1,12 @@
 import {useState, useEffect, useMemo} from 'react'
-import {Box, Grid, Typography, Divider} from '@mui/material'
+import {Box, Grid, Typography, Divider, IconButton} from '@mui/material'
 import green from '@mui/material/colors/green'
 import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
 import {fetchApps} from '../../utils/apiClient'
 import {useSnackbar} from 'notistack'
+import { Settings } from '@mui/icons-material'
 
 function PortalHome() {
   const [isLoading, setLoading] = useState(true)
@@ -56,6 +57,9 @@ function PortalHome() {
             <Typography variant="h2" color={green[700]}>
               Portal
             </Typography>
+            <IconButton href="#!/portal-admin">
+              <Settings />
+            </IconButton>
           </Box>
         </Grid>
         <Divider sx={{mb: 3}} />
