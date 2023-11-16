@@ -4,16 +4,20 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import {createTheme, ThemeProvider} from '@mui/material/styles'
 import {green} from '@mui/material/colors'
+import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material'
 import {
-  AccountCircle,
-  Menu as MenuIcon
-} from '@mui/icons-material'
-import {Divider, Drawer, IconButton, Link, Menu, MenuItem, ListItemIcon} from '@mui/material'
+  Divider,
+  Drawer,
+  IconButton,
+  Link,
+  Menu,
+  MenuItem,
+  ListItemIcon
+} from '@mui/material'
 import React from 'react'
 import {OpenHIMMenu} from '@jembi/openhim-sidebar'
 import LogoutIcon from '@mui/icons-material/Logout'
 import EditIcon from '@mui/icons-material/Edit'
-import AppsIcon from '@mui/icons-material/Apps';
 
 const theme = createTheme({
   palette: {
@@ -111,19 +115,9 @@ export default function ButtonAppBar() {
                   href="#!/profile"
                 >
                   <ListItemIcon>
-                    <EditIcon/>
+                    <EditIcon />
                   </ListItemIcon>
                   Profile
-                </MenuItem>
-                <MenuItem
-                  onClick={handleClose}
-                  component={Link}
-                  href="#!/portal"
-                >
-                  <ListItemIcon>
-                    <AppsIcon/>
-                  </ListItemIcon>
-                  Portal
                 </MenuItem>
                 <Divider />
                 <MenuItem
@@ -132,7 +126,7 @@ export default function ButtonAppBar() {
                   href="#!/logout"
                 >
                   <ListItemIcon>
-                    <LogoutIcon/>
+                    <LogoutIcon />
                   </ListItemIcon>
                   Logout
                 </MenuItem>
