@@ -4,11 +4,12 @@ import axios from 'axios'
 For example  https://localhost:8080/
 */
 
-// const API_URL = process.env.REACT_APP_OPENHIM_API_BASE_URL || "https://localhost:8080/"
-const API_URL =  "https://localhost:8080/"
+const API_URL =
+  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://localhost:8080/'
 if (!API_URL) {
   throw new Error('REACT_APP_OPENHIM_API_BASE_URL is not set')
 }
+
 interface App {
   _id: string
   name: string
@@ -23,14 +24,25 @@ interface App {
   __v: number
 }
 
-const apiClient = axios.create({
+// Anything exported from this file is importable by other in-browser modules.
+
+export const apiClient = axios.create({
   withCredentials: true,
   baseURL: API_URL
 })
 
-export default apiClient
+export async function fetchApps(): Promise<App[]> {
+  try {
+    const response = await apiClient.get('/apps')
+    /* filter out apps that are not to be shown in the portal */
+    const portalApps = response.data.filter(app => app.showInPortal)
+    return portalApps
+  } catch (error) {
+    throw error
+  }
+}
 
-async function fetchApps(): Promise<App[]> {
+export async function getAllApps(): Promise<App[]> {
   try {
     const response = await apiClient.get('/apps')
     return response.data
@@ -38,9 +50,8 @@ async function fetchApps(): Promise<App[]> {
     throw error
   }
 }
-export {fetchApps}
 
-async function fetchApp(id): Promise<App> {
+export async function fetchApp(id): Promise<App> {
   try {
     const response = await apiClient.get(`/apps/${id}`)
     return response.data
@@ -48,8 +59,6 @@ async function fetchApp(id): Promise<App> {
     throw error
   }
 }
-
-export {fetchApp}
 
 async function editApp(id, data): Promise<App> {
   try {

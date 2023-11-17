@@ -7,7 +7,7 @@ import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported'
 import LinearProgress from '@mui/material/LinearProgress'
 import './app.css'
 import {theme} from './utils/theme'
-import {fetchApps} from './utils/api'
+import {getAllApps} from '@jembi/openhim-core-api'
 
 function Toolbar() {
   return (
@@ -16,7 +16,7 @@ function Toolbar() {
         Manage Apps
       </Typography>
       <Stack direction="row" spacing={2} p={2}>
-        <Button disabled variant="contained" color="primary" size="medium">
+        <Button variant="contained" color="primary" size="medium">
           Add
         </Button>
         <Button disabled variant="contained" color="primary" size="medium">
@@ -35,7 +35,7 @@ export default function PortalAdminRoot(props) {
   const [apps, setApps] = useState(appsInitialState)
   useEffect(() => {
     try {
-      fetchApps().then(apps => {
+      getAllApps().then(apps => {
         setApps(apps)
       })
     } catch (error) {
@@ -131,7 +131,7 @@ export default function PortalAdminRoot(props) {
       <Box p={5} sx={{height: '100%'}}>
         <Paper>
           <section id="apps-datagrid">
-            <Box sx={{height: 400, width: '100%'}}>
+            <Box sx={{height: 600, width: '100%'}}>
               <DataGrid
                 autoPageSize
                 getRowId={(row: any) => row._id}

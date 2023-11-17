@@ -4,7 +4,7 @@ import green from '@mui/material/colors/green'
 import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
-import {fetchApps} from '../../utils/apiClient'
+import {fetchApps} from '@jembi/openhim-core-api'
 import {useSnackbar} from 'notistack'
 import { Settings } from '@mui/icons-material'
 
