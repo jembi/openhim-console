@@ -5,6 +5,6 @@
     "declarationDir": "dist"
   },
   "files": ["src/jembi-portal-admin.tsx"],
-  "include": ["src/**/*"],
+  "include": ["src/**/**/**/*"],
   "exclude": ["src/**/*.test*"]
 }
