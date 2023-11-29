@@ -1,12 +1,18 @@
 import {useState, useEffect, useMemo} from 'react'
-import {Box, Grid, Typography, Divider, IconButton} from '@mui/material'
+import {
+  Box,
+  Grid,
+  Typography,
+  Divider,
+  Button
+} from '@mui/material'
 import green from '@mui/material/colors/green'
+import {useSnackbar} from 'notistack'
+import {Settings} from '@mui/icons-material'
 import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
 import {fetchApps} from '@jembi/openhim-core-api'
-import {useSnackbar} from 'notistack'
-import { Settings } from '@mui/icons-material'
 
 function PortalHome() {
   const [isLoading, setLoading] = useState(true)
@@ -50,19 +56,18 @@ function PortalHome() {
 
   return (
     <Box mt={'5%'} ml={'10%'} mr={'10%'}>
-      <section id="alertSection" />
       <section id="PortalHeader">
         <Grid sx={{ml: 0, mt: 0}}>
           <Box width="100%" display="flex" justifyContent="space-between">
             <Typography variant="h2" color={green[700]}>
               Portal
             </Typography>
-            <IconButton href="#!/portal-admin">
-              <Settings />
-            </IconButton>
+            <Button href="#!/portal-admin" startIcon={<Settings />}>
+              Manage
+            </Button>
           </Box>
         </Grid>
-        <Divider sx={{mb: 3}} />
+        <Divider sx={{mb: 3, borderBlockColor: 'rgba(0, 0, 0, 0.50)'}} />
       </section>
       <section id="CategoriesSection">
         {isLoading ? (

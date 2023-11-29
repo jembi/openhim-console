@@ -68,7 +68,7 @@ export default function ButtonAppBar() {
         <OpenHIMMenu></OpenHIMMenu>
       </Drawer>
       <Box sx={{flexGrow: 1}}>
-        <AppBar position="static" elevation={0}>
+        <AppBar position="static">
           <Toolbar>
             <IconButton
               color="inherit"
@@ -80,7 +80,11 @@ export default function ButtonAppBar() {
               <MenuIcon />
             </IconButton>
             <a href="#!/transactions">
-              <img height={50} src="/images/openhim-logo-green.png"></img>
+              <img
+                height={50}
+                src="/images/openhim-logo-green.png"
+                alt="OpenHIM logo"
+              ></img>
             </a>
             <GrowingDiv></GrowingDiv>
             <div>
