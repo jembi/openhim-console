@@ -32,93 +32,63 @@ export const apiClient = axios.create({
 })
 
 export async function fetchApps(): Promise<App[]> {
-  try {
-    const response = await apiClient.get('/apps')
-    /* filter out apps that are not to be shown in the portal */
-    const portalApps = response.data.filter(app => app.showInPortal)
-    return portalApps
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get('/apps')
+  /* filter out apps that are not to be shown in the portal */
+  const portalApps = response.data.filter(app => app.showInPortal)
+  return portalApps
 }
 
 export async function getAllApps(): Promise<App[]> {
-  try {
-    const response = await apiClient.get('/apps')
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get('/apps')
+  return response.data
 }
 
 export async function fetchApp(id): Promise<App> {
-  try {
-    const response = await apiClient.get(`/apps/${id}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get(`/apps/${id}`)
+  return response.data
 }
 
 async function editApp(id, data): Promise<App> {
-  try {
-    const response = await apiClient.put(`/apps/${id}`, data)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.put(`/apps/${id}`, data)
+  return response.data
 }
 
 export {editApp}
 
 async function deleteApp(id) {
-  try {
-    const response = await apiClient.delete(`/apps/${id}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.delete(`/apps/${id}`)
+  return response.data
 }
 
 export {deleteApp}
 
 async function fetchCategories() {
-  try {
-    const response = await apiClient.get('/apps')
-    const categories = Array.from(
-      new Set(response.data.map(app => app.category))
-    )
-    return categories
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get('/apps')
+  const categories = Array.from(new Set(response.data.map(app => app.category)))
+  return categories
 }
 export {fetchCategories}
 
 async function fetchAppsByCategory(category) {
-  try {
-    const response = await apiClient.get('/apps')
-    const apps = response.data.filter(app => app.category === category)
-    return apps
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get('/apps')
+  const apps = response.data.filter(app => app.category === category)
+  return apps
 }
 export {fetchAppsByCategory}
 
 async function fetchAppsGroupedByCategory() {
-  try {
-    const response = await apiClient.get('/apps')
-    const categories = Array.from(
-      new Set(response.data.map(app => app.category))
-    )
-    const appsGroupedByCategory = categories.map(category => {
-      const apps = response.data.filter(app => app.category === category)
-      return {category, apps}
-    })
-    return appsGroupedByCategory
-  } catch (error) {
-    throw error
-  }
+  const response = await apiClient.get('/apps')
+  const categories = Array.from(new Set(response.data.map(app => app.category)))
+  const appsGroupedByCategory = categories.map(category => {
+    const apps = response.data.filter(app => app.category === category)
+    return {category, apps}
+  })
+  return appsGroupedByCategory
 }
 export {fetchAppsGroupedByCategory}
+
+async function addApp(app: any) {
+  const response = await apiClient.post('/apps', app)
+  return response.data
+}
+export {addApp}
