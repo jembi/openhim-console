@@ -1,15 +1,15 @@
 import axios from 'axios'
 
-/* if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to point to OpenHIM Core API
-For example  https://localhost:8080/
+/* if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to point to OpenHIM Core API base URL
+
 */
 
-const API_URL =
-  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://localhost:8080/'
-if (!API_URL) {
+if (!process.env.REACT_APP_OPENHIM_API_BASE_URL) {
   throw new Error('REACT_APP_OPENHIM_API_BASE_URL is not set')
 }
 
+const API_URL =
+  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://localhost:8080/'
 interface App {
   _id: string
   name: string
@@ -23,8 +23,6 @@ interface App {
   showInSideBar: boolean
   __v: number
 }
-
-// Anything exported from this file is importable by other in-browser modules.
 
 export const apiClient = axios.create({
   withCredentials: true,
@@ -48,35 +46,29 @@ export async function fetchApp(id): Promise<App> {
   return response.data
 }
 
-async function editApp(id, data): Promise<App> {
+export async function editApp(id, data): Promise<App> {
   const response = await apiClient.put(`/apps/${id}`, data)
   return response.data
 }
 
-export {editApp}
-
-async function deleteApp(id) {
+export async function deleteApp(id) {
   const response = await apiClient.delete(`/apps/${id}`)
   return response.data
 }
 
-export {deleteApp}
-
-async function fetchCategories() {
+export async function fetchCategories() {
   const response = await apiClient.get('/apps')
   const categories = Array.from(new Set(response.data.map(app => app.category)))
   return categories
 }
-export {fetchCategories}
 
-async function fetchAppsByCategory(category) {
+export async function fetchAppsByCategory(category) {
   const response = await apiClient.get('/apps')
   const apps = response.data.filter(app => app.category === category)
   return apps
 }
-export {fetchAppsByCategory}
 
-async function fetchAppsGroupedByCategory() {
+export async function fetchAppsGroupedByCategory() {
   const response = await apiClient.get('/apps')
   const categories = Array.from(new Set(response.data.map(app => app.category)))
   const appsGroupedByCategory = categories.map(category => {
@@ -85,10 +77,8 @@ async function fetchAppsGroupedByCategory() {
   })
   return appsGroupedByCategory
 }
-export {fetchAppsGroupedByCategory}
 
-async function addApp(app: any) {
+export async function addApp(app: App) {
   const response = await apiClient.post('/apps', app)
   return response.data
 }
-export {addApp}
