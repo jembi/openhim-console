@@ -42,6 +42,11 @@ export default function OpenHIMMenu() {
   return (
     <Box sx={{width: '100%', maxWidth: 250, bgcolor: 'background.paper'}}>
       <List>
+      <ListItem disablePadding>
+          <ListItemButton component="a" href="/#!/portal">
+            <ListItemText primary="Portal" />
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton component="a" href="#!">
             <ListItemText primary="Dashboard" />

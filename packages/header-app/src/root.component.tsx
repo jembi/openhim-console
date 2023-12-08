@@ -4,18 +4,18 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import {createTheme, ThemeProvider} from '@mui/material/styles'
 import {green} from '@mui/material/colors'
-import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material'
-import {Drawer, IconButton, Link, Menu, MenuItem} from '@mui/material'
+import {
+  AccountCircle,
+  Menu as MenuIcon
+} from '@mui/icons-material'
+import {Divider, Drawer, IconButton, Link, Menu, MenuItem, ListItemIcon} from '@mui/material'
 import React from 'react'
 import {OpenHIMMenu} from '@jembi/openhim-sidebar'
+import LogoutIcon from '@mui/icons-material/Logout'
+import EditIcon from '@mui/icons-material/Edit'
+import AppsIcon from '@mui/icons-material/Apps';
 
 const theme = createTheme({
-  typography: {
-    // Tell MUI what's the font-size on the html element is.
-    // This is necessary as the legacy angular app uses bootstrap which
-    // changes the html font-size globally to 10px
-    htmlFontSize: 10
-  },
   palette: {
     primary: {
       main: green[700]
@@ -110,13 +110,30 @@ export default function ButtonAppBar() {
                   component={Link}
                   href="#!/profile"
                 >
+                  <ListItemIcon>
+                    <EditIcon/>
+                  </ListItemIcon>
                   Profile
                 </MenuItem>
                 <MenuItem
                   onClick={handleClose}
                   component={Link}
+                  href="#!/portal"
+                >
+                  <ListItemIcon>
+                    <AppsIcon/>
+                  </ListItemIcon>
+                  Portal
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                  onClick={handleClose}
+                  component={Link}
                   href="#!/logout"
                 >
+                  <ListItemIcon>
+                    <LogoutIcon/>
+                  </ListItemIcon>
                   Logout
                 </MenuItem>
               </Menu>
