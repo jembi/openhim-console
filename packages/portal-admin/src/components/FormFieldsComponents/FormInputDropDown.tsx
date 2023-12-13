@@ -1,5 +1,5 @@
 import React from 'react'
-import {FormControl, InputLabel, MenuItem, Select} from '@mui/material'
+import {FormControl, InputLabel, MenuItem, Select, Stepper} from '@mui/material'
 import {Controller} from 'react-hook-form'
 import {FormInputProps} from './FormInputProps'
 
@@ -24,21 +24,23 @@ export const FormInputDropdown: React.FC<FormInputProps> = ({
   }
 
   return (
-    <FormControl fullWidth required>
+    <FormControl fullWidth required sx={{mt: 1}}>
       <InputLabel>{label}</InputLabel>
       <Controller
         render={({field: {onChange, value}}) => (
-          <Select
-            margin="dense"
-            fullWidth
-            onChange={onChange}
-            id={id}
-            name={name}
-            value={value}
-            label={label}
-          >
-            {generateSingleOptions()}
-          </Select>
+          <>
+            <Select
+              margin="dense"
+              fullWidth
+              onChange={onChange}
+              id={id}
+              name={name}
+              value={value}
+              label={label}
+            >
+              {generateSingleOptions()}
+            </Select>
+          </>
         )}
         control={control}
         name={name}

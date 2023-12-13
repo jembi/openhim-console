@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {useForm, FormProvider} from 'react-hook-form'
+import {useForm, FormProvider, Control} from 'react-hook-form'
 import {
   Button,
   Dialog,
@@ -13,8 +13,7 @@ import {
   useTheme
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import FormFields from './FormFieldsComponents/FormFields'
-
+import HorizontalLinearStepper from './FormFieldsComponents/FormStepper'
 const FormDialog = ({
   edit,
   setOpenEditDialog,
@@ -24,6 +23,7 @@ const FormDialog = ({
   selectedApp
 }) => {
   const [formInputsValues, setInputsValues] = useState(selectedApp || {})
+  const [activeStep, setActiveStep] = useState(0)
   const {reset, ...methods} = useForm({
     defaultValues: formInputsValues
   })
@@ -34,7 +34,7 @@ const FormDialog = ({
 
   const onSubmit = async event => {
     event.preventDefault()
-    handleApp(event)
+    handleApp(methods.getValues())
   }
 
   const handleDialogClose = () => {
@@ -64,7 +64,11 @@ const FormDialog = ({
         aria-labelledby="customized-dialog-title"
         fullScreen={fullScreen}
       >
-        <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title" width={'520px'}>
+        <DialogTitle
+          sx={{m: 0, p: 2}}
+          id="customized-dialog-title"
+          width={'480px'}
+        >
           <Typography align="center" variant="h5">
             {edit ? 'Edit Portal Item' : 'Add Portal Item'}
           </Typography>
@@ -89,17 +93,24 @@ const FormDialog = ({
         <DialogContent>
           <FormProvider {...methods} reset={reset}>
             <form onSubmit={onSubmit} id="AppForm">
-              <FormFields />
+              <HorizontalLinearStepper
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+              />
             </form>
           </FormProvider>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleDialogClose}>
-            Cancel
-          </Button>
-          <Button form="AppForm" type="submit" variant="contained">
-            {edit ? 'Update App' : 'Add App'}
-          </Button>
+          {activeStep === 3 && (
+            <>
+              <Button variant="outlined" onClick={handleDialogClose}>
+                Cancel
+              </Button>
+              <Button form="AppForm" type="submit" variant="contained">
+                {edit ? 'Update App' : 'Add App'}
+              </Button>
+            </>
+          )}
         </DialogActions>
       </BootstrapDialog>
     </>

@@ -40,7 +40,7 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
     })
 
   return (
-    <FormControl component="fieldset" required error={!!errors.type}>
+    <FormControl fullWidth component="fieldset" required error={!!errors.type}>
       <FormLabel required component="legend">
         {label}
       </FormLabel>
