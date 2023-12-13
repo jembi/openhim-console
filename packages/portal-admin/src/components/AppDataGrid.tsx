@@ -28,7 +28,6 @@ import {getAllApps, deleteApp, editApp, addApp} from '@jembi/openhim-core-api'
 
 const AppDataGrid = () => {
   const formInitialState = {
-    _id: '',
     name: '',
     description: '',
     category: '',
@@ -36,7 +35,7 @@ const AppDataGrid = () => {
     url: '',
     showInPortal: true,
     showInSideBar: false,
-    access_roles: []
+    access_roles: ['admin']
   }
   const [apps, setApps] = useState([])
   const [openEditDialog, setOpenEditDialog] = useState(false)
@@ -62,28 +61,20 @@ const AppDataGrid = () => {
     loadContent()
   }, [])
 
-  const handleApp = async event => {
+  const handleApp = async data => {
     if (openEditDialog) {
-      handleEditApp(event)
+      handleEditApp(data)
     } else {
-      handleAddApp(event)
+      handleAddApp(data)
     }
   }
 
-  const handleAddApp = async event => {
+  const handleAddApp = async data => {
     try {
-      event.preventDefault()
-      const newApp = {
-        name: event.target.elements.name.value.trim(),
-        url: event.target.elements.url.value.trim(),
-        category: event.target.elements.category.value,
-        type: event.target.elements.type.value,
-        description: event.target.elements.description.value.trim(),
-        access_roles: event.target.elements.access_roles.value,
-        showInPortal: event.target.elements.showInPortal.checked,
-        showInSideBar: event.target.elements.showInSideBar.checked
-      }
-      await addApp(newApp)
+      data.name = data.name.trim()
+      data.description = data.description.trim()
+      data.url = data.url.trim()
+      await addApp(data)
       enqueueSnackbar('App was registered successfully', {variant: 'success'})
       setOpenDialog(false)
       setSelectedApp(formInitialState)
@@ -96,31 +87,24 @@ const AppDataGrid = () => {
       ) {
         enqueueSnackbar('App already exists', {variant: 'error'})
       } else {
-        enqueueSnackbar('Failed to add app', {variant: 'error'})
+        enqueueSnackbar('Failed to add app ! ' + error.response.data.error, {
+          variant: 'error'
+        })
       }
     }
   }
 
-  const handleEditApp = async event => {
+  const handleEditApp = async data => {
     try {
-      event.preventDefault()
-      const updatedApp = {
-        id: selectedApp._id,
-        name: event.target.elements.name.value.trim(),
-        url: event.target.elements.url.value.trim(),
-        category: event.target.elements.category.value,
-        type: event.target.elements.type.value,
-        description: event.target.elements.description.value.trim(),
-        access_roles: event.target.elements.access_roles.value,
-        showInPortal: event.target.elements.showInPortal.checked,
-        showInSideBar: event.target.elements.showInSideBar.checked
-      }
-      await editApp(selectedApp._id, updatedApp)
+      await editApp(data._id, data)
       loadContent()
       enqueueSnackbar('App was updated successfully', {variant: 'success'})
       setSelectedApp(formInitialState)
     } catch (error) {
-      enqueueSnackbar('Failed to edit app', {variant: 'error'})
+      enqueueSnackbar('Failed to edit app! ' + error.response.data.error, {
+        variant: 'error'
+      })
+      console.error(error)
     } finally {
       setOpenDialog(false)
       setOpenEditDialog(false)
@@ -144,15 +128,23 @@ const AppDataGrid = () => {
       headerName: 'Icon',
       type: 'string',
       align: 'center',
+      width: 35,
       renderCell: params => (
         <Avatar
           variant="rounded"
           aria-label="application icon"
           alt="application icon"
-          src={params.value}
           sx={{backgroundColor: 'gray', width: 32, height: 32}}
         >
-          <ImageNotSupportedIcon />
+          {params.value ? (
+            <img
+              src={params.value}
+              alt={params.row.name.substring(0, 2)}
+              width={24}
+            />
+          ) : (
+            <ImageNotSupportedIcon />
+          )}
         </Avatar>
       )
     },
