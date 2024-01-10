@@ -9,26 +9,16 @@ import {
 import {Controller} from 'react-hook-form'
 import {FormInputProps} from './FormInputProps'
 
-const radioOptions = [
-  {
-    label: 'Internal',
-    value: 'link'
-  },
-  {
-    label: 'External',
-    value: 'embedded'
-  }
-]
-
 export const FormInputRadioGroup: React.FC<FormInputProps> = ({
   name,
   id,
   control,
   label,
-  errors
+  errors,
+  options
 }) => {
-  const generateRadioOptions = () =>
-    radioOptions.map(option => {
+  const generateRadioOptions = options =>
+    options.map(option => {
       return (
         <FormControlLabel
           key={option.value}
@@ -47,7 +37,7 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={'embedded'}
+        defaultValue={'internal'}
         rules={{required: 'This field is required'}}
         render={({field: {onChange, value}, fieldState: {error}}) => {
           return (
@@ -58,7 +48,7 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
               value={value}
               onChange={onChange}
             >
-              {generateRadioOptions()}
+              {generateRadioOptions(options)}
               {error && <FormHelperText>{error.message}</FormHelperText>}
             </RadioGroup>
           )

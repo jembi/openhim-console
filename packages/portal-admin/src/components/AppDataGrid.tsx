@@ -166,7 +166,7 @@ const AppDataGrid = () => {
       field: 'type',
       headerName: 'Type',
       type: 'singleSelect',
-      valueOptions: ['embedded', 'link']
+      valueOptions: ['internal', 'external', 'esmodule']
     },
     {
       field: 'url',
