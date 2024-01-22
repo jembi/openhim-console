@@ -54,6 +54,7 @@ export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, 
     $scope.channel.type = 'http'
     $scope.channel.authType = 'private'
     $scope.channel.status = 'enabled'
+    $scope.channel.isAsynchronousProcess = false
   }
 
   $scope.$on('$destroy', function () {

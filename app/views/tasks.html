@@ -73,6 +73,7 @@
 
                     <span ng-if="task.status === 'Completed'" class="label label-success">Completed</span>
                     <span ng-if="task.status === 'Processing'" class="label label-warning">Processing</span>
+                    <span ng-if="task.status === 'Pending Async'" class="label label-info">Pending Async</span>
                     <span ng-if="task.status === 'Queued'" class="label label-info">Queued</span>
                     <span ng-if="task.status === 'Paused'" class="label label-primary">Paused</span>
                     <span ng-if="task.status === 'Cancelled'" class="label label-danger">Cancelled</span>
@@ -81,6 +82,7 @@
                   <td ng-click="viewTaskDetails('tasks/' + task._id)" data-title="Progress">
                     <uib-progressbar ng-if="task.status === 'Completed'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="success"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
                     <uib-progressbar ng-if="task.status === 'Processing' || task.status === 'Queued'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="warning"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
+                    <uib-progressbar ng-if="task.status === 'Pending Async'" class="progress-striped active" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="info"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
                     <uib-progressbar ng-if="task.status === 'Paused'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="default"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
                     <uib-progressbar ng-if="task.status === 'Cancelled'" class="progress-striped" max="task.totalTransactions" animate="false" value="getProcessedTotal(task)" type="danger"><i>{{getProcessedPercentage(task)}}</i></uib-progressbar>
                   </td>
