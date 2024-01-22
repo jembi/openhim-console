@@ -87,7 +87,7 @@ const AppDataGrid = () => {
       ) {
         enqueueSnackbar('App already exists', {variant: 'error'})
       } else {
-        enqueueSnackbar('Failed to add app ! ' + error.response.data.error, {
+        enqueueSnackbar('Failed to add app ! ' + error.response.data?.error, {
           variant: 'error'
         })
       }

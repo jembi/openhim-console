@@ -1,5 +1,5 @@
 {
-  "name": "@jembi/openhim-core",
+  "name": "@jembi/openhim-core-api",
   "scripts": {
     "start": "webpack serve -- --port 8505",
     "start:standalone": "webpack serve --env standalone",

@@ -1,7 +1,7 @@
-import {ThemeProvider} from '@mui/material/styles'
-import {Typography, Box, Paper} from '@mui/material'
-import {SnackbarProvider} from 'notistack'
-import {theme} from './utils/theme'
+import { ThemeProvider } from '@mui/material/styles'
+import { Typography, Box, Paper } from '@mui/material'
+import { SnackbarProvider } from 'notistack'
+import theme from '@jembi/openhim-theme'
 import './app.css'
 
 import AppsDataGrid from './components/AppDataGrid'
