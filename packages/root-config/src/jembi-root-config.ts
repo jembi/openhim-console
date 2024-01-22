@@ -5,12 +5,7 @@ import {
   constructLayoutEngine
 } from 'single-spa-layout'
 import microfrontendLayout from './microfrontend-layout.html'
-
-import axios from 'axios'
-export const apiClient = axios.create({
-  withCredentials: true,
-  baseURL: 'https://localhost:8080/'
-})
+import {fetchApps} from '@jembi/openhim-core-api'
 
 export interface PortalApp {
   _id: string
@@ -25,15 +20,13 @@ export interface PortalApp {
   showInSideBar: boolean
   __v: number
 }
+
 /**
  * Fetches the portal apps from the OpenHIM Core.
  * @returns A promise that resolves to an array of PortalApp objects.
  */
-async function fetchApps(): Promise<PortalApp[]> {
-  const response = await apiClient.get('/apps')
-  /* filter out apps that are not to be shown in the portal */
-  const portalApps = response.data.filter(app => app.showInPortal)
-  DEBUG: console.log('fetchApps returned: ', portalApps)
+async function fetchApps_(): Promise<PortalApp[]> {
+  const portalApps = await fetchApps()
   return portalApps
 }
 
@@ -50,9 +43,19 @@ function generateRoutingPathFromURL(url: string): string {
   return appName
 }
 
-// Extract the common code into a separate function
+function generateImportMap(esmodules) {
+  return {
+    imports: esmodules
+      .filter(app => app.type === 'esmodule')
+      .reduce((imports, app) => {
+        const urlWithoutProtocol = app.url.replace(/^https?:/, '')
+        imports[app.name] = urlWithoutProtocol
+        return imports
+      }, {})
+  }
+}
 /**
- * Registers applications and starts the layout engine.
+ * Register and start applications using the layout engine.
  *
  * @param layout The layout configuration.
  * @returns A promise that resolves when the applications are registered and the layout engine is started.
@@ -61,8 +64,17 @@ async function registerAndStartApps(layout: string) {
   const routes = constructRoutes(layout)
   const applications = constructApplications({
     routes,
-    loadApp({name}) {
-      return System.import(name)
+    async loadApp({name}): Promise<any> {
+      return System.import(name).catch(err => {
+        console.error(`Error loading application ${name}:`, err)
+        window.alert(`Error loading application ${name}: ${err}`)
+        // Handle the error appropriately here
+        return {
+          bootstrap: () => Promise.resolve(),
+          mount: () => Promise.resolve(),
+          unmount: () => Promise.resolve()
+        }
+      })
     }
   })
   const layoutEngine = constructLayoutEngine({routes, applications})
@@ -78,10 +90,32 @@ async function registerAndStartApps(layout: string) {
  */
 async function loadAndStartMicrofrontends(): Promise<void> {
   try {
-    const esmodules: PortalApp[] = await fetchApps()
-    const importMap = esmodules.filter(app => app.type === 'esmodule')
+    const apps: PortalApp[] = await fetchApps_()
+    const esmodules = apps.filter(app => app.type === 'esmodule')
+    /* ----------------------------------------------------------*/
+    // TODO: This is a temporary solution to dynamically load the import map
+    // Generate the import map
+    const importMap = generateImportMap(esmodules)
+    // Convert the import map to a JSON string
+    const importMapJson = JSON.stringify(importMap, null, 2)
+
+    // Find the script tag with id 'esm-importmap'
+    //const scriptTag = document.getElementById('esm-importmap');
+
+    const scriptTag = document.createElement('script')
+    scriptTag.type = 'systemjs-importmap'
+    scriptTag.textContent = importMapJson
+
+    // Inject the import map into the script tag
+    if (scriptTag) {
+      document.head.appendChild(scriptTag)
+    } else {
+      console.error('Could not find script tag with id "esm-importmap"')
+    }
+    /* ----------------------------------------------------------*/
+    // Generate the new microfrontend layout
     let newMicrofrontendLayout = ''
-    for (const app of importMap) {
+    for (const app of esmodules) {
       const path = generateRoutingPathFromURL(app.url)
       newMicrofrontendLayout += `<route path="#!/${path}">`
       newMicrofrontendLayout += `<div style="width: 100%" id="${path}">`
@@ -100,4 +134,9 @@ async function loadAndStartMicrofrontends(): Promise<void> {
   }
 }
 
-loadAndStartMicrofrontends()
+try {
+  await loadAndStartMicrofrontends()
+} catch (error) {
+  console.error('Failed to load and start core microfrontend modules: ', error)
+  // TODO Handle the error appropriately
+}

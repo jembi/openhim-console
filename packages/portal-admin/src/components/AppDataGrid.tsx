@@ -79,6 +79,19 @@ const AppDataGrid = () => {
       setOpenDialog(false)
       setSelectedApp(formInitialState)
       loadContent()
+      if (data.type === 'esmodule') {
+        let countdown = 5;
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          if (countdown === 0) {
+            clearInterval(countdownInterval);
+          }
+          enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+            variant: 'info'
+          });
+        }, 1000);
+        window.location.reload()
+      }
     } catch (error) {
       if (
         error.response &&
@@ -100,6 +113,21 @@ const AppDataGrid = () => {
       loadContent()
       enqueueSnackbar('App was updated successfully', {variant: 'success'})
       setSelectedApp(formInitialState)
+      if (data.type === 'esmodule') {
+        let countdown = 5;
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          if (countdown === 0) {
+            clearInterval(countdownInterval);
+          }
+          enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+            variant: 'info'
+          });
+        }, 1000);
+        setTimeout(() => {
+          window.location.reload()
+        }, 5000)
+      }
     } catch (error) {
       enqueueSnackbar('Failed to edit app! ' + error.response.data.error, {
         variant: 'error'
@@ -116,6 +144,21 @@ const AppDataGrid = () => {
       await deleteApp(id)
       loadContent()
       enqueueSnackbar('App was deleted successfully', {variant: 'success'})
+      if (selectedApp.type === 'esmodule') {
+        let countdown = 5;
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          if (countdown === 0) {
+            clearInterval(countdownInterval);
+          }
+          enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+            variant: 'info'
+          });
+        }, 1000);
+        //setTimeout(() => {
+          window.location.reload()
+        //}, 5000)
+      }
     } catch (error) {
       enqueueSnackbar('Failed to delete app', {variant: 'error'})
     }

@@ -48,6 +48,9 @@
         <route path="#!/profile">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
+        <route path="#!/portal-admin">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
         <div style="flex-grow: 1">
           <application name="@jembi/legacy-console"></application>
         </div>
@@ -58,6 +61,7 @@
         </div>
       </route>
       <route path="#!/portal-admin">
+        <application name="@jembi/openhim-sidebar"></application>
         <div style="width: 100%" id="portal-admin">
           <application name="@jembi/portal-admin"></application>
         </div>

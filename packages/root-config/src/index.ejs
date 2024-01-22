@@ -36,12 +36,11 @@
         "imports": {
           "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
           "react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js",
-          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js",
-          "@jembi/kafka-mapper-consumer-ui": "//localhost:8081/jembi-kafka-mapper-consumer-ui.js",
-          "@jembi/fhir-ig-importer": "//localhost:8082/jembi-fhir-ig-importer.js"
+          "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"
         }
       }
     </script>
+    <script id="esm-importmap" type="systemjs-importmap"></script>
     <link
       rel="preload"
       href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
@@ -89,9 +88,11 @@
     <% if (isLocal) { %>
     <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/dynamic-import-maps.js"></script>
     <% } else { %>
     <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/dynamic-import-maps.min.js"></script>
     <% } %>
   </head>
 
