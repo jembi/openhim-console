@@ -70,16 +70,16 @@ const FormFields = ({currentStep}) => {
               errors={errors}
               options={[
                 {
-                  label: 'Local App',
+                  label: '🏠 Built-in',
                   value: 'internal'
                 },
                 {
-                  label: 'External App',
-                  value: 'external'
+                  label: '🧩 Extension',
+                  value: 'esmodule'
                 },
                 {
-                  label: 'Micro-frontend',
-                  value: 'esmodule'
+                  label: '🔗 Shortcut',
+                  value: 'external'
                 }
               ]}
             />
