@@ -6,8 +6,9 @@ import {
   Radio,
   RadioGroup
 } from '@mui/material'
-import {Controller} from 'react-hook-form'
-import {FormInputProps} from './FormInputProps'
+import { Controller } from 'react-hook-form'
+import { FormInputProps } from './FormInputProps'
+import { useState } from 'react'
 
 export const FormInputRadioGroup: React.FC<FormInputProps> = ({
   name,
@@ -17,6 +18,13 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
   errors,
   options
 }) => {
+
+  const [radioValue, setRadioValue] = useState<String>("internal")
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRadioValue(event.target.value)
+  }
+
   const generateRadioOptions = options =>
     options.map(option => {
       return (
@@ -38,15 +46,15 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
         name={name}
         control={control}
         defaultValue={'internal'}
-        rules={{required: 'This field is required'}}
-        render={({field: {onChange, value}, fieldState: {error}}) => {
+        rules={{ required: 'This field is required' }}
+        render={({ fieldState: { error } }) => {
           return (
             <RadioGroup
               id={id}
               name={name}
               row
-              value={value}
-              onChange={onChange}
+              value={radioValue}
+              onChange={handleChange}
             >
               {generateRadioOptions(options)}
               {error && <FormHelperText>{error.message}</FormHelperText>}

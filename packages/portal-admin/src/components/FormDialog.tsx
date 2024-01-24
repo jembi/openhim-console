@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
-import {useForm, FormProvider, Control} from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useForm, FormProvider, Control } from 'react-hook-form'
 import {
   Button,
   Dialog,
@@ -10,7 +10,9 @@ import {
   Typography,
   styled,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Grid,
+  Stack
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import HorizontalLinearStepper from './FormFieldsComponents/FormStepper'
@@ -24,7 +26,7 @@ const FormDialog = ({
 }) => {
   const [formInputsValues, setInputsValues] = useState(selectedApp || {})
   const [activeStep, setActiveStep] = useState(0)
-  const {reset, ...methods} = useForm({
+  const { reset, ...methods } = useForm({
     defaultValues: formInputsValues
   })
 
@@ -45,7 +47,7 @@ const FormDialog = ({
 
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const BootstrapDialog = styled(Dialog)(({theme}) => ({
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
       padding: theme.spacing(2)
     },
@@ -65,31 +67,36 @@ const FormDialog = ({
         fullScreen={fullScreen}
       >
         <DialogTitle
-          sx={{m: 0, p: 2}}
+          sx={{ m: 0, p: 2 }}
           id="customized-dialog-title"
-          width={'480px'}
         >
-          <Typography align="center" variant="h5">
-            {edit ? 'Edit Portal Item' : 'Add Portal Item'}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" align="center">
-            {edit
-              ? 'Use the form below to edit your portal item.'
-              : 'Use the form below to add your portal item.'}
-          </Typography>
+          <Stack direction={"row"}>
+            <Grid container direction={"column"} justifyContent={'center'} alignItems={'center'} sx={{ flexGrow: 1 }}>
+              <Typography align="center" variant="h5">
+                {edit ? 'Edit Portal Item' : 'Add Portal Item'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" align="center">
+                {edit
+                  ? 'Use the form below to edit your portal item.'
+                  : 'Use the form below to add your portal item.'}
+              </Typography>
+            </Grid>
+
+            <IconButton
+              aria-label="close"
+              onClick={handleDialogClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: theme => theme.palette.text.primary
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+
         </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleDialogClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: theme => theme.palette.text.primary
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
         <DialogContent>
           <FormProvider {...methods} reset={reset}>
             <form onSubmit={onSubmit} id="AppForm">
