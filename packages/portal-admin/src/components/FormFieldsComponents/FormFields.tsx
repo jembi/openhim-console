@@ -70,12 +70,16 @@ const FormFields = ({currentStep}) => {
               errors={errors}
               options={[
                 {
-                  label: 'Internal',
-                  value: 'embedded'
+                  label: '🏠 Built-in',
+                  value: 'internal'
                 },
                 {
-                  label: 'External',
-                  value: 'link'
+                  label: '🧩 Extension',
+                  value: 'esmodule'
+                },
+                {
+                  label: '🔗 Shortcut',
+                  value: 'external'
                 }
               ]}
             />
@@ -150,12 +154,12 @@ const FormFields = ({currentStep}) => {
         )}
         {currentStep === 1 && (
           <div id="step-2">
-            {typeCheck === 'embedded' && (
+            {typeCheck === 'esmodule' && (
               <TextField
                 margin="dense"
                 multiline
                 id="url"
-                label="URL"
+                label="Bundle URL"
                 type="url"
                 fullWidth
                 variant="outlined"
@@ -173,12 +177,12 @@ const FormFields = ({currentStep}) => {
                 })}
               />
             )}
-            {typeCheck === 'link' && (
+            {(typeCheck === 'internal' || typeCheck === 'external') && (
               <TextField
                 margin="dense"
                 multiline
                 id="page"
-                label="Page"
+                label="Link"
                 fullWidth
                 variant="outlined"
                 name="page"
