@@ -11,6 +11,7 @@
 	"scripts": {
 		"start": "npx lerna run start",
 		"build": "npx lerna run build",
-		"test": "npx lerna run test"
+		"test": "npx lerna run test",
+    "build:prod": "npx lerna run build -- --prod"
 	}
 }

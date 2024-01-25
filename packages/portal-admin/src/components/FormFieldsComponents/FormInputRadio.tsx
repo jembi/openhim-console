@@ -6,22 +6,23 @@ import {
   Radio,
   RadioGroup
 } from '@mui/material'
-import {Controller, set} from 'react-hook-form'
+import {Controller} from 'react-hook-form'
 import {FormInputProps} from './FormInputProps'
 
 const radioOptions = [
   {
     label: 'Internal',
-    value: 'embedded'
+    value: 'link'
   },
   {
     label: 'External',
-    value: 'link'
+    value: 'embedded'
   }
 ]
 
 export const FormInputRadioGroup: React.FC<FormInputProps> = ({
   name,
+  id,
   control,
   label,
   errors
@@ -39,7 +40,7 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
     })
 
   return (
-    <FormControl component="fieldset" required error={!!errors.type}>
+    <FormControl fullWidth component="fieldset" required error={!!errors.type}>
       <FormLabel required component="legend">
         {label}
       </FormLabel>
@@ -50,7 +51,13 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
         rules={{required: 'This field is required'}}
         render={({field: {onChange, value}, fieldState: {error}}) => {
           return (
-            <RadioGroup row value={value} onChange={onChange}>
+            <RadioGroup
+              id={id}
+              name={name}
+              row
+              value={value}
+              onChange={onChange}
+            >
               {generateRadioOptions()}
               {error && <FormHelperText>{error.message}</FormHelperText>}
             </RadioGroup>

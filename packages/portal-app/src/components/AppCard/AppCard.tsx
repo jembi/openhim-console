@@ -1,13 +1,12 @@
-import {Avatar, Card, IconButton, CardActionArea, Link} from '@mui/material'
+import {Avatar, Card, IconButton, Link, Typography} from '@mui/material'
 import CardHeader from '@mui/material/CardHeader'
 import LaunchIcon from '@mui/icons-material/Launch'
 import AppsIcon from '@mui/icons-material/Apps'
-import AppCardActionsMenu from './AppCardActionsMenu'
 
-const AppCard = ({app, onSuccess}) => {
+const AppCard = ({app}) => {
   return (
     <div>
-      <Card sx={{maxWidth: '400px'}}>
+      <Card sx={{width: '320px'}} elevation={3}>
         <CardHeader
           href={app.url}
           avatar={
@@ -31,22 +30,20 @@ const AppCard = ({app, onSuccess}) => {
                   rel="noopener noreferrer"
                   size="large"
                   color="primary"
-                  edge="end"
                 >
                   <LaunchIcon />
                 </IconButton>
               )}
-              <AppCardActionsMenu app={app} onSuccess={onSuccess} />
             </div>
           }
           title={
             <Link color="inherit" underline="hover" href={app.url}>
-              {app.name}
+              <Typography variant="body1"> {app.name}</Typography>
             </Link>
           }
           subheader={
             <Link color="inherit" underline="hover" href={app.url}>
-              {app.description}
+              <Typography variant="body2">{app.description}</Typography>
             </Link>
           }
         />
