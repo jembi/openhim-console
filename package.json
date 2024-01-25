@@ -1,5 +1,5 @@
 {
-	"name": "root",
+	"name": "openhim-console-mf",
 	"private": true,
 	"workspaces": [
 		"packages/*"
