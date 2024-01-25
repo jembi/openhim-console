@@ -38,7 +38,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           if ($rootScope.referringURL) {
             $window.location = '#!' + $rootScope.referringURL
           } else { // default redirect to transactions page
-            $window.location = '#!/transactions'
+            $window.location.assign('#!/transactions')
+            $window.location.reload()
           }
         } else {
           if (result === 'Internal Server Error') {
@@ -103,7 +104,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           if ($rootScope.referringURL) {
             $window.location = '#!' + $rootScope.referringURL
           } else { // default redirect to transactions page
-            $window.location = '#!/transactions'
+            $window.location.assign('#!/transactions')
+            $window.location.reload()
           }
         }
       } else {
@@ -159,7 +161,8 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
             Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.')
             $timeout(function () {
               // redirect user to landing page (transactions)
-              $window.location = '#/transactions'
+              $window.location.assign('#/transactions')
+              $window.location.reload()
             }, 5000)
           } else {
             // add the error message

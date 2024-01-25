@@ -18,7 +18,6 @@ const AppCard = ({app}) => {
       setAppPath(
         'http://localhost:9000/#!/' + generateRoutingPathFromURL(app.url)
       )
-      console.log('app URL', appPath)
     }
   }, [])
   return (
