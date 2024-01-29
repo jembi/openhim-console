@@ -6,4 +6,8 @@ export interface FormInputProps {
   setValue?: any
   errors?: any
   options?: object[]
+  handleTypeChange?: any,
+  typeCheck?: ModuleTypes
 }
+
+export type ModuleTypes = "internal"| "esmodule" | "external"

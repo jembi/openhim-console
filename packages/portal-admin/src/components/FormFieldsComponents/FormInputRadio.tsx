@@ -16,13 +16,13 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
   control,
   label,
   errors,
-  options
+  options,
+  handleTypeChange,
+  typeCheck
 }) => {
 
-  const [radioValue, setRadioValue] = useState<String>("internal")
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRadioValue(event.target.value)
+    handleTypeChange(event.target.value)
   }
 
   const generateRadioOptions = options =>
@@ -53,7 +53,7 @@ export const FormInputRadioGroup: React.FC<FormInputProps> = ({
               id={id}
               name={name}
               row
-              value={radioValue}
+              value={typeCheck}
               onChange={handleChange}
             >
               {generateRadioOptions(options)}

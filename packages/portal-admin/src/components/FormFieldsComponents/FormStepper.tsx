@@ -6,12 +6,13 @@ import StepLabel from '@mui/material/StepLabel'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import FormFields from './FormFields'
-import {StepperProvider} from './StepperContext'
-import {useState} from 'react'
+import { StepperProvider } from './StepperContext'
+import { useState } from 'react'
 
 const steps = ['Add App details', 'Add App Configuration', 'Choose Icon']
-export default function HorizontalLinearStepper({activeStep, setActiveStep}) {
+const HorizontalLinearStepper = ({ activeStep, setActiveStep}) => {
   const [skipped, setSkipped] = useState(new Set<number>())
+  // const [typeCheck, setTypeCheck] = useState<ModuleTypes>("internal")
 
   const isStepOptional = (step: number) => {
     return step === 2
@@ -55,10 +56,10 @@ export default function HorizontalLinearStepper({activeStep, setActiveStep}) {
   }
 
   return (
-    <Box sx={{width: '100%'}}>
+    <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, index) => {
-          const stepProps: {completed?: boolean} = {}
+          const stepProps: { completed?: boolean } = {}
           const labelProps: {
             optional?: React.ReactNode
           } = {}
@@ -80,12 +81,12 @@ export default function HorizontalLinearStepper({activeStep, setActiveStep}) {
       {activeStep === steps.length ? (
         <>
           <Typography
-            sx={{mt: 2, mb: 1, alignContent: 'center', textAlign: 'center'}}
+            sx={{ mt: 2, mb: 1, alignContent: 'center', textAlign: 'center' }}
           >
             All steps completed
           </Typography>
-          <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
-            <Box sx={{flex: '1 1 auto'}} />
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
             <Button onClick={handleReset} variant="text">
               Reset
             </Button>
@@ -93,21 +94,21 @@ export default function HorizontalLinearStepper({activeStep, setActiveStep}) {
         </>
       ) : (
         <>
-          <StepperProvider value={{activeStep}}>
+          <StepperProvider value={{ activeStep }}>
             <FormFields currentStep={activeStep} />
           </StepperProvider>
-          <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{mr: 1}}
+              sx={{ mr: 1 }}
               variant="outlined"
             >
               Back
             </Button>
-            <Box sx={{flex: '1 1 auto'}} />
+            <Box sx={{ flex: '1 1 auto' }} />
             {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{mr: 1}}>
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                 Skip
               </Button>
             )}
@@ -126,3 +127,5 @@ export default function HorizontalLinearStepper({activeStep, setActiveStep}) {
     </Box>
   )
 }
+
+export default HorizontalLinearStepper

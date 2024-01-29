@@ -16,6 +16,9 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import HorizontalLinearStepper from './FormFieldsComponents/FormStepper'
+import { ModuleTypes } from '../components/FormFieldsComponents/FormInputProps'
+import {useFromState} from '../hooks/useFormType'
+
 const FormDialog = ({
   edit,
   setOpenEditDialog,
@@ -26,10 +29,10 @@ const FormDialog = ({
 }) => {
   const [formInputsValues, setInputsValues] = useState(selectedApp || {})
   const [activeStep, setActiveStep] = useState(0)
+
   const { reset, ...methods } = useForm({
     defaultValues: formInputsValues
   })
-
   useEffect(() => {
     reset(selectedApp || {})
   }, [selectedApp])
@@ -69,6 +72,7 @@ const FormDialog = ({
         <DialogTitle
           sx={{ m: 0, p: 2 }}
           id="customized-dialog-title"
+          minWidth={"480px"}
         >
           <Stack direction={"row"}>
             <Grid container direction={"column"} justifyContent={'center'} alignItems={'center'} sx={{ flexGrow: 1 }}>
@@ -99,7 +103,7 @@ const FormDialog = ({
         </DialogTitle>
         <DialogContent>
           <FormProvider {...methods} reset={reset}>
-            <form onSubmit={onSubmit} id="AppForm">
+          <form onSubmit={onSubmit} id="AppForm">
               <HorizontalLinearStepper
                 activeStep={activeStep}
                 setActiveStep={setActiveStep}

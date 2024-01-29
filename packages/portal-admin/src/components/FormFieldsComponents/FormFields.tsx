@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {useFormContext} from 'react-hook-form'
+import { useState, useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import {
   Box,
@@ -11,26 +11,29 @@ import {
   Stack,
   Switch
 } from '@mui/material'
-import {enqueueSnackbar} from 'notistack'
+import { enqueueSnackbar } from 'notistack'
 import FormInputRadioGroup from './FormInputRadio'
-import {FormInputDropdown} from './FormInputDropDown'
+import { FormInputDropdown } from './FormInputDropDown'
 import IconToggleButton from './IconToggleButton'
+import { ModuleTypes } from './FormInputProps'
+import { useFromState } from '../../hooks/useFormType'
 
-const FormFields = ({currentStep}) => {
-  const {register, control, formState, watch, setValue} = useFormContext()
-  const {errors} = formState
-  const typeCheck = watch('type')
+const FormFields = ({ currentStep }) => {
+  const { register, control, formState, setValue } = useFormContext()
+  const { errors } = formState
   const [displayIcon, setDisplayIcon] = useState(false)
 
-  const handleFileRead = async ({target}) => {
+  const { typeCheck, setTypeCheck } = useFromState()
+
+  const handleFileRead = async ({ target }) => {
     const file = target.files[0]
     if (!file) {
-      enqueueSnackbar('No file selected', {variant: 'error'})
+      enqueueSnackbar('No file selected', { variant: 'error' })
       return
     }
     if (file && file.size > 50000) {
       // Handle error when file size exceeds 3kb
-      enqueueSnackbar('File size exceeds 50kb', {variant: 'error'})
+      enqueueSnackbar('File size exceeds 50kb', { variant: 'error' })
       return
     }
     try {
@@ -39,7 +42,7 @@ const FormFields = ({currentStep}) => {
       setValue('icon', base64)
     } catch (error) {
       console.error('Error reading file:', error)
-      enqueueSnackbar('Error reading file', {variant: 'error'})
+      enqueueSnackbar('Error reading file', { variant: 'error' })
       // handle error in input component
     }
   }
@@ -57,6 +60,9 @@ const FormFields = ({currentStep}) => {
     })
   }
 
+  const handleTypeChange = (type: ModuleTypes) => {
+    setTypeCheck(type)
+  }
   return (
     <>
       <Stack spacing={2}>
@@ -68,6 +74,8 @@ const FormFields = ({currentStep}) => {
               label={'What is the type of your app?'}
               control={control}
               errors={errors}
+              handleTypeChange={handleTypeChange}
+              typeCheck={typeCheck}
               options={[
                 {
                   label: 'Local App',
@@ -214,7 +222,7 @@ const FormFields = ({currentStep}) => {
                 }
               ]}
             />
-            <FormGroup sx={{mt: 2}}>
+            <FormGroup sx={{ mt: 2 }}>
               <FormLabel component="legend">Visibility Settings</FormLabel>
               <FormControlLabel
                 control={
@@ -222,7 +230,7 @@ const FormFields = ({currentStep}) => {
                     name="showInPortal"
                     id="showInPortal"
                     {...register('showInPortal')}
-                    sx={{'& .MuiSvgIcon-root': {fontSize: 18}}}
+                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                   />
                 }
                 label="Display in Portal Apps Shelf"
@@ -232,7 +240,7 @@ const FormFields = ({currentStep}) => {
                   <Switch
                     name="showInSideBar"
                     id="showInSideBar"
-                    sx={{'& .MuiSvgIcon-root': {fontSize: 18}}}
+                    sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                     {...register('showInSideBar')}
                   />
                 }
@@ -244,7 +252,7 @@ const FormFields = ({currentStep}) => {
         {currentStep === 2 && (
           <Stack id="step-3">
             <FormControl
-              sx={{m: 1, alignItems: 'center'}}
+              sx={{ m: 1, alignItems: 'center' }}
               component="fieldset"
               variant="standard"
             >
@@ -278,7 +286,7 @@ const FormFields = ({currentStep}) => {
                   size="small"
                   variant="outlined"
                   fullWidth
-                  inputProps={{accept: 'image/*'}}
+                  inputProps={{ accept: 'image/*' }}
                   onChange={e => handleFileRead(e)}
                 />
               </div>

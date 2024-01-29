@@ -9,16 +9,21 @@ import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import {useFormContext} from 'react-hook-form'
 
-export default function IconToggleButton() {
+interface IconToggleButtonProps {
+  setAppIcon?: React.Dispatch<any>
+}
+
+const IconToggleButton: React.FC<IconToggleButtonProps> = ({setAppIcon}) => {
   const [icon, setIcon] = React.useState('AppsIcon')
-  const {setValue} = useFormContext()
+  // const {setValue} = useFormContext()
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newIcon: string
   ) => {
     setIcon(newIcon)
-    setValue('icon', newIcon)
+    //setValue('icon', newIcon)
+    setAppIcon && setAppIcon(newIcon)
   }
 
   const children = [
@@ -68,3 +73,6 @@ export default function IconToggleButton() {
     </Stack>
   )
 }
+
+
+export default IconToggleButton

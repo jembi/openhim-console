@@ -74,6 +74,7 @@ const AppDataGrid = () => {
       data.name = data.name.trim()
       data.description = data.description.trim()
       data.url = data.url.trim()
+
       await addApp(data)
       enqueueSnackbar('App was registered successfully', {variant: 'success'})
       setOpenDialog(false)
@@ -317,6 +318,7 @@ const AppDataGrid = () => {
           />
         </Box>
       </Box>
+
       <FormDialog
         edit={openEditDialog}
         setOpenEditDialog={setOpenEditDialog}
