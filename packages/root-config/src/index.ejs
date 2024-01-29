@@ -48,35 +48,10 @@
     />
 
     <!-- Add your organization's prod import map URL to this script's src  -->
-    <script type="systemjs-importmap">
-      {
-        "imports": {
-          "@jembi/root-config": "./jembi-root-config.js",
-          "@jembi/openhim-sidebar": "./jembi-openhim-sidebar.js",
-          "@jembi/openhim-header": "./jembi-openhim-header.js",
-          "@jembi/legacy-console": "./bundle.js",
-          "@jembi/openhim-portal": "./jembi-openhim-portal.js",
-          "@jembi/portal-admin": "./jembi-portal-admin.js",
-          "@jembi/openhim-core-api": "./jembi-openhim-core-api.js",
-          "@jembi/openhim-theme": "./jembi-openhim-theme.js"
-        }
-      }
+    <script type="systemjs-importmap" src="http://localhost:7401/app.importmap">
     </script>
-
     <% if (isLocal) { %>
-    <script type="systemjs-importmap">
-      {
-        "imports": {
-          "@jembi/root-config": "//localhost:9000/jembi-root-config.js",
-          "@jembi/openhim-sidebar": "//localhost:8500/jembi-openhim-sidebar.js",
-          "@jembi/openhim-theme": "//localhost:8506/jembi-openhim-theme.js",
-          "@jembi/openhim-header": "//localhost:8501/jembi-openhim-header.js",
-          "@jembi/legacy-console": "//localhost:9001/bundle.js",
-          "@jembi/openhim-portal": "//localhost:8502/jembi-openhim-portal.js",
-          "@jembi/portal-admin": "//localhost:8503/jembi-portal-admin.js",
-          "@jembi/openhim-core-api": "//localhost:8505/jembi-openhim-core-api.js"
-        }
-      }
+    <script type="systemjs-importmap" src="http://localhost:7401/app.importmap">
     </script>
     <% } %>
 
