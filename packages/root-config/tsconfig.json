@@ -2,6 +2,7 @@
   "extends": "ts-config-single-spa",
   "files": ["src/jembi-root-config.ts"],
   "compilerOptions": {
+    "target": "es2017",
     "declarationDir": "dist"
   },
   "include": ["src/**/*"],
