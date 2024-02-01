@@ -1,3 +1,4 @@
 node_modules/
 
-infrastructure/import-maps-server/builds
+packaging/import-maps-server/builds
+*.secrets

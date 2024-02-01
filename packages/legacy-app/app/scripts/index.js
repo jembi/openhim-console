@@ -410,7 +410,7 @@ const ngLifecycles = singleSpaAngularJS({
 })
 
 const cssLifecycles = singleSpaCss({
-  cssUrls: ['http://localhost:9001/styles.css']
+  cssUrls: ['styles.css']
 })
 
 export const bootstrap = [

@@ -1,0 +1,33 @@
+ARG baseImage=singlespa/import-maps-mfe-server
+
+FROM ${baseImage} 
+
+ARG WORK_DIR=/path/to/your/app
+ARG sourceDir=dist
+ARG virtualDir=libs
+ARG libName=unknown
+ARG libVersion=unknown
+ARG libMainFile=unknown.js
+ARG nginxDir=/usr/share/nginx/html
+ARG publicOrigin=https://jembi.org
+ARG importMapFilename=app.importmap
+
+
+
+RUN pwd
+
+COPY . /app
+
+WORKDIR /app
+
+
+RUN mkdir -p ${nginxDir}/${virtualDir}/"@jembi"
+RUN cp importmap.json ${nginxDir}/${importMapFilename}
+RUN cp builds/@jembi/root-config/dist/index.html ${nginxDir}/index.html
+RUN cp -r builds/@jembi/legacy-console/dist/config ${nginxDir}/config
+RUN cp -r images ${nginxDir}/images
+RUN cp builds/@jembi/legacy-console/dist/styles.css ${nginxDir}/
+RUN cp builds/@jembi/legacy-console/dist/favicon.ico ${nginxDir}/
+RUN cp -r builds/@jembi/legacy-console/dist/fonts ${nginxDir}/fonts
+RUN cp -r builds/@jembi/ ${nginxDir}/${virtualDir}/
+RUN pwd && ls -alh
