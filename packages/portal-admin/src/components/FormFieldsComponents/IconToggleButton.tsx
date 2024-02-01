@@ -7,23 +7,20 @@ import ExtensionIcon from '@mui/icons-material/Extension'
 import Stack from '@mui/material/Stack'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import {useFormContext} from 'react-hook-form'
 
 interface IconToggleButtonProps {
-  setAppIcon?: React.Dispatch<any>
+  updateIcon: (icon: string) => void
 }
 
-const IconToggleButton: React.FC<IconToggleButtonProps> = ({setAppIcon}) => {
+const IconToggleButton: React.FC<IconToggleButtonProps> = ({ updateIcon }) => {
   const [icon, setIcon] = React.useState('AppsIcon')
-  // const {setValue} = useFormContext()
 
-  const handleChange = (
+  const handleToggleChange = (
     event: React.MouseEvent<HTMLElement>,
     newIcon: string
   ) => {
     setIcon(newIcon)
-    //setValue('icon', newIcon)
-    setAppIcon && setAppIcon(newIcon)
+    updateIcon(newIcon)
   }
 
   const children = [
@@ -54,6 +51,8 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({setAppIcon}) => {
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/extension/v12/24px.svg"
       key="ExtensionIcon"
+      className='ExtensionIcon'
+
     >
       <ExtensionIcon />
     </ToggleButton>
@@ -61,8 +60,9 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({setAppIcon}) => {
 
   const control = {
     value: icon,
-    onChange: handleChange,
-    exclusive: true
+    onChange:handleToggleChange,
+    exclusive: true,
+    name: 'icon',
   }
 
   return (

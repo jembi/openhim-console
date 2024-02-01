@@ -5,9 +5,7 @@ import theme from '@jembi/openhim-theme'
 import './app.css'
 import { FormStateProvider } from './hooks/useFormType'
 
-import AppsDataGrid from './components/AppDataGrid'
-import AppDataGridTwo from './components/AppDataGridTwo'
-import RefactoredApp from './components/RefactoredApp'
+import AppsDataGrid from '../src/components/AppsDataGrid'
 
 export default function PortalAdminRoot(props: any) {
   return (
@@ -21,7 +19,7 @@ export default function PortalAdminRoot(props: any) {
                 <Typography variant="body2">
                   Add and update all the Portal apps details and settings
                 </Typography>
-                <RefactoredApp />
+                <AppsDataGrid />
               </Box>
             </Paper>
           </Box>

@@ -24,19 +24,6 @@ import {
     StepLabel,
     DialogContent,
     DialogActions,
-    FormControl,
-    FormLabel,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    InputLabel,
-    Select,
-    MenuItem,
-    TextField,
-    FormGroup,
-    Switch,
-    Icon,
-    FormHelperText,
     Divider
 
 } from '@mui/material'
@@ -54,9 +41,10 @@ import { getAllApps, deleteApp, editApp, addApp } from '@jembi/openhim-core-api'
 import { enqueueSnackbar } from 'notistack'
 import CloseIcon from '@mui/icons-material/Close'
 import { Formik } from 'formik'
-// import { Controller, useFormContext } from 'react-hook-form'
-import IconToggleButton from './FormFieldsComponents/IconToggleButton'
-import { z } from 'zod';
+import ActiveStepZero from './ActiveStepZero';
+import ActiveStepOne from './ActiveStepOne';
+import ActiveStepTwo from './ActiveStepTwo';
+import { AppProps } from './FormInputProps'
 
 const StyledGridOverlay = styled('div')(() => ({
     display: 'flex',
@@ -67,18 +55,6 @@ const StyledGridOverlay = styled('div')(() => ({
 }))
 
 const steps = ['Add App details', 'Add App Configuration', 'Choose Icon']
-type ModuleTypes = "internal" | "esmodule" | "external"
-
-interface AppProps {
-    name: string,
-    description: string,
-    category: string,
-    type: ModuleTypes,
-    url: string,
-    showInPortal: boolean,
-    showInSideBar: boolean,
-    access_roles: string[]
-}
 
 const RefactoredApp = () => {
     const formInitialState: AppProps = {
@@ -89,40 +65,41 @@ const RefactoredApp = () => {
         url: '',
         showInPortal: true,
         showInSideBar: false,
-        access_roles: ['admin']
+        access_roles: ['admin'],
+        icon: ''
     }
 
     const [openDialog, setOpenDialog] = useState(false)
     const [loading, setLoading] = useState(true)
+    //List of apps saved in mongoDB
     const [apps, setApps] = useState([])
+    //Selected app in the data grid.
     const [selectedApp, setSelectedApp] = useState(formInitialState)
+    //Steps 0, 1, 2, 3
     const [activeStep, setActiveStep] = useState(0)
     const [skipped, setSkipped] = useState(new Set<number>())
     const [openEditDialog, setOpenEditDialog] = useState(false)
-    const [typeCheck, setTypeCheck] = useState<ModuleTypes>("internal")
-    const [displayIcon, setDisplayIcon] = useState(false)
-    const [appIcon, setAppIcon] = useState(null)
+    //Current application in the form when adding or editing
     const [appValues, setAppValues] = useState<AppProps>(formInitialState)
     const [deleteAppData, setDeleteApp] = useState<any>()
-    //Validation
-    //Check app text
+
+    //Get app title
     const [appTitleHelperMessage, setAppTitleHelperMessage] = useState('')
-    const appTitleLengthSchema = z.string().min(3, 'Application title should be at least 3 characters long').max(25, 'Application title should be at most 25 characters long');
     const appTitleFieldRef = useRef<HTMLInputElement>(null);
 
-    //Check app types
+    //Get app types
     const [appCategoryHelperMessage, setAppCategoryHelperMessage] = useState('')
     const appCategoryFieldRef = useRef<HTMLInputElement>(null);
 
-    //Check description
+    //Get description
     const [appDescriptionHelperMessage, setAppDescriptionHelperMessage] = useState('')
     const appDescriptionFieldRef = useRef<HTMLInputElement>(null);
 
-    //Check for the link
+    //Get for the link
     const [appLinkHelperMessage, setAppLinkHelperMessage] = useState('')
     const appLinkFieldRef = useRef<HTMLInputElement>(null);
 
-    //Check access role
+    //Get access role
     const [appAccessRoleHelperMessage, setAppAccessRoleHelperMessage] = useState('')
     const appAccessRoleieldRef = useRef<HTMLInputElement>(null);
 
@@ -131,6 +108,10 @@ const RefactoredApp = () => {
     const [openWarningDialog, setOpenWarningDialog] = useState<boolean>(false)
     const theme = useTheme()
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+    var showInPortal = true
+    var showInSideBar = false
+    var appLink = ''
 
     const columns: GridColDef[] = [
         { field: '_id', headerName: 'ID' },
@@ -229,9 +210,9 @@ const RefactoredApp = () => {
                     id="edit"
                     label="Edit"
                     onClick={() => {
+                        setSelectedApp(params.row)
                         setOpenEditDialog(true)
                         setOpenDialog(true)
-                        setSelectedApp(params.row)
                     }}
                 />,
                 <GridActionsCellItem
@@ -267,6 +248,7 @@ const RefactoredApp = () => {
         )
     }
 
+    // Get all apps from mongoDB
     const loadContent = async () => {
         try {
             setLoading(true)
@@ -281,28 +263,62 @@ const RefactoredApp = () => {
         }
     }
 
+    // Delete a selected app in mongoDB based on the id. 
+    // Will reload the window
     const handleDeleteApp = async id => {
         try {
             await deleteApp(id)
             loadContent()
             enqueueSnackbar('App was deleted successfully', { variant: 'success' })
+            if (deleteAppData.type === 'esmodule') {
+                let countdown = 5;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown === 0) {
+                        clearInterval(countdownInterval);
+                    }
+                    enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+                        variant: 'info'
+                    });
+                }, 1000);
+                window.location.reload()
+            }
         } catch (error) {
             enqueueSnackbar('Failed to delete app', { variant: 'error' })
         }
     }
 
+    // Called when closing the form dialog
+    // Reset active step
+    // Reset initial form value
     const handleDialogClose = () => {
         setOpenDialog(false)
         setOpenEditDialog(false)
-        setSelectedApp(null)
+        setActiveStep(0)
+        setSelectedApp(formInitialState)
     }
 
+    // Edit selected application
+    // Will reload window
     const handleEditApp = async data => {
         try {
             await editApp(data._id, data)
             loadContent()
             enqueueSnackbar('App was updated successfully', { variant: 'success' })
             setSelectedApp(formInitialState)
+            if (data.type === 'esmodule') {
+                let countdown = 5;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown === 0) {
+                        clearInterval(countdownInterval);
+                    }
+                    enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+                        variant: 'info'
+                    });
+                }, 1000);
+                window.location.reload()
+            }
         } catch (error) {
             enqueueSnackbar('Failed to edit app! ' + error.response.data.error, {
                 variant: 'error'
@@ -311,20 +327,41 @@ const RefactoredApp = () => {
         } finally {
             setOpenDialog(false)
             setOpenEditDialog(false)
+            setActiveStep(0)
         }
     }
 
+    // Add new aplication
+    // Will reload the window 
+    // Reset active step to 0
+    // Close the form dialog
     const handleAddApp = async data => {
         try {
             data.name = data.name.trim()
             data.description = data.description.trim()
             data.url = data.url.trim()
 
+            console.log(appLink)
+
             await addApp(data)
             enqueueSnackbar('App was registered successfully', { variant: 'success' })
             setOpenDialog(false)
+            setActiveStep(0)
             setSelectedApp(formInitialState)
             loadContent()
+            if (data.type === 'esmodule') {
+                let countdown = 5;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown === 0) {
+                        clearInterval(countdownInterval);
+                    }
+                    enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+                        variant: 'info'
+                    });
+                }, 1000);
+                window.location.reload()
+            }
         } catch (error) {
             if (
                 error.response &&
@@ -333,6 +370,7 @@ const RefactoredApp = () => {
             ) {
                 enqueueSnackbar('App already exists', { variant: 'error' })
             } else {
+                console.log(error.response)
                 enqueueSnackbar('Failed to add app ! ' + error.response.data?.error, {
                     variant: 'error'
                 })
@@ -340,15 +378,24 @@ const RefactoredApp = () => {
         }
     }
 
+    // Check for actions: Edit or Add
     const handleApp = async () => {
         if (openEditDialog) {
             handleEditApp(appValues)
         } else {
             handleAddApp(appValues)
         }
+
     }
 
-    //STEPPER - START
+    // UseState is not updating the state imediately for our use case. 
+    // We are currently using our own setter function to get data immediately. 
+    // Function is called inside ActiveStepTwo to set the icon url on button toggle
+    // In addition it is used to set the url when adding custom icon. 
+    const updateIcon = (icon: any) => {
+        appValues.icon = icon as string
+    }
+
     const isStepOptional = (step: number) => {
         return step === 2
     }
@@ -357,6 +404,10 @@ const RefactoredApp = () => {
         return skipped.has(step)
     }
 
+    // Function is called to increment activeStep
+    // Validate the form before going to the next steps 
+    // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
+    // Set the app URL to avoid delay with useState.  
     const handleNext = () => {
         let newSkipped = skipped
         if (isStepSkipped(activeStep)) {
@@ -364,30 +415,33 @@ const RefactoredApp = () => {
             newSkipped.delete(activeStep)
         }
 
+        //From Validation
+        //Manually setting form validation since Formik is not updating state imediately 
+
         if (activeStep === 0) {
-            try {
-                const apptileValue = appTitleFieldRef.current.value
-                const appCategoryValue = appCategoryFieldRef.current.value
-                const appDescriptionValue = appDescriptionFieldRef.current.value
+            const apptileValue = appTitleFieldRef.current.value
+            const appCategoryValue = appCategoryFieldRef.current.value
+            const appDescriptionValue = appDescriptionFieldRef.current.value
 
-                if (!appCategoryValue) {
-                    setAppCategoryHelperMessage("Category is required. Select one of the categories")
-                }
-                else if (!apptileValue) {
-                    setAppTitleHelperMessage('App Title is required. Type a title between 3-25 characters')
-                }
-                else if (appDescriptionValue.length > 70) {
-                    setAppDescriptionHelperMessage('Description should be at most 70 characters long')
-                }
-                else {
-                    appTitleLengthSchema.parse(apptileValue)
-                    setActiveStep(activeStep + 1)
-                    setSkipped(newSkipped)
-                }
+            if (!appCategoryValue) {
+                setAppCategoryHelperMessage("Category is required. Select one of the categories")
+            }
+            else if (!apptileValue) {
+                setAppTitleHelperMessage('App Title is required. Type a title between 3-25 characters')
+            }
+            else if (apptileValue.length < 3) {
+                setAppTitleHelperMessage('Application title should be at least 3 characters long')
+            }
+            else if (apptileValue.length > 25) {
+                setAppTitleHelperMessage('Application title should be at most 25 characters long')
 
-
-            } catch (e) {
-                setAppTitleHelperMessage(JSON.parse(e.message)[0].message)
+            }
+            else if (appDescriptionValue.length > 70) {
+                setAppDescriptionHelperMessage('Description should be at most 70 characters long')
+            }
+            else {
+                setActiveStep(activeStep + 1)
+                setSkipped(newSkipped)
             }
         }
 
@@ -398,13 +452,10 @@ const RefactoredApp = () => {
 
             const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
 
-            console.log("Type: " + accessRoleValue)
-
             if (!appLinkValue) {
                 setAppLinkHelperMessage('App Link is required')
             }
             else if (!regExp.test(appLinkValue)) {
-                console.log(regExp.test(appLinkValue))
                 setAppLinkHelperMessage('Invalid URL')
 
             }
@@ -412,7 +463,11 @@ const RefactoredApp = () => {
                 setAppAccessRoleHelperMessage('User Access Role is required')
             }
             else {
-                console.log("Here")
+
+                //sometimes user copy and paste the link
+                //we need to get the full link and the state do not handle it well since it does not update immediately. 
+                //We therefore update the state directly before going to the next step. 
+                appValues.url = appLinkValue
                 setActiveStep(activeStep + 1)
                 setSkipped(newSkipped)
             }
@@ -432,8 +487,6 @@ const RefactoredApp = () => {
 
     const handleSkip = () => {
         if (!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
             throw new Error("You can't skip a step that isn't optional.")
         }
 
@@ -449,88 +502,40 @@ const RefactoredApp = () => {
         setActiveStep(0)
     }
 
-    //STEPPER - END
-
     useEffect(() => {
         loadContent()
+        if (activeStep === steps.length) {
+            setActiveStep(0)
+        }
     }, [])
 
+    // UseState is not updating the state imediately for our use case. 
+    // We are currently using our own setter function to get data immediately. 
+    const setShowInPortalValue = (value: boolean) => {
+        showInPortal = value
+        return showInPortal
+    }
+
+    const setShowInSideBarValue = (value: boolean) => {
+        showInSideBar = value
+        return showInSideBar
+    }
+
+    // TODO: Handle formik onChange function better
+    // PROBLEM: Formik is not updating state on change imediately. In our context we ware using data right after inputing it. 
+    // Which cause data value to reflext previous data instead of current data in the DOM. 
+    // SOLUTION: Create another function that update the state immediately. 
+    // Once a change is performed in the DOM we make the change to the state manually. 
     const handleFormChanges = (values: AppProps) => {
+        values.showInPortal = showInPortal
+        values.showInSideBar = showInSideBar
+
+        //sometime user copy and paste the URL
+        //We want to get the exact url without waiting for the state to rerender
         setAppValues(values)
     }
 
-    const radioButtonOptions = [
-        {
-            label: 'Local App',
-            value: 'internal'
-        },
-        {
-            label: 'External App',
-            value: 'external'
-        },
-        {
-            label: 'Micro-frontend',
-            value: 'esmodule'
-        }
-    ]
-
-    const categoryOptions = [
-        {
-            label: 'OpenHIM',
-            value: 'OpenHIM'
-        },
-        {
-            label: 'Operations',
-            value: 'Operations'
-        },
-        {
-            label: 'HIE Configuration',
-            value: 'HIE Configuration'
-        },
-        {
-            label: 'Other',
-            value: 'Other'
-        }
-    ]
-
-    const accessRoleOptions = [
-        {
-            label: 'Super Admin',
-            value: 'admin'
-        },
-        {
-            label: 'Basic User',
-            value: 'user'
-        }
-    ]
-
-    const generateRadioOptions = options =>
-        options.map(option => {
-            return (
-                <FormControlLabel
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                    control={<Radio />}
-                />
-            )
-        })
-    const generateSingleOptions = (options) => {
-        if (!options) {
-            return null
-        }
-        return options.map((option: any) => {
-            return (
-                <MenuItem key={option.value} value={option.value as string}>
-                    {option.label}
-                </MenuItem>
-            )
-        })
-    }
-
-
-    //WATCH OUT THIS MIGHT NOT WORK
-
+    // When adding a custom icon than what provided in the form this function is called to set the icon url. 
     const handleFileRead = async ({ target }) => {
         const file = target.files[0]
         if (!file) {
@@ -544,8 +549,7 @@ const RefactoredApp = () => {
         }
         try {
             const base64 = await convertBase64(file)
-            // Set the value of the 'icon' field using react-hook-form
-            setAppIcon(base64)
+            updateIcon(base64)
         } catch (error) {
             console.error('Error reading file:', error)
             enqueueSnackbar('Error reading file', { variant: 'error' })
@@ -553,6 +557,7 @@ const RefactoredApp = () => {
         }
     }
 
+    // Convert the image uploaded to base64 and save it. 
     const convertBase64 = (file: File) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader()
@@ -700,7 +705,7 @@ const RefactoredApp = () => {
 
                     <Formik
                         initialValues={
-                            formInitialState
+                            selectedApp
                         }
                         onSubmit={handleApp}
                     >
@@ -711,83 +716,19 @@ const RefactoredApp = () => {
                                     <Stack spacing={2}>
                                         {activeStep === 0 && (
                                             <>
-                                                <FormControl fullWidth component="fieldset" required>
-                                                    <FormLabel required component="legend">
-                                                        {'What is the type of your app?'}
-                                                    </FormLabel>
-                                                    <RadioGroup
-                                                        id={"type"}
-                                                        name={"type"}
-                                                        row
-                                                        value={values.type}
-                                                        onChange={(e) => {
-                                                            handleChange(e)
-                                                            handleFormChanges(values)
-                                                        }}
-                                                    >
-                                                        {generateRadioOptions(radioButtonOptions)}
-
-                                                    </RadioGroup>
-                                                </FormControl>
-                                                <FormControl fullWidth required sx={{ mt: 1 }}>
-                                                    <InputLabel>{"category"}</InputLabel>
-                                                    <Select
-                                                        margin="dense"
-                                                        fullWidth
-                                                        inputRef={appCategoryFieldRef}
-                                                        onChange={(e) => {
-                                                            handleChange(e)
-                                                            handleFormChanges(values)
-                                                            setAppCategoryHelperMessage('')
-                                                        }}
-                                                        id={"category"}
-                                                        error={appCategoryHelperMessage ? true : false}
-                                                        name={"category"}
-                                                        value={values.category}
-                                                        label={"category"}
-                                                    >
-                                                        {generateSingleOptions(categoryOptions)}
-
-                                                    </Select>
-                                                    <FormHelperText error={appCategoryHelperMessage ? true : false}>{appCategoryHelperMessage}</FormHelperText>
-                                                </FormControl>
-                                                <TextField
-                                                    margin="dense"
-                                                    value={values.name}
-                                                    id="name"
-                                                    inputRef={appTitleFieldRef}
-                                                    label="App Title"
-                                                    type="text"
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    required
-                                                    name="name"
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                        handleFormChanges(values)
-                                                        setAppTitleHelperMessage('')
-                                                    }}
-                                                    error={appTitleHelperMessage ? true : false}
-                                                    helperText={appTitleHelperMessage}
-                                                />
-                                                <TextField
-                                                    margin="dense"
-                                                    multiline
-                                                    inputRef={appDescriptionFieldRef}
-                                                    id="description"
-                                                    label="Description"
-                                                    type="text"
-                                                    fullWidth
-                                                    variant="outlined"
-                                                    name="description"
-                                                    value={values.description}
-                                                    onChange={(e) => {
-                                                        handleChange(e)
-                                                        handleFormChanges(values)
-                                                        setAppDescriptionHelperMessage('')
-                                                    }}
-                                                    error={appDescriptionHelperMessage ? true : false}
-                                                    helperText={appDescriptionHelperMessage}
+                                                <ActiveStepZero
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleFormChanges={handleFormChanges}
+                                                    setAppCategoryHelperMessage={setAppCategoryHelperMessage}
+                                                    setAppTitleHelperMessage={setAppTitleHelperMessage}
+                                                    setAppDescriptionHelperMessage={setAppDescriptionHelperMessage}
+                                                    appCategoryFieldRef={appCategoryFieldRef}
+                                                    appCategoryHelperMessage={appCategoryHelperMessage}
+                                                    appTitleFieldRef={appTitleFieldRef}
+                                                    appTitleHelperMessage={appTitleHelperMessage}
+                                                    appDescriptionHelperMessage={appDescriptionHelperMessage}
+                                                    appDescriptionFieldRef={appDescriptionFieldRef}
                                                 />
                                             </>
                                         )
@@ -795,152 +736,28 @@ const RefactoredApp = () => {
 
                                         {activeStep === 1 && (
                                             <>
-                                                {values.type === 'esmodule' && (
-                                                    <TextField
-                                                        margin="dense"
-                                                        multiline
-                                                        id="url"
-                                                        label="Bundle URL"
-                                                        type="url"
-                                                        required
-                                                        inputRef={appLinkFieldRef}
-                                                        fullWidth
-                                                        variant="outlined"
-                                                        name="url"
-                                                        value={values.url}
-                                                        onChange={(e) => {
-                                                            handleChange(e)
-                                                            handleFormChanges(values)
-                                                            setAppLinkHelperMessage('')
-                                                        }}
-                                                        error={appLinkHelperMessage ? true : false}
-                                                        helperText={appLinkHelperMessage}
-                                                    />
-                                                )}
-                                                {(values.type === 'internal' || values.type === 'external') && (
-                                                    <TextField
-                                                        margin="dense"
-                                                        multiline
-                                                        id="page"
-                                                        inputRef={appLinkFieldRef}
-                                                        label="Link"
-                                                        value={values.url}
-                                                        fullWidth
-                                                        required
-                                                        variant="outlined"
-                                                        name="url"
-                                                        onChange={(e) => {
-                                                            handleChange(e)
-                                                            handleFormChanges(values)
-                                                            setAppLinkHelperMessage('')
-                                                        }}
-                                                        error={appLinkHelperMessage ? true : false}
-                                                        helperText={appLinkHelperMessage}
-                                                    />
-                                                )}
-                                                <FormControl fullWidth required sx={{ mt: 1 }}>
-                                                    <InputLabel>{"Access Roles"}</InputLabel>
-                                                    <Select
-                                                        margin="dense"
-                                                        fullWidth
-                                                        inputRef={appAccessRoleieldRef}
-                                                        onChange={(e) => {
-                                                            handleChange(e)
-                                                            handleFormChanges(values)
-                                                            setAppAccessRoleHelperMessage('')
-                                                        }}
-                                                        id={"access_roles"}
-                                                        name={"access_roles"}
-                                                        value={values.access_roles}
-                                                        label={"Access Roles"}
-                                                        multiple
-                                                        error={appAccessRoleHelperMessage ? true : false}
+                                                <ActiveStepOne
+                                                    appLinkFieldRef={appLinkFieldRef}
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleFormChanges={handleFormChanges}
+                                                    setAppLinkHelperMessage={setAppLinkHelperMessage}
+                                                    setAppAccessRoleHelperMessage={setAppAccessRoleHelperMessage}
+                                                    appLinkHelperMessage={appLinkHelperMessage}
+                                                    appAccessRoleieldRef={appAccessRoleieldRef}
+                                                    appAccessRoleHelperMessage={appAccessRoleHelperMessage}
+                                                    setShowInPortalValue={setShowInPortalValue}
+                                                    setShowInSideBarValue={setShowInSideBarValue}
 
-                                                    >
-                                                        {generateSingleOptions(accessRoleOptions)}
-                                                    </Select>
-                                                    <FormHelperText error={appAccessRoleHelperMessage ? true : false}>{appAccessRoleHelperMessage}</FormHelperText>
-                                                </FormControl>
-
-                                                <FormGroup sx={{ mt: 2 }}>
-                                                    <FormLabel component="legend">Visibility Settings</FormLabel>
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Switch
-                                                                name="showInPortal"
-                                                                id="showInPortal"
-                                                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                                                onChange={(e) => {
-                                                                    handleChange(e)
-                                                                    handleFormChanges(values)
-                                                                }}
-                                                                value={values.showInPortal}
-                                                            />
-                                                        }
-                                                        label="Display in Portal Apps Shelf"
-                                                    />
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Switch
-                                                                name="showInSideBar"
-                                                                id="showInSideBar"
-                                                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                                                onChange={(e) => {
-                                                                    handleChange(e)
-                                                                    handleFormChanges(values)
-                                                                }}
-                                                                value={values.showInSideBar}
-                                                            />
-                                                        }
-                                                        label="Display in Sidebar Menu"
-                                                    />
-                                                </FormGroup>
+                                                />
                                             </>
                                         )}
 
                                         {activeStep === 2 && (
-                                            <Stack id="step-3">
-                                                <FormControl
-                                                    sx={{ m: 1, alignItems: 'center' }}
-                                                    component="fieldset"
-                                                    variant="standard"
-                                                >
-                                                    <FormLabel component="label">Icon Settings</FormLabel>
-                                                    <IconToggleButton setAppIcon={setAppIcon} />
-                                                </FormControl>
-                                                <Button
-                                                    variant="text"
-                                                    onClick={() => {
-                                                        setDisplayIcon(true)
-                                                    }}
-                                                >
-                                                    Or upload your own custom icon
-                                                </Button>
-                                                {displayIcon ? (
-                                                    <div>
-                                                        <input
-                                                            hidden
-                                                            id="icon"
-                                                            type="url"
-                                                            name="icon"
-                                                        // {...register('icon')}
-                                                        />
-                                                        <TextField
-                                                            focused
-                                                            margin="dense"
-                                                            id="icon-file"
-                                                            name="icon-file"
-                                                            type="file"
-                                                            label="Application Icon"
-                                                            size="small"
-                                                            variant="outlined"
-                                                            fullWidth
-                                                            inputProps={{ accept: 'image/*' }}
-                                                            onChange={e => handleFileRead(e)}
-                                                        />
-                                                    </div>
-                                                ) : null}
-                                            </Stack>
+                                            <ActiveStepTwo
+                                                updateIcon={updateIcon}
+                                                handleFileRead={handleFileRead}
+                                            />
                                         )}
 
                                         {activeStep === steps.length && (
@@ -994,6 +811,12 @@ const RefactoredApp = () => {
                                         Continue
                                     </Button>
                                 )}
+
+                                {openEditDialog && activeStep < 2 && (
+                                    <Button onClick={handleApp} variant="contained" sx={{ ml: 1 }}>
+                                        Update
+                                    </Button>
+                                )}
                             </Box></>
                     )}
 
@@ -1009,7 +832,7 @@ const RefactoredApp = () => {
                                 Cancel
                             </Button>
                             <Button form="AppForm" type="submit" variant="contained" onClick={handleApp}>
-                                {openEditDialog ? 'Update App' : 'Add App'}
+                                {openEditDialog ? 'Update' : 'Add App'}
                             </Button>
                         </Box>
                     )}
@@ -1029,18 +852,18 @@ const RefactoredApp = () => {
             >
                 <DialogTitle>
                     <Stack direction={"row"} spacing={1}>
-                        <WarningIcon sx={{ color: 'red', width: 30, height: 30}} />
+                        <WarningIcon sx={{ color: 'red', width: 30, height: 30 }} />
                         <Typography sx={{ fontWeight: 'bold', fontSize: '20px' }}>
                             Delete Application
                         </Typography>
                     </Stack>
                 </DialogTitle>
 
-                <Divider/>
+                <Divider />
 
-                <DialogContent sx={{p: 2}}>
-                <Typography variant='h6'>
-                    {`Are you sure you want to delete the application ${deleteAppData?.name}? This action is irreversible and will permanently remove all associated data.`}
+                <DialogContent sx={{ p: 2 }}>
+                    <Typography variant='h6'>
+                        {`Are you sure you want to delete the application ${deleteAppData?.name}? This action is irreversible and will permanently remove all associated data.`}
                     </Typography>
                 </DialogContent>
                 <DialogActions>
