@@ -11,7 +11,7 @@ const theme = createTheme({
     // Tell MUI what's the font-size on the html element is.
     // This is necessary as the legacy angular app uses bootstrap which
     // changes the html font-size globally to 10px
-    htmlFontSize: 10
+    htmlFontSize: 10,
   },
   palette: {
     primary: {
