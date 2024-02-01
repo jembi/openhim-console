@@ -35,16 +35,16 @@ for package in "$packages_dir/packages"/*; do
             package_name=$(basename "$package")
             package_name=$(cat package.json | jq -r .name)
 
-            echo "$packages_dir/infrastructure/import-maps-server/$package_name"
-            mkdir -p "$packages_dir/infrastructure/import-maps-server/builds/$package_name/dist/"
-            cp -r dist/ "$packages_dir/infrastructure/import-maps-server/builds/$package_name/"
-            js_file=$(find "$packages_dir/infrastructure/import-maps-server/builds/$package_name/dist" -maxdepth 1 -type f -name "*.js" -print -quit)
+            echo "$packages_dir/packaging/import-maps-server/$package_name"
+            mkdir -p "$packages_dir/packaging/import-maps-server/builds/$package_name/dist/"
+            cp -r dist/ "$packages_dir/packaging/import-maps-server/builds/$package_name/"
+            js_file=$(find "$packages_dir/packaging/import-maps-server/builds/$package_name/dist" -maxdepth 1 -type f -name "*.js" -print -quit)
             file_name=$(basename "$js_file" .js)
 
             echo "Extracted name: $file_name"
             #Add package to the JSON file
 
-            cd "$packages_dir/infrastructure/import-maps-server/" || exit
+            cd "$packages_dir/packaging/import-maps-server/" || exit
             jq --arg module_url "$BASE_URL/libs/$package_name/dist/$file_name.js" ".imports += {\"$package_name\": \$module_url}" "$packages_json" >"$packages_json.tmp" && mv "$packages_json.tmp" "$packages_json"
             # jq --arg module_url "http://localhost:7401/libs/@jembi/$package_name/dist/" ".imports += {\"@jembi/$package_name/\": \$module_url}" "$packages_json" >>"$packages_json.tmp" && mv "$packages_json.tmp" "$packages_json"
 
