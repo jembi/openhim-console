@@ -4,10 +4,6 @@ import axios from 'axios'
 if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to point to OpenHIM Core API base URL
  **************************************************************************************************************** */
 
-if (!process.env.REACT_APP_OPENHIM_API_BASE_URL) {
-  throw new Error('REACT_APP_OPENHIM_API_BASE_URL is not set')
-}
-
 const API_URL =
   process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://localhost:8080/'
 interface App {
