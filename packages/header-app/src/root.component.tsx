@@ -2,9 +2,8 @@ import styled from '@emotion/styled'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import {createTheme, ThemeProvider} from '@mui/material/styles'
-import {green} from '@mui/material/colors'
-import {AccountCircle, Menu as MenuIcon} from '@mui/icons-material'
+import { ThemeProvider } from '@mui/material/styles'
+import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material'
 import {
   Divider,
   Drawer,
@@ -15,20 +14,10 @@ import {
   ListItemIcon
 } from '@mui/material'
 import React from 'react'
-import {OpenHIMMenu} from '@jembi/openhim-sidebar'
+import { OpenHIMMenu } from '@jembi/openhim-sidebar'
 import LogoutIcon from '@mui/icons-material/Logout'
 import EditIcon from '@mui/icons-material/Edit'
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: green[700]
-    },
-    secondary: {
-      main: green['A100']
-    }
-  }
-})
+import theme from '@jembi/openhim-theme'
 
 const GrowingDiv = styled.div`
   flex-grow: 1;
@@ -61,13 +50,13 @@ export default function ButtonAppBar() {
           keepMounted: true // Better open performance on mobile.
         }}
         sx={{
-          display: {xs: 'block', sm: 'none'},
-          '& .MuiDrawer-paper': {boxSizing: 'border-box', width: '200px'}
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '200px' }
         }}
       >
         <OpenHIMMenu></OpenHIMMenu>
       </Drawer>
-      <Box sx={{flexGrow: 1}}>
+      <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" elevation={1}>
           <Toolbar>
             <IconButton
@@ -75,7 +64,7 @@ export default function ButtonAppBar() {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{mr: 2, display: {sm: 'none'}}}
+              sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
             </IconButton>

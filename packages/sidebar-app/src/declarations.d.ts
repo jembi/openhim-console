@@ -37,3 +37,4 @@ declare module '*.svg' {
   const src: string
   export default src
 }
+declare module '@jembi/openhim-theme'

@@ -3,10 +3,10 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemText,
-  Divider
+  Divider,
+  Typography
 } from '@mui/material'
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 export default function OpenHIMMenu() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -19,12 +19,11 @@ export default function OpenHIMMenu() {
           '[sidebar-app] Failed to fetch OpenHIM console config'
         )
       }
-      const {protocol, host, hostPath, port} = await resConf.json()
+      const { protocol, host, hostPath, port } = await resConf.json()
       const resMe = await fetch(
-        `${protocol}://${host}:${port}${
-          /^\s*$/.test(hostPath) ? '' : '/' + hostPath
+        `${protocol}://${host}:${port}${/^\s*$/.test(hostPath) ? '' : '/' + hostPath
         }/me`,
-        {credentials: 'include'}
+        { credentials: 'include' }
       )
       if (!resMe.ok) {
         return console.error('[sidebar-app] Failed to fetch user profile')
@@ -39,79 +38,109 @@ export default function OpenHIMMenu() {
     }
   })
 
+  const customFontSize = 16
+
   return (
-    <Box sx={{width: '100%', maxWidth: 250, bgcolor: 'background.paper'}}>
+    <Box sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper' }}>
       <List>
-      <ListItem disablePadding>
+        <ListItem disablePadding>
           <ListItemButton component="a" href="/#!/portal">
-            <ListItemText primary="Portal" />
+            <Typography sx={{ fontSize: customFontSize }}>
+              Portal
+            </Typography>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component="a" href="#!">
-            <ListItemText primary="Dashboard" />
+            <Typography sx={{ fontSize: customFontSize }}>
+              Dashboard
+            </Typography>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component="a" href="/#!/transactions">
-            <ListItemText primary="Transaction Log" />
+            <Typography sx={{ fontSize: customFontSize }}>
+              Transaction Log
+            </Typography>
           </ListItemButton>
         </ListItem>
         {isAdmin && (
           <>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/audits">
-                <ListItemText primary="Audit Log" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Audit Log
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/clients">
-                <ListItemText primary="Clients" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Clients
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/channels">
-                <ListItemText primary="Channels" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Channels
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/tasks">
-                <ListItemText primary="Tasks" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Tasks
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/visualizer">
-                <ListItemText primary="Visualizer" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Visualizer
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/groups">
-                <ListItemText primary="Contact Lists" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Contact Lists
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/mediators">
-                <ListItemText primary="Mediators" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Mediators
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/users">
-                <ListItemText primary="Users" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Users
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/certificates">
-                <ListItemText primary="Certificates" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Certificates
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/export-import">
-                <ListItemText primary="Import/Export" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Import/Export
+                </Typography>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/logs">
-                <ListItemText primary="Server Logs" />
+                <Typography sx={{ fontSize: customFontSize }}>
+                  Server Logs
+                </Typography>
               </ListItemButton>
             </ListItem>
           </>
@@ -119,7 +148,9 @@ export default function OpenHIMMenu() {
         <Divider />
         <ListItem disablePadding>
           <ListItemButton component="a" href="/#!/about">
-            <ListItemText primary="About" />
+            <Typography sx={{ fontSize: customFontSize }}>
+              About
+            </Typography>
           </ListItemButton>
         </ListItem>
       </List>

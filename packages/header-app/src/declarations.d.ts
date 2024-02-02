@@ -39,3 +39,4 @@ declare module '*.svg' {
 }
 
 declare module '@jembi/openhim-sidebar'
+declare module '@jembi/openhim-theme'

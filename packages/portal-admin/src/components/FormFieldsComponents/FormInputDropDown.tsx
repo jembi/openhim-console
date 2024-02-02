@@ -1,7 +1,7 @@
 import React from 'react'
 import {FormControl, InputLabel, MenuItem, Select, Stepper} from '@mui/material'
 import {Controller} from 'react-hook-form'
-import {FormInputProps} from './FormInputProps'
+import {FormInputProps} from '../FormInputProps'
 
 export const FormInputDropdown: React.FC<FormInputProps> = ({
   name,
