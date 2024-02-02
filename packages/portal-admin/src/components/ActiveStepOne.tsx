@@ -40,7 +40,7 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
     appLinkHelperMessage,
     appAccessRoleieldRef,
     appAccessRoleHelperMessage,
-    setShowInSideBarValue, 
+    setShowInSideBarValue,
     setShowInPortalValue
 }) => {
 
@@ -92,7 +92,7 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
                     error={appLinkHelperMessage ? true : false}
                     helperText={appLinkHelperMessage}
                 />
-            )}                              
+            )}
             {(values.type === 'internal' || values.type === 'external') && (
                 <TextField
                     margin="dense"
