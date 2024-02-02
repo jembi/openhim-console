@@ -111,7 +111,6 @@ const RefactoredApp = () => {
 
     var showInPortal = true
     var showInSideBar = false
-    var appLink = ''
 
     const columns: GridColDef[] = [
         { field: '_id', headerName: 'ID' },
@@ -301,34 +300,46 @@ const RefactoredApp = () => {
     // Edit selected application
     // Will reload window
     const handleEditApp = async data => {
-        try {
-            await editApp(data._id, data)
-            loadContent()
-            enqueueSnackbar('App was updated successfully', { variant: 'success' })
-            setSelectedApp(formInitialState)
-            if (data.type === 'esmodule') {
-                let countdown = 5;
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown === 0) {
-                        clearInterval(countdownInterval);
-                    }
-                    enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
-                        variant: 'info'
-                    });
-                }, 1000);
-                window.location.reload()
+        if (validateData()) {
+            console.log('data validated')
+            try {
+
+                await editApp(data._id, data)
+                loadContent()
+                enqueueSnackbar('App was updated successfully', { variant: 'success' })
+                setSelectedApp(formInitialState)
+                if (data.type === 'esmodule') {
+                    let countdown = 5;
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        if (countdown === 0) {
+                            clearInterval(countdownInterval);
+                        }
+                        enqueueSnackbar(`The app will have to reload in ${countdown} seconds.`, {
+                            variant: 'info'
+                        });
+                    }, 1000);
+                    window.location.reload()
+                }
+            } catch (error) {
+                enqueueSnackbar('Failed to edit app! ' + error.response.data.error, {
+                    variant: 'error'
+                })
+                console.error(error)
+            } finally {
+                setOpenDialog(false)
+                setOpenEditDialog(false)
+                setActiveStep(0)
             }
-        } catch (error) {
-            enqueueSnackbar('Failed to edit app! ' + error.response.data.error, {
+        } else {
+            enqueueSnackbar('Invalidate Data ', {
                 variant: 'error'
             })
-            console.error(error)
-        } finally {
             setOpenDialog(false)
             setOpenEditDialog(false)
             setActiveStep(0)
         }
+
     }
 
     // Add new aplication
@@ -340,8 +351,6 @@ const RefactoredApp = () => {
             data.name = data.name.trim()
             data.description = data.description.trim()
             data.url = data.url.trim()
-
-            console.log(appLink)
 
             await addApp(data)
             enqueueSnackbar('App was registered successfully', { variant: 'success' })
@@ -381,14 +390,14 @@ const RefactoredApp = () => {
     // Check for actions: Edit or Add
     const handleApp = async () => {
         if (openEditDialog) {
-            handleEditApp(appValues)
+            handleEditApp(selectedApp)
         } else {
             handleAddApp(appValues)
         }
 
     }
 
-    // UseState is not updating the state imediately for our use case. 
+    // UseState is not updating the state imediately for our use case.
     // We are currently using our own setter function to get data immediately. 
     // Function is called inside ActiveStepTwo to set the icon url on button toggle
     // In addition it is used to set the url when adding custom icon. 
@@ -404,19 +413,7 @@ const RefactoredApp = () => {
         return skipped.has(step)
     }
 
-    // Function is called to increment activeStep
-    // Validate the form before going to the next steps 
-    // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
-    // Set the app URL to avoid delay with useState.  
-    const handleNext = () => {
-        let newSkipped = skipped
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values())
-            newSkipped.delete(activeStep)
-        }
-
-        //From Validation
-        //Manually setting form validation since Formik is not updating state imediately 
+    const validateData = () => {
 
         if (activeStep === 0) {
             const apptileValue = appTitleFieldRef.current.value
@@ -425,23 +422,27 @@ const RefactoredApp = () => {
 
             if (!appCategoryValue) {
                 setAppCategoryHelperMessage("Category is required. Select one of the categories")
+                return false
             }
             else if (!apptileValue) {
                 setAppTitleHelperMessage('App Title is required. Type a title between 3-25 characters')
+                return false
             }
             else if (apptileValue.length < 3) {
                 setAppTitleHelperMessage('Application title should be at least 3 characters long')
             }
             else if (apptileValue.length > 25) {
                 setAppTitleHelperMessage('Application title should be at most 25 characters long')
+                return false
 
             }
             else if (appDescriptionValue.length > 70) {
                 setAppDescriptionHelperMessage('Description should be at most 70 characters long')
+                return false
             }
             else {
-                setActiveStep(activeStep + 1)
-                setSkipped(newSkipped)
+                appValues.description = appDescriptionValue
+                return true
             }
         }
 
@@ -454,24 +455,38 @@ const RefactoredApp = () => {
 
             if (!appLinkValue) {
                 setAppLinkHelperMessage('App Link is required')
+                return false
             }
             else if (!regExp.test(appLinkValue)) {
                 setAppLinkHelperMessage('Invalid URL')
+                return false
 
             }
             else if (accessRoleValue.length === 0) {
                 setAppAccessRoleHelperMessage('User Access Role is required')
+                return false
             }
             else {
-
-                //sometimes user copy and paste the link
-                //we need to get the full link and the state do not handle it well since it does not update immediately. 
-                //We therefore update the state directly before going to the next step. 
                 appValues.url = appLinkValue
-                setActiveStep(activeStep + 1)
-                setSkipped(newSkipped)
+                return true
             }
 
+        }
+    }
+    // Function is called to increment activeStep
+    // Validate the form before going to the next steps 
+    // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
+    // Set the app URL to avoid delay with useState.  
+    const handleNext = () => {
+        let newSkipped = skipped
+        if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values())
+            newSkipped.delete(activeStep)
+        }
+
+        if (validateData()) {
+            setActiveStep(activeStep + 1)
+            setSkipped(newSkipped)
         }
 
         if (activeStep === 2) {
@@ -532,7 +547,13 @@ const RefactoredApp = () => {
 
         //sometime user copy and paste the URL
         //We want to get the exact url without waiting for the state to rerender
-        setAppValues(values)
+
+        if (openEditDialog) {
+            setSelectedApp(values)
+        }
+        else {
+            setAppValues(values)
+        }
     }
 
     // When adding a custom icon than what provided in the form this function is called to set the icon url. 
