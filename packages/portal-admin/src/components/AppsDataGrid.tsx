@@ -56,7 +56,7 @@ const StyledGridOverlay = styled('div')(() => ({
 
 const steps = ['Add App details', 'Add App Configuration', 'Choose Icon']
 
-const RefactoredApp = () => {
+const AppsDataGrid = () => {
     const formInitialState: AppProps = {
         name: '',
         description: '',
@@ -262,7 +262,7 @@ const RefactoredApp = () => {
         }
     }
 
-    // Delete a selected app in mongoDB based on the id. 
+    // Delete a selected app in mongoDB based on the id.
     // Will reload the window
     const handleDeleteApp = async id => {
         try {
@@ -343,7 +343,7 @@ const RefactoredApp = () => {
     }
 
     // Add new aplication
-    // Will reload the window 
+    // Will reload the window
     // Reset active step to 0
     // Close the form dialog
     const handleAddApp = async data => {
@@ -398,9 +398,11 @@ const RefactoredApp = () => {
     }
 
     // UseState is not updating the state imediately for our use case.
+    // We are currently using our own setter function to get data immediately.
+    // UseState is not updating the state imediately for our use case.
     // We are currently using our own setter function to get data immediately. 
     // Function is called inside ActiveStepTwo to set the icon url on button toggle
-    // In addition it is used to set the url when adding custom icon. 
+    // In addition it is used to set the url when adding custom icon.
     const updateIcon = (icon: any) => {
         appValues.icon = icon as string
     }
@@ -416,7 +418,7 @@ const RefactoredApp = () => {
     const validateData = () => {
 
         if (activeStep === 0) {
-            const apptileValue = appTitleFieldRef.current.value
+            const apptTitleValue = appTitleFieldRef.current.value
             const appCategoryValue = appCategoryFieldRef.current.value
             const appDescriptionValue = appDescriptionFieldRef.current.value
 
@@ -424,14 +426,14 @@ const RefactoredApp = () => {
                 setAppCategoryHelperMessage("Category is required. Select one of the categories")
                 return false
             }
-            else if (!apptileValue) {
+            else if (!apptTitleValue) {
                 setAppTitleHelperMessage('App Title is required. Type a title between 3-25 characters')
                 return false
             }
-            else if (apptileValue.length < 3) {
+            else if (apptTitleValue.length < 3) {
                 setAppTitleHelperMessage('Application title should be at least 3 characters long')
             }
-            else if (apptileValue.length > 25) {
+            else if (apptTitleValue.length > 25) {
                 setAppTitleHelperMessage('Application title should be at most 25 characters long')
                 return false
 
@@ -449,7 +451,7 @@ const RefactoredApp = () => {
         if (activeStep === 1) {
 
             const appLinkValue = appLinkFieldRef.current.value.trim()
-            const regExp = /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/
+            const regExp = /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
 
             const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
 
@@ -524,8 +526,8 @@ const RefactoredApp = () => {
         }
     }, [])
 
-    // UseState is not updating the state imediately for our use case. 
-    // We are currently using our own setter function to get data immediately. 
+    // UseState is not updating the state imediately for our use case.
+    // We are currently using our own setter function to get data immediately.
     const setShowInPortalValue = (value: boolean) => {
         showInPortal = value
         return showInPortal
@@ -537,10 +539,10 @@ const RefactoredApp = () => {
     }
 
     // TODO: Handle formik onChange function better
-    // PROBLEM: Formik is not updating state on change imediately. In our context we ware using data right after inputing it. 
-    // Which cause data value to reflext previous data instead of current data in the DOM. 
-    // SOLUTION: Create another function that update the state immediately. 
-    // Once a change is performed in the DOM we make the change to the state manually. 
+    // PROBLEM: Formik is not updating state on change imediately. In our context we ware using data right after inputing it.
+    // Which cause data value to reflext previous data instead of current data in the DOM.
+    // SOLUTION: Create another function that update the state immediately.
+    // Once a change is performed in the DOM we make the change to the state manually.
     const handleFormChanges = (values: AppProps) => {
         values.showInPortal = showInPortal
         values.showInSideBar = showInSideBar
@@ -556,7 +558,7 @@ const RefactoredApp = () => {
         }
     }
 
-    // When adding a custom icon than what provided in the form this function is called to set the icon url. 
+    // When adding a custom icon than what provided in the form this function is called to set the icon url.
     const handleFileRead = async ({ target }) => {
         const file = target.files[0]
         if (!file) {
@@ -578,7 +580,7 @@ const RefactoredApp = () => {
         }
     }
 
-    // Convert the image uploaded to base64 and save it. 
+    // Convert the image uploaded to base64 and save it.
     const convertBase64 = (file: File) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader()
@@ -710,18 +712,18 @@ const RefactoredApp = () => {
                     </Stepper>
                 </DialogTitle>
                 <DialogContent>
-                    {/* 
-                            ActiveStep 0: 
-                                1. Radio button 
-                                2. Text Fields 
+                    {/*
+                            ActiveStep 0:
+                                1. Radio button
+                                2. Text Fields
                                 3. Select display
-                            ActiveStep 1: 
+                            ActiveStep 1:
                                 1. Text Fields
-                                2. Visibilty Setting: portal and sidebar 
-                            ActiveStep 2: 
-                                1. Icons 
-                            ActiveStep 3: 
-                                1. Completion message and reset button 
+                                2. Visibilty Setting: portal and sidebar
+                            ActiveStep 2:
+                                1. Icons
+                            ActiveStep 3:
+                                1. Completion message and reset button
                         */}
 
                     <Formik
@@ -913,4 +915,4 @@ const RefactoredApp = () => {
     )
 }
 
-export default RefactoredApp
+export default AppsDataGrid
