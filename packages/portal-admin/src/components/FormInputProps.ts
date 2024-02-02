@@ -1,7 +1,6 @@
 type ModuleTypes = "internal" | "esmodule" | "external"
 
 export interface AppProps {
-    _id: string,
     name: string,
     description: string,
     category: string,

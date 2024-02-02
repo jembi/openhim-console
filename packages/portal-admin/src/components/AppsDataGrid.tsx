@@ -56,9 +56,8 @@ const StyledGridOverlay = styled('div')(() => ({
 
 const steps = ['Add App details', 'Add App Configuration', 'Choose Icon']
 
-const AppsDataGrid = () => {
+const RefactoredApp = () => {
     const formInitialState: AppProps = {
-        _id: '',
         name: '',
         description: '',
         category: '',
@@ -264,7 +263,7 @@ const AppsDataGrid = () => {
         }
     }
 
-    // Delete a selected app in mongoDB based on the id.
+    // Delete a selected app in mongoDB based on the id. 
     // Will reload the window
     const handleDeleteApp = async id => {
         try {
@@ -303,7 +302,6 @@ const AppsDataGrid = () => {
     // Will reload window
     const handleEditApp = async data => {
         try {
-            DEBUG:console.log(data._id)
             await editApp(data._id, data)
             loadContent()
             enqueueSnackbar('App was updated successfully', { variant: 'success' })
@@ -333,8 +331,8 @@ const AppsDataGrid = () => {
         }
     }
 
-    // Add new application
-    // Will reload the window
+    // Add new aplication
+    // Will reload the window 
     // Reset active step to 0
     // Close the form dialog
     const handleAddApp = async data => {
@@ -390,10 +388,10 @@ const AppsDataGrid = () => {
 
     }
 
-    // UseState is not updating the state immediately for our use case.
-    // We are currently using our own setter function to get data immediately.
+    // UseState is not updating the state imediately for our use case. 
+    // We are currently using our own setter function to get data immediately. 
     // Function is called inside ActiveStepTwo to set the icon url on button toggle
-    // In addition it is used to set the url when adding custom icon.
+    // In addition it is used to set the url when adding custom icon. 
     const updateIcon = (icon: any) => {
         appValues.icon = icon as string
     }
@@ -407,9 +405,9 @@ const AppsDataGrid = () => {
     }
 
     // Function is called to increment activeStep
-    // Validate the form before going to the next steps
+    // Validate the form before going to the next steps 
     // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
-    // Set the app URL to avoid delay with useState.
+    // Set the app URL to avoid delay with useState.  
     const handleNext = () => {
         let newSkipped = skipped
         if (isStepSkipped(activeStep)) {
@@ -418,23 +416,23 @@ const AppsDataGrid = () => {
         }
 
         //From Validation
-        //Manually setting form validation since Formik is not updating state immediately
+        //Manually setting form validation since Formik is not updating state imediately 
 
         if (activeStep === 0) {
-            const appTitleValue = appTitleFieldRef.current.value
+            const apptileValue = appTitleFieldRef.current.value
             const appCategoryValue = appCategoryFieldRef.current.value
             const appDescriptionValue = appDescriptionFieldRef.current.value
 
             if (!appCategoryValue) {
                 setAppCategoryHelperMessage("Category is required. Select one of the categories")
             }
-            else if (!appTitleValue) {
+            else if (!apptileValue) {
                 setAppTitleHelperMessage('App Title is required. Type a title between 3-25 characters')
             }
-            else if (appTitleValue.length < 3) {
+            else if (apptileValue.length < 3) {
                 setAppTitleHelperMessage('Application title should be at least 3 characters long')
             }
-            else if (appTitleValue.length > 25) {
+            else if (apptileValue.length > 25) {
                 setAppTitleHelperMessage('Application title should be at most 25 characters long')
 
             }
@@ -450,7 +448,7 @@ const AppsDataGrid = () => {
         if (activeStep === 1) {
 
             const appLinkValue = appLinkFieldRef.current.value.trim()
-            const regExp = /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
+            const regExp = /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/
 
             const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
 
@@ -467,8 +465,8 @@ const AppsDataGrid = () => {
             else {
 
                 //sometimes user copy and paste the link
-                //we need to get the full link and the state do not handle it well since it does not update immediately.
-                //We therefore update the state directly before going to the next step.
+                //we need to get the full link and the state do not handle it well since it does not update immediately. 
+                //We therefore update the state directly before going to the next step. 
                 appValues.url = appLinkValue
                 setActiveStep(activeStep + 1)
                 setSkipped(newSkipped)
@@ -511,8 +509,8 @@ const AppsDataGrid = () => {
         }
     }, [])
 
-    // UseState is not updating the state immediately for our use case.
-    // We are currently using our own setter function to get data immediately.
+    // UseState is not updating the state imediately for our use case. 
+    // We are currently using our own setter function to get data immediately. 
     const setShowInPortalValue = (value: boolean) => {
         showInPortal = value
         return showInPortal
@@ -524,10 +522,10 @@ const AppsDataGrid = () => {
     }
 
     // TODO: Handle formik onChange function better
-    // PROBLEM: Formik is not updating state on change immediately. In our context we ware using data right after inputting it.
-    // Which cause data value to reflect previous data instead of current data in the DOM.
-    // SOLUTION: Create another function that update the state immediately.
-    // Once a change is performed in the DOM we make the change to the state manually.
+    // PROBLEM: Formik is not updating state on change imediately. In our context we ware using data right after inputing it. 
+    // Which cause data value to reflext previous data instead of current data in the DOM. 
+    // SOLUTION: Create another function that update the state immediately. 
+    // Once a change is performed in the DOM we make the change to the state manually. 
     const handleFormChanges = (values: AppProps) => {
         values.showInPortal = showInPortal
         values.showInSideBar = showInSideBar
@@ -537,7 +535,7 @@ const AppsDataGrid = () => {
         setAppValues(values)
     }
 
-    // When adding a custom icon than what provided in the form this function is called to set the icon url.
+    // When adding a custom icon than what provided in the form this function is called to set the icon url. 
     const handleFileRead = async ({ target }) => {
         const file = target.files[0]
         if (!file) {
@@ -559,7 +557,7 @@ const AppsDataGrid = () => {
         }
     }
 
-    // Convert the image uploaded to base64 and save it.
+    // Convert the image uploaded to base64 and save it. 
     const convertBase64 = (file: File) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader()
@@ -691,18 +689,18 @@ const AppsDataGrid = () => {
                     </Stepper>
                 </DialogTitle>
                 <DialogContent>
-                    {/*
-                            ActiveStep 0:
-                                1. Radio button
-                                2. Text Fields
+                    {/* 
+                            ActiveStep 0: 
+                                1. Radio button 
+                                2. Text Fields 
                                 3. Select display
-                            ActiveStep 1:
+                            ActiveStep 1: 
                                 1. Text Fields
-                                2. Visibility Setting: portal and sidebar
-                            ActiveStep 2:
-                                1. Icons
-                            ActiveStep 3:
-                                1. Completion message and reset button
+                                2. Visibilty Setting: portal and sidebar 
+                            ActiveStep 2: 
+                                1. Icons 
+                            ActiveStep 3: 
+                                1. Completion message and reset button 
                         */}
 
                     <Formik
@@ -822,7 +820,7 @@ const AppsDataGrid = () => {
                             </Box></>
                     )}
 
-                    {/* An empty box outside of the button box is needed to enforce the right position of the box below */}
+                    {/* An empty box outside of the button box is needed to enforce the right position of the box belo */}
                     {activeStep === 3 && (
                         <Box />
                     )}
@@ -894,4 +892,4 @@ const AppsDataGrid = () => {
     )
 }
 
-export default AppsDataGrid
+export default RefactoredApp
