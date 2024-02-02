@@ -448,7 +448,7 @@ const AppsDataGrid = () => {
         if (activeStep === 1) {
 
             const appLinkValue = appLinkFieldRef.current.value.trim()
-            const regExp = /^(?:https?:\/\/)?(?:localhost|www\.\w+|(?:[\w-]+(?:\.\w+){1,2}))(?::\d+)?(?:\/.*)?$/
+            const regExp = /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
 
             const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
 
