@@ -8,8 +8,7 @@ export ENVIRONMENT_NAME=prod
 export DOCKER_ORG_NAME=drono
 PROJECT_UNIQUE_HASH_VERSION=$(git rev-parse HEAD)
 export PROJECT_UNIQUE_HASH_VERSION
-npm install
-npm run build:prod
+
 # Get the script's directory
 script_dir=$(dirname "$0")
 
@@ -23,11 +22,15 @@ packages_json="$script_dir/importmap.json"
 echo '{"imports": {}}' >"$packages_json"
 # Iterate over packages
 cd ../../ || exit
+
+jq '. += {"environment": "production"}' packages/legacy-app/app/config/default.json
+
+npm install
+npm run build:prod
 for package in "packages"/*; do
     if [ -d "$package" ]; then
         (
             echo "package: $package"
-
             # Go into the package directory in a subshell
 
             cd $(pwd)/$package || exit
@@ -47,6 +50,7 @@ for package in "packages"/*; do
         )
     fi
 done
+cd  packaging/import-maps-server/ || exit
 
 # echo "docker build -f Dockerfile-mf --build-arg WORK_DIR=$(pwd) --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=jembi/import-maps-mfe-server"
 docker build -f Dockerfile-mf --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME --build-arg WORK_DIR=$(pwd) --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=jembi/import-maps-mfe-server

@@ -17,7 +17,7 @@ ARG importMapFilename=app.importmap
 RUN pwd
 
 COPY . /app
-
+RUN ls -alh app
 WORKDIR /app
 
 

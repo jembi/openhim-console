@@ -15,5 +15,6 @@
   "ssoEnabled": false,
   "keyCloakUrl": "http://localhost:9088",
   "keyCloakRealm": "platform-realm",
-  "keyCloakClientId": "openhim-oauth"
+  "keyCloakClientId": "openhim-oauth",
+  "environment":"development"
 }

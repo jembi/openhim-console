@@ -51,7 +51,19 @@
     <script type="systemjs-importmap" src="app.importmap">
     </script>
     <% if (isLocal) { %>
-    <script type="systemjs-importmap" src="http://localhost:8080/app.importmap">
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@jembi/root-config": "//localhost:9000/jembi-root-config.js",
+          "@jembi/openhim-sidebar": "//localhost:8500/jembi-openhim-sidebar.js",
+          "@jembi/openhim-theme": "//localhost:8506/jembi-openhim-theme.js",
+          "@jembi/openhim-header": "//localhost:8501/jembi-openhim-header.js",
+          "@jembi/legacy-console": "//localhost:9001/bundle.js",
+          "@jembi/openhim-portal": "//localhost:8502/jembi-openhim-portal.js",
+          "@jembi/portal-admin": "//localhost:8503/jembi-portal-admin.js",
+          "@jembi/openhim-core-api": "//localhost:8505/jembi-openhim-core-api.js"
+        }
+      }
     </script>
     <% } %>
 
