@@ -100,7 +100,7 @@
 		"clean": "rimraf dist",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
-		"test": "karma start --single-run",
+		
 		"test:watch": "karma start --auto-watch",
 		"build": "npm run clean && NODE_OPTIONS=--max_old_space_size=4096 webpack --config webpack.production.js",
 		"version": "node versionManager.js && git add -u",
