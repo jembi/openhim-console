@@ -354,7 +354,12 @@ describe('Controller: channelBasicInfoCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent
-
+  // setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new()
@@ -393,7 +398,12 @@ describe('Controller: channelRequestMatchingCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, q
-
+// setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new()
@@ -452,7 +462,12 @@ describe('Controller: channelUserAccessCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, httpBackend
-
+// setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
@@ -509,7 +524,12 @@ describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent
-
+// setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $q) {
     scope = $rootScope.$new()
@@ -548,7 +568,12 @@ describe('Controller: channelRoutesCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, httpBackend
-
+// setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
@@ -869,7 +894,12 @@ describe('Controller: channelAlertsCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent
-
+// setup config constant to be used for API server details
+  beforeEach(function () {
+    module('openhimConsoleApp', function ($provide) {
+      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+    })
+  })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new()

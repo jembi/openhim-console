@@ -5,7 +5,7 @@ if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to po
  **************************************************************************************************************** */
 
 const API_URL =
-  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://13.245.11.170:8080/'
+  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'http://localhost:8080/'
 interface App {
   _id: string
   name: string
@@ -76,8 +76,5 @@ export async function fetchAppsGroupedByCategory() {
 
 export async function addApp(app: App) {
   const response = await apiClient.post('/apps', app)
-
-
-  // insertt new app into the apps array. writere to to the too level of the json file
   return response.data
 }

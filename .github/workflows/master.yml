@@ -34,6 +34,8 @@ jobs:
         run: node -v && npm -v
         shell: bash
       - name: Run script file
+        env:
+         HOST: ${{ secrets.HOST }}
         working-directory: ./packaging/import-maps-server
         run: |
           chmod +x ./build.sh 
@@ -46,11 +48,11 @@ jobs:
           chmod 600 key.pem
       - name: Pull Docker image
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_IP }} 'sudo docker pull' $IMAGE_ID
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker pull' $IMAGE_ID
       - name: Stop running container
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_IP }} 'sudo docker stop jembi-mfe-server || true'
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_IP }} 'sudo docker rm jembi-mfe-server || true'
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker stop jembi-mfe-server || true'
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker rm jembi-mfe-server || true'
       - name: Run new container
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_IP }} 'sudo docker run -d --name jembi-mfe-server -p 80:80' -v /home/ubuntu/openhim-console/default.json:/usr/share/nginx/html/config/default.json $IMAGE_ID
+          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker run -d --name jembi-mfe-server -p 80:80' -v /home/ubuntu/openhim-console/default.json:/usr/share/nginx/html/config/default.json $IMAGE_ID

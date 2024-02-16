@@ -23,8 +23,12 @@ echo '{"imports": {}}' >"$packages_json"
 # Iterate over packages
 cd ../../ || exit
 
-jq '. += {"environment": "production"}' packages/legacy-app/app/config/default.json
+jq '. += {"environment": "production"}'  packages/legacy-app/app/config/default.json > packages/legacy-app/app/config/default.json.tmp && mv packages/legacy-app/app/config/default.json.tmp packages/legacy-app/app/config/default.json
 
+# Set the environment variable REACT_APP_OPENHIM_API_BASE_URL to the value of the EC2_instance variable and write it to the .env file.
+echo "REACT_APP_OPENHIM_API_BASE_URL=https://$HOST:8080" > packages/openhim-core-api/.env
+
+cat packages/openhim-core-api/.env
 npm install
 npm run build:prod
 for package in "packages"/*; do
@@ -52,9 +56,8 @@ for package in "packages"/*; do
 done
 cd  packaging/import-maps-server/ || exit
 
-# echo "docker build -f Dockerfile-mf --build-arg WORK_DIR=$(pwd) --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=jembi/import-maps-mfe-server"
 docker build -f Dockerfile-mf --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME --build-arg WORK_DIR=$(pwd) --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=jembi/import-maps-mfe-server
 
 echo "IMAGE_ID=$DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME" >>"$GITHUB_ENV"
-# docker push $IMAGE_ID
+
 echo "image id is $GITHUB_ENV"

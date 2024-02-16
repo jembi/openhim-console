@@ -27,7 +27,11 @@ describe('Controller: LoginCtrl', function () {
     keycloak = _keycloak_
 
     // Override function to prevent page reload
-    keycloak.keycloakInstance.init = () => {}
+    keycloak.keycloakInstance = {
+      init: () => {},
+      login: () => {},
+      logout: () => {}
+    }
 
     httpBackend = $httpBackend
 

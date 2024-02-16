@@ -17,7 +17,7 @@ ARG importMapFilename=app.importmap
 RUN pwd
 
 COPY . /app
-RUN ls -alh app
+
 WORKDIR /app
 
 
@@ -30,4 +30,4 @@ RUN cp builds/@jembi/legacy-console/dist/styles.css ${nginxDir}/
 RUN cp builds/@jembi/legacy-console/dist/favicon.ico ${nginxDir}/
 RUN cp -r builds/@jembi/legacy-console/dist/fonts ${nginxDir}/fonts
 RUN cp -r builds/@jembi/ ${nginxDir}/${virtualDir}/
-RUN pwd && ls -alh
+
