@@ -5,7 +5,7 @@ if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to po
  **************************************************************************************************************** */
 
 const API_URL =
-  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'https://localhost:8080/'
+  process.env.REACT_APP_OPENHIM_API_BASE_URL || 'http://localhost:8080/'
 interface App {
   _id: string
   name: string

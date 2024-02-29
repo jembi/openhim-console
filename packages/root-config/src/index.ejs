@@ -48,21 +48,8 @@
     />
 
     <!-- Add your organization's prod import map URL to this script's src  -->
-    <script type="systemjs-importmap">
-      {
-        "imports": {
-          "@jembi/root-config": "./jembi-root-config.js",
-          "@jembi/openhim-sidebar": "./jembi-openhim-sidebar.js",
-          "@jembi/openhim-header": "./jembi-openhim-header.js",
-          "@jembi/legacy-console": "./bundle.js",
-          "@jembi/openhim-portal": "./jembi-openhim-portal.js",
-          "@jembi/portal-admin": "./jembi-portal-admin.js",
-          "@jembi/openhim-core-api": "./jembi-openhim-core-api.js",
-          "@jembi/openhim-theme": "./jembi-openhim-theme.js"
-        }
-      }
+    <script type="systemjs-importmap" src="app.importmap">
     </script>
-
     <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {

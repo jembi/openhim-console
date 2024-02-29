@@ -5,13 +5,17 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^6.5.1",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "lerna": "^6.5.1"
   },
   "scripts": {
     "start": "npx lerna run start",
     "build": "npx lerna run build",
     "test": "npx lerna run test",
     "build:prod": "npx lerna run build -- --prod"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1"
   }
 }
