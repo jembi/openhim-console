@@ -110,3 +110,8 @@ export async function deleteImportMap(id) {
   const response = await apiClient.delete(`/importmaps/${id}`)
   return response.data
 }
+
+export async function getImportMapByAppId(id): Promise<ImportMap> {
+  const response = await apiClient.get(`/importmaps/apps/${id}`)
+  return response.data
+}

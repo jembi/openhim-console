@@ -37,7 +37,7 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useEffect, useRef, useState } from 'react'
-import { getAllApps, deleteApp, editApp, addApp } from '@jembi/openhim-core-api'
+import { getAllApps, deleteApp, editApp, addApp, addImportMap, getImportMapByAppId } from '@jembi/openhim-core-api'
 import { enqueueSnackbar } from 'notistack'
 import CloseIcon from '@mui/icons-material/Close'
 import { Formik } from 'formik'
@@ -352,7 +352,12 @@ const AppsDataGrid = () => {
             data.description = data.description.trim()
             data.url = data.url.trim()
 
-            await addApp(data)
+            const appResult = await addApp(data)
+            const testResults = await getImportMapByAppId(appResult._id)
+            if (!testResults || (Array.isArray(testResults) && testResults.length === 0)) {
+                await addImportMap(appResult)
+            }
+
             enqueueSnackbar('App was registered successfully', { variant: 'success' })
             setOpenDialog(false)
             setActiveStep(0)
@@ -400,7 +405,7 @@ const AppsDataGrid = () => {
     // UseState is not updating the state imediately for our use case.
     // We are currently using our own setter function to get data immediately.
     // UseState is not updating the state imediately for our use case.
-    // We are currently using our own setter function to get data immediately. 
+    // We are currently using our own setter function to get data immediately.
     // Function is called inside ActiveStepTwo to set the icon url on button toggle
     // In addition it is used to set the url when adding custom icon.
     const updateIcon = (icon: any) => {
@@ -476,9 +481,9 @@ const AppsDataGrid = () => {
         }
     }
     // Function is called to increment activeStep
-    // Validate the form before going to the next steps 
+    // Validate the form before going to the next steps
     // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
-    // Set the app URL to avoid delay with useState.  
+    // Set the app URL to avoid delay with useState.
     const handleNext = () => {
         let newSkipped = skipped
         if (isStepSkipped(activeStep)) {
