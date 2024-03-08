@@ -20,6 +20,13 @@ interface App {
   __v: number
 }
 
+interface ImportMap {
+  _id: string
+  name: string
+  url: string
+  appId: string
+}
+
 export const apiClient = axios.create({
   withCredentials: true,
   baseURL: API_URL
@@ -76,5 +83,30 @@ export async function fetchAppsGroupedByCategory() {
 
 export async function addApp(app: App) {
   const response = await apiClient.post('/apps', app)
+  return response.data
+}
+
+export async function addImportMap(importMap: ImportMap){
+  const response = await apiClient.post('/importmaps', importMap)
+  return response.data
+}
+
+export async function getAllImportMaps(): Promise<ImportMap[]> {
+  const response = await apiClient.get('/importmaps')
+  return response.data
+}
+
+export async function fetchImportMap(id): Promise<ImportMap> {
+  const response = await apiClient.get(`/importmaps/${id}`)
+  return response.data
+}
+
+export async function editImportMap(id, data): Promise<ImportMap> {
+  const response = await apiClient.put(`/importmaps/${id}`, data)
+  return response.data
+}
+
+export async function deleteImportMap(id) {
+  const response = await apiClient.delete(`/importmaps/${id}`)
   return response.data
 }
