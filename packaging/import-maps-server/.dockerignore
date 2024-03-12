@@ -1,7 +1,3 @@
-**/node_modules
-infrastructure
-packaging
-test
 Dockerfile
 .dockerignore
 .travis

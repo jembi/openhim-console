@@ -13,9 +13,11 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/angular/angular.js',
+      
+      '../../node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/moment/moment.js',
+      '../../node_modules/systemjs/dist/system.js',
       'dist/bundle.js',
       { pattern: 'dist/bundle.js.map', included: false, watched: false },
       'dist/index.html',
