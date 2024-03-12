@@ -42,7 +42,9 @@ import {
   editApp,
   addApp,
   addImportMap,
-  getImportMapByAppId
+  getImportMapByAppId,
+  deleteImportMap,
+  editImportMap
 } from '@jembi/openhim-core-api'
 import {enqueueSnackbar} from 'notistack'
 import CloseIcon from '@mui/icons-material/Close'
@@ -274,6 +276,21 @@ const AppsDataGrid = () => {
   const handleDeleteApp = async id => {
     try {
       await deleteApp(id)
+
+      let importMapResults: any
+
+      try {
+        importMapResults = await getImportMapByAppId(id)
+        await deleteImportMap(importMapResults._id)
+      } catch (e) {
+        enqueueSnackbar(
+          'Failed to delete app importmap ! ' + e.response.data?.error,
+          {
+            variant: 'error'
+          }
+        )
+      }
+
       loadContent()
       enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       if (deleteAppData.type === 'esmodule') {
@@ -314,6 +331,20 @@ const AppsDataGrid = () => {
       console.log('data validated')
       try {
         await editApp(data._id, data)
+
+        let importMapResults: any
+
+        try {
+          importMapResults = await getImportMapByAppId(data._id)
+          await editImportMap(importMapResults._id, data)
+        } catch (e) {
+          enqueueSnackbar(
+            'Failed to update app importmap ! ' + e.response.data?.error,
+            {
+              variant: 'error'
+            }
+          )
+        }
         loadContent()
         enqueueSnackbar('App was updated successfully', {variant: 'success'})
         setSelectedApp(formInitialState)
