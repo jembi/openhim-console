@@ -277,20 +277,6 @@ const AppsDataGrid = () => {
     try {
       await deleteApp(id)
 
-      let importMapResults: any
-
-      try {
-        importMapResults = await getImportMapByAppId(id)
-        await deleteImportMap(importMapResults._id)
-      } catch (e) {
-        enqueueSnackbar(
-          'Failed to delete app importmap ! ' + e.response.data?.error,
-          {
-            variant: 'error'
-          }
-        )
-      }
-
       loadContent()
       enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       if (deleteAppData.type === 'esmodule') {
@@ -332,19 +318,6 @@ const AppsDataGrid = () => {
       try {
         await editApp(data._id, data)
 
-        let importMapResults: any
-
-        try {
-          importMapResults = await getImportMapByAppId(data._id)
-          await editImportMap(importMapResults._id, data)
-        } catch (e) {
-          enqueueSnackbar(
-            'Failed to update app importmap ! ' + e.response.data?.error,
-            {
-              variant: 'error'
-            }
-          )
-        }
         loadContent()
         enqueueSnackbar('App was updated successfully', {variant: 'success'})
         setSelectedApp(formInitialState)
@@ -394,23 +367,7 @@ const AppsDataGrid = () => {
       data.description = data.description.trim()
       data.url = data.url.trim()
 
-      const appResult = await addApp(data)
-      let importMapResults: any
-
-      try {
-        importMapResults = await getImportMapByAppId(appResult._id)
-      } catch (e) {
-        if (e.response && e.response.status === 404) {
-          await addImportMap(appResult)
-        } else {
-          enqueueSnackbar(
-            'Failed to add app importmap ! ' + e.response.data?.error,
-            {
-              variant: 'error'
-            }
-          )
-        }
-      }
+      await addApp(data)
 
       enqueueSnackbar('App was registered successfully', {variant: 'success'})
       setOpenDialog(false)

@@ -48,8 +48,7 @@
     />
 
     <!-- Add your organization's prod import map URL to this script's src  -->
-    <script type="systemjs-importmap" src="app.importmap">
-    </script>
+    <script type="systemjs-importmap" src="<%= REACT_APP_OPENHIM_API_BASE_URL %>/importmaps"></script>
     <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
