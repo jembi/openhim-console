@@ -79,7 +79,7 @@ export async function addApp(app: App) {
   return response.data
 }
 
-export async function getImportMap(app: App){
+export async function getImportMap(){
   const response = await apiClient.get('/importmaps')
   return response.data
 }
