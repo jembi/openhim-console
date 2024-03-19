@@ -1,9 +1,11 @@
 module.exports = {
-    testEnvironment: "jsdom",
-    transform: {
-    "^.+\\.(j|t)sx?$": "babel-jest",
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  moduleDirectories: ['../../node_modules', '__mocks__'],
+  transform: {
+    '^.+\\.ts$': 'ts-jest'
   },
   moduleNameMapper: {
-    "\\.(css)$": "identity-obj-proxy",
-  },
-};
+    '\\.(css)$': 'identity-obj-proxy'
+  }
+}

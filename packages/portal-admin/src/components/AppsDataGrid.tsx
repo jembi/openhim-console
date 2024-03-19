@@ -314,7 +314,6 @@ const AppsDataGrid = () => {
   // Will reload window
   const handleEditApp = async data => {
     if (validateData()) {
-      console.log('data validated')
       try {
         await editApp(data._id, data)
 
@@ -398,7 +397,6 @@ const AppsDataGrid = () => {
       ) {
         enqueueSnackbar('App already exists', {variant: 'error'})
       } else {
-        console.log(error.response)
         enqueueSnackbar('Failed to add app ! ' + error.response.data?.error, {
           variant: 'error'
         })
