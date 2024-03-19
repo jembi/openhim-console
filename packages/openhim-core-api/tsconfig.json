@@ -2,7 +2,12 @@
   "extends": "ts-config-single-spa",
   "files": ["src/jembi-openhim-core-api.ts"],
   "compilerOptions": {
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]

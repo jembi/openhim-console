@@ -12,7 +12,7 @@ interface IconToggleButtonProps {
   updateIcon: (icon: string) => void
 }
 
-const IconToggleButton: React.FC<IconToggleButtonProps> = ({ updateIcon }) => {
+const IconToggleButton: React.FC<IconToggleButtonProps> = ({updateIcon}) => {
   const [icon, setIcon] = React.useState('AppsIcon')
 
   const handleToggleChange = (
@@ -51,8 +51,7 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({ updateIcon }) => {
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/extension/v12/24px.svg"
       key="ExtensionIcon"
-      className='ExtensionIcon'
-
+      className="ExtensionIcon"
     >
       <ExtensionIcon />
     </ToggleButton>
@@ -60,9 +59,9 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({ updateIcon }) => {
 
   const control = {
     value: icon,
-    onChange:handleToggleChange,
+    onChange: handleToggleChange,
     exclusive: true,
-    name: 'icon',
+    name: 'icon'
   }
 
   return (
@@ -73,6 +72,5 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({ updateIcon }) => {
     </Stack>
   )
 }
-
 
 export default IconToggleButton

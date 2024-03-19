@@ -28,7 +28,7 @@ export const apiClient = axios.create({
 export async function fetchApps(): Promise<App[]> {
   const response = await apiClient.get('/apps')
   /* filter out apps that are not to be shown in the portal */
-  const portalApps = response.data.filter(app => app.showInPortal)
+  const portalApps = response.data.filter((app: App) => app.showInPortal)
   return portalApps
 }
 
@@ -37,38 +37,42 @@ export async function getAllApps(): Promise<App[]> {
   return response.data
 }
 
-export async function fetchApp(id): Promise<App> {
+export async function fetchApp(id: string): Promise<App> {
   const response = await apiClient.get(`/apps/${id}`)
   return response.data
 }
 
-export async function editApp(id, data): Promise<App> {
+export async function editApp(id: string, data: App): Promise<App> {
   const response = await apiClient.put(`/apps/${id}`, data)
   return response.data
 }
 
-export async function deleteApp(id) {
+export async function deleteApp(id: string) {
   const response = await apiClient.delete(`/apps/${id}`)
   return response.data
 }
 
 export async function fetchCategories() {
   const response = await apiClient.get('/apps')
-  const categories = Array.from(new Set(response.data.map(app => app.category)))
+  const categories = Array.from(
+    new Set(response.data.map((app: App) => app.category))
+  )
   return categories
 }
 
-export async function fetchAppsByCategory(category) {
+export async function fetchAppsByCategory(category: string) {
   const response = await apiClient.get('/apps')
-  const apps = response.data.filter(app => app.category === category)
+  const apps = response.data.filter((app: App) => app.category === category)
   return apps
 }
 
 export async function fetchAppsGroupedByCategory() {
   const response = await apiClient.get('/apps')
-  const categories = Array.from(new Set(response.data.map(app => app.category)))
+  const categories = Array.from(
+    new Set(response.data.map((app: App) => app.category))
+  )
   const appsGroupedByCategory = categories.map(category => {
-    const apps = response.data.filter(app => app.category === category)
+    const apps = response.data.filter((app: App) => app.category === category)
     return {category, apps}
   })
   return appsGroupedByCategory
@@ -76,5 +80,10 @@ export async function fetchAppsGroupedByCategory() {
 
 export async function addApp(app: App) {
   const response = await apiClient.post('/apps', app)
+  return response.data
+}
+
+export async function getImportMap() {
+  const response = await apiClient.get('/importmaps')
   return response.data
 }

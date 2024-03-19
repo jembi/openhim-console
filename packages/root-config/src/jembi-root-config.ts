@@ -43,17 +43,6 @@ function generateRoutingPathFromURL(url: string): string {
   return appName
 }
 
-function generateImportMap(esmodules) {
-  return {
-    imports: esmodules
-      .filter(app => app.type === 'esmodule')
-      .reduce((imports, app) => {
-        const urlWithoutProtocol = app.url.replace(/^https?:/, '')
-        imports[app.name] = urlWithoutProtocol
-        return imports
-      }, {})
-  }
-}
 /**
  * Register and start applications using the layout engine.
  *
@@ -92,27 +81,7 @@ async function loadAndStartMicrofrontends(): Promise<void> {
   try {
     const apps: PortalApp[] = await fetchApps_()
     const esmodules = apps.filter(app => app.type === 'esmodule')
-    /* ----------------------------------------------------------*/
-    // TODO: This is a temporary solution to dynamically load the import map
-    // Generate the import map
-    const importMap = generateImportMap(esmodules)
-    // Convert the import map to a JSON string
-    const importMapJson = JSON.stringify(importMap, null, 2)
 
-    // Find the script tag with id 'esm-importmap'
-    //const scriptTag = document.getElementById('esm-importmap');
-
-    const scriptTag = document.createElement('script')
-    scriptTag.type = 'systemjs-importmap'
-    scriptTag.textContent = importMapJson
-
-    // Inject the import map into the script tag
-    if (scriptTag) {
-      document.head.appendChild(scriptTag)
-    } else {
-      console.error('Could not find script tag with id "esm-importmap"')
-    }
-    /* ----------------------------------------------------------*/
     // Generate the new microfrontend layout
     let newMicrofrontendLayout = ''
     for (const app of esmodules) {
