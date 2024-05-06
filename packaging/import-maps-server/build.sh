@@ -4,11 +4,10 @@
 export DOCKERFILE_VERSION=main
 
 # Push vars. Each deployed environment has its own docker tag
-export ENVIRONMENT_NAME=prod
-export DOCKER_ORG_NAME=drono
+export ENVIRONMENT_NAME=poc-microfrontend
+export DOCKER_ORG_NAME=jembi
 PROJECT_UNIQUE_HASH_VERSION=$(git rev-parse HEAD)
 export PROJECT_UNIQUE_HASH_VERSION
-
 # Get the script's directory
 script_dir=$(dirname "$0")
 
@@ -60,8 +59,8 @@ for package in "packages"/*; do
 done
 cd  packaging/import-maps-server/ || exit
 
-docker build -f Dockerfile-mf --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME --build-arg WORK_DIR=$(pwd) --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=singlespa/import-maps-mfe-server
+docker build -f Dockerfile-mf --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console:$ENVIRONMENT_NAME --build-arg WORK_DIR=$(pwd) --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=singlespa/import-maps-mfe-server
 
-echo "IMAGE_ID=$DOCKER_ORG_NAME/openhim-console-mf:$ENVIRONMENT_NAME" >>"$GITHUB_ENV"
+echo "IMAGE_ID=$DOCKER_ORG_NAME/openhim-console:$ENVIRONMENT_NAME" >>"$GITHUB_ENV"
 
 echo "image id is $GITHUB_ENV"
