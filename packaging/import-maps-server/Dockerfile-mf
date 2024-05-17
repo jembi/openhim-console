@@ -20,8 +20,11 @@ COPY . /app
 
 WORKDIR /app
 
+RUN ls -alh
 
 RUN mkdir -p ${nginxDir}/${virtualDir}/"@jembi"
+
+
 RUN cp importmap.json ${nginxDir}/${importMapFilename}
 RUN cp builds/@jembi/root-config/dist/index.html ${nginxDir}/index.html
 RUN cp -r builds/@jembi/legacy-console/dist/config ${nginxDir}/config
@@ -31,3 +34,8 @@ RUN cp builds/@jembi/legacy-console/dist/favicon.ico ${nginxDir}/
 RUN cp -r builds/@jembi/legacy-console/dist/fonts ${nginxDir}/fonts
 RUN cp -r builds/@jembi/ ${nginxDir}/${virtualDir}/
 
+RUN cp update_openhim_urls.sh ${nginxDir}/update_openhim_urls.sh
+
+RUN ls -alh ${nginxDir}/${virtualDir}/@jembi
+
+CMD ["/bin/bash", "-c", "chmod +x /usr/share/nginx/html/update_openhim_urls.sh && /usr/share/nginx/html/update_openhim_urls.sh && nginx -g \"daemon off;\""]
