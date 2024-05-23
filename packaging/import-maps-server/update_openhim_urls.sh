@@ -11,4 +11,4 @@ REPLACEMENT_HOST=${extracted_host:-$DEFAULT_HOST}
 # Replace occurrences in index.html
 sed -i "s|src=\"https\?:\/\/[^\/]*\/importmaps\"|src=\"https:\/\/$REPLACEMENT_HOST\/importmaps\"|g" /usr/share/nginx/html/index.html
 # Replace occurrences in jembi-openhim-core-api.js
-sed -i 's|baseURL:"https\?:\/\/[^\/]"|baseURL:"https://'$REPLACEMENT_HOST'|g' /usr/share/nginx/html/libs/@jembi/openhim-core-api/dist/jembi-openhim-core-api.js
+sed -i 's|baseURL:"https\?://[^"]*"|baseURL:"https://'$REPLACEMENT_HOST'"|g' /usr/share/nginx/html/libs/@jembi/openhim-core-api/dist/jembi-openhim-core-api.js
