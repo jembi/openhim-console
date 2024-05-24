@@ -47,8 +47,25 @@
       as="script"
     />
 
-    <!-- Add your organization's prod import map URL to this script's src  -->
-    <script type="systemjs-importmap" src="<%= REACT_APP_OPENHIM_API_BASE_URL %>/importmaps"></script>
+    <script id="fetch-config">
+      fetch('/config/default.json')
+        .then(response => response.json())
+        .then(config => {
+          const script = document.createElement('script');
+          script.type = 'systemjs-importmap';
+
+          let hostPath = (config.hostPath || '')
+          if (hostPath) {
+            hostPath = '/' + hostPath.replace(/(^\/)|(\/$)/g, '')
+          }
+          
+          script.src = `${config.protocol}://${config.host}:${config.port}${hostPath}/importmaps`;
+          document.head.insertBefore(script, document.getElementById('fetch-config'));
+
+          System.import('@jembi/root-config')
+        })
+        .catch(error => console.error('Error loading the import map:', error));
+    </script>
     <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
@@ -86,9 +103,12 @@
 
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
+    <% if (isLocal) { %>
+    <!-- If not local, initialization happens after config is loaded above -->
     <script>
       System.import('@jembi/root-config')
     </script>
+    <% } %>
     <import-map-overrides-full
       show-when-local-storage="devtools"
       dev-libs
