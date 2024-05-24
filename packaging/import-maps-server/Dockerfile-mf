@@ -38,4 +38,4 @@ RUN cp update_openhim_urls.sh ${nginxDir}/update_openhim_urls.sh
 
 RUN ls -alh ${nginxDir}/${virtualDir}/@jembi
 
-CMD ["/bin/bash", "-c", "chmod +x /usr/share/nginx/html/update_openhim_urls.sh && /usr/share/nginx/html/update_openhim_urls.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", "chmod +x /usr/share/nginx/html/update_env_vars.sh && /usr/share/nginx/html/update_env_vars.sh && nginx -g \"daemon off;\""]

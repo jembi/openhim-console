@@ -4,7 +4,7 @@ import axios from 'axios'
 if running locally set REACT_APP_OPENHIM_API_BASE_URL environment variable to point to OpenHIM Core API base URL
  **************************************************************************************************************** */
 
-const API_URL =
+let API_URL =
   process.env.REACT_APP_OPENHIM_API_BASE_URL || 'http://localhost:8080/'
 interface App {
   _id: string
@@ -20,12 +20,39 @@ interface App {
   __v: number
 }
 
-export const apiClient = axios.create({
-  withCredentials: true,
-  baseURL: API_URL
-})
+interface Config {
+  protocol: string;
+  host: string;
+  port: number;
+  hostPath?: string;
+}
+
+async function initializeApiClient(): Promise<void> {
+  try {
+    const response = await fetch('/config/default.json');
+    const config: Config = await response.json();
+    // Initialize apiClient with the correct baseURL
+    apiClient = axios.create({
+      withCredentials: true,
+      baseURL: `${config.protocol}://${config.host}:${config.port}`
+    });
+  } catch (error) {
+    console.error('Error initializing the API client:', error);
+    throw error;
+  }
+}
+// Variable to hold the initialized apiClient
+let apiClient = axios.create();
+
+// Call initializeApiClient to setup apiClient before using it
+const initializationPromise = initializeApiClient().catch(console.error);
 
 export async function fetchApps(): Promise<App[]> {
+  await initializationPromise;
+  
+  if (!apiClient) {
+    throw new Error('API client not initialized');
+  }
   const response = await apiClient.get('/apps')
   /* filter out apps that are not to be shown in the portal */
   const portalApps = response.data.filter((app: App) => app.showInPortal)
