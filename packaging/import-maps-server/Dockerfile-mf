@@ -34,7 +34,7 @@ RUN cp builds/@jembi/legacy-console/dist/favicon.ico ${nginxDir}/
 RUN cp -r builds/@jembi/legacy-console/dist/fonts ${nginxDir}/fonts
 RUN cp -r builds/@jembi/ ${nginxDir}/${virtualDir}/
 
-RUN cp update_openhim_urls.sh ${nginxDir}/update_openhim_urls.sh
+RUN cp update_env_vars.sh ${nginxDir}/update_env_vars.sh
 
 RUN ls -alh ${nginxDir}/${virtualDir}/@jembi
 
