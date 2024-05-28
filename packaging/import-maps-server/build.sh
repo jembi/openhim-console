@@ -24,7 +24,6 @@ cd ../../ || exit
 
 jq '. += {"environment": "production"}'  packages/legacy-app/app/config/default.json > packages/legacy-app/app/config/default.json.tmp && mv packages/legacy-app/app/config/default.json.tmp packages/legacy-app/app/config/default.json
 
-# Set the environment variable REACT_APP_OPENHIM_API_BASE_URL to the value of the EC2_instance variable and write it to the .env file.
 rm packages/root-config/.env.local
 
 cat packages/openhim-core-api/.env

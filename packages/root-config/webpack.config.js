@@ -21,8 +21,7 @@ module.exports = (webpackConfigEnv, argv) => {
         template: 'src/index.ejs',
         templateParameters: {
           isLocal: webpackConfigEnv && webpackConfigEnv.isLocal,
-          orgName,
-          REACT_APP_OPENHIM_API_BASE_URL: process.env.REACT_APP_OPENHIM_API_BASE_URL
+          orgName
         }
       })
     ]
