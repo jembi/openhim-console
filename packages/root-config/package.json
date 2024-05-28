@@ -1,7 +1,7 @@
 {
   "name": "@jembi/root-config",
   "scripts": {
-    "start": "webpack serve --port 9000 --env isLocal --env REACT_APP_OPENHIM_API_BASE_URL",
+    "start": "webpack serve --port 9000 --env isLocal",
     "lint": "eslint src --ext js,ts,tsx",
     "test": "cross-env BABEL_ENV=test jest --passWithNoTests",
     "format": "prettier --write .",
