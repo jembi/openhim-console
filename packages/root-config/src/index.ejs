@@ -46,7 +46,7 @@
       href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
       as="script"
     />
-
+    <% if (!isLocal) { %>
     <script id="fetch-config">
       fetch('/config/default.json')
         .then(response => response.json())
@@ -66,6 +66,7 @@
         })
         .catch(error => console.error('Error loading the import map:', error));
     </script>
+    <% } %>
     <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
