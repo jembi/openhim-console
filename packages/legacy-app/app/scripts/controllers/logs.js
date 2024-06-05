@@ -74,6 +74,9 @@ export function LogsCtrl ($scope, $location, Api) {
   const scrollInterval = setInterval(function () {
     if ($scope.tailLogs === true) {
       const textarea = document.getElementById('textarea')
+      if(textarea === null) {
+        return
+      }
       // scroll to bottom
       textarea.scrollTop = textarea.scrollHeight
     }
