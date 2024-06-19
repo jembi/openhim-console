@@ -12,8 +12,11 @@
   "mediatorLastHeartbeatWarningSeconds": 60,
   "mediatorLastHeartbeatDangerSeconds": 120,
   "showLoginForm": true,
-  "ssoEnabled": true,
+  "ssoEnabled": false,
   "keyCloakUrl": "http://localhost:9088",
   "keyCloakRealm": "platform-realm",
-  "keyCloakClientId": "openhim-oauth"
+  "keyCloakClientId": "openhim-oauth",
+  "environment": "development",
+  "openHIMAPIhost":"localhost",
+  "openHIMAPIport":"5001"
 }
