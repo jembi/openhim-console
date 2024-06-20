@@ -1,3 +1,4 @@
+#!/bin/bash
 # Set defaults for the environment variables
 export OPENHIM_CONSOLE_PROTOCOL=${OPENHIM_CONSOLE_PROTOCOL:-"https"}
 export OPENHIM_CONSOLE_HOSTPATH=${OPENHIM_CONSOLE_HOSTPATH:-""}
