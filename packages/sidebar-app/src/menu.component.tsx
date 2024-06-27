@@ -74,6 +74,13 @@ export default function OpenHIMMenu() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
+              <ListItemButton component="a" href="/#!/rbac">
+                <Typography sx={{ fontSize: customFontSize }}>
+                  RBAC
+                </Typography>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
               <ListItemButton component="a" href="/#!/clients">
                 <Typography sx={{ fontSize: customFontSize }}>
                   Clients
