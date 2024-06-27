@@ -77,6 +77,8 @@ const AppsDataGrid = () => {
     access_roles: ['admin'],
     icon: ''
   }
+  //seconds for countdown
+  const seconds = 5;
 
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -281,7 +283,6 @@ const AppsDataGrid = () => {
       loadContent()
       enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       if (deleteAppData.type === 'esmodule') {
-        let seconds = 20
         await countdown(seconds, (remainingSeconds) => {
           enqueueSnackbar(
             `The app will have to reload in ${remainingSeconds} seconds.`,
@@ -320,8 +321,6 @@ const AppsDataGrid = () => {
         enqueueSnackbar('App was updated successfully', {variant: 'success'})
         setSelectedApp(formInitialState)
         if (data.type === 'esmodule') {
-          let seconds = 20
-
           await countdown(seconds, (remainingSeconds) => {
             enqueueSnackbar(
               `The app will have to reload in ${remainingSeconds} seconds.`,
@@ -370,7 +369,6 @@ const AppsDataGrid = () => {
       setSelectedApp(formInitialState)
       loadContent()
       if (data.type === 'esmodule') {
-        let seconds = 5
         await countdown(seconds, (remainingSeconds) =>
           enqueueSnackbar(
             `The app will have to reload in ${remainingSeconds} seconds.`,
