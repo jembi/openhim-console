@@ -136,3 +136,9 @@ export async function fetchClients(): Promise<any> {
   const response = await apiClient.get('/clients')
   return response.data
 }
+
+export async function fetchTransactions(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions')
+  return response.data
+}
