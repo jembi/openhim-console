@@ -409,7 +409,6 @@ const AppsDataGrid = () => {
   // Function is called inside ActiveStepTwo to set the icon url on button toggle
   // In addition it is used to set the url when adding custom icon.
   const updateIcon = (icon: any) => {
-    console.log('Icon:', icon);
     
     appValues.icon = icon as string
 
