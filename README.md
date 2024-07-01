@@ -18,6 +18,10 @@ See documentation and tutorials at [openhim.org](http://openhim.org).
 ---
 
 ## Getting started with the OpenHIM Console
+### Tech Used
+- Node: v16.20.2
+- Lerna (microfrontend)
+- Docker
 
 ### Developer guide
 
@@ -42,6 +46,8 @@ To run tests:
 ```sh
 npm test
 ```
+
+**Note:** If you are running from a **microfrontend branch**, be sure to change ``environment`` value inside ```packages/legacy-app/app/config/default.json``` to ``development``. This is when you are running the project locally.
 
 ---
 
@@ -212,6 +218,14 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
 
 ---
 
+## Access to services in the dev environement
+For dev environment you can access the admin console and signin using the following credentials :
+
+- URL : http://localhost:9000/
+- username : root@openhim.org
+- password : instant101
+
+---
 ## Contributing
 
 You may view/add issues here: <https://github.com/jembi/openhim-console/issues>
