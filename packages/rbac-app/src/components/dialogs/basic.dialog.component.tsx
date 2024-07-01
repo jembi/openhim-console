@@ -12,6 +12,7 @@ export type BasicDialogProps = {
   onClose: () => void;
   children: React.ReactNode;
   size?: DialogProps['maxWidth'];
+  defaultContentWrapper?: boolean;
 }
 
 export function BasicDialog(props: BasicDialogProps) {

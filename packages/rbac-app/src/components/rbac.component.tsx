@@ -2,31 +2,38 @@ import {
   Button,
   ButtonGroup,
   Grid,
+  MenuItem,
+  Select,
   SelectChangeEvent,
   Typography,
-  Select,
-  MenuItem,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
+  createNewRole,
+  deleteRoleByName,
+  editRoleByName,
   getApps,
   getChannels,
   getClients,
   getMediators,
   getRoles,
   getTransactions,
-  deleteRoleByName,
-  editRoleByName,
-  createNewRole,
 } from '../services/api';
-import { Permission, Role } from '../types';
-import { defaultRole } from '../utils';
-import { BasicDialog } from './basic.dialog.component';
-import { ConfirmationDialog } from './confirmation.dialog.component';
-import CreateRole from './role-crud/create.role.component';
+import { Role } from '../types';
+import { BasicDialog } from './dialogs/basic.dialog.component';
+import { ConfirmationDialog } from './dialogs/confirmation.dialog.component';
 import Loader from './loader.component';
-import ViewRole from './role-crud/view.role.component';
+import CreateRole from './role-crud/create.role.component';
 import EditRole from './role-crud/edit.role.component';
+import ViewRole from './role-crud/view.role.component';
+import { AlertDialog, AlertDialogProps } from './dialogs/alert.dialog.component';
+
+type Alert = {
+  severity: AlertDialogProps['severity'];
+  isOpen: boolean;
+  title: string;
+  message: string;
+}
 
 const RBACManagement: React.FC = () => {
   const [isFetchingData, setIsFetchData] = useState(true);
@@ -36,6 +43,7 @@ const RBACManagement: React.FC = () => {
   const [canEdit, setCanEdit] = useState(true)
   const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
   const [isShowDeleteDialog, setIsShowDeleteDialog] = useState(false);
+  const [alert, setAlert] = useState<Alert>({ isOpen: false, title: '', message: '', severity: 'info' });
 
   const [roles, setRoles] = useState<Role[]>([]);
   const [apps, setApps] = useState<any[]>([]);
@@ -67,7 +75,7 @@ const RBACManagement: React.FC = () => {
       })
       .catch(err => {
         console.error(err);
-        alert('Error loading data');
+        setAlert({ isOpen: true, title: 'Error ',severity: 'error', message: 'Error loading data' });
       })
       .finally(() => {
         setIsFetchData(false);
@@ -86,11 +94,12 @@ const RBACManagement: React.FC = () => {
   const submitEditRole = async (role: Role) => {
     try {
       await editRoleByName(role.name, role);
-      alert('Role successfully edited');
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Role successfully edited' });
       setIsEditing(false);
     } catch (err) {
       console.error(err);
-      alert('Error editing role');
+      setIsEditing(false);
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Error editing role' });
     }
   }
 
@@ -101,11 +110,12 @@ const RBACManagement: React.FC = () => {
   const submitAddNewRole = async (role: Role) => {
     try {
       await createNewRole(role);
-      alert('Role successfully created');
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Role successfully created' });
       setIsAddNewRole(false);
     } catch(err) {
       console.error(err);
-      alert('Error submitting new role');
+      setIsAddNewRole(false);
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Error submitting new role' });
     }
   };
 
@@ -118,7 +128,7 @@ const RBACManagement: React.FC = () => {
     const currentRole = roles.find(role => role.name == name);
 
     if (!currentRole) {
-      alert('Could not find current role.');
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Could not find current role.' });
       return;
     }
     
@@ -132,7 +142,7 @@ const RBACManagement: React.FC = () => {
       await deleteRoleByName(selectedRole.name);
     } catch (err) {
       console.error(err);
-      alert('Error deleting role');
+      setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Error deleting role' });
     }
 
     setIsShowDeleteDialog(false);
@@ -228,6 +238,13 @@ const RBACManagement: React.FC = () => {
         onYes={submitDeleteRole}
       />
 
+      <AlertDialog
+        severity={alert.severity}
+        title={alert.title}
+        message={alert.message}
+        open={alert.isOpen}
+        onClose={() => setAlert({ ...alert, isOpen: false })}
+      />
 
       <Grid container spacing={2} style={{ marginTop: '20px' }}>
         <Grid item xs={10}>
