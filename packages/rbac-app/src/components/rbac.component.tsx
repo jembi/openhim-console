@@ -1,47 +1,43 @@
-import React, { useEffect, useState } from 'react';
 import {
-  FormControlLabel,
-  FormGroup,
-  FormControl,
-  FormLabel,
   Button,
+  ButtonGroup,
+  Grid,
+  SelectChangeEvent,
+  Typography,
   Select,
   MenuItem,
-  Typography,
-  Grid,
-  Switch,
-  TextField,
-  SelectChangeEvent,
-  DialogTitle,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  ButtonGroup,
 } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import {
-  getRoles,
   getApps,
   getChannels,
-  getMediators,
   getClients,
+  getMediators,
+  getRoles,
   getTransactions,
+  deleteRoleByName,
+  editRoleByName,
+  createNewRole,
 } from '../services/api';
 import { Permission, Role } from '../types';
-import Loader from './loader.component';
 import { defaultRole } from '../utils';
-import CreateRole from './create.role.component';
-import ViewRole from './view.role.component';
 import { BasicDialog } from './basic.dialog.component';
 import { ConfirmationDialog } from './confirmation.dialog.component';
+import CreateRole from './role-crud/create.role.component';
+import Loader from './loader.component';
+import ViewRole from './role-crud/view.role.component';
+import EditRole from './role-crud/edit.role.component';
 
 const RBACManagement: React.FC = () => {
-  const [formState, setFormState] = useState<Role[]>([]);
+  const [isFetchingData, setIsFetchData] = useState(true);
   const [isAddNewRole, setIsAddNewRole] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [canDelete, setCanDelete] = useState(true);
+  const [canEdit, setCanEdit] = useState(true)
   const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
   const [isShowDeleteDialog, setIsShowDeleteDialog] = useState(false);
 
+  const [roles, setRoles] = useState<Role[]>([]);
   const [apps, setApps] = useState<any[]>([]);
   const [channels, setChannels] = useState<any[]>([]);
   const [mediators, setMediators] = useState<any[]>([]);
@@ -50,6 +46,7 @@ const RBACManagement: React.FC = () => {
 
 
   useEffect(() => {
+    setIsFetchData(true);
 
     Promise.all([
       getRoles(),
@@ -60,9 +57,8 @@ const RBACManagement: React.FC = () => {
       getTransactions(),
     ])
       .then(([roles, apps, channels, mediators, clients, transactions]) => {
-        roles[0].permissions['channel-view-specified'] = ['test 1', 'test 4', 'test 7'];
+        setRoles(roles);
         setSelectedRole(structuredClone(roles[0]));
-        setFormState(roles);
         setApps(apps);
         setChannels(channels);
         setMediators(mediators);
@@ -73,10 +69,13 @@ const RBACManagement: React.FC = () => {
         console.error(err);
         alert('Error loading data');
       })
+      .finally(() => {
+        setIsFetchData(false);
+      })
   }, []);
 
 
-  const onEditRole = () => {
+  const onAttemptToEditRole = () => {
     setIsEditing(true);
   };
 
@@ -84,34 +83,59 @@ const RBACManagement: React.FC = () => {
     setIsEditing(false);
   };
 
-  const onAddNewRole = () => {
-    const newRole = defaultRole;
-    const roles = structuredClone([ ...formState, newRole ]);
+  const submitEditRole = async (role: Role) => {
+    try {
+      await editRoleByName(role.name, role);
+      alert('Role successfully edited');
+      setIsEditing(false);
+    } catch (err) {
+      console.error(err);
+      alert('Error editing role');
+    }
+  }
 
-    setFormState(roles);
-    setSelectedRole(roles.at(-1));
+  const onAttemptToAddRole = () => {
     setIsAddNewRole(true);
   };
 
+  const submitAddNewRole = async (role: Role) => {
+    try {
+      await createNewRole(role);
+      alert('Role successfully created');
+      setIsAddNewRole(false);
+    } catch(err) {
+      console.error(err);
+      alert('Error submitting new role');
+    }
+  };
+
   const onCancelAddNewRole = () => {
-    formState.pop();
     setIsAddNewRole(false);
-    setSelectedRole(formState.length > 0 ? formState.at(-1) : undefined);
   };
 
-  const handleSelectedRoleChange = (event: SelectChangeEvent) => {
+  const onSelectedRoleChange = (event: SelectChangeEvent) => {
     const name = event.target.value;
+    const currentRole = roles.find(role => role.name == name);
+
+    if (!currentRole) {
+      alert('Could not find current role.');
+      return;
+    }
     
-    setSelectedRole(structuredClone(formState.find(role => role.name == name)));
+    setSelectedRole(structuredClone(currentRole));
+    setCanEdit(currentRole.name.toLowerCase() != 'admin');
+    setCanDelete(currentRole.name.toLowerCase() != 'admin');
   };
 
-  const handleSave = () => {
-    console.log('Permissions saved:', formState);
-    getRoles();
-  };
+  const submitDeleteRole = async () => {
+    try {
+      await deleteRoleByName('');
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting role');
+    }
 
-  const handleCancel = () => {
-    console.log('Action cancelled');
+    setIsShowDeleteDialog(false);
   };
 
   const onAttemptToDeleteRole = () => {
@@ -119,22 +143,13 @@ const RBACManagement: React.FC = () => {
   };
 
 
-  // TODO: Fix this up.
-  if (!selectedRole) return <Loader />;
 
-  const handlePermissionSwitchChange = (key: keyof Permission) => {
-    // @ts-ignore
-    selectedRole.permissions[key] = !selectedRole.permissions[key];
-    setSelectedRole(structuredClone(selectedRole));
+  if (isFetchingData) return <Loader />;
 
-    // const ref = formState.find(f => selectedRole.name == f.name);
+  if (!selectedRole) {
+    return <div>No role selected</div>;
   }
 
-  const handlePermissionListChange = (key: keyof Permission, values: string[]) => {
-    // @ts-ignore
-    selectedRole.permissions[key] = values;
-    setSelectedRole(structuredClone(selectedRole));
-  }
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
@@ -150,32 +165,22 @@ const RBACManagement: React.FC = () => {
       <Grid container style={{ marginTop: '20px' }}>
           <ButtonGroup variant="contained" size="large">
             <Button
-              color="warning"
-              onClick={onCancelAddNewRole}
-            >
-              Cancel Adding Role
-            </Button>
-            <Button
-              color="warning"
-              onClick={onCancelEditRole}
-            >
-              Cancel Editing Role
-            </Button>    
-            <Button
               color="secondary"
-              onClick={onEditRole}
+              onClick={onAttemptToEditRole}
+              disabled={!canEdit}
               >
               Edit Role
             </Button>
             <Button
               color="primary"
-              onClick={onAddNewRole}
+              onClick={onAttemptToAddRole}
             >
               Add New Role
             </Button>
             <Button
               color="error"
               onClick={onAttemptToDeleteRole}
+              disabled={!canDelete}
             >
               Delete Role
             </Button>
@@ -193,8 +198,25 @@ const RBACManagement: React.FC = () => {
           mediators={mediators}
           clients={clients}
           transactions={transactions}
-          onSubmit={() => 1}
+          onSubmit={submitAddNewRole}
           onCancel={onCancelAddNewRole}
+      />
+      </BasicDialog>
+
+      <BasicDialog
+        title='Edit Role'
+        open={isEditing}
+        onClose={onCancelEditRole}
+      >
+        <EditRole
+          role={selectedRole}
+          apps={apps}
+          channels={channels}
+          mediators={mediators}
+          clients={clients}
+          transactions={transactions}
+          onSubmit={submitEditRole}
+          onCancel={onCancelEditRole}
       />
       </BasicDialog>
 
@@ -203,10 +225,28 @@ const RBACManagement: React.FC = () => {
         message="Are you sure you want to delete this role?"
         open={isShowDeleteDialog}
         onNo={() => setIsShowDeleteDialog(false)}
-        onYes={() => setIsShowDeleteDialog(true)}
+        onYes={submitDeleteRole}
       />
 
-      <ViewRole role={selectedRole} />
+
+      <Grid container spacing={2} style={{ marginTop: '20px' }}>
+        <Grid item xs={10}>
+        <Select
+          fullWidth
+          multiple={false}
+          value={selectedRole?.name ?? undefined}
+          onChange={onSelectedRoleChange}
+        >
+          {
+            roles.map(role => (
+              <MenuItem key={role.name} value={role.name}>{role.name}</MenuItem>
+            ))
+          }
+        </Select>
+        </Grid>
+      </Grid>
+
+      <ViewRole role={selectedRole} isReadOnly={true} />
 
     </div>
   );

@@ -119,6 +119,21 @@ export async function fetchRoles(): Promise<any> {
   return response.data
 }
 
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
+}
+
+export async function editRole(roleName: string, role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.put('/roles/' + roleName, role)
+}
+
+export async function createRole(role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.post('/roles', role)
+}
+
 export async function fetchChannels(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/channels')

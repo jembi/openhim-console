@@ -7,7 +7,9 @@ const {
     fetchMediators,
     fetchClients,
     fetchTransactions,
-    App
+    deleteRole,
+    editRole,
+    createRole,
 } = require("@jembi/openhim-core-api");
 
 
@@ -66,6 +68,35 @@ export async function getRoles() {
         throw err;
     }
 }
+
+export async function deleteRoleByName(name: string) {
+    try {
+        await deleteRole(name);
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+
+export async function editRoleByName(name: string, role: Role) {
+    try {
+        await editRole(name, role);
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+export async function createNewRole(role: Role) {
+    try {
+        await createRole(role);
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 
 export async function getMediators() {
     try {
