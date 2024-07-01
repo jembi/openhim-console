@@ -129,7 +129,7 @@ const RBACManagement: React.FC = () => {
 
   const submitDeleteRole = async () => {
     try {
-      await deleteRoleByName('');
+      await deleteRoleByName(selectedRole.name);
     } catch (err) {
       console.error(err);
       alert('Error deleting role');
@@ -153,7 +153,7 @@ const RBACManagement: React.FC = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      {JSON.stringify(selectedRole)}
+
       <Typography variant="h4" gutterBottom>
         Add or Edit a User Role
       </Typography>
