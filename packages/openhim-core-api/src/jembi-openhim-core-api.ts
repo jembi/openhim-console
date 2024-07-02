@@ -112,3 +112,57 @@ export async function getImportMap(): Promise<any> {
   const response = await apiClient.get('/importmaps')
   return response.data
 }
+
+export async function fetchRoles(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/roles')
+  return response.data
+}
+
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
+}
+
+export async function editRole(roleName: string, role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.put('/roles/' + roleName, role)
+}
+
+export async function createRole(role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.post('/roles', role)
+}
+
+export async function fetchChannels(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/channels')
+  return response.data
+}
+
+export async function fetchMediators(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/mediators')
+  return response.data
+}
+
+export async function fetchClients(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/clients')
+  return response.data
+}
+
+export async function fetchTransactions(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions')
+  return response.data
+}
+
+// add clients
+
+// edit clients
+
+// delete clients
+
+// fetch certificate
+
