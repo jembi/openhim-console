@@ -5,6 +5,9 @@
       <route default>
         <route path="#!" exact="true">
           <application name="@jembi/openhim-sidebar"></application>
+          <div style="flex-grow: 1">
+            <application name="@jembi/legacy-console"></application>
+          </div>
         </route>
         <route path="#!/transactions">
           <application name="@jembi/openhim-sidebar"></application>
@@ -13,7 +16,9 @@
           <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/clients">
-          <application name="@jembi/clients-app"></application>
+          <div style="flex-grow: 1">
+            <application name="@jembi/clients-app"></application>
+          </div>
         </route>
         <route path="#!/channels">
           <application name="@jembi/openhim-sidebar"></application>
@@ -51,9 +56,7 @@
         <route path="#!/portal-admin">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
-        <div style="flex-grow: 1">
-          <application name="@jembi/legacy-console"></application>
-        </div>
+        
       </route>
       <route path="#!/portal">
         <application name="@jembi/openhim-sidebar"></application>
