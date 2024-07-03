@@ -1,28 +1,46 @@
-import { useState } from 'react';
-import { AddClient } from './pages/add-client/add-client'
+import {StrictMode, useState} from 'react'
+import {AddClient} from './pages/add-client/add-client'
 import ClientsList from './pages/clients-list/clients-list'
 import EditClient from './pages/edit-client/edit-client'
+import {ThemeProvider} from '@emotion/react'
+import theme from '@jembi/openhim-theme'
+import { Client } from './types'
+import { BasicInfoModel } from './interfaces'
 
 export default function Root(props) {
-  const [activePage, setActivePage] = useState<"client-list"|"edit-client"|"add-client">("client-list");
-  const [clientID, setClientID] = useState<string | null>(null);
+  const defaultPage = "client-list";
+  const [activePage, setActivePage] = useState<
+    'client-list' | 'edit-client' | 'add-client'
+  >(defaultPage)
+  const [activeClient, setActiveClient] = useState<BasicInfoModel | null>(null)
   const returnToClientList = () => {
-    setActivePage("client-list");
-    setClientID(null);
-  };
-  const editClient = (id: string) => {
-    setActivePage("edit-client");
-    setClientID(id);
-  };
+    setActivePage('client-list')
+    setActiveClient(null)
+  }
+  const editClient = (client: BasicInfoModel) => {
+    setActivePage('edit-client')
+    setActiveClient(client)
+  }
   const addClient = () => {
-    setActivePage("add-client");
-  };
+    setActivePage('add-client')
+  }
 
   return (
-    <>
-      {activePage === "client-list" && <ClientsList  addClient={addClient} editClient={editClient} />}
-      {activePage === "edit-client" && <EditClient clientID={clientID} returnToClientList={returnToClientList}/>}
-      {activePage === "add-client" && <AddClient   returnToClientList={returnToClientList} />}
-    </>
+    <StrictMode>
+      <ThemeProvider theme={theme}>
+        {activePage === 'client-list' && (
+          <ClientsList addClient={addClient} editClient={editClient} />
+        )}
+        {activePage === 'edit-client' && (
+          <EditClient
+            client={activeClient}
+            returnToClientList={returnToClientList}
+          />
+        )}
+        {activePage === 'add-client' && (
+          <AddClient returnToClientList={returnToClientList} />
+        )}
+      </ThemeProvider>
+    </StrictMode>
   )
 }

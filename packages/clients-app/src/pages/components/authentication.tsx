@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Divider,
   FormControl,
@@ -34,7 +35,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
 }) => {
   return (
     <div hidden={hidden}>
-      <>
+      <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 6}}>
         <h1>Authentication</h1>
         <p>Configure the authentication settings for the client</p>
         <Divider />
@@ -147,7 +148,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             </Stack>
           </>
         )}
-      </>
+      </Box>
     </div>
   );
 };

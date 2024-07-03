@@ -2,21 +2,22 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Checkbox,
   Divider,
   FormControl,
   FormControlLabel,
-  TextField,
-} from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React from "react";
-import { BasicInfoModel } from "../../interfaces";
+  TextField
+} from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import React from 'react'
+import {BasicInfoModel} from '../../interfaces'
 
 interface BasicInfoProps {
-  basicInfo: BasicInfoModel;
-  setBasicInfo: React.Dispatch<React.SetStateAction<BasicInfoModel>>;
-  onBasicInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isChecked: (role: string) => boolean;
+  basicInfo: BasicInfoModel
+  setBasicInfo: React.Dispatch<React.SetStateAction<BasicInfoModel>>
+  onBasicInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isChecked: (role: string) => boolean
   hidden?: boolean
 }
 
@@ -25,16 +26,18 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   isChecked,
   onBasicInfoChange,
   setBasicInfo,
-  hidden,
+  hidden
 }) => {
   return (
     <div hidden={hidden}>
+      <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 3}}>
         <h1>Basic Info</h1>
         <p>
           Provide the required client information and assign existing roles for
           access management
         </p>
         <Divider />
+        <br />
         <TextField
           id="clientId"
           label="Client ID"
@@ -55,20 +58,20 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
             control={
               <Checkbox
                 id="fhir"
-                checked={isChecked("fhir")}
-                onChange={(e) => {
+                checked={isChecked('fhir')}
+                onChange={e => {
                   if (e.target.checked) {
                     setBasicInfo({
                       ...basicInfo,
-                      roles: [...basicInfo.roles, e.target.id],
-                    });
+                      roles: [...basicInfo.roles, e.target.id]
+                    })
                   } else {
                     setBasicInfo({
                       ...basicInfo,
                       roles: basicInfo.roles.filter(
-                        (role) => role !== e.target.id
-                      ),
-                    });
+                        role => role !== e.target.id
+                      )
+                    })
                   }
                 }}
               />
@@ -129,6 +132,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
             />
           </AccordionDetails>
         </Accordion>
+      </Box>
     </div>
-  );
-};
+  )
+}

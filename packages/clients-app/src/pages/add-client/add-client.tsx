@@ -6,67 +6,67 @@ import {
   Stack,
   Step,
   StepLabel,
-  Stepper,
-} from "@mui/material";
-import { FC, useState } from "react";
-import { AuthenticationModel, BasicInfoModel } from "../../interfaces";
-import { BasicInfo } from "../components/basic-info";
-import { Authentication } from "../components/authentication";
+  Stepper
+} from '@mui/material'
+import {FC, useState} from 'react'
+import {AuthenticationModel, BasicInfoModel} from '../../interfaces'
+import {BasicInfo} from '../components/basic-info'
+import {Authentication} from '../components/authentication'
 
 interface AddClientProps {
-  returnToClientList: () => void;
+  returnToClientList: () => void
 }
 
-export const AddClient: FC<AddClientProps> = ({ returnToClientList }) => {
+export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
   //TODO: Make sure that there is a safe guard when incrementing this value to prevent it from going over the number of steps
-  const [activeStep, setActiveStep] = useState(0);
-  const labelProps: { optional?: React.ReactNode } = {};
+  const [activeStep, setActiveStep] = useState(0)
+  const labelProps: {optional?: React.ReactNode} = {}
   const [basicInfo, setBasicInfo] = useState<BasicInfoModel>({
-    clientID: "",
-    clientName: "",
+    clientID: '',
+    clientName: '',
     roles: [],
-    organization: "",
-    softwareName: "",
-    description: "",
-    location: "",
-    contactPerson: "",
-    contactPersonEmail: "",
-  });
-  const [authType, setAuthType] = useState("jwt");
+    organization: '',
+    softwareName: '',
+    description: '',
+    location: '',
+    contactPerson: '',
+    contactPersonEmail: ''
+  })
+  const [authType, setAuthType] = useState('jwt')
   const [authentication, setAuthentication] = useState<AuthenticationModel>({
     jwt: {
-      secret: "",
+      secret: ''
     },
     customToken: {
-      token: "",
+      token: ''
     },
     mutualTLS: {
-      domain: "",
-      certificate: "",
+      domain: '',
+      certificate: ''
     },
     basicAuth: {
-      password: "",
-    },
-  });
+      password: ''
+    }
+  })
 
   const onBasicInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setBasicInfo({
       ...basicInfo,
-      [e.target.id]: e.target.value,
-    });
-  };
+      [e.target.id]: e.target.value
+    })
+  }
 
   const isChecked = (id: string) => {
-    return basicInfo.roles.includes(id);
-  };
+    return basicInfo.roles.includes(id)
+  }
 
   const selectAuthenticationType = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setAuthType(e.currentTarget.id);
-  };
+    setAuthType(e.currentTarget.id)
+  }
 
   const onAuthenticationChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,35 +75,44 @@ export const AddClient: FC<AddClientProps> = ({ returnToClientList }) => {
       ...authentication,
       [authType]: {
         ...authentication[authType],
-        [e.target.id]: e.target.value,
-      },
-    });
-  };
+        [e.target.id]: e.target.value
+      }
+    })
+  }
 
   const onNavigateClicked = (direction: string) => {
-    if (direction === "next") {
-      setActiveStep(activeStep + 1);
+    if (direction === 'next') {
+      setActiveStep(activeStep + 1)
     }
-    if (direction === "back") {
-      setActiveStep(activeStep - 1);
+    if (direction === 'back') {
+      setActiveStep(activeStep - 1)
     }
-    if (direction === "cancel") {
-      returnToClientList();
+    if (direction === 'cancel') {
+      returnToClientList()
     }
-    if (direction === "save") {
-      returnToClientList();
+    if (direction === 'save') {
+      returnToClientList()
     }
-  };
+  }
 
   return (
-    <>
-      <Card variant="outlined">
+    <Box sx={{maxWidth: '85%', paddingLeft: 20}}>
+      <h1>Add Client</h1>
+
+      <p>
+        Control client systems and their access roles. Add clients to enable
+        their request routing and group them by roles for streamlined channel
+        access management
+      </p>
+      <Divider />
+      <br />
+      <Card variant="outlined" sx={{margin: 'auto', maxWidth: '50%'}}>
         <Box>
-          <Stepper activeStep={activeStep}>
-            <Step key={"basic-info"}>
+          <Stepper sx={{paddingTop: 2}} activeStep={activeStep}>
+            <Step key={'basic-info'}>
               <StepLabel {...labelProps}>Basic Info</StepLabel>
             </Step>
-            <Step key={"authentication"}>
+            <Step key={'authentication'}>
               <StepLabel {...labelProps}>Authentication</StepLabel>
             </Step>
           </Stepper>
@@ -132,26 +141,26 @@ export const AddClient: FC<AddClientProps> = ({ returnToClientList }) => {
           <br />
           <Divider />
           <br />
-          <Stack spacing={2} direction="row">
+          <Stack spacing={2} direction="row" sx={{marginBottom: 1}}>
             <Button
               variant="outlined"
-              id={activeStep === 0 ? "cancel" : "back"}
+              id={activeStep === 0 ? 'cancel' : 'back'}
               color="success"
-              onClick={(e) => onNavigateClicked(e.currentTarget.id)}
+              onClick={e => onNavigateClicked(e.currentTarget.id)}
             >
-              {activeStep === 0 ? "Cancel" : "Back"}
+              {activeStep === 0 ? 'Cancel' : 'Back'}
             </Button>
             <Button
               variant="contained"
-              id={activeStep === 0 ? "next" : "save"}
+              id={activeStep === 0 ? 'next' : 'save'}
               color="success"
-              onClick={(e) => onNavigateClicked(e.currentTarget.id)}
+              onClick={e => onNavigateClicked(e.currentTarget.id)}
             >
-              {activeStep === 0 ? "Next" : "Save"}
+              {activeStep === 0 ? 'Next' : 'Save'}
             </Button>
           </Stack>
         </Box>
       </Card>
-    </>
-  );
-};
+    </Box>
+  )
+}
