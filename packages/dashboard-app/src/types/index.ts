@@ -1,0 +1,2 @@
+
+export type Transaction = any;
