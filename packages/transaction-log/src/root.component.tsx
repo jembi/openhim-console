@@ -1,3 +1,10 @@
-export default function Root(props) {
-  return <section>{props.name} is mounted!</section>;
+import React from 'react'
+import App from './components/App'
+
+export default function TransactionsLogRootApp(props) {
+  return (
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
 }
