@@ -12,13 +12,13 @@ const CustomFilters: React.FC = () => {
           </TextField>
         </Grid>
         <Grid item xs={2}>
-          <TextField select label="Channel" fullWidth>
+          <TextField select label="Channel" fullWidth defaultValue="Channel1">
             <MenuItem value="Channel1">Channel1</MenuItem>
             <MenuItem value="Channel2">Channel2</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Date Range" type="date" fullWidth />
+          <TextField label="Date Range" type="date" fullWidth InputLabelProps={{shrink: true}}/>
         </Grid>
         <Grid item xs={1}>
           <TextField label="Limit" type="number" defaultValue={20} fullWidth />

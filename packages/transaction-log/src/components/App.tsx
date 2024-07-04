@@ -12,7 +12,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <Container sx={{backgroundColor: '#F1F1F1'}}>
+    <Container sx={{backgroundColor: '#F1F1F1', maxWidth: '100% !important'}}>
       <Box sx={{}}>
         <Typography
           sx={{
