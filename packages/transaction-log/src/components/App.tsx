@@ -1,8 +1,8 @@
 import React from 'react'
 import {Container, Tab, Tabs, Box, Typography, Card, Stack} from '@mui/material'
-import LogTable from './LogTable'
 import CustomFilters from './CustomFilters'
 import BasicFilters from './BasicFilters'
+import TransactionLogTable from './TransactionLogTable'
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = React.useState(0)
@@ -52,7 +52,7 @@ const App: React.FC = () => {
 
         {tabValue === 0 && <BasicFilters />}
         {tabValue === 1 && <CustomFilters />}
-        <LogTable />
+        <TransactionLogTable />
       </Card>
     </Container>
   )

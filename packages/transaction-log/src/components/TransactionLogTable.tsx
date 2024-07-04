@@ -17,7 +17,7 @@ import {
   fetchClientById
 } from '@jembi/openhim-core-api'
 
-const LogTable: React.FC = () => {
+const TransactionLogTable: React.FC = () => {
   const [transactions, setTransactions] = useState([])
 
   async function fetchTransactionLogs() {
@@ -132,4 +132,4 @@ const LogTable: React.FC = () => {
   )
 }
 
-export default LogTable
+export default TransactionLogTable
