@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Box,
   Table,
@@ -11,24 +11,66 @@ import {
   Typography,
   Container
 } from '@mui/material'
-import {Lock} from '@mui/icons-material'
-
-const logs = [
-  {
-    type: '',
-    method: 'POST',
-    host: 'openhimcore.ndr-test.jembi.cloud',
-    port: 5000,
-    path: '/regiony/fhir/',
-    params: '',
-    channel: 'FHIR Server - Dire Dawa (Region Y)',
-    client: 'Region Y',
-    time: '2023-12-05 17:03:28 +0200'
-  }
-  // Add more logs here
-]
+import {
+  fetchTransactions,
+  fetchChannelById,
+  fetchClientById
+} from '@jembi/openhim-core-api'
 
 const LogTable: React.FC = () => {
+  const [transactions, setTransactions] = useState([])
+
+  async function fetchTransactionLogs() {
+    try {
+      const transactions = await fetchTransactions()
+
+      const transactionsWithChannelDetails = await Promise.all(
+        transactions.map(async transaction => {
+          const channelName = await fetchChannelDetails(transaction.channelID)
+          const clientName = await fetchClientDetails(transaction.clientID)
+          return {...transaction, channelName, clientName}
+        })
+      )
+
+      setTransactions(transactionsWithChannelDetails)
+    } catch (error) {
+      console.error('Error fetching logs:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTransactionLogs()
+  }, [])
+
+  async function fetchChannelDetails(channelID: String) {
+    try {
+      const response = await fetchChannelById(channelID)
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const channel = await response.json()
+      return channel.name
+    } catch (error) {
+      console.error('Error fetching logs:', error)
+      return 'Unknown'
+    }
+  }
+
+  async function fetchClientDetails(clientID: String) {
+    try {
+      const response = await fetchClientById(clientID)
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const client = await response.json()
+      return client.name
+    } catch (error) {
+      console.error('Error fetching logs:', error)
+      return 'Unknown'
+    }
+  }
+
   return (
     <Box sx={{padding: '16px'}}>
       <TableContainer>
@@ -50,7 +92,7 @@ const LogTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {logs.map((log, index) => (
+            {transactions.map((transaction, index) => (
               <TableRow key={index}>
                 <TableCell padding="checkbox">
                   <Checkbox />
@@ -70,14 +112,14 @@ const LogTable: React.FC = () => {
                     />
                   </svg>
                 </TableCell>
-                <TableCell>{log.method}</TableCell>
-                <TableCell>{log.host}</TableCell>
-                <TableCell>{log.port}</TableCell>
-                <TableCell>{log.path}</TableCell>
-                <TableCell>{log.params}</TableCell>
-                <TableCell>{log.channel}</TableCell>
-                <TableCell>{log.client}</TableCell>
-                <TableCell>{log.time}</TableCell>
+                <TableCell>{transaction.request.method}</TableCell>
+                <TableCell>{transaction.request.host}</TableCell>
+                <TableCell>{transaction.request.port}</TableCell>
+                <TableCell>{transaction.request.path}</TableCell>
+                <TableCell>{transaction.request.params}</TableCell>
+                <TableCell>{transaction.channelName}</TableCell>
+                <TableCell>{transaction.clientName}</TableCell>
+                <TableCell>{transaction.request.timestamp}</TableCell>
               </TableRow>
             ))}
           </TableBody>

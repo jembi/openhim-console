@@ -20,6 +20,20 @@ interface Config {
   hostPath?: string
 }
 
+interface Transactions {
+  _id: string
+  method: string
+  host: string
+  port: string
+  path: string
+  querystring: string
+  channel: {
+    _id: string
+    name: string
+  }
+  timestamp: Date
+}
+
 async function initializeApiClient(): Promise<void> {
   try {
     const response = await fetch('/config/default.json')
@@ -45,7 +59,7 @@ let apiClient = axios.create()
 const initializationPromise = initializeApiClient().catch(console.error)
 
 async function ensureApiClientInitialized(): Promise<void> {
-    await initializationPromise
+  await initializationPromise
 }
 export async function fetchApps(): Promise<App[]> {
   await ensureApiClientInitialized()
@@ -110,5 +124,40 @@ export async function addApp(app: App): Promise<App> {
 export async function getImportMap(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/importmaps')
+  return response.data
+}
+
+/**
+ * Transactions
+ * @returns
+ */
+export async function fetchTransactions(): Promise<Transactions[]> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions')
+  return response.data
+}
+
+/**
+ * Channels
+ * @returns
+ */
+export async function fetchChannels(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/channels')
+  return response.data
+}
+
+export async function fetchChannelById(id: String): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/channels/${id}`)
+  return response.data
+}
+
+/**
+ * Clients
+ */
+export async function fetchClientById(id: String): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/clients/${id}`)
   return response.data
 }

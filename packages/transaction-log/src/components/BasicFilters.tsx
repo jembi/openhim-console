@@ -8,6 +8,7 @@ import {
   Typography,
   Grid
 } from '@mui/material'
+import { LocalizationProvider } from '@mui/x-date-pickers'
 
 const BasicFilters: React.FC = () => {
   return (
@@ -30,6 +31,9 @@ const BasicFilters: React.FC = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField label="Date Range" type="date" fullWidth InputLabelProps={{shrink: true}} />
+          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+            
+          </LocalizationProvider> */}
         </Grid>
         <Grid item xs={1}>
           <TextField label="Limit" type="number" defaultValue={20} fullWidth />
