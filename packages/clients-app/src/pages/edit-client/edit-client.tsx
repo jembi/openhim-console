@@ -42,10 +42,6 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
     })
   }
 
-  const isChecked = (id: string) => {
-    return basicInfo.roles.includes(id)
-  }
-
   const selectAuthenticationType = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -90,7 +86,6 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
           </Box>
           <BasicInfo
             basicInfo={basicInfo}
-            isChecked={isChecked}
             onBasicInfoChange={onBasicInfoChange}
             setBasicInfo={setBasicInfo}
             hidden={tabValue !== 0}

@@ -58,10 +58,6 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
     })
   }
 
-  const isChecked = (id: string) => {
-    return basicInfo.roles.includes(id)
-  }
-
   const selectAuthenticationType = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -123,7 +119,6 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
           {activeStep === 0 ? (
             <BasicInfo
               basicInfo={basicInfo}
-              isChecked={isChecked}
               onBasicInfoChange={onBasicInfoChange}
               setBasicInfo={setBasicInfo}
             />

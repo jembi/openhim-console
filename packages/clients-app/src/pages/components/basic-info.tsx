@@ -10,24 +10,31 @@ import {
   TextField
 } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
+import {fetchRoles} from '@jembi/openhim-core-api'
 
 interface BasicInfoProps {
   basicInfo: BasicInfoModel
   setBasicInfo: React.Dispatch<React.SetStateAction<BasicInfoModel>>
   onBasicInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  isChecked: (role: string) => boolean
   hidden?: boolean
 }
 
 export const BasicInfo: React.FC<BasicInfoProps> = ({
   basicInfo,
-  isChecked,
   onBasicInfoChange,
   setBasicInfo,
   hidden
 }) => {
+  const [roles, setRoles] = useState<string[]>([])
+
+  useEffect(() => {
+    fetchRoles().then(roles => {
+      setRoles(roles.map(role => role.name))
+    })
+  }, [])
+
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 3}}>
@@ -39,7 +46,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
         <Divider />
         <br />
         <TextField
-          id="clientId"
+          id="clientID"
           label="Client ID"
           placeholder="Enter client ID"
           onChange={onBasicInfoChange}
@@ -54,30 +61,34 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
         />
         <h2>Assign Existing Roles</h2>
         <FormControl>
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="fhir"
-                checked={isChecked('fhir')}
-                onChange={e => {
-                  if (e.target.checked) {
-                    setBasicInfo({
-                      ...basicInfo,
-                      roles: [...basicInfo.roles, e.target.id]
-                    })
-                  } else {
-                    setBasicInfo({
-                      ...basicInfo,
-                      roles: basicInfo.roles.filter(
-                        role => role !== e.target.id
-                      )
-                    })
-                  }
-                }}
-              />
-            }
-            label="fhir"
-          />
+          {roles.map(role => (
+            <FormControlLabel
+              key={role}
+              control={
+                <Checkbox
+                  id={role}
+                  checked={basicInfo.roles.includes(role)}
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setBasicInfo({
+                        ...basicInfo,
+                        roles: [...basicInfo.roles, e.target.id]
+                      })
+                    } else {
+                      setBasicInfo({
+                        ...basicInfo,
+                        roles: basicInfo.roles.filter(
+                          role => role !== e.target.id
+                        )
+                      })
+                    }
+                  }}
+                />
+              }
+              label={role}
+            />
+          ))}
+          {roles.length === 0 && <p>No roles available</p>}
         </FormControl>
         <Divider />
         <br />
