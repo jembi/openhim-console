@@ -88,6 +88,7 @@ async function loadAndStartMicrofrontends(): Promise<void> {
       const path = generateRoutingPathFromURL(app.url)
       newMicrofrontendLayout += `<route path="#!/${path}">`
       newMicrofrontendLayout += `<div style="width: 100%" id="${path}">`
+      newMicrofrontendLayout += `<application name="@jembi/openhim-sidebar"></application>`
       newMicrofrontendLayout += `<application name="${app.name}"></application>`
       newMicrofrontendLayout += `</div>`
       newMicrofrontendLayout += '</route>'

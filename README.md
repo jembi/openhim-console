@@ -101,10 +101,20 @@ Clone the repository and then run
 npm install
 ```
 
+change the following property from ./packages/legacy-app/app/config/default.json
+
+``` json
+{
+    "environment": "development"
+}
+```
+
+> NOTE: change this back to "production" when committing
+
 To start up a development instance of the webapp run
 
 ```sh
-npm run start:dev
+npm run start
 ```
 
 To start up a production instance run
