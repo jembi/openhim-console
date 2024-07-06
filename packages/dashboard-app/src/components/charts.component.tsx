@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as fns from 'date-fns';
 import { Grid, Typography, Card } from '@mui/material';
-import TransactionLoadLineChart from "./charts/transaction-load-line-chart.component";
+import TransactionLineChart from "./charts/transaction-line-chart.component";
 import { getTimeSeries } from '../services/api';
 import { TimeSeries, TimeSeriesScale } from '../types';
 import BasicFilter, { BasicFilterData } from './filters/basic.filter.component';
@@ -56,14 +56,19 @@ export default function Charts() {
 			</Grid>
 			<Grid item>
 				<Grid container spacing={2}>
-					{/* <Grid item xs={12}>
+					<Grid item xs={6}>
 						<Card>
-							<MediatorBarChart data={timeSeries} />
+              <TransactionLineChart
+                type="load"
+								data={timeSeries}
+                period={{ from: filterData.from, until: filterData.until, type: filterData.period }}
+              />
 						</Card>
-					</Grid> */}
-					<Grid item>
+					</Grid>
+					<Grid item xs={6}>
 						<Card>
-							<TransactionLoadLineChart
+							<TransactionLineChart
+                type="avgResponseTime"
 								data={timeSeries}
                 period={{ from: filterData.from, until: filterData.until, type: filterData.period }}
               />
