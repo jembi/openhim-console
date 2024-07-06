@@ -27,3 +27,32 @@ export type Transaction = {
   status: string;
 };
 
+export type TimeSeries = {
+  total: number;
+  avgResp: number;
+  minResp: number;
+  maxResp: number;
+  failed: number;
+  successful: number;
+  processing: number;
+  completed: number;
+  completedWErrors: number;
+  timestamp: string;
+  _id: {
+    minute: number;
+    hour: number;
+    day: number;
+    week: number;
+    month: number;
+    year: number;
+  };
+};
+
+export enum TimeSeriesScale {
+  minute = 'minute',
+  hour = 'hour',
+  day = 'day',
+  week = 'week',
+  month = 'month',
+  year = 'year'
+}

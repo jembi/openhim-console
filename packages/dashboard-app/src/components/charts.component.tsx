@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
+import * as fns from 'date-fns';
 import { Grid, Typography, Card } from '@mui/material';
-import MediatorBarChart from "./charts/mediator-bar-chart.component";
-import MediatorLineChart from "./charts/mediator-line-chart.component";
-import { getTransactions } from '../services/api';
-import { Transaction } from '../types';
-import BasicFilter, { BasicFilterObj } from './filters/basic.filter.component';
+import TransactionLoadLineChart from "./charts/transaction-load-line-chart.component";
+import { getTimeSeries } from '../services/api';
+import { TimeSeries, TimeSeriesScale } from '../types';
+import BasicFilter, { BasicFilterData } from './filters/basic.filter.component';
 import Loader from './ux/loader.component';
 
 export default function Charts() {
-	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [timeSeries, setTimeSeries] = useState<TimeSeries[]>([]);
 	const [isFetchingTransactions, setIsFetchingTransactions] = useState(true);
+	const [filterData, setFilterData] = useState<BasicFilterData>({
+		period: TimeSeriesScale.day,
+		from: new Date(),
+		until: fns.add(new Date(), { hours: 23.99 }),
+    	option: '1h',
+	});
 
 	const getFilteredTransactions = () => {
 		setIsFetchingTransactions(true);
-		getTransactions()
-			.then(transactions => {
+		getTimeSeries(filterData.period, { startDate: fns.sub(new Date(), { weeks: 1 }), endDate: new Date() })
+			.then(timeSeries => {
 				setIsFetchingTransactions(false);
-				setTransactions(transactions)
+				setTimeSeries(timeSeries)
 			})
 			.catch(err => {
 				setIsFetchingTransactions(false);
@@ -26,10 +32,10 @@ export default function Charts() {
 
 	React.useEffect(() => {
 		getFilteredTransactions();
-	}, []);
+	}, [filterData]);
 
-	const onFilterChange = (filter: BasicFilterObj) => {
-		getFilteredTransactions();
+	const onFilterChange = (filter: BasicFilterData) => {
+    setFilterData(structuredClone(filter));
 	};
 
 
@@ -46,20 +52,23 @@ export default function Charts() {
 				</p>
 			</Grid>
 			<Grid item xs={12}>
-				<BasicFilter onFilterChange={onFilterChange} />
+				<BasicFilter value={filterData} onChange={onFilterChange} />
 			</Grid>
 			<Grid item>
 				<Grid container spacing={2}>
-					<Grid item xs={12}>
+					{/* <Grid item xs={12}>
 						<Card>
-							<MediatorBarChart data={transactions} />
-						</Card>
-					</Grid>
-					{/* <Grid item>
-						<Card>
-							<MediatorLineChart />
+							<MediatorBarChart data={timeSeries} />
 						</Card>
 					</Grid> */}
+					<Grid item>
+						<Card>
+							<TransactionLoadLineChart
+								data={timeSeries}
+                period={{ from: filterData.from, until: filterData.until, type: filterData.period }}
+              />
+						</Card>
+					</Grid>
 				</Grid>
 			</Grid>
 		</Grid>
