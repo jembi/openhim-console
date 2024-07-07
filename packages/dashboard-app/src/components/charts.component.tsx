@@ -6,13 +6,13 @@ import {getTimeSeries} from '../services/api'
 import {TimeSeries, TimeSeriesScale} from '../types'
 import BasicFilter, {BasicFilterData} from './filters/basic.filter.component'
 import Loader from './ux/loader.component'
-import { AlertDialog, AlertDialogProps } from './ux/alert.dialog.component'
+import {AlertDialog, AlertDialogProps} from './ux/alert.dialog.component'
 
 type Alert = {
-  severity: AlertDialogProps['severity'];
-  isOpen: boolean;
-  title: string;
-  message: string;
+  severity: AlertDialogProps['severity']
+  isOpen: boolean
+  title: string
+  message: string
 }
 
 export default function Charts() {
@@ -25,7 +25,12 @@ export default function Charts() {
     until: fns.add(now, {days: 1}),
     option: '1h'
   })
-  const [alert, setAlert] = useState<Alert>({ isOpen: false, title: '', message: '', severity: 'info' });
+  const [alert, setAlert] = useState<Alert>({
+    isOpen: false,
+    title: '',
+    message: '',
+    severity: 'info'
+  })
 
   const getFilteredTransactions = () => {
     setIsFetchingTransactions(true)
@@ -40,7 +45,12 @@ export default function Charts() {
       .catch(err => {
         console.error(err)
         setIsFetchingTransactions(false)
-        setAlert({ isOpen: true, title: 'Error ',severity: 'error', message: 'Error loading data' });
+        setAlert({
+          isOpen: true,
+          title: 'Error ',
+          severity: 'error',
+          message: 'Error loading data'
+        })
       })
   }
 
@@ -103,7 +113,7 @@ export default function Charts() {
         title={alert.title}
         message={alert.message}
         open={alert.isOpen}
-        onClose={() => setAlert({ ...alert, isOpen: false })}
+        onClose={() => setAlert({...alert, isOpen: false})}
       />
     </div>
   )
