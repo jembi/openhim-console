@@ -1,41 +1,43 @@
-import { TimeSeries, TimeSeriesScale, Transaction } from "../types";
+import {TimeSeries, TimeSeriesScale, Transaction} from '../types'
 
 const {
   fetchMediators,
   fetchTransactions,
-  fetchTimeSeries,
-} = require("@jembi/openhim-core-api");
-
+  fetchTimeSeries
+} = require('@jembi/openhim-core-api')
 
 export async function getMediators() {
   try {
-    const mediators = await fetchMediators();
+    const mediators = await fetchMediators()
 
-    return mediators;
+    return mediators
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error(err)
+    throw err
   }
 }
 
 export async function getTransactions(): Promise<Transaction[]> {
   try {
-    const transactions = await fetchTransactions() as Transaction[];
+    const transactions = (await fetchTransactions()) as Transaction[]
 
-    return transactions;
+    return transactions
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error(err)
+    throw err
   }
 }
 
-export async function getTimeSeries(period: TimeSeriesScale, filter: {startDate: Date; endDate: Date}): Promise<TimeSeries[]> {
+export async function getTimeSeries(
+  period: TimeSeriesScale,
+  filter: {startDate: Date; endDate: Date}
+): Promise<TimeSeries[]> {
   try {
-    const data = await fetchTimeSeries(period, filter) as TimeSeries[];
+    const data = (await fetchTimeSeries(period, filter)) as TimeSeries[]
 
-    return data;
+    return data
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error(err)
+    throw err
   }
 }

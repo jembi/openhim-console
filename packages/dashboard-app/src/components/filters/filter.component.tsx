@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Box,
   TextField,
@@ -6,13 +6,13 @@ import {
   Typography,
   Grid,
   Tooltip,
-  IconButton,
-} from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+  IconButton
+} from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
 const AdvancedFilters: React.FC = () => {
-  const clients = ['Client A', 'Client B', 'Client C'];
-  const methods = ['GET', 'POST', 'PUT', 'DELETE'];
+  const clients = ['Client A', 'Client B', 'Client C']
+  const methods = ['GET', 'POST', 'PUT', 'DELETE']
 
   return (
     <Box p={3} border={1} borderColor="grey.300">
@@ -33,7 +33,7 @@ const AdvancedFilters: React.FC = () => {
                         <IconButton>
                           <HelpOutlineIcon />
                         </IconButton>
-                      ),
+                      )
                     }}
                   />
                 </Tooltip>
@@ -108,7 +108,7 @@ const AdvancedFilters: React.FC = () => {
                         <IconButton>
                           <HelpOutlineIcon />
                         </IconButton>
-                      ),
+                      )
                     }}
                   />
                 </Tooltip>
@@ -135,7 +135,9 @@ const AdvancedFilters: React.FC = () => {
         {/* Filter by Orchestration */}
         <Grid item xs={4}>
           <Box border={1} borderColor="grey.300" p={2}>
-            <Typography variant="subtitle1">Filter by Orchestration:</Typography>
+            <Typography variant="subtitle1">
+              Filter by Orchestration:
+            </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12}>
                 <Tooltip title="Enter Status Code" arrow>
@@ -147,7 +149,7 @@ const AdvancedFilters: React.FC = () => {
                         <IconButton>
                           <HelpOutlineIcon />
                         </IconButton>
-                      ),
+                      )
                     }}
                   />
                 </Tooltip>
@@ -172,7 +174,7 @@ const AdvancedFilters: React.FC = () => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default AdvancedFilters;
+export default AdvancedFilters

@@ -1,18 +1,13 @@
-import React from 'react';
-import {
-  DialogTitle,
-  Dialog,
-  DialogContent,
-  DialogProps,
-} from '@mui/material';
+import React from 'react'
+import {DialogTitle, Dialog, DialogContent, DialogProps} from '@mui/material'
 
 export type BasicDialogProps = {
-  title?: string;
-  open: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-  size?: DialogProps['maxWidth'];
-  defaultContentWrapper?: boolean;
+  title?: string
+  open: boolean
+  onClose: () => void
+  children: React.ReactNode
+  size?: DialogProps['maxWidth']
+  defaultContentWrapper?: boolean
 }
 
 export function BasicDialog(props: BasicDialogProps) {
@@ -21,13 +16,9 @@ export function BasicDialog(props: BasicDialogProps) {
       open={props.open}
       onClose={props.onClose}
       maxWidth={props.size ?? 'lg'}
-      >
-      {props.title && <DialogTitle>
-        {props.title}
-      </DialogTitle>}
-      <DialogContent>
-        {props.children}
-      </DialogContent>
+    >
+      {props.title && <DialogTitle>{props.title}</DialogTitle>}
+      <DialogContent>{props.children}</DialogContent>
     </Dialog>
-  );
+  )
 }
