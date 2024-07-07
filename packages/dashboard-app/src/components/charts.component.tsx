@@ -67,8 +67,8 @@ export default function Charts() {
           <BasicFilter value={filterData} onChange={onFilterChange} />
         </Grid>
         <Grid item>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
+          <Grid container spacing={1}>
+            <Grid item md={6} xs={12}>
               <Card>
                 <TransactionLineChart
                   type="load"
@@ -81,7 +81,7 @@ export default function Charts() {
                 />
               </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item md={6} xs={12}>
               <Card>
                 <TransactionLineChart
                   type="avgResponseTime"

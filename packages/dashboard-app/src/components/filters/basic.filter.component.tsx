@@ -99,7 +99,7 @@ function FilterComponent(props: BasicFilterProps) {
     }
 
     const data: BasicFilterData = {
-      period: optionToPeriod(selectedOption),
+      period: optionToScale(selectedOption),
       from,
       until: now,
       option: selectedOption
@@ -127,7 +127,7 @@ function FilterComponent(props: BasicFilterProps) {
 
   const handleApplyFilters = () => {
     const data: BasicFilterData = {
-      period: optionToPeriod(selectedOption),
+      period: optionToScale(selectedOption),
       from: new Date(fromDate),
       until: new Date(untilDate),
       option: selectedOption
@@ -136,7 +136,7 @@ function FilterComponent(props: BasicFilterProps) {
     props.onChange(data)
   }
 
-  const optionToPeriod = (option: BasicFilterOption): TimeSeriesScale => {
+  const optionToScale = (option: BasicFilterOption): TimeSeriesScale => {
     switch (option) {
       case '1h':
         return TimeSeriesScale.minute
@@ -145,7 +145,7 @@ function FilterComponent(props: BasicFilterProps) {
       case '1w':
         return TimeSeriesScale.day
       case '1m':
-        return TimeSeriesScale.day
+        return TimeSeriesScale.week
       case '1y':
         return TimeSeriesScale.month
       case '5y':

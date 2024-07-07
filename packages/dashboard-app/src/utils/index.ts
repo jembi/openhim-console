@@ -13,7 +13,7 @@ export function getTimeDiffScale(
   from: Date,
   until: Date
 ): {diff: number; scale: TimeSeriesScale} {
-  let diff
+  let diff: number = 0
 
   if ((diff = differenceInYears(until, from)) > 1) {
     return {diff, scale: TimeSeriesScale.year}
@@ -29,12 +29,12 @@ export function getTimeDiffScale(
     return {diff, scale: TimeSeriesScale.week}
   } else if (
     (diff = differenceInDays(until, from)) > 1 ||
-    (diff = differenceInWeeks(until, from) == 1)
+    (diff = differenceInWeeks(until, from)) == 1
   ) {
     return {diff, scale: TimeSeriesScale.day}
   } else if (
     (diff = differenceInHours(until, from)) > 1 ||
-    (diff = differenceInDays(until, from) == 1)
+    (diff = differenceInDays(until, from)) == 1
   ) {
     return {diff, scale: TimeSeriesScale.hour}
   } else {
