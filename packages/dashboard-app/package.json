@@ -55,16 +55,18 @@
     "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.16.0",
-    "@mui/x-charts": "^7.8.0",
-    "@mui/x-date-pickers": "^7.9.0",
+    "@mui/x-charts": "^6.19.8",
+    "@mui/x-date-pickers": "^6.20.2",
     "@types/jest": "^27.0.1",
     "@types/systemjs": "^6.1.1",
     "@types/webpack-env": "^1.16.2",
     "date-fns": "^2.30.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "single-spa": "^6.0.1",
-    "single-spa-react": "^6.0.1"
+    "install": "^0.13.0",
+    "npm": "^10.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "single-spa": "^5.9.3",
+    "single-spa-react": "^4.3.1"
   },
   "types": "dist/jembi-dashboard-app.d.ts"
 }
