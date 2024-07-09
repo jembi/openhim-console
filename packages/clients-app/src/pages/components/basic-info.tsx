@@ -13,11 +13,14 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles} from '@jembi/openhim-core-api'
+import {Client} from '../../types'
 
 interface BasicInfoProps {
-  basicInfo: BasicInfoModel
-  setBasicInfo: React.Dispatch<React.SetStateAction<BasicInfoModel>>
+  basicInfo: Client
+  setBasicInfo: React.Dispatch<React.SetStateAction<Client>>
   onBasicInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  validationErrors?: {[key: string]: string}
+  validateBasicInfoField?: (field: string, newBasicInfoState?: object) => void
   hidden?: boolean
 }
 
@@ -25,15 +28,56 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   basicInfo,
   onBasicInfoChange,
   setBasicInfo,
+  validationErrors,
+  validateBasicInfoField,
   hidden
 }) => {
   const [roles, setRoles] = useState<string[]>([])
 
   useEffect(() => {
-    fetchRoles().then(roles => {
-      setRoles(roles.map(role => role.name))
-    })
+    // //@ts-ignore
+    // fetchRoles().then(roles => {
+    //   //@ts-ignore
+    //   setRoles(roles.map(role => role.name))
+    // });
+    setRoles(['fhir'])
   }, [])
+
+  const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (
+      e.currentTarget.id === 'contactPersonEmail' &&
+      e.currentTarget.value === ''
+    ) {
+      setBasicInfo({
+        ...basicInfo,
+        [e.currentTarget.id]: null
+      })
+    }
+    validateBasicInfoField(e.currentTarget.id)
+  }
+
+  const onCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('hit')
+    if (e.target.checked) {
+      console.log('checked')
+
+      const newBasicInfoState = {
+        ...basicInfo,
+        roles: [...basicInfo.roles, e.target.id]
+      }
+      setBasicInfo(newBasicInfoState)
+      validateBasicInfoField('roles', newBasicInfoState)
+    } else {
+      console.log('unchecked')
+
+      const newBasicInfoState = {
+        ...basicInfo,
+        roles: basicInfo.roles.filter(role => role !== e.target.id)
+      }
+      setBasicInfo(newBasicInfoState)
+      validateBasicInfoField('roles', newBasicInfoState)
+    }
+  }
 
   return (
     <div hidden={hidden}>
@@ -51,15 +95,24 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           placeholder="Enter client ID"
           onChange={onBasicInfoChange}
           value={basicInfo.clientID}
+          error={validationErrors?.clientID ? true : false}
+          helperText={validationErrors?.clientID}
+          onBlur={onBlurValidation}
         />
         <TextField
-          id="clientName"
+          id="name"
           label="Client Name"
           placeholder="Enter client name"
-          value={basicInfo.clientName}
+          value={basicInfo.name}
           onChange={onBasicInfoChange}
+          error={validationErrors?.name ? true : false}
+          helperText={validationErrors?.name}
+          onBlur={onBlurValidation}
         />
         <h2>Assign Existing Roles</h2>
+        {validationErrors?.roles && (
+          <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
+        )}
         <FormControl>
           {roles.map(role => (
             <FormControlLabel
@@ -68,21 +121,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                 <Checkbox
                   id={role}
                   checked={basicInfo.roles.includes(role)}
-                  onChange={e => {
-                    if (e.target.checked) {
-                      setBasicInfo({
-                        ...basicInfo,
-                        roles: [...basicInfo.roles, e.target.id]
-                      })
-                    } else {
-                      setBasicInfo({
-                        ...basicInfo,
-                        roles: basicInfo.roles.filter(
-                          role => role !== e.target.id
-                        )
-                      })
-                    }
-                  }}
+                  onChange={onCheckBoxChange}
                 />
               }
               label={role}
@@ -107,6 +146,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               label="Organization"
               value={basicInfo.organization}
               onChange={onBasicInfoChange}
+              error={validationErrors?.organization ? true : false}
+              helperText={validationErrors?.organization}
+              onBlur={onBlurValidation}
             />
             <TextField
               fullWidth
@@ -114,6 +156,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               label="Software Name"
               value={basicInfo.softwareName}
               onChange={onBasicInfoChange}
+              error={validationErrors?.softwareName ? true : false}
+              helperText={validationErrors?.softwareName}
+              onBlur={onBlurValidation}
             />
             <TextField
               fullWidth
@@ -121,6 +166,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               label="Description"
               value={basicInfo.description}
               onChange={onBasicInfoChange}
+              error={validationErrors?.description ? true : false}
+              helperText={validationErrors?.description}
+              onBlur={onBlurValidation}
             />
             <TextField
               fullWidth
@@ -128,18 +176,27 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               label="Location"
               value={basicInfo.location}
               onChange={onBasicInfoChange}
+              error={validationErrors?.location ? true : false}
+              helperText={validationErrors?.location}
+              onBlur={onBlurValidation}
             />
             <TextField
               id="contactPerson"
               label="Contact Person"
               value={basicInfo.contactPerson}
               onChange={onBasicInfoChange}
+              error={validationErrors?.contactPerson ? true : false}
+              helperText={validationErrors?.contactPerson}
+              onBlur={onBlurValidation}
             />
             <TextField
               id="contactPersonEmail"
               label="Contact Person Email"
               value={basicInfo.contactPersonEmail}
               onChange={onBasicInfoChange}
+              error={validationErrors?.contactPersonEmail ? true : false}
+              helperText={validationErrors?.contactPersonEmail}
+              onBlur={onBlurValidation}
             />
           </AccordionDetails>
         </Accordion>

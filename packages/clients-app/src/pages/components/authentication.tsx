@@ -9,11 +9,12 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { BasicInfoModel, AuthenticationModel } from "../../interfaces";
+import { AuthenticationModel } from "../../interfaces";
 import { v4 as uuidv4 } from "uuid";
+import { Client } from "../../types";
 
 interface AuthenticationProps {
-  basicInfo: BasicInfoModel;
+  basicInfo: Client;
   authType: string;
   authentication: AuthenticationModel;
   setAuthentication: React.Dispatch<React.SetStateAction<AuthenticationModel>>;
@@ -91,6 +92,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             <TextField
               id="customToken"
               label="Custom Token"
+              fullWidth
               onChange={onAuthenticationChange}
               value={authentication.customToken.token}
               InputProps={{
@@ -104,7 +106,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
                         },
                       });
                     }}
-                    style={{ fontSize: 12 }}
+                    style={{ fontSize: 8 }}
                   >
                     Generate UUID
                   </a>

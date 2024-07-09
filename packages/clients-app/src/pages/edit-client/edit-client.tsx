@@ -11,11 +11,11 @@ interface EditClientProps {
 }
 
 const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
-  if (client.clientID === null) {
+  if (client?.clientID === null) {
     returnToClientList()
   }
 
-  const [basicInfo, setBasicInfo] = useState<BasicInfoModel>(client)
+  const [basicInfo, setBasicInfo] = useState<BasicInfoModel | null>(client)
   const [authType, setAuthType] = useState('jwt')
   const [authentication, setAuthentication] = useState<AuthenticationModel>({
     jwt: {
@@ -36,6 +36,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
   const onBasicInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    // @ts-ignore
     setBasicInfo({
       ...basicInfo,
       [e.target.id]: e.target.value

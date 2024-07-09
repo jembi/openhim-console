@@ -159,10 +159,29 @@ export async function fetchTransactions(): Promise<any> {
 }
 
 // add clients
+export async function addClient(client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/clients', client)
+  return response.data
+}
 
 // edit clients
+export async function editClient(clientId: string, client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/clients/${clientId}`, client)
+  return response.data
+}
 
 // delete clients
+export async function deleteClient(clientId: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete(`/clients/${clientId}`)
+}
 
 // fetch certificate
+export async function fetchCertificate(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/ca`)
+  return response.data
+}
 

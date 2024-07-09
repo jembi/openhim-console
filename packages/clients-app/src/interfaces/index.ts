@@ -11,7 +11,6 @@ export interface BasicInfoModel {
 }
 
 export interface AuthenticationModel {
-    jwt: { secret: string };
     customToken: { token: string };
     mutualTLS: { domain: string; certificate: string };
     basicAuth: { password: string };
