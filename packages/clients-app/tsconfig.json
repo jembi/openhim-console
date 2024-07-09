@@ -3,7 +3,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "declarationDir": "dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": false
   },
   "files": ["src/jembi-clients-app.tsx"],
   "include": ["src/**/*"],
