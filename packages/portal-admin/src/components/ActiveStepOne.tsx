@@ -11,6 +11,7 @@ import {
   FormHelperText
 } from '@mui/material'
 import {AppProps} from './FormInputProps'
+import { useEffect } from 'react'
 
 interface ActiveStepOneProps {
   appLinkFieldRef: React.MutableRefObject<HTMLInputElement>
@@ -70,6 +71,10 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
     })
   }
 
+  useEffect(() => {
+    handleFormChanges(values);
+  }, [values]);
+
   return (
     <>
       {values.type === 'esmodule' && (
@@ -87,7 +92,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
           value={values.url}
           onChange={e => {
             handleChange(e)
-            handleFormChanges(values)
             setAppLinkHelperMessage('')
           }}
           error={appLinkHelperMessage ? true : false}
@@ -108,7 +112,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
           name="url"
           onChange={e => {
             handleChange(e)
-            handleFormChanges(values)
             setAppLinkHelperMessage('')
           }}
           error={appLinkHelperMessage ? true : false}
@@ -123,7 +126,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
           inputRef={appAccessRoleieldRef}
           onChange={e => {
             handleChange(e)
-            handleFormChanges(values)
             setAppAccessRoleHelperMessage('')
           }}
           id={'access_roles'}
@@ -151,7 +153,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
               onChange={e => {
                 setShowInPortalValue(e.target.checked)
                 handleChange(e)
-                handleFormChanges(values)
               }}
               checked={values.showInPortal}
             />
@@ -167,7 +168,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
               onChange={e => {
                 setShowInSideBarValue(e.target.checked)
                 handleChange(e)
-                handleFormChanges(values)
               }}
               checked={values.showInSideBar}
             />
