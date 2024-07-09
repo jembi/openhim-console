@@ -94,8 +94,8 @@ async function loadAndStartMicrofrontends(): Promise<void> {
       newMicrofrontendLayout += '</route>'
     }
     const updatedMicrofrontendLayout = microfrontendLayout.replace(
-      '<div style="flex-grow: 1" id="openhim-console-ems-container"></div>',
-      `<div style="flex-grow: 1" id="openhim-console-ems-container">${newMicrofrontendLayout}</div>`
+      '<div style="display: flex" id="openhim-console-ems-container"></div>',
+      `<div style="display: flex" id="openhim-console-ems-container">${newMicrofrontendLayout}</div>`
     )
     await registerAndStartApps(updatedMicrofrontendLayout)
   } catch (error) {
