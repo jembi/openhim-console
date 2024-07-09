@@ -1,5 +1,8 @@
 'use strict'
 /* global moment: false */
+function daysAgo (days) {
+  return moment().subtract(days, 'days').startOf('day')
+}
 
 describe('Controller: ChannelMonitoringCtrl', function () {
   // load the controller's module
@@ -22,10 +25,6 @@ describe('Controller: ChannelMonitoringCtrl', function () {
         'admin'
       ]
     }
-  }
-
-  function daysAgo (days) {
-    return moment().subtract(days, 'days').startOf('day')
   }
 
   // Initialize the controller and a mock scope
