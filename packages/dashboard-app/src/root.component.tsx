@@ -11,7 +11,9 @@ export default function Root() {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <Charts />
+        <div style={{ marginTop: '16px', backgroundColor: '#F1F1F1', height: '100%' }}>
+          <Charts />
+        </div>
       </ThemeProvider>
     </React.StrictMode>
   )

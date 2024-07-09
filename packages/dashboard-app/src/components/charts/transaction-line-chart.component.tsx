@@ -85,7 +85,7 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
   const hasDataToShow = yData.some(y => y > 0)
 
   return (
-    <Card style={{minWidth: '600px'}}>
+    <Card style={{minWidth: '660px', backgroundColor: '#fff'}}>
       <CardHeader
         title={
           props.type == 'load' ? 'Transaction Load' : 'Average Response Time'
@@ -104,10 +104,10 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
             {!hasDataToShow && (
               <>
                 <InfoIcon color="action" sx={{fontSize: 50, marginBottom: 1}} />
-                <Typography variant="h6" color="textSecondary" gutterBottom>
+                <Typography variant="h6" color="black" gutterBottom>
                   No Data Available
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
+                <Typography variant="body2" color="black">
                   Please check back later or contact support if you believe this
                   is an error.
                 </Typography>

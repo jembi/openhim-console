@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import * as fns from 'date-fns'
-import {Grid, Typography, Card} from '@mui/material'
+import {Grid, Typography, Card, Divider} from '@mui/material'
 import TransactionLineChart from './charts/transaction-line-chart.component'
 import {getTimeSeries} from '../services/api'
 import {TimeSeries, TimeSeriesScale} from '../types'
@@ -68,18 +68,19 @@ export default function Charts() {
 
   return (
     <div>
-      <Grid container spacing={2} padding={2}>
+      <Grid container spacing={2} padding={2} fontFamily={"sans-serif"}>
         <Grid item xs={12}>
-          <Typography variant="h3">Charts</Typography>
-          <p>An overview of recent transactions through your mediator.</p>
+          <Typography variant="h3" fontSize={"32px"} fontWeight={400}>Dashboard</Typography>
+          <p style={{ fontSize: "16px" }}>An overview of recent transactions through your mediator.</p>
+          <Divider />
         </Grid>
         <Grid item xs={12}>
           <BasicFilter value={filterData} onChange={onFilterChange} />
         </Grid>
         <Grid item>
-          <Grid container spacing={1}>
+          <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
-              <Card>
+              <Card elevation={2} style={{ backgroundColor: '#fff', borderRadius: '4px' }}>
                 <TransactionLineChart
                   type="load"
                   data={timeSeries}
@@ -92,7 +93,7 @@ export default function Charts() {
               </Card>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Card>
+              <Card elevation={2} style={{ backgroundColor: '#fff', borderRadius: '4px' }}>
                 <TransactionLineChart
                   type="avgResponseTime"
                   data={timeSeries}
