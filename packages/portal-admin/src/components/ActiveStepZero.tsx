@@ -11,6 +11,7 @@ import {
   Radio
 } from '@mui/material'
 import {AppProps} from './FormInputProps'
+import { useEffect } from 'react'
 
 interface ActiveStepZeroProps {
   values: AppProps
@@ -82,6 +83,10 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
     }
   ]
 
+  useEffect(() => {
+    handleFormChanges(values);
+  }, [values]);
+
   const generateRadioOptions = options =>
     options.map(option => {
       return (
@@ -119,7 +124,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
           value={values.type}
           onChange={e => {
             handleChange(e)
-            handleFormChanges(values)
           }}
         >
           {generateRadioOptions(radioButtonOptions)}
@@ -133,7 +137,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
           inputRef={appCategoryFieldRef}
           onChange={e => {
             handleChange(e)
-            handleFormChanges(values)
             setAppCategoryHelperMessage('')
           }}
           id={'category'}
@@ -161,7 +164,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         name="name"
         onChange={e => {
           handleChange(e)
-          handleFormChanges(values)
           setAppTitleHelperMessage('')
         }}
         error={appTitleHelperMessage ? true : false}
@@ -180,7 +182,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         value={values.description}
         onChange={e => {
           handleChange(e)
-          handleFormChanges(values)
           setAppDescriptionHelperMessage('')
         }}
         error={appDescriptionHelperMessage ? true : false}
