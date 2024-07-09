@@ -6,6 +6,7 @@ import {fetchClients} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add';
 import { BasicInfoModel } from '../../interfaces'
+import './data-grid-styling.css';
 
 interface ClientsListProps {
   addClient: () => void
@@ -40,7 +41,9 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
   const [clients, setClients] = useState<Client[]>([])
 
   useEffect(() => {
+    //@ts-ignore
     fetchClients().then(clients => {
+      //@ts-ignore
       clients.forEach(client => {
         setClients(prevClients => [...prevClients, client])
       })
@@ -50,25 +53,24 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
   return (
     <Box sx={{maxWidth: '85%', paddingLeft: 20}}>
       <h1>Clients List</h1>
-      <Stack direction="row" spacing={75}>
-        <p>
+      <Stack direction="row" spacing={32} sx={{marginBottom: 1}}>
+        <p style={{opacity: 0.6}}>
           Control client systems and their access roles. Add clients to enable
           their request routing and group them by roles for streamlined channel
           access management
         </p>
-        <Button color="success" variant="contained" onClick={addClient}>
+        <Button style={{backgroundColor: "#29AC96"}} variant="contained" onClick={addClient}>
           <AddIcon /> Add
         </Button>
       </Stack>
-      <br />
       <Divider />
       <br />
-      <Card>
+      <Card >
         <DataGrid
           getRowId={row => row.clientID}
           rows={clients}
           columns={columns}
-          slots={{toolbar: GridToolbar}}
+          slots={{toolbar: GridToolbar, }}
           slotProps={{
             toolbar: {
               showQuickFilter: true,
