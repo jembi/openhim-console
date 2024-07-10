@@ -35,8 +35,8 @@ export default function Charts() {
   const getFilteredTransactions = () => {
     setIsFetchingTransactions(true)
     getTimeSeries(filterData.period, {
-      startDate: fns.sub(new Date(), {weeks: 1}),
-      endDate: new Date()
+      startDate: filterData.from,
+      endDate: filterData.until,
     })
       .then(timeSeries => {
         setIsFetchingTransactions(false)

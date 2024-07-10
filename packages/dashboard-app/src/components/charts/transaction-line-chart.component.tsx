@@ -47,7 +47,7 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
 
         if (eq) {
           Y =
-            props.data[j][props.type == 'avgResponseTime' ? 'avgResp' : 'total']
+            Math.floor(+(props.data[j][props.type == 'avgResponseTime' ? 'avgResp' : 'total']) ?? 0)
           break
         }
       }
