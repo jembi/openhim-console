@@ -77,7 +77,7 @@ export default function Charts() {
         <Grid item xs={12}>
           <BasicFilter value={filterData} onChange={onFilterChange} />
         </Grid>
-        <Grid item>
+        <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
               <Card elevation={2} style={{ backgroundColor: '#fff', borderRadius: '4px' }}>

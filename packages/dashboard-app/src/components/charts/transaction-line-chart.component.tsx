@@ -85,7 +85,7 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
   const hasDataToShow = yData.some(y => y > 0)
 
   return (
-    <Card style={{minWidth: '660px', backgroundColor: '#fff'}}>
+    <Card style={{minWidth: '100%', backgroundColor: '#fff'}}>
       <CardHeader
         title={
           props.type == 'load' ? 'Transaction Load' : 'Average Response Time'
@@ -124,15 +124,18 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
                     tickNumber: res.diff >= 12 ? undefined : res.diff
                   }
                 ]}
-                yAxis={[
-                  {label: props.type == 'load' ? 'Load' : 'Response Time'}
-                ]}
+                // yAxis={[
+                //   {
+                //     label: props.type == 'load' ? 'Load' : 'Response Time',
+                //   }
+                // ]}
                 series={[
                   {
                     data: yData,
                     area: true,
                     connectNulls: false,
-                    showMark: true
+                    showMark: true,
+                    color: '#1e88e5'
                   }
                 ]}
                 width={600}
