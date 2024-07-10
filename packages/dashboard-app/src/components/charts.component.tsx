@@ -36,7 +36,7 @@ export default function Charts() {
     setIsFetchingTransactions(true)
     getTimeSeries(filterData.period, {
       startDate: filterData.from,
-      endDate: filterData.until,
+      endDate: filterData.until
     })
       .then(timeSeries => {
         setIsFetchingTransactions(false)
@@ -68,10 +68,14 @@ export default function Charts() {
 
   return (
     <div>
-      <Grid container spacing={2} padding={2} fontFamily={"sans-serif"}>
+      <Grid container spacing={2} padding={2} fontFamily={'sans-serif'}>
         <Grid item xs={12}>
-          <Typography variant="h3" fontSize={"32px"} fontWeight={400}>Dashboard</Typography>
-          <p style={{ fontSize: "16px" }}>An overview of recent transactions through your mediator.</p>
+          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+            Dashboard
+          </Typography>
+          <p style={{fontSize: '16px'}}>
+            An overview of recent transactions through your mediator.
+          </p>
           <Divider />
         </Grid>
         <Grid item xs={12}>
@@ -80,7 +84,10 @@ export default function Charts() {
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
-              <Card elevation={2} style={{ backgroundColor: '#fff', borderRadius: '4px' }}>
+              <Card
+                elevation={2}
+                style={{backgroundColor: '#fff', borderRadius: '4px'}}
+              >
                 <TransactionLineChart
                   type="load"
                   data={timeSeries}
@@ -93,7 +100,10 @@ export default function Charts() {
               </Card>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Card elevation={2} style={{ backgroundColor: '#fff', borderRadius: '4px' }}>
+              <Card
+                elevation={2}
+                style={{backgroundColor: '#fff', borderRadius: '4px'}}
+              >
                 <TransactionLineChart
                   type="avgResponseTime"
                   data={timeSeries}

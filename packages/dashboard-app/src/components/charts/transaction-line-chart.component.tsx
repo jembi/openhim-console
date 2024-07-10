@@ -46,8 +46,11 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
           (scale == TimeSeriesScale.minute && isSameMinute(ts, timestamp))
 
         if (eq) {
-          Y =
-            Math.floor(+(props.data[j][props.type == 'avgResponseTime' ? 'avgResp' : 'total']) ?? 0)
+          Y = Math.floor(
+            +props.data[j][
+              props.type == 'avgResponseTime' ? 'avgResp' : 'total'
+            ] ?? 0
+          )
           break
         }
       }
