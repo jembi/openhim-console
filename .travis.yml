@@ -1,11 +1,23 @@
 language: node_js
-before_script: npm run build:prod
+addons:
+apt:
+  sources:
+    - google-chrome
+  packages:
+    - google-chrome-stable
+    - google-chrome-beta
+before_install:
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+before_script:
+  - npm install
+  - npm run build:prod
 after_success:
   - npm run coverage
   - '.travis/build_docker.sh'
 node_js:
   - 'lts/gallium'
-sudo: false
+sudo: required
 notifications:
   slack:
     rooms:
