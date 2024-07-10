@@ -157,6 +157,12 @@ export async function fetchTransactions(): Promise<any> {
   const response = await apiClient.get('/transactions')
   return response.data
 }
+// get specific client
+export async function fetchClient(clientId: string): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/clients/${clientId}`)
+  return response.data
+}
 
 // add clients
 export async function addClient(client: any): Promise<any> {
@@ -182,6 +188,13 @@ export async function deleteClient(clientId: string): Promise<void> {
 export async function fetchCertificate(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get(`/ca`)
+  return response.data
+}
+
+// fetch authentication types
+export async function fetchAuthTypes(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/types`)
   return response.data
 }
 

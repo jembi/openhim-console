@@ -22,6 +22,7 @@ interface BasicInfoProps {
   validationErrors?: {[key: string]: string}
   validateBasicInfoField?: (field: string, newBasicInfoState?: object) => void
   hidden?: boolean
+  editMode?: boolean
 }
 
 export const BasicInfo: React.FC<BasicInfoProps> = ({
@@ -30,7 +31,8 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   setBasicInfo,
   validationErrors,
   validateBasicInfoField,
-  hidden
+  hidden,
+  editMode = false,
 }) => {
   const [roles, setRoles] = useState<string[]>([])
 
@@ -57,10 +59,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   }
 
   const onCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('hit')
     if (e.target.checked) {
-      console.log('checked')
-
       const newBasicInfoState = {
         ...basicInfo,
         roles: [...basicInfo.roles, e.target.id]
@@ -68,8 +67,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
       setBasicInfo(newBasicInfoState)
       validateBasicInfoField('roles', newBasicInfoState)
     } else {
-      console.log('unchecked')
-
       const newBasicInfoState = {
         ...basicInfo,
         roles: basicInfo.roles.filter(role => role !== e.target.id)
@@ -98,6 +95,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           error={validationErrors?.clientID ? true : false}
           helperText={validationErrors?.clientID}
           onBlur={onBlurValidation}
+          disabled={editMode}
         />
         <TextField
           id="name"

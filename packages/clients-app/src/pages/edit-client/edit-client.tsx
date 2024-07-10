@@ -1,9 +1,20 @@
-import {Box, Button, Card, Divider, Stack, Tab, Tabs} from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  SelectChangeEvent,
+  Stack,
+  Tab,
+  Tabs
+} from '@mui/material'
 import React, {FC, useState} from 'react'
 import {AuthenticationModel, BasicInfoModel} from '../../interfaces'
 import {Authentication} from '../components/authentication'
 import {BasicInfo} from '../components/basic-info'
-import {Client} from '../../types'
+import {Client, ClientSchema} from '../../types'
+import CryptoJS from 'crypto-js'
+import {editClient} from '@jembi/openhim-core-api'
 
 interface EditClientProps {
   returnToClientList: () => void
@@ -15,12 +26,12 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
     returnToClientList()
   }
 
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string
+  }>({})
   const [basicInfo, setBasicInfo] = useState<BasicInfoModel | null>(client)
   const [authType, setAuthType] = useState('jwt')
   const [authentication, setAuthentication] = useState<AuthenticationModel>({
-    jwt: {
-      secret: ''
-    },
     customToken: {
       token: ''
     },
@@ -33,14 +44,82 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
     }
   })
 
+  const validateBasicInfoField = (
+    field: string,
+    newBasicInfoState?: object
+  ) => {
+    const validate = ClientSchema.safeParse(newBasicInfoState || basicInfo)
+    if (!validate.success) {
+      const message = validate.error.errors.filter(
+        error => error.path[0] === field
+      )[0]?.message
+      if (message) {
+        setValidationErrors({
+          ...validationErrors,
+          [field]: message
+        })
+      } else {
+        const {[field]: _, ...rest} = validationErrors
+        setValidationErrors(rest)
+      }
+    } else {
+      setValidationErrors({})
+    }
+  }
+
+  const onSaveButtonClicked = () => {
+    const basicAuth = {
+      passwordSalt: null,
+      passwordHash: null,
+      passwordAlgorithm: null
+    }
+
+    if (authentication.basicAuth?.password) {
+      const salt = CryptoJS.lib.WordArray.random(16).toString()
+      const sha512 = CryptoJS.algo.SHA512.create()
+      sha512.update(authentication.basicAuth?.password)
+      sha512.update(salt)
+      const hash = sha512.finalize()
+
+      basicAuth.passwordSalt = salt
+      basicAuth.passwordHash = hash.toString(CryptoJS.enc.Hex)
+      basicAuth.passwordAlgorithm = 'sha512'
+    }
+
+    let clientsPayload = {
+      ...basicInfo,
+      clientDomain: authentication.mutualTLS?.domain,
+      ...(authentication.mutualTLS?.certificate
+        ? {certFingerprint: authentication.mutualTLS.certificate}
+        : {}),
+      ...(authentication.customToken?.token
+        ? {customTokenID: authentication.customToken.token}
+        : {}),
+      ...(basicAuth?.passwordHash ? basicAuth : {})
+    }
+
+    editClient(client['_id'], clientsPayload)
+      .then(() => {
+        alert('Client edited successfully')
+      })
+      .catch(error => {
+        alert('Failed to edit client')
+      })
+      .finally(() => {
+        returnToClientList()
+      })
+  }
+
   const onBasicInfoChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // @ts-ignore
-    setBasicInfo({
+    const newBasicInfoState = {
       ...basicInfo,
       [e.target.id]: e.target.value
-    })
+    }
+    // @ts-ignore
+    setBasicInfo(newBasicInfoState)
+    validateBasicInfoField(e.target.id, newBasicInfoState)
   }
 
   const selectAuthenticationType = (
@@ -50,7 +129,9 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
   }
 
   const onAuthenticationChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | {target: {id: string; value: string}}
   ) => {
     setAuthentication({
       ...authentication,
@@ -77,7 +158,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
       </p>
       <Divider />
       <br />
-      <Box sx={{ maxWidth: '60%', margin: 'auto'}}>
+      <Box sx={{maxWidth: '60%', margin: 'auto'}}>
         <Card>
           <Box>
             <Tabs value={tabValue} onChange={handleChange} variant="fullWidth">
@@ -89,7 +170,10 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
             basicInfo={basicInfo}
             onBasicInfoChange={onBasicInfoChange}
             setBasicInfo={setBasicInfo}
+            validationErrors={validationErrors}
+            validateBasicInfoField={validateBasicInfoField}
             hidden={tabValue !== 0}
+            editMode={true}
           />
           <Authentication
             authType={authType}
@@ -115,7 +199,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
               variant="contained"
               id="save"
               color="success"
-              onClick={() => returnToClientList()}
+              onClick={() => onSaveButtonClicked()}
             >
               Save
             </Button>

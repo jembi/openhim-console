@@ -4,25 +4,29 @@ import {
   Divider,
   FormControl,
   InputLabel,
+  MenuItem,
   Select,
   Stack,
-  TextField,
-} from "@mui/material";
-import React from "react";
-import { AuthenticationModel } from "../../interfaces";
-import { v4 as uuidv4 } from "uuid";
-import { Client } from "../../types";
+  TextField
+} from '@mui/material'
+import React, {useEffect, useState} from 'react'
+import {AuthenticationModel} from '../../interfaces'
+import {v4 as uuidv4} from 'uuid'
+import {Client} from '../../types'
+import {fetchCertificate, fetchAuthTypes} from '@jembi/openhim-core-api'
 
 interface AuthenticationProps {
-  basicInfo: Client;
-  authType: string;
-  authentication: AuthenticationModel;
-  setAuthentication: React.Dispatch<React.SetStateAction<AuthenticationModel>>;
-  selectAuthenticationType: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  basicInfo: Client
+  authType: string
+  authentication: AuthenticationModel
+  setAuthentication: React.Dispatch<React.SetStateAction<AuthenticationModel>>
+  selectAuthenticationType: (e: React.MouseEvent<HTMLButtonElement>) => void
   onAuthenticationChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  hidden?: boolean;
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | {target: {id: string; value: string}}
+  ) => void
+  hidden?: boolean
 }
 
 export const Authentication: React.FC<AuthenticationProps> = ({
@@ -32,8 +36,24 @@ export const Authentication: React.FC<AuthenticationProps> = ({
   setAuthentication,
   selectAuthenticationType,
   onAuthenticationChange,
-  hidden,
+  hidden
 }) => {
+  const [certificates, setCertificates] = useState<any>([])
+  const [authTypes, setAuthTypes] = useState<string[]>([])
+
+  useEffect(() => {
+    fetchCertificate().then((certificates: any) => {
+      setCertificates(certificates)
+    }).catch((error: any) => {
+      console.error(error)
+    });
+
+    fetchAuthTypes().then((authTypes: string[]) => {
+      setAuthTypes(authTypes)
+    }).catch((error: any) => {
+      console.error(error)
+    });
+  }, [])
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 6}}>
@@ -73,17 +93,20 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         >
           BASIC AUTH
         </Button>
-        {authType === "jwt" && (
+        {authType === 'jwt' && (
           <>
             <h1>JSON Web Token (JWT)</h1>
             <p>
               Securely transmit information between a client and server as JSON
               object, signed using a secret or key pair
             </p>
+            <p style={{color: "#FFA500"}} hidden={authTypes.find(auth => auth === 'jwt') !== undefined}>
+              JWT authentication is disabled on the OpenHIM Core.
+            </p>
           </>
         )}
 
-        {authType === "customToken" && (
+        {authType === 'customToken' && (
           <>
             <h1>Custom Token</h1>
             <p>
@@ -97,25 +120,25 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               value={authentication.customToken.token}
               InputProps={{
                 endAdornment: (
-                  <a
+                  <p
                     onClick={() => {
                       setAuthentication({
                         ...authentication,
                         customToken: {
-                          token: uuidv4(),
-                        },
-                      });
+                          token: uuidv4()
+                        }
+                      })
                     }}
-                    style={{ fontSize: 8 }}
+                    style={{fontSize: 8, cursor: 'pointer'}}
                   >
                     Generate UUID
-                  </a>
-                ),
+                  </p>
+                )
               }}
             />
           </>
         )}
-        {authType === "mutualTLS" && (
+        {authType === 'mutualTLS' && (
           <>
             <h1>Mutual TLS</h1>
             <p>
@@ -130,12 +153,36 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               />
               <FormControl fullWidth>
                 <InputLabel id="certificate-label">Certificate</InputLabel>
-                <Select labelId="certificate-label" id="certificate"></Select>
+                <Select
+                  labelId="certificate-label"
+                  onChange={e => {
+                    onAuthenticationChange({
+                      target: {
+                        id: 'certificate',
+                        value: e.target.value
+                      }
+                    })
+                  }}
+                  value={authentication.mutualTLS.certificate}
+                  id="certificate"
+                >
+                  <MenuItem value="">
+                    <em>No Certificate Selected</em>
+                  </MenuItem>
+                  {certificates.map((certificate: any) => (
+                    <MenuItem
+                      key={certificate.fingerprint}
+                      value={certificate.fingerprint}
+                    >
+                      {certificate.commonName}, {certificate.organization}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
             </Stack>
           </>
         )}
-        {authType === "basicAuth" && (
+        {authType === 'basicAuth' && (
           <>
             <h1>Basic Auth</h1>
             <p>Requires a username and password. Set the password below</p>
@@ -152,5 +199,5 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
       </Box>
     </div>
-  );
-};
+  )
+}
