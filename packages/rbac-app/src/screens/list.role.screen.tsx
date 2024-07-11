@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Box,
   Button,
@@ -13,72 +13,106 @@ import {
   TableRow,
   TextField,
   Typography
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { Permission, Role } from '../types';
-import { Link, useLoaderData } from 'react-router-dom';
-import { mapPermissionToHumanReadable } from '../utils';
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import {Permission, Role} from '../types'
+import {Link, useLoaderData} from 'react-router-dom'
+import {mapPermissionToHumanReadable} from '../utils'
 
 function UserRoleList() {
-  const roles = useLoaderData() as Role[];
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const roles = useLoaderData() as Role[]
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   const getManagePermissions = (role: Role) => {
-    const x = Object.entries(mapPermissionToHumanReadable(
-      Object.entries(role.permissions)
-        .filter(([_key, value]) => typeof value === 'boolean' && value !== true)
-        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as Permission)
-    ))
+    const x = Object.entries(
+      mapPermissionToHumanReadable(
+        Object.entries(role.permissions)
+          .filter(
+            ([_key, value]) => typeof value === 'boolean' && value !== true
+          )
+          .reduce(
+            (acc, [key, value]) => ({...acc, [key]: value}),
+            {} as Permission
+          )
+      )
+    )
       .filter(([_key, value]) => value.includes('Manage'))
       .map(([_key, value]) => value.replace('Manage', ''))
-      .join(', ');
+      .join(', ')
 
-    return x;
+    return x
   }
 
   const getViewPermissions = (role: Role) => {
-    const x = Object.entries(mapPermissionToHumanReadable(
-      Object.entries(role.permissions)
-        .filter(([_key, value]) => typeof value === 'boolean' && value !== true)
-        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as Permission)
-    ))
+    const x = Object.entries(
+      mapPermissionToHumanReadable(
+        Object.entries(role.permissions)
+          .filter(
+            ([_key, value]) => typeof value === 'boolean' && value !== true
+          )
+          .reduce(
+            (acc, [key, value]) => ({...acc, [key]: value}),
+            {} as Permission
+          )
+      )
+    )
       .filter(([_key, value]) => value.includes('View'))
       .map(([_key, value]) => value.replace('View', ''))
-      .join(', ');
+      .join(', ')
 
-    return x;
+    return x
   }
 
   const getAdditionalPermissions = (role: Role) => {
-    const x = Object.entries(mapPermissionToHumanReadable(
-      Object.entries(role.permissions)
-        .filter(([_key, value]) => typeof value === 'boolean' && value !== true)
-        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as Permission)
-    ))
-      .filter(([_key, value]) => !value.includes('Manage') && !value.includes('View'))
+    const x = Object.entries(
+      mapPermissionToHumanReadable(
+        Object.entries(role.permissions)
+          .filter(
+            ([_key, value]) => typeof value === 'boolean' && value !== true
+          )
+          .reduce(
+            (acc, [key, value]) => ({...acc, [key]: value}),
+            {} as Permission
+          )
+      )
+    )
+      .filter(
+        ([_key, value]) => !value.includes('Manage') && !value.includes('View')
+      )
       .map(([_key, value]) => value)
-      .join(', ');
+      .join(', ')
 
-    return x;
+    return x
   }
 
   return (
     <Box padding={3}>
-      <Typography variant="h4" gutterBottom>User Roles List</Typography>
-      <Typography variant="subtitle1" gutterBottom>
-        Easily assign and manage roles and permissions to users by selecting a role, viewing and editing its permissions, or creating a new role with customized permissions.
+      <Typography variant="h4" gutterBottom>
+        User Roles List
       </Typography>
-      <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={2}>
+      <Typography variant="subtitle1" gutterBottom>
+        Easily assign and manage roles and permissions to users by selecting a
+        role, viewing and editing its permissions, or creating a new role with
+        customized permissions.
+      </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        marginBottom={2}
+      >
         <TextField variant="outlined" placeholder="Search..." />
         <Button variant="contained" color="primary" startIcon={<AddIcon />}>
           <Link to="/create-role">Add</Link>
@@ -97,14 +131,16 @@ function UserRoleList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {roles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((role, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{role.name}</TableCell>
-                    <TableCell>{getManagePermissions(role)}</TableCell>
-                    <TableCell>{getViewPermissions(role)}</TableCell>
-                    <TableCell>{getAdditionalPermissions(role)}</TableCell>
-                  </TableRow>
-                ))}
+                {roles
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((role, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{role.name}</TableCell>
+                      <TableCell>{getManagePermissions(role)}</TableCell>
+                      <TableCell>{getViewPermissions(role)}</TableCell>
+                      <TableCell>{getAdditionalPermissions(role)}</TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -120,7 +156,7 @@ function UserRoleList() {
         </CardContent>
       </Card>
     </Box>
-  );
-};
+  )
+}
 
-export default UserRoleList;
+export default UserRoleList
