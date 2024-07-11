@@ -187,14 +187,14 @@ export async function deleteClient(clientId: string): Promise<void> {
 // fetch certificate
 export async function fetchCertificate(): Promise<any> {
   await ensureApiClientInitialized()
-  const response = await apiClient.get(`/ca`)
+  const response = await apiClient.get(`/keystore/ca`)
   return response.data
 }
 
 // fetch authentication types
 export async function fetchAuthTypes(): Promise<any> {
   await ensureApiClientInitialized()
-  const response = await apiClient.get(`/types`)
+  const response = await apiClient.get(`/authentication/types`)
   return response.data
 }
 

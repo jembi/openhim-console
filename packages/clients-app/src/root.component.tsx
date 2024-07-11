@@ -8,7 +8,7 @@ import { Client } from './types'
 import { BasicInfoModel } from './interfaces'
 
 export default function Root(props) {
-  const defaultPage = "client-list";
+  const defaultPage = "add-client";
   const [activePage, setActivePage] = useState<
     'client-list' | 'edit-client' | 'add-client'
   >(defaultPage)

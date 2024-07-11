@@ -41,11 +41,15 @@ export const Authentication: React.FC<AuthenticationProps> = ({
   const [certificates, setCertificates] = useState<any>([])
   const [authTypes, setAuthTypes] = useState<string[]>([])
 
+  const checkAuthType = (authType: string) => {
+    return !!authTypes.find(auth => auth === authType);
+  }
+
   useEffect(() => {
     fetchCertificate().then((certificates: any) => {
       setCertificates(certificates)
     }).catch((error: any) => {
-      console.error(error)
+      console.error('Failed to fetch certificates', JSON.stringify(error));
     });
 
     fetchAuthTypes().then((authTypes: string[]) => {
@@ -118,24 +122,31 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               fullWidth
               onChange={onAuthenticationChange}
               value={authentication.customToken.token}
+              disabled={!checkAuthType('custom-token-auth')}
               InputProps={{
                 endAdornment: (
                   <p
                     onClick={() => {
-                      setAuthentication({
-                        ...authentication,
-                        customToken: {
-                          token: uuidv4()
-                        }
-                      })
+                      if(checkAuthType('custom-token-auth')){
+                        setAuthentication({
+                          ...authentication,
+                          customToken: {
+                            token: uuidv4()
+                          }
+                        })
+                      }
+                      
                     }}
-                    style={{fontSize: 8, cursor: 'pointer'}}
+                    style={{fontSize: 8, cursor: checkAuthType('custom-token-auth') ? 'pointer' : 'not-allowed'}}
                   >
                     Generate UUID
                   </p>
                 )
               }}
             />
+            <p style={{color: "#FFA500"}} hidden={checkAuthType('custom-token-auth')}>
+              Custom Token Authentication is disabled on the OpenHIM Core.
+            </p>
           </>
         )}
         {authType === 'mutualTLS' && (

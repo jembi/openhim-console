@@ -210,7 +210,6 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
             </Step>
           </Stepper>
         </Box>
-        <br />
         <Divider />
         <Box>
           {activeStep === 0 ? (
@@ -231,11 +230,8 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
               onAuthenticationChange={onAuthenticationChange}
             />
           )}
-
           <br />
-          <Divider />
-          <br />
-          <Stack spacing={2} direction="row" sx={{marginBottom: 1}}>
+          <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
             <Button
               variant="outlined"
               id={activeStep === 0 ? 'cancel' : 'back'}

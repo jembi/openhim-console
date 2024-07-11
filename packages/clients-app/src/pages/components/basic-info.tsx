@@ -3,16 +3,18 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Card,
   Checkbox,
   Divider,
   FormControl,
   FormControlLabel,
+  Stack,
   TextField
 } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
-import {fetchRoles} from '@jembi/openhim-core-api'
+import {fetchRoles, createRole} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
 
 interface BasicInfoProps {
@@ -37,11 +39,11 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   const [roles, setRoles] = useState<string[]>([])
 
   useEffect(() => {
-    // //@ts-ignore
-    // fetchRoles().then(roles => {
-    //   //@ts-ignore
-    //   setRoles(roles.map(role => role.name))
-    // });
+    //@ts-ignore
+    fetchRoles().then(roles => {
+      //@ts-ignore
+      setRoles(roles.map(role => role.name))
+    });
     setRoles(['fhir'])
   }, [])
 
@@ -78,13 +80,14 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
 
   return (
     <div hidden={hidden}>
-      <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 3}}>
-        <h1>Basic Info</h1>
-        <p>
+      <Box sx={{marginLeft: 2, marginRight: 2, marginBottom: 3}}>
+        
+        <p style={{fontSize: 24, marginBottom: -10}}>Basic Info</p>
+        <p style={{opacity: '0.6', fontSize: 11}}>
           Provide the required client information and assign existing roles for
           access management
         </p>
-        <Divider />
+        <Divider style={{marginLeft: -100, marginRight: -100}} />
         <br />
         <TextField
           id="clientID"
