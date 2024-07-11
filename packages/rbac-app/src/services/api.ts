@@ -1,4 +1,5 @@
 import { Role } from "../types";
+import { defaultRole } from "../utils";
 
 const {
     fetchRoles,
@@ -12,49 +13,6 @@ const {
     createRole,
 } = require("@jembi/openhim-core-api");
 
-
-const defaultRole: Readonly<Role> = {
-    name: '',
-    permissions: {
-      'channel-view-all': false,
-      'channel-view-specified': [],
-      'channel-manage-all': false,
-      'channel-manage-specified': [],
-      'client-view-all': false,
-      'client-view-specified': [],
-      'client-manage-all': false,
-      'client-manage-specified': [],
-      'client-role-view-all': false,
-      'client-role-view-specified': [],
-      'client-role-manage-all': false,
-      'client-role-manage-specified': [],
-      'transaction-view-all': false,
-      'transaction-view-specified': [],
-      'transaction-view-body-all': false,
-      'transaction-view-body-specified': [],
-      'transaction-rerun-all': false,
-      'transaction-rerun-specified': [],
-      'mediator-view-all': false,
-      'mediator-view-specified': [],
-      'mediator-manage-all': false,
-      'mediator-manage-specified': [],
-      'app-view-all': false,
-      'app-view-specified': [],
-      'app-manage-all': false,
-      'user-view': false,
-      'user-manage': false,
-      'user-role-view': false,
-      'user-role-manage': false,
-      'audit-trail-view': false,
-      'audit-trail-manage': false,
-      'contact-list-view': false,
-      'contact-list-manage': false,
-      'certificates-view': false,
-      'certificates-manage': false,
-      'logs-view': false,
-      'import-export': false,
-    }
-  };
 
 export async function getRoles() {
     try {

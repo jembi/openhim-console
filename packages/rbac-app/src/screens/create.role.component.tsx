@@ -11,8 +11,8 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
-import { Permission, Role } from '../../types';
-import { defaultRole } from '../../utils';
+import { Permission, Role } from '../types';
+import { defaultRole } from '../utils';
 
 export type CreateRoleProps = {
   onSubmit: (role: Role) => unknown;

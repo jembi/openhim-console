@@ -1,41 +1,73 @@
+import React, { useEffect, useState } from 'react';
 import {
+  Button,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
   Grid,
-  Switch
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
 } from '@mui/material';
-import React, { useEffect } from 'react';
-import { Permission, Role } from '../../types';
-import { PermissionChip } from '../permission.chip.component';
+import { Permission, Role } from '../types';
 
-export type ViewRoleProps = {
+export type EditRoleProps = {
   role: Role;
-  isReadOnly?: boolean;
+  onSubmit: (role: Role) => unknown;
+  onCancel: () => unknown;
+  channels: any[];
+  apps: any[];
+  mediators: any[];
+  clients: any[];
+  transactions: any[];
 }
 
-function ViewRole(props: ViewRoleProps): React.ReactElement {
-  const selectedRole = props.role;
+function EditRole(props: EditRoleProps): React.ReactElement {
+  const [selectedRole, setSelectedRole] = useState<Role>(structuredClone(props.role));
 
   useEffect(() => {
    
   }, []);
 
+  const handleSave = () => {
+    props.onSubmit(structuredClone(selectedRole))
+  };
+
+  const handleCancel = () => {
+    props.onCancel();
+  };
+
   const handlePermissionSwitchChange = (key: keyof Permission) => {
     // @ts-ignore
     selectedRole.permissions[key] = !selectedRole.permissions[key];
+    setSelectedRole(structuredClone(selectedRole));
   }
 
   const handlePermissionListChange = (key: keyof Permission, values: string[]) => {
     // @ts-ignore
     selectedRole.permissions[key] = values;
+    setSelectedRole(structuredClone(selectedRole));
   }
 
   return (
     <div style={{ minWidth: '800px', margin: '0 auto' }}>
-      <FormControl aria-readonly={true} disabled={true} component="fieldset" style={{ width: '100%' }}>
-        
+      <FormControl component="fieldset" style={{ width: '100%' }}>
+        <Grid container spacing={2} style={{ marginTop: '20px' }}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Role Name"
+              value={selectedRole.name}
+              onChange={evt => setSelectedRole({ ...selectedRole, name: evt.target.value })}
+              style={{ marginBottom: '20px' }}
+              error={selectedRole.name.trim().length == 0}
+              helperText={selectedRole.name.trim().length == 0 && 'Role name is required'}
+            />
+          </Grid>
+        </Grid>
+
         <section id="permissions">
           <Grid container spacing={2} style={{ marginTop: '20px' }}>
             <Grid item xs={6}>
@@ -59,7 +91,18 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Channel View Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['channel-view-specified']} />
+                <Select
+                  disabled={selectedRole.permissions['channel-view-all']}
+                  multiple
+                  value={selectedRole.permissions['channel-view-specified']}
+                  onChange={evt => handlePermissionListChange('channel-view-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -86,7 +129,18 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Channel Manage Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['channel-manage-specified']} />
+                <Select
+                  multiple
+                  disabled={selectedRole.permissions['channel-manage-all']}
+                  value={selectedRole.permissions['channel-manage-specified']}
+                  onChange={evt => handlePermissionListChange('channel-manage-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -113,7 +167,18 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Client View Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['client-view-specified']} />
+                <Select
+                  multiple
+                  disabled={selectedRole.permissions['client-view-all']}
+                  value={selectedRole.permissions['client-view-specified']}
+                  onChange={evt => handlePermissionListChange('client-view-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.clients.map(client => (
+                      <MenuItem key={client._id} value={client._id}>{client._id}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -140,7 +205,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Client Manage Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['client-manage-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['client-manage-specified']}
+                  onChange={evt => handlePermissionListChange('client-manage-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.clients.map(client => (
+                      <MenuItem key={client.name} value={client.name}>{client.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -167,7 +242,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Client Role View Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['client-role-view-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['client-role-view-specified']}
+                  onChange={evt => handlePermissionListChange('client-role-view-specified', evt.target.value as string[])}
+                >
+                  {/* {
+                    channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
+                    ))
+                  } */}
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -194,7 +279,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Client Role Manage Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['client-role-manage-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['client-role-manage-specified']}
+                  onChange={evt => handlePermissionListChange('client-role-manage-specified', evt.target.value as string[])}
+                >
+                  {
+                    // channels.map(channel => (
+                    //   <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
+                    // ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -221,7 +316,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Transaction View All Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['transaction-view-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['transaction-view-specified']}
+                  onChange={evt => handlePermissionListChange('transaction-view-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.transactions.map(transaction => (
+                      <MenuItem key={transaction.name} value={transaction.name}>{transaction.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -248,7 +353,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Transaction View Body All Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['transaction-view-body-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['transaction-view-body-specified']}
+                  onChange={evt => handlePermissionListChange('transaction-view-body-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.transactions.map(transaction => (
+                      <MenuItem key={transaction.name} value={transaction.name}>{transaction.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -275,7 +390,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>Mediator Manage Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['mediator-manage-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['mediator-manage-specified']}
+                  onChange={evt => handlePermissionListChange('mediator-manage-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.mediators.map(mediator => (
+                      <MenuItem key={mediator.name} value={mediator.name}>{mediator.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -302,7 +427,17 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <FormLabel>App View Specified</FormLabel>
-                <PermissionChip data={props.role.permissions['app-view-specified']} />
+                <Select
+                  multiple
+                  value={selectedRole.permissions['app-view-specified']}
+                  onChange={evt => handlePermissionListChange('app-view-specified', evt.target.value as string[])}
+                >
+                  {
+                    props.apps.map(app => (
+                      <MenuItem key={app.name} value={app.name}>{app.name}</MenuItem>
+                    ))
+                  }
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
@@ -533,9 +668,22 @@ function ViewRole(props: ViewRoleProps): React.ReactElement {
 
         </section>
 
+        <Grid container spacing={2} style={{ marginTop: '20px' }}>
+          <Grid item xs={6}>
+            <Button variant="outlined" fullWidth onClick={handleCancel} style={{ backgroundColor: 'white' }}>
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button disabled={selectedRole.name.trim().length == 0} variant="contained" fullWidth color="primary" onClick={handleSave} style={{ backgroundColor: 'green', color: 'white' }}>
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+
       </FormControl>
     </div>
   );
 };
 
-export default ViewRole;
+export default EditRole;

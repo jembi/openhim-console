@@ -27,16 +27,9 @@ import CreateRole from '../screens/create.role.component';
 import EditRole from '../screens/edit.role.component';
 import ViewRole from '../screens/view.role.component';
 import { AlertDialog, AlertDialogProps } from './dialogs/alert.dialog.component';
-import { useAlert } from '../contexts/alert.context';
 
 type Alert = {
   severity: AlertDialogProps['severity'];
-  isOpen: boolean;
-  title: string;
-  message: string;
-}
-
-type Confirm = {
   isOpen: boolean;
   title: string;
   message: string;
@@ -47,11 +40,10 @@ const RBACManagement: React.FC = () => {
   const [isAddNewRole, setIsAddNewRole] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [canDelete, setCanDelete] = useState(true);
-  const [canEdit, setCanEdit] = useState(true);
+  const [canEdit, setCanEdit] = useState(true)
   const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
+  const [isShowDeleteDialog, setIsShowDeleteDialog] = useState(false);
   const [alert, setAlert] = useState<Alert>({ isOpen: false, title: '', message: '', severity: 'info' });
-  const [confirm, setConfirm] = useState<Confirm>({ isOpen: false, title: '', message: '' });
-  const { showAlert, hideAlert } = useAlert();
 
   const [roles, setRoles] = useState<Role[]>([]);
   const [apps, setApps] = useState<any[]>([]);
@@ -152,10 +144,12 @@ const RBACManagement: React.FC = () => {
       console.error(err);
       setAlert({ isOpen: true, title: 'Error', severity: 'error', message: 'Error deleting role' });
     }
+
+    setIsShowDeleteDialog(false);
   };
 
   const onAttemptToDeleteRole = () => {
-    
+    setIsShowDeleteDialog(true);
   };
 
 
@@ -170,57 +164,106 @@ const RBACManagement: React.FC = () => {
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
 
-      
-      <section id="dialogs">
-        <BasicDialog
-          title='Add New Role'
-          open={isAddNewRole}
-          onClose={onCancelAddNewRole}
+      <Typography variant="h4" gutterBottom>
+        Add or Edit a User Role
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Select an existing role to edit or click Add New Role to create a new one
+      </Typography>
+
+
+      <Grid container style={{ marginTop: '20px' }}>
+          <ButtonGroup variant="contained" size="large">
+            <Button
+              color="secondary"
+              onClick={onAttemptToEditRole}
+              disabled={!canEdit}
+              >
+              Edit Role
+            </Button>
+            <Button
+              color="primary"
+              onClick={onAttemptToAddRole}
+            >
+              Add New Role
+            </Button>
+            <Button
+              color="error"
+              onClick={onAttemptToDeleteRole}
+              disabled={!canDelete}
+            >
+              Delete Role
+            </Button>
+          </ButtonGroup>
+      </Grid>
+
+      <BasicDialog
+        title='Add New Role'
+        open={isAddNewRole}
+        onClose={onCancelAddNewRole}
+      >
+        <CreateRole
+          apps={apps}
+          channels={channels}
+          mediators={mediators}
+          clients={clients}
+          transactions={transactions}
+          onSubmit={submitAddNewRole}
+          onCancel={onCancelAddNewRole}
+      />
+      </BasicDialog>
+
+      <BasicDialog
+        title='Edit Role'
+        open={isEditing}
+        onClose={onCancelEditRole}
+      >
+        <EditRole
+          role={selectedRole}
+          apps={apps}
+          channels={channels}
+          mediators={mediators}
+          clients={clients}
+          transactions={transactions}
+          onSubmit={submitEditRole}
+          onCancel={onCancelEditRole}
+      />
+      </BasicDialog>
+
+      <ConfirmationDialog
+        title="Delete Role"
+        message="Are you sure you want to delete this role?"
+        open={isShowDeleteDialog}
+        onNo={() => setIsShowDeleteDialog(false)}
+        onYes={submitDeleteRole}
+      />
+
+      <AlertDialog
+        severity={alert.severity}
+        title={alert.title}
+        message={alert.message}
+        open={alert.isOpen}
+        onClose={() => setAlert({ ...alert, isOpen: false })}
+      />
+
+      <Grid container spacing={2} style={{ marginTop: '20px' }}>
+        <Grid item xs={10}>
+        <Select
+          fullWidth
+          multiple={false}
+          value={selectedRole?.name ?? undefined}
+          onChange={onSelectedRoleChange}
         >
-          <CreateRole
-            apps={apps}
-            channels={channels}
-            mediators={mediators}
-            clients={clients}
-            transactions={transactions}
-            onSubmit={submitAddNewRole}
-            onCancel={onCancelAddNewRole}
-        />
-        </BasicDialog>
+          {
+            roles.map(role => (
+              <MenuItem key={role.name} value={role.name}>{role.name}</MenuItem>
+            ))
+          }
+        </Select>
+        </Grid>
+      </Grid>
 
-        <BasicDialog
-          title='Edit Role'
-          open={isEditing}
-          onClose={onCancelEditRole}
-        >
-          <EditRole
-            role={selectedRole}
-            apps={apps}
-            channels={channels}
-            mediators={mediators}
-            clients={clients}
-            transactions={transactions}
-            onSubmit={submitEditRole}
-            onCancel={onCancelEditRole}
-        />
-        </BasicDialog>
-
-        <ConfirmationDialog
-          title={confirm.title}
-          message={confirm.message}
-          open={confirm.isOpen}
-          onNo={() => setConfirm({ ...confirm, isOpen: false })}
-          onYes={submitDeleteRole}
-        />
-
-        <AlertDialog
-          severity={alert.severity}
-          title={alert.title}
-          message={alert.message}
-          open={alert.isOpen}
-          onClose={() => setAlert({ ...alert, isOpen: false })}
-        />
-      </section>
+      <ViewRole role={selectedRole} isReadOnly={true} />
 
     </div>
   );
