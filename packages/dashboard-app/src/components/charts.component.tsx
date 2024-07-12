@@ -57,6 +57,11 @@ export default function Charts() {
       })
   }
 
+  // on mount
+  React.useEffect(() => {
+    getFilteredTransactions()
+  }, [])
+
   React.useEffect(() => {
     getFilteredTransactions()
   }, [filterData])
