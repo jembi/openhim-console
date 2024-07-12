@@ -1,4 +1,4 @@
-import {Role} from '../types'
+import {App, Channel, Client, Mediator, Role, Transaction} from '../types'
 import {defaultRole} from '../utils'
 
 const {
@@ -20,7 +20,6 @@ export async function getRoles() {
       structuredClone({...defaultRole, name: 'Test 67'}),
       {...defaultRole, name: 'Admin'}
     ]
-    console.log(roles)
 
     return roles
   } catch (err) {
@@ -56,10 +55,9 @@ export async function createNewRole(role: Role) {
   }
 }
 
-export async function getMediators() {
+export async function getMediators(): Promise<Mediator[]> {
   try {
     const mediators = await fetchMediators()
-    console.log(mediators)
 
     return mediators
   } catch (err) {
@@ -68,10 +66,9 @@ export async function getMediators() {
   }
 }
 
-export async function getApps() {
+export async function getApps(): Promise<App[]> {
   try {
     const apps = await getAllApps()
-    console.log(apps)
 
     return apps
   } catch (err) {
@@ -80,10 +77,9 @@ export async function getApps() {
   }
 }
 
-export async function getChannels() {
+export async function getChannels(): Promise<Channel[]> {
   try {
     const channels = await fetchChannels()
-    console.log(channels)
 
     return channels
   } catch (err) {
@@ -92,10 +88,9 @@ export async function getChannels() {
   }
 }
 
-export async function getClients() {
+export async function getClients(): Promise<Client[]> {
   try {
     const clients = await fetchClients()
-    console.log(clients)
 
     return clients
   } catch (err) {
@@ -104,10 +99,9 @@ export async function getClients() {
   }
 }
 
-export async function getTransactions() {
+export async function getTransactions(): Promise<Transaction[]> {
   try {
     const transactions = await fetchTransactions()
-    console.log(transactions)
 
     return transactions
   } catch (err) {

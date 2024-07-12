@@ -28,6 +28,7 @@ import EditRole from '../screens/edit.role.component'
 import ViewRole from '../screens/view.role.component'
 import {AlertDialog, AlertDialogProps} from './dialogs/alert.dialog.component'
 import {useAlert} from '../contexts/alert.context'
+import AddUserRole from '../screens/create.role.component'
 
 type Alert = {
   severity: AlertDialogProps['severity']
@@ -212,15 +213,7 @@ const RBACManagement: React.FC = () => {
           open={isAddNewRole}
           onClose={onCancelAddNewRole}
         >
-          <CreateRole
-            apps={apps}
-            channels={channels}
-            mediators={mediators}
-            clients={clients}
-            transactions={transactions}
-            onSubmit={submitAddNewRole}
-            onCancel={onCancelAddNewRole}
-          />
+          <AddUserRole />
         </BasicDialog>
 
         <BasicDialog

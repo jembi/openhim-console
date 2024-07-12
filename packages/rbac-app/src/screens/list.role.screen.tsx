@@ -16,10 +16,12 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import {Permission, Role} from '../types'
-import {Link, useLoaderData} from 'react-router-dom'
+import {Link, useLoaderData, useNavigate} from 'react-router-dom'
 import {mapPermissionToHumanReadable} from '../utils'
+import {Routes} from '../types'
 
 function UserRoleList() {
+  const navigate = useNavigate()
   const roles = useLoaderData() as Role[]
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
@@ -114,8 +116,13 @@ function UserRoleList() {
         marginBottom={2}
       >
         <TextField variant="outlined" placeholder="Search..." />
-        <Button variant="contained" color="primary" startIcon={<AddIcon />}>
-          <Link to="/create-role">Add</Link>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => navigate(Routes.CREATE_ROLE)}
+        >
+          Add
         </Button>
       </Box>
       <Card>

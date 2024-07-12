@@ -42,3 +42,26 @@ export type Role = {
   name: string
   permissions: Permission
 }
+
+export enum Routes {
+  ROLES = '/',
+  CREATE_ROLE = '/create-role'
+}
+
+export type Transaction = {name: string}
+
+export type Mediator = {name: string}
+
+export type Client = {name: string}
+
+export type Channel = {name: string}
+
+export type App = {name: string}
+
+export type CreateRoleLoader = {
+  channels: Channel[]
+  clients: Client[]
+  transactions: Transaction[]
+  mediators: Mediator[]
+  apps: App[]
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import {createMemoryRouter, RouterProvider} from 'react-router-dom'
 import {ThemeProvider} from '@emotion/react'
 import theme from '@jembi/openhim-theme'
 import {AlertProvider} from './contexts/alert.context'
@@ -7,17 +7,8 @@ import {ConfirmationProvider} from './contexts/confirmation.context'
 import {BasicDialogProvider} from './contexts/dialog.context'
 import UserRoleList from './screens/list.role.screen'
 import {getRoles} from './services/api'
-
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <UserRoleList />,
-      loader: getRoles
-    }
-  ],
-  {}
-)
+import AddUserRole from './screens/create.role.component'
+import router from './router'
 
 export default function Root() {
   return (
