@@ -123,6 +123,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                   id={role}
                   checked={basicInfo.roles.includes(role)}
                   onChange={onCheckBoxChange}
+                 
                 />
               }
               label={role}

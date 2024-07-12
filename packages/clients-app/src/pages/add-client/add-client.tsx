@@ -19,7 +19,8 @@ import {
   AuthenticationSchema
 } from '../../types'
 import {addClient} from '@jembi/openhim-core-api'
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js'
+import './style.css'
 
 interface AddClientProps {
   returnToClientList: () => void
@@ -199,7 +200,7 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
         <Box>
           <Stepper sx={{paddingTop: 2}} activeStep={activeStep}>
             <Step key={'basic-info'}>
-              <StepLabel {...labelProps}>
+              <StepLabel sx={{fontSize:20}} {...labelProps}>
                 <p style={{fontSize: 14}}>Basic Info</p>
               </StepLabel>
             </Step>
