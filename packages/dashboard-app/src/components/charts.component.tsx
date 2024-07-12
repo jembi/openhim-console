@@ -15,6 +15,9 @@ type Alert = {
   message: string
 }
 
+const subtitleStyles = {fontSize: '16px'}
+const chartCardStyles = {backgroundColor: '#fff', borderRadius: '4px'}
+
 export default function Charts() {
   const now = new Date()
   const [timeSeries, setTimeSeries] = useState<TimeSeries[]>([])
@@ -73,7 +76,7 @@ export default function Charts() {
           <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
             Dashboard
           </Typography>
-          <p style={{fontSize: '16px'}}>
+          <p style={subtitleStyles}>
             An overview of recent transactions through your mediator.
           </p>
           <Divider />
@@ -84,10 +87,7 @@ export default function Charts() {
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
-              <Card
-                elevation={2}
-                style={{backgroundColor: '#fff', borderRadius: '4px'}}
-              >
+              <Card elevation={2} style={chartCardStyles}>
                 <TransactionLineChart
                   type="load"
                   data={timeSeries}
@@ -100,10 +100,7 @@ export default function Charts() {
               </Card>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Card
-                elevation={2}
-                style={{backgroundColor: '#fff', borderRadius: '4px'}}
-              >
+              <Card elevation={2} style={chartCardStyles}>
                 <TransactionLineChart
                   type="avgResponseTime"
                   data={timeSeries}

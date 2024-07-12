@@ -55,3 +55,11 @@ export enum TimeSeriesScale {
   month = 'month',
   year = 'year'
 }
+
+export type TransactionLineChartType = 'load' | 'avgResponseTime'
+
+export type TransactionLineChartProps = {
+  period: {from: Date; until: Date; type: TimeSeriesScale}
+  data: TimeSeries[]
+  type: TransactionLineChartType
+}

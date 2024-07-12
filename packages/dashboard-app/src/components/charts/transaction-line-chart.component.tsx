@@ -1,6 +1,6 @@
 import InfoIcon from '@mui/icons-material/Info'
-import {Card, CardContent, CardHeader, Grid, Typography} from '@mui/material'
-import {LineChart} from '@mui/x-charts/LineChart'
+import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material'
+import { LineChart } from '@mui/x-charts/LineChart'
 import {
   add,
   format,
@@ -11,16 +11,11 @@ import {
   isSameWeek,
   isSameYear
 } from 'date-fns'
-import {TimeSeries, TimeSeriesScale} from '../../types'
-import {getTimeDiffScale} from '../../utils'
-
-export type TransactionLineChartType = 'load' | 'avgResponseTime'
-
-export type TransactionLineChartProps = {
-  period: {from: Date; until: Date; type: TimeSeriesScale}
-  data: TimeSeries[]
-  type: TransactionLineChartType
-}
+import {
+  TimeSeriesScale,
+  TransactionLineChartProps
+} from '../../types'
+import { getTimeDiffScale } from '../../utils'
 
 export default function TransactionLineChart(props: TransactionLineChartProps) {
   const buildChartData = () => {
