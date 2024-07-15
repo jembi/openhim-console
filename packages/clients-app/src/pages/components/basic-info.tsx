@@ -44,7 +44,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
       //@ts-ignore
       setRoles(roles.map(role => role.name))
     });
-    setRoles(['fhir'])
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
