@@ -45,10 +45,38 @@ export type Role = {
 
 export enum Routes {
   ROLES = '/',
-  CREATE_ROLE = '/create-role'
+  CREATE_ROLE = '/create-role',
+  EDIT_ROLE = '/edit-role/:id'
 }
 
-export type Transaction = {name: string}
+export type Request = {
+  host: string
+  port: string
+  path: string
+  querystring: string
+  method: string
+  timestamp: string
+}
+
+export type Response = {
+  status: number
+  timestamp: string
+}
+
+export type Transaction = {
+  request: Request
+  response: Response
+  _id: string
+  clientID: string
+  clientIP: string
+  childIDs: string[]
+  channelID: string
+  canRerun: boolean
+  autoRetry: boolean
+  wasRerun: boolean
+  status: string
+  __v: number
+}
 
 export type Mediator = {name: string}
 

@@ -1,29 +1,24 @@
 import {
   Box,
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Divider,
   Button,
-  FormControl,
-  FormControlLabel,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
   Grid,
-  MenuItem,
-  Select,
   Step,
   StepLabel,
   Stepper,
-  Switch,
-  TextField,
-  Typography,
-  Paper
+  Typography
 } from '@mui/material'
 import React from 'react'
 import {useLoaderData, useNavigate, useNavigation} from 'react-router-dom'
-import {defaultRole} from '../utils'
-import {Channel, CreateRoleLoader, Permission, Role} from '../types'
 import Loader from '../components/helpers/loader.component'
+import {CreateRoleLoader} from '../types'
+import {defaultRole} from '../utils'
+import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
+import {ChannelsClientsStep} from './steps/channels.and.clients.step'
+import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
 
 const steps = [
   'Channels & Clients',
@@ -31,357 +26,11 @@ const steps = [
   'Additional Permissions'
 ]
 
-const ChannelsClientsStep = (props: {
-  role: Role
-  channels: Channel[]
-  onChange: (role: Role) => void
-}) => {
-  const {state} = useNavigation()
-  const [role, setRole] = React.useState(props.role)
-
-  React.useEffect(() => {
-    props.onChange(role)
-  }, [role])
-
-  if (state === 'loading') {
-    return <Loader />
-  }
-
-  return (
-    <Box>
-      <Typography variant="h6">
-        Set Channels, Clients and Client Roles
-      </Typography>
-      <Typography variant="subtitle1">
-        Manage permissions for viewing and managing channels, clients and client
-        roles.
-      </Typography>
-
-      <Divider style={{marginTop: '10px', marginBottom: '10px'}} />
-
-      <Grid container rowSpacing={2}>
-        <Grid item xs={12}>
-          <Card
-            elevation={0}
-            style={{boxShadow: '0px', border: '1px', borderRadius: '0px'}}
-          >
-            <CardHeader title="Role Name" />
-            <CardContent>
-              <Grid container>
-                <Grid item xs={8}>
-                  <TextField
-                    label="Role Name"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={role.name}
-                    onChange={e => setRole({...role, name: e.target.value})}
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Channels" />
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        value={role.permissions['channel-manage-all']}
-                        onChange={e => {}}
-                      />
-                    }
-                    label="Allow channel management"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      value={role.permissions['channel-manage-specified']}
-                      disabled={!role.permissions['channel-manage-all']}
-                    >
-                      {props.channels.map(channel => (
-                        <MenuItem value={channel.name}>{channel.name}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={<Switch />}
-                    label="Allow channel viewing"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      defaultValue=""
-                    >
-                      <MenuItem value="">Manage None</MenuItem>
-                      {/* Add more options as needed */}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Clients" />
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Allow client management"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      defaultValue=""
-                    >
-                      <MenuItem value="">Manage All</MenuItem>
-                      {/* Add more options as needed */}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Allow client viewing"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      defaultValue=""
-                    >
-                      <MenuItem value="">View All</MenuItem>
-                      {/* Add more options as needed */}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title="Client Roles" />
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Allow client role management"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      defaultValue=""
-                    >
-                      <MenuItem value="">Manage X</MenuItem>
-                      <MenuItem value="">Manage Y</MenuItem>
-                      {/* Add more options as needed */}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Allow client role viewing"
-                  />
-                  <FormControl fullWidth margin="normal">
-                    <Select
-                      label="Choose options"
-                      variant="outlined"
-                      defaultValue=""
-                    >
-                      <MenuItem value="">Manage X</MenuItem>
-                      <MenuItem value="">Manage Y</MenuItem>
-                      {/* Add more options as needed */}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
-  )
-}
-
-const TransactionsUsersMediatorsStep = () => (
-  <Box>
-    <Typography variant="h6">Set Transactions, Users and Mediators</Typography>
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Transactions</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow transaction reruns"
-        />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">Manage None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow transaction viewing"
-        />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">Manage None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow body viewing" />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">Manage None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Users</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow user management" />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow user viewing" />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow user role management"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow user role viewing"
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Mediators</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow mediator management"
-        />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">Manage None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow mediator viewing" />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">View None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-    </Grid>
-  </Box>
-)
-
-const AdditionalPermissionsStep = () => (
-  <Box>
-    <Typography variant="h6">Set Additional Permissions</Typography>
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Apps</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow app viewing" />
-        <FormControl fullWidth margin="normal">
-          <Select label="Choose options" variant="outlined" defaultValue="">
-            <MenuItem value="">View None</MenuItem>
-            {/* Add more options as needed */}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Audit Trails & Logs</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow audit trail viewing"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow log viewing" />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Certificates</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow certificate management"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow certificate viewing"
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Contacts</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow contact management"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel control={<Switch />} label="Allow contact viewing" />
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1">Data Management</Typography>
-      </Grid>
-      <Grid item xs={6}>
-        <FormControlLabel
-          control={<Switch />}
-          label="Allow import & export of data"
-        />
-      </Grid>
-    </Grid>
-  </Box>
-)
-
 function AddUserRole() {
+  const {state} = useNavigation()
   const navigate = useNavigate()
-  const {channels} = useLoaderData() as CreateRoleLoader
+  const {channels, clients, mediators, transactions, apps} =
+    useLoaderData() as CreateRoleLoader
   const [activeStep, setActiveStep] = React.useState(0)
   const [role, setRole] = React.useState(structuredClone(defaultRole))
 
@@ -391,6 +40,10 @@ function AddUserRole() {
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1)
+  }
+
+  if (state === 'loading') {
+    return <Loader />
   }
 
   return (
@@ -441,12 +94,26 @@ function AddUserRole() {
                 {activeStep === 0 && (
                   <ChannelsClientsStep
                     role={role}
+                    clients={clients}
                     channels={channels}
                     onChange={setRole}
                   />
                 )}
-                {activeStep === 1 && <TransactionsUsersMediatorsStep />}
-                {activeStep === 2 && <AdditionalPermissionsStep />}
+                {activeStep === 1 && (
+                  <TransactionsUsersMediatorsStep
+                    role={role}
+                    mediators={mediators}
+                    transactions={transactions}
+                    onChange={setRole}
+                  />
+                )}
+                {activeStep === 2 && (
+                  <AdditionalPermissionsStep
+                    role={role}
+                    apps={apps}
+                    onChange={setRole}
+                  />
+                )}
               </div>
             </CardContent>
             <Divider />

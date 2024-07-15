@@ -7,13 +7,18 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
-  Typography
+  Input,
+  Typography,
+  Grid,
+  Divider,
+  InputAdornment
 } from '@mui/material'
+import Search from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import {Permission, Role} from '../types'
 import {Link, useLoaderData, useNavigate} from 'react-router-dom'
@@ -25,6 +30,10 @@ function UserRoleList() {
   const roles = useLoaderData() as Role[]
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+
+  const handleRowClick = (role: Role) => {
+    navigate(Routes.EDIT_ROLE.replace(':id', role.name))
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -100,38 +109,55 @@ function UserRoleList() {
   }
 
   return (
-    <Box padding={3}>
+    <Box padding={3} sx={{backgroundColor: '#fff'}}>
       <Typography variant="h4" gutterBottom>
         User Roles List
       </Typography>
-      <Typography variant="subtitle1" gutterBottom>
-        Easily assign and manage roles and permissions to users by selecting a
-        role, viewing and editing its permissions, or creating a new role with
-        customized permissions.
-      </Typography>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        marginBottom={2}
-      >
-        <TextField variant="outlined" placeholder="Search..." />
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => navigate(Routes.CREATE_ROLE)}
-        >
-          Add
-        </Button>
-      </Box>
-      <Card>
+
+      <Grid container>
+        <Grid item xs={11}>
+          <Typography variant="subtitle1" gutterBottom>
+            Easily assign and manage roles and permissions to users by selecting
+            a role, viewing and editing its permissions, or creating a new role
+            with customized permissions.
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => navigate(Routes.CREATE_ROLE)}
+          >
+            Add
+          </Button>
+        </Grid>
+      </Grid>
+
+      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
+
+      <Card elevation={4}>
         <CardContent>
+          <Grid container>
+            <Grid item xs={2}>
+              <Input
+                placeholder="Search"
+                fullWidth
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                }
+              />
+            </Grid>
+          </Grid>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
+                  <TableCell>
+                    <TableSortLabel direction="asc">Name</TableSortLabel>
+                  </TableCell>
                   <TableCell>Manage</TableCell>
                   <TableCell>View</TableCell>
                   <TableCell>Additional Permissions</TableCell>
@@ -141,7 +167,7 @@ function UserRoleList() {
                 {roles
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((role, index) => (
-                    <TableRow key={index}>
+                    <TableRow onClick={() => handleRowClick(role)} key={index}>
                       <TableCell>{role.name}</TableCell>
                       <TableCell>{getManagePermissions(role)}</TableCell>
                       <TableCell>{getViewPermissions(role)}</TableCell>
@@ -153,6 +179,7 @@ function UserRoleList() {
           </TableContainer>
           <TablePagination
             // rowsPerPageOptions={[5, 10, 25]}
+
             component="section"
             count={roles.length}
             rowsPerPage={rowsPerPage}

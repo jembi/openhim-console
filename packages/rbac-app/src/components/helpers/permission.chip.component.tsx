@@ -2,14 +2,14 @@ import {Chip, Stack} from '@mui/material'
 
 export type PermissionChipProps = {
   data: string[]
+  onRemove?: (index: number) => unknown
 }
 
 export const PermissionChip = (props: PermissionChipProps) => {
   return (
-    <Stack direction="row" spacing={1}>
-      {props.data.map(channel => (
-        <Chip key={channel} label={channel} />
-      ))}
+    <Stack sx={{display: 'flex'}} direction="row" spacing={1}>
+      {Array.isArray(props.data) &&
+        props.data.map(channel => <Chip key={channel} label={channel} />)}
     </Stack>
   )
 }
