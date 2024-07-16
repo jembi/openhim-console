@@ -100,7 +100,9 @@ export function AdditionalPermissionsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.apps.map(app => (
-                      <MenuItem key={app.name} value={app.name}>{app.name}</MenuItem>
+                      <MenuItem key={app.name} value={app.name}>
+                        {app.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
