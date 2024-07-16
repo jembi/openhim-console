@@ -16,7 +16,6 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
-import {useBasicDialog} from '../contexts/dialog.context'
 import {
   createNewRole,
   getApps,
@@ -30,6 +29,7 @@ import {defaultRole} from '../utils'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
+import { useBasicBackdrop } from '../contexts/backdrop.context'
 
 const steps = [
   'Channels & Clients',
@@ -57,7 +57,7 @@ const queryFn = async () => {
 function AddUserRole() {
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
-  const {showBasicDialog, hideBasicDialog} = useBasicDialog()
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
   const [role, setRole] = React.useState(structuredClone(defaultRole))
   const queryKey = React.useMemo(() => ['query.AddUserRole'], [])
@@ -67,14 +67,14 @@ function AddUserRole() {
   const mutation = useMutation({
     mutationFn: createNewRole,
     onMutate: () => {
-      showBasicDialog(<Loader />)
+      showBackdrop(<Loader />, true)
     },
     onSuccess: () => {
-      hideBasicDialog()
+      hideBackdrop()
       navigate(Routes.ROLES)
     },
     onError: error => {
-      hideBasicDialog()
+      hideBackdrop()
       showAlert('Error creating a new role', 'Error', 'error')
     }
   })
