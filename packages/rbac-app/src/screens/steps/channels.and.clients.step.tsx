@@ -86,7 +86,11 @@ export function ChannelsClientsStep(props: {
                   value={role.name}
                   onChange={e => setRole({...role, name: e.target.value})}
                   error={role.name.trim() === ''}
-                  helperText={role.name.trim() === '' ? 'Role name cannot be empty' : undefined}
+                  helperText={
+                    role.name.trim() === ''
+                      ? 'Role name cannot be empty'
+                      : undefined
+                  }
                 />
               </Grid>
             </Grid>

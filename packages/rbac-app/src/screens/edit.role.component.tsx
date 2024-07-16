@@ -11,12 +11,12 @@ import {
   Stepper,
   Typography
 } from '@mui/material'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
-import { useAlert } from '../contexts/alert.context'
-import { useBasicDialog } from '../contexts/dialog.context'
+import {useAlert} from '../contexts/alert.context'
+import {useBasicDialog} from '../contexts/dialog.context'
 import {
   editRoleByName,
   getApps,
@@ -25,10 +25,10 @@ import {
   getMediators,
   getTransactions
 } from '../services/api'
-import { Role, Routes } from '../types'
-import { AdditionalPermissionsStep } from './steps/additional.permissions.step'
-import { ChannelsClientsStep } from './steps/channels.and.clients.step'
-import { TransactionsUsersMediatorsStep } from './steps/transactions.and.users.step'
+import {Role, Routes} from '../types'
+import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
+import {ChannelsClientsStep} from './steps/channels.and.clients.step'
+import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
 
 const steps = [
   'Channels & Clients',
@@ -55,7 +55,7 @@ const queryFn = async () => {
 
 function EditUserRole() {
   const navigate = useNavigate()
-  const location = useLocation();
+  const location = useLocation()
   const {showAlert, hideAlert} = useAlert()
   const {showBasicDialog, hideBasicDialog} = useBasicDialog()
   const [activeStep, setActiveStep] = React.useState(0)
@@ -118,7 +118,10 @@ function EditUserRole() {
           customized permissions.
           <br />
           For more details instructions, visit out{' '}
-          <a style={{color: 'grey'}} href="#">
+          <a
+            style={{color: 'grey'}}
+            href="https://openhim.org/docs/introduction/about"
+          >
             Help Section
           </a>
           .

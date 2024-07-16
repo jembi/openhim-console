@@ -117,7 +117,10 @@ function AddUserRole() {
           customized permissions.
           <br />
           For more details instructions, visit out{' '}
-          <a style={{color: 'grey'}} href="#">
+          <a
+            style={{color: 'grey'}}
+            href="https://openhim.org/docs/introduction/about"
+          >
             Help Section
           </a>
           .

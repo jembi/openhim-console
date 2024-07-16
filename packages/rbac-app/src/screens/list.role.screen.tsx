@@ -1,33 +1,31 @@
-import React from 'react'
+import AddIcon from '@mui/icons-material/Add'
+import Search from '@mui/icons-material/Search'
 import {
   Box,
   Button,
   Card,
   CardContent,
+  Divider,
+  Grid,
+  Input,
+  InputAdornment,
   Table,
   TableBody,
   TableCell,
-  TableSortLabel,
   TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  Input,
-  Typography,
-  Grid,
-  Divider,
-  InputAdornment
+  TableSortLabel,
+  Typography
 } from '@mui/material'
-import {debounce} from '@mui/material/utils'
-import Search from '@mui/icons-material/Search'
-import AddIcon from '@mui/icons-material/Add'
-import {Permission, Role} from '../types'
-import {Link, useLoaderData, useNavigate} from 'react-router-dom'
-import {mapPermissionToHumanReadable} from '../utils'
-import {Routes} from '../types'
 import {useQuery} from '@tanstack/react-query'
-import {getRoles} from '../services/api'
+import React from 'react'
+import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
+import {getRoles} from '../services/api'
+import {Permission, Role, Routes} from '../types'
+import {mapPermissionToHumanReadable} from '../utils'
 
 function UserRoleList() {
   const search = React.useState('')
@@ -59,7 +57,7 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
-    navigate(Routes.EDIT_ROLE, { state: role })
+    navigate(Routes.EDIT_ROLE, {state: role})
   }
 
   const handleChangePage = (event: unknown, newPage: number) => {

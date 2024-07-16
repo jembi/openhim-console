@@ -1,7 +1,7 @@
-import { createMemoryRouter } from 'react-router-dom'
+import {createMemoryRouter} from 'react-router-dom'
 import AddUserRole from '../screens/create.role.component'
 import UserRoleList from '../screens/list.role.screen'
-import { Routes } from '../types'
+import {Routes} from '../types'
 import EditUserRole from '../screens/edit.role.component'
 
 const router = createMemoryRouter([
