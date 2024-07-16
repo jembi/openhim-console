@@ -1,20 +1,12 @@
-import React from 'react'
-import {createMemoryRouter, RouterProvider} from 'react-router-dom'
 import {ThemeProvider} from '@emotion/react'
 import theme from '@jembi/openhim-theme'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import React from 'react'
+import {RouterProvider} from 'react-router-dom'
 import {AlertProvider} from './contexts/alert.context'
+import {BasicBackdropProvider} from './contexts/backdrop.context'
 import {ConfirmationProvider} from './contexts/confirmation.context'
 import {BasicDialogProvider} from './contexts/dialog.context'
-import UserRoleList from './screens/list.role.screen'
-import {getRoles} from './services/api'
-import AddUserRole from './screens/create.role.component'
 import router from './router'
 
 const queryClient = new QueryClient()
@@ -25,11 +17,13 @@ export default function Root() {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <BasicDialogProvider>
-            <AlertProvider>
-              <ConfirmationProvider>
-                <RouterProvider router={router} />
-              </ConfirmationProvider>
-            </AlertProvider>
+            <BasicBackdropProvider>
+              <AlertProvider>
+                <ConfirmationProvider>
+                  <RouterProvider router={router} />
+                </ConfirmationProvider>
+              </AlertProvider>
+            </BasicBackdropProvider>
           </BasicDialogProvider>
         </QueryClientProvider>
       </ThemeProvider>
