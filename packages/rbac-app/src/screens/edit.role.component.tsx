@@ -16,7 +16,6 @@ import React from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
-import {useBasicDialog} from '../contexts/dialog.context'
 import {
   editRoleByName,
   getApps,
@@ -29,6 +28,7 @@ import {Role, Routes} from '../types'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
 
 const steps = [
   'Channels & Clients',
@@ -57,7 +57,7 @@ function EditUserRole() {
   const navigate = useNavigate()
   const location = useLocation()
   const {showAlert, hideAlert} = useAlert()
-  const {showBasicDialog, hideBasicDialog} = useBasicDialog()
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
   const originalRole = structuredClone(location.state)
   const [role, setRole] = React.useState<Role>(structuredClone(location.state))
@@ -68,14 +68,14 @@ function EditUserRole() {
   const mutation = useMutation({
     mutationFn: () => editRoleByName(originalRole.name, role),
     onMutate: () => {
-      showBasicDialog(<Loader />)
+      showBackdrop(<Loader />, false)
     },
     onSuccess: () => {
-      hideBasicDialog()
+      hideBackdrop()
       navigate(Routes.ROLES)
     },
     onError: error => {
-      hideBasicDialog()
+      hideBackdrop()
       showAlert('Error editing role', 'Error', 'error')
     }
   })
@@ -206,7 +206,11 @@ function EditUserRole() {
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={mutation.isLoading || role.name.trim() === ''}
+                    disabled={
+                      mutation.isLoading ||
+                      role.name.trim() === '' ||
+                      JSON.stringify(role) === JSON.stringify(originalRole)
+                    }
                     onClick={handleEditRole}
                   >
                     Edit Role

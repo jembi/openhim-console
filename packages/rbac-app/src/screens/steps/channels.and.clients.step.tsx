@@ -137,7 +137,7 @@ export function ChannelsClientsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.channels.map(channel => (
-                      <MenuItem value={channel.name}>{channel.name}</MenuItem>
+                      <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -175,7 +175,7 @@ export function ChannelsClientsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.channels.map(channel => (
-                      <MenuItem value={channel.name}>{channel.name}</MenuItem>
+                      <MenuItem key={channel.name} value={channel.name}>{channel.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -225,7 +225,7 @@ export function ChannelsClientsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.clients.map(client => (
-                      <MenuItem value={client.name}>{client.name}</MenuItem>
+                      <MenuItem key={client.name} value={client.name}>{client.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -263,7 +263,7 @@ export function ChannelsClientsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.clients.map(client => (
-                      <MenuItem value={client.name}>{client.name}</MenuItem>
+                      <MenuItem key={client.name} value={client.name}>{client.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>

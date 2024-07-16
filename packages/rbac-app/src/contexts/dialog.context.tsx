@@ -26,13 +26,13 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
     title: '',
     children: null,
     open: false,
-    size: 'lg'
+    size: 'xs'
   })
 
   const showBasicDialog = (
     children: ReactNode,
     title?: string,
-    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'lg'
+    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs'
   ) => {
     setDialogProps({title, children, open: true, size})
   }
