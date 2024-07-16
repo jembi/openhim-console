@@ -19,6 +19,7 @@ import {
   TableSortLabel,
   Typography
 } from '@mui/material'
+import debounce from '@mui/material/utils/debounce';
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
@@ -28,25 +29,24 @@ import {Permission, Role, Routes} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
 
 function UserRoleList() {
-  const search = React.useState('')
+  const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const {isLoading, isError, data, error, refetch} = useQuery({
     queryKey: ['query.UserRoleList'],
     queryFn: getRoles,
     enabled: false
   })
   const roles = data || []
-  // const delayedFetch = React.useMemo(() => debounce(refetch, 500), [refetch])
 
   React.useEffect(() => {
     refetch()
   }, [])
 
-  React.useEffect(() => {
-    // refetch()
-  }, [search])
+  // React.useEffect(() => {
+  //   // refetch()
+  // }, [search])
 
   if (isLoading) {
     return <Loader />
@@ -59,6 +59,10 @@ function UserRoleList() {
   const handleRowClick = (role: Role) => {
     navigate(Routes.EDIT_ROLE, {state: role})
   }
+  
+  const handleOnSearchChange = debounce((value: string) => {
+    setSearch(value)
+  }, 500);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -133,6 +137,13 @@ function UserRoleList() {
     return x
   }
 
+  // @FIXME: Once the search API is implemented, this should be updated to use the filtered roles
+  const filteredRoles = roles.filter(r => {
+    const name = r.name.toLowerCase();
+
+    return name.includes(search.toLowerCase());
+  });
+
   return (
     <Box padding={3} sx={{backgroundColor: '#fff'}}>
       <Typography variant="h4" gutterBottom>
@@ -167,6 +178,7 @@ function UserRoleList() {
             <Grid item xs={2}>
               <Input
                 placeholder="Search"
+                onChange={e => handleOnSearchChange(e.target.value)}
                 fullWidth
                 startAdornment={
                   <InputAdornment position="start">
@@ -189,7 +201,7 @@ function UserRoleList() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {roles
+                {filteredRoles
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((role, index) => (
                     <TableRow onClick={() => handleRowClick(role)} key={index}>
@@ -206,7 +218,7 @@ function UserRoleList() {
             // rowsPerPageOptions={[5, 10, 25]}
 
             component="section"
-            count={roles.length}
+            count={filteredRoles.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
