@@ -74,7 +74,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['app-view-all']}
+                      checked={role.permissions['app-view-all']}
                       onChange={e =>
                         handleSwitchToggle('app-view-all', e.target.checked)
                       }
@@ -118,7 +118,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['audit-trail-view']}
+                      checked={role.permissions['audit-trail-view']}
                       onChange={e =>
                         handleSwitchToggle('audit-trail-view', e.target.checked)
                       }
@@ -131,7 +131,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['logs-view']}
+                      checked={role.permissions['logs-view']}
                       onChange={e =>
                         handleSwitchToggle('logs-view', e.target.checked)
                       }
@@ -153,7 +153,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['certificates-manage']}
+                      checked={role.permissions['certificates-manage']}
                       onChange={e =>
                         handleSwitchToggle(
                           'certificates-manage',
@@ -169,7 +169,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['certificates-view']}
+                      checked={role.permissions['certificates-view']}
                       onChange={e =>
                         handleSwitchToggle(
                           'certificates-view',
@@ -194,7 +194,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['contact-list-manage']}
+                      checked={role.permissions['contact-list-manage']}
                       onChange={e =>
                         handleSwitchToggle(
                           'contact-list-manage',
@@ -210,7 +210,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['contact-list-view']}
+                      checked={role.permissions['contact-list-view']}
                       onChange={e =>
                         handleSwitchToggle(
                           'contact-list-view',
@@ -235,7 +235,7 @@ export function AdditionalPermissionsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['import-export']}
+                      checked={role.permissions['import-export']}
                       onChange={e =>
                         handleSwitchToggle('import-export', e.target.checked)
                       }

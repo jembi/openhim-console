@@ -39,6 +39,7 @@ export type Permission = {
 }
 
 export type Role = {
+  _id: string
   name: string
   permissions: Permission
 }
@@ -46,7 +47,7 @@ export type Role = {
 export enum Routes {
   ROLES = '/',
   CREATE_ROLE = '/create-role',
-  EDIT_ROLE = '/edit-role/:id'
+  EDIT_ROLE = '/edit-role'
 }
 
 export type Request = {

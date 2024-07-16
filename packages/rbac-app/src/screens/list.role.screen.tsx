@@ -18,21 +18,48 @@ import {
   Divider,
   InputAdornment
 } from '@mui/material'
+import {debounce} from '@mui/material/utils'
 import Search from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import {Permission, Role} from '../types'
 import {Link, useLoaderData, useNavigate} from 'react-router-dom'
 import {mapPermissionToHumanReadable} from '../utils'
 import {Routes} from '../types'
+import {useQuery} from '@tanstack/react-query'
+import {getRoles} from '../services/api'
+import Loader from '../components/helpers/loader.component'
 
 function UserRoleList() {
+  const search = React.useState('')
   const navigate = useNavigate()
-  const roles = useLoaderData() as Role[]
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const {isLoading, isError, data, error, refetch} = useQuery({
+    queryKey: ['query.UserRoleList'],
+    queryFn: getRoles,
+    enabled: false
+  })
+  const roles = data || []
+  // const delayedFetch = React.useMemo(() => debounce(refetch, 500), [refetch])
+
+  React.useEffect(() => {
+    refetch()
+  }, [])
+
+  React.useEffect(() => {
+    // refetch()
+  }, [search])
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (isError) {
+    return <div>{error}</div>
+  }
 
   const handleRowClick = (role: Role) => {
-    navigate(Routes.EDIT_ROLE.replace(':id', role.name))
+    navigate(Routes.EDIT_ROLE, { state: role })
   }
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -51,7 +78,7 @@ function UserRoleList() {
       mapPermissionToHumanReadable(
         Object.entries(role.permissions)
           .filter(
-            ([_key, value]) => typeof value === 'boolean' && value !== true
+            ([_key, value]) => typeof value === 'boolean' && value === true
           )
           .reduce(
             (acc, [key, value]) => ({...acc, [key]: value}),
@@ -71,7 +98,7 @@ function UserRoleList() {
       mapPermissionToHumanReadable(
         Object.entries(role.permissions)
           .filter(
-            ([_key, value]) => typeof value === 'boolean' && value !== true
+            ([_key, value]) => typeof value === 'boolean' && value === true
           )
           .reduce(
             (acc, [key, value]) => ({...acc, [key]: value}),
@@ -91,7 +118,7 @@ function UserRoleList() {
       mapPermissionToHumanReadable(
         Object.entries(role.permissions)
           .filter(
-            ([_key, value]) => typeof value === 'boolean' && value !== true
+            ([_key, value]) => typeof value === 'boolean' && value === true
           )
           .reduce(
             (acc, [key, value]) => ({...acc, [key]: value}),

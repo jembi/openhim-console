@@ -85,6 +85,8 @@ export function ChannelsClientsStep(props: {
                   margin="normal"
                   value={role.name}
                   onChange={e => setRole({...role, name: e.target.value})}
+                  error={role.name.trim() === ''}
+                  helperText={role.name.trim() === '' ? 'Role name cannot be empty' : undefined}
                 />
               </Grid>
             </Grid>
@@ -100,7 +102,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['channel-manage-all']}
+                      checked={role.permissions['channel-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'channel-manage-all',
@@ -140,7 +142,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['channel-view-all']}
+                      checked={role.permissions['channel-view-all']}
                       onChange={e =>
                         handleSwitchToggle('channel-view-all', e.target.checked)
                       }
@@ -187,7 +189,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['client-manage-all']}
+                      checked={role.permissions['client-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-manage-all',
@@ -228,7 +230,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['client-view-all']}
+                      checked={role.permissions['client-view-all']}
                       onChange={e =>
                         handleSwitchToggle('client-view-all', e.target.checked)
                       }
@@ -275,7 +277,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['client-role-manage-all']}
+                      checked={role.permissions['client-role-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-role-manage-all',
@@ -312,7 +314,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['client-role-view-all']}
+                      checked={role.permissions['client-role-view-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-role-view-all',

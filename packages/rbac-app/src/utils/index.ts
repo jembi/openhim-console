@@ -2,6 +2,7 @@ import {titleCase} from 'title-case'
 import {Role, Permission} from '../types'
 
 export const defaultRole: Readonly<Role> = {
+  _id: '',
   name: '',
   permissions: {
     'channel-view-all': false,

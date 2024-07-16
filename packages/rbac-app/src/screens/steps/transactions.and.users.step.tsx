@@ -79,7 +79,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['transaction-rerun-all']}
+                      checked={role.permissions['transaction-rerun-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'transaction-rerun-all',
@@ -122,7 +122,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['transaction-view-all']}
+                      checked={role.permissions['transaction-view-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'transaction-view-all',
@@ -168,7 +168,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['transaction-view-body-all']}
+                      checked={role.permissions['transaction-view-body-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'transaction-view-body-all',
@@ -220,7 +220,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['user-manage']}
+                      checked={role.permissions['user-manage']}
                       onChange={e =>
                         handleSwitchToggle('user-manage', e.target.checked)
                       }
@@ -233,7 +233,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['user-view']}
+                      checked={role.permissions['user-view']}
                       onChange={e =>
                         handleSwitchToggle('user-view', e.target.checked)
                       }
@@ -249,7 +249,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['user-role-manage']}
+                      checked={role.permissions['user-role-manage']}
                       onChange={e =>
                         handleSwitchToggle('user-role-manage', e.target.checked)
                       }
@@ -262,7 +262,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['user-role-view']}
+                      checked={role.permissions['user-role-view']}
                       onChange={e =>
                         handleSwitchToggle('user-role-view', e.target.checked)
                       }
@@ -284,7 +284,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['mediator-manage-all']}
+                      checked={role.permissions['mediator-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'mediator-manage-all',
@@ -324,7 +324,7 @@ export function TransactionsUsersMediatorsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      value={role.permissions['mediator-view-all']}
+                      checked={role.permissions['mediator-view-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'mediator-view-all',

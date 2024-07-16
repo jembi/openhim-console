@@ -1,5 +1,4 @@
 import {App, Channel, Client, Mediator, Role, Transaction} from '../types'
-import {defaultRole} from '../utils'
 
 const {
   fetchRoles,
@@ -13,13 +12,9 @@ const {
   createRole
 } = require('@jembi/openhim-core-api')
 
-export async function getRoles() {
+export async function getRoles(): Promise<Role[]> {
   try {
-    // const roles = await fetchRoles();
-    const roles = [
-      structuredClone({...defaultRole, name: 'Test 67'}),
-      {...defaultRole, name: 'Admin'}
-    ]
+    const roles = await fetchRoles()
 
     return roles
   } catch (err) {
@@ -48,7 +43,7 @@ export async function editRoleByName(name: string, role: Role) {
 
 export async function createNewRole(role: Role) {
   try {
-    await createRole(role)
+    await createRole({...role, _id: undefined})
   } catch (err) {
     console.error(err)
     throw err
