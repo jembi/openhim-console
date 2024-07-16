@@ -111,7 +111,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.transactions.map(transaction => (
-                      <MenuItem value={transaction._id}>
+                      <MenuItem key={transaction._id} value={transaction._id}>
                         {transaction._id}
                       </MenuItem>
                     ))}
@@ -154,7 +154,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.transactions.map(transaction => (
-                      <MenuItem value={transaction._id}>
+                      <MenuItem key={transaction._id} value={transaction._id}>
                         {transaction._id}
                       </MenuItem>
                     ))}
@@ -200,7 +200,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.transactions.map(transaction => (
-                      <MenuItem value={transaction._id}>
+                      <MenuItem key={transaction._id} value={transaction._id}>
                         {transaction._id}
                       </MenuItem>
                     ))}
@@ -315,7 +315,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.mediators.map(mediator => (
-                      <MenuItem value={mediator.name}>{mediator.name}</MenuItem>
+                      <MenuItem key={mediator.name} value={mediator.name}>{mediator.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -356,7 +356,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
                     {props.mediators.map(mediator => (
-                      <MenuItem value={mediator.name}>{mediator.name}</MenuItem>
+                      <MenuItem key={mediator.name} value={mediator.name}>{mediator.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
