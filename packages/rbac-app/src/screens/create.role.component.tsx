@@ -29,7 +29,7 @@ import {defaultRole} from '../utils'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
-import { useBasicBackdrop } from '../contexts/backdrop.context'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
 
 const steps = [
   'Channels & Clients',

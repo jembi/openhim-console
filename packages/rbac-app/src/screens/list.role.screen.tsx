@@ -19,7 +19,7 @@ import {
   TableSortLabel,
   Typography
 } from '@mui/material'
-import debounce from '@mui/material/utils/debounce';
+import debounce from '@mui/material/utils/debounce'
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
@@ -59,10 +59,10 @@ function UserRoleList() {
   const handleRowClick = (role: Role) => {
     navigate(Routes.EDIT_ROLE, {state: role})
   }
-  
+
   const handleOnSearchChange = debounce((value: string) => {
     setSearch(value)
-  }, 500);
+  }, 500)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -139,10 +139,10 @@ function UserRoleList() {
 
   // @FIXME: Once the search API is implemented, this should be updated to use the filtered roles
   const filteredRoles = roles.filter(r => {
-    const name = r.name.toLowerCase();
+    const name = r.name.toLowerCase()
 
-    return name.includes(search.toLowerCase());
-  });
+    return name.includes(search.toLowerCase())
+  })
 
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
