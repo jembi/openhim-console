@@ -90,6 +90,7 @@ export function AdditionalPermissionsStep(props: {
                   <Select
                     startAdornment={<InputAdornment />}
                     labelId="app-view-specified"
+                    label="Choose options"
                     multiple
                     variant="outlined"
                     value={role.permissions['app-view-specified']}

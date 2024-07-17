@@ -124,6 +124,7 @@ export function ChannelsClientsStep(props: {
                   <Select
                     startAdornment={<InputAdornment />}
                     labelId="channel-manage-specified"
+                    label="Choose options"
                     multiple
                     variant="outlined"
                     value={role.permissions['channel-manage-specified']}

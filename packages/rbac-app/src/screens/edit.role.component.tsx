@@ -102,7 +102,7 @@ function EditUserRole() {
   }
 
   return (
-    <Box padding={3}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit User Role

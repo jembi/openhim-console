@@ -99,6 +99,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     startAdornment={<InputAdornment />}
                     labelId="transaction-rerun-specified"
                     multiple
+                    label="Choose options"
                     variant="outlined"
                     value={role.permissions['transaction-rerun-specified']}
                     disabled={!role.permissions['transaction-rerun-all']}
@@ -188,6 +189,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     startAdornment={<InputAdornment />}
                     labelId="transaction-view-body-specified"
                     multiple
+                    label="Choose options"
                     variant="outlined"
                     value={role.permissions['transaction-view-body-specified']}
                     disabled={!role.permissions['transaction-view-body-all']}
