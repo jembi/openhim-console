@@ -18,6 +18,7 @@ import { OpenHIMMenu } from '@jembi/openhim-sidebar'
 import LogoutIcon from '@mui/icons-material/Logout'
 import EditIcon from '@mui/icons-material/Edit'
 import theme from '@jembi/openhim-theme'
+import OpenhimAppBar from './components/openhim.appbar.component'
 
 const GrowingDiv = styled.div`
   flex-grow: 1;
@@ -57,76 +58,7 @@ export default function ButtonAppBar() {
         <OpenHIMMenu></OpenHIMMenu>
       </Drawer>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" elevation={1}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <a href="#!/transactions">
-              <img
-                height={50}
-                src="/images/openhim-logo-green.png"
-                alt="OpenHIM logo"
-              ></img>
-            </a>
-            <GrowingDiv></GrowingDiv>
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={handleClose}
-                  component={Link}
-                  href="#!/profile"
-                >
-                  <ListItemIcon>
-                    <EditIcon />
-                  </ListItemIcon>
-                  Profile
-                </MenuItem>
-                <Divider />
-                <MenuItem
-                  onClick={handleClose}
-                  component={Link}
-                  href="#!/logout"
-                >
-                  <ListItemIcon>
-                    <LogoutIcon />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
-          </Toolbar>
-        </AppBar>
+        <OpenhimAppBar />
       </Box>
     </ThemeProvider>
   )
