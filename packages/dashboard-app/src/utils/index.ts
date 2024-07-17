@@ -13,32 +13,24 @@ export function getTimeDiffScale(
   from: Date,
   until: Date
 ): {diff: number; scale: TimeSeriesScale} {
-  let diff: number = 0
+  const diffInYears = differenceInYears(until, from)
+  const diffInMonths = differenceInMonths(until, from)
+  const diffInWeeks = differenceInWeeks(until, from)
+  const diffInDays = differenceInDays(until, from)
+  const diffInHours = differenceInHours(until, from)
+  const diffInMinutes = differenceInMinutes(until, from)
 
-  if ((diff = differenceInYears(until, from)) > 1) {
-    return {diff, scale: TimeSeriesScale.year}
-  } else if (
-    (diff = differenceInMonths(until, from)) > 1 ||
-    (diff = differenceInYears(until, from)) == 1
-  ) {
-    return {diff, scale: TimeSeriesScale.month}
-  } else if (
-    (diff = differenceInWeeks(until, from)) > 1 ||
-    (diff = differenceInMonths(until, from)) == 1
-  ) {
-    return {diff, scale: TimeSeriesScale.week}
-  } else if (
-    (diff = differenceInDays(until, from)) > 1 ||
-    (diff = differenceInWeeks(until, from)) == 1
-  ) {
-    return {diff, scale: TimeSeriesScale.day}
-  } else if (
-    (diff = differenceInHours(until, from)) > 1 ||
-    (diff = differenceInDays(until, from)) == 1
-  ) {
-    return {diff, scale: TimeSeriesScale.hour}
+  if (diffInYears > 1) {
+    return {diff: diffInYears, scale: TimeSeriesScale.year}
+  } else if (diffInMonths > 1 || diffInYears == 1) {
+    return {diff: diffInMonths, scale: TimeSeriesScale.month}
+  } else if (diffInWeeks > 1 || diffInMonths == 1) {
+    return {diff: diffInWeeks, scale: TimeSeriesScale.week}
+  } else if (diffInDays > 1 || diffInWeeks == 1) {
+    return {diff: diffInDays, scale: TimeSeriesScale.day}
+  } else if (diffInHours > 1 || diffInDays == 1) {
+    return {diff: diffInHours, scale: TimeSeriesScale.hour}
   } else {
-    diff = differenceInMinutes(until, from)
-    return {diff, scale: TimeSeriesScale.minute}
+    return {diff: diffInMinutes, scale: TimeSeriesScale.minute}
   }
 }

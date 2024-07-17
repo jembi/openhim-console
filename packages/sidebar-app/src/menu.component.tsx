@@ -51,7 +51,7 @@ export default function OpenHIMMenu() {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="/#!/dashboard-v2">
+          <ListItemButton component="a" href="/#!/dashboard">
             <Typography sx={{ fontSize: customFontSize }}>
               Dashboard
             </Typography>

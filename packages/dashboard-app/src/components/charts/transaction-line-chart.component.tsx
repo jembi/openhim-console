@@ -58,18 +58,21 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
   }
 
   const xValueFormatter = (v: Date) => {
-    if (scale == TimeSeriesScale.year) {
-      return format(v, 'yyyy')
-    } else if (scale == TimeSeriesScale.month) {
-      return format(v, 'MMM')
-    } else if (scale == TimeSeriesScale.week) {
-      return format(v, 'II')
-    } else if (scale == TimeSeriesScale.day) {
-      return format(v, 'iii')
-    } else if (scale == TimeSeriesScale.hour) {
-      return format(v, 'HH')
-    } else if (scale == TimeSeriesScale.minute) {
-      return format(v, 'HH:mm')
+    switch (scale) {
+      case TimeSeriesScale.year:
+        return format(v, 'yyyy')
+      case TimeSeriesScale.month:
+        return format(v, 'MMM')
+      case TimeSeriesScale.week:
+        return format(v, 'II')
+      case TimeSeriesScale.day:
+        return format(v, 'iii')
+      case TimeSeriesScale.hour:
+        return format(v, 'HH')
+      case TimeSeriesScale.minute:
+        return format(v, 'HH:mm')
+      default:
+        return ''
     }
   }
 
@@ -119,11 +122,6 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
                     tickNumber: res.diff >= 12 ? undefined : res.diff
                   }
                 ]}
-                // yAxis={[
-                //   {
-                //     label: props.type == 'load' ? 'Load' : 'Response Time',
-                //   }
-                // ]}
                 series={[
                   {
                     data: yData,

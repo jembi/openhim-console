@@ -62,8 +62,6 @@ function FilterComponent(props: BasicFilterProps) {
   const [fromDate, setFromDate] = useState<Date>(initData.from)
   const [untilDate, setUntilDate] = useState<Date>(initData.until)
 
-  React.useEffect(() => {}, [])
-
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedOption = (event.target as HTMLInputElement)
       .value as BasicFilterOption

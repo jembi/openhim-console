@@ -7,6 +7,7 @@ import {TimeSeries, TimeSeriesScale} from '../types'
 import BasicFilter, {BasicFilterData} from './filters/basic.filter.component'
 import Loader from './ux/loader.component'
 import {AlertDialog, AlertDialogProps} from './ux/alert.dialog.component'
+import './styles.css'
 
 type Alert = {
   severity: AlertDialogProps['severity']
@@ -14,9 +15,6 @@ type Alert = {
   title: string
   message: string
 }
-
-const subtitleStyles = {fontSize: '16px'}
-const chartCardStyles = {backgroundColor: '#fff', borderRadius: '4px'}
 
 export default function Charts() {
   const now = new Date()
@@ -81,7 +79,7 @@ export default function Charts() {
           <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
             Dashboard
           </Typography>
-          <p style={subtitleStyles}>
+          <p className={'subtitle'}>
             An overview of recent transactions through your mediator.
           </p>
           <Divider />
@@ -92,7 +90,7 @@ export default function Charts() {
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
-              <Card elevation={2} style={chartCardStyles}>
+              <Card elevation={2} className={'chartCard'}>
                 <TransactionLineChart
                   type="load"
                   data={timeSeries}
@@ -105,7 +103,7 @@ export default function Charts() {
               </Card>
             </Grid>
             <Grid item md={6} xs={12}>
-              <Card elevation={2} style={chartCardStyles}>
+              <Card elevation={2} className={'chartCard'}>
                 <TransactionLineChart
                   type="avgResponseTime"
                   data={timeSeries}
