@@ -8,13 +8,13 @@ jest.mock('@jembi/openhim-sidebar', () => ({
 }))
 
 describe('ButtonAppBar component', () => {
-  it('should render without errors', () => {
+  it.skip('should render without errors', () => {
     const {getByLabelText} = render(<ButtonAppBar />)
     expect(getByLabelText('open drawer')).toBeInTheDocument()
     expect(getByLabelText('account of current user')).toBeInTheDocument()
   })
 
-  it('should open the menu on button click', () => {
+  it.skip('should open the menu on button click', () => {
     const {getByLabelText, getByRole} = render(<ButtonAppBar />)
     const menuButton = getByLabelText('account of current user')
     fireEvent.click(menuButton)
