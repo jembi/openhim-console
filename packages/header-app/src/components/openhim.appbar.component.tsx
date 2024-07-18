@@ -11,10 +11,10 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { makeStyles } from '@mui/styles'
+import {makeStyles} from '@mui/styles'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import { useConfirmation } from '../contexts/confirmation.context'
+import {useEffect, useState} from 'react'
+import {useConfirmation} from '../contexts/confirmation.context'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'none',
     fontWeight: 500,
     marginRight: '20px',
-    color: '#388e3c',
+    color: '#388e3c'
   },
   avatar: {
     width: 32,
@@ -327,9 +327,13 @@ export default function OpenhimAppBar() {
                   <Button
                     key={page.name}
                     onClick={handleCloseNavMenu}
-                    className={window.location.href.includes(page.link) ? classes.selectedButton : classes.button}
+                    className={
+                      window.location.href.includes(page.link)
+                        ? classes.selectedButton
+                        : classes.button
+                    }
                     href={page.link}
-                    variant='text'
+                    variant="text"
                   >
                     {page.name}
                   </Button>
