@@ -15,6 +15,8 @@ import {BasicInfo} from '../components/basic-info'
 import {Client, ClientSchema} from '../../types'
 import CryptoJS from 'crypto-js'
 import {editClient} from '@jembi/openhim-core-api'
+import {useSnackbar} from 'notistack'
+import {AxiosError} from 'axios'
 
 interface EditClientProps {
   returnToClientList: () => void
@@ -29,6 +31,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string
   }>({})
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
   const [basicInfo, setBasicInfo] = useState<BasicInfoModel | null>(client)
   const [authType, setAuthType] = useState('jwt')
   const [authentication, setAuthentication] = useState<AuthenticationModel>({
@@ -100,10 +103,15 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
 
     editClient(client['_id'], clientsPayload)
       .then(() => {
-        alert('Client edited successfully')
+        enqueueSnackbar('Client edited successfully, you', {variant: 'success'})
       })
-      .catch(error => {
-        alert('Failed to edit client')
+      .catch((error: AxiosError) => {
+        if (error.response && error.response.data) {
+          enqueueSnackbar(error.response.data, {variant: 'error'})
+        } else {
+          console.log(JSON.stringify(error))
+          enqueueSnackbar('Error while editing client', {variant: 'error'})
+        }
       })
       .finally(() => {
         returnToClientList()

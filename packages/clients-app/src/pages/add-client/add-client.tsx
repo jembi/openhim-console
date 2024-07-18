@@ -21,6 +21,8 @@ import {
 import {addClient} from '@jembi/openhim-core-api'
 import CryptoJS from 'crypto-js'
 import './style.css'
+import {AxiosError} from 'axios'
+import {useSnackbar} from 'notistack'
 
 interface AddClientProps {
   returnToClientList: () => void
@@ -29,6 +31,7 @@ interface AddClientProps {
 export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
   //TODO: Make sure that there is a safe guard when incrementing this value to prevent it from going over the number of steps
   const [activeStep, setActiveStep] = useState(0)
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string
   }>({})
@@ -109,13 +112,19 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
 
     addClient(clientsPayload)
       .then(() => {
-        alert('Client added successfully');
+        enqueueSnackbar('Client added successfully', {variant: 'success'})
       })
-      .catch(error => {
-        alert('Failed to add client');
-      }).finally(() => {
+      .catch((error: AxiosError) => {
+        if (error.response && error.response.data) {
+          enqueueSnackbar(error.response.data, {variant: 'error'})
+        } else {
+          console.log(JSON.stringify(error))
+          enqueueSnackbar('Error while creating new client', {variant: 'error'})
+        }
+      })
+      .finally(() => {
         returnToClientList()
-      });
+      })
   }
 
   const validateBasicInfoField = (
@@ -200,7 +209,7 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
         <Box>
           <Stepper sx={{paddingTop: 2}} activeStep={activeStep}>
             <Step key={'basic-info'}>
-              <StepLabel sx={{fontSize:20}} {...labelProps}>
+              <StepLabel sx={{fontSize: 20}} {...labelProps}>
                 <p style={{fontSize: 14}}>Basic Info</p>
               </StepLabel>
             </Step>
@@ -232,7 +241,11 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
             />
           )}
           <br />
-          <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{marginBottom: 1, marginLeft: 2}}
+          >
             <Button
               variant="outlined"
               id={activeStep === 0 ? 'cancel' : 'back'}

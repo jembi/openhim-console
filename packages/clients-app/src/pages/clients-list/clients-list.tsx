@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import {BasicInfoModel} from '../../interfaces'
 import './data-grid-styling.css'
 import {set} from 'zod'
+import { useSnackbar } from 'notistack'
+import { AxiosError } from 'axios'
 
 interface ClientsListProps {
   addClient: () => void
@@ -17,6 +19,7 @@ interface ClientsListProps {
 
 const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
   const [clients, setClients] = useState<Client[]>([])
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     //@ts-ignore
@@ -25,7 +28,14 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
       clients.forEach(client => {
         setClients(prevClients => [...prevClients, client])
       })
-    })
+    }).catch((error: AxiosError) => {
+      if(error.response && error.response.data){
+        enqueueSnackbar(error.response.data, { variant: 'error' });
+      }else{
+        console.log(JSON.stringify(error));
+        enqueueSnackbar('Error fetching clients', { variant: 'error' });
+      }
+    });
   }, [])
 
   const [clientToDelete, setClientToDelete] = useState<string| null>(null);
