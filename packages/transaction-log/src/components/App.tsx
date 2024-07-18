@@ -12,24 +12,40 @@ const App: React.FC = () => {
   }
 
   return (
-    <Container sx={{backgroundColor: '#F1F1F1', maxWidth: '100% !important'}}>
+    <Container 
+      sx={{
+        backgroundColor: '#F1F1F1', 
+        maxWidth: '100% !important'
+      }}>
       <Box sx={{}}>
         <Typography
+          variant='h4'
           sx={{
             fontFamily: 'Roboto',
-            fontSize: 34,
+            fontSize: '34px',
             fontWeight: 400,
-            letterSpacing: 0.25,
+            lineHeight: '41.99px',
+            letterSpacing: '0.25px',
             textAlign: 'left'
           }}
         >
           Transactions Log
         </Typography>
-        <Stack>
+        <Typography
+        variant="subtitle1"
+        sx={{
+          fontFamily: 'Roboto',
+          fontSize: '16px',
+          fontWeight: 400,
+          lineHeight: '28px',
+          letterSpacing: '0.15px',
+          textAlign: 'left',
+          marginTop: '8px'
+        }}>
           A log of the recent transactions through the system. Use Basic or
           Advanced filters to find specific transactions to investigate or
           rerun. Use settings to modify the list behaviour.
-        </Stack>
+        </Typography>
       </Box>
       <Card>
         <Box sx={{borderBottom: 1, borderColor: 'divider', marginBottom: 2}}>

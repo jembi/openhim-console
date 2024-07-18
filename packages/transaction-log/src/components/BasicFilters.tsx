@@ -21,7 +21,7 @@ const BasicFilters: React.FC = () => {
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Search" type="date" fullWidth InputLabelProps={{shrink: true}} />
+          <TextField label="Search" type="text" fullWidth InputLabelProps={{shrink: true}} />
         </Grid>
         <Grid item xs={2}>
           <TextField select label="Channel" fullWidth defaultValue="Channel1" InputLabelProps={{shrink: true}}>
@@ -36,7 +36,14 @@ const BasicFilters: React.FC = () => {
           </LocalizationProvider> */}
         </Grid>
         <Grid item xs={1}>
-          <TextField label="Limit" type="number" defaultValue={20} fullWidth />
+          <TextField select label="Limit" defaultValue="10" fullWidth>
+            <MenuItem value="10">10</MenuItem>
+            <MenuItem value="20">20</MenuItem>
+            <MenuItem value="50">50</MenuItem>
+            <MenuItem value="100">100</MenuItem>
+            <MenuItem value="200">200</MenuItem>
+            <MenuItem value="500">500</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={1}>
           <TextField

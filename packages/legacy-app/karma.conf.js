@@ -17,6 +17,8 @@ module.exports = function (config) {
       '../../node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/moment/moment.js',
+      // for some reason, the above moment is not found in the node_modules folder
+      '../../node_modules/moment/moment.js',
       '../../node_modules/systemjs/dist/system.js',
       'dist/bundle.js',
       { pattern: 'dist/bundle.js.map', included: false, watched: false },

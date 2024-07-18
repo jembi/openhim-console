@@ -1,6 +1,9 @@
 {
   "name": "openhim-console-mf",
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
   "workspaces": [
     "packages/*"
   ],
@@ -16,6 +19,7 @@
   },
   "dependencies": {
     "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^14.2.1"
+    "@testing-library/react": "^14.2.1",
+    "moment": "^2.29.1"
   }
 }

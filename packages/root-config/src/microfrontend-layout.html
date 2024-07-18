@@ -71,9 +71,13 @@
         <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/transaction-log"></application>
+      <route path="#!/dashboard">
+        <application name="@jembi/openhim-sidebar"></application>
+        <div style="flex-grow: 1">
+          <application name="@jembi/dashboard-app"></application>
         </div>
       </route>
     </div>
-    <div style="flex-grow: 1" id="openhim-console-ems-container"></div>
+    <div style="display: flex" id="openhim-console-ems-container"></div>
   </main>
 </single-spa-router>
