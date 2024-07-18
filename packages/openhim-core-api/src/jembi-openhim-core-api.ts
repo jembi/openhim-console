@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { start } from 'repl'
 interface App {
   _id: string
   name: string
@@ -204,3 +205,16 @@ export async function fetchAuthTypes(): Promise<any> {
   return response.data
 }
 
+
+export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
+  await ensureApiClientInitialized()
+  const url = `/metrics/timeseries/${period}`
+  const response = await apiClient.get(
+    url,
+    { params: {
+      startDate: filter.startDate.toISOString(),
+      endDate: filter.endDate.toISOString(),
+    } }
+  )
+  return response.data
+}
