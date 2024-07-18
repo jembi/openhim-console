@@ -1,0 +1,12 @@
+{
+  "extends": "ts-config-single-spa",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "declarationDir": "dist",
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "files": ["src/jembi-channels-app.tsx"],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}
