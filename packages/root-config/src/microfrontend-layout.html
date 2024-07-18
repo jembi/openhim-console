@@ -15,9 +15,6 @@
         <route path="#!/audits">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
-        <route path="#!/channels">
-          <application name="@jembi/openhim-sidebar"></application>
-        </route>
         <route path="#!/tasks">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
@@ -59,6 +56,12 @@
         <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/openhim-portal"></application>
+        </div>
+      </route>
+      <route path="#!/channels">
+        <application name="@jembi/openhim-sidebar"></application>
+        <div style="flex-grow: 1">
+          <application name="@jembi/channels-app"></application>
         </div>
       </route>
       <route path="#!/clients">
