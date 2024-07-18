@@ -2,3 +2,4 @@ node_modules/
 DockerfileARM
 packaging/import-maps-server/builds
 *.secrets
+dist/
