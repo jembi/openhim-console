@@ -248,7 +248,7 @@ export default function OpenhimAppBar() {
                       onClick={event =>
                         handleOpenMoreMenu(
                           event,
-                          page.name === 'More'
+                          page.name.toUpperCase() === 'MORE'
                             ? setAnchorElMore
                             : setAnchorElApps
                         )
@@ -258,7 +258,7 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                       <Menu
                         anchorEl={
-                          page.name === 'More' ? anchorElMore : anchorElApps
+                          page.name.toUpperCase() === 'MORE' ? anchorElMore : anchorElApps
                         }
                         anchorOrigin={{
                           vertical: 'top',
@@ -269,13 +269,13 @@ export default function OpenhimAppBar() {
                           horizontal: 'right'
                         }}
                         open={
-                          page.name === 'More'
+                          page.name.toUpperCase() === 'MORE'
                             ? Boolean(anchorElMore)
                             : Boolean(anchorElApps)
                         }
                         onClose={() =>
                           handleCloseMoreMenu(
-                            page.name === 'More'
+                            page.name.toUpperCase() === 'MORE'
                               ? setAnchorElMore
                               : setAnchorElApps
                           )
@@ -287,7 +287,7 @@ export default function OpenhimAppBar() {
                             key={child.name}
                             onClick={() =>
                               handleCloseMoreMenu(
-                                page.name === 'More'
+                                page.name.toUpperCase() === 'MORE'
                                   ? setAnchorElMore
                                   : setAnchorElApps
                               )
@@ -343,7 +343,7 @@ export default function OpenhimAppBar() {
                       onClick={event =>
                         handleOpenMoreMenu(
                           event,
-                          page.name === 'More'
+                          page.name.toUpperCase() === 'MORE'
                             ? setAnchorElMore
                             : setAnchorElApps
                         )
@@ -355,7 +355,7 @@ export default function OpenhimAppBar() {
                     </Button>
                     <Menu
                       anchorEl={
-                        page.name === 'More' ? anchorElMore : anchorElApps
+                        page.name.toUpperCase() === 'MORE' ? anchorElMore : anchorElApps
                       }
                       anchorOrigin={{
                         vertical: 'top',
@@ -366,13 +366,13 @@ export default function OpenhimAppBar() {
                         horizontal: 'right'
                       }}
                       open={
-                        page.name === 'More'
+                        page.name.toUpperCase() === 'MORE'
                           ? Boolean(anchorElMore)
                           : Boolean(anchorElApps)
                       }
                       onClose={() =>
                         handleCloseMoreMenu(
-                          page.name === 'More'
+                          page.name.toUpperCase() === 'MORE'
                             ? setAnchorElMore
                             : setAnchorElApps
                         )
@@ -384,7 +384,7 @@ export default function OpenhimAppBar() {
                           key={child.name}
                           onClick={() =>
                             handleCloseMoreMenu(
-                              page.name === 'More'
+                              page.name.toUpperCase() === 'MORE'
                                 ? setAnchorElMore
                                 : setAnchorElApps
                             )
