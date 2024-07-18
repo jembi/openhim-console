@@ -1,19 +1,19 @@
-import * as React from 'react'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import MenuIcon from '@mui/icons-material/Menu'
+import Person from '@mui/icons-material/Person'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
-import Container from '@mui/material/Container'
-import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import {useState, useEffect} from 'react'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import Toolbar from '@mui/material/Toolbar'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import {makeStyles} from '@mui/styles'
+import * as React from 'react'
+import {useEffect, useState} from 'react'
 import {useConfirmation} from '../contexts/confirmation.context'
 
 const useStyles = makeStyles(theme => ({
@@ -30,13 +30,13 @@ const useStyles = makeStyles(theme => ({
     minHeight: 64
   },
   logoContainer: {
-    padding: '10px'
+    paddingTop: '10px',
+    paddingRight: '25px'
   },
   logo: {
     width: '100px',
     height: '30px',
-    textDecoration: 'none',
-    color: 'inherit'
+    textDecoration: 'none'
   },
   menuButton: {
     color: '#000000'
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   button: {
     textTransform: 'none',
     fontWeight: 500,
-    marginRight: 2,
+    marginRight: '20px',
     '&:hover': {
       backgroundColor: '#e0e0e0'
     }
@@ -394,11 +394,7 @@ export default function OpenhimAppBar() {
             <Box sx={{flexGrow: 0}}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                  <Avatar
-                    alt="User Avatar"
-                    src="/static/images/avatar/2.jpg"
-                    className={classes.avatar}
-                  />
+                  <Person className={classes.avatar} />
                 </IconButton>
               </Tooltip>
               <Menu
