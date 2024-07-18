@@ -8,6 +8,7 @@
     "@jembi/openhim-portal": "./libs/@jembi/openhim-portal/dist/jembi-openhim-portal.js",
     "@jembi/root-config": "./libs/@jembi/root-config/dist/jembi-root-config.js",
     "@jembi/openhim-sidebar": "./libs/@jembi/openhim-sidebar/dist/jembi-openhim-sidebar.js",
-    "@jembi/clients-app": "./libs/@jembi/clients-app/dist/jembi-clients-app.js"
+    "@jembi/clients-app": "./libs/@jembi/clients-app/dist/jembi-clients-app.js",
+    "@jembi/channels-app": "./libs/@jembi/channels-app/dist/jembi-channels-app.js"
   }
 }
