@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { start } from 'repl'
 interface App {
   _id: string
   name: string
@@ -110,5 +111,30 @@ export async function addApp(app: App): Promise<App> {
 export async function getImportMap(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/importmaps')
+  return response.data
+}
+
+export async function fetchMediators(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/mediators')
+  return response.data
+}
+
+export async function fetchTransactions(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions')
+  return response.data
+}
+
+export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
+  await ensureApiClientInitialized()
+  const url = `/metrics/timeseries/${period}`
+  const response = await apiClient.get(
+    url,
+    { params: {
+      startDate: filter.startDate.toISOString(),
+      endDate: filter.endDate.toISOString(),
+    } }
+  )
   return response.data
 }
