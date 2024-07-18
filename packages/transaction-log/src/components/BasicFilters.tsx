@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Box,
   TextField,
@@ -8,9 +8,33 @@ import {
   Typography,
   Grid
 } from '@mui/material'
-import { LocalizationProvider } from '@mui/x-date-pickers'
+import {LocalizationProvider} from '@mui/x-date-pickers'
+import axios from 'axios'
 
 const BasicFilters: React.FC = () => {
+  const [limit, setLimit] = useState('10')
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetchData(limit)
+  }, [limit])
+
+  const fetchData = async (limit: string) => {
+    try {
+      const response = await axios.post('YOUR_ENDPOINT_URL', {
+        filterLimit: limit,
+        filterPage: 0,
+        filters: {}
+      })
+      setData(response.data)
+    } catch (error) {
+      console.error('Error fetching data', error)
+    }
+  }
+
+  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLimit(event.target.value)
+  }
   return (
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
@@ -21,16 +45,32 @@ const BasicFilters: React.FC = () => {
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Search" type="text" fullWidth InputLabelProps={{shrink: true}} />
+          <TextField
+            label="Search"
+            type="text"
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          />
         </Grid>
         <Grid item xs={2}>
-          <TextField select label="Channel" fullWidth defaultValue="Channel1" InputLabelProps={{shrink: true}}>
+          <TextField
+            select
+            label="Channel"
+            fullWidth
+            defaultValue="Channel1"
+            InputLabelProps={{shrink: true}}
+          >
             <MenuItem value="Channel1">Channel1</MenuItem>
             <MenuItem value="Channel2">Channel2</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Date Range" type="date" fullWidth InputLabelProps={{shrink: true}} />
+          <TextField
+            label="Date Range"
+            type="date"
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          />
           {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
             
           </LocalizationProvider> */}
