@@ -258,7 +258,9 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                       <Menu
                         anchorEl={
-                          page.name.toUpperCase() === 'MORE' ? anchorElMore : anchorElApps
+                          page.name.toUpperCase() === 'MORE'
+                            ? anchorElMore
+                            : anchorElApps
                         }
                         anchorOrigin={{
                           vertical: 'top',
@@ -355,7 +357,9 @@ export default function OpenhimAppBar() {
                     </Button>
                     <Menu
                       anchorEl={
-                        page.name.toUpperCase() === 'MORE' ? anchorElMore : anchorElApps
+                        page.name.toUpperCase() === 'MORE'
+                          ? anchorElMore
+                          : anchorElApps
                       }
                       anchorOrigin={{
                         vertical: 'top',
