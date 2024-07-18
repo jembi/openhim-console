@@ -34,6 +34,19 @@ async function initializeApiClient(): Promise<void> {
       withCredentials: true,
       baseURL: `${config.protocol}://${config.host}:${config.port}${hostPath}`
     })
+
+    // Add interceptors
+    apiClient.interceptors.response.use(
+      response => response,
+      error => {
+        // Add a response interceptor to redirect to login page if the user is not authenticated
+        if (error.response.status == 401) {
+          window.location.href = '/#!/login'
+          return Promise.reject(error)
+        }
+        return Promise.reject(error)
+      }
+    )
   } catch (error) {
     console.error('Error initializing the API client:', error)
     throw error
@@ -46,7 +59,7 @@ let apiClient = axios.create()
 const initializationPromise = initializeApiClient().catch(console.error)
 
 async function ensureApiClientInitialized(): Promise<void> {
-    await initializationPromise
+  await initializationPromise
 }
 export async function fetchApps(): Promise<App[]> {
   await ensureApiClientInitialized()
