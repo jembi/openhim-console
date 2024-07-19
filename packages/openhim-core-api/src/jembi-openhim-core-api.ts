@@ -196,21 +196,6 @@ export async function fetchChannelById(id: String): Promise<any> {
   const response = await apiClient.get(`/channels/${id}`)
   return response.data
 }
-
-/**
- * Clients
- */
-export async function fetchClientById(id: String): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get(`/clients/${id}`)
-  return response.data
-}
-
-export async function fetchMediators(): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/mediators')
-  return response.data
-}
 // get specific client
 export async function fetchClient(clientId: string): Promise<any> {
   await ensureApiClientInitialized()
@@ -256,11 +241,12 @@ export async function fetchAuthTypes(): Promise<any> {
 export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
   await ensureApiClientInitialized()
   const url = `/metrics/timeseries/${period}`
-  const response = await apiClient.get(url, {
-    params: {
+  const response = await apiClient.get(
+    url,
+    { params: {
       startDate: filter.startDate.toISOString(),
-      endDate: filter.endDate.toISOString()
-    }
-  })
+      endDate: filter.endDate.toISOString(),
+    } }
+  )
   return response.data
 }
