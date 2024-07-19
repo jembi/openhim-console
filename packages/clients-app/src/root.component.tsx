@@ -9,7 +9,7 @@ import {BasicInfoModel} from './interfaces'
 import {SnackbarProvider} from 'notistack'
 
 export default function Root(props) {
-  const defaultPage = 'client-list'
+  const defaultPage = 'add-client'
   const [activePage, setActivePage] = useState<
     'client-list' | 'edit-client' | 'add-client'
   >(defaultPage)
@@ -30,18 +30,25 @@ export default function Root(props) {
     <StrictMode>
       <ThemeProvider theme={theme}>
         <SnackbarProvider maxSnack={3} preventDuplicate>
-          {activePage === 'client-list' && (
-            <ClientsList addClient={addClient} editClient={editClient} />
-          )}
-          {activePage === 'edit-client' && (
-            <EditClient
-              client={activeClient}
-              returnToClientList={returnToClientList}
-            />
-          )}
-          {activePage === 'add-client' && (
-            <AddClient returnToClientList={returnToClientList} />
-          )}
+          <div
+          style={{
+            marginTop: '16px',
+            backgroundColor: '#F1F1F1',
+            height: '100vh'
+          }}>
+            {activePage === 'client-list' && (
+              <ClientsList addClient={addClient} editClient={editClient} />
+            )}
+            {activePage === 'edit-client' && (
+              <EditClient
+                client={activeClient}
+                returnToClientList={returnToClientList}
+              />
+            )}
+            {activePage === 'add-client' && (
+              <AddClient returnToClientList={returnToClientList} />
+            )}
+          </div>
         </SnackbarProvider>
       </ThemeProvider>
     </StrictMode>
