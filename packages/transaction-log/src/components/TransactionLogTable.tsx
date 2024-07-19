@@ -9,9 +9,10 @@ import {
   TableRow,
   Checkbox,
   Typography,
+  Button,
 } from '@mui/material';
 
-const TransactionLogTable: React.FC<{ transactions: any[] }> = ({ transactions }) => {
+const TransactionLogTable: React.FC<{ transactions: any[], loadMore: () => void }> = ({ transactions, loadMore }) => {
   return (
     <Box sx={{ padding: '16px' }}>
       <TableContainer>
@@ -66,9 +67,11 @@ const TransactionLogTable: React.FC<{ transactions: any[] }> = ({ transactions }
           </TableBody>
         </Table>
       </TableContainer>
-      <Typography variant="body2" sx={{ marginTop: '16px' }}>
-        Load 20 more results
-      </Typography>
+      <Box sx={{ marginTop: '16px', textAlign: 'center' }}>
+        <Button variant="outlined" onClick={loadMore}>
+          Load 20 more results
+        </Button>
+      </Box>
     </Box>
   );
 };

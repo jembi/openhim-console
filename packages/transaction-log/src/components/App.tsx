@@ -1,76 +1,76 @@
-import React, {useState, useEffect} from 'react'
-import {Container, Tab, Tabs, Box, Typography, Card} from '@mui/material'
-import CustomFilters from './CustomFilters'
-import BasicFilters from './BasicFilters'
-import TransactionLogTable from './TransactionLogTable'
-import {
-  fetchTransactions,
-  fetchChannelById,
-  fetchClientById
-} from '@jembi/openhim-core-api'
+import React, { useState, useEffect } from 'react';
+import { Container, Tab, Tabs, Box, Typography, Card } from '@mui/material';
+import CustomFilters from './CustomFilters';
+import BasicFilters from './BasicFilters';
+import TransactionLogTable from './TransactionLogTable';
+import { fetchTransactions, fetchChannelById, fetchClientById } from '@jembi/openhim-core-api';
 
 const App: React.FC = () => {
-  const [tabValue, setTabValue] = useState(0)
-  const [limit, setLimit] = useState('10')
-  const [transactions, setTransactions] = useState([])
+  const [tabValue, setTabValue] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    fetchTransactionLogs()
-  }, [limit])
+    fetchTransactionLogs();
+  }, [limit]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setTabValue(newValue)
-  }
+    setTabValue(newValue);
+  };
 
   const fetchTransactionLogs = async () => {
     try {
       const transactions = await fetchTransactions({
         filterLimit: limit,
         filterPage: 0,
-        filters: {}
-      })
+        filters: {},
+      });
 
       const transactionsWithChannelDetails = await Promise.all(
         transactions.map(async transaction => {
-          const channelName = await fetchChannelDetails(transaction.channelID)
-          const clientName = await fetchClientDetails(transaction.clientID)
-          return {...transaction, channelName, clientName}
+          const channelName = await fetchChannelDetails(transaction.channelID);
+          const clientName = await fetchClientDetails(transaction.clientID);
+          return { ...transaction, channelName, clientName };
         })
-      )
+      );
 
-      setTransactions(transactionsWithChannelDetails)
+      setTransactions(transactionsWithChannelDetails);
     } catch (error) {
-      console.error('Error fetching logs:', error)
+      console.error('Error fetching logs:', error);
     }
-  }
+  };
 
   const fetchChannelDetails = async (channelID: string) => {
     try {
-      const response = await fetchChannelById(channelID)
+      const response = await fetchChannelById(channelID);
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error('Network response was not ok');
       }
-      const channel = await response.json()
-      return channel.name
+      const channel = await response.json();
+      return channel.name;
     } catch (error) {
-      console.error('Error fetching logs:', error)
-      return 'Unknown'
+      console.error('Error fetching logs:', error);
+      return 'Unknown';
     }
-  }
+  };
 
   const fetchClientDetails = async (clientID: string) => {
     try {
-      const response = await fetchClientById(clientID)
+      const response = await fetchClientById(clientID);
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error('Network response was not ok');
       }
-      const client = await response.json()
-      return client.name
+      const client = await response.json();
+      return client.name;
     } catch (error) {
-      console.error('Error fetching logs:', error)
-      return 'Unknown'
+      console.error('Error fetching logs:', error);
+      return 'Unknown';
     }
-  }
+  };
+
+  const loadMore = () => {
+    setLimit(prevLimit => prevLimit + 20);
+  };
 
   return (
     <Container
@@ -81,7 +81,7 @@ const App: React.FC = () => {
     >
       <Box sx={{}}>
         <Typography
-          variant="h4"
+          variant='h4'
           sx={{
             fontFamily: 'Roboto',
             fontSize: '34px',
@@ -111,30 +111,30 @@ const App: React.FC = () => {
         </Typography>
       </Box>
       <Card>
-        <Box sx={{borderBottom: 1, borderColor: 'divider', marginBottom: 2}}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
             aria-label="basic tabs"
-            TabIndicatorProps={{style: {backgroundColor: '#54C4A4'}}}
+            TabIndicatorProps={{ style: { backgroundColor: '#54C4A4' } }}
           >
             <Tab
               label="Basic Filters"
-              sx={{color: tabValue === 0 ? '#54C4A4' : '#54C4A4'}}
+              sx={{ color: tabValue === 0 ? '#54C4A4' : '#54C4A4' }}
             />
             <Tab
               label="Custom Filters"
-              sx={{color: tabValue === 1 ? '#54C4A4' : 'inherit'}}
+              sx={{ color: tabValue === 1 ? '#54C4A4' : 'inherit' }}
             />
           </Tabs>
         </Box>
 
         {tabValue === 0 && <BasicFilters limit={limit} setLimit={setLimit} />}
         {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}
-        <TransactionLogTable transactions={transactions} />
+        <TransactionLogTable transactions={transactions} loadMore={loadMore} />
       </Card>
     </Container>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,9 +1,14 @@
 import React from 'react';
 import { Box, TextField, MenuItem, Grid } from '@mui/material';
 
-const BasicFilters: React.FC<{ limit: string, setLimit: React.Dispatch<React.SetStateAction<string>> }> = ({ limit, setLimit }) => {
+interface FilterProps {
+  limit: number;
+  setLimit: (value: number) => void;
+}
+
+const BasicFilters: React.FC<FilterProps> = ({ limit, setLimit }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(event.target.value);
+    setLimit(Number(event.target.value));
   };
 
   return (
@@ -29,12 +34,12 @@ const BasicFilters: React.FC<{ limit: string, setLimit: React.Dispatch<React.Set
         </Grid>
         <Grid item xs={1}>
           <TextField select label="Limit" value={limit} onChange={handleLimitChange} fullWidth>
-            <MenuItem value="10">10</MenuItem>
-            <MenuItem value="20">20</MenuItem>
-            <MenuItem value="50">50</MenuItem>
-            <MenuItem value="100">100</MenuItem>
-            <MenuItem value="200">200</MenuItem>
-            <MenuItem value="500">500</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+            <MenuItem value={100}>100</MenuItem>
+            <MenuItem value={200}>200</MenuItem>
+            <MenuItem value={500}>500</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={1}>

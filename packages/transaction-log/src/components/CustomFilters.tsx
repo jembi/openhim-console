@@ -1,9 +1,14 @@
 import React from 'react';
 import { Box, TextField, MenuItem, Button, Grid } from '@mui/material';
 
-const CustomFilters: React.FC<{ limit: string, setLimit: React.Dispatch<React.SetStateAction<string>> }> = ({ limit, setLimit }) => {
+interface FilterProps {
+  limit: number;
+  setLimit: (value: number) => void;
+}
+
+const CustomFilters: React.FC<FilterProps> = ({ limit, setLimit }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(event.target.value);
+    setLimit(Number(event.target.value));
   };
 
   return (
