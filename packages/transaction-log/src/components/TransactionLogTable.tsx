@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react';
 import {
   Box,
   Table,
@@ -9,70 +9,11 @@ import {
   TableRow,
   Checkbox,
   Typography,
-  Container
-} from '@mui/material'
-import {
-  fetchTransactions,
-  fetchChannelById,
-  fetchClientById
-} from '@jembi/openhim-core-api'
+} from '@mui/material';
 
-const TransactionLogTable: React.FC = () => {
-  const [transactions, setTransactions] = useState([])
-
-  async function fetchTransactionLogs() {
-    try {
-      const transactions = await fetchTransactions()
-
-      const transactionsWithChannelDetails = await Promise.all(
-        transactions.map(async transaction => {
-          const channelName = await fetchChannelDetails(transaction.channelID)
-          const clientName = await fetchClientDetails(transaction.clientID)
-          return {...transaction, channelName, clientName}
-        })
-      )
-
-      setTransactions(transactionsWithChannelDetails)
-    } catch (error) {
-      console.error('Error fetching logs:', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchTransactionLogs()
-  }, [])
-
-  async function fetchChannelDetails(channelID: String) {
-    try {
-      const response = await fetchChannelById(channelID)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const channel = await response.json()
-      return channel.name
-    } catch (error) {
-      console.error('Error fetching logs:', error)
-      return 'Unknown'
-    }
-  }
-
-  async function fetchClientDetails(clientID: String) {
-    try {
-      const response = await fetchClientById(clientID)
-      console.log(response)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const client = await response.json()
-      return client.name
-    } catch (error) {
-      console.error('Error fetching logs:', error)
-      return 'Unknown'
-    }
-  }
-
+const TransactionLogTable: React.FC<{ transactions: any[] }> = ({ transactions }) => {
   return (
-    <Box sx={{padding: '16px'}}>
+    <Box sx={{ padding: '16px' }}>
       <TableContainer>
         <Table>
           <TableHead>
@@ -125,11 +66,11 @@ const TransactionLogTable: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Typography variant="body2" sx={{marginTop: '16px'}}>
+      <Typography variant="body2" sx={{ marginTop: '16px' }}>
         Load 20 more results
       </Typography>
     </Box>
-  )
-}
+  );
+};
 
-export default TransactionLogTable
+export default TransactionLogTable;

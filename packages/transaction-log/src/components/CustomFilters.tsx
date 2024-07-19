@@ -1,9 +1,13 @@
-import React from 'react'
-import {Box, TextField, MenuItem, Button, Grid} from '@mui/material'
+import React from 'react';
+import { Box, TextField, MenuItem, Button, Grid } from '@mui/material';
 
-const CustomFilters: React.FC = () => {
+const CustomFilters: React.FC<{ limit: string, setLimit: React.Dispatch<React.SetStateAction<string>> }> = ({ limit, setLimit }) => {
+  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLimit(event.target.value);
+  };
+
   return (
-    <Box sx={{padding: '16px'}}>
+    <Box sx={{ padding: '16px' }}>
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <TextField select label="Status" defaultValue="Failed" fullWidth>
@@ -18,10 +22,10 @@ const CustomFilters: React.FC = () => {
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Date Range" type="date" fullWidth InputLabelProps={{shrink: true}}/>
+          <TextField label="Date Range" type="date" fullWidth InputLabelProps={{ shrink: true }} />
         </Grid>
         <Grid item xs={1}>
-          <TextField label="Limit" type="number" defaultValue={20} fullWidth />
+          <TextField label="Limit" type="number" value={limit} onChange={handleLimitChange} fullWidth />
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -40,13 +44,13 @@ const CustomFilters: React.FC = () => {
           </Button>
         </Grid>
       </Grid>
-      <Box sx={{marginTop: '16px', textAlign: 'right'}}>
+      <Box sx={{ marginTop: '16px', textAlign: 'right' }}>
         <Button variant="outlined" color="primary">
           CUSTOMISE
         </Button>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default CustomFilters
+export default CustomFilters;

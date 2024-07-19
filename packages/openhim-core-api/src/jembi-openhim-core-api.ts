@@ -132,10 +132,12 @@ export async function getImportMap(): Promise<any> {
  * Transactions
  * @returns
  */
-export async function fetchTransactions(): Promise<Transactions[]> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/transactions')
-  return response.data
+export async function fetchTransactions(filters: { filterLimit: string, filterPage: number, filters: {} }): Promise<Transactions[]> {
+  await ensureApiClientInitialized();
+  const response = await apiClient.get('/transactions', {
+    params: filters,
+  });
+  return response.data;
 }
 
 /**
