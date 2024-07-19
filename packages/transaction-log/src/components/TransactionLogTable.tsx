@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Box,
   Table,
@@ -9,12 +9,15 @@ import {
   TableRow,
   Checkbox,
   Typography,
-  Button,
-} from '@mui/material';
+  Button
+} from '@mui/material'
 
-const TransactionLogTable: React.FC<{ transactions: any[], loadMore: () => void }> = ({ transactions, loadMore }) => {
+const TransactionLogTable: React.FC<{
+  transactions: any[]
+  loadMore: () => void
+}> = ({transactions, loadMore}) => {
   return (
-    <Box sx={{ padding: '16px' }}>
+    <Box sx={{padding: '16px'}}>
       <TableContainer>
         <Table>
           <TableHead>
@@ -67,13 +70,13 @@ const TransactionLogTable: React.FC<{ transactions: any[], loadMore: () => void 
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ marginTop: '16px', textAlign: 'center' }}>
+      <Box sx={{marginTop: '16px', textAlign: 'center'}}>
         <Button variant="outlined" onClick={loadMore}>
           Load 20 more results
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default TransactionLogTable;
+export default TransactionLogTable

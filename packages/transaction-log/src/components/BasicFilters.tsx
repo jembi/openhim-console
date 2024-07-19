@@ -1,18 +1,18 @@
-import React from 'react';
-import { Box, TextField, MenuItem, Grid } from '@mui/material';
+import React from 'react'
+import {Box, TextField, MenuItem, Grid} from '@mui/material'
 
 interface FilterProps {
-  limit: number;
-  setLimit: (value: number) => void;
+  limit: number
+  setLimit: (value: number) => void
 }
 
-const BasicFilters: React.FC<FilterProps> = ({ limit, setLimit }) => {
+const BasicFilters: React.FC<FilterProps> = ({limit, setLimit}) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(Number(event.target.value));
-  };
+    setLimit(Number(event.target.value))
+  }
 
   return (
-    <Box sx={{ padding: '16px' }}>
+    <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <TextField select label="Status" defaultValue="Failed" fullWidth>
@@ -21,19 +21,41 @@ const BasicFilters: React.FC<FilterProps> = ({ limit, setLimit }) => {
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Search" type="text" fullWidth InputLabelProps={{ shrink: true }} />
+          <TextField
+            label="Search"
+            type="text"
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          />
         </Grid>
         <Grid item xs={2}>
-          <TextField select label="Channel" fullWidth defaultValue="Channel1" InputLabelProps={{ shrink: true }}>
+          <TextField
+            select
+            label="Channel"
+            fullWidth
+            defaultValue="Channel1"
+            InputLabelProps={{shrink: true}}
+          >
             <MenuItem value="Channel1">Channel1</MenuItem>
             <MenuItem value="Channel2">Channel2</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={3}>
-          <TextField label="Date Range" type="date" fullWidth InputLabelProps={{ shrink: true }} />
+          <TextField
+            label="Date Range"
+            type="date"
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          />
         </Grid>
         <Grid item xs={1}>
-          <TextField select label="Limit" value={limit} onChange={handleLimitChange} fullWidth>
+          <TextField
+            select
+            label="Limit"
+            value={limit}
+            onChange={handleLimitChange}
+            fullWidth
+          >
             <MenuItem value={10}>10</MenuItem>
             <MenuItem value={20}>20</MenuItem>
             <MenuItem value={50}>50</MenuItem>
@@ -55,7 +77,7 @@ const BasicFilters: React.FC<FilterProps> = ({ limit, setLimit }) => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default BasicFilters;
+export default BasicFilters
