@@ -1,5 +1,4 @@
-
 export type AboutResponse = {
-  currentCoreVersion: string,
+  currentCoreVersion: string
   serverTimezone: string
 }

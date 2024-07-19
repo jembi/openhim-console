@@ -122,6 +122,9 @@ export default function OpenhimAppBar() {
   const [currentPage, setCurrentPage] = useState<string>(
     window.localStorage.href
   )
+  const isLoggedIn =
+    !window.location.href.includes('#!/login') &&
+    !window.location.href.includes('#!/logout')
 
   const settings: Page[] = [
     {name: 'Profile', link: '#!/profile'},
@@ -164,11 +167,15 @@ export default function OpenhimAppBar() {
 
       if (!newRef.includes('#!/login') || !newRef.includes('#!/logout')) {
         fetchMe()
+      } else {
+        setIsAdmin(false)
       }
       setCurrentPage(newRef)
     }
 
     window.addEventListener('popstate', loadEvent)
+
+    loadEvent()
 
     return () => {
       window.removeEventListener('popstate', loadEvent)
@@ -208,7 +215,7 @@ export default function OpenhimAppBar() {
     <AppBar position="static" className={classes.appBar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters className={classes.toolbar}>
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
               <IconButton
                 size="large"
@@ -328,7 +335,7 @@ export default function OpenhimAppBar() {
             />
           </Typography>
 
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
               {pages.map(page =>
                 page.link ? (
@@ -412,7 +419,7 @@ export default function OpenhimAppBar() {
             </Box>
           )}
 
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 0}}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
