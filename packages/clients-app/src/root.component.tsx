@@ -9,7 +9,7 @@ import {BasicInfoModel} from './interfaces'
 import {SnackbarProvider} from 'notistack'
 
 export default function Root(props) {
-  const defaultPage = 'add-client'
+  const defaultPage = 'client-list'
   const [activePage, setActivePage] = useState<
     'client-list' | 'edit-client' | 'add-client'
   >(defaultPage)
