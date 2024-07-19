@@ -144,9 +144,37 @@ export async function fetchTransactions(filters: { filterLimit: string, filterPa
  * Channels
  * @returns
  */
+
+export async function fetchRoles(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/roles')
+  return response.data
+}
+
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
+}
+
+export async function editRole(roleName: string, role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.put('/roles/' + roleName, role)
+}
+
+export async function createRole(role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.post('/roles', role)
+}
+
 export async function fetchChannels(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/channels')
+  return response.data
+}
+
+export async function fetchClients(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/clients')
   return response.data
 }
 
@@ -170,6 +198,47 @@ export async function fetchMediators(): Promise<any> {
   const response = await apiClient.get('/mediators')
   return response.data
 }
+// get specific client
+export async function fetchClient(clientId: string): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/clients/${clientId}`)
+  return response.data
+}
+
+// add clients
+export async function addClient(client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/clients', client)
+  return response.data
+}
+
+// edit clients
+export async function editClient(clientId: string, client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/clients/${clientId}`, client)
+  return response.data
+}
+
+// delete clients
+export async function deleteClient(clientId: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete(`/clients/${clientId}`)
+}
+
+// fetch certificate
+export async function fetchCertificate(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/keystore/ca`)
+  return response.data
+}
+
+// fetch authentication types
+export async function fetchAuthTypes(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/authentication/types`)
+  return response.data
+}
+
 
 export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
   await ensureApiClientInitialized()
