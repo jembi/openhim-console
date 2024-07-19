@@ -4,7 +4,7 @@ const singleSpaDefaults = require('webpack-config-single-spa-react-ts')
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
     orgName: 'jembi',
-    projectName: 'openhim-header',
+    projectName: 'footer-app',
     webpackConfigEnv,
     argv
   })

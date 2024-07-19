@@ -250,3 +250,9 @@ export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year
   )
   return response.data
 }
+
+export async function fetchAbout(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/about')
+  return response.data
+}
