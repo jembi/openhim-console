@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Divider, FormControlLabel, FormGroup, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { fetchClients, fetchRoles } from '@jembi/openhim-core-api'
 
 const steps: {key: string, label: string}[] = [
   {key: 'basic-info', label: 'Basic Info'},
@@ -13,6 +15,17 @@ const allowedMethods: string[][] = [
 ]
 
 const channelTypes: string[] = ['HTTP', 'TCP', 'TLS', 'Polling']
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const BasicInfo = ({ setDisplay, setActiveStep }) => {
   return (
@@ -64,6 +77,7 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
               helperText="Help others understand this channel."
               variant='outlined'
               onChange={() => {}}
+              style={{width: '80%'}}
             />
             <br/>
             <br/>
@@ -103,6 +117,41 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
 }
 
 const RequestMatching = ({ setActiveStep, setDisplay }) => {
+  const [allowedClients, setAllowedClients] = useState<string[]>([])
+  const [clients, setClients] = useState<string[]>(['instant'])
+  const [roles, setRoles] = useState<string[]>([])
+  const [allowedRoles, setAllowedRoles] = useState<string[]>([])
+
+  useEffect(() => {
+    fetchClients().then(clients => {
+      setClients(clients.map(client => client.clientID))
+    })
+
+    fetchRoles().then(roles => {
+      // @ts-ignore
+      setRoles(roles.map(role => role.name))
+    })
+  }, [])
+
+  const handleChange = (event: SelectChangeEvent<typeof clients>) => {
+    const {
+      target: { value },
+    } = event;
+    setAllowedClients(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+  const handleChangeRoles = (event: SelectChangeEvent<typeof roles>) => {
+    const {
+      target: { value },
+    } = event;
+    setAllowedRoles(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
   return (
     <Box>
       <Typography paddingLeft={1} variant="h5">Request Matching</Typography>
@@ -112,16 +161,88 @@ const RequestMatching = ({ setActiveStep, setDisplay }) => {
       <br/>
       <Divider />
       <br />
-      <Card>
-      <CardActions>
+      <Card style={{paddingLeft: 10}}>
+        <br/>
+        <TextField
+          id="channelUrlPattern"
+          label="Channel Url Pattern"
+          placeholder="/fhir.*"
+          helperText="Which URL patterns will match the channel?"
+          variant='outlined'
+          required={true}
+          onChange={() => {}}
+          style={{width: '80%'}}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">^</InputAdornment>,
+            endAdornment: <InputAdornment position="end">$</InputAdornment>
+          }}
+        />
+        <br/>
+        <br/>
+        <FormControlLabel control={<Switch checked />} label='Auto-add regex delimiters (Recommended)'/>
+        <br/>
+        <br/>
+        <FormControl sx={{width: '80%',}}>
+          <InputLabel>
+            Clients
+          </InputLabel>
+          <Select
+            multiple
+            onChange={handleChange}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={MenuProps}
+            value={allowedClients}
+          >
+            {
+              clients.map(client => (
+                <MenuItem key={client} value={client}>
+                  <Checkbox checked={allowedClients.indexOf(client) > -1} />
+                  <ListItemText primary={client} />
+                </MenuItem>
+              ))
+            }
+          </Select>
+          <FormHelperText>Which clients should be able to access the channel?</FormHelperText>
+        </FormControl>
+        <br/>
+        <br/>
+        <FormControl sx={{width: '80%',}}>
+          <InputLabel>
+            Roles
+          </InputLabel>
+          <Select
+            multiple
+            onChange={handleChangeRoles}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={MenuProps}
+            value={allowedRoles}
+          >
+            {
+              roles.map(role => (
+                <MenuItem key={role} value={role}>
+                  <Checkbox checked={allowedRoles.indexOf(role) > -1} />
+                  <ListItemText primary={role} />
+                </MenuItem>
+              ))
+            }
+          </Select>
+          <FormHelperText>Which roles should be able to access the channel?</FormHelperText>
+        </FormControl>
+        <br/>
+        <br/>
+        <CardActions>
           <Button onClick={() => setDisplay('list')}>Cancel</Button>
           <Button onClick={() => {
-
+            setActiveStep(2)
           }}>Save</Button>
         </CardActions>
       </Card>
     </Box>
   )
+}
+
+const Routes = ({}) => {
+
 }
 
 export const EditAdd = ({ setDisplay }) => {
