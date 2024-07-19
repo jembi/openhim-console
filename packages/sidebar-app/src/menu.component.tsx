@@ -64,13 +64,6 @@ export default function OpenHIMMenu() {
             </Typography>
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component="a" href="/#!/transactionsxyz">
-            <Typography sx={{ fontSize: customFontSize }}>
-              Transaction Log 2
-            </Typography>
-          </ListItemButton>
-        </ListItem>
         {isAdmin && (
           <>
             <ListItem disablePadding>
