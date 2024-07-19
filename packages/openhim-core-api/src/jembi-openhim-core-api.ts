@@ -254,5 +254,10 @@ export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year
 export async function fetchAbout(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/about')
+}
+
+export async function fetchMediators(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/mediators')
   return response.data
 }
