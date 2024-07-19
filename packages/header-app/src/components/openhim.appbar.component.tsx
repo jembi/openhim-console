@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: 'none',
-    borderBottom: '1px solid #e0e0e0'
+    borderBottom: '1px solid #e0e0e0',
+    // background: 'linear-gradient(to bottom, #76b852, #8DC26F)', // Green gradient
     // fontSize: '14px!important',
     // lineHeight: '24px!important',
   },
@@ -60,8 +61,8 @@ const useStyles = makeStyles(theme => ({
     color: '#388e3c'
   },
   avatar: {
-    width: 32,
-    height: 32
+    width: 26,
+    height: 26
   },
   moreMenuButton: {
     display: 'flex',
