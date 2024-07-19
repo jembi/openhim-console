@@ -1,6 +1,25 @@
-import {Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Stack} from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  Stack,
+  Typography
+} from '@mui/material'
 import {Client} from '../../types'
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridRowParams,
+  GridToolbar
+} from '@mui/x-data-grid'
 import {FC, useEffect, useState} from 'react'
 import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
@@ -8,9 +27,8 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {BasicInfoModel} from '../../interfaces'
 import './data-grid-styling.css'
-import {set} from 'zod'
-import { useSnackbar } from 'notistack'
-import { AxiosError } from 'axios'
+import {useSnackbar} from 'notistack'
+import {AxiosError} from 'axios'
 
 interface ClientsListProps {
   addClient: () => void
@@ -19,36 +37,42 @@ interface ClientsListProps {
 
 const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
   const [clients, setClients] = useState<Client[]>([])
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
 
   useEffect(() => {
     //@ts-ignore
-    fetchClients().then(clients => {
-      //@ts-ignore
-      clients.forEach(client => {
-        setClients(prevClients => [...prevClients, client])
+    fetchClients()
+      .then(clients => {
+        //@ts-ignore
+        clients.forEach(client => {
+          setClients(prevClients => [...prevClients, client])
+        })
       })
-    }).catch((error: AxiosError) => {
-      if(error.response && error.response.data){
-        enqueueSnackbar(error.response.data, { variant: 'error' });
-      }else{
-        console.log(JSON.stringify(error));
-        enqueueSnackbar('Error fetching clients', { variant: 'error' });
-      }
-    });
+      .catch((error: AxiosError) => {
+        if (error.response && error.response.data) {
+          enqueueSnackbar(error.response.data, {variant: 'error'})
+        } else {
+          console.log(JSON.stringify(error))
+          enqueueSnackbar('Error fetching clients', {variant: 'error'})
+        }
+      })
   }, [])
 
-  const [clientToDelete, setClientToDelete] = useState<string| null>(null);
-  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
-    if (e.currentTarget.id === 'confirm') {      
-      deleteClient(clientToDelete).then(() => {}).catch((error: any) => {
-        console.error(error)
-      });
-      const newClients = clients.filter(client => client['_id'] !== clientToDelete);
-      setClients(newClients);
+  const [clientToDelete, setClientToDelete] = useState<string | null>(null)
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (e.currentTarget.id === 'confirm') {
+      deleteClient(clientToDelete)
+        .then(() => {})
+        .catch((error: any) => {
+          console.error(error)
+        })
+      const newClients = clients.filter(
+        client => client['_id'] !== clientToDelete
+      )
+      setClients(newClients)
     }
     setClientToDelete(null)
-  };
+  }
 
   const columns: GridColDef[] = [
     {field: 'clientID', headerName: 'ID', width: 80},
@@ -63,26 +87,46 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
       field: 'actions',
       headerName: 'Actions',
       width: 50,
-      renderCell: params => (
-        <>
-          <CreateIcon
-            style={{cursor: 'pointer'}}
-            onClick={() => {
-              editClient(params.row as BasicInfoModel)
-            }}
-          />
-          <DeleteIcon
-            style={{cursor: 'pointer'}}
-            onClick={() => {
-              setClientToDelete(params.row['_id'])
-            }}
-          />
-        </>
-      )
+      type: 'actions',
+      getActions: (params: GridRowParams) => [
+        <GridActionsCellItem
+          icon={<CreateIcon />}
+          id="edit"
+          label="Edit"
+          onClick={() => {
+            editClient(params.row as BasicInfoModel)
+          }}
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          id="delete"
+          label="Delete"
+          onClick={() => {
+            setClientToDelete(params.row['_id'])
+          }}
+        />
+      ]
     }
   ]
 
-  
+  const CustomNoRowsOverlay = () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%'
+        }}
+      >
+        <Typography variant="h6" color="black" gutterBottom>
+          No Clients Available
+        </Typography>
+        <Button startIcon={<AddIcon />} onClick={addClient} />
+      </div>
+    )
+  }
 
   return (
     <>
@@ -110,47 +154,58 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* Separation */}
-      <Box sx={{maxWidth: '85%', paddingLeft: 20}}>
-        <h1>Clients List</h1>
-        <Stack direction="row" spacing={32} sx={{marginBottom: 1}}>
-          <p style={{opacity: 0.6}}>
-            Control client systems and their access roles. Add clients to enable
-            their request routing and group them by roles for streamlined
-            channel access management
-          </p>
-          <Button
-            style={{backgroundColor: '#29AC96'}}
-            variant="contained"
-            onClick={addClient}
-          >
-            <AddIcon /> Add
-          </Button>
-        </Stack>
-        <Divider />
-        <br />
-        <Card>
-          <DataGrid
-            getRowId={row => row.clientID}
-            rows={clients}
-            columns={columns}
-            slots={{toolbar: GridToolbar}}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                printOptions: {disableToolbarButton: true},
-                csvOptions: {disableToolbarButton: true}
-              }
-            }}
-            initialState={{
-              pagination: {
-                paginationModel: {page: 0, pageSize: 10}
-              }
-            }}
-            pageSizeOptions={[10, 25, 50]}
-          />
-        </Card>
-      </Box>
+
+      <Grid container spacing={2} padding={2}>
+        <Grid item xs={12}>
+          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+            Client List
+          </Typography>
+          <Grid container>
+            <Grid item xs={11}>
+              <p style={{opacity: 0.6, fontSize: '16px'}}>
+                Control client systems and their access roles. Add clients to
+                enable their request routing and group them by roles for
+                streamlined channel access management
+              </p>
+            </Grid>
+            <Grid item xs={1}>
+              <Button
+                style={{backgroundColor: '#29AC96'}}
+                variant="contained"
+                onClick={addClient}
+              >
+                <AddIcon /> Add
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <Card>
+            <DataGrid
+              autoHeight
+              getRowId={row => row.clientID}
+              rows={clients}
+              columns={columns}
+              slots={{toolbar: GridToolbar, noRowsOverlay: CustomNoRowsOverlay}}
+              slotProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  printOptions: {disableToolbarButton: true},
+                  csvOptions: {disableToolbarButton: true}
+                }
+              }}
+              initialState={{
+                pagination: {
+                  paginationModel: {page: 0, pageSize: 10}
+                }
+              }}
+              pageSizeOptions={[10, 25, 50]}
+            />
+          </Card>
+        </Grid>
+      </Grid>
     </>
   )
 }
