@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { start } from 'repl'
+import {start} from 'repl'
 interface App {
   _id: string
   name: string
@@ -48,6 +48,19 @@ async function initializeApiClient(): Promise<void> {
       withCredentials: true,
       baseURL: `${config.protocol}://${config.host}:${config.port}${hostPath}`
     })
+
+    // Add interceptors
+    apiClient.interceptors.response.use(
+      response => response,
+      error => {
+        // Add a response interceptor to redirect to login page if the user is not authenticated
+        if (error.response.status == 401) {
+          window.location.href = '/#!/login'
+          return Promise.reject(error)
+        }
+        return Promise.reject(error)
+      }
+    )
   } catch (error) {
     console.error('Error initializing the API client:', error)
     throw error
@@ -243,12 +256,11 @@ export async function fetchAuthTypes(): Promise<any> {
 export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
   await ensureApiClientInitialized()
   const url = `/metrics/timeseries/${period}`
-  const response = await apiClient.get(
-    url,
-    { params: {
+  const response = await apiClient.get(url, {
+    params: {
       startDate: filter.startDate.toISOString(),
-      endDate: filter.endDate.toISOString(),
-    } }
-  )
+      endDate: filter.endDate.toISOString()
+    }
+  })
   return response.data
 }
