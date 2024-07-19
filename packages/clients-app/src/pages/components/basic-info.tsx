@@ -99,6 +99,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           onBlur={onBlurValidation}
           disabled={editMode}
         />
+
         <TextField
           id="name"
           label="Client Name"
@@ -108,6 +109,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           error={validationErrors?.name ? true : false}
           helperText={validationErrors?.name}
           onBlur={onBlurValidation}
+          sx={{marginLeft: 1}}
         />
         <h2>Assign Existing Roles</h2>
         {validationErrors?.roles && (
