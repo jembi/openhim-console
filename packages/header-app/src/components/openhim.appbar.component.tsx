@@ -86,10 +86,11 @@ type Page = {
 }
 
 const pages: Page[] = [
+  {name: 'PORTAL', link: '#!/portal'},
   {name: 'DASHBOARD', link: '#!/dashboard'},
   {name: 'TRANSACTIONS', link: '#!/transactions'},
   {name: 'CHANNELS', link: '#!/channels'},
-  {name: 'ROLES', link: '#!/roles'},
+  {name: 'ROLES', link: '#!/rbac'},
   {name: 'CLIENTS', link: '#!/clients'},
   {
     name: 'MORE',
@@ -164,12 +165,14 @@ export default function OpenhimAppBar() {
 
       if (!newRef.includes('#!/login') || !newRef.includes('#!/logout')) {
         fetchMe()
+      }else{
+        setIsAdmin(false);
       }
       setCurrentPage(newRef)
     }
 
     window.addEventListener('popstate', loadEvent)
-
+    loadEvent();
     return () => {
       window.removeEventListener('popstate', loadEvent)
     }

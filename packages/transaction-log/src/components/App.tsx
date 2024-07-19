@@ -89,7 +89,8 @@ const App: React.FC = () => {
     <Container
       sx={{
         backgroundColor: '#F1F1F1',
-        maxWidth: '100% !important'
+        maxWidth: '100% !important',
+        padding:4
       }}
     >
       <Grid item xs={12}>

@@ -54,6 +54,7 @@ async function initializeApiClient(): Promise<void> {
       response => response,
       error => {
         // Add a response interceptor to redirect to login page if the user is not authenticated
+        console.log(error.response)
         if (error.response.status == 401) {
           window.location.href = '/#!/login'
           return Promise.reject(error)

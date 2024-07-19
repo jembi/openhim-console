@@ -1,7 +1,7 @@
 {
   "name": "@jembi/footer-app",
   "scripts": {
-    "start": "webpack serve --port 8509",
+    "start": "webpack serve --port 8510",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently npm:build:*",
     "build:webpack": "webpack --mode=production",
