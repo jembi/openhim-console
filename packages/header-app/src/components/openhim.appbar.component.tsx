@@ -22,10 +22,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: 'none',
-    borderBottom: '1px solid #e0e0e0'
-    // background: 'linear-gradient(to bottom, #76b852, #8DC26F)', // Green gradient
-    // fontSize: '14px!important',
-    // lineHeight: '24px!important',
+    borderBottom: '1px solid #e0e0e0',
+    position: 'relative',
+    zIndex: 1
   },
   toolbar: {
     minHeight: 64
@@ -67,6 +66,15 @@ const useStyles = makeStyles(theme => ({
   moreMenuButton: {
     display: 'flex',
     alignItems: 'center'
+  },
+  gradientBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: 5,
+    background:
+      'linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(0,128,0,1) 100%)'
   }
 }))
 
@@ -150,9 +158,6 @@ export default function OpenhimAppBar() {
     setIsAdmin(me.user.groups.includes('admin'))
   }
 
-  // listen to navigation change events.
-  // it is important for the component to re-render when the navigation changes to update the active link
-  // and to be able to render the nav links correctly
   useEffect(() => {
     const loadEvent = function () {
       const newRef = document.location.href
@@ -457,6 +462,7 @@ export default function OpenhimAppBar() {
           )}
         </Toolbar>
       </Container>
+      <Box className={classes.gradientBar}></Box>
     </AppBar>
   )
 }
