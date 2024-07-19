@@ -59,7 +59,7 @@ export function Metrics () {
           }
         }
 
-        graphData.push({ timestamp: timestamp.format('YYYY-MM-DD HH:mm'), value: value })
+        graphData.push({ timestamp: timestamp.format('YYYY-MM-DD HH:mm'), value })
       }
 
       avgResponseTime = (avgResponseTimeTotal / metrics.length).toFixed(2)
@@ -68,8 +68,8 @@ export function Metrics () {
         xkey: 'timestamp',
         ykeys: ['value'],
         labels: [label],
-        loadTotal: loadTotal,
-        avgResponseTime: avgResponseTime
+        loadTotal,
+        avgResponseTime
       }
     }
   }

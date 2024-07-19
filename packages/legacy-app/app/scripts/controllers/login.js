@@ -196,11 +196,11 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
         // create session object
         const consoleSessionObject = {
-          sessionID: sessionID,
+          sessionID,
           sessionUser: loginEmail,
-          sessionUserGroups: sessionUserGroups,
-          sessionUserSettings: sessionUserSettings,
-          sessionProvider: sessionProvider
+          sessionUserGroups,
+          sessionUserSettings,
+          sessionProvider
         }
 
         // Put the object into storage
@@ -212,11 +212,9 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
   }
 
   $scope.signInWithKeyCloak = function () {
-    keycloak.keycloakInstance.init({
-      onLoad: 'login-required',
+    keycloak.keycloakInstance.login({
       // Must match to the configured value in keycloak
-      redirectUri: $window.location.origin,
-      checkLoginIframe: false
+      redirectUri: $window.location.origin
     })
   }
 }

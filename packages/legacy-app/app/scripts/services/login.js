@@ -7,7 +7,7 @@ export function login (Api, $rootScope, keycloak) {
       Api.AuthenticateLocal.save({ username: email, password }, function () {
         // on success
         // Verify that you can make authenticated requests
-        Api.Users.get({ email: email }, function (profile) {
+        Api.Users.get({ email }, function (profile) {
           userProfile = profile
           done('Authentication Success')
         }, function () {
@@ -46,14 +46,17 @@ export function login (Api, $rootScope, keycloak) {
         function () {
           // Cleanup of keycloak session
           const keycloakState = keycloak.getKeycloakState()
-          if ($rootScope.sessionUser && $rootScope.sessionProvider === 'openid' && keycloakState) {
-            localStorage.removeItem(`kc-callback-${keycloakState}`)
-          }
-
+          const isKeycloakLogin = $rootScope.sessionUser && $rootScope.sessionProvider === 'openid' && keycloakState
           userProfile = null
           $rootScope.sessionUser = null
           $rootScope.navMenuVisible = false
           localStorage.removeItem('consoleSession')
+
+          if (isKeycloakLogin) {
+            localStorage.removeItem(`kc-callback-${keycloakState}`)
+            keycloak.keycloakInstance.logout({ redirectUri: window.location.origin })
+          }
+
           done('Logout Successful')
         }, function () {
           done('Internal Server Error')

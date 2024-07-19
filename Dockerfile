@@ -16,7 +16,10 @@ FROM nginx:mainline-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=build /app/packages/legacy-app/dist  ./
-COPY --from=build /app/packages/header-app/dist  ./
-COPY --from=build /app/packages/sidebar-app/dist  ./
-COPY --from=build /app/packages/root-config/dist  ./
+COPY --from=build /app/dist  ./
+
+COPY ./docker-entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT [ "/bin/sh", "/usr/local/bin/docker-entrypoint.sh" ]

@@ -670,6 +670,7 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend.flush()
 
     scope.newRoute = {}
+    scope.newRoute.type = 'http'
     scope.newRoute.name = ''
     scope.newRoute.host = ''
     scope.newRoute.port = 'qwerty'
@@ -690,6 +691,7 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend.flush()
 
     scope.newRoute = {}
+    scope.newRoute.type = 'http'
     scope.newRoute.name = ''
     scope.newRoute.host = ''
     scope.newRoute.port = 'qwerty'

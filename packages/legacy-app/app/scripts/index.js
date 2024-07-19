@@ -197,12 +197,21 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
     // Retrieve the session from storage
     let consoleSession = localStorage.getItem('consoleSession')
 
-    Api.Me.get(
-      function (authDetails) {
-        if (authDetails.user) {
-          consoleSession = authDetails.user
-          // set the nav menu to show
-          $rootScope.navMenuVisible = true
+    // Initialize the route to /login if there is no consoleSession
+    if (curRoute && !consoleSession && curRoute.indexOf('login') !== 1 && curRoute.indexOf('set-password') !== 1 && curRoute.indexOf('forgot-password') !== 1) {
+      $location.path('/login')
+    }
+
+    Api.Me.get(function (authDetails) {
+      if (authDetails.user) {
+        // ConsoleSession was deleted but the user still have a session
+        if (curRoute && curRoute !== $location.path() && curRoute.indexOf('login') !== 1) {
+          $location.path($rootScope.referringURL)
+        }
+
+        consoleSession = authDetails.user
+        // set the nav menu to show
+        $rootScope.navMenuVisible = true
 
           // get sessionID
           const sessionID = uuidV4()
@@ -211,14 +220,14 @@ app.run(function ($rootScope, $location, $anchorScroll, Api) {
           const sessionUserSettings = consoleSession.settings
           const sessionProvider = consoleSession.provider
 
-          // create session object
-          const consoleSessionObject = {
-            sessionID: sessionID,
-            sessionUser: sessionUser,
-            sessionUserGroups: sessionUserGroups,
-            sessionUserSettings: sessionUserSettings,
-            sessionProvider: sessionProvider
-          }
+        // create session object
+        const consoleSessionObject = {
+          sessionID,
+          sessionUser,
+          sessionUserGroups,
+          sessionUserSettings,
+          sessionProvider
+        }
 
           // Put updated object into storage
           localStorage.setItem(

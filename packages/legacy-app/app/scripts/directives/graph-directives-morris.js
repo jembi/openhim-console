@@ -23,7 +23,7 @@ export function morrisLineChart ($parse) {
           } else {
           // create Morris Line Chart if it doesnt yet exist
             scope.morrisLineChart = new Morris.Line({
-              element: element,
+              element,
               data: data.data,
               xkey: data.xkey,
               ykeys: data.ykeys,
@@ -56,7 +56,7 @@ export function morrisBarChart ($parse) {
           } else {
           // create Morris Bar Chart if it doesnt yet exist
             scope.morrisBarChart = new Morris.Bar({
-              element: element,
+              element,
               data: data.data,
               xkey: data.xkey,
               ykeys: data.ykeys,
@@ -98,7 +98,7 @@ export function morrisDonutChart ($parse) {
         elem.empty()
         if (data) {
           scope.morrisDonutChart = new Morris.Donut({
-            element: element,
+            element,
             data: data.data,
             colors: data.colors,
             resize: true,
