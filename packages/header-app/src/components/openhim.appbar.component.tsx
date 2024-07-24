@@ -141,6 +141,8 @@ export default function OpenhimAppBar() {
   ]
 
   const fetchMe = async () => {
+    setIsAdmin(false)
+
     const resConf = await fetch('/config/default.json')
     if (!resConf.ok) {
       return console.error(
@@ -165,11 +167,7 @@ export default function OpenhimAppBar() {
     const loadEvent = function () {
       const newRef = document.location.href
 
-      if (!newRef.includes('#!/login') || !newRef.includes('#!/logout')) {
-        fetchMe()
-      } else {
-        setIsAdmin(false)
-      }
+      fetchMe()
       setCurrentPage(newRef)
     }
 
@@ -324,8 +322,8 @@ export default function OpenhimAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#!/dashboard"
+            component={isAdmin && isLoggedIn ? "a" : undefined}
+            href={isAdmin && isLoggedIn ? "#!/dashboard" : undefined}
             className={classes.logoContainer}
           >
             <img

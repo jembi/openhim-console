@@ -1,19 +1,21 @@
-@import '~bootstrap/dist/css/bootstrap.css';
+@import 'bootstrap/bootstrap.css';
 @import 'morris.css';
 @import '~highlight.js/styles/default.css';
 @import '~highlight.js/styles/github.css';
 @import '~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
 @import '~angular-bootstrap-colorpicker/css/colorpicker.css';
 @import 'angular-taglist-directive.css';
-
-html,
+  
+@scope(.ng-scope) {
+  
+ html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-body {
+ body {
   font-family: 'Open Sans', sans-serif;
   /* background-color: #f7f7f7; */
   position: relative;
@@ -22,7 +24,7 @@ body {
   padding: 0px;
 }
 
-h2 {
+ h2 {
   word-wrap: break-word;
 }
 
@@ -2561,4 +2563,5 @@ label {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
 }
