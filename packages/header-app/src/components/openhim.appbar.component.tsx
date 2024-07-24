@@ -164,7 +164,7 @@ export default function OpenhimAppBar() {
   }
 
   useEffect(() => {
-    const loadEvent = function () {
+    const loadEvent = function (e?: PopStateEvent | HashChangeEvent) {
       const newRef = document.location.href
 
       fetchMe()
@@ -172,11 +172,13 @@ export default function OpenhimAppBar() {
     }
 
     window.addEventListener('popstate', loadEvent)
+    // window.addEventListener('hashchange', loadEvent)
 
     loadEvent()
 
     return () => {
       window.removeEventListener('popstate', loadEvent)
+      // window.removeEventListener('hashchange', loadEvent)
     }
   }, [])
 

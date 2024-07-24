@@ -7,6 +7,10 @@
 @import 'angular-taglist-directive.css';
   
 @scope(.ng-scope) {
+
+:scope {
+  font-family: 'Open Sans', sans-serif;
+}
   
  html,
 body {
