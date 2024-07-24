@@ -322,8 +322,8 @@ export default function OpenhimAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component={isAdmin && isLoggedIn ? "a" : undefined}
-            href={isAdmin && isLoggedIn ? "#!/dashboard" : undefined}
+            component={isAdmin && isLoggedIn ? 'a' : undefined}
+            href={isAdmin && isLoggedIn ? '#!/dashboard' : undefined}
             className={classes.logoContainer}
           >
             <img
