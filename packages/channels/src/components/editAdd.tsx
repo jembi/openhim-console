@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, stackClasses, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { fetchClients, fetchRoles } from '@jembi/openhim-core-api'
+import CreateIcon from '@mui/icons-material/Create'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const steps: {key: string, label: string}[] = [
   {key: 'basic-info', label: 'Basic Info'},
@@ -27,7 +30,54 @@ const MenuProps = {
   },
 };
 
-const BasicInfo = ({ setDisplay, setActiveStep }) => {
+interface Channel {
+  name: string;
+  description: string;
+  urlPattern: string;
+  isAsynchronousProcess: boolean;
+  maxBodyAgeDays: number;
+  timeout: number;
+  status: string;
+  methods: string[];
+  type: string;
+  priority: number;
+  tcpPort: number;
+  tcpHost: string;
+  pollingSchedule: string;
+  requestBody: boolean;
+  allow: string[];
+  whitelist: string[];
+  authType: string;
+}
+
+const channelTemplate: Channel = {
+  name: '',
+  description: '',
+  urlPattern: '',
+  isAsynchronousProcess: false,
+  maxBodyAgeDays: null,
+  timeout: null,
+  status: '',
+  methods: [],
+  type: '',
+  priority: null,
+  tcpPort: null,
+  tcpHost: '',
+  pollingSchedule: '',
+  requestBody: false,
+  allow: [],
+  whitelist: [],
+  authType: ''
+}
+
+const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
+  const [name, setName] = useState<string>(channel.name)
+  const [channelMethods, setMethods] = useState<string[]>(channel.methods || [])
+  const [description, setDescription] = useState<string>(channel.description)
+  const [type, setChannelType] = useState<string>(channel.type)
+  const [timeout, setChannelTimeout] = useState<string>(channel.timeout)
+  const [enabled, setChannelEnabled] = useState<boolean>(channel.status)
+
   return (
     <Box>
       <Typography paddingLeft={1} variant="h5">Basic Info</Typography>
@@ -45,7 +95,10 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
           placeholder=""
           helperText="Choose a short but descriptive name."
           variant='outlined'
-          onChange={() => {}}
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value)
+          }}
         />
         <br/>
         <br/>
@@ -55,8 +108,20 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
         {
           allowedMethods.map(methods =>
             <FormGroup key={methods[0]} style={{flexDirection: 'row', paddingLeft: 20}}>
-              {methods[0] && <FormControlLabel style={{width: '10%', paddingRight: '40%'}} control={<input type='checkbox'/>} label={methods[0]}/>}
-              {methods[1] && <FormControlLabel control={<input type='checkbox'/>} label={methods[1]}/>}
+              {methods[0] && <FormControlLabel style={{width: '10%', paddingRight: '40%'}} control={<input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target?.checked) {
+                  setMethods([...channelMethods, methods[0]])
+                } else {
+                  setMethods(channelMethods.filter(meth => meth != methods[0]))
+                }
+              }} type='checkbox' checked={channelMethods.includes(methods[0])}/>} label={methods[0]}/>}
+              {methods[1] && <FormControlLabel control={<input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target?.checked) {
+                  setMethods([...channelMethods, methods[1]])
+                } else {
+                  setMethods(channelMethods.filter(meth => meth != methods[1]))
+                }
+              }} type='checkbox' checked={channelMethods.includes(methods[1])}/>} label={methods[1]}/>}
             </FormGroup>
           )
         }
@@ -76,7 +141,10 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
               placeholder=""
               helperText="Help others understand this channel."
               variant='outlined'
-              onChange={() => {}}
+              onChange={(e) => {
+                setDescription(e.target.value)
+              }}
+              value={description}
               style={{width: '80%'}}
             />
             <br/>
@@ -84,9 +152,15 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
             <Typography variant="h5">Channel Type</Typography>
             <br/>
             {
-              channelTypes.map(channel =>
-                <FormGroup key={channel} style={{ paddingLeft: 20}}>
-                  <FormControlLabel control={<input type='radio'/>} label={channel}/>
+              channelTypes.map(chanType =>
+                <FormGroup key={chanType} style={{ paddingLeft: 20}}>
+                  <FormControlLabel control={<input checked={type === chanType} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (e.target?.checked) {
+                      setChannelType(chanType)
+                    } else {
+                      setChannelType('')
+                    }
+                  }} type='radio'/>} label={chanType}/>
                 </FormGroup>
               )
             }
@@ -95,41 +169,52 @@ const BasicInfo = ({ setDisplay, setActiveStep }) => {
               id="channelTimeout"
               label="Channel Timeout ms"
               placeholder=""
+              value={timeout}
               variant='outlined'
-              onChange={() => {}}
+              inputProps={{ inputMode: 'numeric' }}
+              onChange={(e) => {
+                setChannelTimeout(e.target.value)
+              }}
             />
             <br/>
             <br/>
-            <FormControlLabel control={<Switch checked />} label='Enable Channel'/>
+            <FormControlLabel control={<Switch onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setChannelEnabled(e.target?.checked)
+            }} checked={enabled} />} label='Enable Channel'/>
             <br/>
           </AccordionDetails>
         </Accordion>
         <Divider/>
         <CardActions>
-          <Button onClick={() => setDisplay('list')}>Cancel</Button>
-          <Button onClick={() => {
+          <Button variant="outlined" color="success" onClick={() => setDisplay('list')}>Cancel</Button>
+          <Button variant="contained" color="success" onClick={() => {
+            setChannel({...channel, name, description, methods: channelMethods, type, timeout, status: enabled})
             setActiveStep(1)
-          }}>Save</Button>
+          }}>Next</Button>
         </CardActions>
       </Card>
     </Box>
   )
 }
 
-const RequestMatching = ({ setActiveStep, setDisplay }) => {
-  const [allowedClients, setAllowedClients] = useState<string[]>([])
-  const [clients, setClients] = useState<string[]>(['instant'])
+const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
+  const [allowedClients, setAllowedClients] = useState<string[]>(channel.allow)
+  const [clients, setClients] = useState<string[]>([])
   const [roles, setRoles] = useState<string[]>([])
   const [allowedRoles, setAllowedRoles] = useState<string[]>([])
+  const [urlPattern, setUrlPattern] = useState<string>(channel.urlPattern)
+  const [autoRegexEnabled, setAutoRegexEnabled] = useState<boolean>(true)
 
   useEffect(() => {
     fetchClients().then(clients => {
       setClients(clients.map(client => client.clientID))
+      setAllowedClients(clients.map(client => client.clientID).filter(id => channel.allow.includes(id)))
     })
 
     fetchRoles().then(roles => {
       // @ts-ignore
       setRoles(roles.map(role => role.name))
+      setAllowedRoles(roles.map(role => role.name).filter(name => channel.allow.includes(name)))
     })
   }, [])
 
@@ -170,7 +255,10 @@ const RequestMatching = ({ setActiveStep, setDisplay }) => {
           helperText="Which URL patterns will match the channel?"
           variant='outlined'
           required={true}
-          onChange={() => {}}
+          onChange={(e) => {
+            setUrlPattern(e.target.value)
+          }}
+          value={urlPattern}
           style={{width: '80%'}}
           InputProps={{
             startAdornment: <InputAdornment position="start">^</InputAdornment>,
@@ -179,7 +267,9 @@ const RequestMatching = ({ setActiveStep, setDisplay }) => {
         />
         <br/>
         <br/>
-        <FormControlLabel control={<Switch checked />} label='Auto-add regex delimiters (Recommended)'/>
+        <FormControlLabel control={<Switch value={autoRegexEnabled} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setAutoRegexEnabled(e.target.checked)
+        }} checked />} label='Auto-add regex delimiters (Recommended)'/>
         <br/>
         <br/>
         <FormControl sx={{width: '80%',}}>
@@ -231,9 +321,197 @@ const RequestMatching = ({ setActiveStep, setDisplay }) => {
         <br/>
         <br/>
         <CardActions>
-          <Button onClick={() => setDisplay('list')}>Cancel</Button>
-          <Button onClick={() => {
+          <Button variant="outlined" color="success" onClick={() => setActiveStep(0)}>Back</Button>
+          <Button variant="contained" color="success" onClick={() => {
             setActiveStep(2)
+          }}>Next</Button>
+        </CardActions>
+      </Card>
+    </Box>
+  )
+}
+
+const Routes = ({ setDisplay, setActiveStep }) => {
+  const [routeID, setRouteId] = useState<string>('')
+  const [routes, setRoutes] = useState([])
+  const [displayAddRoute, setDisplayAddRoute] = useState<boolean>(false)
+
+  const columns = [
+    {field: 'name', headerName: 'Name', flex: 0.3},
+    {field: 'type', headerName: 'Type', flex: 0.1},
+    {field: 'host', headerName: 'Host', flex: 0.2},
+    {field: 'port', headerName: 'Port', flex: 0.2},
+    {field: 'path', headerName: 'Path', flex: 0.2},
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 0.2,
+      renderCell: params => (
+        <>
+          <CreateIcon
+            style={{cursor: 'pointer'}}
+            onClick={() => {
+            }}
+          />
+          <DeleteIcon
+            style={{cursor: 'pointer'}}
+            onClick={() => {
+              setRouteId(params.row['_id'])
+            }}
+          />
+        </>
+      )
+    }
+  ]
+
+  return (
+    <Box>
+      <Typography paddingLeft={1} variant="h5">Routes</Typography>
+      <Typography paddingLeft={1}>
+        Set the routes to route to.
+      </Typography>
+      <br/>
+      <Divider />
+      <br />
+      <Card style={{paddingLeft: 10, paddingRight: 10}}>
+        <DataGrid
+          getRowId={row => row._id}
+          columns={columns}
+          slots={{toolbar: GridToolbar}}
+          rows={routes}
+          initialState={{
+            pagination: {
+              paginationModel: {page: 0, pageSize: 10}
+            }
+          }}
+          pageSizeOptions={[10, 25, 50]}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: false,
+              printOptions: {disableToolbarButton: true},
+              csvOptions: {disableToolbarButton: true}
+            }
+          }}
+        />
+        <br/>
+        {
+          !displayAddRoute ? <Button style={{paddingLeft: '80%'}} color="primary" variant="text" onClick={() => setDisplayAddRoute(true)}>
+            Add new route
+          </Button> :
+          <Box>
+            <Typography paddingLeft={1} variant="h5">Add new route</Typography>
+            <br/>
+            <TextField
+              id="routeName"
+              label="Route Name"
+              helperText="Choose descriptive name for this route."
+              variant='outlined'
+              required={true}
+              onChange={() => {}}
+              style={{width: '80%'}}
+            />
+            <br/>
+            <br/>
+            <FormControl>
+              <FormControlLabel control={<Switch checked />} label='Primary Route?'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if this is the primary route.</FormHelperText>
+            </FormControl>
+            <br/>
+            <FormControl>
+              <FormControlLabel control={<Switch checked />} label='Wait for Primary Response?'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to wait for the response from the primary route before processing.</FormHelperText>
+            </FormControl>
+            <br/>
+            <FormControl>
+              <FormControlLabel control={<Switch checked />} label='Status'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to enable this route.</FormHelperText>
+            </FormControl>
+            <br/>
+            <br/>
+            <FormGroup style={{ flexDirection: 'row'}}>
+              <Typography paddingLeft={1} variant="h5">Route Type</Typography>
+              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input type='checkbox'/>} label="HTTP"/>
+              <FormControlLabel control={<input type='checkbox'/>} label='KAFKA'/>
+            </FormGroup>
+            <br/>
+            <br/>
+            <FormControl>
+              <FormControlLabel control={<Switch checked />} label='Secured Route?'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if the route is secured. Uses default certificate  authority..</FormHelperText>
+            </FormControl>
+            <br/>
+            <br/>
+            <FormGroup style={{ flexDirection: 'row'}}>
+              <TextField
+                id="host"
+                label="Host"
+                helperText=""
+                variant="outlined"
+                required={true}
+                style={{ width: "48%", paddingRight: 20 }}
+              />
+              <TextField
+                id="port"
+                label="Port"
+                helperText=""
+                variant="outlined"
+                required={true}
+                style={{ width: "48%" }}
+              />
+            </FormGroup>
+            <br/>
+            <FormGroup style={{ flexDirection: 'row' }}>
+              <TextField
+                id="routePath"
+                label="Path"
+                helperText=""
+                variant="outlined"
+                style={{ width: "48%", paddingRight: 20}}
+              />
+              <TextField
+                id="routePathTransform"
+                label="Route Path Transform"
+                helperText="Using defined format eg s/from/to/g"
+                variant="outlined"
+                style={{width: "48%"}}
+              />
+            </FormGroup>
+            <br/>
+            <FormGroup style={{ flexDirection: 'row'}}>
+              <TextField
+                id="authName"
+                label="Basic Authentication Username"
+                helperText=""
+                variant="outlined"
+                style={{ width: "48%", paddingRight: 20 }}
+              />
+              <TextField
+                id="authPassword"
+                label="Basic Authentication Password"
+                helperText=""
+                variant="outlined"
+                style={{ width: "48%" }}
+              />
+            </FormGroup>
+            <br/>
+            <FormControl>
+              <FormControlLabel control={<Switch checked />} label='Forward Auth Header?'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to forward existing authorization header.</FormHelperText>
+            </FormControl>
+            <CardActions style={{paddingLeft: '70%', justifyItems: "center"}}>
+              <Button variant="outlined" color="success" onClick={() => setDisplayAddRoute(false)}>Cancel</Button>
+              <Button variant="contained" color="success" onClick={() => {
+                setDisplayAddRoute(false)
+                setDisplayAddRoute(false)
+              }}>Save</Button>
+            </CardActions>
+          </Box>
+        }
+        <CardActions>
+          <Button variant="outlined" color="success" onClick={() => setActiveStep(1)}>Back</Button>
+          <Button variant="contained" color="success" onClick={() => {
+            setActiveStep(0)
+            setDisplay('list')
           }}>Save</Button>
         </CardActions>
       </Card>
@@ -241,13 +519,10 @@ const RequestMatching = ({ setActiveStep, setDisplay }) => {
   )
 }
 
-const Routes = ({}) => {
-
-}
-
 export const EditAdd = ({ setDisplay }) => {
   const [activeStep, setActiveStep] = useState(0)
   const labelProps: {optional?: React.ReactNode} = {}
+  const [channel, setChannel] = useState<Channel>(channelTemplate)
 
   return (
     <>
@@ -276,9 +551,16 @@ export const EditAdd = ({ setDisplay }) => {
           </Stepper>
           <br/>
           {
-            activeStep === 0 ?
-              <BasicInfo setActiveStep={setActiveStep} setDisplay={setDisplay}/> :
-              <RequestMatching setActiveStep={setActiveStep} setDisplay={setDisplay}/>
+            activeStep === 0 &&
+            <BasicInfo setActiveStep={setActiveStep} setDisplay={setDisplay} setChannel={setChannel} channel={channel}/>
+          }
+          {
+            activeStep === 1 &&
+            <RequestMatching setActiveStep={setActiveStep} setChannel={setChannel} channel={channel}/>
+          }
+          {
+            activeStep === 2 &&
+            <Routes setActiveStep={setActiveStep} setDisplay={setDisplay}/>
           }
         </Card>
       </Box>
