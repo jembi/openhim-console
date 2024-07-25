@@ -1,6 +1,6 @@
 import {SnackbarProvider} from 'notistack'
 import {StrictMode, useState} from 'react'
-import {ListRoles} from './pages/list-roles/list-roles'
+import {ListRoles} from './pages/list-client-roles/list-client-roles'
 import {ClientRoleForm} from './pages/client-role-form/client-role-form'
 import { ClientRole } from './interface'
 

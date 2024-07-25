@@ -1,5 +1,5 @@
 {
-  "name": "@jembi/roles-app",
+  "name": "@jembi/client-roles-app",
   "scripts": {
     "start": "webpack serve -- --port 8510",
     "start:standalone": "webpack serve --env standalone",
@@ -64,5 +64,5 @@
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"
   },
-  "types": "dist/jembi-roles-app.d.ts"
+  "types": "dist/jembi-client-roles-app.d.ts"
 }

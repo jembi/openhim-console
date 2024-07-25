@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "declarationDir": "dist"
   },
-  "files": ["src/jembi-roles-app.tsx"],
+  "files": ["src/jembi-client-roles-app.tsx"],
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]
 }

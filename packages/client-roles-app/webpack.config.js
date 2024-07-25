@@ -4,7 +4,7 @@ const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
     orgName: "jembi",
-    projectName: "roles-app",
+    projectName: "client-roles-app",
     webpackConfigEnv,
     argv,
   });
