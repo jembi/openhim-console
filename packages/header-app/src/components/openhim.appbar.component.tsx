@@ -123,6 +123,9 @@ export default function OpenhimAppBar() {
   const [currentPage, setCurrentPage] = useState<string>(
     window.localStorage.href
   )
+  const isLoggedIn =
+    !window.location.href.includes('#!/login') &&
+    !window.location.href.includes('#!/logout')
 
   const settings: Page[] = [
     {name: 'Profile', link: '#!/profile'},
@@ -139,6 +142,8 @@ export default function OpenhimAppBar() {
   ]
 
   const fetchMe = async () => {
+    setIsAdmin(false)
+
     const resConf = await fetch('/config/default.json')
     if (!resConf.ok) {
       return console.error(
@@ -160,21 +165,21 @@ export default function OpenhimAppBar() {
   }
 
   useEffect(() => {
-    const loadEvent = function () {
+    const loadEvent = function (e?: PopStateEvent | HashChangeEvent) {
       const newRef = document.location.href
 
-      if (!newRef.includes('#!/login') || !newRef.includes('#!/logout')) {
-        fetchMe()
-      }else{
-        setIsAdmin(false);
-      }
+      fetchMe()
       setCurrentPage(newRef)
     }
 
     window.addEventListener('popstate', loadEvent)
-    loadEvent();
+    // window.addEventListener('hashchange', loadEvent)
+
+    loadEvent()
+
     return () => {
       window.removeEventListener('popstate', loadEvent)
+      // window.removeEventListener('hashchange', loadEvent)
     }
   }, [])
 
@@ -211,7 +216,7 @@ export default function OpenhimAppBar() {
     <AppBar position="static" className={classes.appBar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters className={classes.toolbar}>
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
               <IconButton
                 size="large"
@@ -320,8 +325,8 @@ export default function OpenhimAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#!/dashboard"
+            component={isAdmin && isLoggedIn ? 'a' : undefined}
+            href={isAdmin && isLoggedIn ? '#!/dashboard' : undefined}
             className={classes.logoContainer}
           >
             <img
@@ -331,7 +336,7 @@ export default function OpenhimAppBar() {
             />
           </Typography>
 
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
               {pages.map(page =>
                 page.link ? (
@@ -415,7 +420,7 @@ export default function OpenhimAppBar() {
             </Box>
           )}
 
-          {isAdmin && (
+          {isLoggedIn && isAdmin && (
             <Box sx={{flexGrow: 0}}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
