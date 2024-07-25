@@ -186,6 +186,13 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
+export async function deleteChannel(id: string): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.delete('/channels/'+ id)
+  return response.data
+}
+
+
 export async function fetchClients(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/clients')
