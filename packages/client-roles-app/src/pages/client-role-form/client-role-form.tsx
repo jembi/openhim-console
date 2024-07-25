@@ -115,10 +115,10 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
   return (
     <Grid container spacing={2} padding={2}>
       <Grid item xs={12}>
-        <Typography variant="h3" component="h3">
+        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
           {existingClientRole ? pageHeadingTypography.editClientUserRole.heading : pageHeadingTypography.addClientUserRole.heading}
         </Typography>
-        <Typography variant="caption">
+        <Typography variant="caption" fontSize={16} style={{opacity: 0.6}}>
           {existingClientRole ? pageHeadingTypography.editClientUserRole.caption : pageHeadingTypography.addClientUserRole.caption}
         </Typography>
         <Divider />
@@ -207,10 +207,10 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
           </FormControl>
           <Divider />
           <Box sx={{display: 'flex', justifyContent: 'flex-start', p: 1}}>
-            <Button onClick={returnToRolesList} variant="outlined">
+            <Button onClick={returnToRolesList} sx={{borderColor: '#29AC96' , color:'#29AC96' }} variant="outlined">
               Cancel
             </Button>
-            <Button onClick={handleSaveButtonClicked} sx={{ml: 1}} variant="contained">
+            <Button onClick={handleSaveButtonClicked} sx={{ml: 1, backgroundColor: '#29AC96'}} variant="contained">
               Save
             </Button>
           </Box>

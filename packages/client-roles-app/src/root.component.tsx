@@ -3,6 +3,7 @@ import {StrictMode, useState} from 'react'
 import {ListRoles} from './pages/list-client-roles/list-client-roles'
 import {ClientRoleForm} from './pages/client-role-form/client-role-form'
 import { ClientRole } from './interface'
+import "./app.css";
 
 export default function Root(props) {
   const defaultPage = 'list-roles'
