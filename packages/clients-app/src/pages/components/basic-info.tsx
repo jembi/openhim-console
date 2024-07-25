@@ -17,6 +17,10 @@ import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles, createRole} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
 
+const styleForTextAreas = {
+  marginBottom: 2,
+}
+
 interface BasicInfoProps {
   basicInfo: Client
   setBasicInfo: React.Dispatch<React.SetStateAction<Client>>
@@ -152,6 +156,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.organization ? true : false}
               helperText={validationErrors?.organization}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -162,6 +167,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.softwareName ? true : false}
               helperText={validationErrors?.softwareName}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -172,6 +178,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.description ? true : false}
               helperText={validationErrors?.description}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -182,6 +189,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.location ? true : false}
               helperText={validationErrors?.location}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               id="contactPerson"
@@ -191,6 +199,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.contactPerson ? true : false}
               helperText={validationErrors?.contactPerson}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               id="contactPersonEmail"
@@ -200,6 +209,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.contactPersonEmail ? true : false}
               helperText={validationErrors?.contactPersonEmail}
               onBlur={onBlurValidation}
+              sx={{...styleForTextAreas, marginLeft: 1}}
             />
           </AccordionDetails>
         </Accordion>
