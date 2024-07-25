@@ -5,7 +5,7 @@ import {AddUserRole} from './pages/add-user-role/add-user-role'
 import {EditUserRole} from './pages/edit-user-role/edit-user-role'
 
 export default function Root(props) {
-  const defaultPage = 'edit-user-role'
+  const defaultPage = 'add-user-role'
   const [activePage, setActivePage] = useState<
     'list-roles' | 'add-user-role' | 'edit-user-role'
   >(defaultPage)
