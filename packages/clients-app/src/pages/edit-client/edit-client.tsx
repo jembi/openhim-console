@@ -203,7 +203,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
             />
             <Divider />
             <br />
-            <Stack spacing={2} direction="row">
+            <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
               <Button
                 variant="outlined"
                 id="cancel"
@@ -216,6 +216,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
                 variant="contained"
                 id="save"
                 color="success"
+                sx={{backgroundColor: '#29AC96'}}
                 onClick={() => onSaveButtonClicked()}
               >
                 Save

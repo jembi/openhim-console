@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Card,
   Checkbox,
   Divider,
   FormControl,
@@ -18,7 +17,7 @@ import {fetchRoles, createRole} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
 
 const styleForTextAreas = {
-  marginBottom: 2,
+  marginBottom: 2
 }
 
 interface BasicInfoProps {
@@ -38,7 +37,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   validationErrors,
   validateBasicInfoField,
   hidden,
-  editMode = false,
+  editMode = false
 }) => {
   const [roles, setRoles] = useState<string[]>([])
 
@@ -47,7 +46,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
     fetchRoles().then(roles => {
       //@ts-ignore
       setRoles(roles.map(role => role.name))
-    });
+    })
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -84,7 +83,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2, marginRight: 2, marginBottom: 3}}>
-        
         <p style={{fontSize: 24, marginBottom: -10}}>Basic Info</p>
         <p style={{opacity: '0.6', fontSize: 11}}>
           Provide the required client information and assign existing roles for
@@ -128,7 +126,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                   id={role}
                   checked={basicInfo.roles.includes(role)}
                   onChange={onCheckBoxChange}
-                 
                 />
               }
               label={role}
@@ -191,26 +188,30 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               onBlur={onBlurValidation}
               sx={styleForTextAreas}
             />
-            <TextField
-              id="contactPerson"
-              label="Contact Person"
-              value={basicInfo.contactPerson}
-              onChange={onBasicInfoChange}
-              error={validationErrors?.contactPerson ? true : false}
-              helperText={validationErrors?.contactPerson}
-              onBlur={onBlurValidation}
-              sx={styleForTextAreas}
-            />
-            <TextField
-              id="contactPersonEmail"
-              label="Contact Person Email"
-              value={basicInfo.contactPersonEmail}
-              onChange={onBasicInfoChange}
-              error={validationErrors?.contactPersonEmail ? true : false}
-              helperText={validationErrors?.contactPersonEmail}
-              onBlur={onBlurValidation}
-              sx={{...styleForTextAreas, marginLeft: 1}}
-            />
+            <Stack direction="row" spacing={2}>
+              <TextField
+                fullWidth
+                id="contactPerson"
+                label="Contact Person"
+                value={basicInfo.contactPerson}
+                onChange={onBasicInfoChange}
+                error={validationErrors?.contactPerson ? true : false}
+                helperText={validationErrors?.contactPerson}
+                onBlur={onBlurValidation}
+                sx={styleForTextAreas}
+              />
+              <TextField
+              fullWidth
+                id="contactPersonEmail"
+                label="Contact Person Email"
+                value={basicInfo.contactPersonEmail}
+                onChange={onBasicInfoChange}
+                error={validationErrors?.contactPersonEmail ? true : false}
+                helperText={validationErrors?.contactPersonEmail}
+                onBlur={onBlurValidation}
+                sx={{...styleForTextAreas, marginLeft: 1}}
+              />
+            </Stack>
           </AccordionDetails>
         </Accordion>
       </Box>
