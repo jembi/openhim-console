@@ -1,24 +1,26 @@
 import {SnackbarProvider} from 'notistack'
 import {StrictMode, useState} from 'react'
 import {ListRoles} from './pages/list-roles/list-roles'
-import {AddUserRole} from './pages/add-user-role/add-user-role'
-import {EditUserRole} from './pages/edit-user-role/edit-user-role'
+import {ClientRoleForm} from './pages/client-role-form/client-role-form'
+import { ClientRole } from './interface'
 
 export default function Root(props) {
-  const defaultPage = 'add-user-role'
+  const defaultPage = 'list-roles'
   const [activePage, setActivePage] = useState<
-    'list-roles' | 'add-user-role' | 'edit-user-role'
+    'list-roles' | 'client-role-form'
   >(defaultPage)
+  const [existingClientRole, setExistingClientRole] = useState<ClientRole>();
 
   const returnToListRoles = () => {
     setActivePage('list-roles')
   }
   const addUserRole = () => {
-    setActivePage('add-user-role')
+    setActivePage('client-role-form')
   }
-
-  const editUserRole = (id: number) => {
-    setActivePage('edit-user-role')
+  
+  const editUserRole = (clientRole: ClientRole) => {
+    setExistingClientRole(clientRole);
+    setActivePage('client-role-form')
   }
 
   return (
@@ -27,11 +29,8 @@ export default function Root(props) {
         {activePage === 'list-roles' && (
           <ListRoles addUserRole={addUserRole} editUserRole={editUserRole} />
         )}
-        {activePage === 'add-user-role' && (
-          <AddUserRole returnToRolesList={returnToListRoles} />
-        )}
-        {activePage === 'edit-user-role' && (
-          <EditUserRole returnToRolesList={returnToListRoles} />
+        {activePage === 'client-role-form' && (
+          <ClientRoleForm returnToRolesList={returnToListRoles} existingClientRole={existingClientRole}/>
         )}
       </SnackbarProvider>
     </StrictMode>

@@ -5,10 +5,11 @@ import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
 import React from 'react'
+import { ClientRole } from '../../interface'
 
 interface ListRolesProps {
   addUserRole: () => void
-  editUserRole: (id: number) => void
+  editUserRole: (client: ClientRole) => void
 }
 
 const noRolesOverlay = () => (
@@ -33,7 +34,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
   editUserRole
 }) => {
   const columns: GridColDef[] = [
-    {field: 'name', headerName: 'Name', width: 200},
+    {field: 'roleName', headerName: 'Name', width: 200},
     {field: 'clients', headerName: 'Clients', width: 200},
     {field: 'channels', headerName: 'Channels', width: 200},
     {
@@ -50,22 +51,22 @@ export const ListRoles: React.FC<ListRolesProps> = ({
   ]
   const roles = [
     {
-      id: 1,
-      name: 'Admin',
+      id: "1",
+      roleName: 'Hapi Fhir',
       clients: ['instant-client'],
-      channels: ['Kafka Mapper']
+      channels: ['fhir', 'kafka', 'dhis2']
     },
     {
-      id: 2,
-      name: 'User',
+      id: "2",
+      roleName: 'Instant',
       clients: ['Contacts'],
-      channels: ['All Client']
+      channels: ['fhir']
     },
     {
-      id: 3,
-      name: 'Guest',
-      clients: ['None'],
-      channels: ['None']
+      id: "3",
+      roleName: 'Guest',
+      clients: [],
+      channels: []
     }
   ]
   return (
@@ -84,7 +85,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
           getRowId={row => row.id}
           autoHeight
           rows={roles}
-          onRowClick={params => editUserRole(params.row.id)}
+          onRowClick={params => editUserRole(params.row)}
           slots={{
             toolbar: GridToolbar,
             noRowsOverlay: noRolesOverlay
