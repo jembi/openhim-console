@@ -136,7 +136,14 @@ const App: React.FC = () => {
             setStatus={setStatus}
           />
         )}
-        {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} status={status} setStatus={setStatus} />}
+        {tabValue === 1 && (
+          <CustomFilters
+            limit={limit}
+            setLimit={setLimit}
+            status={status}
+            setStatus={setStatus}
+          />
+        )}
         <TransactionLogTable transactions={transactions} loadMore={loadMore} />
       </Card>
     </Container>

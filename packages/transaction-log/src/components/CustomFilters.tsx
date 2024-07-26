@@ -4,11 +4,16 @@ import {Box, TextField, MenuItem, Button, Grid} from '@mui/material'
 interface FilterProps {
   limit: number
   setLimit: (value: number) => void
-  status,
+  status
   setStatus
 }
 
-const CustomFilters: React.FC<FilterProps> = ({limit, setLimit, status, setStatus}) => {
+const CustomFilters: React.FC<FilterProps> = ({
+  limit,
+  setLimit,
+  status,
+  setStatus
+}) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(Number(event.target.value))
   }
@@ -21,7 +26,7 @@ const CustomFilters: React.FC<FilterProps> = ({limit, setLimit, status, setStatu
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
         <Grid item xs={2}>
-        <TextField
+          <TextField
             select
             label="Status"
             value={status}
