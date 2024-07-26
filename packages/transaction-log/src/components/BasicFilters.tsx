@@ -6,13 +6,19 @@ interface FilterProps {
   setLimit: (value: number) => void
   status: string
   setStatus: (value: string) => void
+  channels: any[]
+  setChannel: (value: string) => void
+  channel: string
 }
 
 const BasicFilters: React.FC<FilterProps> = ({
   limit,
   setLimit,
   status,
-  setStatus
+  setStatus,
+  channels,
+  setChannel,
+  channel
 }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(Number(event.target.value))
@@ -20,6 +26,10 @@ const BasicFilters: React.FC<FilterProps> = ({
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
+  }
+
+  const handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChannel(event.target.value)
   }
 
   return (
@@ -55,12 +65,17 @@ const BasicFilters: React.FC<FilterProps> = ({
           <TextField
             select
             label="Channel"
+            value={channel}
+            onChange={handleChannelChange}
             fullWidth
-            defaultValue="Channel1"
             InputLabelProps={{shrink: true}}
           >
-            <MenuItem value="Channel1">Channel1</MenuItem>
-            <MenuItem value="Channel2">Channel2</MenuItem>
+            <MenuItem value="NoFilter">Don't Filter</MenuItem>
+            {channels.map(channel => (
+              <MenuItem key={channel._id} value={channel._id}>
+                {channel.name}
+              </MenuItem>
+            ))}
           </TextField>
         </Grid>
         <Grid item xs={3}>
@@ -94,8 +109,9 @@ const BasicFilters: React.FC<FilterProps> = ({
             defaultValue="Include reruns"
             fullWidth
           >
-            <MenuItem value="Include reruns">Include reruns</MenuItem>
-            <MenuItem value="Exclude reruns">Exclude reruns</MenuItem>
+            <MenuItem value="NoFilter">Don't Filter</MenuItem>
+            <MenuItem value="Yes">Yes</MenuItem>
+            <MenuItem value="No">No</MenuItem>
           </TextField>
         </Grid>
       </Grid>

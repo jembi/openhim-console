@@ -15,18 +15,22 @@ import TransactionLogTable from './TransactionLogTable'
 import {
   fetchTransactions,
   fetchChannelById,
-  fetchClientById
+  fetchClientById,
+  fetchChannels
 } from '@jembi/openhim-core-api'
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = useState(0)
   const [limit, setLimit] = useState(10)
   const [status, setStatus] = useState('NoFilter')
+  const [channel, setChannel] = useState('NoFilter')
+  const [channels, setChannels] = useState([])
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     fetchTransactionLogs()
-  }, [limit, status])
+    fetchAvailableChannels()
+  }, [limit, status, channel])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -35,8 +39,13 @@ const App: React.FC = () => {
   const fetchTransactionLogs = async () => {
     try {
       const filters: {[key: string]: any} = {}
+
       if (status !== 'NoFilter') {
         filters.status = status
+      }
+
+      if (channel !== 'NoFilter') {
+        filters.channelID = channel
       }
 
       const transactions = await fetchTransactions({
@@ -91,6 +100,15 @@ const App: React.FC = () => {
     setLimit(prevLimit => prevLimit + 20)
   }
 
+  const fetchAvailableChannels = async () => {
+    try {
+      const channels = await fetchChannels()
+      setChannels(channels)
+    } catch (error) {
+      console.error('Error fetching channels:', error)
+    }
+  }
+
   return (
     <Container
       sx={{
@@ -134,6 +152,9 @@ const App: React.FC = () => {
             setLimit={setLimit}
             status={status}
             setStatus={setStatus}
+            channels={channels}
+            setChannel={setChannel}
+            channel={channel}
           />
         )}
         {tabValue === 1 && (
@@ -142,6 +163,9 @@ const App: React.FC = () => {
             setLimit={setLimit}
             status={status}
             setStatus={setStatus}
+            // channels={channels}
+            // setChannel={setChannel}
+            // channel={channel}
           />
         )}
         <TransactionLogTable transactions={transactions} loadMore={loadMore} />
