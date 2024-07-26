@@ -25,12 +25,13 @@ const App: React.FC = () => {
   const [status, setStatus] = useState('NoFilter')
   const [channel, setChannel] = useState('NoFilter')
   const [channels, setChannels] = useState([])
+  const [reruns, setReruns] = useState('NoFilter')
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     fetchTransactionLogs()
     fetchAvailableChannels()
-  }, [limit, status, channel])
+  }, [limit, status, channel, reruns])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -46,6 +47,14 @@ const App: React.FC = () => {
 
       if (channel !== 'NoFilter') {
         filters.channelID = channel
+      }
+
+      if (reruns !== 'NoFilter') {
+        if (reruns === 'Yes') {
+          filters.childIDs = JSON.stringify({$exists: true, $ne: []})
+        } else if (reruns === 'No') {
+          filters.childIDs = JSON.stringify({$eq: []})
+        }
       }
 
       const transactions = await fetchTransactions({
@@ -155,19 +164,11 @@ const App: React.FC = () => {
             channels={channels}
             setChannel={setChannel}
             channel={channel}
+            reruns={reruns}
+            setReruns={setReruns}
           />
         )}
-        {tabValue === 1 && (
-          <CustomFilters
-            limit={limit}
-            setLimit={setLimit}
-            status={status}
-            setStatus={setStatus}
-            // channels={channels}
-            // setChannel={setChannel}
-            // channel={channel}
-          />
-        )}
+        {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}
         <TransactionLogTable transactions={transactions} loadMore={loadMore} />
       </Card>
     </Container>

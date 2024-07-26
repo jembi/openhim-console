@@ -9,6 +9,8 @@ interface FilterProps {
   channels: any[]
   setChannel: (value: string) => void
   channel: string
+  reruns: string
+  setReruns: (value: string) => void
 }
 
 const BasicFilters: React.FC<FilterProps> = ({
@@ -18,7 +20,9 @@ const BasicFilters: React.FC<FilterProps> = ({
   setStatus,
   channels,
   setChannel,
-  channel
+  channel,
+  reruns,
+  setReruns
 }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(Number(event.target.value))
@@ -30,6 +34,10 @@ const BasicFilters: React.FC<FilterProps> = ({
 
   const handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChannel(event.target.value)
+  }
+
+  const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setReruns(event.target.value)
   }
 
   return (
@@ -106,12 +114,13 @@ const BasicFilters: React.FC<FilterProps> = ({
           <TextField
             select
             label="Reruns"
-            defaultValue="Include reruns"
+            value={reruns}
+            onChange={handleRerunsChange}
             fullWidth
           >
             <MenuItem value="NoFilter">Don't Filter</MenuItem>
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
+            <MenuItem value="Yes">Include reruns</MenuItem>
+            <MenuItem value="No">Don't Include reruns</MenuItem>
           </TextField>
         </Grid>
       </Grid>
