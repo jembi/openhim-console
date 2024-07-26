@@ -90,34 +90,45 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
         </p>
         <Divider style={{marginLeft: -100, marginRight: -100}} />
         <br />
-        <TextField
-          id="clientID"
-          label="Client ID"
-          placeholder="Enter client ID"
-          onChange={onBasicInfoChange}
-          value={basicInfo.clientID}
-          error={validationErrors?.clientID ? true : false}
-          helperText={validationErrors?.clientID}
-          onBlur={onBlurValidation}
-          disabled={editMode}
-        />
+        <Stack direction="row" spacing={2}>
+          <TextField
+            id="clientID"
+            label="Client ID"
+            fullWidth
+            placeholder="Enter client ID"
+            onChange={onBasicInfoChange}
+            value={basicInfo.clientID}
+            error={validationErrors?.clientID ? true : false}
+            helperText={validationErrors?.clientID}
+            onBlur={onBlurValidation}
+            disabled={editMode}
+          />
+          <TextField
+            id="name"
+            label="Client Name"
+            fullWidth
+            placeholder="Enter client name"
+            value={basicInfo.name}
+            onChange={onBasicInfoChange}
+            error={validationErrors?.name ? true : false}
+            helperText={validationErrors?.name}
+            onBlur={onBlurValidation}
+            sx={{marginLeft: 1}}
+          />
+        </Stack>
 
-        <TextField
-          id="name"
-          label="Client Name"
-          placeholder="Enter client name"
-          value={basicInfo.name}
-          onChange={onBasicInfoChange}
-          error={validationErrors?.name ? true : false}
-          helperText={validationErrors?.name}
-          onBlur={onBlurValidation}
-          sx={{marginLeft: 1}}
-        />
         <h2>Assign Existing Roles</h2>
         {validationErrors?.roles && (
           <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
         )}
-        <FormControl>
+        <FormControl
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 150,
+            overflow: 'auto'
+          }}
+        >
           {roles.map(role => (
             <FormControlLabel
               key={role}
@@ -201,7 +212,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                 sx={styleForTextAreas}
               />
               <TextField
-              fullWidth
+                fullWidth
                 id="contactPersonEmail"
                 label="Contact Person Email"
                 value={basicInfo.contactPersonEmail}

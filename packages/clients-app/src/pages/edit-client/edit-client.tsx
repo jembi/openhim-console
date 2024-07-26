@@ -172,7 +172,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
         <Divider />
       </Grid>
       <Grid item xs={12}>
-          <Card sx={{maxWidth: '37%', margin: 'auto'}}>
+          <Card sx={{width: 550, margin: 'auto'}}>
             <Box>
               <Tabs
                 value={tabValue}
@@ -208,6 +208,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
                 variant="outlined"
                 id="cancel"
                 color="success"
+                sx={{color: '#29AC96'}}
                 onClick={() => returnToClientList()}
               >
                 Cancel

@@ -86,7 +86,7 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 50,
+      width: 70,
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
@@ -185,6 +185,8 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
           <Card>
             <DataGrid
               autoHeight
+              checkboxSelection
+              disableRowSelectionOnClick
               getRowId={row => row.clientID}
               rows={clients}
               columns={columns}
