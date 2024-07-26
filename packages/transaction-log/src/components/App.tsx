@@ -21,11 +21,12 @@ import {
 const App: React.FC = () => {
   const [tabValue, setTabValue] = useState(0)
   const [limit, setLimit] = useState(10)
+  const [status, setStatus] = useState('NoFilter')
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     fetchTransactionLogs()
-  }, [limit])
+  }, [limit, status])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -33,10 +34,15 @@ const App: React.FC = () => {
 
   const fetchTransactionLogs = async () => {
     try {
+      const filters: {[key: string]: any} = {}
+      if (status !== 'NoFilter') {
+        filters.status = status
+      }
+
       const transactions = await fetchTransactions({
         filterLimit: limit,
         filterPage: 0,
-        filters: {}
+        filters: JSON.stringify(filters)
       })
 
       const transactionsWithChannelDetails = await Promise.all(
@@ -122,7 +128,14 @@ const App: React.FC = () => {
           </Tabs>
         </Box>
 
-        {tabValue === 0 && <BasicFilters limit={limit} setLimit={setLimit} />}
+        {tabValue === 0 && (
+          <BasicFilters
+            limit={limit}
+            setLimit={setLimit}
+            status={status}
+            setStatus={setStatus}
+          />
+        )}
         {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}
         <TransactionLogTable transactions={transactions} loadMore={loadMore} />
       </Card>

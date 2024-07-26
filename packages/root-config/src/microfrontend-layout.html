@@ -6,6 +6,9 @@
         <route path="#!" exact="true">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
+        <route path="#!/transactionsxyz">
+          <application name="@jembi/openhim-sidebar"></application>
+        </route>
         <route path="#!/transactions">
           <application name="@jembi/openhim-sidebar"></application>
         </route>
@@ -67,12 +70,12 @@
           <application name="@jembi/portal-admin"></application>
         </div>
       </route>
-      <route path="#!/transactions">
+      <route path="#!/transactionsxyz">
         <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/transaction-log"></application>
         </div>
-        </route>
+      </route>
       <route path="#!/dashboard">
         <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
