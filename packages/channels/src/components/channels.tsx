@@ -1,12 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Link, Stack, Typography } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, {useEffect, useState} from 'react'
+import {
+  Box,
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Link,
+  Stack,
+  Typography
+} from '@mui/material'
+import {DataGrid, GridToolbar} from '@mui/x-data-grid'
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { fetchChannels, deleteChannel } from '@jembi/openhim-core-api'
+import {fetchChannels, deleteChannel} from '@jembi/openhim-core-api'
 
-export const Channels = ({ setDisplay }) => {
+export const Channels = ({setDisplay}) => {
   const [channels, setChannels] = useState([])
 
   useEffect(() => {
@@ -26,11 +39,7 @@ export const Channels = ({ setDisplay }) => {
       flex: 0.2,
       renderCell: params => (
         <>
-          <CreateIcon
-            style={{cursor: 'pointer'}}
-            onClick={() => {
-            }}
-          />
+          <CreateIcon style={{cursor: 'pointer'}} onClick={() => {}} />
           <DeleteIcon
             style={{cursor: 'pointer'}}
             onClick={() => {
@@ -42,39 +51,52 @@ export const Channels = ({ setDisplay }) => {
     }
   ]
   const [ChannelId, setChannelId] = useState(null)
-  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
-    if (e.currentTarget.id === 'confirm') {      
-      deleteChannel(ChannelId).then(() => {}).catch((error: any) => {
-        console.error(error)
-      });
-      const newChannels = channels.filter(chan => chan['_id'] !== ChannelId);
-      setChannels(newChannels);
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (e.currentTarget.id === 'confirm') {
+      deleteChannel(ChannelId)
+        .then(() => {})
+        .catch((error: any) => {
+          console.error(error)
+        })
+      const newChannels = channels.filter(chan => chan['_id'] !== ChannelId)
+      setChannels(newChannels)
     }
     setChannelId(null)
-  };
+  }
 
   return (
     <>
-      <Box sx={{
-        display: { xs: 'block' },
-        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '150px' }
-      }} padding={15} display={"flex"}>
-        <Typography variant='h4'>Channels List</Typography>
-        <br/>
-        <Stack direction="row" alignContent={"center"} spacing={'74%'} sx={{marginBottom: 1}}>
-          <Typography variant="body1">Set up and control your channels.<Link>How do channels work?</Link></Typography>
+      <Box
+        sx={{
+          display: {xs: 'block'},
+          '& .MuiDrawer-paper': {boxSizing: 'border-box', width: '150px'}
+        }}
+        padding={15}
+        display={'flex'}
+      >
+        <Typography variant="h4">Channels List</Typography>
+        <br />
+        <Stack
+          direction="row"
+          alignContent={'center'}
+          spacing={'74%'}
+          sx={{marginBottom: 1}}
+        >
+          <Typography variant="body1">
+            Set up and control your channels.<Link>How do channels work?</Link>
+          </Typography>
           <Button
-              style={{backgroundColor: '#29AC96'}}
-              variant="contained"
-              onClick={() => {
-                setDisplay('add')
-              }}
-            >
-              <AddIcon /> Add
-            </Button>
+            style={{backgroundColor: '#29AC96'}}
+            variant="contained"
+            onClick={() => {
+              setDisplay('add')
+            }}
+          >
+            <AddIcon /> Add
+          </Button>
         </Stack>
         <Divider />
-        <br/>
+        <br />
         <Card>
           <DataGrid
             getRowId={row => row._id}

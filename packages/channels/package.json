@@ -1,7 +1,7 @@
 {
   "name": "@jembi/channels-app",
   "scripts": {
-    "start": "webpack serve --port 8510",
+    "start": "webpack serve --port 8511",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently npm:build:*",
     "build:webpack": "webpack --mode=production",

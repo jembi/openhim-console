@@ -1,53 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, stackClasses, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { fetchClients, fetchRoles } from '@jembi/openhim-core-api'
+import React, {useEffect, useState} from 'react'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  stackClasses,
+  Step,
+  StepLabel,
+  Stepper,
+  Switch,
+  TextField,
+  Typography
+} from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import Select, {SelectChangeEvent} from '@mui/material/Select'
+import {fetchClients, fetchRoles} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import {DataGrid, GridToolbar} from '@mui/x-data-grid'
 
-const steps: {key: string, label: string}[] = [
+const steps: {key: string; label: string}[] = [
   {key: 'basic-info', label: 'Basic Info'},
   {key: 'request-matching', label: 'Request Matching'},
   {key: 'routes', label: 'Routes'}
 ]
 
 const allowedMethods: string[][] = [
-  ['GET', 'HEAD'], ['POST', 'TRACE'], ['DELETE', 'CONNECT'], ['PUT', 'PATCH'], ['OPTIONS']
+  ['GET', 'HEAD'],
+  ['POST', 'TRACE'],
+  ['DELETE', 'CONNECT'],
+  ['PUT', 'PATCH'],
+  ['OPTIONS']
 ]
 
 const channelTypes: string[] = ['HTTP', 'TCP', 'TLS', 'Polling']
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+      width: 250
+    }
+  }
+}
 
 interface Channel {
-  name: string;
-  description: string;
-  urlPattern: string;
-  isAsynchronousProcess: boolean;
-  maxBodyAgeDays: number;
-  timeout: number;
-  status: string;
-  methods: string[];
-  type: string;
-  priority: number;
-  tcpPort: number;
-  tcpHost: string;
-  pollingSchedule: string;
-  requestBody: boolean;
-  allow: string[];
-  whitelist: string[];
-  authType: string;
+  name: string
+  description: string
+  urlPattern: string
+  isAsynchronousProcess: boolean
+  maxBodyAgeDays: number
+  timeout: number
+  status: string
+  methods: string[]
+  type: string
+  priority: number
+  tcpPort: number
+  tcpHost: string
+  pollingSchedule: string
+  requestBody: boolean
+  allow: string[]
+  whitelist: string[]
+  authType: string
 }
 
 const channelTemplate: Channel = {
@@ -70,7 +99,7 @@ const channelTemplate: Channel = {
   authType: ''
 }
 
-const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
+const BasicInfo = ({setDisplay, setActiveStep, channel, setChannel}) => {
   const [name, setName] = useState<string>(channel.name)
   const [channelMethods, setMethods] = useState<string[]>(channel.methods || [])
   const [description, setDescription] = useState<string>(channel.description)
@@ -80,11 +109,14 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
 
   return (
     <Box>
-      <Typography paddingLeft={1} variant="h5">Basic Info</Typography>
-      <Typography paddingLeft={1}>
-        Describe some basic information about the channel and choose its overall type.
+      <Typography paddingLeft={1} variant="h5">
+        Basic Info
       </Typography>
-      <br/>
+      <Typography paddingLeft={1}>
+        Describe some basic information about the channel and choose its overall
+        type.
+      </Typography>
+      <br />
       <Divider />
       <br />
       <Card style={{paddingLeft: 10}}>
@@ -94,39 +126,67 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
           label="Channel Name"
           placeholder=""
           helperText="Choose a short but descriptive name."
-          variant='outlined'
+          variant="outlined"
           value={name}
-          onChange={(e) => {
+          onChange={e => {
             setName(e.target.value)
           }}
         />
-        <br/>
-        <br/>
-        <br/>
+        <br />
+        <br />
+        <br />
         <Typography variant="h5">Allowed Methods</Typography>
-        <br/>
-        {
-          allowedMethods.map(methods =>
-            <FormGroup key={methods[0]} style={{flexDirection: 'row', paddingLeft: 20}}>
-              {methods[0] && <FormControlLabel style={{width: '10%', paddingRight: '40%'}} control={<input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target?.checked) {
-                  setMethods([...channelMethods, methods[0]])
-                } else {
-                  setMethods(channelMethods.filter(meth => meth != methods[0]))
+        <br />
+        {allowedMethods.map(methods => (
+          <FormGroup
+            key={methods[0]}
+            style={{flexDirection: 'row', paddingLeft: 20}}
+          >
+            {methods[0] && (
+              <FormControlLabel
+                style={{width: '10%', paddingRight: '40%'}}
+                control={
+                  <input
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      if (e.target?.checked) {
+                        setMethods([...channelMethods, methods[0]])
+                      } else {
+                        setMethods(
+                          channelMethods.filter(meth => meth != methods[0])
+                        )
+                      }
+                    }}
+                    type="checkbox"
+                    checked={channelMethods.includes(methods[0])}
+                  />
                 }
-              }} type='checkbox' checked={channelMethods.includes(methods[0])}/>} label={methods[0]}/>}
-              {methods[1] && <FormControlLabel control={<input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target?.checked) {
-                  setMethods([...channelMethods, methods[1]])
-                } else {
-                  setMethods(channelMethods.filter(meth => meth != methods[1]))
+                label={methods[0]}
+              />
+            )}
+            {methods[1] && (
+              <FormControlLabel
+                control={
+                  <input
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      if (e.target?.checked) {
+                        setMethods([...channelMethods, methods[1]])
+                      } else {
+                        setMethods(
+                          channelMethods.filter(meth => meth != methods[1])
+                        )
+                      }
+                    }}
+                    type="checkbox"
+                    checked={channelMethods.includes(methods[1])}
+                  />
                 }
-              }} type='checkbox' checked={channelMethods.includes(methods[1])}/>} label={methods[1]}/>}
-            </FormGroup>
-          )
-        }
-        <br/>
-        <Accordion style={{ width: '98%'}}>
+                label={methods[1]}
+              />
+            )}
+          </FormGroup>
+        ))}
+        <br />
+        <Accordion style={{width: '98%'}}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls="panel1-content"
@@ -140,64 +200,99 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
               label="Channel Description"
               placeholder=""
               helperText="Help others understand this channel."
-              variant='outlined'
-              onChange={(e) => {
+              variant="outlined"
+              onChange={e => {
                 setDescription(e.target.value)
               }}
               value={description}
               style={{width: '80%'}}
             />
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Typography variant="h5">Channel Type</Typography>
-            <br/>
-            {
-              channelTypes.map(chanType =>
-                <FormGroup key={chanType} style={{ paddingLeft: 20}}>
-                  <FormControlLabel control={<input checked={type === chanType} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    if (e.target?.checked) {
-                      setChannelType(chanType)
-                    } else {
-                      setChannelType('')
-                    }
-                  }} type='radio'/>} label={chanType}/>
-                </FormGroup>
-              )
-            }
-            <br/>
+            <br />
+            {channelTypes.map(chanType => (
+              <FormGroup key={chanType} style={{paddingLeft: 20}}>
+                <FormControlLabel
+                  control={
+                    <input
+                      checked={type === chanType}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.target?.checked) {
+                          setChannelType(chanType)
+                        } else {
+                          setChannelType('')
+                        }
+                      }}
+                      type="radio"
+                    />
+                  }
+                  label={chanType}
+                />
+              </FormGroup>
+            ))}
+            <br />
             <TextField
               id="channelTimeout"
               label="Channel Timeout ms"
               placeholder=""
               value={timeout}
-              variant='outlined'
-              inputProps={{ inputMode: 'numeric' }}
-              onChange={(e) => {
+              variant="outlined"
+              inputProps={{inputMode: 'numeric'}}
+              onChange={e => {
                 setChannelTimeout(e.target.value)
               }}
             />
-            <br/>
-            <br/>
-            <FormControlLabel control={<Switch onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setChannelEnabled(e.target?.checked)
-            }} checked={enabled} />} label='Enable Channel'/>
-            <br/>
+            <br />
+            <br />
+            <FormControlLabel
+              control={
+                <Switch
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setChannelEnabled(e.target?.checked)
+                  }}
+                  checked={enabled}
+                />
+              }
+              label="Enable Channel"
+            />
+            <br />
           </AccordionDetails>
         </Accordion>
-        <Divider/>
+        <Divider />
         <CardActions>
-          <Button variant="outlined" color="success" onClick={() => setDisplay('list')}>Cancel</Button>
-          <Button variant="contained" color="success" onClick={() => {
-            setChannel({...channel, name, description, methods: channelMethods, type, timeout, status: enabled})
-            setActiveStep(1)
-          }}>Next</Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => setDisplay('list')}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setChannel({
+                ...channel,
+                name,
+                description,
+                methods: channelMethods,
+                type,
+                timeout,
+                status: enabled
+              })
+              setActiveStep(1)
+            }}
+          >
+            Next
+          </Button>
         </CardActions>
       </Card>
     </Box>
   )
 }
 
-const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
+const RequestMatching = ({setActiveStep, setChannel, channel}) => {
   const [allowedClients, setAllowedClients] = useState<string[]>(channel.allow)
   const [clients, setClients] = useState<string[]>([])
   const [roles, setRoles] = useState<string[]>([])
@@ -208,54 +303,64 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
   useEffect(() => {
     fetchClients().then(clients => {
       setClients(clients.map(client => client.clientID))
-      setAllowedClients(clients.map(client => client.clientID).filter(id => channel.allow.includes(id)))
+      setAllowedClients(
+        clients
+          .map(client => client.clientID)
+          .filter(id => channel.allow.includes(id))
+      )
     })
 
     fetchRoles().then(roles => {
       // @ts-ignore
       setRoles(roles.map(role => role.name))
-      setAllowedRoles(roles.map(role => role.name).filter(name => channel.allow.includes(name)))
+      setAllowedRoles(
+        roles
+          .map(role => role.name)
+          .filter(name => channel.allow.includes(name))
+      )
     })
   }, [])
 
   const handleChange = (event: SelectChangeEvent<typeof clients>) => {
     const {
-      target: { value },
-    } = event;
+      target: {value}
+    } = event
     setAllowedClients(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+      typeof value === 'string' ? value.split(',') : value
+    )
+  }
   const handleChangeRoles = (event: SelectChangeEvent<typeof roles>) => {
     const {
-      target: { value },
-    } = event;
+      target: {value}
+    } = event
     setAllowedRoles(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+      typeof value === 'string' ? value.split(',') : value
+    )
+  }
 
   return (
     <Box>
-      <Typography paddingLeft={1} variant="h5">Request Matching</Typography>
+      <Typography paddingLeft={1} variant="h5">
+        Request Matching
+      </Typography>
       <Typography paddingLeft={1}>
         Set criteria for requests to be forwarded to this channel.
       </Typography>
-      <br/>
+      <br />
       <Divider />
       <br />
       <Card style={{paddingLeft: 10}}>
-        <br/>
+        <br />
         <TextField
           id="channelUrlPattern"
           label="Channel Url Pattern"
           placeholder="/fhir.*"
           helperText="Which URL patterns will match the channel?"
-          variant='outlined'
+          variant="outlined"
           required={true}
-          onChange={(e) => {
+          onChange={e => {
             setUrlPattern(e.target.value)
           }}
           value={urlPattern}
@@ -265,73 +370,90 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
             endAdornment: <InputAdornment position="end">$</InputAdornment>
           }}
         />
-        <br/>
-        <br/>
-        <FormControlLabel control={<Switch value={autoRegexEnabled} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setAutoRegexEnabled(e.target.checked)
-        }} checked />} label='Auto-add regex delimiters (Recommended)'/>
-        <br/>
-        <br/>
-        <FormControl sx={{width: '80%',}}>
-          <InputLabel>
-            Clients
-          </InputLabel>
+        <br />
+        <br />
+        <FormControlLabel
+          control={
+            <Switch
+              value={autoRegexEnabled}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setAutoRegexEnabled(e.target.checked)
+              }}
+              checked
+            />
+          }
+          label="Auto-add regex delimiters (Recommended)"
+        />
+        <br />
+        <br />
+        <FormControl sx={{width: '80%'}}>
+          <InputLabel>Clients</InputLabel>
           <Select
             multiple
             onChange={handleChange}
-            renderValue={(selected) => selected.join(', ')}
+            renderValue={selected => selected.join(', ')}
             MenuProps={MenuProps}
             value={allowedClients}
           >
-            {
-              clients.map(client => (
-                <MenuItem key={client} value={client}>
-                  <Checkbox checked={allowedClients.indexOf(client) > -1} />
-                  <ListItemText primary={client} />
-                </MenuItem>
-              ))
-            }
+            {clients.map(client => (
+              <MenuItem key={client} value={client}>
+                <Checkbox checked={allowedClients.indexOf(client) > -1} />
+                <ListItemText primary={client} />
+              </MenuItem>
+            ))}
           </Select>
-          <FormHelperText>Which clients should be able to access the channel?</FormHelperText>
+          <FormHelperText>
+            Which clients should be able to access the channel?
+          </FormHelperText>
         </FormControl>
-        <br/>
-        <br/>
-        <FormControl sx={{width: '80%',}}>
-          <InputLabel>
-            Roles
-          </InputLabel>
+        <br />
+        <br />
+        <FormControl sx={{width: '80%'}}>
+          <InputLabel>Roles</InputLabel>
           <Select
             multiple
             onChange={handleChangeRoles}
-            renderValue={(selected) => selected.join(', ')}
+            renderValue={selected => selected.join(', ')}
             MenuProps={MenuProps}
             value={allowedRoles}
           >
-            {
-              roles.map(role => (
-                <MenuItem key={role} value={role}>
-                  <Checkbox checked={allowedRoles.indexOf(role) > -1} />
-                  <ListItemText primary={role} />
-                </MenuItem>
-              ))
-            }
+            {roles.map(role => (
+              <MenuItem key={role} value={role}>
+                <Checkbox checked={allowedRoles.indexOf(role) > -1} />
+                <ListItemText primary={role} />
+              </MenuItem>
+            ))}
           </Select>
-          <FormHelperText>Which roles should be able to access the channel?</FormHelperText>
+          <FormHelperText>
+            Which roles should be able to access the channel?
+          </FormHelperText>
         </FormControl>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <CardActions>
-          <Button variant="outlined" color="success" onClick={() => setActiveStep(0)}>Back</Button>
-          <Button variant="contained" color="success" onClick={() => {
-            setActiveStep(2)
-          }}>Next</Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => setActiveStep(0)}
+          >
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setActiveStep(2)
+            }}
+          >
+            Next
+          </Button>
         </CardActions>
       </Card>
     </Box>
   )
 }
 
-const Routes = ({ setDisplay, setActiveStep }) => {
+const Routes = ({setDisplay, setActiveStep}) => {
   const [routeID, setRouteId] = useState<string>('')
   const [routes, setRoutes] = useState([])
   const [displayAddRoute, setDisplayAddRoute] = useState<boolean>(false)
@@ -348,11 +470,7 @@ const Routes = ({ setDisplay, setActiveStep }) => {
       flex: 0.2,
       renderCell: params => (
         <>
-          <CreateIcon
-            style={{cursor: 'pointer'}}
-            onClick={() => {
-            }}
-          />
+          <CreateIcon style={{cursor: 'pointer'}} onClick={() => {}} />
           <DeleteIcon
             style={{cursor: 'pointer'}}
             onClick={() => {
@@ -366,11 +484,11 @@ const Routes = ({ setDisplay, setActiveStep }) => {
 
   return (
     <Box>
-      <Typography paddingLeft={1} variant="h5">Routes</Typography>
-      <Typography paddingLeft={1}>
-        Set the routes to route to.
+      <Typography paddingLeft={1} variant="h5">
+        Routes
       </Typography>
-      <br/>
+      <Typography paddingLeft={1}>Set the routes to route to.</Typography>
+      <br />
       <Divider />
       <br />
       <Card style={{paddingLeft: 10, paddingRight: 10}}>
@@ -393,62 +511,98 @@ const Routes = ({ setDisplay, setActiveStep }) => {
             }
           }}
         />
-        <br/>
-        {
-          !displayAddRoute ? <Button style={{paddingLeft: '80%'}} color="primary" variant="text" onClick={() => setDisplayAddRoute(true)}>
+        <br />
+        {!displayAddRoute ? (
+          <Button
+            style={{paddingLeft: '80%'}}
+            color="primary"
+            variant="text"
+            onClick={() => setDisplayAddRoute(true)}
+          >
             Add new route
-          </Button> :
+          </Button>
+        ) : (
           <Box>
-            <Typography paddingLeft={1} variant="h5">Add new route</Typography>
-            <br/>
+            <Typography paddingLeft={1} variant="h5">
+              Add new route
+            </Typography>
+            <br />
             <TextField
               id="routeName"
               label="Route Name"
               helperText="Choose descriptive name for this route."
-              variant='outlined'
+              variant="outlined"
               required={true}
               onChange={() => {}}
               style={{width: '80%'}}
             />
-            <br/>
-            <br/>
+            <br />
+            <br />
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Primary Route?'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if this is the primary route.</FormHelperText>
+              <FormControlLabel
+                control={<Switch checked />}
+                label="Primary Route?"
+              />
+              <FormHelperText style={{paddingLeft: 30}}>
+                Toogle on if this is the primary route.
+              </FormHelperText>
             </FormControl>
-            <br/>
+            <br />
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Wait for Primary Response?'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to wait for the response from the primary route before processing.</FormHelperText>
+              <FormControlLabel
+                control={<Switch checked />}
+                label="Wait for Primary Response?"
+              />
+              <FormHelperText style={{paddingLeft: 30}}>
+                Toogle on to wait for the response from the primary route before
+                processing.
+              </FormHelperText>
             </FormControl>
-            <br/>
+            <br />
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Status'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to enable this route.</FormHelperText>
+              <FormControlLabel control={<Switch checked />} label="Status" />
+              <FormHelperText style={{paddingLeft: 30}}>
+                Toogle on to enable this route.
+              </FormHelperText>
             </FormControl>
-            <br/>
-            <br/>
-            <FormGroup style={{ flexDirection: 'row'}}>
-              <Typography paddingLeft={1} variant="h5">Route Type</Typography>
-              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input type='checkbox'/>} label="HTTP"/>
-              <FormControlLabel control={<input type='checkbox'/>} label='KAFKA'/>
+            <br />
+            <br />
+            <FormGroup style={{flexDirection: 'row'}}>
+              <Typography paddingLeft={1} variant="h5">
+                Route Type
+              </Typography>
+              <FormControlLabel
+                style={{width: '10%', paddingLeft: '10%'}}
+                control={<input type="checkbox" />}
+                label="HTTP"
+              />
+              <FormControlLabel
+                control={<input type="checkbox" />}
+                label="KAFKA"
+              />
             </FormGroup>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Secured Route?'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if the route is secured. Uses default certificate  authority..</FormHelperText>
+              <FormControlLabel
+                control={<Switch checked />}
+                label="Secured Route?"
+              />
+              <FormHelperText style={{paddingLeft: 30}}>
+                Toogle on if the route is secured. Uses default certificate
+                authority..
+              </FormHelperText>
             </FormControl>
-            <br/>
-            <br/>
-            <FormGroup style={{ flexDirection: 'row'}}>
+            <br />
+            <br />
+            <FormGroup style={{flexDirection: 'row'}}>
               <TextField
                 id="host"
                 label="Host"
                 helperText=""
                 variant="outlined"
                 required={true}
-                style={{ width: "48%", paddingRight: 20 }}
+                style={{width: '48%', paddingRight: 20}}
               />
               <TextField
                 id="port"
@@ -456,112 +610,156 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 helperText=""
                 variant="outlined"
                 required={true}
-                style={{ width: "48%" }}
+                style={{width: '48%'}}
               />
             </FormGroup>
-            <br/>
-            <FormGroup style={{ flexDirection: 'row' }}>
+            <br />
+            <FormGroup style={{flexDirection: 'row'}}>
               <TextField
                 id="routePath"
                 label="Path"
                 helperText=""
                 variant="outlined"
-                style={{ width: "48%", paddingRight: 20}}
+                style={{width: '48%', paddingRight: 20}}
               />
               <TextField
                 id="routePathTransform"
                 label="Route Path Transform"
                 helperText="Using defined format eg s/from/to/g"
                 variant="outlined"
-                style={{width: "48%"}}
+                style={{width: '48%'}}
               />
             </FormGroup>
-            <br/>
-            <FormGroup style={{ flexDirection: 'row'}}>
+            <br />
+            <FormGroup style={{flexDirection: 'row'}}>
               <TextField
                 id="authName"
                 label="Basic Authentication Username"
                 helperText=""
                 variant="outlined"
-                style={{ width: "48%", paddingRight: 20 }}
+                style={{width: '48%', paddingRight: 20}}
               />
               <TextField
                 id="authPassword"
                 label="Basic Authentication Password"
                 helperText=""
                 variant="outlined"
-                style={{ width: "48%" }}
+                style={{width: '48%'}}
               />
             </FormGroup>
-            <br/>
+            <br />
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Forward Auth Header?'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to forward existing authorization header.</FormHelperText>
+              <FormControlLabel
+                control={<Switch checked />}
+                label="Forward Auth Header?"
+              />
+              <FormHelperText style={{paddingLeft: 30}}>
+                Toogle on to forward existing authorization header.
+              </FormHelperText>
             </FormControl>
-            <CardActions style={{paddingLeft: '70%', justifyItems: "center"}}>
-              <Button variant="outlined" color="success" onClick={() => setDisplayAddRoute(false)}>Cancel</Button>
-              <Button variant="contained" color="success" onClick={() => {
-                setDisplayAddRoute(false)
-                setDisplayAddRoute(false)
-              }}>Save</Button>
+            <CardActions style={{paddingLeft: '70%', justifyItems: 'center'}}>
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => setDisplayAddRoute(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  setDisplayAddRoute(false)
+                  setDisplayAddRoute(false)
+                }}
+              >
+                Save
+              </Button>
             </CardActions>
           </Box>
-        }
+        )}
         <CardActions>
-          <Button variant="outlined" color="success" onClick={() => setActiveStep(1)}>Back</Button>
-          <Button variant="contained" color="success" onClick={() => {
-            setActiveStep(0)
-            setDisplay('list')
-          }}>Save</Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => setActiveStep(1)}
+          >
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              setActiveStep(0)
+              setDisplay('list')
+            }}
+          >
+            Save
+          </Button>
         </CardActions>
       </Card>
     </Box>
   )
 }
 
-export const EditAdd = ({ setDisplay }) => {
+export const EditAdd = ({setDisplay}) => {
   const [activeStep, setActiveStep] = useState(0)
   const labelProps: {optional?: React.ReactNode} = {}
   const [channel, setChannel] = useState<Channel>(channelTemplate)
 
   return (
     <>
-      <Box sx={{
-        display: { xs: 'block' },
-        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '150px' }
-      }} padding={15} display={"flex"}>
-        <Typography variant='h4'>Add Channel</Typography>
-        <br/>
-        <Typography variant="h6">Create a channel and configure the clients and roles that can use the channel.</Typography>
-        <br/>
+      <Box
+        sx={{
+          display: {xs: 'block'},
+          '& .MuiDrawer-paper': {boxSizing: 'border-box', width: '150px'}
+        }}
+        padding={15}
+        display={'flex'}
+      >
+        <Typography variant="h4">Add Channel</Typography>
+        <br />
+        <Typography variant="h6">
+          Create a channel and configure the clients and roles that can use the
+          channel.
+        </Typography>
+        <br />
         <Divider />
-        <br/>
-        <Card variant="outlined" style={{borderRadius: 5}} sx={{margin: 'auto', maxWidth: 610}}>
-          <br/>
+        <br />
+        <Card
+          variant="outlined"
+          style={{borderRadius: 5}}
+          sx={{margin: 'auto', maxWidth: 610}}
+        >
+          <br />
           <Stepper activeStep={activeStep}>
-            {
-              steps.map(step => (
-                <Step key={step.key}>
-                  <StepLabel {...labelProps}>
-                    <Typography style={{fontSize: 14}}>{step.label}</Typography>
-                  </StepLabel>
-                </Step>
-              ))
-            }
+            {steps.map(step => (
+              <Step key={step.key}>
+                <StepLabel {...labelProps}>
+                  <Typography style={{fontSize: 14}}>{step.label}</Typography>
+                </StepLabel>
+              </Step>
+            ))}
           </Stepper>
-          <br/>
-          {
-            activeStep === 0 &&
-            <BasicInfo setActiveStep={setActiveStep} setDisplay={setDisplay} setChannel={setChannel} channel={channel}/>
-          }
-          {
-            activeStep === 1 &&
-            <RequestMatching setActiveStep={setActiveStep} setChannel={setChannel} channel={channel}/>
-          }
-          {
-            activeStep === 2 &&
-            <Routes setActiveStep={setActiveStep} setDisplay={setDisplay}/>
-          }
+          <br />
+          {activeStep === 0 && (
+            <BasicInfo
+              setActiveStep={setActiveStep}
+              setDisplay={setDisplay}
+              setChannel={setChannel}
+              channel={channel}
+            />
+          )}
+          {activeStep === 1 && (
+            <RequestMatching
+              setActiveStep={setActiveStep}
+              setChannel={setChannel}
+              channel={channel}
+            />
+          )}
+          {activeStep === 2 && (
+            <Routes setActiveStep={setActiveStep} setDisplay={setDisplay} />
+          )}
         </Card>
       </Box>
     </>

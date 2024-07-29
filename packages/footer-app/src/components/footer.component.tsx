@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
 export function Footer() {
   const [about, setAbout] = React.useState<AboutResponse | null>(null)
   const classes = useStyles()
-  const extractedPathName = getDashboardPathName(window.location.href);
   React.useEffect(() => {
     const loadEvent = () => {
       getAbout()

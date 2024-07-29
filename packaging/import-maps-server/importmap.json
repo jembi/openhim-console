@@ -1,5 +1,6 @@
 {
   "imports": {
+    "@jembi/channels-app": "./libs/@jembi/channels-app/dist/jembi-channels-app.js",
     "@jembi/clients-app": "./libs/@jembi/clients-app/dist/jembi-clients-app.js",
     "@jembi/dashboard-app": "./libs/@jembi/dashboard-app/dist/jembi-dashboard-app.js",
     "@jembi/footer-app": "./libs/@jembi/footer-app/dist/jembi-footer-app.js",
@@ -12,7 +13,6 @@
     "@jembi/rbac-app": "./libs/@jembi/rbac-app/dist/jembi-rbac-app.js",
     "@jembi/root-config": "./libs/@jembi/root-config/dist/jembi-root-config.js",
     "@jembi/openhim-sidebar": "./libs/@jembi/openhim-sidebar/dist/jembi-openhim-sidebar.js",
-    "@jembi/transaction-log": "./libs/@jembi/transaction-log/dist/jembi-transaction-log.js",
-    "@jembi/channels-app": "./libs/@jembi/channels-app/dist/jembi-channels-app.js"
+    "@jembi/transaction-log": "./libs/@jembi/transaction-log/dist/jembi-transaction-log.js"
   }
 }

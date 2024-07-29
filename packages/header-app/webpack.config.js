@@ -6,7 +6,8 @@ module.exports = (webpackConfigEnv, argv) => {
     orgName: 'jembi',
     projectName: 'openhim-header',
     webpackConfigEnv,
-    argv
+    argv,
+    externals: [/^@jembi\/.+/]
   })
 
   return merge(defaultConfig, {
