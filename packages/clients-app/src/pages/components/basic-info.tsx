@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Card,
   Checkbox,
   Divider,
   FormControl,
@@ -16,6 +15,10 @@ import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles, createRole} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
+
+const styleForTextAreas = {
+  marginBottom: 2
+}
 
 interface BasicInfoProps {
   basicInfo: Client
@@ -34,7 +37,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   validationErrors,
   validateBasicInfoField,
   hidden,
-  editMode = false,
+  editMode = false
 }) => {
   const [roles, setRoles] = useState<string[]>([])
 
@@ -43,7 +46,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
     fetchRoles().then(roles => {
       //@ts-ignore
       setRoles(roles.map(role => role.name))
-    });
+    })
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -80,7 +83,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2, marginRight: 2, marginBottom: 3}}>
-        
         <p style={{fontSize: 24, marginBottom: -10}}>Basic Info</p>
         <p style={{opacity: '0.6', fontSize: 11}}>
           Provide the required client information and assign existing roles for
@@ -88,32 +90,45 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
         </p>
         <Divider style={{marginLeft: -100, marginRight: -100}} />
         <br />
-        <TextField
-          id="clientID"
-          label="Client ID"
-          placeholder="Enter client ID"
-          onChange={onBasicInfoChange}
-          value={basicInfo.clientID}
-          error={validationErrors?.clientID ? true : false}
-          helperText={validationErrors?.clientID}
-          onBlur={onBlurValidation}
-          disabled={editMode}
-        />
-        <TextField
-          id="name"
-          label="Client Name"
-          placeholder="Enter client name"
-          value={basicInfo.name}
-          onChange={onBasicInfoChange}
-          error={validationErrors?.name ? true : false}
-          helperText={validationErrors?.name}
-          onBlur={onBlurValidation}
-        />
+        <Stack direction="row" spacing={2}>
+          <TextField
+            id="clientID"
+            label="Client ID"
+            fullWidth
+            placeholder="Enter client ID"
+            onChange={onBasicInfoChange}
+            value={basicInfo.clientID}
+            error={validationErrors?.clientID ? true : false}
+            helperText={validationErrors?.clientID}
+            onBlur={onBlurValidation}
+            disabled={editMode}
+          />
+          <TextField
+            id="name"
+            label="Client Name"
+            fullWidth
+            placeholder="Enter client name"
+            value={basicInfo.name}
+            onChange={onBasicInfoChange}
+            error={validationErrors?.name ? true : false}
+            helperText={validationErrors?.name}
+            onBlur={onBlurValidation}
+            sx={{marginLeft: 1}}
+          />
+        </Stack>
+
         <h2>Assign Existing Roles</h2>
         {validationErrors?.roles && (
           <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
         )}
-        <FormControl>
+        <FormControl
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 150,
+            overflow: 'auto'
+          }}
+        >
           {roles.map(role => (
             <FormControlLabel
               key={role}
@@ -122,7 +137,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                   id={role}
                   checked={basicInfo.roles.includes(role)}
                   onChange={onCheckBoxChange}
-                 
                 />
               }
               label={role}
@@ -150,6 +164,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.organization ? true : false}
               helperText={validationErrors?.organization}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -160,6 +175,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.softwareName ? true : false}
               helperText={validationErrors?.softwareName}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -170,6 +186,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.description ? true : false}
               helperText={validationErrors?.description}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
             <TextField
               fullWidth
@@ -180,25 +197,32 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               error={validationErrors?.location ? true : false}
               helperText={validationErrors?.location}
               onBlur={onBlurValidation}
+              sx={styleForTextAreas}
             />
-            <TextField
-              id="contactPerson"
-              label="Contact Person"
-              value={basicInfo.contactPerson}
-              onChange={onBasicInfoChange}
-              error={validationErrors?.contactPerson ? true : false}
-              helperText={validationErrors?.contactPerson}
-              onBlur={onBlurValidation}
-            />
-            <TextField
-              id="contactPersonEmail"
-              label="Contact Person Email"
-              value={basicInfo.contactPersonEmail}
-              onChange={onBasicInfoChange}
-              error={validationErrors?.contactPersonEmail ? true : false}
-              helperText={validationErrors?.contactPersonEmail}
-              onBlur={onBlurValidation}
-            />
+            <Stack direction="row" spacing={2}>
+              <TextField
+                fullWidth
+                id="contactPerson"
+                label="Contact Person"
+                value={basicInfo.contactPerson}
+                onChange={onBasicInfoChange}
+                error={validationErrors?.contactPerson ? true : false}
+                helperText={validationErrors?.contactPerson}
+                onBlur={onBlurValidation}
+                sx={styleForTextAreas}
+              />
+              <TextField
+                fullWidth
+                id="contactPersonEmail"
+                label="Contact Person Email"
+                value={basicInfo.contactPersonEmail}
+                onChange={onBasicInfoChange}
+                error={validationErrors?.contactPersonEmail ? true : false}
+                helperText={validationErrors?.contactPersonEmail}
+                onBlur={onBlurValidation}
+                sx={{...styleForTextAreas, marginLeft: 1}}
+              />
+            </Stack>
           </AccordionDetails>
         </Accordion>
       </Box>

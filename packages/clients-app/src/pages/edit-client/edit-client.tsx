@@ -3,10 +3,12 @@ import {
   Button,
   Card,
   Divider,
+  Grid,
   SelectChangeEvent,
   Stack,
   Tab,
-  Tabs
+  Tabs,
+  Typography
 } from '@mui/material'
 import React, {FC, useState} from 'react'
 import {AuthenticationModel, BasicInfoModel} from '../../interfaces'
@@ -156,65 +158,74 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
     setTabValue(newValue)
   }
   return (
-    <Box sx={{maxWidth: '85%', paddingLeft: 20}}>
-      <h1>Edit Client</h1>
+    <Grid container spacing={2} padding={2}>
+      <Grid item xs={12}>
+        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+          Edit Client
+        </Typography>
 
-      <p>
-        Control client systems and their access roles. Add clients to enable
-        their request routing and group them by roles for streamlined channel
-        access management
-      </p>
-      <Divider />
-      <br />
-      <Box sx={{maxWidth: '60%', margin: 'auto'}}>
-        <Card>
-          <Box>
-            <Tabs value={tabValue} onChange={handleChange} variant="fullWidth">
-              <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
-              <Tab label="Authentication" id={`edit-client-tab-${1}`} />
-            </Tabs>
-          </Box>
-          <BasicInfo
-            basicInfo={basicInfo}
-            onBasicInfoChange={onBasicInfoChange}
-            setBasicInfo={setBasicInfo}
-            validationErrors={validationErrors}
-            validateBasicInfoField={validateBasicInfoField}
-            hidden={tabValue !== 0}
-            editMode={true}
-          />
-          <Authentication
-            authType={authType}
-            authentication={authentication}
-            basicInfo={basicInfo}
-            setAuthentication={setAuthentication}
-            selectAuthenticationType={selectAuthenticationType}
-            onAuthenticationChange={onAuthenticationChange}
-            hidden={tabValue !== 1}
-          />
-          <Divider />
-          <br />
-          <Stack spacing={2} direction="row">
-            <Button
-              variant="outlined"
-              id="cancel"
-              color="success"
-              onClick={() => returnToClientList()}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              id="save"
-              color="success"
-              onClick={() => onSaveButtonClicked()}
-            >
-              Save
-            </Button>
-          </Stack>
-        </Card>
-      </Box>
-    </Box>
+        <p style={{opacity: 0.6, fontSize: '16px'}}>
+          Control client systems and their access roles. Add clients to enable
+          their request routing and group them by roles for streamlined channel
+          access management
+        </p>
+        <Divider />
+      </Grid>
+      <Grid item xs={12}>
+          <Card sx={{width: 550, margin: 'auto'}}>
+            <Box>
+              <Tabs
+                value={tabValue}
+                onChange={handleChange}
+                variant="fullWidth"
+              >
+                <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
+                <Tab label="Authentication" id={`edit-client-tab-${1}`} />
+              </Tabs>
+            </Box>
+            <BasicInfo
+              basicInfo={basicInfo}
+              onBasicInfoChange={onBasicInfoChange}
+              setBasicInfo={setBasicInfo}
+              validationErrors={validationErrors}
+              validateBasicInfoField={validateBasicInfoField}
+              hidden={tabValue !== 0}
+              editMode={true}
+            />
+            <Authentication
+              authType={authType}
+              authentication={authentication}
+              basicInfo={basicInfo}
+              setAuthentication={setAuthentication}
+              selectAuthenticationType={selectAuthenticationType}
+              onAuthenticationChange={onAuthenticationChange}
+              hidden={tabValue !== 1}
+            />
+            <Divider />
+            <br />
+            <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
+              <Button
+                variant="outlined"
+                id="cancel"
+                color="success"
+                sx={{color: '#29AC96'}}
+                onClick={() => returnToClientList()}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                id="save"
+                color="success"
+                sx={{backgroundColor: '#29AC96'}}
+                onClick={() => onSaveButtonClicked()}
+              >
+                Save
+              </Button>
+            </Stack>
+          </Card>
+      </Grid>
+    </Grid>
   )
 }
 

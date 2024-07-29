@@ -3,17 +3,25 @@ import {
   Button,
   Divider,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {AuthenticationModel} from '../../interfaces'
 import {v4 as uuidv4} from 'uuid'
 import {Client} from '../../types'
 import {fetchCertificate, fetchAuthTypes} from '@jembi/openhim-core-api'
+import "./styles.css";
+
+const buttonStyle = {
+  borderColor: '#049D84',
+  color: '#049D84'
+}
 
 interface AuthenticationProps {
   basicInfo: Client
@@ -42,78 +50,112 @@ export const Authentication: React.FC<AuthenticationProps> = ({
   const [authTypes, setAuthTypes] = useState<string[]>([])
 
   const checkAuthType = (authType: string) => {
-    return !!authTypes.find(auth => auth === authType);
+    return !!authTypes.find(auth => auth === authType)
   }
 
   useEffect(() => {
-    fetchCertificate().then((certificates: any) => {
-      setCertificates(certificates)
-    }).catch((error: any) => {
-      console.error('Failed to fetch certificates', JSON.stringify(error));
-    });
+    fetchCertificate()
+      .then((certificates: any) => {
+        setCertificates(certificates)
+      })
+      .catch((error: any) => {
+        console.error('Failed to fetch certificates', JSON.stringify(error))
+      })
 
-    fetchAuthTypes().then((authTypes: string[]) => {
-      setAuthTypes(authTypes)
-    }).catch((error: any) => {
-      console.error(error)
-    });
+    fetchAuthTypes()
+      .then((authTypes: string[]) => {
+        setAuthTypes(authTypes)
+      })
+      .catch((error: any) => {
+        console.error(error)
+      })
   }, [])
   return (
     <div hidden={hidden}>
-      <Box sx={{marginLeft: 10, marginRight: 10, marginBottom: 6}}>
-        <h1>Authentication</h1>
-        <p>Configure the authentication settings for the client</p>
-        <Divider />
+      <Box sx={{marginLeft: 2}}>
+        <h3 style={{fontSize: 24, fontWeight: 'normal', marginBottom: -10}}>
+          Authentication
+        </h3>
+        <p style={{opacity: 0.6, fontSize: '12px'}}>
+          Choose and configure the authentication type for securing
+          client-server communication.
+        </p>
+      </Box>
+
+      <Divider />
+      <Box sx={{marginLeft: 6, marginTop: 2, marginBottom: 4, width: 450}}>
         <p>Select Type</p>
         <Button
           variant="outlined"
+          className={authType === 'jwt' ? 'selected' : ''}
           color="success"
           id="jwt"
+          style={{
+            ...buttonStyle,
+            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white'
+          }}
           onClick={selectAuthenticationType}
         >
           JSON WEB TOKEN
         </Button>
         <Button
           variant="outlined"
+          className={authType === 'customToken' ? 'selected' : ''}
           color="success"
           id="customToken"
+          style={{
+            ...buttonStyle,
+            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white'
+          }}
           onClick={selectAuthenticationType}
         >
           CUSTOM TOKEN
         </Button>
         <Button
           variant="outlined"
+          className={authType === 'mutualTLS' ? 'selected' : ''}
           color="success"
           id="mutualTLS"
+          style={{
+            ...buttonStyle,
+            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white'
+          }}
           onClick={selectAuthenticationType}
         >
           MUTUAL TLS
         </Button>
         <Button
           variant="outlined"
+          className={authType === 'basicAuth' ? 'selected' : ''}
           color="success"
           id="basicAuth"
+          style={{
+            ...buttonStyle,
+            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white'
+          }}
           onClick={selectAuthenticationType}
         >
           BASIC AUTH
         </Button>
         {authType === 'jwt' && (
           <>
-            <h1>JSON Web Token (JWT)</h1>
-            <p>
+            <h3 style={{fontSize: 20}}>JSON Web Token (JWT)</h3>
+            <p style={{fontSize: 12}}>
               Securely transmit information between a client and server as JSON
               object, signed using a secret or key pair
             </p>
-            <p style={{color: "#FFA500"}} hidden={authTypes.find(auth => auth === 'jwt') !== undefined}>
+            <p
+              style={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+              hidden={authTypes.find(auth => auth === 'jwt') !== undefined}
+            >
               JWT authentication is disabled on the OpenHIM Core.
             </p>
           </>
         )}
-
         {authType === 'customToken' && (
           <>
-            <h1>Custom Token</h1>
-            <p>
+            <h3 style={{fontSize: 20}}>Custom Token</h3>
+            <p style={{fontSize: 12}}>
               Set an ID to verify the client. The ID can be any unique string
             </p>
             <TextField
@@ -127,7 +169,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
                 endAdornment: (
                   <p
                     onClick={() => {
-                      if(checkAuthType('custom-token-auth')){
+                      if (checkAuthType('custom-token-auth')) {
                         setAuthentication({
                           ...authentication,
                           customToken: {
@@ -135,24 +177,31 @@ export const Authentication: React.FC<AuthenticationProps> = ({
                           }
                         })
                       }
-                      
                     }}
-                    style={{fontSize: 8, cursor: checkAuthType('custom-token-auth') ? 'pointer' : 'not-allowed'}}
+                    style={{
+                      fontSize: 8,
+                      cursor: checkAuthType('custom-token-auth')
+                        ? 'pointer'
+                        : 'not-allowed'
+                    }}
                   >
                     Generate UUID
                   </p>
                 )
               }}
             />
-            <p style={{color: "#FFA500"}} hidden={checkAuthType('custom-token-auth')}>
+            <p
+              style={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+              hidden={checkAuthType('custom-token-auth')}
+            >
               Custom Token Authentication is disabled on the OpenHIM Core.
             </p>
           </>
         )}
         {authType === 'mutualTLS' && (
           <>
-            <h1>Mutual TLS</h1>
-            <p>
+            <h3 style={{fontSize: 20}}>Mutual TLS</h3>
+            <p style={{fontSize: 12}}>
               Set Up an encrypted channel by providing the client's domain and
               certificate
             </p>
@@ -195,11 +244,19 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'basicAuth' && (
           <>
-            <h1>Basic Auth</h1>
-            <p>Requires a username and password. Set the password below</p>
+            <h3 style={{fontSize: 20}}>Basic Auth</h3>
+            <p style={{fontSize: 12}}>
+              Requires a username and password. Set the password below
+            </p>
             <Stack spacing={2} direction="row">
-              <TextField id="clientID" value={basicInfo.clientID} disabled />
               <TextField
+                fullWidth
+                id="clientID"
+                value={basicInfo.clientID}
+                disabled
+              />
+              <TextField
+                fullWidth
                 id="password"
                 label="Password"
                 type="password"
