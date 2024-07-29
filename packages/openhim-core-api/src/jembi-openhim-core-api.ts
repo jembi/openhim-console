@@ -39,9 +39,11 @@ async function initializeApiClient(): Promise<void> {
     apiClient.interceptors.response.use(
       response => response,
       error => {
-        // Add a response interceptor to redirect to login page if the user is not authenticated
+        // Add a response interceptor to redirect to login page if the user is not authenticated and not already logged out.
         if (error.response.status == 401) {
-          window.location.href = '/#!/login'
+          if (!window.location.href.includes('/login') && !window.location.href.includes('/logout')) {
+            window.location.href = '/#!/logout'
+          }
           return Promise.reject(error)
         }
         return Promise.reject(error)
