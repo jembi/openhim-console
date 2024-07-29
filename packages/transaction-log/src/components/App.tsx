@@ -26,12 +26,16 @@ const App: React.FC = () => {
   const [channel, setChannel] = useState('NoFilter')
   const [channels, setChannels] = useState([])
   const [reruns, setReruns] = useState('NoFilter')
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null
+  ])
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     fetchTransactionLogs()
     fetchAvailableChannels()
-  }, [limit, status, channel, reruns])
+  }, [limit, status, channel, reruns, dateRange])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -55,6 +59,11 @@ const App: React.FC = () => {
         } else if (reruns === 'No') {
           filters.childIDs = JSON.stringify({$eq: []})
         }
+      }
+
+      if (dateRange[0] && dateRange[1]) {
+        filters.startDate = dateRange[0].toISOString()
+        filters.endDate = dateRange[1].toISOString()
       }
 
       const transactions = await fetchTransactions({
@@ -166,6 +175,8 @@ const App: React.FC = () => {
             channel={channel}
             reruns={reruns}
             setReruns={setReruns}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
           />
         )}
         {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}

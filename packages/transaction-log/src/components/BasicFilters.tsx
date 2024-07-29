@@ -11,6 +11,8 @@ interface FilterProps {
   channel: string
   reruns: string
   setReruns: (value: string) => void
+  dateRange: [Date | null, Date | null];
+  setDateRange: (value: [Date | null, Date | null]) => void;
 }
 
 const BasicFilters: React.FC<FilterProps> = ({
