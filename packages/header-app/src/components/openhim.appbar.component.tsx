@@ -16,7 +16,7 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {useConfirmation} from '../contexts/confirmation.context'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(_theme => ({
   appBar: {
     fontFamily: 'Roboto, sans-serif',
     backgroundColor: '#ffffff',
@@ -120,7 +120,7 @@ export default function OpenhimAppBar() {
   const [anchorElMore, setAnchorElMore] = useState<null | HTMLElement>(null)
   const [anchorElApps, setAnchorElApps] = useState<null | HTMLElement>(null)
   const [currentPage, setCurrentPage] = useState<string>(
-    window.localStorage.href
+    window.location.href
   )
   const isLoggedIn =
     !window.location.href.includes('#!/login') &&
@@ -212,7 +212,7 @@ export default function OpenhimAppBar() {
   }
 
   return (
-    <AppBar position="static" className={classes.appBar}>
+    <AppBar position="fixed" className={classes.appBar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters className={classes.toolbar}>
           {isLoggedIn && isAdmin && (
