@@ -92,6 +92,15 @@ const pages: Page[] = [
   {name: 'ROLES', link: '#!/roles'},
   {name: 'CLIENTS', link: '#!/clients'},
   {
+    name: 'USERS',
+    children: [
+      {name: 'Manage Users', link: '#!/users'}
+      // {name: 'TASKS', link: '#!/tasks'},
+      // {name: 'VISUALIZER', link: '#!/visualizer'},
+      // {name: 'CONTACT LISTS', link: '#!/groups'},
+    ]
+  },
+  {
     name: 'MORE',
     children: [{name: 'About', link: '#!/about'}]
   },
@@ -117,14 +126,26 @@ export default function OpenhimAppBar() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [anchorElUsers, setAnchorElUsers] = useState<null | HTMLElement>(null)
   const [anchorElMore, setAnchorElMore] = useState<null | HTMLElement>(null)
   const [anchorElApps, setAnchorElApps] = useState<null | HTMLElement>(null)
-  const [currentPage, setCurrentPage] = useState<string>(
-    window.location.href
-  )
+  const [currentPage, setCurrentPage] = useState<string>(window.location.href)
   const isLoggedIn =
     !window.location.href.includes('#!/login') &&
     !window.location.href.includes('#!/logout')
+
+  const getCorrectAnchorEl = (
+    page: Page
+  ): [HTMLElement, React.Dispatch<React.SetStateAction<HTMLElement>>] => {
+    if (page.name.toUpperCase() === 'MORE') {
+      return [anchorElMore, setAnchorElMore]
+    } else if (page.name.toUpperCase() === 'APPS') {
+      return [anchorElApps, setAnchorElApps]
+    } else if (page.name.toUpperCase() === 'USERS') {
+      return [anchorElUsers, setAnchorElUsers]
+    }
+    throw new Error(`Could not getCorrectAnchorEl() from: ${page.name}`)
+  }
 
   const settings: Page[] = [
     {name: 'Profile', link: '#!/profile'},
@@ -259,12 +280,7 @@ export default function OpenhimAppBar() {
                     <MenuItem
                       key={page.name}
                       onClick={event =>
-                        handleOpenMoreMenu(
-                          event,
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
                     >
                       <Typography textAlign="center">{page.name}</Typography>
@@ -289,11 +305,7 @@ export default function OpenhimAppBar() {
                             : Boolean(anchorElApps)
                         }
                         onClose={() =>
-                          handleCloseMoreMenu(
-                            page.name.toUpperCase() === 'MORE'
-                              ? setAnchorElMore
-                              : setAnchorElApps
-                          )
+                          handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                         }
                         className={classes.menu}
                       >
@@ -301,11 +313,7 @@ export default function OpenhimAppBar() {
                           <MenuItem
                             key={child.name}
                             onClick={() =>
-                              handleCloseMoreMenu(
-                                page.name.toUpperCase() === 'MORE'
-                                  ? setAnchorElMore
-                                  : setAnchorElApps
-                              )
+                              handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                             }
                             component="a"
                             href={child.link}
@@ -356,12 +364,7 @@ export default function OpenhimAppBar() {
                   <Box key={page.name}>
                     <Button
                       onClick={event =>
-                        handleOpenMoreMenu(
-                          event,
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
                       className={`${classes.button} ${classes.moreMenuButton}`}
                     >
@@ -369,11 +372,7 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                     </Button>
                     <Menu
-                      anchorEl={
-                        page.name.toUpperCase() === 'MORE'
-                          ? anchorElMore
-                          : anchorElApps
-                      }
+                      anchorEl={getCorrectAnchorEl(page)[0]}
                       anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'right'
@@ -382,17 +381,9 @@ export default function OpenhimAppBar() {
                         vertical: 'top',
                         horizontal: 'right'
                       }}
-                      open={
-                        page.name.toUpperCase() === 'MORE'
-                          ? Boolean(anchorElMore)
-                          : Boolean(anchorElApps)
-                      }
+                      open={Boolean(getCorrectAnchorEl(page)[0])}
                       onClose={() =>
-                        handleCloseMoreMenu(
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                       }
                       className={classes.menu}
                     >
@@ -400,11 +391,7 @@ export default function OpenhimAppBar() {
                         <MenuItem
                           key={child.name}
                           onClick={() =>
-                            handleCloseMoreMenu(
-                              page.name.toUpperCase() === 'MORE'
-                                ? setAnchorElMore
-                                : setAnchorElApps
-                            )
+                            handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                           }
                           component="a"
                           href={child.link}
