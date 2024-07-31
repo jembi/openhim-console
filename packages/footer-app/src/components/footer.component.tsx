@@ -16,8 +16,16 @@ export function Footer() {
   const [about, setAbout] = React.useState<AboutResponse | null>(null)
   const classes = useStyles()
 
+  const isLoggedIn =
+    !window.location.href.includes('#!/login') &&
+    !window.location.href.includes('#!/logout')
+
   React.useEffect(() => {
     const loadEvent = () => {
+      if (!isLoggedIn) {
+        return
+      }
+
       getAbout()
         .then(setAbout)
         .catch(err => setAbout(null))

@@ -85,19 +85,34 @@ type Page = {
   onClick?: () => void
 }
 
+const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
+  name: '__',
+  children: [],
+  link: ''
+})
+
 const pages: Page[] = [
   {name: 'DASHBOARD', link: '#!/dashboard'},
   {name: 'TRANSACTIONS', link: '#!/transactions'},
   {name: 'CHANNELS', link: '#!/channels'},
-  {name: 'ROLES', link: '#!/roles'},
-  {name: 'CLIENTS', link: '#!/clients'},
+  {
+    name: 'CLIENTS',
+    children: [
+      {name: 'Manage Client', link: '#!/clients'},
+      {name: 'Add Client', link: ''},
+      DIVIDER_MENU_ITEM,
+      {name: 'Manage Client Roles', link: ''},
+      {name: 'Add User Role', link: ''}
+    ]
+  },
   {
     name: 'USERS',
     children: [
-      {name: 'Manage Users', link: '#!/users'}
-      // {name: 'TASKS', link: '#!/tasks'},
-      // {name: 'VISUALIZER', link: '#!/visualizer'},
-      // {name: 'CONTACT LISTS', link: '#!/groups'},
+      {name: 'Manage Users', link: '#!/users'},
+      {name: 'Add User', link: '#!/users/create-user'},
+      DIVIDER_MENU_ITEM,
+      {name: 'Manage User Roles', link: '#!/roles'},
+      {name: 'Add User Role', link: '#!/roles/create-user'}
     ]
   },
   {
@@ -107,6 +122,7 @@ const pages: Page[] = [
   {
     name: 'APPS',
     children: [
+      {name: 'MANAGE APPS', link: '#!/portal-admin'},
       {name: 'AUDIT LOG', link: '#!/audits'},
       {name: 'TASKS', link: '#!/tasks'},
       {name: 'VISUALIZER', link: '#!/visualizer'},
@@ -126,6 +142,9 @@ export default function OpenhimAppBar() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [anchorElClients, setAnchorElClients] = useState<null | HTMLElement>(
+    null
+  )
   const [anchorElUsers, setAnchorElUsers] = useState<null | HTMLElement>(null)
   const [anchorElMore, setAnchorElMore] = useState<null | HTMLElement>(null)
   const [anchorElApps, setAnchorElApps] = useState<null | HTMLElement>(null)
@@ -143,8 +162,10 @@ export default function OpenhimAppBar() {
       return [anchorElApps, setAnchorElApps]
     } else if (page.name.toUpperCase() === 'USERS') {
       return [anchorElUsers, setAnchorElUsers]
+    } else if (page.name.toUpperCase() === 'CLIENTS') {
+      return [anchorElClients, setAnchorElClients]
     }
-    throw new Error(`Could not getCorrectAnchorEl() from: ${page.name}`)
+    throw new Error(`[-] Could not getCorrectAnchorEl() from: ${page.name}`)
   }
 
   const settings: Page[] = [
@@ -309,8 +330,9 @@ export default function OpenhimAppBar() {
                         }
                         className={classes.menu}
                       >
-                        {page.children.map(child => (
+                        {page.children.map((child, index, items) => (
                           <MenuItem
+                            divider={items[index + 1] === DIVIDER_MENU_ITEM}
                             key={child.name}
                             onClick={() =>
                               handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
@@ -387,8 +409,9 @@ export default function OpenhimAppBar() {
                       }
                       className={classes.menu}
                     >
-                      {page.children.map(child => (
+                      {page.children.map((child, index, items) => (
                         <MenuItem
+                          divider={items[index + 1] === DIVIDER_MENU_ITEM}
                           key={child.name}
                           onClick={() =>
                             handleCloseMoreMenu(getCorrectAnchorEl(page)[1])

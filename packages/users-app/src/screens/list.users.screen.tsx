@@ -45,10 +45,6 @@ function UsersList() {
     refetch()
   }, [])
 
-  // React.useEffect(() => {
-  //   // refetch()
-  // }, [search])
-
   if (isLoading) {
     return <Loader />
   }
@@ -142,7 +138,6 @@ function UsersList() {
                     Name
                   </TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Organisation</TableCell>
                   <TableCell>Role</TableCell>
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>
@@ -156,7 +151,6 @@ function UsersList() {
                         {user.firstname} {user.surname}
                       </TableCell>
                       <TableCell>{user.email}</TableCell>
-                      <TableCell>{''}</TableCell>
                       <TableCell>{user.groups.join(', ')}</TableCell>
                       <TableCell align="right">
                         <IconButton
