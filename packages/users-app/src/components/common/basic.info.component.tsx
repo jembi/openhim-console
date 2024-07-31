@@ -17,12 +17,24 @@ import {
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Role, Routes, User} from '../../types'
+import {makeStyles} from '@mui/styles'
+
+const useStyles = makeStyles(_theme => ({
+  divider: {
+    marginTop: '10px',
+    margin: '0px',
+    width: '100%',
+    marginBottom: '10px',
+    overflow: 'visible'
+  }
+}))
 
 export function BasicInfo(props: {
   user: User
   roles: Role[]
   onChange: (event: {user: User; isValid: boolean}) => unknown
 }) {
+  const classes = useStyles()
   const navigate = useNavigate()
   const [user, setUser] = React.useState(props.user)
 
@@ -57,9 +69,7 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider
-        style={{marginTop: '10px', width: '100vw', marginBottom: '10px'}}
-      />
+      <Divider className={classes.divider} />
 
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -120,9 +130,9 @@ export function BasicInfo(props: {
               value={user.groups || []}
               onChange={e => handleSelectChange('groups', e.target.value)}
             >
-              {user.groups?.map((group, index) => (
-                <MenuItem key={index} value={group}>
-                  {group}
+              {props.roles.map((role, index) => (
+                <MenuItem key={index} value={role.name}>
+                  {role.name}
                 </MenuItem>
               ))}
             </Select>
