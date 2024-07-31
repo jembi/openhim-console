@@ -330,19 +330,21 @@ export default function OpenhimAppBar() {
                         }
                         className={classes.menu}
                       >
-                        {page.children.map((child, index, items) => (
-                          <MenuItem
-                            divider={items[index + 1] === DIVIDER_MENU_ITEM}
-                            key={child.name}
-                            onClick={() =>
-                              handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                            }
-                            component="a"
-                            href={child.link}
-                          >
-                            {child.name}
-                          </MenuItem>
-                        ))}
+                        {page.children.map((child, index, items) =>
+                          child === DIVIDER_MENU_ITEM ? null : (
+                            <MenuItem
+                              divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                              key={child.name}
+                              onClick={() =>
+                                handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                              }
+                              component="a"
+                              href={child.link}
+                            >
+                              {child.name}
+                            </MenuItem>
+                          )
+                        )}
                       </Menu>
                     </MenuItem>
                   )
@@ -409,19 +411,21 @@ export default function OpenhimAppBar() {
                       }
                       className={classes.menu}
                     >
-                      {page.children.map((child, index, items) => (
-                        <MenuItem
-                          divider={items[index + 1] === DIVIDER_MENU_ITEM}
-                          key={child.name}
-                          onClick={() =>
-                            handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                          }
-                          component="a"
-                          href={child.link}
-                        >
-                          {child.name}
-                        </MenuItem>
-                      ))}
+                      {page.children.map((child, index, items) =>
+                        child === DIVIDER_MENU_ITEM ? null : (
+                          <MenuItem
+                            divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                            key={child.name}
+                            onClick={() =>
+                              handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                            }
+                            component="a"
+                            href={child.link}
+                          >
+                            {child.name}
+                          </MenuItem>
+                        )
+                      )}
                     </Menu>
                   </Box>
                 )
