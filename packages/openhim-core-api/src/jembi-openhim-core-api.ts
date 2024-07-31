@@ -141,6 +141,12 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
+export async function editChannel(channel: any){
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/channels/${channel._id}`, channel)
+  return response.data
+}
+
 export async function fetchMediators(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/mediators')
@@ -212,3 +218,4 @@ export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year
   )
   return response.data
 }
+

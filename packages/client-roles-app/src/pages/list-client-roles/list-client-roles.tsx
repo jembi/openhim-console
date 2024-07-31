@@ -1,34 +1,26 @@
-import {Box, Button, Card, Divider, Grid, Stack, Typography} from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Stack,
+  Typography
+} from '@mui/material'
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
-import './data-grid-styling.css';
+import './data-grid-styling.css'
+import {getAllRoles} from '../../utils'
 
 interface ListRolesProps {
   addUserRole: () => void
   editUserRole: (client: ClientRole) => void
 }
-
-const noRolesOverlay = () => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%'
-    }}
-  >
-    <ErrorIcon fontSize="large" color="disabled" />
-    <Box sx={{m: 1}}>No Roles Found</Box>
-    //TODO: Add a onclick event to the button
-    <Button startIcon={<AddIcon />}>Add</Button>
-  </div>
-)
 
 export const ListRoles: React.FC<ListRolesProps> = ({
   addUserRole,
@@ -50,30 +42,45 @@ export const ListRoles: React.FC<ListRolesProps> = ({
       )
     }
   ]
-  const roles = [
-    {
-      id: '1',
-      roleName: 'Hapi Fhir',
-      clients: ['instant-client'],
-      channels: ['fhir', 'kafka', 'dhis2']
-    },
-    {
-      id: '2',
-      roleName: 'Instant',
-      clients: ['Contacts'],
-      channels: ['fhir']
-    },
-    {
-      id: '3',
-      roleName: 'Guest',
-      clients: [],
-      channels: []
-    }
-  ]
+
+  const [roles, setRoles] = useState([])
+
+  useEffect(() => {
+    getAllRoles()
+      .then(roles => {
+        const formattedRoles = roles.map(role => ({
+          id: role.roleName,
+          roleName: role.roleName,
+          clients: role.clients,
+          channels: role.channels
+        }))
+        setRoles(formattedRoles)
+      })
+      .catch(error => {})
+  }, [])
+
+  const noRolesOverlay = () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%'
+      }}
+    >
+      <ErrorIcon fontSize="large" color="disabled" />
+      <Box sx={{m: 1}}>No Roles Found</Box>
+      <Button onClick={addUserRole} startIcon={<AddIcon />}>Add</Button>
+    </div>
+  )
+
   return (
     <Grid container padding={2} spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>Manage User Roles</Typography>
+        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+          Manage User Roles
+        </Typography>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="caption" fontSize={16} style={{opacity: 0.6}}>
@@ -83,7 +90,11 @@ export const ListRoles: React.FC<ListRolesProps> = ({
             </Typography>
           </Grid>
           <Grid item xs={1}>
-            <Button variant="contained" style={{backgroundColor: '#29AC96'}} onClick={addUserRole}>
+            <Button
+              variant="contained"
+              style={{backgroundColor: '#29AC96'}}
+              onClick={addUserRole}
+            >
               Add
             </Button>
           </Grid>

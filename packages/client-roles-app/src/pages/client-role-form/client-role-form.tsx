@@ -23,6 +23,7 @@ import {
 } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
+import { Channel, Client, getAllClientsAndChannels, upsertRole } from '../../utils'
 
 interface ClientRoleFormProps {
   returnToRolesList: () => void
@@ -67,23 +68,63 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
     ...defaultClientRoleState,
     ...existingClientRole
   })
-  const [channels, setChannels] = useState<string[]>([])
-  const [clients, setClients] = useState<string[]>([])
+  const [channelNames, setChannelNames] = useState<string[]>([])
+  const [clientNames, setClientNames] = useState<string[]>([])
+
+
+  const updateListOfSelectedClientsAndChannels = async () => {
+    const { channels, clients} = await getAllClientsAndChannels();
+    console.log(`clientsList: ${clients.length}, channelsList: ${channels.length}`);
+
+    clients.forEach(client => {
+      if (clientRole.clients.includes(client.clientID)) {
+        if (!client.roles.includes(clientRole.roleName)) {
+          client.roles.push(clientRole.roleName)
+        }
+      } else {
+        client.roles = client.roles.filter(role => role !== clientRole.roleName)
+      }
+    });
+    channels.forEach(channel => {
+      if (clientRole.channels.includes(channel.name)) {
+        if (!channel.allow.includes(clientRole.roleName)) {
+          channel.allow.push(clientRole.roleName)
+        }
+      } else {
+        channel.allow = channel.allow.filter(
+          role => role !== clientRole.roleName
+        )
+      }
+    });
+    console.log('Now upserting role');
+    await upsertRole(clients, channels);
+  }
 
   useEffect(() => {
-    // fetch channels
-    setChannels(['fhir', 'kafka', 'dhis2'])
-    // fetch roles
-    setClients(['UltraCare', 'SmartDigiHealth'])
+    getAllClientsAndChannels().then(({clients, channels}) => {
+      setClientNames(clients.map(client => client.clientID))
+      setChannelNames(channels.map(channel => channel.name))
+    }).catch((error) => {
+      console.error('Error fetching clients and channels', error);
+    });
   }, [])
 
   const handleClientSelectionChange = (
-    event: SelectChangeEvent<typeof clientRole.clients>
+    event: SelectChangeEvent<typeof clientRole.clients>,
+    child: any
   ) => {
     const {
-      target: {value}
+      target: {value},
     } = event
+
+    
     const selectedClients = typeof value === 'string' ? value.split(',') : value
+    // what has been added from the client selection of ClientRoles state
+    // check the current values of clients against the incoming values and is there are any values that are not presents update the roles of the specific client with the role
+
+    // what has been removed from the client selection of ClientRoles state
+    // check the new values of clients against the current values and if there are any values that are not present remove the role from the specific client
+
     setClientRole(prevClientRole => ({
       ...prevClientRole,
       clients: selectedClients
@@ -108,8 +149,10 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
     }
   }
 
-  const handleSaveButtonClicked = () => {
+  const handleSaveButtonClicked = async () => {
+    await updateListOfSelectedClientsAndChannels()
     returnToRolesList()
+    
   }
 
   return (
@@ -164,7 +207,7 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
                 </Box>
               )}
             >
-              {clients.map(name => (
+              {clientNames.map(name => (
                 <MenuItem key={name} value={name}>
                   {name}
                 </MenuItem>
@@ -190,7 +233,7 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
                 overflow: 'auto'
               }}
             >
-              {channels.map(channel => (
+              {channelNames.map(channel => (
                 <FormControlLabel
                   key={channel}
                   control={
