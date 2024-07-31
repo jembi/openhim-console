@@ -141,6 +141,12 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
+export async function createChannel(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/channels')
+  return response.data
+}
+
 export async function deleteChannel(id: string): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.delete('/channels/'+ id)

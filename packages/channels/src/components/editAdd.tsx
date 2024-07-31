@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, stackClasses, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardActions, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, FormGroup, FormHelperText, InputAdornment, InputLabel, ListItemText, MenuItem, stackClasses, Step, StepLabel, Stepper, Switch, TextField, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { fetchClients, fetchRoles } from '@jembi/openhim-core-api'
+import { fetchClients, fetchRoles, createChannel } from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -48,6 +48,7 @@ interface Channel {
   allow: string[];
   whitelist: string[];
   authType: string;
+  routes: any[]
 }
 
 const channelTemplate: Channel = {
@@ -57,7 +58,7 @@ const channelTemplate: Channel = {
   isAsynchronousProcess: false,
   maxBodyAgeDays: null,
   timeout: null,
-  status: '',
+  status: 'Enabled',
   methods: [],
   type: '',
   priority: null,
@@ -67,7 +68,8 @@ const channelTemplate: Channel = {
   requestBody: false,
   allow: [],
   whitelist: [],
-  authType: ''
+  authType: '',
+  routes: []
 }
 
 const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
@@ -76,7 +78,7 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
   const [description, setDescription] = useState<string>(channel.description)
   const [type, setChannelType] = useState<string>(channel.type)
   const [timeout, setChannelTimeout] = useState<string>(channel.timeout)
-  const [enabled, setChannelEnabled] = useState<boolean>(channel.status)
+  const [enabled, setChannelEnabled] = useState<string>(channel.status)
 
   return (
     <Box>
@@ -179,8 +181,8 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
             <br/>
             <br/>
             <FormControlLabel control={<Switch onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setChannelEnabled(e.target?.checked)
-            }} checked={enabled} />} label='Enable Channel'/>
+              setChannelEnabled(e.target?.checked ? "enabled" : "disabled")
+            }} checked={enabled === "enabled"} />} label='Enable Channel'/>
             <br/>
           </AccordionDetails>
         </Accordion>
@@ -323,6 +325,7 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
         <CardActions>
           <Button variant="outlined" color="success" onClick={() => setActiveStep(0)}>Back</Button>
           <Button variant="contained" color="success" onClick={() => {
+            setChannel({...channel, urlPattern, allow: allowedRoles.concat(allowedClients)})
             setActiveStep(2)
           }}>Next</Button>
         </CardActions>
@@ -331,10 +334,23 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
   )
 }
 
-const Routes = ({ setDisplay, setActiveStep }) => {
+const Routes = ({ setDisplay, setActiveStep, setChannel, channel }) => {
   const [routeID, setRouteId] = useState<string>('')
-  const [routes, setRoutes] = useState([])
+  const [routes, setRoutes] = useState(channel.routes || [])
   const [displayAddRoute, setDisplayAddRoute] = useState<boolean>(false)
+  const [name, setRouteName] = useState<string>('')
+  const [primary, setPrimaryRoute] = useState<boolean>(!routes.length)
+  const [waitForPrimary, setWaitForPrimary] = useState<boolean>(true)
+  const [enableRoute, setEnableRoute] = useState<boolean>(true)
+  const [routeType, setRouteType] = useState<string>('')
+  const [secured, setSecured] = useState<boolean>(false)
+  const [host, setHost] = useState<string>('')
+  const [port, setPort] = useState<string>('')
+  const [path, setPath] = useState<string>('')
+  const [pathTransform, setPathTransform] = useState<string>('')
+  const [routeAuthPassword, setRouteAuthPassword] = useState<string>('')
+  const [routeAuthUsername, setRouteAuthUsername] = useState<string>('')
+  const [forwardHeaders, setForwardHeaders] = useState<boolean>(false)
 
   const columns = [
     {field: 'name', headerName: 'Name', flex: 0.3},
@@ -375,7 +391,7 @@ const Routes = ({ setDisplay, setActiveStep }) => {
       <br />
       <Card style={{paddingLeft: 10, paddingRight: 10}}>
         <DataGrid
-          getRowId={row => row._id}
+          getRowId={row => row.name}
           columns={columns}
           slots={{toolbar: GridToolbar}}
           rows={routes}
@@ -407,37 +423,58 @@ const Routes = ({ setDisplay, setActiveStep }) => {
               helperText="Choose descriptive name for this route."
               variant='outlined'
               required={true}
-              onChange={() => {}}
+              value={name}
+              onChange={(e) => setRouteName(e.target.value)}
               style={{width: '80%'}}
             />
             <br/>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Primary Route?'/>
+              <FormControlLabel control={<Switch value={primary} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setPrimaryRoute(e.target?.checked)
+              }} checked />} label='Primary Route?'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if this is the primary route.</FormHelperText>
             </FormControl>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Wait for Primary Response?'/>
+              <FormControlLabel control={<Switch value={waitForPrimary} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setWaitForPrimary(e.target?.checked)
+              }} checked />} label='Wait for Primary Response?'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to wait for the response from the primary route before processing.</FormHelperText>
             </FormControl>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Status'/>
+              <FormControlLabel control={<Switch value={enableRoute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEnableRoute(e.target?.checked)
+              }} checked />} label='Status'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to enable this route.</FormHelperText>
             </FormControl>
             <br/>
             <br/>
             <FormGroup style={{ flexDirection: 'row'}}>
               <Typography paddingLeft={1} variant="h5">Route Type</Typography>
-              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input type='checkbox'/>} label="HTTP"/>
-              <FormControlLabel control={<input type='checkbox'/>} label='KAFKA'/>
+              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input checked={routeType === "HTTP"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setRouteType("HTTP")
+                } else {
+                  setRouteType("")
+                }
+              }} type='checkbox'/>} label="HTTP"/>
+              <FormControlLabel control={<input checked={routeType === "KAFKA"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setRouteType("KAFKA")
+                } else {
+                  setRouteType("")
+                }
+              }} type='checkbox'/>} label='KAFKA'/>
             </FormGroup>
             <br/>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Secured Route?'/>
-              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if the route is secured. Uses default certificate  authority..</FormHelperText>
+              <FormControlLabel control={<Switch checked={secured} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setSecured(e.target.checked)
+              }} />} label='Secured Route?'/>
+              <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if the route is secured. Uses default certificate  authority.</FormHelperText>
             </FormControl>
             <br/>
             <br/>
@@ -449,6 +486,10 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 variant="outlined"
                 required={true}
                 style={{ width: "48%", paddingRight: 20 }}
+                value={host}
+                onChange={e => {
+                  setHost(e.target.value)
+                }}
               />
               <TextField
                 id="port"
@@ -457,6 +498,8 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 variant="outlined"
                 required={true}
                 style={{ width: "48%" }}
+                value={port}
+                onChange={e => setPort(e.target.value)}
               />
             </FormGroup>
             <br/>
@@ -467,6 +510,8 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 helperText=""
                 variant="outlined"
                 style={{ width: "48%", paddingRight: 20}}
+                value={path}
+                onChange={e => setPath(e.target.value)}
               />
               <TextField
                 id="routePathTransform"
@@ -474,6 +519,8 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 helperText="Using defined format eg s/from/to/g"
                 variant="outlined"
                 style={{width: "48%"}}
+                value={pathTransform}
+                onChange={e => setPathTransform(e.target.value)}
               />
             </FormGroup>
             <br/>
@@ -484,6 +531,8 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 helperText=""
                 variant="outlined"
                 style={{ width: "48%", paddingRight: 20 }}
+                value={routeAuthUsername}
+                onChange={e => setRouteAuthUsername(e.target.value)}
               />
               <TextField
                 id="authPassword"
@@ -491,17 +540,30 @@ const Routes = ({ setDisplay, setActiveStep }) => {
                 helperText=""
                 variant="outlined"
                 style={{ width: "48%" }}
+                value={routeAuthPassword}
+                onChange={e => setRouteAuthPassword(e.target.value)}
               />
             </FormGroup>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch checked />} label='Forward Auth Header?'/>
+              <FormControlLabel control={<Switch checked={forwardHeaders} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setForwardHeaders(e.target.checked)
+              }} />} label='Forward Auth Header?'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to forward existing authorization header.</FormHelperText>
             </FormControl>
             <CardActions style={{paddingLeft: '70%', justifyItems: "center"}}>
               <Button variant="outlined" color="success" onClick={() => setDisplayAddRoute(false)}>Cancel</Button>
               <Button variant="contained" color="success" onClick={() => {
-                setDisplayAddRoute(false)
+                const route = {name, host, port, path, secured, type: routeType, pathTransform, primary, username: routeAuthUsername, password: routeAuthPassword, waitPrimaryResponse: waitForPrimary, forwardAuthHeaders: forwardHeaders }
+                let newRoutes = routes
+                if (primary) {
+                  newRoutes = routes.map(route => {
+                    route.primary = false
+                    return route
+                  })
+                }
+                setRoutes([...newRoutes, route])
+                setChannel({...channel, routes: [...newRoutes, route]})
                 setDisplayAddRoute(false)
               }}>Save</Button>
             </CardActions>
@@ -510,8 +572,10 @@ const Routes = ({ setDisplay, setActiveStep }) => {
         <CardActions>
           <Button variant="outlined" color="success" onClick={() => setActiveStep(1)}>Back</Button>
           <Button variant="contained" color="success" onClick={() => {
-            setActiveStep(0)
-            setDisplay('list')
+            createChannel(channel).then(() => {
+              setActiveStep(0)
+              setDisplay('list')
+            }).catch(() => {})
           }}>Save</Button>
         </CardActions>
       </Card>
@@ -560,7 +624,7 @@ export const EditAdd = ({ setDisplay }) => {
           }
           {
             activeStep === 2 &&
-            <Routes setActiveStep={setActiveStep} setDisplay={setDisplay}/>
+            <Routes setActiveStep={setActiveStep} setDisplay={setDisplay} setChannel={setChannel} channel={channel}/>
           }
         </Card>
       </Box>
