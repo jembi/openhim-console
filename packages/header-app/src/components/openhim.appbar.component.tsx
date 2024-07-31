@@ -19,6 +19,7 @@ import {useConfirmation} from '../contexts/confirmation.context'
 const useStyles = makeStyles(_theme => ({
   appBar: {
     fontFamily: 'Roboto, sans-serif',
+    fontSize: '14px',
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: 'none',
@@ -39,7 +40,7 @@ const useStyles = makeStyles(_theme => ({
     textDecoration: 'none'
   },
   menuButton: {
-    color: '#000000'
+    color: 'grey'
   },
   menu: {
     marginTop: 4
@@ -48,7 +49,7 @@ const useStyles = makeStyles(_theme => ({
     textTransform: 'none',
     fontWeight: 500,
     marginRight: '20px',
-    color: 'grey',
+    color: '#00000099',
     '&:hover': {
       color: '#388e3c'
     }
@@ -73,8 +74,7 @@ const useStyles = makeStyles(_theme => ({
     left: 0,
     width: '100%',
     height: 5,
-    background:
-      'linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(0,128,0,1) 100%)'
+    background: 'linear-gradient(90deg, #5EF26F 0%, #058568 100%)'
   }
 }))
 
