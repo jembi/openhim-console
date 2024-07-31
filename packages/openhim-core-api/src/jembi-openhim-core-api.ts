@@ -171,6 +171,18 @@ export async function fetchUsers(): Promise<any[]> {
   return response.data
 }
 
+export async function createUser(user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/users', user)
+  return response.data
+}
+
+export async function updateUser(email: string, user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put('/users/' + email, user)
+  return response.data
+}
+
 export async function fetchRoles(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/roles')

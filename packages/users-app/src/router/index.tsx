@@ -1,8 +1,8 @@
 import {createMemoryRouter} from 'react-router-dom'
 import AddUser from '../screens/create.user.component'
 import UsersList from '../screens/list.users.screen'
+import EditUser from '../screens/edit.user.component'
 import {Routes} from '../types'
-import EditUser from '../screens/create.user.component'
 
 const router = createMemoryRouter([
   {

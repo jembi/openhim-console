@@ -1,9 +1,10 @@
+var ObjectID = require('bson-objectid')
 import {Role, User} from '../types'
 
 const {
   fetchUsers,
-  editUser,
-  createRole,
+  createUser,
+  updateUser,
   fetchRoles
 } = require('@jembi/openhim-core-api')
 
@@ -18,9 +19,9 @@ export async function getUsers(): Promise<User[]> {
   }
 }
 
-export async function editUserByName(name: string, user: User) {
+export async function editUserByEmail(email: string, user: User) {
   try {
-    await editUser(name, user)
+    await updateUser(email, user)
   } catch (err) {
     console.error(err)
     throw err
@@ -29,7 +30,8 @@ export async function editUserByName(name: string, user: User) {
 
 export async function createNewUser(user: User) {
   try {
-    await createRole({...user, _id: undefined})
+    const passports = ObjectID() // create random ObjectId for passports
+    await createUser({...user, _id: undefined, passports})
   } catch (err) {
     console.error(err)
     throw err

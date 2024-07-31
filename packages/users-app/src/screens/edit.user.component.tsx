@@ -11,13 +11,12 @@ import {
 import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {createNewUser, getRoles} from '../services/api'
-import {Routes} from '../types'
-import {defaultUser} from '../utils'
+import {createNewUser, editUserByEmail, getRoles} from '../services/api'
+import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
 
 const useStyles = makeStyles(_theme => ({
@@ -33,16 +32,15 @@ const useStyles = makeStyles(_theme => ({
 
 function AddUserRole() {
   const classes = useStyles()
+  const location = useLocation()
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const [user, setUser] = React.useState(structuredClone(defaultUser))
-  const queryKey = React.useMemo(() => ['query.AddUserRole'], [])
-  const query = useQuery(queryKey, getRoles, {
-    staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
-  })
+  const originalUser = structuredClone(location.state as User)
+  const [user, setUser] = React.useState(structuredClone(originalUser))
+  const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
-    mutationFn: createNewUser,
+    mutationFn: async () => editUserByEmail(originalUser.email, user),
     onMutate: () => {
       showBackdrop(<Loader />, true)
     },
@@ -52,10 +50,10 @@ function AddUserRole() {
     },
     onError: error => {
       hideBackdrop()
-      showAlert('Error creating a new user', 'Error', 'error')
+      showAlert('Error editing user', 'Error', 'error')
     }
   })
-  const roles = query.data || []
+  const roles = getRolesQuery.data || []
   const [isFormDataValid, setIsFormDataValid] = React.useState(false)
 
   const onBasicInfoChange = (event: {user: any; isValid: boolean}) => {
@@ -63,23 +61,23 @@ function AddUserRole() {
     setIsFormDataValid(event.isValid)
   }
 
-  const handleAddUser = async () => {
-    mutation.mutate(user)
+  const handleEditUser = async () => {
+    mutation.mutate()
   }
 
-  if (query.isLoading) {
+  if (getRolesQuery.isLoading) {
     return <Loader />
   }
 
-  if (query.isError) {
-    return <div>{query.error}</div>
+  if (getRolesQuery.isError) {
+    return <div>{getRolesQuery.error}</div>
   }
 
   return (
     <Box padding={3} className={classes.box}>
       <header className={classes.boxHeader}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
-          Add User
+          Edit User
         </Typography>
         <Typography
           variant="subtitle1"
@@ -87,7 +85,7 @@ function AddUserRole() {
           gutterBottom
           fontWeight={400}
         >
-          Control client systems and their access roles. Add clients to enable
+          Control client systems and their access roles. Edit clients to enable
           their request routing and group them by roles for streamlined channel
           management.
         </Typography>
@@ -118,7 +116,7 @@ function AddUserRole() {
                   color="info"
                   onClick={() => navigate(-1)}
                 >
-                  Cancel
+                  CANCEL
                 </Button>
 
                 <span className={classes.cardActionsGap}></span>
@@ -126,10 +124,14 @@ function AddUserRole() {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={mutation.isLoading || !isFormDataValid}
-                  onClick={handleAddUser}
+                  disabled={
+                    mutation.isLoading ||
+                    !isFormDataValid ||
+                    JSON.stringify(user) === JSON.stringify(originalUser)
+                  }
+                  onClick={handleEditUser}
                 >
-                  Add User
+                  UPDATE USER
                 </Button>
               </Box>
             </CardActions>

@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import Search from '@mui/icons-material/Search'
+import Edit from '@mui/icons-material/Edit'
 import {
   Box,
   Button,
@@ -7,6 +8,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  IconButton,
   Input,
   InputAdornment,
   Table,
@@ -63,7 +65,7 @@ function UsersList() {
     setSearch(value)
   }, 500)
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage)
   }
 
@@ -91,7 +93,7 @@ function UsersList() {
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
-        User Roles List
+        Manager Users
       </Typography>
 
       <Grid container>
@@ -120,7 +122,7 @@ function UsersList() {
           <Grid container>
             <Grid item xs={2}>
               <Input
-                placeholder="Search"
+                placeholder="Search..."
                 onChange={e => handleOnSearchChange(e.target.value)}
                 fullWidth
                 startAdornment={
@@ -136,24 +138,34 @@ function UsersList() {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <TableSortLabel direction="asc">Name</TableSortLabel>
+                    {/* <TableSortLabel direction="asc">Name</TableSortLabel> */}
+                    Name
                   </TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Organisation</TableCell>
                   <TableCell>Role</TableCell>
+                  <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredUsers
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((user, index) => (
-                    <TableRow onClick={() => handleRowClick(user)} key={index}>
+                    <TableRow key={index}>
                       <TableCell>
                         {user.firstname} {user.surname}
                       </TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{''}</TableCell>
-                      <TableCell>{''}</TableCell>
+                      <TableCell>{user.groups.join(', ')}</TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          onClick={() => handleRowClick(user)}
+                          aria-label={`Edit user ${user.firstname} ${user.surname}`}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
