@@ -26,16 +26,14 @@ const App: React.FC = () => {
   const [channel, setChannel] = useState('NoFilter')
   const [channels, setChannels] = useState([])
   const [reruns, setReruns] = useState('NoFilter')
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null
-  ])
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     fetchTransactionLogs()
     fetchAvailableChannels()
-  }, [limit, status, channel, reruns, dateRange])
+  }, [limit, status, channel, reruns, startDate, endDate])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -61,9 +59,11 @@ const App: React.FC = () => {
         }
       }
 
-      if (dateRange[0] && dateRange[1]) {
-        filters.startDate = dateRange[0].toISOString()
-        filters.endDate = dateRange[1].toISOString()
+      if (startDate && endDate) {
+        filters['request.timestamp'] = JSON.stringify({
+          "$gte": startDate.toISOString(),
+          "$lte": endDate.toISOString()
+        })
       }
 
       const transactions = await fetchTransactions({
@@ -175,8 +175,10 @@ const App: React.FC = () => {
             channel={channel}
             reruns={reruns}
             setReruns={setReruns}
-            dateRange={dateRange}
-            setDateRange={setDateRange}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
           />
         )}
         {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}

@@ -1,5 +1,8 @@
 import React from 'react'
 import {Box, TextField, MenuItem, Grid} from '@mui/material'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 interface FilterProps {
   limit: number
@@ -11,8 +14,10 @@ interface FilterProps {
   channel: string
   reruns: string
   setReruns: (value: string) => void
-  dateRange: [Date | null, Date | null];
-  setDateRange: (value: [Date | null, Date | null]) => void;
+  startDate: Date | null
+  setStartDate: (value: Date | null) => void
+  endDate: Date | null
+  setEndDate: (value: Date | null) => void
 }
 
 const BasicFilters: React.FC<FilterProps> = ({
@@ -24,7 +29,11 @@ const BasicFilters: React.FC<FilterProps> = ({
   setChannel,
   channel,
   reruns,
-  setReruns
+  setReruns,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate
 }) => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLimit(Number(event.target.value))
@@ -41,6 +50,14 @@ const BasicFilters: React.FC<FilterProps> = ({
   const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReruns(event.target.value)
   }
+
+  // const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setStartDate(event.target.value)
+  // }
+
+  // const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setEndDate(event.target.value)
+  // }
 
   return (
     <Box sx={{padding: '16px'}}>
@@ -88,13 +105,27 @@ const BasicFilters: React.FC<FilterProps> = ({
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={3}>
-          <TextField
-            label="Date Range"
-            type="date"
-            fullWidth
-            InputLabelProps={{shrink: true}}
-          />
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="Start Date"
+              value={startDate}
+              onChange={newValue => {
+                setStartDate(newValue)
+              }}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="End Date"
+              value={endDate}
+              onChange={newValue => {
+                setEndDate(newValue)
+              }}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={1}>
           <TextField
@@ -112,7 +143,7 @@ const BasicFilters: React.FC<FilterProps> = ({
             <MenuItem value={500}>500</MenuItem>
           </TextField>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2}>
           <TextField
             select
             label="Reruns"
