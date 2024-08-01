@@ -1,79 +1,64 @@
 <single-spa-router>
   <main>
     <application name="@jembi/openhim-header"></application>
-    <div style="display: flex">
+    <div style="display: flex; padding: 0 5%; background-color: #f1f1f1; min-height: 80vh;">
       <route default>
         <route path="#!" exact="true">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/transactions">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/audits">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/clients">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/channels">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/tasks">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/visualizer">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/groups">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/mediators">
-          <application name="@jembi/openhim-sidebar"></application>
-        </route>
-        <route path="#!/users">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/certificates">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/export-import">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/logs">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/about">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/profile">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <route path="#!/portal-admin">
-          <application name="@jembi/openhim-sidebar"></application>
         </route>
         <div style="flex-grow: 1">
           <application name="@jembi/legacy-console"></application>
         </div>
       </route>
       <route path="#!/portal">
-        <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/openhim-portal"></application>
         </div>
       </route>
       <route path="#!/portal-admin">
-        <application name="@jembi/openhim-sidebar"></application>
         <div style="width: 100%" id="portal-admin">
           <application name="@jembi/portal-admin"></application>
         </div>
       </route>
       <route path="#!/dashboard">
-        <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/dashboard-app"></application>
         </div>
       </route>
+      <route path="#!/users">
+        <div style="flex-grow: 1">
+          <application name="@jembi/users-app"></application>
+        </div>
+      </route>
     </div>
+    <application name="@jembi/footer-app"></application>
     <div style="display: flex" id="openhim-console-ems-container"></div>
   </main>
 </single-spa-router>
