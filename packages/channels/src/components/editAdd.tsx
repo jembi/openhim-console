@@ -58,17 +58,17 @@ const channelTemplate: Channel = {
   isAsynchronousProcess: false,
   maxBodyAgeDays: null,
   timeout: null,
-  status: 'Enabled',
+  status: 'enabled',
   methods: [],
   type: '',
   priority: null,
   tcpPort: null,
   tcpHost: '',
   pollingSchedule: '',
-  requestBody: false,
+  requestBody: true,
   allow: [],
   whitelist: [],
-  authType: '',
+  authType: 'private',
   routes: []
 }
 
@@ -156,9 +156,9 @@ const BasicInfo = ({ setDisplay, setActiveStep, channel, setChannel }) => {
             {
               channelTypes.map(chanType =>
                 <FormGroup key={chanType} style={{ paddingLeft: 20}}>
-                  <FormControlLabel control={<input checked={type === chanType} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  <FormControlLabel control={<input checked={type === chanType.toLowerCase()} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     if (e.target?.checked) {
-                      setChannelType(chanType)
+                      setChannelType(chanType.toLowerCase())
                     } else {
                       setChannelType('')
                     }
@@ -206,6 +206,7 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
   const [allowedRoles, setAllowedRoles] = useState<string[]>([])
   const [urlPattern, setUrlPattern] = useState<string>(channel.urlPattern)
   const [autoRegexEnabled, setAutoRegexEnabled] = useState<boolean>(true)
+  const [authType, setAuthType] = useState<string>(channel.authType)
 
   useEffect(() => {
     fetchClients().then(clients => {
@@ -274,58 +275,81 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
         }} checked />} label='Auto-add regex delimiters (Recommended)'/>
         <br/>
         <br/>
-        <FormControl sx={{width: '80%',}}>
-          <InputLabel>
-            Clients
-          </InputLabel>
-          <Select
-            multiple
-            onChange={handleChange}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-            value={allowedClients}
-          >
-            {
-              clients.map(client => (
-                <MenuItem key={client} value={client}>
-                  <Checkbox checked={allowedClients.indexOf(client) > -1} />
-                  <ListItemText primary={client} />
-                </MenuItem>
-              ))
-            }
-          </Select>
-          <FormHelperText>Which clients should be able to access the channel?</FormHelperText>
-        </FormControl>
+        <FormGroup style={{ flexDirection: 'row'}}>
+              <Typography paddingLeft={1} variant="h5">Channel Authentication type.</Typography>
+              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input checked={authType === "public"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setAuthType("public")
+                } else {
+                  setAuthType("")
+                }
+              }} type='checkbox'/>} label="Public"/>
+              <FormControlLabel control={<input checked={authType === "private"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setAuthType("private")
+                } else {
+                  setAuthType("")
+                }
+              }} type='checkbox'/>} label='Private'/>
+            </FormGroup>
         <br/>
-        <br/>
-        <FormControl sx={{width: '80%',}}>
-          <InputLabel>
-            Roles
-          </InputLabel>
-          <Select
-            multiple
-            onChange={handleChangeRoles}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-            value={allowedRoles}
-          >
-            {
-              roles.map(role => (
-                <MenuItem key={role} value={role}>
-                  <Checkbox checked={allowedRoles.indexOf(role) > -1} />
-                  <ListItemText primary={role} />
-                </MenuItem>
-              ))
-            }
-          </Select>
-          <FormHelperText>Which roles should be able to access the channel?</FormHelperText>
-        </FormControl>
+        {
+          authType === 'private' &&
+          <>
+            <FormControl sx={{width: '80%',}}>
+              <InputLabel>
+                Clients
+              </InputLabel>
+              <Select
+                multiple
+                onChange={handleChange}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+                value={allowedClients}
+              >
+                {
+                  clients.map(client => (
+                    <MenuItem key={client} value={client}>
+                      <Checkbox checked={allowedClients.indexOf(client) > -1} />
+                      <ListItemText primary={client} />
+                    </MenuItem>
+                  ))
+                }
+              </Select>
+              <FormHelperText>Which clients should be able to access the channel?</FormHelperText>
+            </FormControl>
+            <br/>
+            <br/>
+            <FormControl sx={{width: '80%',}}>
+              <InputLabel>
+                Roles
+              </InputLabel>
+              <Select
+                multiple
+                onChange={handleChangeRoles}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+                value={allowedRoles}
+              >
+                {
+                  roles.map(role => (
+                    <MenuItem key={role} value={role}>
+                      <Checkbox checked={allowedRoles.indexOf(role) > -1} />
+                      <ListItemText primary={role} />
+                    </MenuItem>
+                  ))
+                }
+              </Select>
+              <FormHelperText>Which roles should be able to access the channel?</FormHelperText>
+            </FormControl>
+          </>
+        }
         <br/>
         <br/>
         <CardActions>
           <Button variant="outlined" color="success" onClick={() => setActiveStep(0)}>Back</Button>
           <Button variant="contained" color="success" onClick={() => {
-            setChannel({...channel, urlPattern, allow: allowedRoles.concat(allowedClients)})
+            setChannel({...channel, urlPattern, authType, allow: allowedRoles.concat(allowedClients)})
             setActiveStep(2)
           }}>Next</Button>
         </CardActions>
@@ -453,16 +477,16 @@ const Routes = ({ setDisplay, setActiveStep, setChannel, channel }) => {
             <br/>
             <FormGroup style={{ flexDirection: 'row'}}>
               <Typography paddingLeft={1} variant="h5">Route Type</Typography>
-              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input checked={routeType === "HTTP"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              <FormControlLabel style={{width: '10%', paddingLeft: '10%'}} control={<input checked={routeType === "http"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 if (e.target.checked) {
-                  setRouteType("HTTP")
+                  setRouteType("http")
                 } else {
                   setRouteType("")
                 }
               }} type='checkbox'/>} label="HTTP"/>
-              <FormControlLabel control={<input checked={routeType === "KAFKA"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              <FormControlLabel control={<input checked={routeType === "kafka"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 if (e.target.checked) {
-                  setRouteType("KAFKA")
+                  setRouteType("kafka")
                 } else {
                   setRouteType("")
                 }

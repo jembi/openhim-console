@@ -14,6 +14,27 @@ interface App {
   __v: number
 }
 
+interface Channel {
+  name: string;
+  description: string;
+  urlPattern: string;
+  isAsynchronousProcess: boolean;
+  maxBodyAgeDays: number;
+  timeout: number;
+  status: string;
+  methods: string[];
+  type: string;
+  priority: number;
+  tcpPort: number;
+  tcpHost: string;
+  pollingSchedule: string;
+  requestBody: boolean;
+  allow: string[];
+  whitelist: string[];
+  authType: string;
+  routes: any[]
+}
+
 interface Config {
   protocol: string
   host: string
@@ -141,9 +162,9 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
-export async function createChannel(): Promise<any> {
+export async function createChannel(channel: Channel): Promise<any> {
   await ensureApiClientInitialized()
-  const response = await apiClient.post('/channels')
+  const response = await apiClient.post('/channels', channel)
   return response.data
 }
 
