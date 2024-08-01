@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {start} from 'repl'
+
 interface App {
   _id: string
   name: string
@@ -41,7 +41,10 @@ async function initializeApiClient(): Promise<void> {
       error => {
         // Add a response interceptor to redirect to login page if the user is not authenticated and not already logged out.
         if (error.response.status == 401) {
-          if (!window.location.href.includes('/login') && !window.location.href.includes('/logout')) {
+          if (
+            !window.location.href.includes('/login') &&
+            !window.location.href.includes('/logout')
+          ) {
             window.location.href = '/#!/logout'
           }
           return Promise.reject(error)
@@ -159,5 +162,29 @@ export async function fetchTimeSeries(
 export async function fetchAbout(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/about')
+  return response.data
+}
+
+export async function fetchUsers(): Promise<any[]> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/users')
+  return response.data
+}
+
+export async function createUser(user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/users', user)
+  return response.data
+}
+
+export async function updateUser(email: string, user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put('/users/' + email, user)
+  return response.data
+}
+
+export async function fetchRoles(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/roles')
   return response.data
 }

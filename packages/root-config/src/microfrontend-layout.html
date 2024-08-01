@@ -1,7 +1,7 @@
 <single-spa-router>
   <main>
     <application name="@jembi/openhim-header"></application>
-    <div style="display: flex; padding: 0 5%; background-color: #f1f1f1;">
+    <div style="display: flex; padding: 0 5%; background-color: #f1f1f1; min-height: 80vh;">
       <route default>
         <route path="#!" exact="true">
         </route>
@@ -20,8 +20,6 @@
         <route path="#!/groups">
         </route>
         <route path="#!/mediators">
-        </route>
-        <route path="#!/users">
         </route>
         <route path="#!/certificates">
         </route>
@@ -52,6 +50,11 @@
       <route path="#!/dashboard">
         <div style="flex-grow: 1">
           <application name="@jembi/dashboard-app"></application>
+        </div>
+      </route>
+      <route path="#!/users">
+        <div style="flex-grow: 1">
+          <application name="@jembi/users-app"></application>
         </div>
       </route>
     </div>

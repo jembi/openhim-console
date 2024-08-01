@@ -19,6 +19,7 @@ import {useConfirmation} from '../contexts/confirmation.context'
 const useStyles = makeStyles(_theme => ({
   appBar: {
     fontFamily: 'Roboto, sans-serif',
+    fontSize: '14px',
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: 'none',
@@ -39,7 +40,7 @@ const useStyles = makeStyles(_theme => ({
     textDecoration: 'none'
   },
   menuButton: {
-    color: '#000000'
+    color: 'grey'
   },
   menu: {
     marginTop: 4
@@ -48,7 +49,7 @@ const useStyles = makeStyles(_theme => ({
     textTransform: 'none',
     fontWeight: 500,
     marginRight: '20px',
-    color: 'grey',
+    color: '#00000099',
     '&:hover': {
       color: '#388e3c'
     }
@@ -73,8 +74,7 @@ const useStyles = makeStyles(_theme => ({
     left: 0,
     width: '100%',
     height: 5,
-    background:
-      'linear-gradient(90deg, rgba(0,255,0,1) 0%, rgba(0,128,0,1) 100%)'
+    background: 'linear-gradient(90deg, #5EF26F 0%, #058568 100%)'
   }
 }))
 
@@ -85,12 +85,36 @@ type Page = {
   onClick?: () => void
 }
 
+const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
+  name: '__',
+  children: [],
+  link: ''
+})
+
 const pages: Page[] = [
   {name: 'DASHBOARD', link: '#!/dashboard'},
   {name: 'TRANSACTIONS', link: '#!/transactions'},
   {name: 'CHANNELS', link: '#!/channels'},
-  {name: 'ROLES', link: '#!/roles'},
-  {name: 'CLIENTS', link: '#!/clients'},
+  {
+    name: 'CLIENTS',
+    children: [
+      {name: 'Manage Client', link: '#!/clients'},
+      {name: 'Add Client', link: ''},
+      DIVIDER_MENU_ITEM,
+      {name: 'Manage Client Roles', link: ''},
+      {name: 'Add User Role', link: ''}
+    ]
+  },
+  {
+    name: 'USERS',
+    children: [
+      {name: 'Manage Users', link: '#!/users'},
+      {name: 'Add User', link: '#!/users/create-user'},
+      DIVIDER_MENU_ITEM,
+      {name: 'Manage User Roles', link: '#!/roles'},
+      {name: 'Add User Role', link: '#!/roles/create-user'}
+    ]
+  },
   {
     name: 'MORE',
     children: [{name: 'About', link: '#!/about'}]
@@ -98,6 +122,7 @@ const pages: Page[] = [
   {
     name: 'APPS',
     children: [
+      {name: 'MANAGE APPS', link: '#!/portal-admin'},
       {name: 'AUDIT LOG', link: '#!/audits'},
       {name: 'TASKS', link: '#!/tasks'},
       {name: 'VISUALIZER', link: '#!/visualizer'},
@@ -117,14 +142,31 @@ export default function OpenhimAppBar() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [anchorElClients, setAnchorElClients] = useState<null | HTMLElement>(
+    null
+  )
+  const [anchorElUsers, setAnchorElUsers] = useState<null | HTMLElement>(null)
   const [anchorElMore, setAnchorElMore] = useState<null | HTMLElement>(null)
   const [anchorElApps, setAnchorElApps] = useState<null | HTMLElement>(null)
-  const [currentPage, setCurrentPage] = useState<string>(
-    window.location.href
-  )
+  const [currentPage, setCurrentPage] = useState<string>(window.location.href)
   const isLoggedIn =
     !window.location.href.includes('#!/login') &&
     !window.location.href.includes('#!/logout')
+
+  const getCorrectAnchorEl = (
+    page: Page
+  ): [HTMLElement, React.Dispatch<React.SetStateAction<HTMLElement>>] => {
+    if (page.name.toUpperCase() === 'MORE') {
+      return [anchorElMore, setAnchorElMore]
+    } else if (page.name.toUpperCase() === 'APPS') {
+      return [anchorElApps, setAnchorElApps]
+    } else if (page.name.toUpperCase() === 'USERS') {
+      return [anchorElUsers, setAnchorElUsers]
+    } else if (page.name.toUpperCase() === 'CLIENTS') {
+      return [anchorElClients, setAnchorElClients]
+    }
+    throw new Error(`[-] Could not getCorrectAnchorEl() from: ${page.name}`)
+  }
 
   const settings: Page[] = [
     {name: 'Profile', link: '#!/profile'},
@@ -259,12 +301,7 @@ export default function OpenhimAppBar() {
                     <MenuItem
                       key={page.name}
                       onClick={event =>
-                        handleOpenMoreMenu(
-                          event,
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
                     >
                       <Typography textAlign="center">{page.name}</Typography>
@@ -289,30 +326,25 @@ export default function OpenhimAppBar() {
                             : Boolean(anchorElApps)
                         }
                         onClose={() =>
-                          handleCloseMoreMenu(
-                            page.name.toUpperCase() === 'MORE'
-                              ? setAnchorElMore
-                              : setAnchorElApps
-                          )
+                          handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                         }
                         className={classes.menu}
                       >
-                        {page.children.map(child => (
-                          <MenuItem
-                            key={child.name}
-                            onClick={() =>
-                              handleCloseMoreMenu(
-                                page.name.toUpperCase() === 'MORE'
-                                  ? setAnchorElMore
-                                  : setAnchorElApps
-                              )
-                            }
-                            component="a"
-                            href={child.link}
-                          >
-                            {child.name}
-                          </MenuItem>
-                        ))}
+                        {page.children.map((child, index, items) =>
+                          child === DIVIDER_MENU_ITEM ? null : (
+                            <MenuItem
+                              divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                              key={child.name}
+                              onClick={() =>
+                                handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                              }
+                              component="a"
+                              href={child.link}
+                            >
+                              {child.name}
+                            </MenuItem>
+                          )
+                        )}
                       </Menu>
                     </MenuItem>
                   )
@@ -356,12 +388,7 @@ export default function OpenhimAppBar() {
                   <Box key={page.name}>
                     <Button
                       onClick={event =>
-                        handleOpenMoreMenu(
-                          event,
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
                       className={`${classes.button} ${classes.moreMenuButton}`}
                     >
@@ -369,11 +396,7 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                     </Button>
                     <Menu
-                      anchorEl={
-                        page.name.toUpperCase() === 'MORE'
-                          ? anchorElMore
-                          : anchorElApps
-                      }
+                      anchorEl={getCorrectAnchorEl(page)[0]}
                       anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'right'
@@ -382,36 +405,27 @@ export default function OpenhimAppBar() {
                         vertical: 'top',
                         horizontal: 'right'
                       }}
-                      open={
-                        page.name.toUpperCase() === 'MORE'
-                          ? Boolean(anchorElMore)
-                          : Boolean(anchorElApps)
-                      }
+                      open={Boolean(getCorrectAnchorEl(page)[0])}
                       onClose={() =>
-                        handleCloseMoreMenu(
-                          page.name.toUpperCase() === 'MORE'
-                            ? setAnchorElMore
-                            : setAnchorElApps
-                        )
+                        handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                       }
                       className={classes.menu}
                     >
-                      {page.children.map(child => (
-                        <MenuItem
-                          key={child.name}
-                          onClick={() =>
-                            handleCloseMoreMenu(
-                              page.name.toUpperCase() === 'MORE'
-                                ? setAnchorElMore
-                                : setAnchorElApps
-                            )
-                          }
-                          component="a"
-                          href={child.link}
-                        >
-                          {child.name}
-                        </MenuItem>
-                      ))}
+                      {page.children.map((child, index, items) =>
+                        child === DIVIDER_MENU_ITEM ? null : (
+                          <MenuItem
+                            divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                            key={child.name}
+                            onClick={() =>
+                              handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                            }
+                            component="a"
+                            href={child.link}
+                          >
+                            {child.name}
+                          </MenuItem>
+                        )
+                      )}
                     </Menu>
                   </Box>
                 )
