@@ -105,7 +105,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
 
     editClient(client['_id'], clientsPayload)
       .then(() => {
-        enqueueSnackbar('Client edited successfully, you', {variant: 'success'})
+        enqueueSnackbar('Client edited successfully', {variant: 'success'})
       })
       .catch((error: AxiosError) => {
         if (error.response && error.response.data) {

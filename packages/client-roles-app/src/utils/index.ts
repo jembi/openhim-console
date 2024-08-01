@@ -22,44 +22,6 @@ export interface Role {
   channels: string[]
 }
 
-export async function getAllRoles() {
-  const {channels, clients} = await getAllClientsAndChannels()
-
-  const roles: Role[] = []
-  clients.forEach(client => {
-    client.roles.forEach(role => {
-      // check if role exists in roles array
-      const roleIndex = roles.findIndex(r => r.roleName === role)
-      if (roleIndex === -1) {
-        roles.push({
-          roleName: role,
-          clients: [client.clientID],
-          channels: []
-        })
-      } else {
-        roles[roleIndex].clients.push(client.clientID)
-      }
-    })
-  })
-  channels.forEach(channel => {
-    channel.allow.forEach(role => {
-      // check if role exists in roles array
-      const roleIndex = roles.findIndex(r => r.roleName === role)
-      if (roleIndex === -1) {
-        roles.push({
-          roleName: role,
-          clients: [],
-          channels: [channel.name]
-        })
-      } else {
-        roles[roleIndex].channels.push(channel.name)
-      }
-    })
-  })
-
-  return roles
-}
-
 export async function getAllClientsAndChannels(): Promise<{
   clients: Client[]
   channels: Channel[]

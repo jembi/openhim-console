@@ -15,7 +15,7 @@ import ErrorIcon from '@mui/icons-material/Error'
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
 import './data-grid-styling.css'
-import {getAllRoles} from '../../utils'
+import {fetchClientRoles} from '@jembi/openhim-core-api'
 
 interface ListRolesProps {
   addUserRole: () => void
@@ -46,7 +46,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
   const [roles, setRoles] = useState([])
 
   useEffect(() => {
-    getAllRoles()
+    fetchClientRoles()
       .then(roles => {
         const formattedRoles = roles.map(role => ({
           id: role.roleName,

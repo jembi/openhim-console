@@ -13,7 +13,7 @@ import {
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
-import {fetchRoles, createRole} from '@jembi/openhim-core-api'
+import {fetchRoles, createRole, fetchClientRoles} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
 
 const styleForTextAreas = {
@@ -43,9 +43,14 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
 
   useEffect(() => {
     //@ts-ignore
-    fetchRoles().then(roles => {
+    fetchClientRoles().then(roles => {
       //@ts-ignore
-      setRoles(roles.map(role => role.name))
+      if(roles.length === 0){
+        setRoles(['instant']);
+      }else {
+        setRoles(roles.map(role => role.roleName))
+      }
+      
     })
   }, [])
 

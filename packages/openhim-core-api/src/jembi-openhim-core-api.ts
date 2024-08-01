@@ -219,3 +219,59 @@ export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year
   return response.data
 }
 
+interface ClientRole {
+  roleName: string
+  clients: string[]
+  channels: string[]
+}
+
+interface Client {
+  _id?: string
+  clientID: string
+  roles: string[]
+}
+interface Channel {
+  _id?: string
+  name: string
+  allow: string[]
+}
+
+export async function fetchClientRoles() {
+  const clients = await fetchClients() as Client[]
+  const channels = await fetchChannels() as Channel[]
+
+  const roles: ClientRole[] = []
+  clients.forEach(client => {
+    client.roles.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [client.clientID],
+          channels: []
+        })
+      } else {
+        roles[roleIndex].clients.push(client.clientID)
+      }
+    })
+  })
+  channels.forEach(channel => {
+    channel.allow.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [],
+          channels: [channel.name]
+        })
+      } else {
+        roles[roleIndex].channels.push(channel.name)
+      }
+    })
+  })
+
+  return roles
+}
+
