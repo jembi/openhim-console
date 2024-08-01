@@ -1,63 +1,63 @@
 import React from 'react'
 import {Box, TextField, MenuItem, Grid} from '@mui/material'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
 
 interface FilterProps {
-  limit: number
-  setLimit: (value: number) => void
   status: string
   setStatus: (value: string) => void
-  channels: any[]
-  setChannel: (value: string) => void
+  searchQuery: string
+  setSearchQuery: (value: string) => void
   channel: string
-  reruns: string
-  setReruns: (value: string) => void
+  setChannel: (value: string) => void
   startDate: Date | null
   setStartDate: (value: Date | null) => void
   endDate: Date | null
   setEndDate: (value: Date | null) => void
+  limit: number
+  setLimit: (value: number) => void
+  reruns: string
+  setReruns: (value: string) => void
+  channels: any[]
 }
 
 const BasicFilters: React.FC<FilterProps> = ({
-  limit,
-  setLimit,
   status,
   setStatus,
-  channels,
-  setChannel,
+  searchQuery,
+  setSearchQuery,
   channel,
-  reruns,
-  setReruns,
+  setChannel,
   startDate,
   setStartDate,
   endDate,
-  setEndDate
+  setEndDate,
+  limit,
+  setLimit,
+  reruns,
+  setReruns,
+  channels
 }) => {
-  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(Number(event.target.value))
-  }
-
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
+  }
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value)
   }
 
   const handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChannel(event.target.value)
   }
 
+  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLimit(Number(event.target.value))
+  }
+
   const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReruns(event.target.value)
   }
-
-  // const handleStartDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setStartDate(event.target.value)
-  // }
-
-  // const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setEndDate(event.target.value)
-  // }
 
   return (
     <Box sx={{padding: '16px'}}>
@@ -84,6 +84,8 @@ const BasicFilters: React.FC<FilterProps> = ({
           <TextField
             label="Search"
             type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
             fullWidth
             InputLabelProps={{shrink: true}}
           />

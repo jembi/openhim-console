@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import {
   Container,
   Tab,
@@ -21,25 +21,17 @@ import {
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = useState(0)
-  const [limit, setLimit] = useState(10)
   const [status, setStatus] = useState('NoFilter')
+  const [searchQuery, setSearchQuery] = useState('')
   const [channel, setChannel] = useState('NoFilter')
-  const [channels, setChannels] = useState([])
-  const [reruns, setReruns] = useState('NoFilter')
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
+  const [limit, setLimit] = useState(10)
+  const [reruns, setReruns] = useState('NoFilter')
+  const [channels, setChannels] = useState([])
   const [transactions, setTransactions] = useState([])
 
-  useEffect(() => {
-    fetchTransactionLogs()
-    fetchAvailableChannels()
-  }, [limit, status, channel, reruns, startDate, endDate])
-
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setTabValue(newValue)
-  }
-
-  const fetchTransactionLogs = async () => {
+  const fetchTransactionLogs = useCallback(async () => {
     try {
       const filters: {[key: string]: any} = {}
 
@@ -61,8 +53,8 @@ const App: React.FC = () => {
 
       if (startDate && endDate) {
         filters['request.timestamp'] = JSON.stringify({
-          "$gte": startDate.toISOString(),
-          "$lte": endDate.toISOString()
+          $gte: startDate.toISOString(),
+          $lte: endDate.toISOString()
         })
       }
 
@@ -84,6 +76,24 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error fetching logs:', error)
     }
+  }, [status, channel, startDate, endDate, limit, reruns])
+
+  const fetchAvailableChannels = useCallback(async () => {
+    try {
+      const channels = await fetchChannels()
+      setChannels(channels)
+    } catch (error) {
+      console.error('Error fetching channels:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchTransactionLogs()
+    fetchAvailableChannels()
+  }, [fetchTransactionLogs, fetchAvailableChannels])
+
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setTabValue(newValue)
   }
 
   const fetchChannelDetails = async (channelID: string) => {
@@ -118,14 +128,25 @@ const App: React.FC = () => {
     setLimit(prevLimit => prevLimit + 20)
   }
 
-  const fetchAvailableChannels = async () => {
-    try {
-      const channels = await fetchChannels()
-      setChannels(channels)
-    } catch (error) {
-      console.error('Error fetching channels:', error)
-    }
-  }
+  const filteredTransactions = transactions.filter(transaction => {
+    const searchTerm = searchQuery.toLowerCase()
+    return (
+      transaction.channelName?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.clientName?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.request.method?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.request.host?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.request.path?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.request.params?.toLowerCase().includes(searchTerm) ||
+      '' ||
+      transaction.status?.toLowerCase().includes(searchTerm) ||
+      ''
+    )
+  })
 
   return (
     <Container
@@ -166,23 +187,28 @@ const App: React.FC = () => {
 
         {tabValue === 0 && (
           <BasicFilters
-            limit={limit}
-            setLimit={setLimit}
             status={status}
             setStatus={setStatus}
-            channels={channels}
-            setChannel={setChannel}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
             channel={channel}
-            reruns={reruns}
-            setReruns={setReruns}
+            setChannel={setChannel}
             startDate={startDate}
             setStartDate={setStartDate}
             endDate={endDate}
             setEndDate={setEndDate}
+            limit={limit}
+            setLimit={setLimit}
+            reruns={reruns}
+            setReruns={setReruns}
+            channels={channels}
           />
         )}
         {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}
-        <TransactionLogTable transactions={transactions} loadMore={loadMore} />
+        <TransactionLogTable
+          transactions={filteredTransactions}
+          loadMore={loadMore}
+        />
       </Card>
     </Container>
   )
