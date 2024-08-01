@@ -254,7 +254,7 @@ export default function OpenhimAppBar() {
   }
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="static" className={classes.appBar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters className={classes.toolbar}>
           {isLoggedIn && isAdmin && (
