@@ -99,10 +99,10 @@ const pages: Page[] = [
     name: 'CLIENTS',
     children: [
       {name: 'Manage Client', link: '#!/clients'},
-      {name: 'Add Client', link: ''},
+      {name: 'Add Client', link: '#!/clients/add'},
       DIVIDER_MENU_ITEM,
-      {name: 'Manage Client Roles', link: ''},
-      {name: 'Add User Role', link: ''}
+      {name: 'Manage Client Roles', link: '#!/client-roles'},
+      {name: 'Add User Role', link: '#!/client-roles/add'}
     ]
   },
   {

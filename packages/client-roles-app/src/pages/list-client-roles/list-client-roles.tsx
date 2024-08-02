@@ -83,11 +83,11 @@ export const ListRoles: React.FC<ListRolesProps> = ({
         </Typography>
         <Grid container>
           <Grid item xs={11}>
-            <Typography variant="caption" fontSize={16} style={{opacity: 0.6}}>
+          <p style={{opacity: 0.6, fontSize: '16px'}}>
               Control client systems and their access roles. Add clients to
               enable their request routing and group them by roles for
               streamlined channel access management.
-            </Typography>
+            </p>
           </Grid>
           <Grid item xs={1}>
             <Button
@@ -95,7 +95,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
               style={{backgroundColor: '#29AC96'}}
               onClick={addUserRole}
             >
-              Add
+              <AddIcon /> Add
             </Button>
           </Grid>
         </Grid>
@@ -106,6 +106,8 @@ export const ListRoles: React.FC<ListRolesProps> = ({
           <DataGrid
             getRowId={row => row.id}
             autoHeight
+            checkboxSelection
+            disableRowSelectionOnClick
             rows={roles}
             onRowClick={params => editUserRole(params.row)}
             slots={{

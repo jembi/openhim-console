@@ -263,12 +263,6 @@ export async function updateUser(email: string, user: any): Promise<any> {
   return response.data
 }
 
-export async function fetchRoles(): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/roles')
-  return response.data
-}
-
 interface ClientRole {
   roleName: string
   clients: string[]
