@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { start } from 'repl'
+
 interface App {
   _id: string
   name: string
@@ -34,6 +34,24 @@ async function initializeApiClient(): Promise<void> {
       withCredentials: true,
       baseURL: `${config.protocol}://${config.host}:${config.port}${hostPath}`
     })
+
+    // Add interceptors
+    apiClient.interceptors.response.use(
+      response => response,
+      error => {
+        // Add a response interceptor to redirect to login page if the user is not authenticated and not already logged out.
+        if (error.response.status == 401) {
+          if (
+            !window.location.href.includes('/login') &&
+            !window.location.href.includes('/logout')
+          ) {
+            window.location.href = '/#!/logout'
+          }
+          return Promise.reject(error)
+        }
+        return Promise.reject(error)
+      }
+    )
   } catch (error) {
     console.error('Error initializing the API client:', error)
     throw error
@@ -46,7 +64,7 @@ let apiClient = axios.create()
 const initializationPromise = initializeApiClient().catch(console.error)
 
 async function ensureApiClientInitialized(): Promise<void> {
-    await initializationPromise
+  await initializationPromise
 }
 export async function fetchApps(): Promise<App[]> {
   await ensureApiClientInitialized()
@@ -194,15 +212,47 @@ export async function fetchAuthTypes(): Promise<any> {
 }
 
 
-export async function fetchTimeSeries(period: 'minute' | 'month' | 'day' | 'year', filter: {startDate: Date; endDate: Date}): Promise<any> {
+export async function fetchTimeSeries(
+  period: 'minute' | 'month' | 'day' | 'year',
+  filter: {startDate: Date; endDate: Date}
+): Promise<any> {
   await ensureApiClientInitialized()
   const url = `/metrics/timeseries/${period}`
-  const response = await apiClient.get(
-    url,
-    { params: {
+  const response = await apiClient.get(url, {
+    params: {
       startDate: filter.startDate.toISOString(),
-      endDate: filter.endDate.toISOString(),
-    } }
-  )
+      endDate: filter.endDate.toISOString()
+    }
+  })
+  return response.data
+}
+
+export async function fetchAbout(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/about')
+  return response.data
+}
+
+export async function fetchUsers(): Promise<any[]> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/users')
+  return response.data
+}
+
+export async function createUser(user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/users', user)
+  return response.data
+}
+
+export async function updateUser(email: string, user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put('/users/' + email, user)
+  return response.data
+}
+
+export async function fetchRoles(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/roles')
   return response.data
 }
