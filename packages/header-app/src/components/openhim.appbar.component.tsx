@@ -69,7 +69,8 @@ const useStyles = makeStyles(_theme => ({
     alignItems: 'center'
   },
   gradientBar: {
-    position: 'absolute',
+    margin: 0,
+    padding: 0,
     bottom: 0,
     left: 0,
     width: '100%',
@@ -128,7 +129,6 @@ const pages: Page[] = [
       {name: 'VISUALIZER', link: '#!/visualizer'},
       {name: 'CONTACT LISTS', link: '#!/groups'},
       {name: 'MEDIATORS', link: '#!/mediators'},
-      {name: 'USERS', link: '#!/users'},
       {name: 'CERTIFICATES', link: '#!/certificates'},
       {name: 'IMPORT/EXPORT', link: '#!/export-import'},
       {name: 'SERVER LOGS', link: '#!/logs'}
@@ -188,7 +188,7 @@ export default function OpenhimAppBar() {
     const resConf = await fetch('/config/default.json')
     if (!resConf.ok) {
       return console.error(
-        '[sidebar-app] Failed to fetch OpenHIM console config'
+        '[header-app] Failed to fetch OpenHIM console config'
       )
     }
     const {protocol, host, hostPath, port} = await resConf.json()
@@ -199,7 +199,7 @@ export default function OpenhimAppBar() {
       {credentials: 'include'}
     )
     if (!resMe.ok) {
-      return console.error('[sidebar-app] Failed to fetch user profile')
+      return console.error('[header-app] Failed to fetch user profile')
     }
     const me = await resMe.json()
     setIsAdmin(me.user.groups.includes('admin'))
