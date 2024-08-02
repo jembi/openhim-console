@@ -204,7 +204,28 @@ const App: React.FC = () => {
             channels={channels}
           />
         )}
-        {tabValue === 1 && <CustomFilters limit={limit} setLimit={setLimit} />}
+        {tabValue === 1 && (
+          <CustomFilters
+            status={status}
+            setStatus={setStatus}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            channel={channel}
+            setChannel={setChannel}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            limit={limit}
+            setLimit={setLimit}
+            reruns={reruns}
+            setReruns={setReruns}
+            channels={channels}
+          />
+        )}
+      </Card>
+
+      <Card>
         <TransactionLogTable
           transactions={filteredTransactions}
           loadMore={loadMore}
