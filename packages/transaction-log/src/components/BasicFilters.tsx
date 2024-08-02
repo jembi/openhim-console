@@ -59,6 +59,16 @@ const BasicFilters: React.FC<FilterProps> = ({
     setReruns(event.target.value)
   }
 
+  const handleClearFilters = () => {
+    setStatus('NoFilter')
+    setSearchQuery('')
+    setChannel('NoFilter')
+    setStartDate(null)
+    setEndDate(null)
+    setLimit(10)
+    setReruns('NoFilter')
+  }
+
   return (
     <Card>
       <Box sx={{padding: '16px'}}>
@@ -166,7 +176,7 @@ const BasicFilters: React.FC<FilterProps> = ({
             <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
               RERUN SELECTED
             </Button>
-            <Button variant="outlined" color="secondary">
+            <Button variant="outlined" color="secondary" onClick={handleClearFilters}>
               CLEAR
             </Button>
           </Grid>
