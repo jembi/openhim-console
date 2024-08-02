@@ -6,12 +6,7 @@
 @import '~angular-bootstrap-colorpicker/css/colorpicker.css';
 @import 'angular-taglist-directive.css';
   
-@scope(.ng-scope) {
 
-:scope {
-  font-family: 'Open Sans', sans-serif;
-}
-  
  html,
 body {
   margin: 0;
@@ -2567,5 +2562,4 @@ label {
 .flex-column {
   display: flex;
   flex-direction: column;
-}
 }
