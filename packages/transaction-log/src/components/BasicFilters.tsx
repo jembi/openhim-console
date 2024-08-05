@@ -176,7 +176,11 @@ const BasicFilters: React.FC<FilterProps> = ({
             <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
               RERUN SELECTED
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleClearFilters}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleClearFilters}
+            >
               CLEAR
             </Button>
           </Grid>
