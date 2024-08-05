@@ -4,11 +4,9 @@ import {
   Card,
   Divider,
   Grid,
-  Stack,
   Typography
 } from '@mui/material'
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
-import DeleteIcon from '@mui/icons-material/Delete'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
@@ -34,7 +32,6 @@ export const ListRoles: React.FC<ListRolesProps> = ({
       field: 'actions',
       headerName: 'Actions',
       width: 100,
-      //TODO: Add a onclick event to the button
       renderCell: () => (
         <>
           <CreateIcon style={{cursor: 'pointer'}} />
