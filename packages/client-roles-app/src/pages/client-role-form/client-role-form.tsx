@@ -24,6 +24,8 @@ import {
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
 import { Channel, Client, getAllClientsAndChannels, upsertRole } from '../../utils'
+import { AxiosError } from 'axios'
+import {useSnackbar} from 'notistack'
 
 interface ClientRoleFormProps {
   returnToRolesList: () => void
@@ -70,34 +72,44 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
   })
   const [channelNames, setChannelNames] = useState<string[]>([])
   const [clientNames, setClientNames] = useState<string[]>([])
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
 
 
   const updateListOfSelectedClientsAndChannels = async () => {
-    const { channels, clients} = await getAllClientsAndChannels();
-    console.log(`clientsList: ${clients.length}, channelsList: ${channels.length}`);
-
-    clients.forEach(client => {
-      if (clientRole.clients.includes(client.clientID)) {
-        if (!client.roles.includes(clientRole.roleName)) {
-          client.roles.push(clientRole.roleName)
+    try {
+      const { channels, clients} = await getAllClientsAndChannels();
+      clients.forEach(client => {
+        if (clientRole.clients.includes(client.clientID)) {
+          if (!client.roles.includes(clientRole.roleName)) {
+            client.roles.push(clientRole.roleName)
+          }
+        } else {
+          client.roles = client.roles.filter(role => role !== clientRole.roleName)
         }
-      } else {
-        client.roles = client.roles.filter(role => role !== clientRole.roleName)
-      }
-    });
-    channels.forEach(channel => {
-      if (clientRole.channels.includes(channel.name)) {
-        if (!channel.allow.includes(clientRole.roleName)) {
-          channel.allow.push(clientRole.roleName)
+      });
+      channels.forEach(channel => {
+        if (clientRole.channels.includes(channel.name)) {
+          if (!channel.allow.includes(clientRole.roleName)) {
+            channel.allow.push(clientRole.roleName)
+          }
+        } else {
+          channel.allow = channel.allow.filter(
+            role => role !== clientRole.roleName
+          )
         }
+      });
+      await upsertRole(clients, channels);
+    } catch (e) {
+      const error = e as AxiosError;
+      if (error.response) {
+        console.error('Error updating clients and channels', error.response.data);
       } else {
-        channel.allow = channel.allow.filter(
-          role => role !== clientRole.roleName
-        )
+        console.error('Error updating clients and channels', error);
       }
-    });
-    console.log('Now upserting role');
-    await upsertRole(clients, channels);
+      enqueueSnackbar('Error updating clients and channels', {
+        variant: 'error'
+      })
+    }
   }
 
   useEffect(() => {
@@ -150,9 +162,15 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
   }
 
   const handleSaveButtonClicked = async () => {
-    await updateListOfSelectedClientsAndChannels()
+    try {
+      await updateListOfSelectedClientsAndChannels()
+    } catch (error) {
+      console.error('Error updating clients and channels', error)
+      enqueueSnackbar('Error updating clients and channels', {
+        variant: 'error'
+      })
+    }
     returnToRolesList()
-    
   }
 
   return (

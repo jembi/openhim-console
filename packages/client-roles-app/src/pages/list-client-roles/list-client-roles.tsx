@@ -53,7 +53,9 @@ export const ListRoles: React.FC<ListRolesProps> = ({
         }))
         setRoles(formattedRoles)
       })
-      .catch(error => {})
+      .catch(error => {
+        console.error('Error fetching client roles', error);
+      })
   }, [])
 
   const noRolesOverlay = () => (

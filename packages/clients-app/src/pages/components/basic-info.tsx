@@ -15,6 +15,7 @@ import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles, createRole, fetchClientRoles} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
+import { useSnackbar } from 'notistack'
 
 const styleForTextAreas = {
   marginBottom: 2
@@ -40,6 +41,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   editMode = false
 }) => {
   const [roles, setRoles] = useState<string[]>([])
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
 
   useEffect(() => {
     //@ts-ignore
@@ -51,7 +53,14 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
         setRoles(roles.map(role => role.roleName))
       }
       
-    })
+    }).catch((error) => {
+      if (error?.response && error?.response?.data) {
+        enqueueSnackbar(error.response.data, {variant: 'error'})
+      } else {
+        console.log(JSON.stringify(error))
+        enqueueSnackbar('Error fetching roles', {variant: 'error'})
+      }
+    });
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
