@@ -162,6 +162,19 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
   }
 
   const handleSaveButtonClicked = async () => {
+    if(clientRole.roleName === '') {
+      enqueueSnackbar('Please enter a role name', {
+        variant: 'error'
+      });
+      return;
+    }
+
+    if(clientRole.clients.length === 0 || clientRole.channels.length === 0) {
+      enqueueSnackbar('Please select at least one client', {
+        variant: 'error'
+      });
+      return;
+    }
     try {
       await updateListOfSelectedClientsAndChannels()
     } catch (error) {
