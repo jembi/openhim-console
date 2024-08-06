@@ -16,12 +16,14 @@ import {
   fetchTransactions,
   fetchChannelById,
   fetchClientById,
-  fetchChannels
+  fetchChannels,
+  fetchClients
 } from '@jembi/openhim-core-api'
 
 const App: React.FC = () => {
   const [tabValue, setTabValue] = useState(0)
   const [status, setStatus] = useState('NoFilter')
+  const [statusCode, setStatusCode] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [channel, setChannel] = useState('NoFilter')
   const [startDate, setStartDate] = useState<Date | null>(null)
@@ -30,6 +32,13 @@ const App: React.FC = () => {
   const [reruns, setReruns] = useState('NoFilter')
   const [channels, setChannels] = useState([])
   const [transactions, setTransactions] = useState([])
+  const [host, setHost] = useState('')
+  const [port, setPort] = useState(null)
+  const [path, setPath] = useState('')
+  const [param, setParam] = useState('')
+  const [client, setClient] = useState('NoFilter')
+  const [method, setMethod] = useState('NoFilter')
+  const [clients, setClients] = useState([])
 
   const fetchTransactionLogs = useCallback(async () => {
     try {
@@ -37,6 +46,10 @@ const App: React.FC = () => {
 
       if (status !== 'NoFilter') {
         filters.status = status
+      }
+
+      if (statusCode) {
+        filters['response.status'] = statusCode
       }
 
       if (channel !== 'NoFilter') {
@@ -58,6 +71,30 @@ const App: React.FC = () => {
         })
       }
 
+      if (host) {
+        filters['request.host'] = host
+      }
+
+      if (port) {
+        filters['request.port'] = port
+      }
+
+      if (path) {
+        filters['request.path'] = path
+      }
+
+      if (param) {
+        filters['request.querystring'] = param
+      }
+
+      if (client !== 'NoFilter') {
+        filters.clientID = client
+      }
+
+      if (method !== 'NoFilter') {
+        filters['request.method'] = method
+      }
+
       const transactions = await fetchTransactions({
         filterLimit: limit,
         filterPage: 0,
@@ -76,7 +113,21 @@ const App: React.FC = () => {
     } catch (error) {
       console.error('Error fetching logs:', error)
     }
-  }, [status, channel, startDate, endDate, limit, reruns])
+  }, [
+    status,
+    statusCode,
+    channel,
+    startDate,
+    endDate,
+    limit,
+    reruns,
+    host,
+    port,
+    path,
+    param,
+    client,
+    method
+  ])
 
   const fetchAvailableChannels = useCallback(async () => {
     try {
@@ -87,10 +138,17 @@ const App: React.FC = () => {
     }
   }, [])
 
+  const fetchAvailableClients = useCallback(async () => {
+    try {
+      const clients = await fetchClients()
+      setClients(clients)
+    } catch (error) {}
+  }, [])
+
   useEffect(() => {
     fetchTransactionLogs()
-    fetchAvailableChannels()
-  }, [fetchTransactionLogs, fetchAvailableChannels])
+    fetchAvailableChannels(), fetchAvailableClients()
+  }, [fetchTransactionLogs, fetchAvailableChannels, fetchAvailableClients])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -208,8 +266,8 @@ const App: React.FC = () => {
           <CustomFilters
             status={status}
             setStatus={setStatus}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+            statusCode={statusCode}
+            setStatusCode={setStatusCode}
             channel={channel}
             setChannel={setChannel}
             startDate={startDate}
@@ -221,6 +279,19 @@ const App: React.FC = () => {
             reruns={reruns}
             setReruns={setReruns}
             channels={channels}
+            host={host}
+            setHost={setHost}
+            port={port}
+            setPort={setPort}
+            path={path}
+            setPath={setPath}
+            param={param}
+            setParam={setParam}
+            client={client}
+            setClient={setClient}
+            method={method}
+            setMethod={setMethod}
+            clients={clients}
           />
         )}
       </Card>

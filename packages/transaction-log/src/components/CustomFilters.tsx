@@ -8,8 +8,8 @@ import CustomizeDialog from './CustomizeDialog'
 interface FilterProps {
   status: string
   setStatus: (value: string) => void
-  searchQuery: string
-  setSearchQuery: (value: string) => void
+  statusCode: number | null
+  setStatusCode: (value: number | null) => void
   channel: string
   setChannel: (value: string) => void
   startDate: Date | null
@@ -21,13 +21,26 @@ interface FilterProps {
   reruns: string
   setReruns: (value: string) => void
   channels: any[]
+  host: string
+  setHost: (value: string) => void
+  port: number | null
+  setPort: (value: number | null) => void
+  path: string
+  setPath: (value: string) => void
+  param: string
+  setParam: (value: string) => void
+  client: string
+  setClient: (value: string) => void
+  clients: any[]
+  method: string
+  setMethod: (value: string) => void
 }
 
 const CustomFilters: React.FC<FilterProps> = ({
   status,
   setStatus,
-  searchQuery,
-  setSearchQuery,
+  statusCode,
+  setStatusCode,
   channel,
   setChannel,
   startDate,
@@ -38,18 +51,38 @@ const CustomFilters: React.FC<FilterProps> = ({
   setLimit,
   reruns,
   setReruns,
-  channels
+  channels,
+  host,
+  setHost,
+  port,
+  setPort,
+  path,
+  setPath,
+  param,
+  setParam,
+  client,
+  setClient,
+  clients,
+  method,
+  setMethod
 }) => {
   const [open, setOpen] = useState(false)
 
   const [visibleFilters, setVisibleFilters] = useState({
     status: true,
+    statusCode: true,
     searchQuery: true,
     channel: true,
     startDate: true,
     endDate: true,
     limit: true,
-    reruns: true
+    reruns: true,
+    host: false,
+    port: false,
+    path: false,
+    param: false,
+    client: false,
+    method: false
   })
 
   const [tempVisibleFilters, setTempVisibleFilters] = useState(visibleFilters)
@@ -58,8 +91,10 @@ const CustomFilters: React.FC<FilterProps> = ({
     setStatus(event.target.value)
   }
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value)
+  const handleStatusCodeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setStatusCode(Number(event.target.value) || null)
   }
 
   const handleChannelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,21 +102,51 @@ const CustomFilters: React.FC<FilterProps> = ({
   }
 
   const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(Number(event.target.value))
+    setLimit(Number(event.target.value) || 10)
   }
 
   const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReruns(event.target.value)
   }
 
+  const handleHostChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHost(event.target.value)
+  }
+
+  const handlePortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPort(Number(event.target.value) || null)
+  }
+
+  const handlePathChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPath(event.target.value)
+  }
+
+  const handleParamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setParam(event.target.value)
+  }
+
+  const handleClientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setClient(event.target.value)
+  }
+
+  const handleMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMethod(event.target.value)
+  }
+
   const handleClearFilters = () => {
     setStatus('NoFilter')
-    setSearchQuery('')
+    setStatusCode(null)
     setChannel('NoFilter')
     setStartDate(null)
     setEndDate(null)
     setLimit(10)
     setReruns('NoFilter')
+    setHost('')
+    setPort(null)
+    setPath('')
+    setParam('')
+    setClient('NoFilter')
+    setMethod('NoFilter')
   }
 
   const handleToggleDialog = () => {
@@ -125,6 +190,18 @@ const CustomFilters: React.FC<FilterProps> = ({
               </MenuItem>
               <MenuItem value="Success">Success</MenuItem>
             </TextField>
+          </Grid>
+        )}
+        {visibleFilters.statusCode && (
+          <Grid item xs={1}>
+            <TextField
+              label="Status Code"
+              type="number"
+              value={statusCode ?? ''}
+              onChange={handleStatusCodeChange}
+              fullWidth
+              InputLabelProps={{shrink: true}}
+            />
           </Grid>
         )}
         {visibleFilters.channel && (
@@ -202,6 +279,89 @@ const CustomFilters: React.FC<FilterProps> = ({
               <MenuItem value="NoFilter">Don't Filter</MenuItem>
               <MenuItem value="Yes">Include reruns</MenuItem>
               <MenuItem value="No">Don't Include reruns</MenuItem>
+            </TextField>
+          </Grid>
+        )}
+        {visibleFilters.host && (
+          <Grid item xs={1}>
+            <TextField
+              label="Host"
+              type="text"
+              value={host}
+              onChange={handleHostChange}
+              InputLabelProps={{shrink: true}}
+              fullWidth
+            />
+          </Grid>
+        )}
+        {visibleFilters.port && (
+          <Grid item xs={1} sm={1} md={1}>
+            <TextField
+              label="Port"
+              type="number"
+              value={port ?? ''}
+              onChange={handlePortChange}
+              InputLabelProps={{shrink: true}}
+              fullWidth
+            />
+          </Grid>
+        )}
+        {visibleFilters.path && (
+          <Grid item xs={2} sm={2} md={2}>
+            <TextField
+              label="Path"
+              type="string"
+              value={path}
+              onChange={handlePathChange}
+              InputLabelProps={{shrink: true}}
+              fullWidth
+            />
+          </Grid>
+        )}
+        {visibleFilters.param && (
+          <Grid item xs={2} sm={2} md={2}>
+            <TextField
+              label="Request Param Key"
+              type="text"
+              value={param}
+              onChange={handleParamChange}
+              InputLabelProps={{shrink: true}}
+              fullWidth
+            />
+          </Grid>
+        )}
+        {visibleFilters.client && (
+          <Grid item xs={2} sm={2} md={2}>
+            <TextField
+              select
+              label="Client"
+              value={client}
+              onChange={handleClientChange}
+              InputLabelProps={{shrink: true}}
+              fullWidth
+            >
+              <MenuItem value="NoFilter">Don't Filter</MenuItem>
+              {clients.map(client => (
+                <MenuItem key={client._id} value={client._id}>
+                  {client.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+        )}
+        {visibleFilters.method && (
+          <Grid item xs={2} sm={2} md={2}>
+            <TextField
+              select
+              label="Method"
+              value={method}
+              onChange={handleMethodChange}
+              fullWidth
+            >
+              <MenuItem value="NoFilter">Don't Filter</MenuItem>
+              <MenuItem value="GET">GET</MenuItem>
+              <MenuItem value="POST">POST</MenuItem>
+              <MenuItem value="PUT">PUT</MenuItem>
             </TextField>
           </Grid>
         )}

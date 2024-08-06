@@ -177,6 +177,12 @@ export async function fetchChannelById(id: String): Promise<any> {
 /**
  * Clients
  */
+export async function fetchClients(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/clients')
+  return response.data
+}
+
 export async function fetchClientById(id: String): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get(`/clients/${id}`)
