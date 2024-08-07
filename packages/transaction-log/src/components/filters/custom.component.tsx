@@ -4,7 +4,7 @@ import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
 import CustomizeDialog from '../dialogs/customize.dialog.component'
-import { CustomFilterProps } from '../../interfaces/index.interface'
+import {CustomFilterProps} from '../../interfaces/index.interface'
 
 const CustomFilters: React.FC<CustomFilterProps> = ({
   status,

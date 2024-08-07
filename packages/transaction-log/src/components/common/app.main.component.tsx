@@ -7,15 +7,19 @@ import {
   Typography,
   Card,
   Grid,
-  Divider
+  Divider,
+  CardContent
 } from '@mui/material'
 import CustomFilters from '../filters/custom.component'
 import BasicFilters from '../filters/basic.component'
 import TransactionLogTable from './transactionlog.datatable.component'
 import {
-  fetchTransactions
-} from '@jembi/openhim-core-api'
-import { getChannelById, getChannels, getClientById, getClients, getTransactions } from '../../services/api.service'
+  getChannelById,
+  getChannels,
+  getClientById,
+  getClients,
+  getTransactions
+} from '../../services/api.service'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -93,12 +97,11 @@ const App: React.FC = () => {
         filters['request.method'] = method
       }
 
-      // const transactions = await fetchTransactions({
-      //   filterLimit: limit,
-      //   filterPage: 0,
-      //   filters: JSON.stringify(filters)
-      // })
-      const transactions = await getTransactions(limit,0,JSON.stringify(filters))
+      const transactions = await getTransactions(
+        limit,
+        0,
+        JSON.stringify(filters)
+      )
 
       const transactionsWithChannelDetails = await Promise.all(
         transactions.map(async transaction => {
@@ -200,102 +203,105 @@ const App: React.FC = () => {
   })
 
   return (
-    <Container
-      sx={{
-        backgroundColor: '#F1F1F1',
-        maxWidth: '100% !important'
-      }}
-    >
-      <Grid item xs={12}>
-        <Typography variant="h4" fontSize={'32px'} fontWeight={400}>
-          Transaction Log
-        </Typography>
-        <p className={'subtitle'}>
-          A log of the recent transactions through the system. Use Basic or
-          Advanced filters to find specific transactions to investigate or
-          rerun. Use settings to modify the list behaviour.
-        </p>
-        <Divider />
-      </Grid>
-      <Card>
-        <Box sx={{borderBottom: 1, borderColor: 'divider', marginBottom: 2}}>
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            aria-label="basic tabs"
-            TabIndicatorProps={{style: {backgroundColor: '#54C4A4'}}}
-          >
-            <Tab
-              label="Basic Filters"
-              sx={{color: tabValue === 0 ? '#54C4A4' : '#54C4A4'}}
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+      <Box>
+        <Grid item xs={12}>
+          <Typography variant="h4">Transaction Log</Typography>
+          <Typography variant="subtitle1">
+            A log of the recent transactions through the system. Use Basic or
+            Advanced filters to find specific transactions to investigate or
+            rerun. Use settings to modify the list behaviour.
+          </Typography>
+        </Grid>
+      </Box>
+      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
+      <Box>
+        <Card elevation={4}>
+          <CardContent>
+            <Box
+              sx={{borderBottom: 1, borderColor: 'divider', marginBottom: 2}}
+            >
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                aria-label="basic tabs"
+                TabIndicatorProps={{style: {backgroundColor: '#54C4A4'}}}
+              >
+                <Tab
+                  label="Basic Filters"
+                  sx={{color: tabValue === 0 ? '#54C4A4' : '#54C4A4'}}
+                />
+                <Tab
+                  label="Custom Filters"
+                  sx={{color: tabValue === 1 ? '#54C4A4' : 'inherit'}}
+                />
+              </Tabs>
+            </Box>
+            {tabValue === 0 && (
+              <BasicFilters
+                status={status}
+                setStatus={setStatus}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                channel={channel}
+                setChannel={setChannel}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                limit={limit}
+                setLimit={setLimit}
+                reruns={reruns}
+                setReruns={setReruns}
+                channels={channels}
+              />
+            )}
+            {tabValue === 1 && (
+              <CustomFilters
+                status={status}
+                setStatus={setStatus}
+                statusCode={statusCode}
+                setStatusCode={setStatusCode}
+                channel={channel}
+                setChannel={setChannel}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                limit={limit}
+                setLimit={setLimit}
+                reruns={reruns}
+                setReruns={setReruns}
+                channels={channels}
+                host={host}
+                setHost={setHost}
+                port={port}
+                setPort={setPort}
+                path={path}
+                setPath={setPath}
+                param={param}
+                setParam={setParam}
+                client={client}
+                setClient={setClient}
+                method={method}
+                setMethod={setMethod}
+                clients={clients}
+              />
+            )}
+          </CardContent>
+        </Card>
+      </Box>
+      <Box sx={{mt: 3}}>
+        <Card elevation={4}>
+          <CardContent>
+            <TransactionLogTable
+              transactions={filteredTransactions}
+              loadMore={loadMore}
             />
-            <Tab
-              label="Custom Filters"
-              sx={{color: tabValue === 1 ? '#54C4A4' : 'inherit'}}
-            />
-          </Tabs>
-        </Box>
-
-        {tabValue === 0 && (
-          <BasicFilters
-            status={status}
-            setStatus={setStatus}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            channel={channel}
-            setChannel={setChannel}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            limit={limit}
-            setLimit={setLimit}
-            reruns={reruns}
-            setReruns={setReruns}
-            channels={channels}
-          />
-        )}
-        {tabValue === 1 && (
-          <CustomFilters
-            status={status}
-            setStatus={setStatus}
-            statusCode={statusCode}
-            setStatusCode={setStatusCode}
-            channel={channel}
-            setChannel={setChannel}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            limit={limit}
-            setLimit={setLimit}
-            reruns={reruns}
-            setReruns={setReruns}
-            channels={channels}
-            host={host}
-            setHost={setHost}
-            port={port}
-            setPort={setPort}
-            path={path}
-            setPath={setPath}
-            param={param}
-            setParam={setParam}
-            client={client}
-            setClient={setClient}
-            method={method}
-            setMethod={setMethod}
-            clients={clients}
-          />
-        )}
-      </Card>
-
-      <Card>
-        <TransactionLogTable
-          transactions={filteredTransactions}
-          loadMore={loadMore}
-        />
-      </Card>
-    </Container>
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
   )
 }
 

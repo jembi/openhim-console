@@ -10,7 +10,7 @@ import {
   List,
   ListItem
 } from '@mui/material'
-import { CustomizeDialogProps } from '../../interfaces/index.interface'
+import {CustomizeDialogProps} from '../../interfaces/index.interface'
 
 const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
   open,

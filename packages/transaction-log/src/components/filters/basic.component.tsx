@@ -3,7 +3,7 @@ import {Box, TextField, MenuItem, Grid, Button, Card} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
-import { BasicFilterProps } from '../../interfaces/index.interface'
+import {BasicFilterProps} from '../../interfaces/index.interface'
 
 const BasicFilters: React.FC<BasicFilterProps> = ({
   status,
@@ -53,135 +53,133 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   }
 
   return (
-    <Card>
-      <Box sx={{padding: '16px'}}>
-        <Grid container spacing={2}>
-          <Grid item xs={2}>
-            <TextField
-              select
-              label="Status"
-              value={status}
-              onChange={handleStatusChange}
-              fullWidth
-            >
-              <MenuItem value="NoFilter">Don't Filter</MenuItem>
-              <MenuItem value="Failed">Failed</MenuItem>
-              <MenuItem value="Processing">Processing</MenuItem>
-              <MenuItem value="Completed">Completed</MenuItem>
-              <MenuItem value="Completed with error(s)">
-                Completed with error(s)
-              </MenuItem>
-              <MenuItem value="Success">Success</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              label="Search"
-              type="text"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              fullWidth
-              InputLabelProps={{shrink: true}}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              select
-              label="Channel"
-              value={channel}
-              onChange={handleChannelChange}
-              fullWidth
-              InputLabelProps={{shrink: true}}
-            >
-              <MenuItem value="NoFilter">Don't Filter</MenuItem>
-              {channels.map(channel => (
-                <MenuItem key={channel._id} value={channel._id}>
-                  {channel.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={1}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                label="Start Date"
-                value={startDate}
-                onChange={newValue => {
-                  setStartDate(newValue)
-                }}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={1}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                label="End Date"
-                value={endDate}
-                onChange={newValue => {
-                  setEndDate(newValue)
-                }}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              select
-              label="Limit"
-              value={limit}
-              onChange={handleLimitChange}
-              fullWidth
-            >
-              <MenuItem key={10} value={10}>
-                10
-              </MenuItem>
-              <MenuItem key={20} value={20}>
-                20
-              </MenuItem>
-              <MenuItem key={50} value={50}>
-                50
-              </MenuItem>
-              <MenuItem key={100} value={100}>
-                100
-              </MenuItem>
-              <MenuItem key={200} value={200}>
-                200
-              </MenuItem>
-              <MenuItem key={500} value={500}>
-                500
-              </MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              select
-              label="Reruns"
-              value={reruns}
-              onChange={handleRerunsChange}
-              fullWidth
-            >
-              <MenuItem value="NoFilter">Don't Filter</MenuItem>
-              <MenuItem value="Yes">Include reruns</MenuItem>
-              <MenuItem value="No">Don't Include reruns</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={12} sx={{textAlign: 'right', marginTop: 2}}>
-            <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
-              RERUN MATCHES
-            </Button>
-            <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
-              RERUN SELECTED
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleClearFilters}
-            >
-              CLEAR
-            </Button>
-          </Grid>
+    <Box sx={{padding: '16px'}}>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <TextField
+            select
+            label="Status"
+            value={status}
+            onChange={handleStatusChange}
+            fullWidth
+          >
+            <MenuItem value="NoFilter">Don't Filter</MenuItem>
+            <MenuItem value="Failed">Failed</MenuItem>
+            <MenuItem value="Processing">Processing</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+            <MenuItem value="Completed with error(s)">
+              Completed with error(s)
+            </MenuItem>
+            <MenuItem value="Success">Success</MenuItem>
+          </TextField>
         </Grid>
-      </Box>
-    </Card>
+        <Grid item xs={3}>
+          <TextField
+            label="Search"
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <TextField
+            select
+            label="Channel"
+            value={channel}
+            onChange={handleChannelChange}
+            fullWidth
+            InputLabelProps={{shrink: true}}
+          >
+            <MenuItem value="NoFilter">Don't Filter</MenuItem>
+            {channels.map(channel => (
+              <MenuItem key={channel._id} value={channel._id}>
+                {channel.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="Start Date"
+              value={startDate}
+              onChange={newValue => {
+                setStartDate(newValue)
+              }}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="End Date"
+              value={endDate}
+              onChange={newValue => {
+                setEndDate(newValue)
+              }}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={1}>
+          <TextField
+            select
+            label="Limit"
+            value={limit}
+            onChange={handleLimitChange}
+            fullWidth
+          >
+            <MenuItem key={10} value={10}>
+              10
+            </MenuItem>
+            <MenuItem key={20} value={20}>
+              20
+            </MenuItem>
+            <MenuItem key={50} value={50}>
+              50
+            </MenuItem>
+            <MenuItem key={100} value={100}>
+              100
+            </MenuItem>
+            <MenuItem key={200} value={200}>
+              200
+            </MenuItem>
+            <MenuItem key={500} value={500}>
+              500
+            </MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={2}>
+          <TextField
+            select
+            label="Reruns"
+            value={reruns}
+            onChange={handleRerunsChange}
+            fullWidth
+          >
+            <MenuItem value="NoFilter">Don't Filter</MenuItem>
+            <MenuItem value="Yes">Include reruns</MenuItem>
+            <MenuItem value="No">Don't Include reruns</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={12} sx={{textAlign: 'right', marginTop: 2}}>
+          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+            RERUN MATCHES
+          </Button>
+          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+            RERUN SELECTED
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleClearFilters}
+          >
+            CLEAR
+          </Button>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 

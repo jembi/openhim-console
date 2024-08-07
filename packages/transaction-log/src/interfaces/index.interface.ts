@@ -1,22 +1,22 @@
 import {Channel, Client} from '../types'
 
 export interface BasicFilterProps {
-    status: string
-    setStatus: (value: string) => void
-    searchQuery: string
-    setSearchQuery: (value: string) => void
-    channel: string
-    setChannel: (value: string) => void
-    startDate: Date | null
-    setStartDate: (value: Date | null) => void
-    endDate: Date | null
-    setEndDate: (value: Date | null) => void
-    limit: number
-    setLimit: (value: number) => void
-    reruns: string
-    setReruns: (value: string) => void
-    channels: Channel[]
-  }
+  status: string
+  setStatus: (value: string) => void
+  searchQuery: string
+  setSearchQuery: (value: string) => void
+  channel: string
+  setChannel: (value: string) => void
+  startDate: Date | null
+  setStartDate: (value: Date | null) => void
+  endDate: Date | null
+  setEndDate: (value: Date | null) => void
+  limit: number
+  setLimit: (value: number) => void
+  reruns: string
+  setReruns: (value: string) => void
+  channels: Channel[]
+}
 
 export interface CustomFilterProps {
   status: string
