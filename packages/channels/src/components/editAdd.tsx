@@ -204,8 +204,8 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
   const [clients, setClients] = useState<string[]>([])
   const [roles, setRoles] = useState<string[]>([])
   const [allowedRoles, setAllowedRoles] = useState<string[]>([])
-  const [urlPattern, setUrlPattern] = useState<string>(channel.urlPattern)
-  const [autoRegexEnabled, setAutoRegexEnabled] = useState<boolean>(true)
+  const [urlPattern, setUrlPattern] = useState<string>(channel.urlPattern.replace(/\^|\$/g, ''))
+  const [autoRegexEnabled, setAutoRegexEnabled] = useState<boolean>(!channel.urlPattern ? true : channel.urlPattern.includes('$'))
   const [authType, setAuthType] = useState<string>(channel.authType)
 
   useEffect(() => {
@@ -270,9 +270,9 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
         />
         <br/>
         <br/>
-        <FormControlLabel control={<Switch value={autoRegexEnabled} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        <FormControlLabel control={<Switch onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setAutoRegexEnabled(e.target.checked)
-        }} checked />} label='Auto-add regex delimiters (Recommended)'/>
+        }} checked={autoRegexEnabled} />} label='Auto-add regex delimiters (Recommended)'/>
         <br/>
         <br/>
         <FormGroup style={{ flexDirection: 'row'}}>
@@ -349,7 +349,7 @@ const RequestMatching = ({ setActiveStep, setChannel, channel }) => {
         <CardActions>
           <Button variant="outlined" color="success" onClick={() => setActiveStep(0)}>Back</Button>
           <Button variant="contained" color="success" onClick={() => {
-            setChannel({...channel, urlPattern, authType, allow: allowedRoles.concat(allowedClients)})
+            setChannel({...channel, urlPattern: autoRegexEnabled ? `^${urlPattern}$` : urlPattern, authType, allow: allowedRoles.concat(allowedClients)})
             setActiveStep(2)
           }}>Next</Button>
         </CardActions>
@@ -454,23 +454,23 @@ const Routes = ({ setDisplay, setActiveStep, setChannel, channel }) => {
             <br/>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch value={primary} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              <FormControlLabel control={<Switch onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setPrimaryRoute(e.target?.checked)
-              }} checked />} label='Primary Route?'/>
+              }} checked={primary} />} label='Primary Route?'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on if this is the primary route.</FormHelperText>
             </FormControl>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch value={waitForPrimary} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              <FormControlLabel control={<Switch checked={waitForPrimary} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setWaitForPrimary(e.target?.checked)
-              }} checked />} label='Wait for Primary Response?'/>
+              }} />} label='Wait for Primary Response?'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to wait for the response from the primary route before processing.</FormHelperText>
             </FormControl>
             <br/>
             <FormControl>
-              <FormControlLabel control={<Switch value={enableRoute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              <FormControlLabel control={<Switch checked={enableRoute} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setEnableRoute(e.target?.checked)
-              }} checked />} label='Status'/>
+              }} />} label='Status'/>
               <FormHelperText style={{ paddingLeft: 30 }}>Toogle on to enable this route.</FormHelperText>
             </FormControl>
             <br/>
