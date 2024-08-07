@@ -163,18 +163,23 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             <MenuItem value="No">Don't Include reruns</MenuItem>
           </TextField>
         </Grid>
-        <Grid item xs={12} sm={12} sx={{textAlign: 'right', marginTop: 2}}>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="space-between"
+        sx={{marginTop: 2}}
+      >
+        <Grid item>
           <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
             RERUN MATCHES
           </Button>
-          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+          <Button variant="text" color="primary" sx={{marginRight: 2}}>
             RERUN SELECTED
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleClearFilters}
-          >
+        </Grid>
+        <Grid item>
+          <Button variant="text" color="primary" onClick={handleClearFilters}>
             CLEAR
           </Button>
         </Grid>

@@ -348,23 +348,32 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
       </Grid>
-      <Grid item xs={12} sm={12} sx={{textAlign: 'right', marginTop: 2}}>
-        <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
-          RERUN MATCHES
-        </Button>
-        <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
-          RERUN SELECTED
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleClearFilters}
-        >
-          CLEAR
-        </Button>
-        <Button variant="outlined" color="primary" onClick={handleToggleDialog}>
-          CUSTOMISE
-        </Button>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="space-between"
+        sx={{marginTop: 2}}
+      >
+        <Grid item>
+          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+            RERUN MATCHES
+          </Button>
+          <Button variant="text" color="primary" sx={{marginRight: 2}}>
+            RERUN SELECTED
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="text" color="primary" onClick={handleClearFilters}>
+            CLEAR
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleToggleDialog}
+          >
+            CUSTOMISE
+          </Button>
+        </Grid>
       </Grid>
       <CustomizeDialog
         open={open}
