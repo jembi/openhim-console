@@ -10,16 +10,7 @@ import {
   List,
   ListItem
 } from '@mui/material'
-
-interface CustomizeDialogProps {
-  open: boolean
-  onClose: () => void
-  onApply: () => void
-  visibleFilters: {[key: string]: boolean}
-  handleFilterVisibilityChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void
-}
+import { CustomizeDialogProps } from '../../interfaces/index.interface'
 
 const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
   open,

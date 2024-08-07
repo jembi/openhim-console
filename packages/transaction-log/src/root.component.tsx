@@ -1,5 +1,5 @@
 import React from 'react'
-import App from './components/App'
+import App from './components/common/app.main.component'
 import {ThemeProvider} from '@emotion/react'
 import theme from '@jembi/openhim-theme'
 

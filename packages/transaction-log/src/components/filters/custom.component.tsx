@@ -3,40 +3,10 @@ import {Box, TextField, MenuItem, Button, Grid} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
-import CustomizeDialog from './CustomizeDialog'
+import CustomizeDialog from '../dialogs/customize.dialog.component'
+import { CustomFilterProps } from '../../interfaces/index.interface'
 
-interface FilterProps {
-  status: string
-  setStatus: (value: string) => void
-  statusCode: number | null
-  setStatusCode: (value: number | null) => void
-  channel: string
-  setChannel: (value: string) => void
-  startDate: Date | null
-  setStartDate: (value: Date | null) => void
-  endDate: Date | null
-  setEndDate: (value: Date | null) => void
-  limit: number
-  setLimit: (value: number) => void
-  reruns: string
-  setReruns: (value: string) => void
-  channels: any[]
-  host: string
-  setHost: (value: string) => void
-  port: number | null
-  setPort: (value: number | null) => void
-  path: string
-  setPath: (value: string) => void
-  param: string
-  setParam: (value: string) => void
-  client: string
-  setClient: (value: string) => void
-  clients: any[]
-  method: string
-  setMethod: (value: string) => void
-}
-
-const CustomFilters: React.FC<FilterProps> = ({
+const CustomFilters: React.FC<CustomFilterProps> = ({
   status,
   setStatus,
   statusCode,
@@ -258,12 +228,24 @@ const CustomFilters: React.FC<FilterProps> = ({
               onChange={handleLimitChange}
               fullWidth
             >
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
-              <MenuItem value={100}>100</MenuItem>
-              <MenuItem value={200}>200</MenuItem>
-              <MenuItem value={500}>500</MenuItem>
+              <MenuItem key={10} value={10}>
+                10
+              </MenuItem>
+              <MenuItem key={20} value={20}>
+                20
+              </MenuItem>
+              <MenuItem key={50} value={50}>
+                50
+              </MenuItem>
+              <MenuItem key={100} value={100}>
+                100
+              </MenuItem>
+              <MenuItem key={200} value={200}>
+                200
+              </MenuItem>
+              <MenuItem key={500} value={500}>
+                500
+              </MenuItem>
             </TextField>
           </Grid>
         )}

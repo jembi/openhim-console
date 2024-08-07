@@ -9,35 +9,33 @@ import {
   Grid,
   Divider
 } from '@mui/material'
-import CustomFilters from './CustomFilters'
-import BasicFilters from './BasicFilters'
-import TransactionLogTable from './TransactionLogTable'
+import CustomFilters from '../filters/custom.component'
+import BasicFilters from '../filters/basic.component'
+import TransactionLogTable from './transactionlog.datatable.component'
 import {
-  fetchTransactions,
-  fetchChannelById,
-  fetchClientById,
-  fetchChannels,
-  fetchClients
+  fetchTransactions
 } from '@jembi/openhim-core-api'
+import { getChannelById, getChannels, getClientById, getClients, getTransactions } from '../../services/api.service'
 
 const App: React.FC = () => {
+  const NO_FILTER = 'NoFilter'
   const [tabValue, setTabValue] = useState(0)
-  const [status, setStatus] = useState('NoFilter')
+  const [status, setStatus] = useState(NO_FILTER)
   const [statusCode, setStatusCode] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [channel, setChannel] = useState('NoFilter')
+  const [channel, setChannel] = useState(NO_FILTER)
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
   const [limit, setLimit] = useState(10)
-  const [reruns, setReruns] = useState('NoFilter')
+  const [reruns, setReruns] = useState(NO_FILTER)
   const [channels, setChannels] = useState([])
   const [transactions, setTransactions] = useState([])
   const [host, setHost] = useState('')
   const [port, setPort] = useState(null)
   const [path, setPath] = useState('')
   const [param, setParam] = useState('')
-  const [client, setClient] = useState('NoFilter')
-  const [method, setMethod] = useState('NoFilter')
+  const [client, setClient] = useState(NO_FILTER)
+  const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
 
   const fetchTransactionLogs = useCallback(async () => {
@@ -95,11 +93,12 @@ const App: React.FC = () => {
         filters['request.method'] = method
       }
 
-      const transactions = await fetchTransactions({
-        filterLimit: limit,
-        filterPage: 0,
-        filters: JSON.stringify(filters)
-      })
+      // const transactions = await fetchTransactions({
+      //   filterLimit: limit,
+      //   filterPage: 0,
+      //   filters: JSON.stringify(filters)
+      // })
+      const transactions = await getTransactions(limit,0,JSON.stringify(filters))
 
       const transactionsWithChannelDetails = await Promise.all(
         transactions.map(async transaction => {
@@ -131,7 +130,7 @@ const App: React.FC = () => {
 
   const fetchAvailableChannels = useCallback(async () => {
     try {
-      const channels = await fetchChannels()
+      const channels = await getChannels()
       setChannels(channels)
     } catch (error) {
       console.error('Error fetching channels:', error)
@@ -140,7 +139,7 @@ const App: React.FC = () => {
 
   const fetchAvailableClients = useCallback(async () => {
     try {
-      const clients = await fetchClients()
+      const clients = await getClients()
       setClients(clients)
     } catch (error) {}
   }, [])
@@ -156,12 +155,9 @@ const App: React.FC = () => {
 
   const fetchChannelDetails = async (channelID: string) => {
     try {
-      const response = await fetchChannelById(channelID)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const channel = await response.json()
-      return channel.name
+      const response = await getChannelById(channelID)
+
+      return response.name
     } catch (error) {
       console.error('Error fetching logs:', error)
       return 'Unknown'
@@ -170,12 +166,9 @@ const App: React.FC = () => {
 
   const fetchClientDetails = async (clientID: string) => {
     try {
-      const response = await fetchClientById(clientID)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const client = await response.json()
-      return client.name
+      const response = await getClientById(clientID)
+
+      return response.name
     } catch (error) {
       console.error('Error fetching logs:', error)
       return 'Unknown'
