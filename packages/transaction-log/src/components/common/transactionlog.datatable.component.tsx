@@ -10,10 +10,12 @@ import {
   Checkbox,
   Typography,
   Button,
-  IconButton
+  IconButton,
+  TableFooter
 } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
+import {ChevronRight} from '@mui/icons-material'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
@@ -97,13 +99,17 @@ const TransactionLogTable: React.FC<{
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={10} align="right">
+                  <Button onClick={loadMore} endIcon={<ChevronRight />}>
+                    Load 20 more results
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
         </TableContainer>
-        <Box sx={{marginTop: '16px', textAlign: 'center'}}>
-          <Button variant="outlined" onClick={loadMore}>
-            Load 20 more results
-          </Button>
-        </Box>
       </Box>
       <SettingsDialog
         open={settingsOpen}
