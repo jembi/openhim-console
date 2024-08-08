@@ -58,3 +58,13 @@ export interface CustomizeDialogProps {
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
 }
+
+export interface SettingsDialogProps {
+  open: boolean
+  onClose: () => void
+  onApply: () => void
+  openInNewTab: boolean
+  setOpenInNewTab: (value: boolean) => void
+  autoUpdate: boolean
+  setAutoUpdate: (value: boolean) => void
+}
