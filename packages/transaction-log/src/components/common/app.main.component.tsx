@@ -206,12 +206,16 @@ const App: React.FC = () => {
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Box>
         <Grid item xs={12}>
-          <Typography variant="h4">Transaction Log</Typography>
-          <Typography variant="subtitle1">
-            A log of the recent transactions through the system. Use Basic or
-            Advanced filters to find specific transactions to investigate or
-            rerun. Use settings to modify the list behaviour.
-          </Typography>
+          <Box>
+            <Typography variant="h4">Transaction Log</Typography>
+          </Box>
+          <Box>
+            <Typography variant="subtitle1">
+              A log of the recent transactions through the system. Use Basic or
+              Advanced filters to find specific transactions to investigate or
+              rerun. Use settings to modify the list behaviour.
+            </Typography>
+          </Box>
         </Grid>
       </Box>
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
