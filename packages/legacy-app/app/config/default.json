@@ -16,7 +16,7 @@
   "keyCloakUrl": "http://localhost:9088",
   "keyCloakRealm": "platform-realm",
   "keyCloakClientId": "openhim-oauth",
-  "environment": "development",
+  "environment": "production",
   "openHIMAPIhost":"5001",
   "openHIMAPIport":"localhost"
 }
