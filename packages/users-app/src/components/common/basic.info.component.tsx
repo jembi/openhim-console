@@ -41,7 +41,11 @@ export function BasicInfo(props: {
   React.useEffect(() => {
     props.onChange({
       user,
-      isValid: !!user.firstname && !!user.surname && !!user.email
+      isValid:
+        !!user.firstname.trim() &&
+        !!user.surname.trim() &&
+        !!user.email.trim() &&
+        user.groups?.length > 0
     })
   }, [user])
 
@@ -129,6 +133,7 @@ export function BasicInfo(props: {
               variant="outlined"
               value={user.groups || []}
               onChange={e => handleSelectChange('groups', e.target.value)}
+              error={user.groups?.length === 0}
             >
               {props.roles.map((role, index) => (
                 <MenuItem key={index} value={role.name}>

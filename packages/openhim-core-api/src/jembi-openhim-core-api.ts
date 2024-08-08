@@ -132,12 +132,6 @@ export async function getImportMap(): Promise<any> {
   return response.data
 }
 
-export async function fetchRoles(): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/roles')
-  return response.data
-}
-
 export async function deleteRole(roleName: string): Promise<void> {
   await ensureApiClientInitialized()
   await apiClient.delete('/roles/' + roleName)
