@@ -9,21 +9,25 @@ import {BasicInfoModel} from './interfaces'
 import {SnackbarProvider} from 'notistack'
 
 export default function Root(props) {
-  const defaultPage = 'client-list'
+  const defaultPage = window.location.toString().includes('add') ? 'add-client' : 'client-list';
+  
   const [activePage, setActivePage] = useState<
     'client-list' | 'edit-client' | 'add-client'
   >(defaultPage)
   const [activeClient, setActiveClient] = useState<BasicInfoModel | null>(null)
   const returnToClientList = () => {
     setActivePage('client-list')
+    window.history.pushState({}, '', '/#!/clients')
     setActiveClient(null)
   }
   const editClient = (client: BasicInfoModel) => {
     setActivePage('edit-client')
     setActiveClient(client)
+    window.history.pushState({}, '', '/#!/clients/edit')
   }
   const addClient = () => {
     setActivePage('add-client')
+    window.history.pushState({}, '', '/#!/clients/add')
   }
 
   return (

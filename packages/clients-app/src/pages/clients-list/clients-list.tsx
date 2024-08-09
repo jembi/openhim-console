@@ -93,6 +93,7 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
           icon={<CreateIcon />}
           id="edit"
           label="Edit"
+          key="edit"
           onClick={() => {
             editClient(params.row as BasicInfoModel)
           }}
@@ -101,6 +102,7 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
           icon={<DeleteIcon />}
           id="delete"
           label="Delete"
+          key="delete"
           onClick={() => {
             setClientToDelete(params.row['_id'])
           }}

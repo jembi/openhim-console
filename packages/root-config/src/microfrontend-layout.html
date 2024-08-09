@@ -4,16 +4,10 @@
     <div style="display: flex; padding: 0 5%; background-color: #f1f1f1; min-height: 80vh;">
       <route default>
         <route path="#!" exact="true">
-          <application name="@jembi/openhim-sidebar"></application>
-          <div style="flex-grow: 1">
-            <application name="@jembi/legacy-console"></application>
-          </div>
         </route>
         <route path="#!/transactions">
         </route>
         <route path="#!/audits">
-        </route>
-        <route path="#!/clients">
         </route>
         <route path="#!/channels">
         </route>
@@ -47,7 +41,6 @@
         </div>
       </route>
       <route path="#!/clients">
-        <application name="@jembi/openhim-sidebar"></application>
         <div style="flex-grow: 1">
           <application name="@jembi/clients-app"></application>
         </div>
@@ -60,6 +53,11 @@
       <route path="#!/dashboard">
         <div style="flex-grow: 1">
           <application name="@jembi/dashboard-app"></application>
+        </div>
+      </route>
+      <route path="#!/client-roles">
+        <div style="flex-grow: 1">
+          <application name="@jembi/client-roles-app"></application>
         </div>
       </route>
       <route path="#!/users">

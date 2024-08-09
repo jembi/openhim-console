@@ -203,11 +203,11 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
           Add Client
         </Typography>
 
-        <p style={{opacity: 0.6, fontSize: '16px'}}>
+        <Typography variant='body1' component="p" style={{opacity: 0.6, fontSize: '16px'}}>
           Control client systems and their access roles. Add clients to enable
           their request routing and group them by roles for streamlined channel
           access management
-        </p>
+        </Typography>
         <Divider />
       </Grid>
 
