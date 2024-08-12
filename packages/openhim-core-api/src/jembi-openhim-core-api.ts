@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 interface App {
   _id: string
   name: string
@@ -33,6 +34,24 @@ async function initializeApiClient(): Promise<void> {
       withCredentials: true,
       baseURL: `${config.protocol}://${config.host}:${config.port}${hostPath}`
     })
+
+    // Add interceptors
+    apiClient.interceptors.response.use(
+      response => response,
+      error => {
+        // Add a response interceptor to redirect to login page if the user is not authenticated and not already logged out.
+        if (error.response.status == 401) {
+          if (
+            !window.location.href.includes('/login') &&
+            !window.location.href.includes('/logout')
+          ) {
+            window.location.href = '/#!/logout'
+          }
+          return Promise.reject(error)
+        }
+        return Promise.reject(error)
+      }
+    )
   } catch (error) {
     console.error('Error initializing the API client:', error)
     throw error
@@ -45,7 +64,7 @@ let apiClient = axios.create()
 const initializationPromise = initializeApiClient().catch(console.error)
 
 async function ensureApiClientInitialized(): Promise<void> {
-    await initializationPromise
+  await initializationPromise
 }
 export async function fetchApps(): Promise<App[]> {
   await ensureApiClientInitialized()
@@ -140,6 +159,12 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
+export async function editChannel(channel: any){
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/channels/${channel._id}`, channel)
+  return response.data
+}
+
 export async function fetchMediators(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/mediators')
@@ -157,3 +182,140 @@ export async function fetchTransactions(): Promise<any> {
   const response = await apiClient.get('/transactions')
   return response.data
 }
+// get specific client
+export async function fetchClient(clientId: string): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/clients/${clientId}`)
+  return response.data
+}
+
+// add clients
+export async function addClient(client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/clients', client)
+  return response.data
+}
+
+// edit clients
+export async function editClient(clientId: string, client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/clients/${clientId}`, client)
+  return response.data
+}
+
+// delete clients
+export async function deleteClient(clientId: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete(`/clients/${clientId}`)
+}
+
+// fetch certificate
+export async function fetchCertificate(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/keystore/ca`)
+  return response.data
+}
+
+// fetch authentication types
+export async function fetchAuthTypes(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/authentication/types`)
+  return response.data
+}
+
+
+export async function fetchTimeSeries(
+  period: 'minute' | 'month' | 'day' | 'year',
+  filter: {startDate: Date; endDate: Date}
+): Promise<any> {
+  await ensureApiClientInitialized()
+  const url = `/metrics/timeseries/${period}`
+  const response = await apiClient.get(url, {
+    params: {
+      startDate: filter.startDate.toISOString(),
+      endDate: filter.endDate.toISOString()
+    }
+  })
+  return response.data
+}
+
+export async function fetchAbout(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/about')
+  return response.data
+}
+
+export async function fetchUsers(): Promise<any[]> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/users')
+  return response.data
+}
+
+export async function createUser(user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/users', user)
+  return response.data
+}
+
+export async function updateUser(email: string, user: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put('/users/' + email, user)
+  return response.data
+}
+
+interface ClientRole {
+  roleName: string
+  clients: string[]
+  channels: string[]
+}
+
+interface Client {
+  _id?: string
+  clientID: string
+  roles: string[]
+}
+interface Channel {
+  _id?: string
+  name: string
+  allow: string[]
+}
+
+export async function fetchClientRoles() {
+  const clients = await fetchClients() as Client[]
+  const channels = await fetchChannels() as Channel[]
+
+  const roles: ClientRole[] = []
+  clients.forEach(client => {
+    client.roles.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [client.clientID],
+          channels: []
+        })
+      } else {
+        roles[roleIndex].clients.push(client.clientID)
+      }
+    })
+  })
+  channels.forEach(channel => {
+    channel.allow.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [],
+          channels: [channel.name]
+        })
+      } else {
+        roles[roleIndex].channels.push(channel.name)
+      }
+    })
+  })
+
+  return roles
+}
+
