@@ -44,10 +44,6 @@ function UserRoleList() {
     refetch()
   }, [])
 
-  // React.useEffect(() => {
-  //   // refetch()
-  // }, [search])
-
   if (isLoading) {
     return <Loader />
   }

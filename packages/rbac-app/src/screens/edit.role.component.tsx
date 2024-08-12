@@ -37,20 +37,16 @@ const steps = [
 ]
 
 const queryFn = async () => {
-  try {
-    const [channels, clients, transactions, mediators, apps] =
-      await Promise.all([
-        getChannels(),
-        getClients(),
-        getTransactions(),
-        getMediators(),
-        getApps()
-      ])
+  const [channels, clients, transactions, mediators, apps] =
+    await Promise.all([
+      getChannels(),
+      getClients(),
+      getTransactions(),
+      getMediators(),
+      getApps()
+    ])
 
-    return {channels, clients, transactions, mediators, apps}
-  } catch (err) {
-    throw err
-  }
+  return {channels, clients, transactions, mediators, apps}
 }
 
 function EditUserRole() {

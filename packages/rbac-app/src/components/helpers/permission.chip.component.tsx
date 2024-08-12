@@ -2,7 +2,6 @@ import {Chip, Stack} from '@mui/material'
 
 export type PermissionChipProps = {
   data: string[]
-  onRemove?: (index: number) => unknown
 }
 
 export const PermissionChip = (props: PermissionChipProps) => {
