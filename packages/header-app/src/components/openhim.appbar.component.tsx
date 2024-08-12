@@ -112,7 +112,7 @@ const pages: Page[] = [
       {name: 'Manage Users', link: '#!/users'},
       {name: 'Add User', link: '#!/users/create-user'},
       DIVIDER_MENU_ITEM,
-      {name: 'Manage User Roles', link: '#!/roles'},
+      {name: 'Manage User Roles', link: '#!/rbac'},
       {name: 'Add User Role', link: '#!/roles/create-user'}
     ]
   },
