@@ -37,14 +37,13 @@ const steps = [
 ]
 
 const queryFn = async () => {
-  const [channels, clients, transactions, mediators, apps] =
-    await Promise.all([
-      getChannels(),
-      getClients(),
-      getTransactions(),
-      getMediators(),
-      getApps()
-    ])
+  const [channels, clients, transactions, mediators, apps] = await Promise.all([
+    getChannels(),
+    getClients(),
+    getTransactions(),
+    getMediators(),
+    getApps()
+  ])
 
   return {channels, clients, transactions, mediators, apps}
 }

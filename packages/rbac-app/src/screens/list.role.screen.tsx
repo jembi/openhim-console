@@ -72,7 +72,7 @@ function UserRoleList() {
   }
 
   const getManagePermissions = (role: Role) => {
-    if (!role?.permissions) return '';
+    if (!role?.permissions) return ''
 
     const x = Object.entries(
       mapPermissionToHumanReadable(
@@ -94,7 +94,7 @@ function UserRoleList() {
   }
 
   const getViewPermissions = (role: Role) => {
-    if (!role?.permissions) return '';
+    if (!role?.permissions) return ''
 
     const x = Object.entries(
       mapPermissionToHumanReadable(
@@ -116,8 +116,8 @@ function UserRoleList() {
   }
 
   const getAdditionalPermissions = (role: Role) => {
-    if (!role?.permissions) return '';
-    
+    if (!role?.permissions) return ''
+
     const x = Object.entries(
       mapPermissionToHumanReadable(
         Object.entries(role.permissions)
