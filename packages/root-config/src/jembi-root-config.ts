@@ -87,7 +87,6 @@ async function loadAndStartMicrofrontends(): Promise<void> {
     for (const app of esmodules) {
       const path = generateRoutingPathFromURL(app.url)
       newMicrofrontendLayout += `<route path="#!/${path}">`
-      newMicrofrontendLayout += `<application name="@jembi/openhim-sidebar"></application>`
       newMicrofrontendLayout += `<div style="flex-grow: 1" id="${path}">`
       newMicrofrontendLayout += `<application name="${app.name}"></application>`
       newMicrofrontendLayout += `</div>`
@@ -95,7 +94,7 @@ async function loadAndStartMicrofrontends(): Promise<void> {
     }
     const updatedMicrofrontendLayout = microfrontendLayout.replace(
       '<div style="display: flex" id="openhim-console-ems-container"></div>',
-      `<div style="display: flex" id="openhim-console-ems-container">${newMicrofrontendLayout}</div>`
+      `${newMicrofrontendLayout}`
     )
     await registerAndStartApps(updatedMicrofrontendLayout)
   } catch (error) {
