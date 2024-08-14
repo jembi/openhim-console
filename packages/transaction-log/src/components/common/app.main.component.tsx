@@ -42,94 +42,107 @@ const App: React.FC = () => {
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
 
-  const fetchTransactionLogs = useCallback(async () => {
-    try {
-      const filters: {[key: string]: any} = {}
+  const fetchTransactionLogs = useCallback(
+    async (timestampFilter?: string) => {
+      try {
+        const filters: {[key: string]: any} = {}
 
-      if (status !== 'NoFilter') {
-        filters.status = status
-      }
+        if (timestampFilter) {
+          filters['request.timestamp'] = JSON.stringify({
+            $gte: timestampFilter
+          })
+        } else {
+          if (status !== 'NoFilter') {
+            filters.status = status
+          }
 
-      if (statusCode) {
-        filters['response.status'] = statusCode
-      }
+          if (statusCode) {
+            filters['response.status'] = statusCode
+          }
 
-      if (channel !== 'NoFilter') {
-        filters.channelID = channel
-      }
+          if (channel !== 'NoFilter') {
+            filters.channelID = channel
+          }
 
-      if (reruns !== 'NoFilter') {
-        if (reruns === 'Yes') {
-          filters.childIDs = JSON.stringify({$exists: true, $ne: []})
-        } else if (reruns === 'No') {
-          filters.childIDs = JSON.stringify({$eq: []})
+          if (reruns !== 'NoFilter') {
+            if (reruns === 'Yes') {
+              filters.childIDs = JSON.stringify({$exists: true, $ne: []})
+            } else if (reruns === 'No') {
+              filters.childIDs = JSON.stringify({$eq: []})
+            }
+          }
+
+          if (startDate && endDate) {
+            filters['request.timestamp'] = JSON.stringify({
+              $gte: startDate.toISOString(),
+              $lte: endDate.toISOString()
+            })
+          }
+
+          if (host) {
+            filters['request.host'] = host
+          }
+
+          if (port) {
+            filters['request.port'] = port
+          }
+
+          if (path) {
+            filters['request.path'] = path
+          }
+
+          if (param) {
+            filters['request.querystring'] = param
+          }
+
+          if (client !== 'NoFilter') {
+            filters.clientID = client
+          }
+
+          if (method !== 'NoFilter') {
+            filters['request.method'] = method
+          }
         }
+
+        const fetchParams: {[key: string]: any} = {
+          filters: JSON.stringify(filters)
+        }
+        if (!timestampFilter) {
+          fetchParams.filterLimit = limit
+          fetchParams.filterPage = 0
+        }
+
+        const transactions = await getTransactions(fetchParams);
+
+        const transactionsWithChannelDetails = await Promise.all(
+          transactions.map(async transaction => {
+            const channelName = await fetchChannelDetails(transaction.channelID)
+            const clientName = await fetchClientDetails(transaction.clientID)
+            return {...transaction, channelName, clientName}
+          })
+        )
+
+        setTransactions(transactionsWithChannelDetails)
+      } catch (error) {
+        console.error('Error fetching logs:', error)
       }
-
-      if (startDate && endDate) {
-        filters['request.timestamp'] = JSON.stringify({
-          $gte: startDate.toISOString(),
-          $lte: endDate.toISOString()
-        })
-      }
-
-      if (host) {
-        filters['request.host'] = host
-      }
-
-      if (port) {
-        filters['request.port'] = port
-      }
-
-      if (path) {
-        filters['request.path'] = path
-      }
-
-      if (param) {
-        filters['request.querystring'] = param
-      }
-
-      if (client !== 'NoFilter') {
-        filters.clientID = client
-      }
-
-      if (method !== 'NoFilter') {
-        filters['request.method'] = method
-      }
-
-      const transactions = await getTransactions(
-        limit,
-        0,
-        JSON.stringify(filters)
-      )
-
-      const transactionsWithChannelDetails = await Promise.all(
-        transactions.map(async transaction => {
-          const channelName = await fetchChannelDetails(transaction.channelID)
-          const clientName = await fetchClientDetails(transaction.clientID)
-          return {...transaction, channelName, clientName}
-        })
-      )
-
-      setTransactions(transactionsWithChannelDetails)
-    } catch (error) {
-      console.error('Error fetching logs:', error)
-    }
-  }, [
-    status,
-    statusCode,
-    channel,
-    startDate,
-    endDate,
-    limit,
-    reruns,
-    host,
-    port,
-    path,
-    param,
-    client,
-    method
-  ])
+    },
+    [
+      status,
+      statusCode,
+      channel,
+      startDate,
+      endDate,
+      limit,
+      reruns,
+      host,
+      port,
+      path,
+      param,
+      client,
+      method
+    ]
+  )
 
   const fetchAvailableChannels = useCallback(async () => {
     try {
@@ -146,6 +159,15 @@ const App: React.FC = () => {
       setClients(clients)
     } catch (error) {}
   }, [])
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(async () => {
+  //     const timestamp = new Date().toISOString()
+  //     await fetchTransactionLogs('2024-08-14T15:50:25+03:00') // Auto-polling with timestamp filter, without filterLimit and filterPage
+  //   }, 5000)
+
+  //   return () => clearInterval(intervalId) // Cleanup interval on component unmount
+  // }, [fetchTransactionLogs])
 
   useEffect(() => {
     fetchTransactionLogs()

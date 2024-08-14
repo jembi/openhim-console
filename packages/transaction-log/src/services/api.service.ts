@@ -48,19 +48,38 @@ export async function getChannelById(id: String): Promise<Channel> {
 }
 
 export async function getTransactions(
-  filterLimit: number,
-  filterPage: number,
+  // filterLimit: number,
+  // filterPage: number,
   filters: {}
 ): Promise<any[]> {
   try {
-    const transactions = await fetchTransactions({
-      filterLimit,
-      filterPage,
+    // const transactions = await fetchTransactions({
+    //   filterLimit,
+    //   filterPage,
+    //   filters
+    // })
+    const transactions = await fetchTransactions(
+      // filterLimit,
+      // filterPage,
       filters
-    })
+    )
 
     return transactions
   } catch (error) {
     throw error
   }
 }
+
+// export async function getTransactionsAutopolling(
+//   filters: {}
+// ): Promise<any[]> {
+//   try {
+//     const transactions = await fetchTransactions({
+//       filters
+//     })
+
+//     return transactions
+//   } catch (error) {
+//     throw error
+//   }
+// }
