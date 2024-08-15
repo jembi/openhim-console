@@ -224,6 +224,10 @@ const App: React.FC = () => {
     )
   })
 
+  const handleRowClick = (transaction) => {
+    console.log('Transaction clicked:', transaction);
+  }
+
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Box>
@@ -323,6 +327,7 @@ const App: React.FC = () => {
             <TransactionLogTable
               transactions={filteredTransactions}
               loadMore={loadMore}
+              onRowClick={handleRowClick}
             />
           </CardContent>
         </Card>

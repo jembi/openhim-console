@@ -20,7 +20,8 @@ import {ChevronRight} from '@mui/icons-material'
 const TransactionLogTable: React.FC<{
   transactions: any[]
   loadMore: () => void
-}> = ({transactions, loadMore}) => {
+  onRowClick: (transaction) => void
+}> = ({transactions, loadMore, onRowClick}) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
@@ -69,7 +70,7 @@ const TransactionLogTable: React.FC<{
             </TableHead>
             <TableBody>
               {transactions.map((transaction, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} hover style={{cursor: 'pointer'}} onClick={() => onRowClick(transaction)}>
                   <TableCell padding="checkbox">
                     <Checkbox />
                   </TableCell>
