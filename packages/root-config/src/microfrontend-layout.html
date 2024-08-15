@@ -8,6 +8,10 @@
         <route path="#!/transactions">
         </route>
         <route path="#!/audits">
+<<<<<<< HEAD
+          <application name="@jembi/openhim-sidebar"></application>
+=======
+>>>>>>> poc-microfrontends
         </route>
         <route path="#!/channels">
         </route>
@@ -65,13 +69,20 @@
           <application name="@jembi/client-roles-app"></application>
         </div>
       </route>
+      <route path="#!/rbac">
+        <div style="flex-grow: 1">
+          <application name="@jembi/rbac-app"></application>
+        </div>
+      </route>
       <route path="#!/users">
         <div style="flex-grow: 1">
           <application name="@jembi/users-app"></application>
         </div>
       </route>
+      <div style="display: flex" id="openhim-console-ems-container"></div>
     </div>
+    
     <application name="@jembi/footer-app"></application>
-    <div style="display: flex" id="openhim-console-ems-container"></div>
+
   </main>
 </single-spa-router>

@@ -226,9 +226,10 @@ export async function deleteClient(clientId: string): Promise<void> {
  * 
  * Roles
  */
-export async function deleteRole(roleName: string): Promise<void> {
+export async function fetchRoles(): Promise<any> {
   await ensureApiClientInitialized()
-  await apiClient.delete('/roles/' + roleName)
+  const response = await apiClient.get('/roles')
+  return response.data
 }
 
 export async function editRole(roleName: string, role: any): Promise<void> {
@@ -239,6 +240,10 @@ export async function editRole(roleName: string, role: any): Promise<void> {
 export async function createRole(role: any): Promise<void> {
   await ensureApiClientInitialized()
   await apiClient.post('/roles', role)
+}
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
 }
 
 export async function fetchMediators(): Promise<any> {
@@ -298,12 +303,6 @@ export async function createUser(user: any): Promise<any> {
 export async function updateUser(email: string, user: any): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.put('/users/' + email, user)
-  return response.data
-}
-
-export async function fetchRoles(): Promise<any[]> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/roles')
   return response.data
 }
 
