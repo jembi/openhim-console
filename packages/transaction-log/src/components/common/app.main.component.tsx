@@ -160,15 +160,6 @@ const App: React.FC = () => {
     } catch (error) {}
   }, [])
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(async () => {
-  //     const timestamp = new Date().toISOString()
-  //     await fetchTransactionLogs('2024-08-14T15:50:25+03:00') // Auto-polling with timestamp filter, without filterLimit and filterPage
-  //   }, 5000)
-
-  //   return () => clearInterval(intervalId) // Cleanup interval on component unmount
-  // }, [fetchTransactionLogs])
-
   useEffect(() => {
     fetchTransactionLogs()
     fetchAvailableChannels(), fetchAvailableClients()
@@ -206,22 +197,15 @@ const App: React.FC = () => {
 
   const filteredTransactions = transactions.filter(transaction => {
     const searchTerm = searchQuery.toLowerCase()
-    return (
-      transaction.channelName?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.clientName?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.request.method?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.request.host?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.request.path?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.request.params?.toLowerCase().includes(searchTerm) ||
-      '' ||
-      transaction.status?.toLowerCase().includes(searchTerm) ||
-      ''
-    )
+    return [
+      transaction.channelName,
+      transaction.clientName,
+      transaction.request.method,
+      transaction.request.host,
+      transaction.request.path,
+      transaction.request.params,
+      transaction.status
+    ].some(field => field?.toLowerCase().includes(searchTerm))
   })
 
   const handleRowClick = (transaction) => {

@@ -12,12 +12,6 @@ describe('Client Type', () => {
     expect(typeof client._id).toBe('string')
     expect(typeof client.name).toBe('string')
   })
-
-  it('should fail if Client object is missing properties', () => {
-    // const client: Client = {
-    //   _id: '12345'
-    // }
-  })
 })
 
 describe('Channel Type', () => {
@@ -31,11 +25,5 @@ describe('Channel Type', () => {
     expect(channel).toHaveProperty('name')
     expect(typeof channel._id).toBe('string')
     expect(typeof channel.name).toBe('string')
-  })
-
-  it('should fail if Channel object is missing properties', () => {
-    // const channel: Channel = {
-    //   name: 'General'
-    // }
   })
 })
