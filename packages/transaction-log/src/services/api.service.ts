@@ -47,13 +47,9 @@ export async function getChannelById(id: String): Promise<Channel> {
   }
 }
 
-export async function getTransactions(
-  filters: {}
-): Promise<any[]> {
+export async function getTransactions(filters: {}): Promise<any[]> {
   try {
-    const transactions = await fetchTransactions(
-      filters
-    )
+    const transactions = await fetchTransactions(filters)
 
     return transactions
   } catch (error) {

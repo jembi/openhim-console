@@ -112,7 +112,7 @@ const App: React.FC = () => {
           fetchParams.filterPage = 0
         }
 
-        const transactions = await getTransactions(fetchParams);
+        const transactions = await getTransactions(fetchParams)
 
         const transactionsWithChannelDetails = await Promise.all(
           transactions.map(async transaction => {
@@ -224,8 +224,8 @@ const App: React.FC = () => {
     )
   })
 
-  const handleRowClick = (transaction) => {
-    console.log('Transaction clicked:', transaction);
+  const handleRowClick = transaction => {
+    console.log('Transaction clicked:', transaction)
   }
 
   return (
