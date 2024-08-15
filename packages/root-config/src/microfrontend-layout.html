@@ -9,8 +9,6 @@
         </route>
         <route path="#!/audits">
         </route>
-        <route path="#!/clients">
-        </route>
         <route path="#!/channels">
         </route>
         <route path="#!/tasks">
@@ -33,13 +31,18 @@
         </route>
         <route path="#!/portal-admin">
         </route>
-        <div style="flex-grow: 1">
-          <application name="@jembi/legacy-console"></application>
+        <div style="flex-grow: 1">	
+          <application name="@jembi/legacy-console"></application>	
         </div>
       </route>
       <route path="#!/portal">
         <div style="flex-grow: 1">
           <application name="@jembi/openhim-portal"></application>
+        </div>
+      </route>
+      <route path="#!/clients">
+        <div style="flex-grow: 1">
+          <application name="@jembi/clients-app"></application>
         </div>
       </route>
       <route path="#!/portal-admin">
@@ -55,6 +58,11 @@
       <route path="#!/dashboard">
         <div style="flex-grow: 1">
           <application name="@jembi/dashboard-app"></application>
+        </div>
+      </route>
+      <route path="#!/client-roles">
+        <div style="flex-grow: 1">
+          <application name="@jembi/client-roles-app"></application>
         </div>
       </route>
       <route path="#!/users">

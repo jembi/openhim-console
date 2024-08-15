@@ -174,6 +174,12 @@ export async function fetchChannelById(id: String): Promise<any> {
   return response.data
 }
 
+export async function editChannel(channel: any){
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/channels/${channel._id}`, channel)
+  return response.data
+}
+
 /**
  * Clients
  */
@@ -189,11 +195,72 @@ export async function fetchClientById(id: String): Promise<any> {
   return response.data
 }
 
+// get specific client
+export async function fetchClient(clientId: string): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/clients/${clientId}`)
+  return response.data
+}
+
+// add clients
+export async function addClient(client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/clients', client)
+  return response.data
+}
+
+// edit clients
+export async function editClient(clientId: string, client: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.put(`/clients/${clientId}`, client)
+  return response.data
+}
+
+// delete clients
+export async function deleteClient(clientId: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete(`/clients/${clientId}`)
+}
+
+/**
+ * 
+ * Roles
+ */
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
+}
+
+export async function editRole(roleName: string, role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.put('/roles/' + roleName, role)
+}
+
+export async function createRole(role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.post('/roles', role)
+}
+
 export async function fetchMediators(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/mediators')
   return response.data
 }
+
+// fetch certificate
+export async function fetchCertificate(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/keystore/ca`)
+  return response.data
+}
+
+// fetch authentication types
+export async function fetchAuthTypes(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/authentication/types`)
+  return response.data
+}
+
 
 export async function fetchTimeSeries(
   period: 'minute' | 'month' | 'day' | 'year',
@@ -234,8 +301,65 @@ export async function updateUser(email: string, user: any): Promise<any> {
   return response.data
 }
 
-export async function fetchRoles(): Promise<any> {
+export async function fetchRoles(): Promise<any[]> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/roles')
   return response.data
 }
+
+interface ClientRole {
+  roleName: string
+  clients: string[]
+  channels: string[]
+}
+
+interface Client {
+  _id?: string
+  clientID: string
+  roles: string[]
+}
+interface Channel {
+  _id?: string
+  name: string
+  allow: string[]
+}
+
+export async function fetchClientRoles() {
+  const clients = await fetchClients() as Client[]
+  const channels = await fetchChannels() as Channel[]
+
+  const roles: ClientRole[] = []
+  clients.forEach(client => {
+    client.roles.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [client.clientID],
+          channels: []
+        })
+      } else {
+        roles[roleIndex].clients.push(client.clientID)
+      }
+    })
+  })
+  channels.forEach(channel => {
+    channel.allow.forEach(role => {
+      // check if role exists in roles array
+      const roleIndex = roles.findIndex(r => r.roleName === role)
+      if (roleIndex === -1) {
+        roles.push({
+          roleName: role,
+          clients: [],
+          channels: [channel.name]
+        })
+      } else {
+        roles[roleIndex].channels.push(channel.name)
+      }
+    })
+  })
+
+  return roles
+}
+

@@ -14,7 +14,7 @@ const overrides = createTheme({
     // Tell MUI what's the font-size on the html element is.
     // This is necessary as the legacy angular app uses bootstrap which
     // changes the html font-size globally to 10px
-    fontSize: 10  
+    fontSize: 14  
   }
 })
 
