@@ -8,10 +8,6 @@
         <route path="#!/transactions">
         </route>
         <route path="#!/audits">
-<<<<<<< HEAD
-          <application name="@jembi/openhim-sidebar"></application>
-=======
->>>>>>> poc-microfrontends
         </route>
         <route path="#!/channels">
         </route>
@@ -52,6 +48,11 @@
       <route path="#!/portal-admin">
         <div style="width: 100%" id="portal-admin">
           <application name="@jembi/portal-admin"></application>
+        </div>
+      </route>
+      <route path="#!/transactions">
+        <div style="flex-grow: 1">
+          <application name="@jembi/transaction-log"></application>
         </div>
       </route>
       <route path="#!/dashboard">

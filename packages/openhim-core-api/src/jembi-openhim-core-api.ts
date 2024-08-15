@@ -21,6 +21,20 @@ interface Config {
   hostPath?: string
 }
 
+interface Transactions {
+  _id: string
+  method: string
+  host: string
+  port: string
+  path: string
+  querystring: string
+  channel: {
+    _id: string
+    name: string
+  }
+  timestamp: Date
+}
+
 async function initializeApiClient(): Promise<void> {
   try {
     const response = await fetch('/config/default.json')
@@ -132,30 +146,31 @@ export async function getImportMap(): Promise<any> {
   return response.data
 }
 
-export async function fetchRoles(): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/roles')
-  return response.data
+/**
+ * Transactions
+ * @returns
+ */
+export async function fetchTransactions(filters: { filterLimit: string, filterPage: number, filters: {} }): Promise<Transactions[]> {
+  await ensureApiClientInitialized();
+  const response = await apiClient.get('/transactions', {
+    params: filters,
+  });
+  return response.data;
 }
 
-export async function deleteRole(roleName: string): Promise<void> {
-  await ensureApiClientInitialized()
-  await apiClient.delete('/roles/' + roleName)
-}
-
-export async function editRole(roleName: string, role: any): Promise<void> {
-  await ensureApiClientInitialized()
-  await apiClient.put('/roles/' + roleName, role)
-}
-
-export async function createRole(role: any): Promise<void> {
-  await ensureApiClientInitialized()
-  await apiClient.post('/roles', role)
-}
-
+/**
+ * Channels
+ * @returns
+ */
 export async function fetchChannels(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/channels')
+  return response.data
+}
+
+export async function fetchChannelById(id: String): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/channels/${id}`)
   return response.data
 }
 
@@ -165,23 +180,21 @@ export async function editChannel(channel: any){
   return response.data
 }
 
-export async function fetchMediators(): Promise<any> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/mediators')
-  return response.data
-}
-
+/**
+ * Clients
+ */
 export async function fetchClients(): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/clients')
   return response.data
 }
 
-export async function fetchTransactions(): Promise<any> {
+export async function fetchClientById(id: String): Promise<any> {
   await ensureApiClientInitialized()
-  const response = await apiClient.get('/transactions')
+  const response = await apiClient.get(`/clients/${id}`)
   return response.data
 }
+
 // get specific client
 export async function fetchClient(clientId: string): Promise<any> {
   await ensureApiClientInitialized()
@@ -207,6 +220,36 @@ export async function editClient(clientId: string, client: any): Promise<any> {
 export async function deleteClient(clientId: string): Promise<void> {
   await ensureApiClientInitialized()
   await apiClient.delete(`/clients/${clientId}`)
+}
+
+/**
+ * 
+ * Roles
+ */
+export async function fetchRoles(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/roles')
+  return response.data
+}
+
+export async function editRole(roleName: string, role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.put('/roles/' + roleName, role)
+}
+
+export async function createRole(role: any): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.post('/roles', role)
+}
+export async function deleteRole(roleName: string): Promise<void> {
+  await ensureApiClientInitialized()
+  await apiClient.delete('/roles/' + roleName)
+}
+
+export async function fetchMediators(): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/mediators')
+  return response.data
 }
 
 // fetch certificate
@@ -260,12 +303,6 @@ export async function createUser(user: any): Promise<any> {
 export async function updateUser(email: string, user: any): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.put('/users/' + email, user)
-  return response.data
-}
-
-export async function fetchRoles(): Promise<any[]> {
-  await ensureApiClientInitialized()
-  const response = await apiClient.get('/roles')
   return response.data
 }
 
