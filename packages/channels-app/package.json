@@ -1,7 +1,7 @@
 {
   "name": "@jembi/channels-app",
   "scripts": {
-    "start": "webpack serve -- --port 8512",
+    "start": "webpack serve -- --port 8513",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently npm:build:*",
     "build:webpack": "webpack --mode=production",
@@ -47,6 +47,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@mui/material": "^5.16.7",
     "@types/jest": "^27.0.1",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",

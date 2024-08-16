@@ -1,3 +1,5 @@
+import ManageChannelsTable from "./screens/manage.channels.screen";
+
 export default function Root(props) {
-  return <section>{props.name} is mounted!</section>;
+  return <ManageChannelsTable />
 }
