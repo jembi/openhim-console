@@ -100,10 +100,10 @@ const pages: Page[] = [
     name: 'CLIENTS',
     children: [
       {name: 'Manage Client', link: '#!/clients'},
-      {name: 'Add Client', link: ''},
+      {name: 'Add Client', link: '#!/clients/add'},
       DIVIDER_MENU_ITEM,
-      {name: 'Manage Client Roles', link: ''},
-      {name: 'Add User Role', link: ''}
+      {name: 'Manage Client Roles', link: '#!/client-roles'},
+      {name: 'Add User Role', link: '#!/client-roles/add'}
     ]
   },
   {
@@ -112,7 +112,7 @@ const pages: Page[] = [
       {name: 'Manage Users', link: '#!/users'},
       {name: 'Add User', link: '#!/users/create-user'},
       DIVIDER_MENU_ITEM,
-      {name: 'Manage User Roles', link: '#!/roles'},
+      {name: 'Manage User Roles', link: '#!/rbac'},
       {name: 'Add User Role', link: '#!/roles/create-user'}
     ]
   },

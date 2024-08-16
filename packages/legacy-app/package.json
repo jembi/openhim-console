@@ -63,7 +63,7 @@
 		"sinon-chai": "3.5.0",
 		"speculate": "^2.1.1",
 		"standard": "^14.3.4",
-		"terser-webpack-plugin": "^4.2.3",
+		"terser-webpack-plugin": "4.1.0",
 		"url-loader": "^4.1.1",
 		"webpack": "^4.46.0",
 		"webpack-bundle-analyzer": "^3.9.0",
