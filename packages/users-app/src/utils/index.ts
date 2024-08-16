@@ -2,9 +2,9 @@ import {User} from '../types'
 
 export const defaultUser: Readonly<User> = {
   _id: '',
-  email: '',
-  firstname: '',
-  surname: '',
+  email: null,
+  firstname: null,
+  surname: null,
   provider: 'local',
   groups: [],
   msisdn: '',

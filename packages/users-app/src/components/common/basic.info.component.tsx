@@ -35,16 +35,16 @@ export function BasicInfo(props: {
   onChange: (event: {user: User; isValid: boolean}) => unknown
 }) {
   const classes = useStyles()
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   const [user, setUser] = React.useState(props.user)
 
   React.useEffect(() => {
     props.onChange({
       user,
       isValid:
-        !!user.firstname.trim() &&
-        !!user.surname.trim() &&
-        !!user.email.trim() &&
+        !!user.firstname?.trim() &&
+        !!user.surname?.trim() &&
+        !!user.email?.trim() &&
         user.groups?.length > 0
     })
   }, [user])
@@ -84,9 +84,9 @@ export function BasicInfo(props: {
             margin="normal"
             value={user.firstname}
             onChange={e => setUser({...user, firstname: e.target.value})}
-            error={user.firstname.trim() === ''}
+            error={user.firstname?.trim() === ''}
             helperText={
-              user.firstname.trim() === ''
+              user.firstname?.trim() === ''
                 ? 'First Name cannot be empty'
                 : undefined
             }
@@ -99,11 +99,11 @@ export function BasicInfo(props: {
             variant="outlined"
             fullWidth
             margin="normal"
-            value={user.surname}
+            value={user?.surname}
             onChange={e => setUser({...user, surname: e.target.value})}
-            error={user.surname.trim() === ''}
+            error={user.surname?.trim() === ''}
             helperText={
-              user.surname.trim() === '' ? 'Surname cannot be empty' : undefined
+              user.surname?.trim() === '' ? 'Surname cannot be empty' : undefined
             }
           />
         </Grid>
@@ -116,9 +116,9 @@ export function BasicInfo(props: {
             margin="normal"
             value={user.email}
             onChange={e => setUser({...user, email: e.target.value})}
-            error={user.email.trim() === ''}
+            error={user.email?.trim() === ''}
             helperText={
-              user.email.trim() === '' ? 'Email cannot be empty' : undefined
+              user.email?.trim() === '' ? 'Email cannot be empty' : undefined
             }
           />
         </Grid>
@@ -135,7 +135,7 @@ export function BasicInfo(props: {
               onChange={e => handleSelectChange('groups', e.target.value)}
               error={user.groups?.length === 0}
             >
-              {props.roles.map((role, index) => (
+              {props.roles?.map((role, index) => (
                 <MenuItem key={index} value={role.name}>
                   {role.name}
                 </MenuItem>
@@ -146,7 +146,7 @@ export function BasicInfo(props: {
             Specific user role missing? &nbsp;
             <Typography
               component={'a'}
-              onClick={() => navigate(Routes.ADD_ROLE)}
+              onClick={() => window.history.pushState({}, '', '/#!/roles')}
               color="primary"
             >
               Add a new role

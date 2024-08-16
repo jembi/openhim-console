@@ -16,7 +16,7 @@ const router = createMemoryRouter(
     },
     {
       path: Routes.EDIT_USER,
-      element: <EditUser />
+      element: <EditUser editUser={null}/>
     }
   ],
   {

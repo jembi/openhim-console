@@ -30,14 +30,15 @@ const useStyles = makeStyles(_theme => ({
   cardActionsGap: {marginRight: '10px'}
 }))
 
-function AddUserRole() {
+function AddUserRole({editUser}) {
   const classes = useStyles()
-  const location = useLocation()
-  const navigate = useNavigate()
+  //const location = useLocation()
+  //const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const originalUser = structuredClone(location.state as User)
+  const originalUser = structuredClone(editUser)
   const [user, setUser] = React.useState(structuredClone(originalUser))
+  
   const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
     mutationFn: async () => editUserByEmail(originalUser.email, user),
@@ -46,7 +47,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.USERS)
+      window.history.pushState({}, '', '/#!/users')
     },
     onError: error => {
       hideBackdrop()
@@ -114,7 +115,7 @@ function AddUserRole() {
                 <Button
                   variant="outlined"
                   color="info"
-                  onClick={() => navigate(-1)}
+                  onClick={() => window.history.pushState({}, '', '/#!/users')}
                 >
                   CANCEL
                 </Button>

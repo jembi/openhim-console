@@ -11,7 +11,7 @@ import {
 import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+//import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
@@ -33,7 +33,6 @@ const useStyles = makeStyles(_theme => ({
 
 function AddUserRole() {
   const classes = useStyles()
-  const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [user, setUser] = React.useState(structuredClone(defaultUser))
@@ -48,7 +47,8 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.USERS)
+      window.history.pushState({}, '', '/#!/users')
+      //navigate(Routes.USERS)
     },
     onError: error => {
       hideBackdrop()
@@ -116,7 +116,7 @@ function AddUserRole() {
                 <Button
                   variant="outlined"
                   color="info"
-                  onClick={() => navigate(-1)}
+                  onClick={() => window.history.pushState({}, '', '/#!/users')}
                 >
                   Cancel
                 </Button>

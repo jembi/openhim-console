@@ -31,7 +31,7 @@ import {User, Routes} from '../types'
 
 function UsersList() {
   const [search, setSearch] = React.useState('')
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const {isLoading, isError, data, error, refetch} = useQuery({
@@ -54,7 +54,8 @@ function UsersList() {
   }
 
   const handleRowClick = (user: User) => {
-    navigate(Routes.EDIT_USER, {state: user})
+    window.history.pushState({...user}, '', '/#!/users/edit-user')
+    //navigate(Routes.EDIT_USER, {state: user})
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -104,7 +105,10 @@ function UsersList() {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => navigate(Routes.CREATE_USER)}
+            onClick={() => {
+              window.history.pushState({}, '', '/#!/users/create-user')
+              //navigate(Routes.CREATE_USER)
+            }}
           >
             Add
           </Button>
