@@ -45,6 +45,21 @@ type ChannelRoute = {
   kafkaTopic?: string
 }
 
+export type ChannelMethod =
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'PATCH'
+  | 'OPTIONS'
+  | 'HEAD'
+  | 'CONNECT'
+  | 'TRACE'
+
+export type ChannelType = 'http' | 'tcp' | 'tls' | 'polling'
+
+export type ChannelStatus = 'enabled' | 'disabled' | 'deleted'
+
 export type Channel = {
   name: string
   description?: string
@@ -53,18 +68,8 @@ export type Channel = {
   maxBodyAgeDays?: number
   lastBodyCleared?: Date
   timeout?: number
-  methods?: Array<
-    | 'GET'
-    | 'HEAD'
-    | 'POST'
-    | 'PUT'
-    | 'DELETE'
-    | 'CONNECT'
-    | 'OPTIONS'
-    | 'TRACE'
-    | 'PATCH'
-  >
-  type?: 'http' | 'tcp' | 'tls' | 'polling'
+  methods?: Array<ChannelMethod>
+  type?: ChannelType
   priority?: number
   tcpPort?: number
   tcpHost?: string
@@ -85,7 +90,7 @@ export type Channel = {
   txViewFullAcl?: Array<string>
   txRerunAcl?: Array<string>
   alerts?: Array<AlertsDef>
-  status?: 'enabled' | 'disabled' | 'deleted'
+  status?: ChannelStatus
   rewriteUrls?: boolean
   addAutoRewriteRules?: boolean
   rewriteUrlsConfig?: Array<RewriteRuleDef>
@@ -93,4 +98,10 @@ export type Channel = {
   autoRetryPeriodMinutes?: number
   autoRetryMaxAttempts?: number
   updatedBy?: UpdatedByDef
+}
+
+export enum Routes {
+  MANAGE_CHANNELS = '/',
+  CREATE_CHANNEL = '/create-channel',
+  EDIT_CHANNEL = '/edit-channel'
 }
