@@ -42,7 +42,7 @@ const useStyles = makeStyles(_theme => ({
     padding: '12px'
   },
   channelTypeRadioGroup: {
-    padding: '10px',
+    padding: '10px'
   }
 }))
 
@@ -64,12 +64,7 @@ export function BasicInfo(props: {
     'PATCH',
     'OPTIONS'
   ]
-  const channelTypes: Array<ChannelType> = [
-    'http',
-    'tcp',
-    'tls',
-    'polling'
-  ]
+  const channelTypes: Array<ChannelType> = ['http', 'tcp', 'tls', 'polling']
   const [expandOptionalSettings, setExpandOptionalSettings] =
     React.useState(false)
 
@@ -112,7 +107,9 @@ export function BasicInfo(props: {
             fullWidth
             margin="normal"
             value={channel.name}
-            onChange={e => setChannel({...channel, name: e.target.value.trim()})}
+            onChange={e =>
+              setChannel({...channel, name: e.target.value.trim()})
+            }
             error={channel.name.trim() === ''}
             helperText={
               channel.name.trim() === ''
@@ -162,80 +159,91 @@ export function BasicInfo(props: {
           </Grid>
         </Grid>
 
-        {expandOptionalSettings && <React.Fragment>
-          <Divider />
-          <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <TextField
-                label="Channel Description"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={channel.description}
-                onChange={e =>
-                  setChannel({...channel, description: e.target.value.trim()})
-                }
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">Channel Type</Typography>
+        {expandOptionalSettings && (
+          <React.Fragment>
+            <Divider />
+            <Grid container spacing={2}>
+              <Grid item xs={8}>
+                <TextField
+                  label="Channel Description"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  value={channel.description}
+                  onChange={e =>
+                    setChannel({...channel, description: e.target.value.trim()})
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6">Channel Type</Typography>
 
-              <Box className={classes.channelTypeRadioGroup}>
-                <RadioGroup
-                  defaultValue="http"
-                  value={channel.type}
-                  onChange={e => setChannel({...channel, type: e.target.value as ChannelType})}
-                >
-                  {
-                    channelTypes.map(type => (
+                <Box className={classes.channelTypeRadioGroup}>
+                  <RadioGroup
+                    defaultValue="http"
+                    value={channel.type}
+                    onChange={e =>
+                      setChannel({
+                        ...channel,
+                        type: e.target.value as ChannelType
+                      })
+                    }
+                  >
+                    {channelTypes.map(type => (
                       <FormControlLabel
                         key={type}
                         value={type}
                         control={<Radio />}
                         label={type.toUpperCase()}
                       />
-                    ))
-                  }
-                </RadioGroup>
-              </Box>
-              
-              <Grid item xs={5}>
-                <TextField
-                  label="Timeout ms"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  type="number"
-                  value={channel.timeout}
-                  onChange={e =>
-                    setChannel({...channel, timeout: Number(e.target.value)})
-                  }
-                  error={Number.isSafeInteger(channel.timeout) && channel.timeout < 0}
-                  helperText={
-                    Number.isSafeInteger(channel.timeout) && channel.timeout < 0
-                      ? 'Timeout cannot be negative'
-                      : undefined
-                  }
-                />
-              </Grid>
+                    ))}
+                  </RadioGroup>
+                </Box>
 
-              <Grid item xs={6}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={channel.status === 'enabled'}
-                      onChange={e =>
-                        setChannel({...channel, status: e.target.checked ? 'enabled' : 'disabled'})
-                      }
-                    />
-                  }
-                  label="Enable channel"
-                />
+                <Grid item xs={5}>
+                  <TextField
+                    label="Timeout ms"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type="number"
+                    value={channel.timeout}
+                    onChange={e =>
+                      setChannel({...channel, timeout: Number(e.target.value)})
+                    }
+                    error={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                    }
+                    helperText={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                        ? 'Timeout cannot be negative'
+                        : undefined
+                    }
+                  />
                 </Grid>
-            </Grid>
-          </Grid>
-        </React.Fragment>}
 
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={channel.status === 'enabled'}
+                        onChange={e =>
+                          setChannel({
+                            ...channel,
+                            status: e.target.checked ? 'enabled' : 'disabled'
+                          })
+                        }
+                      />
+                    }
+                    label="Enable channel"
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </React.Fragment>
+        )}
       </Paper>
     </Box>
   )

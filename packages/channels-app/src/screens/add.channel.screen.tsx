@@ -19,6 +19,7 @@ import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useNavigate} from 'react-router-dom'
 import {Channel, Routes} from '../types'
 import {BasicInfo} from './steps/BasicInfo'
+import {RequestMatching} from './steps/RequestMatching'
 
 const steps = ['Basic Info', 'Request Matching', 'Routes']
 
@@ -108,8 +109,9 @@ function AddUserRole() {
           gutterBottom
           fontWeight={400}
         >
-          Control client systems and their access roles.
-          Add clients to enable their request routing and group them by roles for streamlined channel accesss managment.
+          Control client systems and their access roles. Add clients to enable
+          their request routing and group them by roles for streamlined channel
+          accesss managment.
         </Typography>
       </header>
 
@@ -144,7 +146,7 @@ function AddUserRole() {
                   />
                 )}
                 {activeStep === 1 && (
-                  <BasicInfo
+                  <RequestMatching
                     channel={channel}
                     onChange={({channel, isValid}) => {
                       setIsFormValid(isValid)

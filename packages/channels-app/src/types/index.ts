@@ -60,6 +60,8 @@ export type ChannelType = 'http' | 'tcp' | 'tls' | 'polling'
 
 export type ChannelStatus = 'enabled' | 'disabled' | 'deleted'
 
+export type ChannelAuthType = 'private' | 'public'
+
 export type Channel = {
   name: string
   description?: string
@@ -78,7 +80,7 @@ export type Channel = {
   responseBody?: boolean
   allow: Array<string>
   whitelist?: Array<string>
-  authType?: 'private' | 'public'
+  authType?: ChannelAuthType
   routes?: Array<ChannelRoute>
   matchContentTypes?: Array<string>
   matchContentRegex?: string
