@@ -1,5 +1,4 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import ManageChannelsScreen from './screens/manage.channels.screen'
 import React from 'react'
 import theme from '@jembi/openhim-theme'
 import {ThemeProvider} from '@mui/material'
@@ -7,6 +6,8 @@ import {AlertProvider} from './contexts/alert.context'
 import {BasicBackdropProvider} from './contexts/backdrop.context'
 import {ConfirmationProvider} from './contexts/confirmation.context'
 import {BasicDialogProvider} from './contexts/dialog.context'
+import {RouterProvider} from 'react-router-dom'
+import router from './router'
 
 const queryClient = new QueryClient()
 
@@ -19,7 +20,7 @@ export default function Root() {
             <BasicBackdropProvider>
               <AlertProvider>
                 <ConfirmationProvider>
-                  <ManageChannelsScreen />
+                  <RouterProvider router={router} />
                 </ConfirmationProvider>
               </AlertProvider>
             </BasicBackdropProvider>

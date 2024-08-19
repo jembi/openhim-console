@@ -1,36 +1,38 @@
-import React from 'react'
 import AddIcon from '@mui/icons-material/Add'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Search from '@mui/icons-material/Search'
 import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  Divider,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  Menu,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
-  Paper,
-  Checkbox,
-  IconButton,
-  Menu,
-  MenuItem,
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Input,
-  InputAdornment,
-  Divider,
-  Card,
-  CardContent,
-  TablePagination
+  Typography
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import {getChannels} from '../services/api'
 import {useQuery} from '@tanstack/react-query'
+import React from 'react'
+import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useConfirmation} from '../contexts/confirmation.context'
+import {getChannels} from '../services/api'
+import {Routes} from '../types'
 
 const ManageChannelsScreen: React.FC = () => {
+  const navigate = useNavigate()
   const {isLoading, isError, data, error} = useQuery({
     queryKey: ['query.ManageChannelsScreen'],
     queryFn: getChannels
@@ -97,7 +99,7 @@ const ManageChannelsScreen: React.FC = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => 1}
+            onClick={() => navigate(Routes.CREATE_CHANNEL)}
           >
             Add
           </Button>
