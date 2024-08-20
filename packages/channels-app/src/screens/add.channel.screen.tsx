@@ -11,7 +11,7 @@ import {
   CardActions,
   Button
 } from '@mui/material'
-import {useQuery, useMutation} from '@tanstack/react-query'
+import {useMutation} from '@tanstack/react-query'
 import React from 'react'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
@@ -21,6 +21,7 @@ import {Channel, Routes} from '../types'
 import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
+import {addChannel} from '../services/api'
 
 const steps = ['Basic Info', 'Request Matching', 'Routes']
 
@@ -29,13 +30,8 @@ const defaultChannel: Channel = {
   description: '',
   urlPattern: '',
   isAsynchronousProcess: false,
-  maxBodyAgeDays: undefined,
-  lastBodyCleared: undefined,
-  timeout: undefined,
   methods: [],
   type: 'http',
-  priority: undefined,
-  tcpPort: undefined,
   tcpHost: '',
   pollingSchedule: '',
   requestBody: false,
@@ -59,12 +55,10 @@ const defaultChannel: Channel = {
   addAutoRewriteRules: true,
   rewriteUrlsConfig: [],
   autoRetryEnabled: false,
-  autoRetryPeriodMinutes: 60,
-  autoRetryMaxAttempts: undefined,
-  updatedBy: undefined
+  autoRetryPeriodMinutes: 60
 }
 
-function AddUserRole() {
+function AddChannelScreen() {
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
@@ -72,7 +66,7 @@ function AddUserRole() {
   const [channel, setChannel] = React.useState(structuredClone(defaultChannel))
   const [isFormValid, setIsFormValid] = React.useState(false)
   const mutation = useMutation({
-    mutationFn: async () => 1,
+    mutationFn: addChannel,
     onMutate: (channel: Channel) => {
       showBackdrop(<Loader />, true)
     },
@@ -80,13 +74,18 @@ function AddUserRole() {
       hideBackdrop()
       navigate(Routes.MANAGE_CHANNELS)
     },
-    onError: error => {
+    onError: (error: any) => {
+      console.error(error)
       hideBackdrop()
-      showAlert('Error creating a new role', 'Error', 'error')
+      showAlert(
+        'Error creating a new channel. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   })
 
-  const handleAddRole = async () => {
+  const handleAddChannel = () => {
     mutation.mutate(channel)
   }
 
@@ -199,7 +198,7 @@ function AddUserRole() {
                     variant="contained"
                     color="primary"
                     disabled={mutation.isLoading || !isFormValid}
-                    onClick={handleAddRole}
+                    onClick={handleAddChannel}
                   >
                     ADD CHANNEL
                   </Button>
@@ -213,4 +212,4 @@ function AddUserRole() {
   )
 }
 
-export default AddUserRole
+export default AddChannelScreen

@@ -67,6 +67,7 @@ export type ChannelStatus = 'enabled' | 'disabled' | 'deleted'
 export type ChannelAuthType = 'private' | 'public'
 
 export type Channel = {
+  _id?: string // Assuming ObjectId is represented as a string
   name: string
   description?: string
   urlPattern: string

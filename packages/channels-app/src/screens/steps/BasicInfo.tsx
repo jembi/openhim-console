@@ -1,3 +1,5 @@
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
+import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
 import {
   Box,
   Checkbox,
@@ -12,11 +14,8 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
 import {makeStyles} from '@mui/styles'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
 const useStyles = makeStyles(_theme => ({
@@ -51,7 +50,6 @@ export function BasicInfo(props: {
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
 }) {
   const classes = useStyles()
-  const navigate = useNavigate()
   const [channel, setChannel] = React.useState(props.channel)
   const allowedMethods: Array<ChannelMethod> = [
     'GET',

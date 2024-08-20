@@ -45,6 +45,8 @@ export function ChannelRoute(props: {
   onChange?: (event: {route: ChannelRouteDef; isValid: boolean}) => unknown
   onCancel?: () => unknown
 }) {
+  const isEditMode = !!props.route
+  const isCreateMode = !isEditMode
   const classes = useStyles()
   const [route, setRoute] = React.useState(
     structuredClone(props.route ?? defaultRoute)
@@ -52,7 +54,9 @@ export function ChannelRoute(props: {
 
   return (
     <Box>
-      <Typography variant="h5">Add New Route</Typography>
+      <Typography variant="h5">
+        {isCreateMode ? 'Add New Route' : 'Edit Route'}
+      </Typography>
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -292,7 +296,7 @@ export function ChannelRoute(props: {
                 }
                 disabled={!route.name.trim()}
               >
-                ADD ROUTE
+                {isCreateMode ? 'ADD ROUTE' : 'EDIT ROUTE'}
               </Button>
             </Grid>
           </Grid>

@@ -1,12 +1,16 @@
 import AddIcon from '@mui/icons-material/Add'
+import CancelIcon from '@mui/icons-material/Cancel'
+import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import Search from '@mui/icons-material/Search'
+import SearchIcon from '@mui/icons-material/Search'
+import ViewIcon from '@mui/icons-material/Visibility'
 import {
   Box,
   Button,
   Card,
   CardContent,
   Checkbox,
+  Chip,
   Divider,
   Grid,
   IconButton,
@@ -23,30 +27,57 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
+import { makeStyles } from '@mui/styles'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
-import {useConfirmation} from '../contexts/confirmation.context'
-import {getChannels} from '../services/api'
-import {Routes} from '../types'
+import { useAlert } from '../contexts/alert.context'
+import { useBasicBackdrop } from '../contexts/backdrop.context'
+import { useConfirmation } from '../contexts/confirmation.context'
+import { getChannels, modifyChannel } from '../services/api'
+import { Channel, Routes } from '../types'
+
+const useStyles = makeStyles(_theme => ({
+  actionsIcon: {
+    marginRight: '10px',
+  }
+}))
 
 const ManageChannelsScreen: React.FC = () => {
   const navigate = useNavigate()
-  const {isLoading, isError, data, error} = useQuery({
+  const classes = useStyles()
+  const {isLoading, isError, data: channels, error, refetch} = useQuery({
     queryKey: ['query.ManageChannelsScreen'],
     queryFn: getChannels
+  })
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
+  const {showAlert, hideAlert} = useAlert()
+  const mutation = useMutation({
+    mutationFn: modifyChannel,
+    onMutate: (channel: Channel) => {
+      showBackdrop(<Loader />, true)
+    },
+    onSuccess: () => {
+      hideBackdrop()
+      refetch()
+    },
+    onError: (error: any) => {
+      console.error(error)
+      hideBackdrop()
+      showAlert('Error disabling channel. ' + error?.response?.data, 'Error', 'error')
+    }
   })
   const {showConfirmation, hideConfirmation} = useConfirmation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleCloseContextMenu = () => {
     setAnchorEl(null)
   }
 
@@ -61,16 +92,37 @@ const ManageChannelsScreen: React.FC = () => {
     setPage(0)
   }
 
-  const onActionDisableChannel = () => {
-    handleClose()
+  const onActionDisableChannel = (channel: Channel) => {
+    let title = '', message = '', modifyChannel: Channel
+
+    if (channel.status === 'enabled') {
+      title = 'Disable Channel'
+      message = 'Are you sure you want to disable this channel?'
+      modifyChannel = {...channel, status: 'disabled'}
+    } else {
+      title = 'Enable Channel'
+      message = 'Are you sure you want to enable this channel?'
+      modifyChannel = {...channel, status: 'enabled'}
+    }
+
+    handleCloseContextMenu()
     showConfirmation(
-      'Are you sure you want to disable this channel?',
-      'Disable Channel',
+      message,
+      title,
       () => {
-        handleClose()
+        mutation.mutate(modifyChannel)
+        handleCloseContextMenu()
       },
-      handleClose
+      handleCloseContextMenu
     )
+  }
+
+  const handleViewChannelMetrics = (channel: Channel) => {
+    window.location.href = `/#!/channels/${channel._id}`
+  }
+
+  const handleViewChannelLogs = (channel: Channel) => {
+    window.location.href = `/#!/channels/${channel._id}`
   }
 
   if (isLoading) {
@@ -117,7 +169,7 @@ const ManageChannelsScreen: React.FC = () => {
                 fullWidth
                 startAdornment={
                   <InputAdornment position="start">
-                    <Search />
+                    <SearchIcon />
                   </InputAdornment>
                 }
               />
@@ -132,37 +184,53 @@ const ManageChannelsScreen: React.FC = () => {
                   </TableCell>
                   <TableCell>Channel Name</TableCell>
                   <TableCell>URL Pattern</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Priority</TableCell>
                   <TableCell>Access</TableCell>
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((channel, index) => (
+                {channels.map((channel, index) => (
                   <TableRow key={index}>
                     <TableCell padding="checkbox">
                       <Checkbox />
                     </TableCell>
                     <TableCell>{channel.name}</TableCell>
                     <TableCell>{channel.urlPattern}</TableCell>
+                    <TableCell>
+                      {channel.status === 'enabled' ? (
+                        <Chip label="enabled" color="success" />
+                      ) : (
+                        <Chip label="disabled" color="error" />
+                      )}
+                    </TableCell>
                     <TableCell>{channel.priority ?? '-'}</TableCell>
                     <TableCell>{channel.allow.join(', ')}</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={handleClick}>
+                      <IconButton onClick={handleOpenContextMenu}>
                         <MoreVertIcon />
                       </IconButton>
                       <Menu
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
-                        onClose={handleClose}
+                        onClose={handleCloseContextMenu}
                       >
-                        <MenuItem onClick={handleClose}>Edit Channel</MenuItem>
-                        <MenuItem onClick={handleClose}>View Metrics</MenuItem>
-                        <MenuItem divider onClick={handleClose}>
+                        <MenuItem onClick={handleCloseContextMenu}>
+                          <EditIcon className={classes.actionsIcon} />
+                          Edit Channel
+                        </MenuItem>
+                        <MenuItem onClick={() => handleViewChannelMetrics(channel)}>
+                          <ViewIcon className={classes.actionsIcon} />
+                          View Metrics
+                        </MenuItem>
+                        <MenuItem divider onClick={() => handleViewChannelLogs(channel)}>
+                          <SearchIcon className={classes.actionsIcon} />
                           View Logs
                         </MenuItem>
-                        <MenuItem onClick={onActionDisableChannel}>
-                          Disable Channel
+                        <MenuItem onClick={() => onActionDisableChannel(channel)}>
+                          <CancelIcon className={classes.actionsIcon} />
+                          Toggle Status
                         </MenuItem>
                       </Menu>
                     </TableCell>
@@ -173,7 +241,7 @@ const ManageChannelsScreen: React.FC = () => {
           </TableContainer>
           <TablePagination
             component="section"
-            count={data.length}
+            count={channels.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

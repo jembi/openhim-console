@@ -94,13 +94,17 @@ export function ChannelRoutes(props: {
     isValid: boolean
   }) => {
     if (isValid) {
-      setChannel(
-        structuredClone({
-          ...channel,
-          routes: [...(channel.routes ?? []), route]
-        })
-      )
-      hideBasicDialog()
+      for (let i = 0; i < channel.routes?.length; i++) {
+        if (channel.routes[i].name === route.name) {
+          channel.routes[i] = route
+
+          setChannel(structuredClone(channel))
+          hideBasicDialog()
+          return
+        }
+      }
+
+      console.error('[-] Could not find route to update.')
     }
   }
 
