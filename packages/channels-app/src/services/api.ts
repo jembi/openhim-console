@@ -1,13 +1,23 @@
 import {
   fetchChannels,
   createChannel,
-  editChannel
+  editChannel,
+  fetchChannelById
 } from '@jembi/openhim-core-api'
 import {Channel} from '../types'
 
 export async function getChannels(): Promise<Channel[]> {
   try {
     return await fetchChannels()
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+export async function getChannelById(id: string): Promise<Channel> {
+  try {
+    return await fetchChannelById(id)
   } catch (err) {
     console.error(err)
     throw err

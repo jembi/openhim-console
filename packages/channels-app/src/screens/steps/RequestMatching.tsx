@@ -184,6 +184,7 @@ export function RequestMatching(props: {
                   label="Channel priority"
                   variant="outlined"
                   fullWidth
+                  type="number"
                   margin="normal"
                   value={channel.priority}
                   onChange={e =>
@@ -248,145 +249,149 @@ export function RequestMatching(props: {
                   />
                 </Grid>
 
-                <Grid item xs={12} className={classes.controlSection}>
-                  <TagInputAutocomplete
-                    tags={channel.matchContentTypes}
-                    onChange={matchContentTypes =>
-                      setChannel({...channel, matchContentTypes})
-                    }
-                    label="Which Content-Types should be matched?"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <FormLabel>Match on BODY Content?</FormLabel>
-                  <br />
-                  <ButtonGroup size="small" variant="outlined">
-                    <Button
-                      onClick={() => setMatchBodyType('NO MATCHING')}
-                      variant={
-                        matchBodyType == 'NO MATCHING'
-                          ? 'contained'
-                          : 'outlined'
-                      }
-                    >
-                      NO MATCHING
-                    </Button>
-                    <Button
-                      onClick={() => setMatchBodyType('REGEX')}
-                      variant={
-                        matchBodyType == 'REGEX' ? 'contained' : 'outlined'
-                      }
-                    >
-                      REGEX
-                    </Button>
-                    <Button
-                      onClick={() => setMatchBodyType('XML')}
-                      variant={
-                        matchBodyType == 'XML' ? 'contained' : 'outlined'
-                      }
-                    >
-                      XML
-                    </Button>
-                    <Button
-                      onClick={() => setMatchBodyType('JSON')}
-                      variant={
-                        matchBodyType == 'JSON' ? 'contained' : 'outlined'
-                      }
-                    >
-                      JSON
-                    </Button>
-                  </ButtonGroup>
-
-                  {matchBodyType === 'REGEX' && (
-                    <TextField
-                      label="Enter Regular Expression for Matching"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      value={channel.matchContentRegex}
-                      onChange={e =>
-                        setChannel({
-                          ...channel,
-                          matchContentRegex: e.target.value
-                        })
-                      }
-                      helperText="E.g. [abc]+"
-                    />
-                  )}
-
-                  {matchBodyType === 'XML' && (
-                    <Grid container spacing={1}>
-                      <Grid item xs={6}>
-                        <TextField
-                          label="XPath expression"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          value={channel.matchContentXpath}
-                          onChange={e =>
-                            setChannel({
-                              ...channel,
-                              matchContentXpath: e.target.value
-                            })
-                          }
-                          helperText="E.g. /bookstore/book[1]/title"
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          label="Desired expression result"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          value={channel.matchContentValue}
-                          onChange={e =>
-                            setChannel({
-                              ...channel,
-                              matchContentValue: e.target.value
-                            })
-                          }
-                        />
-                      </Grid>
+                {isMatchSpecificRequestContent && (
+                  <React.Fragment>
+                    <Grid item xs={12} className={classes.controlSection}>
+                      <TagInputAutocomplete
+                        tags={channel.matchContentTypes}
+                        onChange={matchContentTypes =>
+                          setChannel({...channel, matchContentTypes})
+                        }
+                        label="Which Content-Types should be matched?"
+                      />
                     </Grid>
-                  )}
 
-                  {matchBodyType === 'JSON' && (
-                    <Grid container spacing={1}>
-                      <Grid item xs={6}>
+                    <Grid item xs={12}>
+                      <FormLabel>Match on BODY Content?</FormLabel>
+                      <br />
+                      <ButtonGroup size="small" variant="outlined">
+                        <Button
+                          onClick={() => setMatchBodyType('NO MATCHING')}
+                          variant={
+                            matchBodyType == 'NO MATCHING'
+                              ? 'contained'
+                              : 'outlined'
+                          }
+                        >
+                          NO MATCHING
+                        </Button>
+                        <Button
+                          onClick={() => setMatchBodyType('REGEX')}
+                          variant={
+                            matchBodyType == 'REGEX' ? 'contained' : 'outlined'
+                          }
+                        >
+                          REGEX
+                        </Button>
+                        <Button
+                          onClick={() => setMatchBodyType('XML')}
+                          variant={
+                            matchBodyType == 'XML' ? 'contained' : 'outlined'
+                          }
+                        >
+                          XML
+                        </Button>
+                        <Button
+                          onClick={() => setMatchBodyType('JSON')}
+                          variant={
+                            matchBodyType == 'JSON' ? 'contained' : 'outlined'
+                          }
+                        >
+                          JSON
+                        </Button>
+                      </ButtonGroup>
+
+                      {matchBodyType === 'REGEX' && (
                         <TextField
-                          label="JSON Path"
+                          label="Enter Regular Expression for Matching"
                           variant="outlined"
                           fullWidth
                           margin="normal"
-                          value={channel.matchContentJson}
+                          value={channel.matchContentRegex}
                           onChange={e =>
                             setChannel({
                               ...channel,
-                              matchContentJson: e.target.value
+                              matchContentRegex: e.target.value
                             })
                           }
-                          helperText="E.g. store.book[0].title"
+                          helperText="E.g. [abc]+"
                         />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          label="Desired expression result"
-                          variant="outlined"
-                          fullWidth
-                          margin="normal"
-                          value={channel.matchContentValue}
-                          onChange={e =>
-                            setChannel({
-                              ...channel,
-                              matchContentValue: e.target.value
-                            })
-                          }
-                        />
-                      </Grid>
+                      )}
+
+                      {matchBodyType === 'XML' && (
+                        <Grid container spacing={1}>
+                          <Grid item xs={6}>
+                            <TextField
+                              label="XPath expression"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              value={channel.matchContentXpath}
+                              onChange={e =>
+                                setChannel({
+                                  ...channel,
+                                  matchContentXpath: e.target.value
+                                })
+                              }
+                              helperText="E.g. /bookstore/book[1]/title"
+                            />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField
+                              label="Desired expression result"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              value={channel.matchContentValue}
+                              onChange={e =>
+                                setChannel({
+                                  ...channel,
+                                  matchContentValue: e.target.value
+                                })
+                              }
+                            />
+                          </Grid>
+                        </Grid>
+                      )}
+
+                      {matchBodyType === 'JSON' && (
+                        <Grid container spacing={1}>
+                          <Grid item xs={6}>
+                            <TextField
+                              label="JSON Path"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              value={channel.matchContentJson}
+                              onChange={e =>
+                                setChannel({
+                                  ...channel,
+                                  matchContentJson: e.target.value
+                                })
+                              }
+                              helperText="E.g. store.book[0].title"
+                            />
+                          </Grid>
+                          <Grid item xs={6}>
+                            <TextField
+                              label="Desired expression result"
+                              variant="outlined"
+                              fullWidth
+                              margin="normal"
+                              value={channel.matchContentValue}
+                              onChange={e =>
+                                setChannel({
+                                  ...channel,
+                                  matchContentValue: e.target.value
+                                })
+                              }
+                            />
+                          </Grid>
+                        </Grid>
+                      )}
                     </Grid>
-                  )}
-                </Grid>
+                  </React.Fragment>
+                )}
               </Grid>
             </Grid>
           </React.Fragment>

@@ -27,35 +27,41 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
-import { makeStyles } from '@mui/styles'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {makeStyles} from '@mui/styles'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
-import { useAlert } from '../contexts/alert.context'
-import { useBasicBackdrop } from '../contexts/backdrop.context'
-import { useConfirmation } from '../contexts/confirmation.context'
-import { getChannels, modifyChannel } from '../services/api'
-import { Channel, Routes } from '../types'
+import {useAlert} from '../contexts/alert.context'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
+import {useConfirmation} from '../contexts/confirmation.context'
+import {getChannels, modifyChannel} from '../services/api'
+import {Channel, Routes} from '../types'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
-    marginRight: '10px',
+    marginRight: '10px'
   }
 }))
 
 const ManageChannelsScreen: React.FC = () => {
   const navigate = useNavigate()
   const classes = useStyles()
-  const {isLoading, isError, data: channels, error, refetch} = useQuery({
+  const {
+    isLoading,
+    isError,
+    data: channels,
+    error,
+    refetch
+  } = useQuery({
     queryKey: ['query.ManageChannelsScreen'],
     queryFn: getChannels
   })
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const {showAlert, hideAlert} = useAlert()
+  const {showAlert} = useAlert()
   const mutation = useMutation({
     mutationFn: modifyChannel,
-    onMutate: (channel: Channel) => {
+    onMutate: () => {
       showBackdrop(<Loader />, true)
     },
     onSuccess: () => {
@@ -65,23 +71,35 @@ const ManageChannelsScreen: React.FC = () => {
     onError: (error: any) => {
       console.error(error)
       hideBackdrop()
-      showAlert('Error disabling channel. ' + error?.response?.data, 'Error', 'error')
+      showAlert(
+        'Error disabling channel. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   })
-  const {showConfirmation, hideConfirmation} = useConfirmation()
+  const {showConfirmation} = useConfirmation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [selectedChannel, setSelectedChannel] = React.useState<Channel | null>(
+    null
+  )
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
 
-  const handleOpenContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenContextMenu = (
+    event: React.MouseEvent<HTMLElement>,
+    channel: Channel
+  ) => {
     setAnchorEl(event.currentTarget)
+    setSelectedChannel(channel)
   }
 
   const handleCloseContextMenu = () => {
     setAnchorEl(null)
+    setSelectedChannel(null)
   }
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage)
   }
 
@@ -93,7 +111,9 @@ const ManageChannelsScreen: React.FC = () => {
   }
 
   const onActionDisableChannel = (channel: Channel) => {
-    let title = '', message = '', modifyChannel: Channel
+    let title = '',
+      message = '',
+      modifyChannel: Channel
 
     if (channel.status === 'enabled') {
       title = 'Disable Channel'
@@ -117,12 +137,20 @@ const ManageChannelsScreen: React.FC = () => {
     )
   }
 
-  const handleViewChannelMetrics = (channel: Channel) => {
-    window.location.href = `/#!/channels/${channel._id}`
+  const handleEditChannel = () => {
+    if (selectedChannel) {
+      navigate(Routes.EDIT_CHANNEL, {state: selectedChannel})
+    }
   }
 
-  const handleViewChannelLogs = (channel: Channel) => {
-    window.location.href = `/#!/channels/${channel._id}`
+  const handleViewChannelMetrics = () => {
+    if (selectedChannel) {
+      window.location.href = `/#!/channels/${selectedChannel._id}`
+    }
+  }
+
+  const handleViewChannelLogs = () => {
+    window.location.href = `/#!/logs`
   }
 
   if (isLoading) {
@@ -208,7 +236,9 @@ const ManageChannelsScreen: React.FC = () => {
                     <TableCell>{channel.priority ?? '-'}</TableCell>
                     <TableCell>{channel.allow.join(', ')}</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={handleOpenContextMenu}>
+                      <IconButton
+                        onClick={event => handleOpenContextMenu(event, channel)}
+                      >
                         <MoreVertIcon />
                       </IconButton>
                       <Menu
@@ -216,19 +246,23 @@ const ManageChannelsScreen: React.FC = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleCloseContextMenu}
                       >
-                        <MenuItem onClick={handleCloseContextMenu}>
+                        <MenuItem onClick={handleEditChannel}>
                           <EditIcon className={classes.actionsIcon} />
                           Edit Channel
                         </MenuItem>
-                        <MenuItem onClick={() => handleViewChannelMetrics(channel)}>
+                        <MenuItem onClick={handleViewChannelMetrics}>
                           <ViewIcon className={classes.actionsIcon} />
                           View Metrics
                         </MenuItem>
-                        <MenuItem divider onClick={() => handleViewChannelLogs(channel)}>
+                        <MenuItem divider onClick={handleViewChannelLogs}>
                           <SearchIcon className={classes.actionsIcon} />
                           View Logs
                         </MenuItem>
-                        <MenuItem onClick={() => onActionDisableChannel(channel)}>
+                        <MenuItem
+                          onClick={() =>
+                            onActionDisableChannel(selectedChannel!)
+                          }
+                        >
                           <CancelIcon className={classes.actionsIcon} />
                           Toggle Status
                         </MenuItem>

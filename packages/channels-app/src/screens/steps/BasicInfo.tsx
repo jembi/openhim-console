@@ -96,6 +96,7 @@ export function BasicInfo(props: {
       </Typography>
 
       <Divider className={classes.divider} />
+      <br />
 
       <Grid container spacing={2}>
         <Grid item xs={6}>

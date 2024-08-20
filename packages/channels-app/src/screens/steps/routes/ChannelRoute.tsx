@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  FormControl,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -13,11 +12,7 @@ import {
 } from '@mui/material'
 import {makeStyles} from '@mui/styles'
 import React from 'react'
-import {
-  ChannelRoute as ChannelRouteDef,
-  ChannelRouteType,
-  ChannelType
-} from '../../../types'
+import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
 const useStyles = makeStyles(_theme => ({
   divider: {
@@ -158,118 +153,161 @@ export function ChannelRoute(props: {
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={route.secured}
-                onChange={e => setRoute({...route, secured: e.target.checked})}
-              />
-            }
-            label="Secured Route?"
-          />
-          <FormHelperText className={classes.switchHelperText}>
-            Toggle on if the route is secured. Uses default certificate
-            authority.
-          </FormHelperText>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Host"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={route.host}
-                onChange={e => setRoute({...route, host: e.target.value})}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Host"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={route.port}
-                onChange={e =>
-                  setRoute({...route, port: Number(e.target.value)})
+        {route.type === 'http' && (
+          <React.Fragment key="http">
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={route.secured}
+                    onChange={e =>
+                      setRoute({...route, secured: e.target.checked})
+                    }
+                  />
                 }
+                label="Secured Route?"
               />
+              <FormHelperText className={classes.switchHelperText}>
+                Toggle on if the route is secured. Uses default certificate
+                authority.
+              </FormHelperText>
             </Grid>
-          </Grid>
-        </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Host"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.host}
+                    onChange={e => setRoute({...route, host: e.target.value})}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Port"
+                    variant="outlined"
+                    fullWidth
+                    type="number"
+                    margin="normal"
+                    value={route.port}
+                    onChange={e =>
+                      setRoute({...route, port: Number(e.target.value)})
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
 
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Route Path"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={route.path}
-                onChange={e => setRoute({...route, path: e.target.value})}
-              />
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Route Path"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.path}
+                    onChange={e => setRoute({...route, path: e.target.value})}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Route Path Transform"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.pathTransform}
+                    onChange={e =>
+                      setRoute({...route, pathTransform: e.target.value})
+                    }
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Route Path Transform"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={route.pathTransform}
-                onChange={e =>
-                  setRoute({...route, pathTransform: e.target.value})
+
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Basic Authentication Username"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.username}
+                    onChange={e =>
+                      setRoute({...route, username: e.target.value})
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Basic Authentication Password"
+                    variant="outlined"
+                    fullWidth
+                    type="password"
+                    margin="normal"
+                    value={route.password}
+                    onChange={e =>
+                      setRoute({...route, password: e.target.value})
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={route.forwardAuthHeader}
+                    onChange={e =>
+                      setRoute({...route, forwardAuthHeader: e.target.checked})
+                    }
+                  />
                 }
+                label="Forward Auth Header?"
               />
+              <FormHelperText className={classes.switchHelperText}>
+                Toggle on to foward the existing authorization header
+              </FormHelperText>
             </Grid>
-          </Grid>
-        </Grid>
+          </React.Fragment>
+        )}
 
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Basic Authentication Username"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={route.username}
-                onChange={e => setRoute({...route, username: e.target.value})}
-              />
+        {route.type === 'kafka' && (
+          <React.Fragment key="kafka">
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Client ID"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.kafkaClientId}
+                    onChange={e =>
+                      setRoute({...route, kafkaClientId: e.target.value})
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Topic Name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={route.kafkaTopic}
+                    onChange={e =>
+                      setRoute({...route, kafkaTopic: e.target.value})
+                    }
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Basic Authentication Password"
-                variant="outlined"
-                fullWidth
-                type="password"
-                margin="normal"
-                value={route.password}
-                onChange={e => setRoute({...route, password: e.target.value})}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={route.forwardAuthHeader}
-                onChange={e =>
-                  setRoute({...route, forwardAuthHeader: e.target.checked})
-                }
-              />
-            }
-            label="Forward Auth Header?"
-          />
-          <FormHelperText className={classes.switchHelperText}>
-            Toggle on to foward the existing authorization header
-          </FormHelperText>
-        </Grid>
+          </React.Fragment>
+        )}
 
         <Grid item xs={6}></Grid>
         <Grid item xs={6}>

@@ -1,6 +1,7 @@
 import {createMemoryRouter} from 'react-router-dom'
 import ManageChannelsScreen from '../screens/manage.channels.screen'
 import AddChannelScreen from '../screens/add.channel.screen'
+import EditChannelScreen from '../screens/edit.channel.screen'
 import {Routes} from '../types'
 
 const router = createMemoryRouter([
@@ -14,7 +15,7 @@ const router = createMemoryRouter([
   },
   {
     path: Routes.EDIT_CHANNEL,
-    element: <AddChannelScreen />
+    element: <EditChannelScreen />
   }
 ])
 
