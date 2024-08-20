@@ -31,6 +31,11 @@ const TransactionLogTable: React.FC<{
     setSettingsOpen(false)
   }
 
+  const handleRowClick = (transaction) => {
+    const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
+    window.location.href = transactionDetailsUrl;
+  }
+
   return (
     <Box sx={{padding: '16px'}}>
       <Box
@@ -75,7 +80,7 @@ const TransactionLogTable: React.FC<{
                   key={index}
                   hover
                   style={{cursor: 'pointer'}}
-                  onClick={() => onRowClick(transaction)}
+                  onClick={() => handleRowClick(transaction)}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox />
