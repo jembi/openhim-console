@@ -31,9 +31,30 @@ const TransactionLogTable: React.FC<{
     setSettingsOpen(false)
   }
 
-  const handleRowClick = (transaction) => {
+  const handleRowClick = transaction => {
     const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
-    window.location.href = transactionDetailsUrl;
+    window.location.href = transactionDetailsUrl
+  }
+
+  function StatusButton(status, buttonText) {
+    const buttonColor =
+      status === 'Processing'
+        ? 'info'
+        : status === 'Pending Async'
+        ? 'info'
+        : status === 'Successful'
+        ? 'success'
+        : status === 'Completed'
+        ? 'warning'
+        : status === 'Completed with error(s)'
+        ? 'warning'
+        : 'error'
+
+    return (
+      <Button variant="contained" color={buttonColor}>
+        {buttonText}
+      </Button>
+    )
   }
 
   return (
@@ -71,6 +92,7 @@ const TransactionLogTable: React.FC<{
                 <TableCell>Params</TableCell>
                 <TableCell>Channel</TableCell>
                 <TableCell>Client</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Time</TableCell>
               </TableRow>
             </TableHead>
@@ -104,6 +126,26 @@ const TransactionLogTable: React.FC<{
                   <TableCell>{transaction.request.params}</TableCell>
                   <TableCell>{transaction.channelName}</TableCell>
                   <TableCell>{transaction.clientName}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color={
+                        transaction.status === 'Processing'
+                          ? 'info'
+                          : transaction.status === 'Pending Async'
+                          ? 'info'
+                          : transaction.status === 'Successful'
+                          ? 'success'
+                          : transaction.status === 'Completed'
+                          ? 'warning'
+                          : transaction.status === 'Completed with error(s)'
+                          ? 'warning'
+                          : 'error'
+                      }
+                    >
+                      {transaction.status}
+                    </Button>
+                  </TableCell>
                   <TableCell>{transaction.request.timestamp}</TableCell>
                 </TableRow>
               ))}
