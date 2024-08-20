@@ -28,7 +28,7 @@ import {ChannelRoutes} from './steps/routes/ChannelRoutes'
 const useStyles = makeStyles(_theme => ({
   mainCard: {
     width: '600px',
-    borderRadius: '20px'
+    borderRadius: '15px'
   }
 }))
 

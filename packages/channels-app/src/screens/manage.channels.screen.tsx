@@ -37,6 +37,7 @@ import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
 import {Channel, Routes} from '../types'
+import {ErrorMessage} from '../components/helpers/error.component'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
@@ -49,7 +50,6 @@ const ManageChannelsScreen: React.FC = () => {
   const classes = useStyles()
   const {
     isLoading,
-    isError,
     data: channels,
     error,
     refetch
@@ -157,8 +157,8 @@ const ManageChannelsScreen: React.FC = () => {
     return <Loader />
   }
 
-  if (isError) {
-    return <div>{error}</div>
+  if (error) {
+    return <ErrorMessage onRetry={refetch} />
   }
 
   return (
