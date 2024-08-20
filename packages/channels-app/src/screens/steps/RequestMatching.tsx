@@ -107,9 +107,7 @@ export function RequestMatching(props: {
               )
             }}
             value={channel.urlPattern}
-            onChange={e =>
-              setChannel({...channel, urlPattern: e.target.value.trim()})
-            }
+            onChange={e => setChannel({...channel, urlPattern: e.target.value})}
             error={channel.urlPattern.trim() === ''}
             helperText={
               channel.urlPattern.trim() === ''

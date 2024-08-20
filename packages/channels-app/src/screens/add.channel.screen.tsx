@@ -20,6 +20,7 @@ import {useNavigate} from 'react-router-dom'
 import {Channel, Routes} from '../types'
 import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
+import {ChannelRoutes} from './steps/routes/ChannelRoutes'
 
 const steps = ['Basic Info', 'Request Matching', 'Routes']
 
@@ -155,7 +156,7 @@ function AddUserRole() {
                   />
                 )}
                 {activeStep === 2 && (
-                  <BasicInfo
+                  <ChannelRoutes
                     channel={channel}
                     onChange={({channel, isValid}) => {
                       setIsFormValid(isValid)
@@ -174,12 +175,12 @@ function AddUserRole() {
                     color="info"
                     onClick={() => navigate(-1)}
                   >
-                    Cancel
+                    CANCEL
                   </Button>
                 )}
                 {activeStep > 0 && (
                   <Button color="info" variant="contained" onClick={handleBack}>
-                    Back
+                    BACK
                   </Button>
                 )}
                 <span style={{marginRight: '10px'}}></span>
@@ -188,19 +189,19 @@ function AddUserRole() {
                     variant="contained"
                     color="primary"
                     onClick={handleNext}
-                    disabled={mutation.isLoading || channel.name.trim() === ''}
+                    disabled={mutation.isLoading || !isFormValid}
                   >
-                    Next
+                    NEXT
                   </Button>
                 )}
                 {activeStep == steps.length - 1 && (
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={mutation.isLoading || channel.name.trim() === ''}
+                    disabled={mutation.isLoading || !isFormValid}
                     onClick={handleAddRole}
                   >
-                    Add Role
+                    ADD CHANNEL
                   </Button>
                 )}
               </Box>

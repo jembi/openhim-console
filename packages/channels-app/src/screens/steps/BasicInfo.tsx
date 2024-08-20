@@ -107,9 +107,7 @@ export function BasicInfo(props: {
             fullWidth
             margin="normal"
             value={channel.name}
-            onChange={e =>
-              setChannel({...channel, name: e.target.value.trim()})
-            }
+            onChange={e => setChannel({...channel, name: e.target.value})}
             error={channel.name.trim() === ''}
             helperText={
               channel.name.trim() === ''
@@ -171,7 +169,7 @@ export function BasicInfo(props: {
                   margin="normal"
                   value={channel.description}
                   onChange={e =>
-                    setChannel({...channel, description: e.target.value.trim()})
+                    setChannel({...channel, description: e.target.value})
                   }
                 />
               </Grid>

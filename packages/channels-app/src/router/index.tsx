@@ -11,11 +11,11 @@ const router = createMemoryRouter([
   {
     path: Routes.CREATE_CHANNEL,
     element: <AddChannelScreen />
+  },
+  {
+    path: Routes.EDIT_CHANNEL,
+    element: <AddChannelScreen />
   }
-  // {
-  //   path: Routes.EDIT_CHANNEL,
-  //   element: <EditUserRole />
-  // }
 ])
 
 export default router

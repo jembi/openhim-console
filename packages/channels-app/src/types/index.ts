@@ -25,11 +25,15 @@ type AlertsDef = {
   users?: Array<ContactUserDef>
 }
 
-type ChannelRoute = {
+export type ChannelRouteType = 'http' | 'kafka'
+
+export type ChannelRouteStatus = 'enabled' | 'disabled'
+
+export type ChannelRoute = {
   name: string
-  type?: 'http' | 'kafka'
+  type?: ChannelRouteType
   cert?: string // Assuming ObjectId is represented as a string
-  status?: 'enabled' | 'disabled'
+  status?: ChannelRouteStatus
   secured?: boolean
   host?: string
   port?: number
@@ -105,5 +109,6 @@ export type Channel = {
 export enum Routes {
   MANAGE_CHANNELS = '/',
   CREATE_CHANNEL = '/create-channel',
-  EDIT_CHANNEL = '/edit-channel'
+  EDIT_CHANNEL = '/edit-channel',
+  CREATE_ROUTE = '/create-route'
 }
