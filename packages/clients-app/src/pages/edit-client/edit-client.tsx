@@ -4,31 +4,30 @@ import {
   Card,
   Divider,
   Grid,
-  SelectChangeEvent,
   Stack,
   Tab,
   Tabs,
   Typography
 } from '@mui/material'
-import React, {FC, useState} from 'react'
+import React, {useState} from 'react'
 import {AuthenticationModel, BasicInfoModel} from '../../interfaces'
 import {Authentication} from '../components/authentication'
 import {BasicInfo} from '../components/basic-info'
-import {Client, ClientSchema} from '../../types'
+import {ClientSchema} from '../../types'
 import CryptoJS from 'crypto-js'
 import {editClient} from '@jembi/openhim-core-api'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
+import {fetchClientById} from '@jembi/openhim-core-api'
+import { useLoaderData } from 'react-router-dom'
 
-interface EditClientProps {
-  returnToClientList: () => void
-  client: BasicInfoModel | null
+export async function loader({params}) {
+  const client = await fetchClientById(params['clientId']);
+  return {client};
 }
 
-const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
-  if (client?.clientID === null) {
-    returnToClientList()
-  }
+const EditClient = () => {
+  const { client } = useLoaderData() as { client: BasicInfoModel };
 
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string
@@ -116,7 +115,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
         }
       })
       .finally(() => {
-        returnToClientList()
+        window.history.pushState({}, '', '/#!/clients')
       })
   }
 
@@ -209,7 +208,7 @@ const EditClient: FC<EditClientProps> = ({returnToClientList, client}) => {
                 id="cancel"
                 color="success"
                 sx={{color: '#29AC96'}}
-                onClick={() => returnToClientList()}
+                onClick={() => window.history.pushState({}, '', '/#!/clients')}
               >
                 Cancel
               </Button>

@@ -26,11 +26,7 @@ import './style.css'
 import {AxiosError} from 'axios'
 import {useSnackbar} from 'notistack'
 
-interface AddClientProps {
-  returnToClientList: () => void
-}
-
-export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
+export const AddClient = () => {
   //TODO: Make sure that there is a safe guard when incrementing this value to prevent it from going over the number of steps
   const [activeStep, setActiveStep] = useState(0)
   const {enqueueSnackbar, closeSnackbar} = useSnackbar()
@@ -125,7 +121,7 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
         }
       })
       .finally(() => {
-        returnToClientList()
+        window.history.pushState({}, '', '/#!/clients')
       })
   }
 
@@ -189,7 +185,7 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
       setActiveStep(activeStep - 1)
     }
     if (direction === 'cancel') {
-      returnToClientList()
+      window.history.pushState({}, '', '/#!/clients')
     }
     if (direction === 'save') {
       onSaveButtonClicked()
@@ -203,7 +199,11 @@ export const AddClient: FC<AddClientProps> = ({returnToClientList}) => {
           Add Client
         </Typography>
 
-        <Typography variant='body1' component="p" style={{opacity: 0.6, fontSize: '16px'}}>
+        <Typography
+          variant="body1"
+          component="p"
+          style={{opacity: 0.6, fontSize: '16px'}}
+        >
           Control client systems and their access roles. Add clients to enable
           their request routing and group them by roles for streamlined channel
           access management
