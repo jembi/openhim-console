@@ -22,6 +22,7 @@ import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
 import {addChannel} from '../services/api'
+import {makeStyles} from '@mui/styles'
 
 const steps = ['Basic Info', 'Request Matching', 'Routes']
 
@@ -58,7 +59,15 @@ const defaultChannel: Channel = {
   autoRetryPeriodMinutes: 60
 }
 
+const useStyles = makeStyles(_theme => ({
+  mainCard: {
+    width: '600px',
+    borderRadius: '15px'
+  }
+}))
+
 function AddChannelScreen() {
+  const classes = useStyles()
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
@@ -122,7 +131,7 @@ function AddChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card style={{width: '600px'}} elevation={4}>
+          <Card className={classes.mainCard} elevation={4}>
             <Divider />
             <CardContent>
               <div style={{marginBottom: '10px'}}>

@@ -17,10 +17,11 @@ import {
   Typography
 } from '@mui/material'
 import {makeStyles} from '@mui/styles'
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+import {DataGrid, GridColDef} from '@mui/x-data-grid'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import {CustomToolbar} from '../components/helpers/custom.toolbar'
 import {ErrorMessage} from '../components/helpers/error.component'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
@@ -157,7 +158,9 @@ const ManageChannelsScreen: React.FC = () => {
       renderCell: params => (
         <div>
           <IconButton
-            onClick={event => handleOpenContextMenu(event, params.row)}
+            onClick={event =>
+              handleOpenContextMenu(event, channels[params.row.id])
+            }
           >
             <MoreVertIcon />
           </IconButton>
@@ -178,7 +181,9 @@ const ManageChannelsScreen: React.FC = () => {
               <SearchIcon className={classes.actionsIcon} />
               View Logs
             </MenuItem>
-            <MenuItem onClick={() => onActionDisableChannel(params.row)}>
+            <MenuItem
+              onClick={() => onActionDisableChannel(channels[params.row.id])}
+            >
               <CancelIcon className={classes.actionsIcon} />
               Toggle Status
             </MenuItem>
@@ -241,7 +246,7 @@ const ManageChannelsScreen: React.FC = () => {
           rows={rows ?? []}
           columns={columns}
           disableColumnMenu
-          slots={{toolbar: GridToolbar}}
+          slots={{toolbar: CustomToolbar}}
           slotProps={{
             toolbar: {
               showQuickFilter: true
