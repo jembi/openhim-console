@@ -7,41 +7,34 @@ import ViewIcon from '@mui/icons-material/Visibility'
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  Checkbox,
   Chip,
   Divider,
   Grid,
   IconButton,
-  Input,
-  InputAdornment,
   Menu,
   MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
+  Paper,
   Typography
 } from '@mui/material'
 import {makeStyles} from '@mui/styles'
+import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import {ErrorMessage} from '../components/helpers/error.component'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
 import {Channel, Routes} from '../types'
-import {ErrorMessage} from '../components/helpers/error.component'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
     marginRight: '10px'
+  },
+  tableContainer: {
+    padding: '0px'
   }
 }))
 
@@ -83,8 +76,6 @@ const ManageChannelsScreen: React.FC = () => {
   const [selectedChannel, setSelectedChannel] = React.useState<Channel | null>(
     null
   )
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
-  const [page, setPage] = React.useState(0)
 
   const handleOpenContextMenu = (
     event: React.MouseEvent<HTMLElement>,
@@ -97,17 +88,6 @@ const ManageChannelsScreen: React.FC = () => {
   const handleCloseContextMenu = () => {
     setAnchorEl(null)
     setSelectedChannel(null)
-  }
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
   }
 
   const onActionDisableChannel = (channel: Channel) => {
@@ -153,6 +133,70 @@ const ManageChannelsScreen: React.FC = () => {
     window.location.href = `/#!/logs`
   }
 
+  const columns: GridColDef[] = [
+    {field: 'name', headerName: 'Channel Name', flex: 1},
+    {field: 'urlPattern', headerName: 'URL Pattern', flex: 1},
+    {
+      field: 'status',
+      headerName: 'Status',
+      flex: 0.5,
+      renderCell: params => (
+        <Chip
+          label={params.value}
+          color={params.value === 'enabled' ? 'success' : 'error'}
+        />
+      )
+    },
+    {field: 'priority', headerName: 'Priority', flex: 0.5},
+    {field: 'allow', headerName: 'Access', flex: 1},
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 0.5,
+      sortable: false,
+      renderCell: params => (
+        <div>
+          <IconButton
+            onClick={event => handleOpenContextMenu(event, params.row)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseContextMenu}
+          >
+            <MenuItem onClick={handleEditChannel}>
+              <EditIcon className={classes.actionsIcon} />
+              Edit Channel
+            </MenuItem>
+            <MenuItem onClick={handleViewChannelMetrics}>
+              <ViewIcon className={classes.actionsIcon} />
+              View Metrics
+            </MenuItem>
+            <MenuItem divider onClick={handleViewChannelLogs}>
+              <SearchIcon className={classes.actionsIcon} />
+              View Logs
+            </MenuItem>
+            <MenuItem onClick={() => onActionDisableChannel(params.row)}>
+              <CancelIcon className={classes.actionsIcon} />
+              Toggle Status
+            </MenuItem>
+          </Menu>
+        </div>
+      )
+    }
+  ]
+
+  const rows = channels?.map((channel, index) => ({
+    id: index,
+    name: channel.name,
+    urlPattern: channel.urlPattern,
+    status: channel.status,
+    priority: channel.priority ?? '',
+    allow: channel.allow.join(', ')
+  }))
+
   if (isLoading) {
     return <Loader />
   }
@@ -171,7 +215,7 @@ const ManageChannelsScreen: React.FC = () => {
         <Grid item xs={11}>
           <Typography variant="subtitle1" gutterBottom>
             Setup and control your channels.&nbsp;
-            <a href="?">How do channels work?</a>
+            <a href="">How do channels work?</a>
           </Typography>
         </Grid>
         <Grid item xs={1}>
@@ -188,101 +232,24 @@ const ManageChannelsScreen: React.FC = () => {
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
-      <Card elevation={4}>
-        <CardContent>
-          <Grid container>
-            <Grid item xs={2}>
-              <Input
-                placeholder="Search..."
-                fullWidth
-                startAdornment={
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                }
-              />
-            </Grid>
-          </Grid>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox />
-                  </TableCell>
-                  <TableCell>Channel Name</TableCell>
-                  <TableCell>URL Pattern</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Priority</TableCell>
-                  <TableCell>Access</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {channels.map((channel, index) => (
-                  <TableRow key={index}>
-                    <TableCell padding="checkbox">
-                      <Checkbox />
-                    </TableCell>
-                    <TableCell>{channel.name}</TableCell>
-                    <TableCell>{channel.urlPattern}</TableCell>
-                    <TableCell>
-                      {channel.status === 'enabled' ? (
-                        <Chip label="enabled" color="success" />
-                      ) : (
-                        <Chip label="disabled" color="error" />
-                      )}
-                    </TableCell>
-                    <TableCell>{channel.priority ?? '-'}</TableCell>
-                    <TableCell>{channel.allow.join(', ')}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        onClick={event => handleOpenContextMenu(event, channel)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-                      <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleCloseContextMenu}
-                      >
-                        <MenuItem onClick={handleEditChannel}>
-                          <EditIcon className={classes.actionsIcon} />
-                          Edit Channel
-                        </MenuItem>
-                        <MenuItem onClick={handleViewChannelMetrics}>
-                          <ViewIcon className={classes.actionsIcon} />
-                          View Metrics
-                        </MenuItem>
-                        <MenuItem divider onClick={handleViewChannelLogs}>
-                          <SearchIcon className={classes.actionsIcon} />
-                          View Logs
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() =>
-                            onActionDisableChannel(selectedChannel!)
-                          }
-                        >
-                          <CancelIcon className={classes.actionsIcon} />
-                          Toggle Status
-                        </MenuItem>
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            component="section"
-            count={channels.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </CardContent>
-      </Card>
+      <Paper elevation={4} className={classes.tableContainer}>
+        <DataGrid
+          disableRowSelectionOnClick
+          disableDensitySelector
+          density="comfortable"
+          loading={isLoading || mutation.isLoading}
+          rows={rows ?? []}
+          columns={columns}
+          disableColumnMenu
+          slots={{toolbar: GridToolbar}}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true
+            }
+          }}
+          pagination
+        />
+      </Paper>
     </Box>
   )
 }

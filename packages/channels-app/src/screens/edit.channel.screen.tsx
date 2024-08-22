@@ -150,7 +150,11 @@ function EditChannelScreen() {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={mutation.isLoading || !isFormValid || JSON.stringify(channel) === JSON.stringify(originalChannel)}
+                  disabled={
+                    mutation.isLoading ||
+                    !isFormValid ||
+                    JSON.stringify(channel) === JSON.stringify(originalChannel)
+                  }
                   onClick={handleEditChannel}
                 >
                   SAVE

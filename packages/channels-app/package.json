@@ -53,6 +53,7 @@
     "@mui/lab": "^5.0.0-alpha.173",
     "@mui/material": "^5.16.7",
     "@mui/styles": "^5.16.7",
+    "@mui/x-data-grid": "^7.13.0",
     "@tanstack/react-query": "^4.36.1",
     "@types/jest": "^27.0.1",
     "@types/react": "^17.0.19",
