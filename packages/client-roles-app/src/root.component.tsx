@@ -2,14 +2,34 @@ import {SnackbarProvider} from 'notistack'
 import {StrictMode, useState} from 'react'
 import {ThemeProvider} from '@emotion/react'
 import {ListRoles} from './pages/list-client-roles/list-client-roles'
-import {ClientRoleForm} from './pages/client-role-form/client-role-form'
+import {ClientRoleForm, loader as clientFormLoader} from './pages/client-role-form/client-role-form'
 import {ClientRole} from './interface'
 import theme from '@jembi/openhim-theme'
 import './app.css'
+import {createHashRouter, RouterProvider} from 'react-router-dom'
 
 export default function Root(props) {
-  const defaultPage = window.location.toString().includes('add') ? 'client-role-form' : 'list-roles'
-  
+  const router = createHashRouter([
+    {
+      path: '!/client-roles',
+      element: <ListRoles />
+    },
+    {
+      path: '!/client-roles/add',
+      element: <ClientRoleForm />,
+      loader: clientFormLoader
+    },
+    {
+      path: '!/client-roles/edit/:roleName',
+      element: <ClientRoleForm />,
+      loader: clientFormLoader
+    }
+  ])
+
+  const defaultPage = window.location.toString().includes('add')
+    ? 'client-role-form'
+    : 'list-roles'
+
   const [activePage, setActivePage] = useState<
     'list-roles' | 'client-role-form'
   >(defaultPage)
@@ -27,7 +47,7 @@ export default function Root(props) {
   const editUserRole = (clientRole: ClientRole) => {
     setExistingClientRole(clientRole)
     setActivePage('client-role-form')
-    window.history.pushState({}, '', '/#!/client-roles/edit')
+    window.history.pushState({}, '', '/#!/client-roles/edit/:roleName')
   }
 
   return (
@@ -41,18 +61,7 @@ export default function Root(props) {
               height: '100vh'
             }}
           >
-            {activePage === 'list-roles' && (
-              <ListRoles
-                addUserRole={addUserRole}
-                editUserRole={editUserRole}
-              />
-            )}
-            {activePage === 'client-role-form' && (
-              <ClientRoleForm
-                returnToRolesList={returnToListRoles}
-                existingClientRole={existingClientRole}
-              />
-            )}
+            <RouterProvider router={router} />
           </div>
         </SnackbarProvider>
       </ThemeProvider>
