@@ -37,7 +37,7 @@ const useStyles = makeStyles(_theme => ({
     padding: '10px'
   },
   optionalSettingsContainer: {
-    borderRadius: '15px',
+    borderRadius: '20px',
     padding: '12px'
   },
   channelTypeRadioGroup: {
@@ -141,8 +141,9 @@ export function BasicInfo(props: {
       </Grid>
 
       <Divider className={classes.divider2} />
+      <br />
 
-      <Paper elevation={1} className={classes.optionalSettingsContainer}>
+      <Paper elevation={2} className={classes.optionalSettingsContainer}>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="body1">Optional Settings</Typography>

@@ -9,6 +9,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  Paper,
   Typography
 } from '@mui/material'
 import Tab from '@mui/material/Tab'
@@ -29,6 +30,15 @@ const useStyles = makeStyles(_theme => ({
   mainCard: {
     width: '600px',
     borderRadius: '15px'
+  },
+  header: {
+    marginBottom: '40px'
+  },
+  cardActions: {
+    padding: '10px'
+  },
+  cardActionsBtnGap: {
+    marginRight: '10px'
   }
 }))
 
@@ -68,7 +78,7 @@ function EditChannelScreen() {
 
   return (
     <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{marginBottom: '40px'}}>
+      <header className={classes.header}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit Channel
         </Typography>
@@ -91,77 +101,71 @@ function EditChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card className={classes.mainCard} elevation={4}>
-            <CardContent>
-              <TabContext value={activeTab}>
-                <TabList
-                  onChange={(e, newValue) => setActiveTab(newValue)}
-                  centered
-                  variant="fullWidth"
-                >
-                  <Tab label="Basic Info" value="0" />
-                  <Tab label="Request Matching" value="1" />
-                  <Tab label="Routes" value="2" />
-                </TabList>
-                <TabPanel value="0">
-                  <BasicInfo
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                </TabPanel>
-                <TabPanel value="1">
-                  <RequestMatching
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                </TabPanel>
-                <TabPanel value="2">
-                  <ChannelRoutes
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                </TabPanel>
-              </TabContext>
-            </CardContent>
+          <Paper className={classes.mainCard} elevation={4}>
+            <TabContext value={activeTab}>
+              <TabList
+                onChange={(e, newValue) => setActiveTab(newValue)}
+                centered
+                variant="fullWidth"
+              >
+                <Tab label="Basic Info" value="0" />
+                <Tab label="Request Matching" value="1" />
+                <Tab label="Routes" value="2" />
+              </TabList>
+              <TabPanel value="0">
+                <BasicInfo
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              </TabPanel>
+              <TabPanel value="1">
+                <RequestMatching
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              </TabPanel>
+              <TabPanel value="2">
+                <ChannelRoutes
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              </TabPanel>
+            </TabContext>
 
-            <Divider />
+            <Box className={classes.cardActions}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => navigate(-1)}
+              >
+                CANCEL
+              </Button>
 
-            <CardActions>
-              <Box display="flex" justifyContent="space-between">
-                <Button
-                  variant="outlined"
-                  color="info"
-                  onClick={() => navigate(-1)}
-                >
-                  CANCEL
-                </Button>
+              <span className={classes.cardActionsBtnGap}></span>
 
-                <span style={{marginRight: '10px'}}></span>
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={
-                    mutation.isLoading ||
-                    !isFormValid ||
-                    JSON.stringify(channel) === JSON.stringify(originalChannel)
-                  }
-                  onClick={handleEditChannel}
-                >
-                  SAVE
-                </Button>
-              </Box>
-            </CardActions>
-          </Card>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={
+                  mutation.isLoading ||
+                  !isFormValid ||
+                  JSON.stringify(channel) === JSON.stringify(originalChannel)
+                }
+                onClick={handleEditChannel}
+              >
+                SAVE
+              </Button>
+            </Box>
+          </Paper>
         </Grid>
       </Grid>
     </Box>

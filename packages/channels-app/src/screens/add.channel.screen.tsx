@@ -1,28 +1,26 @@
 import {
   Box,
-  Typography,
-  Grid,
-  Card,
+  Button,
   Divider,
-  CardContent,
-  Stepper,
+  Grid,
+  Paper,
   Step,
   StepLabel,
-  CardActions,
-  Button
+  Stepper,
+  Typography
 } from '@mui/material'
+import {makeStyles} from '@mui/styles'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
+import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {useNavigate} from 'react-router-dom'
+import {addChannel} from '../services/api'
 import {Channel, Routes} from '../types'
 import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
-import {addChannel} from '../services/api'
-import {makeStyles} from '@mui/styles'
 
 const steps = ['Basic Info', 'Request Matching', 'Routes']
 
@@ -62,7 +60,18 @@ const defaultChannel: Channel = {
 const useStyles = makeStyles(_theme => ({
   mainCard: {
     width: '600px',
-    borderRadius: '15px'
+    borderRadius: '15px',
+    padding: '20px'
+  },
+  header: {
+    marginBottom: '40px'
+  },
+  cardActions: {
+    // padding: '10px',
+    marginTop: '30px'
+  },
+  cardActionsBtnGap: {
+    marginRight: '10px'
   }
 }))
 
@@ -76,7 +85,7 @@ function AddChannelScreen() {
   const [isFormValid, setIsFormValid] = React.useState(false)
   const mutation = useMutation({
     mutationFn: addChannel,
-    onMutate: (channel: Channel) => {
+    onMutate: () => {
       showBackdrop(<Loader />, true)
     },
     onSuccess: () => {
@@ -108,7 +117,7 @@ function AddChannelScreen() {
 
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{marginBottom: '40px'}}>
+      <header className={classes.header}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Add Channel
         </Typography>
@@ -131,90 +140,90 @@ function AddChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card className={classes.mainCard} elevation={4}>
+          <Paper className={classes.mainCard} elevation={4}>
+            <div style={{marginBottom: '10px'}}>
+              <Stepper activeStep={activeStep}>
+                {steps.map(label => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </div>
             <Divider />
-            <CardContent>
-              <div style={{marginBottom: '10px'}}>
-                <Stepper activeStep={activeStep}>
-                  {steps.map(label => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </div>
-              <Divider />
-              <div style={{marginTop: '10px'}}>
-                {activeStep === 0 && (
-                  <BasicInfo
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                )}
-                {activeStep === 1 && (
-                  <RequestMatching
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                )}
-                {activeStep === 2 && (
-                  <ChannelRoutes
-                    channel={channel}
-                    onChange={({channel, isValid}) => {
-                      setIsFormValid(isValid)
-                      setChannel(channel)
-                    }}
-                  />
-                )}
-              </div>
-            </CardContent>
+            <div style={{marginTop: '10px'}}>
+              {activeStep === 0 && (
+                <BasicInfo
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              )}
+              {activeStep === 1 && (
+                <RequestMatching
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              )}
+              {activeStep === 2 && (
+                <ChannelRoutes
+                  channel={channel}
+                  onChange={({channel, isValid}) => {
+                    setIsFormValid(isValid)
+                    setChannel(channel)
+                  }}
+                />
+              )}
+            </div>
             <Divider />
-            <CardActions>
-              <Box display="flex" justifyContent="space-between">
-                {activeStep === 0 && (
-                  <Button
-                    variant="outlined"
-                    color="info"
-                    onClick={() => navigate(-1)}
-                  >
-                    CANCEL
-                  </Button>
-                )}
-                {activeStep > 0 && (
-                  <Button color="info" variant="contained" onClick={handleBack}>
-                    BACK
-                  </Button>
-                )}
-                <span style={{marginRight: '10px'}}></span>
-                {activeStep != steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    disabled={mutation.isLoading || !isFormValid}
-                  >
-                    NEXT
-                  </Button>
-                )}
-                {activeStep == steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={mutation.isLoading || !isFormValid}
-                    onClick={handleAddChannel}
-                  >
-                    ADD CHANNEL
-                  </Button>
-                )}
-              </Box>
-            </CardActions>
-          </Card>
+
+            <Box className={classes.cardActions}>
+              {activeStep === 0 && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => navigate(-1)}
+                >
+                  CANCEL
+                </Button>
+              )}
+              {activeStep > 0 && (
+                <Button color="info" variant="contained" onClick={handleBack}>
+                  BACK
+                </Button>
+              )}
+              <span className={classes.cardActionsBtnGap}></span>
+              {activeStep != steps.length - 1 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  disabled={mutation.isLoading || !isFormValid}
+                >
+                  NEXT
+                </Button>
+              )}
+              {activeStep == steps.length - 1 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={
+                    mutation.isLoading ||
+                    !isFormValid ||
+                    JSON.stringify(channel) === JSON.stringify(defaultChannel)
+                  }
+                  onClick={handleAddChannel}
+                >
+                  ADD CHANNEL
+                </Button>
+              )}
+            </Box>
+          </Paper>
         </Grid>
       </Grid>
     </Box>

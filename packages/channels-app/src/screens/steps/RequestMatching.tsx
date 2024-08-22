@@ -26,23 +26,17 @@ import {TagInputAutocomplete} from '../../components/helpers/tags.input.autocomp
 const useStyles = makeStyles(_theme => ({
   divider: {
     marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
+    marginBottom: '10px'
   },
   divider2: {
     marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '30px',
-    overflow: 'visible'
+    marginBottom: '30px'
   },
   allowedMethodsContainer: {
     padding: '10px'
   },
   optionalSettingsContainer: {
-    borderRadius: '15px',
+    borderRadius: '20px',
     padding: '12px'
   },
   channelTypeRadioGroup: {
@@ -159,9 +153,11 @@ export function RequestMatching(props: {
         </Grid>
       </Grid>
 
+      <br />
       <Divider className={classes.divider2} />
+      <br />
 
-      <Paper elevation={1} className={classes.optionalSettingsContainer}>
+      <Paper elevation={2} className={classes.optionalSettingsContainer}>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="body1">Optional Settings</Typography>
@@ -251,6 +247,7 @@ export function RequestMatching(props: {
 
                 {isMatchSpecificRequestContent && (
                   <React.Fragment>
+                    <br />
                     <Grid item xs={12} className={classes.controlSection}>
                       <TagInputAutocomplete
                         tags={channel.matchContentTypes}
