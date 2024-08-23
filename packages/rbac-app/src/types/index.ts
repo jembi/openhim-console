@@ -45,9 +45,9 @@ export type Role = {
 }
 
 export enum Routes {
-  ROLES = '/',
-  CREATE_ROLE = '/create-role',
-  EDIT_ROLE = '/edit-role'
+  ROLES = '!/rbac',
+  CREATE_ROLE = '!/rbac/create-role',
+  EDIT_ROLE = '!/rbac/edit-role/:roleName'
 }
 
 export type Request = {

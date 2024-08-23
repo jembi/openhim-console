@@ -153,6 +153,54 @@ export function BasicInfo(props: {
             </Typography>
           </Typography>
         </Grid>
+        <Grid item xs={12}>
+          <Card elevation={0}>
+            <CardHeader title="Preference" />
+            <CardContent>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.openTransactionInNewTab}
+                        onChange={e =>
+                          handleSwitchToggle('settings.openTransactionInNewTab' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Open Transactions in a new tab."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.autoUpdateTransactionList}
+                        onChange={e =>
+                          handleSwitchToggle('settings.autoUpdateTransactionList' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Auto-update Transaction List."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.showTooltips}
+                        onChange={e =>
+                          handleSwitchToggle('settings.showToolTips' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Show Tooltips"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
         <Grid item xs={12}>
           <Card elevation={0}>

@@ -54,7 +54,7 @@ function UsersList() {
   }
 
   const handleRowClick = (user: User) => {
-    navigate(Routes.EDIT_USER, {state: user})
+    window.history.pushState({}, '', `/#!/users/edit-user/${user._id}`)
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -104,7 +104,9 @@ function UsersList() {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => navigate(Routes.CREATE_USER)}
+            onClick={() =>
+              window.history.pushState({}, '', `/#${Routes.CREATE_USER}`)
+            }
           >
             Add
           </Button>

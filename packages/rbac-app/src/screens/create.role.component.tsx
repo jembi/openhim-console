@@ -71,7 +71,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.ROLES)
+      window.history.pushState({}, `/#${Routes.ROLES}`)
     },
     onError: error => {
       hideBackdrop()
