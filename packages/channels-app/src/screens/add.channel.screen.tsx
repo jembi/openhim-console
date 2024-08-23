@@ -180,7 +180,6 @@ function AddChannelScreen() {
                 />
               )}
             </div>
-            <Divider />
 
             <Box className={classes.cardActions}>
               {activeStep === 0 && (
