@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   Dialog,
@@ -9,10 +8,9 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  Stack,
   Typography
 } from '@mui/material'
-import {Client} from '../../types'
+import {Client } from '../../types'
 import {
   DataGrid,
   GridActionsCellItem,
@@ -20,24 +18,21 @@ import {
   GridRowParams,
   GridToolbar
 } from '@mui/x-data-grid'
-import {FC, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {BasicInfoModel} from '../../interfaces'
+
 import './data-grid-styling.css'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
 
-interface ClientsListProps {
-  addClient: () => void
-  editClient: (id: BasicInfoModel) => void
-}
-
-const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
+const ClientsList = () => {
   const [clients, setClients] = useState<Client[]>([])
-  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+  const {enqueueSnackbar} = useSnackbar()
+
+  const addingClient = new URL(window.origin + '/#!/clients/add')
 
   useEffect(() => {
     //@ts-ignore
@@ -95,7 +90,11 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
           label="Edit"
           key="edit"
           onClick={() => {
-            editClient(params.row as BasicInfoModel)
+            window.history.pushState(
+              {client: params.row},
+              '',
+              `/#!/clients/edit/${params.row['_id']}`
+            )
           }}
         />,
         <GridActionsCellItem
@@ -125,7 +124,11 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
         <Typography variant="h6" color="black" gutterBottom>
           No Clients Available
         </Typography>
-        <Button startIcon={<AddIcon />} onClick={addClient} />
+        <a href={addingClient.toString()}>
+          <Button
+            startIcon={<AddIcon />}
+          />
+        </a>
       </div>
     )
   }
@@ -171,13 +174,14 @@ const ClientsList: FC<ClientsListProps> = ({addClient, editClient}) => {
               </p>
             </Grid>
             <Grid item xs={1}>
-              <Button
-                style={{backgroundColor: '#29AC96'}}
-                variant="contained"
-                onClick={addClient}
-              >
-                <AddIcon /> Add
-              </Button>
+              <a href={addingClient.toString()}>
+                <Button
+                  style={{backgroundColor: '#29AC96'}}
+                  variant="contained"
+                >
+                  <AddIcon /> Add
+                </Button>
+              </a>
             </Grid>
           </Grid>
 

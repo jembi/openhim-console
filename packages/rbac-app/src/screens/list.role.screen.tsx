@@ -29,6 +29,7 @@ import {Permission, Role, Routes} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
 
 function UserRoleList() {
+  const addClientURL = new URL(window.origin + '/#!/rbac/create-role');
   const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
@@ -53,7 +54,7 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
-    navigate(Routes.EDIT_ROLE, {state: role})
+    window.history.pushState({},'', `/#!/rbac/edit-role/${role.name}`)
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -161,14 +162,15 @@ function UserRoleList() {
           </Typography>
         </Grid>
         <Grid item xs={1}>
+          <a href={addClientURL.toString()}>
           <Button
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => navigate(Routes.CREATE_ROLE)}
           >
             Add
           </Button>
+          </a>
         </Grid>
       </Grid>
 

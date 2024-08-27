@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useLoaderData, useLocation, useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {
@@ -29,6 +29,7 @@ import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
+import { getRoles } from '../services/api'
 
 const steps = [
   'Channels & Clients',
@@ -48,18 +49,25 @@ const queryFn = async () => {
   return {channels, clients, transactions, mediators, apps}
 }
 
+export async function loader({params}) {
+  const roles = await getRoles();
+  const role = roles.find(role => role.name === params.roleName);
+  return {role};
+}
+
 function EditUserRole() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const { role: state } = useLoaderData() as {role: Role};
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
-  const originalRole = structuredClone(location.state)
-  const [role, setRole] = React.useState<Role>(structuredClone(location.state))
+  const originalRole = structuredClone(state)
+  const [role, setRole] = React.useState<Role>(structuredClone(state))
   const queryKey = React.useMemo(() => ['query.EditUserRole'], [])
   const query = useQuery(queryKey, queryFn, {
     staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
   })
+  
   const mutation = useMutation({
     mutationFn: () => editRoleByName(originalRole.name, role),
     onMutate: () => {

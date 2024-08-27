@@ -11,11 +11,11 @@ import {
 import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate, useLocation} from 'react-router-dom'
+import {useNavigate, useLocation, useLoaderData} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {createNewUser, editUserByEmail, getRoles} from '../services/api'
+import {createNewUser, editUserByEmail, getRoles, getUsers} from '../services/api'
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
 
@@ -30,13 +30,19 @@ const useStyles = makeStyles(_theme => ({
   cardActionsGap: {marginRight: '10px'}
 }))
 
+export async function loader({params}) {
+  const users = await getUsers();
+  const user = users.find(user => user._id === params['userId']);
+  return {user}
+}
+
 function AddUserRole() {
   const classes = useStyles()
-  const location = useLocation()
+  const {user: state} = useLoaderData() as { user: User }
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const originalUser = structuredClone(location.state as User)
+  const originalUser = structuredClone(state as User)
   const [user, setUser] = React.useState(structuredClone(originalUser))
   const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
@@ -46,7 +52,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.USERS)
+      window.history.pushState({},'',`/#${Routes.USERS}`)
     },
     onError: error => {
       hideBackdrop()

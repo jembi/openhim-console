@@ -112,8 +112,8 @@ const pages: Page[] = [
       {name: 'Manage Users', link: '#!/users'},
       {name: 'Add User', link: '#!/users/create-user'},
       DIVIDER_MENU_ITEM,
-      {name: 'Manage User Roles', link: '#!/rbac'},
-      {name: 'Add User Role', link: '#!/roles/create-user'}
+      {name: 'Role Based Access Control', link: '#!/rbac'},
+      {name: 'Role Based Access Control - Add', link: '#!/rbac/create-role'}
     ]
   },
   {

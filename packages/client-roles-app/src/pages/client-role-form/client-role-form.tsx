@@ -15,9 +15,6 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Step,
-  StepLabel,
-  Stepper,
   TextField,
   Typography
 } from '@mui/material'
@@ -26,11 +23,8 @@ import {ClientRole} from '../../interface'
 import { Channel, Client, getAllClientsAndChannels, upsertRole } from '../../utils'
 import { AxiosError } from 'axios'
 import {useSnackbar} from 'notistack'
-
-interface ClientRoleFormProps {
-  returnToRolesList: () => void
-  existingClientRole?: ClientRole
-}
+import {fetchClientRoles} from '@jembi/openhim-core-api'
+import { useLoaderData } from 'react-router-dom'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -62,10 +56,22 @@ const pageHeadingTypography = {
   }
 }
 
-export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
-  returnToRolesList,
-  existingClientRole
-}) => {
+export async function loader({params}) {
+  if (params['roleName'] === undefined) {
+    return {}
+  }
+  
+  const allClientRoles = await fetchClientRoles();
+  const existingClientRole = allClientRoles.find(role => role.roleName === params['roleName']);
+
+  return {
+    existingClientRole
+  }
+}
+
+export const ClientRoleForm = () => {
+  const { existingClientRole } = useLoaderData() as { existingClientRole: ClientRole };
+
   const [clientRole, setClientRole] = useState<ClientRole>({
     ...defaultClientRoleState,
     ...existingClientRole
@@ -183,7 +189,7 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
         variant: 'error'
       })
     }
-    returnToRolesList()
+    window.history.pushState({}, '', '/#!/client-roles')
   }
 
   return (
@@ -281,7 +287,7 @@ export const ClientRoleForm: React.FC<ClientRoleFormProps> = ({
           </FormControl>
           <Divider />
           <Box sx={{display: 'flex', justifyContent: 'flex-start', p: 1}}>
-            <Button onClick={returnToRolesList} sx={{borderColor: '#29AC96' , color:'#29AC96' }} variant="outlined">
+            <Button onClick={() => window.history.pushState({}, '', '/#!/client-roles')} sx={{borderColor: '#29AC96' , color:'#29AC96' }} variant="outlined">
               Cancel
             </Button>
             <Button onClick={handleSaveButtonClicked} sx={{ml: 1, backgroundColor: '#29AC96'}} variant="contained">

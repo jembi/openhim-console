@@ -1,10 +1,10 @@
-import {createMemoryRouter} from 'react-router-dom'
+import {createHashRouter, createMemoryRouter} from 'react-router-dom'
 import AddUserRole from '../screens/create.role.component'
 import UserRoleList from '../screens/list.role.screen'
 import {Routes} from '../types'
-import EditUserRole from '../screens/edit.role.component'
+import EditUserRole, {loader as EditUserRoleLoader} from '../screens/edit.role.component'
 
-const router = createMemoryRouter([
+const router = createHashRouter([
   {
     path: Routes.ROLES,
     element: <UserRoleList />
@@ -15,7 +15,8 @@ const router = createMemoryRouter([
   },
   {
     path: Routes.EDIT_ROLE,
-    element: <EditUserRole />
+    element: <EditUserRole />,
+    loader: EditUserRoleLoader
   }
 ])
 
