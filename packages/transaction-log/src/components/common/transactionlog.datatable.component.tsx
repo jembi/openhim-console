@@ -19,6 +19,7 @@ import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.component'
+import StatusButton from '../buttons/status.button.component'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
@@ -34,7 +35,7 @@ const TransactionLogTable: React.FC<{
     setSettingsOpen(false)
   }
 
-  const handleRowClick = (transaction: { _id: any }) => {
+  const handleRowClick = (transaction: {_id: any}) => {
     const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
 
     if (openInNewTab) {
@@ -114,24 +115,10 @@ const TransactionLogTable: React.FC<{
                   <TableCell>{transaction.channelName}</TableCell>
                   <TableCell>{transaction.clientName}</TableCell>
                   <TableCell>
-                    <Button
-                      variant="contained"
-                      color={
-                        transaction.status === 'Processing'
-                          ? 'info'
-                          : transaction.status === 'Pending Async'
-                          ? 'info'
-                          : transaction.status === 'Successful'
-                          ? 'success'
-                          : transaction.status === 'Completed'
-                          ? 'warning'
-                          : transaction.status === 'Completed with error(s)'
-                          ? 'warning'
-                          : 'error'
-                      }
-                    >
-                      {transaction.status}
-                    </Button>
+                    <StatusButton
+                      status={transaction.status}
+                      buttonText={transaction.status}
+                    />
                   </TableCell>
                   <TableCell>
                     {convertTimestampFormat(transaction.request.timestamp)}

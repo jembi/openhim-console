@@ -1,6 +1,8 @@
+import React from 'react'
 import {Button} from '@mui/material'
+import {StatusButtonProps} from '../../interfaces/index.interface'
 
-const StatusButton: React.FC = () => {
+const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
   const buttonColor =
     status === 'Processing'
       ? 'info'
@@ -16,7 +18,7 @@ const StatusButton: React.FC = () => {
 
   return (
     <Button variant="contained" color={buttonColor}>
-      {/* {buttonText} */}
+      {buttonText}
     </Button>
   )
 }
