@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const [client, setClient] = useState(NO_FILTER)
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -140,7 +141,8 @@ const App: React.FC = () => {
       path,
       param,
       client,
-      method
+      method,
+      loading
     ]
   )
 
@@ -192,7 +194,13 @@ const App: React.FC = () => {
   }
 
   const loadMore = () => {
-    setLimit(prevLimit => prevLimit + 20)
+    setLoading(true)
+    try {
+      setLimit(prevLimit => prevLimit + 20)
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   const filteredTransactions = transactions.filter(transaction => {
@@ -311,6 +319,7 @@ const App: React.FC = () => {
             <TransactionLogTable
               transactions={filteredTransactions}
               loadMore={loadMore}
+              loading={loading}
               onRowClick={handleRowClick}
             />
           </CardContent>

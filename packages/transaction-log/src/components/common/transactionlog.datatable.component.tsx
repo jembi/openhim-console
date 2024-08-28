@@ -11,18 +11,21 @@ import {
   Typography,
   Button,
   IconButton,
-  TableFooter
+  TableFooter,
+  CircularProgress
 } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
+import convertTimestampFormat from '../helpers/timestampformat.component'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
   loadMore: () => void
-  onRowClick: (transaction) => void
-}> = ({transactions, loadMore, onRowClick}) => {
+  loading: boolean
+  onRowClick: (transaction: any) => void
+}> = ({transactions, loadMore, onRowClick, loading}) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
@@ -31,30 +34,14 @@ const TransactionLogTable: React.FC<{
     setSettingsOpen(false)
   }
 
-  const handleRowClick = transaction => {
+  const handleRowClick = (transaction: { _id: any }) => {
     const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
-    window.location.href = transactionDetailsUrl
-  }
 
-  function StatusButton(status, buttonText) {
-    const buttonColor =
-      status === 'Processing'
-        ? 'info'
-        : status === 'Pending Async'
-        ? 'info'
-        : status === 'Successful'
-        ? 'success'
-        : status === 'Completed'
-        ? 'warning'
-        : status === 'Completed with error(s)'
-        ? 'warning'
-        : 'error'
-
-    return (
-      <Button variant="contained" color={buttonColor}>
-        {buttonText}
-      </Button>
-    )
+    if (openInNewTab) {
+      window.open(transactionDetailsUrl, '_blank')
+    } else {
+      window.location.href = transactionDetailsUrl
+    }
   }
 
   return (
@@ -146,15 +133,25 @@ const TransactionLogTable: React.FC<{
                       {transaction.status}
                     </Button>
                   </TableCell>
-                  <TableCell>{transaction.request.timestamp}</TableCell>
+                  <TableCell>
+                    {convertTimestampFormat(transaction.request.timestamp)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={10} align="right">
-                  <Button onClick={loadMore} endIcon={<ChevronRight />}>
-                    Load 20 more results
+                <TableCell colSpan={11} align="right">
+                  <Button
+                    onClick={loadMore}
+                    endIcon={<ChevronRight />}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <CircularProgress size={24} />
+                    ) : (
+                      'Load 20 more results'
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>
