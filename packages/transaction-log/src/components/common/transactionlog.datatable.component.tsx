@@ -18,7 +18,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
-import convertTimestampFormat from '../helpers/timestampformat.component'
+import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 import StatusButton from '../buttons/status.button.component'
 
 const TransactionLogTable: React.FC<{
