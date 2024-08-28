@@ -172,9 +172,6 @@ export function ChannelRoutes(props: {
           <Table>
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell> */}
                 <TableCell>Name</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Host | Port</TableCell>
@@ -186,9 +183,6 @@ export function ChannelRoutes(props: {
             <TableBody>
               {props.channel.routes?.map((route, index) => (
                 <TableRow key={index}>
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox />
-                  </TableCell> */}
                   <TableCell>{route.name}</TableCell>
                   <TableCell>{route.type}</TableCell>
                   <TableCell>{`${route.host ?? '-'} : ${
