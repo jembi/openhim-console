@@ -193,10 +193,12 @@ const App: React.FC = () => {
     }
   }
 
-  const loadMore = () => {
+  const loadMore = async () => {
     setLoading(true)
     try {
       setLimit(prevLimit => prevLimit + 20)
+
+      await fetchTransactionLogs()
     } catch (error) {
     } finally {
       setLoading(false)
