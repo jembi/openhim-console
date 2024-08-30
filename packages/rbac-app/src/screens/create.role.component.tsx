@@ -186,7 +186,7 @@ function AddUserRole() {
                   </Button>
                 )}
                 {activeStep > 0 && (
-                  <Button color="info" variant="contained" onClick={handleBack}>
+                  <Button color="info" variant="outlined" onClick={handleBack}>
                     Back
                   </Button>
                 )}

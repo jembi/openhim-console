@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
 import Search from '@mui/icons-material/Search'
 import {
   Box,
@@ -7,6 +8,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  IconButton,
   Input,
   InputAdornment,
   Table,
@@ -29,7 +31,7 @@ import {Permission, Role, Routes} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
 
 function UserRoleList() {
-  const addClientURL = new URL(window.origin + '/#!/rbac/create-role');
+  const addClientURL = new URL(window.origin + '/#!/rbac/create-role')
   const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
@@ -54,7 +56,7 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
-    window.history.pushState({},'', `/#!/rbac/edit-role/${role.name}`)
+    window.history.pushState({}, '', `/#!/rbac/edit-role/${role.name}`)
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -163,13 +165,9 @@ function UserRoleList() {
         </Grid>
         <Grid item xs={1}>
           <a href={addClientURL.toString()}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-          >
-            Add
-          </Button>
+            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+              Add
+            </Button>
           </a>
         </Grid>
       </Grid>
@@ -202,17 +200,23 @@ function UserRoleList() {
                   <TableCell>Manage</TableCell>
                   <TableCell>View</TableCell>
                   <TableCell>Additional Permissions</TableCell>
+                  <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredRoles
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((role, index) => (
-                    <TableRow onClick={() => handleRowClick(role)} key={index}>
+                    <TableRow key={index}>
                       <TableCell>{role.name}</TableCell>
                       <TableCell>{getManagePermissions(role)}</TableCell>
                       <TableCell>{getViewPermissions(role)}</TableCell>
                       <TableCell>{getAdditionalPermissions(role)}</TableCell>
+                      <TableCell align="right">
+                        <IconButton onClick={() => handleRowClick(role)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
