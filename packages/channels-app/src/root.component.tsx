@@ -1,7 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import React from 'react'
 import theme from '@jembi/openhim-theme'
-import {ThemeProvider} from '@mui/material'
+import {ThemeProvider} from '@emotion/react'
 import {AlertProvider} from './contexts/alert.context'
 import {BasicBackdropProvider} from './contexts/backdrop.context'
 import {ConfirmationProvider} from './contexts/confirmation.context'

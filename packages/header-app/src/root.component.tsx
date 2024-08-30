@@ -1,6 +1,6 @@
 import theme from '@jembi/openhim-theme'
 import Box from '@mui/material/Box'
-import {ThemeProvider} from '@mui/material/styles'
+import {ThemeProvider} from '@emotion/react'
 import OpenhimAppBar from './components/openhim.appbar.component'
 import {ConfirmationProvider} from './contexts/confirmation.context'
 
