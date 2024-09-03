@@ -1,26 +1,12 @@
 import AddIcon from '@mui/icons-material/Add'
-import Search from '@mui/icons-material/Search'
 import CreateIcon from '@mui/icons-material/Create'
 import ErrorIcon from '@mui/icons-material/Error'
-import Edit from '@mui/icons-material/Edit'
 import {
   Box,
   Button,
   Card,
-  CardContent,
   Divider,
   Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
@@ -43,7 +29,7 @@ const noRolesOverlay = () => (
     }}
   >
     <ErrorIcon fontSize="large" color="disabled" />
-    <Box sx={{m: 1}}>No Roles Found</Box>
+    <Box sx={{m: 1}}>No Users Found</Box>
     <a href="">
       <Button startIcon={<AddIcon />}>Add</Button>
     </a>
