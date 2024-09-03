@@ -1,22 +1,11 @@
 import AddIcon from '@mui/icons-material/Add'
-import Search from '@mui/icons-material/Search'
+import ErrorIcon from '@mui/icons-material/Error'
 import {
   Box,
   Button,
   Card,
-  CardContent,
   Divider,
   Grid,
-  Input,
-  InputAdornment,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
@@ -27,9 +16,28 @@ import Loader from '../components/helpers/loader.component'
 import {getRoles} from '../services/api'
 import {Permission, Role, Routes} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
+import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+
+const noRolesOverlay = () => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}
+  >
+    <ErrorIcon fontSize="large" color="disabled" />
+    <Box sx={{m: 1}}>No Users Found</Box>
+    <a href="">
+      <Button startIcon={<AddIcon />}>Add</Button>
+    </a>
+  </div>
+)
 
 function UserRoleList() {
-  const addClientURL = new URL(window.origin + '/#!/rbac/create-role');
+  const addClientURL = new URL(window.origin + '/#!/rbac/create-role')
   const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
@@ -54,7 +62,7 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
-    window.history.pushState({},'', `/#!/rbac/edit-role/${role.name}`)
+    window.history.pushState({}, '', `/#!/rbac/edit-role/${role.name}`)
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -147,6 +155,33 @@ function UserRoleList() {
     return name.includes(search.toLowerCase())
   })
 
+  const formattedRoles = filteredRoles.map(role => ({
+    _id: role._id,
+    name: role.name,
+    manage: getManagePermissions(role),
+    view: getViewPermissions(role),
+    additional: getAdditionalPermissions(role)
+  }))
+
+  const columns: GridColDef[] = [
+    {field: 'name', headerName: 'Name', width: 100},
+    {
+      field: 'manage',
+      headerName: 'Manage',
+      width: 500
+    },
+    {
+      field: 'view',
+      headerName: 'View',
+      width: 500
+    },
+    {
+      field: 'additional',
+      headerName: 'Additional Permissions',
+      width: 200
+    }
+  ]
+
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
@@ -163,13 +198,9 @@ function UserRoleList() {
         </Grid>
         <Grid item xs={1}>
           <a href={addClientURL.toString()}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-          >
-            Add
-          </Button>
+            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+              Add
+            </Button>
           </a>
         </Grid>
       </Grid>
@@ -177,58 +208,38 @@ function UserRoleList() {
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
       <Card elevation={4}>
-        <CardContent>
-          <Grid container>
-            <Grid item xs={2}>
-              <Input
-                placeholder="Search"
-                onChange={e => handleOnSearchChange(e.target.value)}
-                fullWidth
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                }
-              />
-            </Grid>
-          </Grid>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <TableSortLabel direction="asc">Name</TableSortLabel>
-                  </TableCell>
-                  <TableCell>Manage</TableCell>
-                  <TableCell>View</TableCell>
-                  <TableCell>Additional Permissions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredRoles
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((role, index) => (
-                    <TableRow onClick={() => handleRowClick(role)} key={index}>
-                      <TableCell>{role.name}</TableCell>
-                      <TableCell>{getManagePermissions(role)}</TableCell>
-                      <TableCell>{getViewPermissions(role)}</TableCell>
-                      <TableCell>{getAdditionalPermissions(role)}</TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            // rowsPerPageOptions={[5, 10, 25]}
-
-            component="section"
-            count={filteredRoles.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </CardContent>
+        <DataGrid
+          getRowId={row => row.name}
+          columns={columns}
+          rows={formattedRoles}
+          getRowHeight={() => 'auto'}
+          autoHeight
+          disableRowSelectionOnClick
+          slots={{
+            toolbar: GridToolbar,
+            noRowsOverlay: noRolesOverlay
+          }}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              `/#!/rbac/edit-role/` + params.row['name']
+            )
+          }
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: {page: 0, pageSize: 10}
+            }
+          }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              printOptions: {disableToolbarButton: true},
+              csvOptions: {disableToolbarButton: true}
+            }
+          }}
+        />
       </Card>
     </Box>
   )
