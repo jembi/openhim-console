@@ -159,6 +159,7 @@ function AddUserRole() {
                 {activeStep === 1 && (
                   <TransactionsUsersMediatorsStep
                     role={role}
+                    channels={channels}
                     mediators={mediators}
                     transactions={transactions}
                     onChange={setRole}
