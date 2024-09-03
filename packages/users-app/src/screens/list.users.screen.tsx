@@ -87,7 +87,7 @@ function UsersList() {
   })
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+    <Box padding={3}>
       <Typography variant="h4" gutterBottom>
         Manager Users
       </Typography>

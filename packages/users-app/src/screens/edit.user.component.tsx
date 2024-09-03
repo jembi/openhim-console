@@ -19,17 +19,6 @@ import {createNewUser, editUserByEmail, getRoles, getUsers} from '../services/ap
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
 
-const useStyles = makeStyles(_theme => ({
-  box: {
-    backgroundColor: '#F1F1F1'
-  },
-  mainCard: {
-    width: '600px'
-  },
-  boxHeader: {marginBottom: '40px'},
-  cardActionsGap: {marginRight: '10px'}
-}))
-
 export async function loader({params}) {
   const users = await getUsers();
   const user = users.find(user => user._id === params['userId']);
@@ -37,7 +26,6 @@ export async function loader({params}) {
 }
 
 function AddUserRole() {
-  const classes = useStyles()
   const {user: state} = useLoaderData() as { user: User }
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
@@ -80,8 +68,8 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} className={classes.box}>
-      <header className={classes.boxHeader}>
+    <Box padding={3}>
+    <header style= {{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit User
         </Typography>
@@ -105,7 +93,7 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card className={classes.mainCard} elevation={4}>
+          <Card style={{width:'600px'}} elevation={4}>
             <Divider />
             <CardContent>
               <BasicInfo
@@ -125,7 +113,7 @@ function AddUserRole() {
                   CANCEL
                 </Button>
 
-                <span className={classes.cardActionsGap}></span>
+                <span style={{marginRight: '10px'}}></span>
 
                 <Button
                   variant="contained"

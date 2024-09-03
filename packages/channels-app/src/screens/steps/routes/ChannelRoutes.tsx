@@ -25,46 +25,12 @@ import {ChannelRoute as ChannelRouteComponent} from './ChannelRoute'
 import {useBasicDialog} from '../../../contexts/dialog.context'
 import {useConfirmation} from '../../../contexts/confirmation.context'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
-  },
-  divider2: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '30px',
-    overflow: 'visible'
-  },
-  addNewRouteContainer: {
-    padding: '10px'
-  },
-  emptyState: {
-    padding: '20px',
-    textAlign: 'center',
-    color: '#999',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '200px'
-  },
-  emptyStateIcon: {
-    fontSize: '48px',
-    marginBottom: '10px',
-    color: '#999'
-  }
-}))
 
 export function ChannelRoutes(props: {
   channel: Channel
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
 }) {
-  const classes = useStyles()
+
   const {showBasicDialog, hideBasicDialog} = useBasicDialog()
   const {showConfirmation, hideConfirmation} = useConfirmation()
   const navigate = useNavigate()
@@ -165,7 +131,11 @@ export function ChannelRoutes(props: {
         the one that is returned to the request sender.
       </Typography>
 
-      <Divider className={classes.divider} />
+      <Divider style={{  marginTop: '10px',
+    margin: '0px',
+    width: '100%',
+    marginBottom: '10px',
+    overflow: 'visible'}} />
 
       {channel.routes?.length > 0 ? (
         <TableContainer>
@@ -210,8 +180,17 @@ export function ChannelRoutes(props: {
           </Table>
         </TableContainer>
       ) : (
-        <Box className={classes.emptyState}>
-          <InfoOutlinedIcon className={classes.emptyStateIcon} />
+        <Box style={{  padding: '20px',
+          textAlign: 'center',
+          color: '#999',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '200px'}}>
+          <InfoOutlinedIcon style={{ fontSize: '48px',
+    marginBottom: '10px',
+    color: '#999'}} />
           <Typography variant="body1">
             No routes have been added yet. Click{' '}
             <Button variant="text" color="primary" onClick={onClickAddNewRoute}>
@@ -223,7 +202,7 @@ export function ChannelRoutes(props: {
       )}
 
       {channel.routes?.length > 0 && (
-        <Grid container className={classes.addNewRouteContainer}>
+        <Grid container style={{ padding: '10px'}}>
           <Grid item xs={8}></Grid>
           <Grid item xs={4}>
             <Button variant="text" color="primary" onClick={onClickAddNewRoute}>

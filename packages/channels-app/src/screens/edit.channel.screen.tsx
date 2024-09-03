@@ -4,16 +4,11 @@ import TabPanel from '@mui/lab/TabPanel'
 import {
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
   Grid,
   Paper,
   Typography
 } from '@mui/material'
 import Tab from '@mui/material/Tab'
-import {makeStyles} from '@mui/styles'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
@@ -26,24 +21,9 @@ import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
 
-const useStyles = makeStyles(_theme => ({
-  mainCard: {
-    width: '600px',
-    borderRadius: '15px'
-  },
-  header: {
-    marginBottom: '40px'
-  },
-  cardActions: {
-    padding: '10px'
-  },
-  cardActionsBtnGap: {
-    marginRight: '10px'
-  }
-}))
 
 function EditChannelScreen() {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const location = useLocation()
   const originalChannel = location.state as Channel
@@ -78,7 +58,7 @@ function EditChannelScreen() {
 
   return (
     <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
-      <header className={classes.header}>
+      <header style={{ marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit Channel
         </Typography>
@@ -101,7 +81,8 @@ function EditChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Paper className={classes.mainCard} elevation={4}>
+          <Paper style={{   width: '600px',
+    borderRadius: '15px'}} elevation={4}>
             <TabContext value={activeTab}>
               <TabList
                 onChange={(e, newValue) => setActiveTab(newValue)}
@@ -141,7 +122,7 @@ function EditChannelScreen() {
               </TabPanel>
             </TabContext>
 
-            <Box className={classes.cardActions}>
+            <Box style={{padding: '10px'}}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -150,7 +131,7 @@ function EditChannelScreen() {
                 CANCEL
               </Button>
 
-              <span className={classes.cardActionsBtnGap}></span>
+              <span style={{marginRight: '10px'}}></span>
 
               <Button
                 variant="contained"
