@@ -1,5 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import Search from '@mui/icons-material/Search'
+import CreateIcon from '@mui/icons-material/Create'
+import ErrorIcon from '@mui/icons-material/Error'
 import Edit from '@mui/icons-material/Edit'
 import {
   Box,
@@ -22,13 +24,31 @@ import {
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
-import {DataGrid} from '@mui/x-data-grid'
+import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {getUsers} from '../services/api'
 import {User, Routes} from '../types'
+
+const noRolesOverlay = () => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}
+  >
+    <ErrorIcon fontSize="large" color="disabled" />
+    <Box sx={{m: 1}}>No Roles Found</Box>
+    <a href="">
+      <Button startIcon={<AddIcon />}>Add</Button>
+    </a>
+  </div>
+)
 
 function UsersList() {
   const [search, setSearch] = React.useState('')
@@ -87,6 +107,22 @@ function UsersList() {
     )
   })
 
+  const columns: GridColDef[] = [
+    {field: 'firstname', headerName: 'First Name', width: 200},
+    {field: 'surname', headerName: 'Surname', width: 200},
+    {field: 'email', headerName: 'Email', width: 200},
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      renderCell: () => (
+        <>
+          <CreateIcon style={{cursor: 'pointer'}} />
+        </>
+      )
+    }
+  ]
+
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
@@ -115,68 +151,39 @@ function UsersList() {
       </Grid>
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-
       <Card elevation={4}>
-        <CardContent>
-          <Grid container>
-            <Grid item xs={2}>
-              <Input
-                placeholder="Search..."
-                onChange={e => handleOnSearchChange(e.target.value)}
-                fullWidth
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                }
-              />
-            </Grid>
-          </Grid>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    {/* <TableSortLabel direction="asc">Name</TableSortLabel> */}
-                    Name
-                  </TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredUsers
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((user, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        {user.firstname} {user.surname}
-                      </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.groups.join(', ')}</TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          onClick={() => handleRowClick(user)}
-                          aria-label={`Edit user ${user.firstname} ${user.surname}`}
-                        >
-                          <Edit />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            component="section"
-            count={filteredUsers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </CardContent>
+        <DataGrid
+          getRowId={row => row._id}
+          autoHeight
+          checkboxSelection
+          disableRowSelectionOnClick
+          columns={columns}
+          rows={users}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              `/#!/users/edit-user/` + params.row['_id']
+            )
+          }
+          slots={{
+            toolbar: GridToolbar,
+            noRowsOverlay: noRolesOverlay
+          }}
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: {page: 0, pageSize: 10}
+            }
+          }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              printOptions: {disableToolbarButton: true},
+              csvOptions: {disableToolbarButton: true}
+            }
+          }}
+        />
       </Card>
     </Box>
   )
