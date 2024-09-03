@@ -22,6 +22,7 @@ import {
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
+import {DataGrid} from '@mui/x-data-grid'
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
