@@ -19,22 +19,13 @@ import {useNavigate} from 'react-router-dom'
 import {Role, Routes, User} from '../../types'
 import {makeStyles} from '@mui/styles'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
-  }
-}))
 
 export function BasicInfo(props: {
   user: User
   roles: Role[]
   onChange: (event: {user: User; isValid: boolean}) => unknown
 }) {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const [user, setUser] = React.useState(props.user)
 
@@ -73,7 +64,7 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider className={classes.divider} />
+      <Divider/>
 
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -152,6 +143,54 @@ export function BasicInfo(props: {
               Add a new role
             </Typography>
           </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Card elevation={0}>
+            <CardHeader title="Preference" />
+            <CardContent>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.openTransactionInNewTab}
+                        onChange={e =>
+                          handleSwitchToggle('settings.openTransactionInNewTab' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Open Transactions in a new tab."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.autoUpdateTransactionList}
+                        onChange={e =>
+                          handleSwitchToggle('settings.autoUpdateTransactionList' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Auto-update Transaction List."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={user.settings?.showTooltips}
+                        onChange={e =>
+                          handleSwitchToggle('settings.showToolTips' as keyof User, e.target.checked)
+                        }
+                      />
+                    }
+                    label="Show Tooltips"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
 
         <Grid item xs={12}>

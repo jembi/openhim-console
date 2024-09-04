@@ -168,6 +168,14 @@ export async function fetchChannels(): Promise<any> {
   return response.data
 }
 
+export async function createChannel(channel: any): Promise<any> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/channels', channel)
+
+  return response.data;
+}
+ 
+
 export async function fetchChannelById(id: String): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.get(`/channels/${id}`)

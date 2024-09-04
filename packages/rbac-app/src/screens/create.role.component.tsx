@@ -71,7 +71,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.ROLES)
+      window.history.pushState({}, `/#${Routes.ROLES}`)
     },
     onError: error => {
       hideBackdrop()
@@ -159,6 +159,7 @@ function AddUserRole() {
                 {activeStep === 1 && (
                   <TransactionsUsersMediatorsStep
                     role={role}
+                    channels={channels}
                     mediators={mediators}
                     transactions={transactions}
                     onChange={setRole}
@@ -186,7 +187,7 @@ function AddUserRole() {
                   </Button>
                 )}
                 {activeStep > 0 && (
-                  <Button color="info" variant="contained" onClick={handleBack}>
+                  <Button color="info" variant="outlined" onClick={handleBack}>
                     Back
                   </Button>
                 )}

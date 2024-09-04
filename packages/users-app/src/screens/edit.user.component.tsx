@@ -11,32 +11,26 @@ import {
 import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate, useLocation} from 'react-router-dom'
+import {useNavigate, useLocation, useLoaderData} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {createNewUser, editUserByEmail, getRoles} from '../services/api'
+import {createNewUser, editUserByEmail, getRoles, getUsers} from '../services/api'
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
 
-const useStyles = makeStyles(_theme => ({
-  box: {
-    backgroundColor: '#F1F1F1'
-  },
-  mainCard: {
-    width: '600px'
-  },
-  boxHeader: {marginBottom: '40px'},
-  cardActionsGap: {marginRight: '10px'}
-}))
+export async function loader({params}) {
+  const users = await getUsers();
+  const user = users.find(user => user._id === params['userId']);
+  return {user}
+}
 
 function AddUserRole() {
-  const classes = useStyles()
-  const location = useLocation()
+  const {user: state} = useLoaderData() as { user: User }
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const originalUser = structuredClone(location.state as User)
+  const originalUser = structuredClone(state as User)
   const [user, setUser] = React.useState(structuredClone(originalUser))
   const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
@@ -46,7 +40,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.USERS)
+      window.history.pushState({},'',`/#${Routes.USERS}`)
     },
     onError: error => {
       hideBackdrop()
@@ -74,8 +68,8 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} className={classes.box}>
-      <header className={classes.boxHeader}>
+    <Box padding={3}>
+    <header style= {{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit User
         </Typography>
@@ -99,7 +93,7 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card className={classes.mainCard} elevation={4}>
+          <Card style={{width:'600px'}} elevation={4}>
             <Divider />
             <CardContent>
               <BasicInfo
@@ -119,7 +113,7 @@ function AddUserRole() {
                   CANCEL
                 </Button>
 
-                <span className={classes.cardActionsGap}></span>
+                <span style={{marginRight: '10px'}}></span>
 
                 <Button
                   variant="contained"

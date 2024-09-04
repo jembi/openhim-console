@@ -77,9 +77,9 @@ export type User = {
 }
 
 export enum Routes {
-  USERS = '/',
-  CREATE_USER = '/create-user',
-  EDIT_USER = '/edit-user',
+  USERS = '!/users/',
+  CREATE_USER = '!/users/create-user',
+  EDIT_USER = '!/users/edit-user/:userId',
 
-  ADD_ROLE = '/#!/roles'
+  ADD_ROLE = '/#!/rbac/create-role',
 }

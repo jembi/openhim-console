@@ -1,5 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
 import Search from '@mui/icons-material/Search'
+import ErrorIcon from '@mui/icons-material/Error'
 import {
   Box,
   Button,
@@ -7,6 +9,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  IconButton,
   Input,
   InputAdornment,
   Table,
@@ -27,8 +30,28 @@ import Loader from '../components/helpers/loader.component'
 import {getRoles} from '../services/api'
 import {Permission, Role, Routes} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
+import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+
+const noRolesOverlay = () => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}
+  >
+    <ErrorIcon fontSize="large" color="disabled" />
+    <Box sx={{m: 1}}>No Users Found</Box>
+    <a href="">
+      <Button startIcon={<AddIcon />}>Add</Button>
+    </a>
+  </div>
+)
 
 function UserRoleList() {
+  const addClientURL = new URL(window.origin + '/#!/rbac/create-role')
   const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
   const [page, setPage] = React.useState(0)
@@ -53,7 +76,7 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
-    navigate(Routes.EDIT_ROLE, {state: role})
+    window.history.pushState({}, '', `/#!/rbac/edit-role/${role.name}`)
   }
 
   const handleOnSearchChange = debounce((value: string) => {
@@ -146,6 +169,33 @@ function UserRoleList() {
     return name.includes(search.toLowerCase())
   })
 
+  const formattedRoles = filteredRoles.map(role => ({
+    _id: role._id,
+    name: role.name,
+    manage: getManagePermissions(role),
+    view: getViewPermissions(role),
+    additional: getAdditionalPermissions(role)
+  }))
+
+  const columns: GridColDef[] = [
+    {field: 'name', headerName: 'Name', width: 100},
+    {
+      field: 'manage',
+      headerName: 'Manage',
+      width: 500
+    },
+    {
+      field: 'view',
+      headerName: 'View',
+      width: 500
+    },
+    {
+      field: 'additional',
+      headerName: 'Additional Permissions',
+      width: 200
+    }
+  ]
+
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
@@ -161,14 +211,11 @@ function UserRoleList() {
           </Typography>
         </Grid>
         <Grid item xs={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => navigate(Routes.CREATE_ROLE)}
-          >
-            Add
-          </Button>
+          <a href={addClientURL.toString()}>
+            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+              Add
+            </Button>
+          </a>
         </Grid>
       </Grid>
 
@@ -200,17 +247,23 @@ function UserRoleList() {
                   <TableCell>Manage</TableCell>
                   <TableCell>View</TableCell>
                   <TableCell>Additional Permissions</TableCell>
+                  <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredRoles
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((role, index) => (
-                    <TableRow onClick={() => handleRowClick(role)} key={index}>
+                    <TableRow key={index}>
                       <TableCell>{role.name}</TableCell>
                       <TableCell>{getManagePermissions(role)}</TableCell>
                       <TableCell>{getViewPermissions(role)}</TableCell>
                       <TableCell>{getAdditionalPermissions(role)}</TableCell>
+                      <TableCell align="right">
+                        <IconButton onClick={() => handleRowClick(role)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>

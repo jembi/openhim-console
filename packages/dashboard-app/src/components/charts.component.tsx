@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import * as fns from 'date-fns'
-import {Grid, Typography, Card, Divider} from '@mui/material'
+import {Grid, Typography, Card, Divider, Box} from '@mui/material'
 import TransactionLineChart from './charts/transaction-line-chart.component'
 import {getTimeSeries} from '../services/api'
 import {TimeSeries, TimeSeriesScale} from '../types'
@@ -62,6 +62,10 @@ export default function Charts() {
 
   React.useEffect(() => {
     getFilteredTransactions()
+
+    const int = window.setInterval(getFilteredTransactions, 30000)
+
+    return () => window.clearInterval(int)
   }, [filterData])
 
   const onFilterChange = (filter: BasicFilterData) => {
@@ -73,7 +77,7 @@ export default function Charts() {
   }
 
   return (
-    <div>
+    <Box>
       <Grid container spacing={2} padding={2} fontFamily={'sans-serif'}>
         <Grid item xs={12}>
           <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
@@ -126,6 +130,6 @@ export default function Charts() {
         open={alert.isOpen}
         onClose={() => setAlert({...alert, isOpen: false})}
       />
-    </div>
+    </Box>
   )
 }

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  Typography
-} from '@mui/material'
+import {Box, Button, Card, Divider, Grid, Typography} from '@mui/material'
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
@@ -15,15 +8,9 @@ import {ClientRole} from '../../interface'
 import './data-grid-styling.css'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
 
-interface ListRolesProps {
-  addUserRole: () => void
-  editUserRole: (client: ClientRole) => void
-}
+export const ListRoles = () => {
+  const addClientRole = new URL(window.origin + '/#!/client-roles/add')
 
-export const ListRoles: React.FC<ListRolesProps> = ({
-  addUserRole,
-  editUserRole
-}) => {
   const columns: GridColDef[] = [
     {field: 'roleName', headerName: 'Name', width: 200},
     {field: 'clients', headerName: 'Clients', width: 600},
@@ -54,7 +41,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
         setRoles(formattedRoles)
       })
       .catch(error => {
-        console.error('Error fetching client roles', error);
+        console.error('Error fetching client roles', error)
       })
   }, [])
 
@@ -70,7 +57,9 @@ export const ListRoles: React.FC<ListRolesProps> = ({
     >
       <ErrorIcon fontSize="large" color="disabled" />
       <Box sx={{m: 1}}>No Roles Found</Box>
-      <Button onClick={addUserRole} startIcon={<AddIcon />}>Add</Button>
+      <a href={addClientRole.toString()}>
+        <Button startIcon={<AddIcon />}>Add</Button>
+      </a>
     </div>
   )
 
@@ -82,20 +71,18 @@ export const ListRoles: React.FC<ListRolesProps> = ({
         </Typography>
         <Grid container>
           <Grid item xs={11}>
-          <p style={{opacity: 0.6, fontSize: '16px'}}>
+            <p style={{opacity: 0.6, fontSize: '16px'}}>
               Control client systems and their access roles. Add clients to
               enable their request routing and group them by roles for
               streamlined channel access management.
             </p>
           </Grid>
           <Grid item xs={1}>
-            <Button
-              variant="contained"
-              style={{backgroundColor: '#29AC96'}}
-              onClick={addUserRole}
-            >
-              <AddIcon /> Add
-            </Button>
+            <a href={addClientRole.toString()}>
+              <Button variant="contained" style={{backgroundColor: '#29AC96'}}>
+                <AddIcon /> Add
+              </Button>
+            </a>
           </Grid>
         </Grid>
         <Divider />
@@ -108,7 +95,7 @@ export const ListRoles: React.FC<ListRolesProps> = ({
             checkboxSelection
             disableRowSelectionOnClick
             rows={roles}
-            onRowClick={params => editUserRole(params.row)}
+            onRowClick={params => window.history.pushState({}, '', '/#!/client-roles/edit/' + params.row['roleName'])}
             slots={{
               toolbar: GridToolbar,
               noRowsOverlay: noRolesOverlay
