@@ -30,6 +30,7 @@ RUN cp builds/@jembi/root-config/dist/index.html ${nginxDir}/index.html
 RUN cp -r builds/@jembi/legacy-console/dist/config ${nginxDir}/config
 RUN cp -r images ${nginxDir}/images
 RUN cp styles.css ${nginxDir}/
+RUN cp update_env_vars.sh ${nginxDir}/
 RUN cp builds/@jembi/legacy-console/dist/favicon.ico ${nginxDir}/
 RUN cp -r builds/@jembi/legacy-console/dist/fonts ${nginxDir}/fonts
 RUN cp -r builds/@jembi/ ${nginxDir}/${virtualDir}/
