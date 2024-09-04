@@ -42,6 +42,7 @@ const App: React.FC = () => {
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
   const [loading, setLoading] = useState(false)
+  const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -166,6 +167,16 @@ const App: React.FC = () => {
     fetchTransactionLogs()
     fetchAvailableChannels(), fetchAvailableClients()
   }, [fetchTransactionLogs, fetchAvailableChannels, fetchAvailableClients])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timestampFilter) {
+        fetchTransactionLogs(timestampFilter)
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)

@@ -30,12 +30,18 @@ const TransactionLogTable: React.FC<{
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
+  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [selectAll, setSelectAll] = useState(false)
 
   const handleSettingsApply = () => {
     setSettingsOpen(false)
   }
 
-  const handleRowClick = (transaction: {_id: any}) => {
+  const handleRowClick = (event: React.MouseEvent, transaction: {_id: any}) => {
+    const nonClickableColumnClass = 'non-clickable-column'
+    if ((event.target as HTMLElement).closest(`.${nonClickableColumnClass}`)) {
+      return
+    }
     const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
 
     if (openInNewTab) {
@@ -43,6 +49,28 @@ const TransactionLogTable: React.FC<{
     } else {
       window.location.href = transactionDetailsUrl
     }
+  }
+
+  const handleRowSelect = (rowIndex: number) => {
+    setSelectedRows(prevSelectedRows => {
+      const newSelectedRows = new Set(prevSelectedRows)
+      if (newSelectedRows.has(rowIndex)) {
+        newSelectedRows.delete(rowIndex)
+      } else {
+        newSelectedRows.add(rowIndex)
+      }
+      return newSelectedRows
+    })
+  }
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedRows(new Set())
+    } else {
+      const allRowIndexes = transactions.map((_, index) => index)
+      setSelectedRows(new Set(allRowIndexes))
+    }
+    setSelectAll(!selectAll)
   }
 
   return (
@@ -70,7 +98,7 @@ const TransactionLogTable: React.FC<{
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox />
+                  <Checkbox checked={selectAll} onChange={handleSelectAll} />
                 </TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Method</TableCell>
@@ -90,10 +118,16 @@ const TransactionLogTable: React.FC<{
                   key={index}
                   hover
                   style={{cursor: 'pointer'}}
-                  onClick={() => handleRowClick(transaction)}
+                  onClick={event => handleRowClick(event, transaction)}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox />
+                  <TableCell
+                    padding="checkbox"
+                    className="non-clickable-column"
+                  >
+                    <Checkbox
+                      checked={selectedRows.has(index)}
+                      onChange={() => handleRowSelect(index)}
+                    />
                   </TableCell>
                   <TableCell>
                     <IconButton
