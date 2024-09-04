@@ -19,22 +19,13 @@ import {useNavigate} from 'react-router-dom'
 import {Role, Routes, User} from '../../types'
 import {makeStyles} from '@mui/styles'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
-  }
-}))
 
 export function BasicInfo(props: {
   user: User
   roles: Role[]
   onChange: (event: {user: User; isValid: boolean}) => unknown
 }) {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const [user, setUser] = React.useState(props.user)
 
@@ -73,7 +64,7 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider className={classes.divider} />
+      <Divider/>
 
       <Grid container spacing={2}>
         <Grid item xs={6}>

@@ -18,38 +18,12 @@ import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
-  },
-  divider2: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '30px',
-    overflow: 'visible'
-  },
-  allowedMethodsContainer: {
-    padding: '10px'
-  },
-  optionalSettingsContainer: {
-    borderRadius: '20px',
-    padding: '12px'
-  },
-  channelTypeRadioGroup: {
-    padding: '10px'
-  }
-}))
+
 
 export function BasicInfo(props: {
   channel: Channel
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
 }) {
-  const classes = useStyles()
   const [channel, setChannel] = React.useState(props.channel)
   const allowedMethods: Array<ChannelMethod> = [
     'GET',
@@ -95,7 +69,15 @@ export function BasicInfo(props: {
         type.
       </Typography>
 
-      <Divider className={classes.divider} />
+      <Divider
+        style={{
+          marginTop: '10px',
+          margin: '0px',
+          width: '100%',
+          marginBottom: '10px',
+          overflow: 'visible'
+        }}
+      />
       <br />
 
       <Grid container spacing={2}>
@@ -117,7 +99,7 @@ export function BasicInfo(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Box className={classes.allowedMethodsContainer}>
+          <Box style={{padding: '10px'}}>
             <Typography variant="h6">Allowed Methods</Typography>
             <Grid container>
               {allowedMethods.map(method => (
@@ -140,10 +122,18 @@ export function BasicInfo(props: {
         </Grid>
       </Grid>
 
-      <Divider className={classes.divider2} />
+      <Divider
+        style={{
+          marginTop: '10px',
+          margin: '0px',
+          width: '100%',
+          marginBottom: '30px',
+          overflow: 'visible'
+        }}
+      />
       <br />
 
-      <Paper elevation={2} className={classes.optionalSettingsContainer}>
+      <Paper elevation={2} style={{borderRadius: '20px', padding: '12px'}}>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="body1">Optional Settings</Typography>
@@ -176,7 +166,7 @@ export function BasicInfo(props: {
               <Grid item xs={12}>
                 <Typography variant="h6">Channel Type</Typography>
 
-                <Box className={classes.channelTypeRadioGroup}>
+                <Box style={{padding: '10px'}}>
                   <RadioGroup
                     defaultValue="http"
                     value={channel.type}

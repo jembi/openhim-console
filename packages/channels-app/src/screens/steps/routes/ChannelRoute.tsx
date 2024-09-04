@@ -14,22 +14,6 @@ import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    margin: '0px',
-    width: '100%',
-    marginBottom: '10px',
-    overflow: 'visible'
-  },
-  switchHelperText: {
-    marginLeft: '45px'
-  },
-  routeTypeRadioGroup: {
-    paddingLeft: '10px'
-  }
-}))
-
 const defaultRoute: ChannelRouteDef = {
   name: '',
   type: 'http'
@@ -42,7 +26,6 @@ export function ChannelRoute(props: {
 }) {
   const isEditMode = !!props.route
   const isCreateMode = !isEditMode
-  const classes = useStyles()
   const [route, setRoute] = React.useState(
     structuredClone(props.route ?? defaultRoute)
   )
@@ -80,7 +63,7 @@ export function ChannelRoute(props: {
             }
             label="Primary Route?"
           />
-          <FormHelperText className={classes.switchHelperText}>
+          <FormHelperText style={{marginLeft: '45px'}}>
             Toggle on if this is the primary route.
           </FormHelperText>
         </Grid>
@@ -96,7 +79,7 @@ export function ChannelRoute(props: {
             }
             label="Wait for Primary Response?"
           />
-          <FormHelperText className={classes.switchHelperText}>
+          <FormHelperText style={{marginLeft: '45px'}}>
             Toggle on to wait for the response from the primary route before
             proceeding.
           </FormHelperText>
@@ -116,7 +99,7 @@ export function ChannelRoute(props: {
             }
             label="Status"
           />
-          <FormHelperText className={classes.switchHelperText}>
+          <FormHelperText style={{marginLeft: '45px'}}>
             Toggle on to enable this route.
           </FormHelperText>
         </Grid>
@@ -127,7 +110,7 @@ export function ChannelRoute(props: {
             </Grid>
             <Grid item xs={10}>
               <RadioGroup
-                className={classes.routeTypeRadioGroup}
+                style={{paddingLeft: '10px'}}
                 defaultValue="http"
                 value={route.type}
                 row
@@ -167,7 +150,7 @@ export function ChannelRoute(props: {
                 }
                 label="Secured Route?"
               />
-              <FormHelperText className={classes.switchHelperText}>
+              <FormHelperText style={{marginLeft: '45px'}}>
                 Toggle on if the route is secured. Uses default certificate
                 authority.
               </FormHelperText>
@@ -269,7 +252,7 @@ export function ChannelRoute(props: {
                 }
                 label="Forward Auth Header?"
               />
-              <FormHelperText className={classes.switchHelperText}>
+              <FormHelperText style={{marginLeft: '45px'}}>
                 Toggle on to foward the existing authorization header
               </FormHelperText>
             </Grid>

@@ -2,7 +2,9 @@ import {createHashRouter, createMemoryRouter} from 'react-router-dom'
 import AddUserRole from '../screens/create.role.component'
 import UserRoleList from '../screens/list.role.screen'
 import {Routes} from '../types'
-import EditUserRole, {loader as EditUserRoleLoader} from '../screens/edit.role.component'
+import EditUserRole, {
+  loader as EditUserRoleLoader
+} from '../screens/edit.role.component'
 
 const router = createHashRouter([
   {

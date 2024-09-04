@@ -29,7 +29,7 @@ import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import { getRoles } from '../services/api'
+import {getRoles} from '../services/api'
 
 const steps = [
   'Channels & Clients',
@@ -50,14 +50,14 @@ const queryFn = async () => {
 }
 
 export async function loader({params}) {
-  const roles = await getRoles();
-  const role = roles.find(role => role.name === params.roleName);
-  return {role};
+  const roles = await getRoles()
+  const role = roles.find(role => role.name === params.roleName)
+  return {role}
 }
 
 function EditUserRole() {
   const navigate = useNavigate()
-  const { role: state } = useLoaderData() as {role: Role};
+  const {role: state} = useLoaderData() as {role: Role}
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
@@ -67,7 +67,7 @@ function EditUserRole() {
   const query = useQuery(queryKey, queryFn, {
     staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
   })
-  
+
   const mutation = useMutation({
     mutationFn: () => editRoleByName(originalRole.name, role),
     onMutate: () => {
@@ -190,7 +190,7 @@ function EditUserRole() {
                   </Button>
                 )}
                 {activeStep > 0 && (
-                  <Button color="info" variant="contained" onClick={handleBack}>
+                  <Button color="info" variant="outlined" onClick={handleBack}>
                     Back
                   </Button>
                 )}

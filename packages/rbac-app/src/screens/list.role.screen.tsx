@@ -1,11 +1,25 @@
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
+import Search from '@mui/icons-material/Search'
 import ErrorIcon from '@mui/icons-material/Error'
 import {
   Box,
   Button,
   Card,
+  CardContent,
   Divider,
   Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
@@ -208,38 +222,64 @@ function UserRoleList() {
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
       <Card elevation={4}>
-        <DataGrid
-          getRowId={row => row.name}
-          columns={columns}
-          rows={formattedRoles}
-          getRowHeight={() => 'auto'}
-          autoHeight
-          disableRowSelectionOnClick
-          slots={{
-            toolbar: GridToolbar,
-            noRowsOverlay: noRolesOverlay
-          }}
-          onRowClick={params =>
-            window.history.pushState(
-              {},
-              '',
-              `/#!/rbac/edit-role/` + params.row['name']
-            )
-          }
-          pageSizeOptions={[10, 25, 50]}
-          initialState={{
-            pagination: {
-              paginationModel: {page: 0, pageSize: 10}
-            }
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              printOptions: {disableToolbarButton: true},
-              csvOptions: {disableToolbarButton: true}
-            }
-          }}
-        />
+        <CardContent>
+          <Grid container>
+            <Grid item xs={2}>
+              <Input
+                placeholder="Search"
+                onChange={e => handleOnSearchChange(e.target.value)}
+                fullWidth
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                }
+              />
+            </Grid>
+          </Grid>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <TableSortLabel direction="asc">Name</TableSortLabel>
+                  </TableCell>
+                  <TableCell>Manage</TableCell>
+                  <TableCell>View</TableCell>
+                  <TableCell>Additional Permissions</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredRoles
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((role, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{role.name}</TableCell>
+                      <TableCell>{getManagePermissions(role)}</TableCell>
+                      <TableCell>{getViewPermissions(role)}</TableCell>
+                      <TableCell>{getAdditionalPermissions(role)}</TableCell>
+                      <TableCell align="right">
+                        <IconButton onClick={() => handleRowClick(role)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            // rowsPerPageOptions={[5, 10, 25]}
+
+            component="section"
+            count={filteredRoles.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </CardContent>
       </Card>
     </Box>
   )

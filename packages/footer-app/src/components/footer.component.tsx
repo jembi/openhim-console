@@ -4,17 +4,8 @@ import {AboutResponse} from '../types'
 import React from 'react'
 import {getAbout} from '../services/api'
 
-const useStyles = makeStyles(theme => ({
-  footer: {
-    backgroundColor: '#F1F1F1',
-    padding: 10,
-    textAlign: 'center'
-  }
-}))
-
 export function Footer() {
   const [about, setAbout] = React.useState<AboutResponse | null>(null)
-  const classes = useStyles()
 
   const isLoggedIn =
     !window.location.href.includes('#!/login') &&
@@ -40,7 +31,9 @@ export function Footer() {
   }, [])
 
   return (
-    <Box className={classes.footer}>
+    <Box style={{ backgroundColor: '#F1F1F1',
+      padding: 10,
+      textAlign: 'center'}}>
       {about?.currentCoreVersion && (
         <Typography
           color={'grey'}

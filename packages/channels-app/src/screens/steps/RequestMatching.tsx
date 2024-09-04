@@ -23,43 +23,13 @@ import {useNavigate} from 'react-router-dom'
 import {Channel, ChannelAuthType, ChannelMethod, ChannelType} from '../../types'
 import {TagInputAutocomplete} from '../../components/helpers/tags.input.autocomplete'
 
-const useStyles = makeStyles(_theme => ({
-  divider: {
-    marginTop: '10px',
-    marginBottom: '10px'
-  },
-  divider2: {
-    marginTop: '10px',
-    marginBottom: '30px'
-  },
-  allowedMethodsContainer: {
-    padding: '10px'
-  },
-  optionalSettingsContainer: {
-    borderRadius: '20px',
-    padding: '12px'
-  },
-  channelTypeRadioGroup: {
-    padding: '10px'
-  },
-  controlSection: {
-    marginBottom: '20px'
-  },
-  urlPatternStartAdornment: {
-    marginRight: '5px'
-  },
-  urlPatternEndAdornment: {
-    marginLeft: '5px'
-  }
-}))
-
 type MatchBodyType = 'NO MATCHING' | 'REGEX' | 'XML' | 'JSON'
 
 export function RequestMatching(props: {
   channel: Channel
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
 }) {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const [channel, setChannel] = React.useState(props.channel)
   const [expandOptionalSettings, setExpandOptionalSettings] =
@@ -83,7 +53,7 @@ export function RequestMatching(props: {
         Set criteria for requests to be forwarded to this channel.
       </Typography>
 
-      <Divider className={classes.divider} />
+      <Divider style={{ marginTop: '10px', marginBottom: '10px' }} />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -94,14 +64,14 @@ export function RequestMatching(props: {
             margin="normal"
             InputProps={{
               startAdornment: (
-                <span className={classes.urlPatternStartAdornment}>^</span>
+                <span style={{ marginRight: '5px' }}>^</span>
               ),
               endAdornment: (
-                <span className={classes.urlPatternEndAdornment}>$</span>
+                <span style={{ marginLeft: '5px' }}>$</span>
               )
             }}
             value={channel.urlPattern}
-            onChange={e => setChannel({...channel, urlPattern: e.target.value})}
+            onChange={e => setChannel({ ...channel, urlPattern: e.target.value })}
             error={channel.urlPattern.trim() === ''}
             helperText={
               channel.urlPattern.trim() === ''
@@ -131,7 +101,7 @@ export function RequestMatching(props: {
         <Grid item xs={12}>
           <TagInputAutocomplete
             tags={channel.txViewAcl}
-            onChange={txViewAcl => setChannel({...channel, txViewAcl})}
+            onChange={txViewAcl => setChannel({ ...channel, txViewAcl })}
             label="Which user groups are allowed to view this channel's transactions?"
           />
         </Grid>
@@ -139,7 +109,7 @@ export function RequestMatching(props: {
         <Grid item xs={12}>
           <TagInputAutocomplete
             tags={channel.txViewAcl}
-            onChange={txViewFullAcl => setChannel({...channel, txViewFullAcl})}
+            onChange={txViewFullAcl => setChannel({ ...channel, txViewFullAcl })}
             label="Which user groups are allowed to view this channel's transactions full request/response body?"
           />
         </Grid>
@@ -147,17 +117,17 @@ export function RequestMatching(props: {
         <Grid item xs={12}>
           <TagInputAutocomplete
             tags={channel.txViewAcl}
-            onChange={txRerunAcl => setChannel({...channel, txRerunAcl})}
+            onChange={txRerunAcl => setChannel({ ...channel, txRerunAcl })}
             label="Which user groups are allowed to rerun this channel's transactions?"
           />
         </Grid>
       </Grid>
 
       <br />
-      <Divider className={classes.divider2} />
+      <Divider style={{ marginTop: '10px', marginBottom: '30px' }} />
       <br />
 
-      <Paper elevation={2} className={classes.optionalSettingsContainer}>
+      <Paper elevation={2} style={{ borderRadius: '20px', padding: '12px' }}>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="body1">Optional Settings</Typography>
@@ -184,16 +154,16 @@ export function RequestMatching(props: {
                   margin="normal"
                   value={channel.priority}
                   onChange={e =>
-                    setChannel({...channel, priority: Number(e.target.value)})
+                    setChannel({ ...channel, priority: Number(e.target.value) })
                   }
                 />
               </Grid>
-              <Grid item xs={12} className={classes.controlSection}>
+              <Grid item xs={12} style={{ marginBottom: '20px' }}>
                 <Typography variant="h6">
                   Is this channel public or private?
                 </Typography>
 
-                <Box className={classes.channelTypeRadioGroup}>
+                <Box style={{ padding: '10px' }}>
                   <RadioGroup
                     defaultValue="public"
                     value={channel.authType}
@@ -220,16 +190,16 @@ export function RequestMatching(props: {
                   </RadioGroup>
                 </Box>
 
-                <Grid item xs={12} className={classes.controlSection}>
+                <Grid item xs={12} style={{ marginBottom: '20px' }}>
                   <TagInputAutocomplete
                     tags={channel.whitelist}
-                    onChange={whitelist => setChannel({...channel, whitelist})}
+                    onChange={whitelist => setChannel({ ...channel, whitelist })}
                     helperText="Should any IP addresses be automatically trusted?"
                     label="Whitelist IP Address"
                   />
                 </Grid>
 
-                <Grid item xs={12} className={classes.controlSection}>
+                <Grid item xs={12} style={{ marginBottom: '20px' }}>
                   <FormControlLabel
                     control={
                       <Switch
@@ -248,11 +218,11 @@ export function RequestMatching(props: {
                 {isMatchSpecificRequestContent && (
                   <React.Fragment>
                     <br />
-                    <Grid item xs={12} className={classes.controlSection}>
+                    <Grid item xs={12} style={{ marginBottom: '20px' }}>
                       <TagInputAutocomplete
                         tags={channel.matchContentTypes}
                         onChange={matchContentTypes =>
-                          setChannel({...channel, matchContentTypes})
+                          setChannel({ ...channel, matchContentTypes })
                         }
                         label="Which Content-Types should be matched?"
                       />

@@ -8,7 +8,6 @@ import {
   Grid,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
@@ -20,19 +19,9 @@ import {Routes} from '../types'
 import {defaultUser} from '../utils'
 import {BasicInfo} from '../components/common/basic.info.component'
 
-const useStyles = makeStyles(_theme => ({
-  box: {
-    backgroundColor: '#F1F1F1'
-  },
-  mainCard: {
-    width: '600px'
-  },
-  boxHeader: {marginBottom: '40px'},
-  cardActionsGap: {marginRight: '10px'}
-}))
+
 
 function AddUserRole() {
-  const classes = useStyles()
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
@@ -76,8 +65,8 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} className={classes.box}>
-      <header className={classes.boxHeader}>
+    <Box padding={3}>
+      <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Add User
         </Typography>
@@ -101,7 +90,7 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card className={classes.mainCard} elevation={4}>
+          <Card style={{width:'600px'}} elevation={4}>
             <Divider />
             <CardContent>
               <BasicInfo
@@ -121,7 +110,7 @@ function AddUserRole() {
                   Cancel
                 </Button>
 
-                <span className={classes.cardActionsGap}></span>
+                <span style={{marginRight: '10px' }}></span>
 
                 <Button
                   variant="contained"

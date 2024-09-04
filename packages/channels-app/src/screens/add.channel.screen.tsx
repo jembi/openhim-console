@@ -57,26 +57,8 @@ const defaultChannel: Channel = {
   autoRetryPeriodMinutes: 60
 }
 
-const useStyles = makeStyles(_theme => ({
-  mainCard: {
-    width: '600px',
-    borderRadius: '15px',
-    padding: '20px'
-  },
-  header: {
-    marginBottom: '40px'
-  },
-  cardActions: {
-    // padding: '10px',
-    marginTop: '30px'
-  },
-  cardActionsBtnGap: {
-    marginRight: '10px'
-  }
-}))
 
 function AddChannelScreen() {
-  const classes = useStyles()
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
@@ -117,7 +99,7 @@ function AddChannelScreen() {
 
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <header className={classes.header}>
+      <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Add Channel
         </Typography>
@@ -140,7 +122,10 @@ function AddChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Paper className={classes.mainCard} elevation={4}>
+          <Paper
+            style={{width: '600px', borderRadius: '15px', padding: '20px'}}
+            elevation={4}
+          >
             <div style={{marginBottom: '10px'}}>
               <Stepper activeStep={activeStep}>
                 {steps.map(label => (
@@ -181,7 +166,7 @@ function AddChannelScreen() {
               )}
             </div>
 
-            <Box className={classes.cardActions}>
+            <Box style={{marginTop: '30px'}}>
               {activeStep === 0 && (
                 <Button
                   variant="outlined"
@@ -196,7 +181,7 @@ function AddChannelScreen() {
                   BACK
                 </Button>
               )}
-              <span className={classes.cardActionsBtnGap}></span>
+              <span style={{marginRight: '10px'}}></span>
               {activeStep != steps.length - 1 && (
                 <Button
                   variant="contained"
