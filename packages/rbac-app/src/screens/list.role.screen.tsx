@@ -1,12 +1,11 @@
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 import Search from '@mui/icons-material/Search'
-import ErrorIcon from '@mui/icons-material/Error' // Add this line
+import ErrorIcon from '@mui/icons-material/Error'
 import {
   Box,
   Button,
   Card,
-  CardContent,
   Divider,
   Grid,
   IconButton,
