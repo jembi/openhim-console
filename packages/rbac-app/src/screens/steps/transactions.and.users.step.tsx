@@ -14,11 +14,12 @@ import {
 import React from 'react'
 import {InputAdornment} from '../../components/helpers/input.adornment.component'
 import {PermissionChip} from '../../components/helpers/permission.chip.component'
-import {Mediator, Permission, Role, Transaction} from '../../types'
+import {Channel, Mediator, Permission, Role, Transaction} from '../../types'
 
 export function TransactionsUsersMediatorsStep(props: {
   role: Role
   transactions: Transaction[]
+  channels: Channel[]
   mediators: Mediator[]
   onChange: (role: Role) => void
 }) {
@@ -111,9 +112,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     }
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
-                    {props.transactions.map(transaction => (
-                      <MenuItem key={transaction._id} value={transaction._id}>
-                        {transaction._id}
+                    {props.channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>
+                        {channel.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -154,9 +155,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     }
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
-                    {props.transactions.map(transaction => (
-                      <MenuItem key={transaction._id} value={transaction._id}>
-                        {transaction._id}
+                    {props.channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>
+                        {channel.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -201,9 +202,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     }
                     renderValue={selected => <PermissionChip data={selected} />}
                   >
-                    {props.transactions.map(transaction => (
-                      <MenuItem key={transaction._id} value={transaction._id}>
-                        {transaction._id}
+                    {props.channels.map(channel => (
+                      <MenuItem key={channel.name} value={channel.name}>
+                        {channel.name}
                       </MenuItem>
                     ))}
                   </Select>

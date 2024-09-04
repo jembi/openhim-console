@@ -165,6 +165,7 @@ function EditUserRole() {
                     role={role}
                     mediators={mediators}
                     transactions={transactions}
+                    channels={channels}
                     onChange={setRole}
                   />
                 )}
