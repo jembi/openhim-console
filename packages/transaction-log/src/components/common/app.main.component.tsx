@@ -170,12 +170,17 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (timestampFilter) {
-        fetchTransactionLogs(timestampFilter)
-      }
+      const currentTimestamp = new Date().toISOString()
+      setTimestampFilter(currentTimestamp)
     }, 5000)
 
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (timestampFilter) {
+      fetchTransactionLogs(timestampFilter)
+    }
   }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
