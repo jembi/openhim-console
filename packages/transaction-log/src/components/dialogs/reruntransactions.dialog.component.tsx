@@ -144,7 +144,7 @@ const RerunTransactionsConfirmationModal: React.FC<Props> = ({
                 <InputLabel>Batch size</InputLabel>
                 <Select
                   value={taskSetup.batchSize}
-                //   onChange={handleBatchSizeChange}
+                  //   onChange={handleBatchSizeChange}
                   label="Batch size"
                 >
                   {batchSizes.map(batch => (

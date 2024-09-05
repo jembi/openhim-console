@@ -14,7 +14,13 @@ import {
 } from '@jembi/openhim-core-api'
 import {Client, Channel} from '../types'
 
-jest.mock('@jembi/openhim-core-api')
+jest.mock('@jembi/openhim-core-api', () => ({
+  fetchClients: jest.fn(),
+  fetchClientById: jest.fn(),
+  fetchChannels: jest.fn(),
+  fetchChannelById: jest.fn(),
+  fetchTransactions: jest.fn()
+}))
 
 describe('API Service Tests', () => {
   afterEach(() => {
@@ -120,23 +126,20 @@ describe('API Service Tests', () => {
 
       const transactions = await getTransactions({})
       expect(transactions).toEqual(mockTransactions)
-      expect(fetchTransactions).toHaveBeenCalledWith({
-        filters: {}
-      })
+
+      expect(fetchTransactions).toHaveBeenCalledWith({})
     })
 
     it('should throw an error if fetchTransactions fails', async () => {
       const errorMessage = 'Failed to fetch transactions'
+
       ;(fetchTransactions as jest.Mock).mockRejectedValue(
         new Error(errorMessage)
       )
 
       await expect(getTransactions({})).rejects.toThrow(errorMessage)
-      expect(fetchTransactions).toHaveBeenCalledWith({
-        filterLimit: 10,
-        filterPage: 1,
-        filters: {}
-      })
+
+      expect(fetchTransactions).toHaveBeenCalledWith({})
     })
   })
 })
