@@ -114,17 +114,20 @@ const App: React.FC = () => {
           fetchParams.filterPage = 0
         }
 
-        const transactions = await getTransactions(fetchParams)
+        const newTransactions = await getTransactions(fetchParams)
 
-        const transactionsWithChannelDetails = await Promise.all(
-          transactions.map(async transaction => {
+        const newTransactionsWithChannelDetails = await Promise.all(
+          newTransactions.map(async transaction => {
             const channelName = await fetchChannelDetails(transaction.channelID)
             const clientName = await fetchClientDetails(transaction.clientID)
             return {...transaction, channelName, clientName}
           })
         )
 
-        setTransactions(transactionsWithChannelDetails)
+        setTransactions(prevTransactions => [
+          ...newTransactionsWithChannelDetails,
+          ...prevTransactions
+        ])
       } catch (error) {
         console.error('Error fetching logs:', error)
       }
