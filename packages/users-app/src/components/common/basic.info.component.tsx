@@ -10,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Switch,
   TextField,
   Typography
@@ -19,26 +20,20 @@ import {useNavigate} from 'react-router-dom'
 import {Role, Routes, User} from '../../types'
 import {makeStyles} from '@mui/styles'
 
-
 export function BasicInfo(props: {
   user: User
   roles: Role[]
-  onChange: (event: {user: User; isValid: boolean}) => unknown
+  onChange: (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string[]>,
+    nestedKey?: string
+  ) => void
+  validationErrors: {[key: string]: string}
+  validateUserField?: (field: string, newUserState?: object) => void
 }) {
-
   const navigate = useNavigate()
   const [user, setUser] = React.useState(props.user)
-
-  React.useEffect(() => {
-    props.onChange({
-      user,
-      isValid:
-        !!user.firstname.trim() &&
-        !!user.surname.trim() &&
-        !!user.email.trim() &&
-        user.groups?.length > 0
-    })
-  }, [user])
 
   const handleSwitchToggle = (key: keyof User, checked: boolean) => {
     setUser({
@@ -56,6 +51,8 @@ export function BasicInfo(props: {
     })
   }
 
+  const onBlurredValidation = (e: React.FocusEvent<HTMLInputElement>) => {}
+
   return (
     <Box>
       <Typography variant="h4">Basic Info</Typography>
@@ -64,7 +61,7 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider/>
+      <Divider />
 
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -72,15 +69,12 @@ export function BasicInfo(props: {
             label="First Name"
             variant="outlined"
             fullWidth
-            margin="normal"
-            value={user.firstname}
-            onChange={e => setUser({...user, firstname: e.target.value})}
-            error={user.firstname.trim() === ''}
-            helperText={
-              user.firstname.trim() === ''
-                ? 'First Name cannot be empty'
-                : undefined
-            }
+            name="firstname"
+            value={props.user.firstname}
+            onChange={props.onChange}
+            onBlur={e => props.validateUserField('firstname')}
+            error={props.validationErrors.firstname ? true : false}
+            helperText={props.validationErrors.firstname}
           />
         </Grid>
 
@@ -89,13 +83,12 @@ export function BasicInfo(props: {
             label="Surname"
             variant="outlined"
             fullWidth
-            margin="normal"
-            value={user.surname}
-            onChange={e => setUser({...user, surname: e.target.value})}
-            error={user.surname.trim() === ''}
-            helperText={
-              user.surname.trim() === '' ? 'Surname cannot be empty' : undefined
-            }
+            name="surname"
+            value={props.user.surname}
+            onChange={props.onChange}
+            onBlur={e => props.validateUserField('surname')}
+            error={props.validationErrors.surname ? true : false}
+            helperText={props.validationErrors.surname}
           />
         </Grid>
 
@@ -104,13 +97,12 @@ export function BasicInfo(props: {
             label="Email"
             variant="outlined"
             fullWidth
-            margin="normal"
-            value={user.email}
-            onChange={e => setUser({...user, email: e.target.value})}
-            error={user.email.trim() === ''}
-            helperText={
-              user.email.trim() === '' ? 'Email cannot be empty' : undefined
-            }
+            name="email"
+            value={props.user.email}
+            onChange={props.onChange}
+            onBlur={e => props.validateUserField('email')}
+            error={props.validationErrors.email ? true : false}
+            helperText={props.validationErrors.email}
           />
         </Grid>
 
@@ -121,10 +113,12 @@ export function BasicInfo(props: {
               multiple
               labelId="user-roles"
               label="Role"
+              name="groups"
               variant="outlined"
-              value={user.groups || []}
-              onChange={e => handleSelectChange('groups', e.target.value)}
-              error={user.groups?.length === 0}
+              value={props.user.groups}
+              onChange={e => props.onChange(e)}
+              onClose={e => props.validateUserField('groups')}
+              error={props.validationErrors.groups ? true : false}
             >
               {props.roles.map((role, index) => (
                 <MenuItem key={index} value={role.name}>
@@ -153,10 +147,10 @@ export function BasicInfo(props: {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={user.settings?.openTransactionInNewTab}
-                        onChange={e =>
-                          handleSwitchToggle('settings.openTransactionInNewTab' as keyof User, e.target.checked)
-                        }
+                        checked={props.user.settings?.list?.tabview}
+                        onChange={e => {
+                          props.onChange(e, 'settings.list.tabview')
+                        }}
                       />
                     }
                     label="Open Transactions in a new tab."
@@ -166,9 +160,9 @@ export function BasicInfo(props: {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={user.settings?.autoUpdateTransactionList}
+                        checked={props.user.settings?.list?.autoupdate}
                         onChange={e =>
-                          handleSwitchToggle('settings.autoUpdateTransactionList' as keyof User, e.target.checked)
+                          props.onChange(e, 'settings.list.autoupdate')
                         }
                       />
                     }
@@ -179,9 +173,9 @@ export function BasicInfo(props: {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={user.settings?.showTooltips}
+                        checked={props.user.settings?.general?.showTooltips}
                         onChange={e =>
-                          handleSwitchToggle('settings.showToolTips' as keyof User, e.target.checked)
+                          props.onChange(e, 'settings.general.showTooltips')
                         }
                       />
                     }
@@ -202,10 +196,9 @@ export function BasicInfo(props: {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={user.dailyReport}
-                        onChange={e =>
-                          handleSwitchToggle('dailyReport', e.target.checked)
-                        }
+                        checked={props.user.dailyReport}
+                        name="dailyReport"
+                        onChange={e => props.onChange(e)}
                       />
                     }
                     label="Receive Daily Channel reports?"
@@ -215,10 +208,9 @@ export function BasicInfo(props: {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={user.weeklyReport}
-                        onChange={e =>
-                          handleSwitchToggle('weeklyReport', e.target.checked)
-                        }
+                        checked={props.user.weeklyReport}
+                        name="weeklyReport"
+                        onChange={e => props.onChange(e)}
                       />
                     }
                     label="Receive Weekly Channel reports?"

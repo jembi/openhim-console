@@ -36,8 +36,10 @@ npm install
 To start up a development instance of the webapp run
 
 ```sh
-npm start
+npx lerna run start --concurrency=16
 ```
+
+> The number passed into the --concurrency flag should be equal to the number of folders in the "./packages" directory
 
 For file changes to apply run `npm build` before starting the server.
 
