@@ -3,5 +3,5 @@ import TransactionsLogRootApp from './root.component'
 import React from 'react'
 
 describe('Root component', () => {
-    it.skip('should be in the document', () => {})
+  it.skip('should be in the document', () => {})
 })

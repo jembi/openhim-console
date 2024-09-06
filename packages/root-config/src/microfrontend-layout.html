@@ -11,6 +11,8 @@
         </route>
         <route path="#!/audits">
         </route>
+        <route path="#!/channels">
+        </route>
         <route path="#!/audits">
         </route>
         <route path="#!/tasks">
@@ -52,7 +54,7 @@
           <application name="@jembi/portal-admin"></application>
         </div>
       </route>
-      <route path="#!/transactions">
+      <route path="#!/transactions" exact>
         <div style="flex-grow: 1">
           <application name="@jembi/transaction-log"></application>
         </div>
