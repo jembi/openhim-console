@@ -68,3 +68,8 @@ export interface SettingsDialogProps {
   autoUpdate: boolean
   setAutoUpdate: (value: boolean) => void
 }
+
+export interface StatusButtonProps {
+  status: string
+  buttonText: string
+}

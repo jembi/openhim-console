@@ -41,6 +41,8 @@ const App: React.FC = () => {
   const [client, setClient] = useState(NO_FILTER)
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -112,17 +114,20 @@ const App: React.FC = () => {
           fetchParams.filterPage = 0
         }
 
-        const transactions = await getTransactions(fetchParams);
+        const newTransactions = await getTransactions(fetchParams)
 
-        const transactionsWithChannelDetails = await Promise.all(
-          transactions.map(async transaction => {
+        const newTransactionsWithChannelDetails = await Promise.all(
+          newTransactions.map(async transaction => {
             const channelName = await fetchChannelDetails(transaction.channelID)
             const clientName = await fetchClientDetails(transaction.clientID)
             return {...transaction, channelName, clientName}
           })
         )
 
-        setTransactions(transactionsWithChannelDetails)
+        setTransactions(prevTransactions => [
+          ...newTransactionsWithChannelDetails,
+          ...prevTransactions
+        ])
       } catch (error) {
         console.error('Error fetching logs:', error)
       }
@@ -140,7 +145,8 @@ const App: React.FC = () => {
       path,
       param,
       client,
-      method
+      method,
+      loading
     ]
   )
 
@@ -164,6 +170,21 @@ const App: React.FC = () => {
     fetchTransactionLogs()
     fetchAvailableChannels(), fetchAvailableClients()
   }, [fetchTransactionLogs, fetchAvailableChannels, fetchAvailableClients])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTimestamp = new Date().toISOString()
+      setTimestampFilter(currentTimestamp)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (timestampFilter) {
+      fetchTransactionLogs(timestampFilter)
+    }
+  }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue)
@@ -191,8 +212,16 @@ const App: React.FC = () => {
     }
   }
 
-  const loadMore = () => {
-    setLimit(prevLimit => prevLimit + 20)
+  const loadMore = async () => {
+    setLoading(true)
+    try {
+      setLimit(prevLimit => prevLimit + 20)
+
+      await fetchTransactionLogs()
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   const filteredTransactions = transactions.filter(transaction => {
@@ -208,8 +237,8 @@ const App: React.FC = () => {
     ].some(field => field?.toLowerCase().includes(searchTerm))
   })
 
-  const handleRowClick = (transaction) => {
-    console.log('Transaction clicked:', transaction);
+  const handleRowClick = transaction => {
+    console.log('Transaction clicked:', transaction)
   }
 
   return (
@@ -311,6 +340,7 @@ const App: React.FC = () => {
             <TransactionLogTable
               transactions={filteredTransactions}
               loadMore={loadMore}
+              loading={loading}
               onRowClick={handleRowClick}
             />
           </CardContent>
