@@ -1,17 +1,11 @@
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Typography
-} from '@mui/material'
+import {Box, Button, Grid, Paper, Typography} from '@mui/material'
 import Tab from '@mui/material/Tab'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
@@ -21,12 +15,9 @@ import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
 
-
 function EditChannelScreen() {
-
   const navigate = useNavigate()
-  const location = useLocation()
-  const originalChannel = location.state as Channel
+  const originalChannel = window.history.state as Channel
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeTab, setActiveTab] = React.useState('0')
@@ -58,7 +49,7 @@ function EditChannelScreen() {
 
   return (
     <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{ marginBottom: '40px'}}>
+      <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit Channel
         </Typography>
@@ -81,8 +72,7 @@ function EditChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Paper style={{   width: '600px',
-    borderRadius: '15px'}} elevation={4}>
+          <Paper style={{width: '600px', borderRadius: '15px'}} elevation={4}>
             <TabContext value={activeTab}>
               <TabList
                 onChange={(e, newValue) => setActiveTab(newValue)}

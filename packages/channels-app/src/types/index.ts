@@ -108,8 +108,7 @@ export type Channel = {
 }
 
 export enum Routes {
-  MANAGE_CHANNELS = '/',
-  CREATE_CHANNEL = '/create-channel',
-  EDIT_CHANNEL = '/edit-channel',
-  CREATE_ROUTE = '/create-route'
+  MANAGE_CHANNELS = '!/channels',
+  CREATE_CHANNEL = '!/channels/create-channel',
+  EDIT_CHANNEL = '!/channels/edit-channel'
 }

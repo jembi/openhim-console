@@ -18,8 +18,6 @@ import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
-
-
 export function BasicInfo(props: {
   channel: Channel
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
