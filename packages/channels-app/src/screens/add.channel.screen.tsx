@@ -57,7 +57,6 @@ const defaultChannel: Channel = {
   autoRetryPeriodMinutes: 60
 }
 
-
 function AddChannelScreen() {
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()

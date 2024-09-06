@@ -20,7 +20,6 @@ import {makeStyles} from '@mui/styles'
 import {DataGrid, GridColDef} from '@mui/x-data-grid'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
 import {CustomToolbar} from '../components/helpers/custom.toolbar'
 import {ErrorMessage} from '../components/helpers/error.component'
 import Loader from '../components/helpers/loader.component'
@@ -28,7 +27,7 @@ import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
-import {Channel, Routes} from '../types'
+import {Channel} from '../types'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
@@ -40,7 +39,6 @@ const useStyles = makeStyles(_theme => ({
 }))
 
 const ManageChannelsScreen: React.FC = () => {
-  const navigate = useNavigate()
   const classes = useStyles()
   const {
     isLoading,
@@ -120,7 +118,7 @@ const ManageChannelsScreen: React.FC = () => {
 
   const handleEditChannel = () => {
     if (selectedChannel) {
-      navigate(Routes.EDIT_CHANNEL, {state: selectedChannel})
+      window.history.pushState(selectedChannel, '', `/#!/channels/edit-channel`)
     }
   }
 
@@ -228,7 +226,7 @@ const ManageChannelsScreen: React.FC = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => navigate(Routes.CREATE_CHANNEL)}
+            href="/#!/channels/create-channel"
           >
             Add
           </Button>

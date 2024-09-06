@@ -26,7 +26,18 @@ export async function getChannelById(id: string): Promise<Channel> {
 
 export async function addChannel(channel: Channel): Promise<void> {
   try {
-    await createChannel(channel)
+    const channelPayload = structuredClone(channel)
+
+    if (
+      channelPayload.addAutoRewriteRules &&
+      !channelPayload.urlPattern.trimStart().startsWith('^') &&
+      !channelPayload.urlPattern.trimEnd().endsWith('$')
+    ) {
+      channelPayload._id = undefined
+      channelPayload.urlPattern = `^${channelPayload.urlPattern.trim()}$`
+    }
+
+    await createChannel(channelPayload)
   } catch (err) {
     console.error(err)
     throw err
