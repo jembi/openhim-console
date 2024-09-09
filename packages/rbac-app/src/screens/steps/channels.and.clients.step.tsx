@@ -106,7 +106,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['channel-manage-all']}
+                      checked={!!role.permissions?.['channel-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'channel-manage-all',
@@ -127,8 +127,8 @@ export function ChannelsClientsStep(props: {
                     label="Choose options"
                     multiple
                     variant="outlined"
-                    value={role.permissions['channel-manage-specified']}
-                    disabled={!role.permissions['channel-manage-all']}
+                    value={role.permissions?.['channel-manage-specified'] ?? []}
+                    disabled={!role.permissions?.['channel-manage-all']}
                     onChange={e =>
                       handleSelectChange(
                         'channel-manage-specified',
@@ -149,7 +149,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['channel-view-all']}
+                      checked={!!role.permissions?.['channel-view-all']}
                       onChange={e =>
                         handleSwitchToggle('channel-view-all', e.target.checked)
                       }
@@ -167,8 +167,8 @@ export function ChannelsClientsStep(props: {
                     labelId="channel-view-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions['channel-view-specified']}
-                    disabled={!role.permissions['channel-view-all']}
+                    value={role.permissions?.['channel-view-specified'] ?? []}
+                    disabled={!role.permissions?.['channel-view-all']}
                     onChange={e =>
                       handleSelectChange(
                         'channel-view-specified',
@@ -198,7 +198,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['client-manage-all']}
+                      checked={!!role.permissions?.['client-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-manage-all',
@@ -219,8 +219,8 @@ export function ChannelsClientsStep(props: {
                     labelId="client-manage-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions['client-manage-specified']}
-                    disabled={!role.permissions['client-manage-all']}
+                    value={role.permissions?.['client-manage-specified'] ?? []}
+                    disabled={!role.permissions?.['client-manage-all']}
                     onChange={e =>
                       handleSelectChange(
                         'client-manage-specified',
@@ -241,7 +241,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['client-view-all']}
+                      checked={!!role.permissions?.['client-view-all']}
                       onChange={e =>
                         handleSwitchToggle('client-view-all', e.target.checked)
                       }
@@ -259,8 +259,8 @@ export function ChannelsClientsStep(props: {
                     labelId="client-view-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions['client-view-specified']}
-                    disabled={!role.permissions['client-view-all']}
+                    value={role.permissions?.['client-view-specified'] ?? []}
+                    disabled={!role.permissions?.['client-view-all']}
                     onChange={e =>
                       handleSelectChange(
                         'client-view-specified',
@@ -290,7 +290,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['client-role-manage-all']}
+                      checked={!!role.permissions?.['client-role-manage-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-role-manage-all',
@@ -311,8 +311,8 @@ export function ChannelsClientsStep(props: {
                     labelId="client-role-manage-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions['client-role-manage-specified']}
-                    disabled={!role.permissions['client-role-manage-all']}
+                    value={role.permissions?.['client-role-manage-specified'] ?? []}
+                    disabled={!role.permissions?.['client-role-manage-all']}
                     onChange={e =>
                       handleSelectChange(
                         'client-role-manage-specified',
@@ -327,7 +327,7 @@ export function ChannelsClientsStep(props: {
                 <FormControlLabel
                   control={
                     <Switch
-                      checked={role.permissions['client-role-view-all']}
+                      checked={!!role.permissions?.['client-role-view-all']}
                       onChange={e =>
                         handleSwitchToggle(
                           'client-role-view-all',
@@ -348,8 +348,8 @@ export function ChannelsClientsStep(props: {
                     labelId="client-role-view-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions['client-role-view-specified']}
-                    disabled={!role.permissions['client-role-view-all']}
+                    value={role.permissions?.['client-role-view-specified'] ?? []}
+                    disabled={!role.permissions?.['client-role-view-all']}
                     onChange={e =>
                       handleSelectChange(
                         'client-role-view-specified',
