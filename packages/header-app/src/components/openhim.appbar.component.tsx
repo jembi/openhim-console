@@ -261,7 +261,7 @@ export default function OpenhimAppBar() {
                       onClick={handleCloseNavMenu}
                       component="a"
                       href={page.link}
-                      selected={window.location.href.includes(page.link)}
+                      selected={window.location.href.endsWith(page.link)}
                     >
                       <Typography textAlign="center">{page.name}</Typography>
                     </MenuItem>
@@ -306,7 +306,7 @@ export default function OpenhimAppBar() {
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                               }
-                              selected={window.location.href.includes(
+                              selected={window.location.href.endsWith(
                                 child.link
                               )}
                               component="a"
@@ -419,7 +419,7 @@ export default function OpenhimAppBar() {
                             onClick={() =>
                               handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                             }
-                            selected={window.location.href.includes(child.link)}
+                            selected={window.location.href.endsWith(child.link)}
                             component="a"
                             href={child.link}
                           >
