@@ -231,6 +231,85 @@ export function AdditionalPermissionsStep(props: {
 
         <Grid item xs={12}>
           <Paper elevation={1} style={paperStyling}>
+            <Typography variant="h5">Metadata</Typography>
+
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['metadata-manage-all']}
+                      onChange={e =>
+                        handleSwitchToggle(
+                          'metadata-manage-all',
+                          e.target.checked
+                        )
+                      }
+                    />
+                  }
+                  label="Allow Metadata management"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['metadata-view-all']}
+                      onChange={e =>
+                        handleSwitchToggle(
+                          'metadata-view-all',
+                          e.target.checked
+                        )
+                      }
+                    />
+                  }
+                  label="Allow metadata viewing"
+                />
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={1} style={paperStyling}>
+            <Typography variant="h5">Visualizer</Typography>
+
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['visualizer-manage']}
+                      onChange={e =>
+                        handleSwitchToggle(
+                          'visualizer-manage',
+                          e.target.checked
+                        )
+                      }
+                    />
+                  }
+                  label="Allow visualizer management"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['visualizer-view']}
+                      onChange={e =>
+                        handleSwitchToggle('visualizer-view', e.target.checked)
+                      }
+                    />
+                  }
+                  label="Allow visualizer viewing"
+                />
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={1} style={paperStyling}>
             <Typography variant="h5">Data Management</Typography>
 
             <Grid container spacing={2}>
@@ -245,6 +324,59 @@ export function AdditionalPermissionsStep(props: {
                     />
                   }
                   label="Allow import & export of data"
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['service-manage']}
+                      onChange={e =>
+                        handleSwitchToggle('service-manage', e.target.checked)
+                      }
+                    />
+                  }
+                  label="Allow service management"
+                />
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={1} style={paperStyling}>
+            <Typography variant="h5">MISC.</Typography>
+
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['auth-type-view-all']}
+                      onChange={e =>
+                        handleSwitchToggle(
+                          'auth-type-view-all',
+                          e.target.checked
+                        )
+                      }
+                    />
+                  }
+                  label="Allow authentication type viewing"
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={role.permissions['events-view-all']}
+                      onChange={e =>
+                        handleSwitchToggle('events-view-all', e.target.checked)
+                      }
+                    />
+                  }
+                  label="Allow events viewing"
                 />
               </Grid>
             </Grid>

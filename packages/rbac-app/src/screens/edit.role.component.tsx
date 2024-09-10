@@ -185,7 +185,7 @@ function EditUserRole() {
                   <Button
                     variant="outlined"
                     color="info"
-                    onClick={() => navigate(-1)}
+                    href={`/#${Routes.ROLES}`}
                   >
                     Cancel
                   </Button>
