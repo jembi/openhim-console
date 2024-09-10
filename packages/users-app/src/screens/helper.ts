@@ -2,7 +2,7 @@ import { SelectChangeEvent } from "@mui/material"
 import { User } from '../types'
 import { userSchema } from "../utils"
 
-export function handleOnChange(nestedKey: string, user: Readonly<User>, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string[]>, setUser: React.Dispatch<React.SetStateAction<Readonly<import("/home/brett/GitHub/openhim-console/packages/users-app/src/types/index").User>>>, validateUserField: (field: string, newBasicInfoState?: object) => void) {
+export function handleOnChange(nestedKey: string, user: Readonly<User>, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string[]>, setUser: React.Dispatch<React.SetStateAction<Readonly<User>>>, validateUserField: (field: string, newBasicInfoState?: object) => void) {
     let newBasicUserState
   
     if (nestedKey) {
