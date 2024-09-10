@@ -73,7 +73,7 @@ export function BasicInfo(props: {
             value={props.user.firstname}
             onChange={props.onChange}
             onBlur={e => props.validateUserField('firstname')}
-            error={props.validationErrors.firstname ? true : false}
+            error={!!props.validationErrors.firstname}
             helperText={props.validationErrors.firstname}
           />
         </Grid>

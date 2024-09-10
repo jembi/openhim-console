@@ -31,7 +31,7 @@ export const userSchema = z.object({
 
 
 export const defaultUser: Readonly<User> = {
-  _id: '',
+  _id: undefined,
   email: '',
   firstname: '',
   surname: '',

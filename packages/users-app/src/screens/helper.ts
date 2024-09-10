@@ -6,17 +6,13 @@ export function handleOnChange(nestedKey: string, user: Readonly<User>, e: React
     let newBasicUserState
   
     if (nestedKey) {
-      newBasicUserState = {
-        ...user
-      }
+      newBasicUserState = structuredClone(user) 
       const keys = nestedKey.split('.')
       newBasicUserState[keys[0]][keys[1]][keys[2]] =
         !newBasicUserState[keys[0]][keys[1]][keys[2]]
     } else {
       const field = e.target.name
       if (field === 'dailyReport' || field === 'weeklyReport') {
-        console.log('field', field)
-  
         newBasicUserState = {
           ...user,
           [field]: !user[field]

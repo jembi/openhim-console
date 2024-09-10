@@ -61,7 +61,6 @@ export function ChannelsClientsStep(props: {
   const paperStyling = {padding: '10px 20px'}
 
   const validateClientName = (newState: Role) => {
-    console.log(newState.name.trim());
     if(newState.name.trim() === ''){
       setValidClientName(false);
     }else{
