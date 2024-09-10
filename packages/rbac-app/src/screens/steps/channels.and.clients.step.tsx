@@ -12,7 +12,7 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import React from 'react'
+import React, {isValidElement} from 'react'
 import {PermissionChip} from '../../components/helpers/permission.chip.component'
 import {InputAdornment} from '../../components/helpers/input.adornment.component'
 import {Channel, Client, Permission, Role} from '../../types'
@@ -24,6 +24,7 @@ export function ChannelsClientsStep(props: {
   onChange: (role: Role) => void
 }) {
   const [role, setRole] = React.useState(props.role)
+  const [validClientName, setValidClientName] = React.useState(true)
 
   React.useEffect(() => {
     props.onChange(role)
@@ -59,6 +60,15 @@ export function ChannelsClientsStep(props: {
 
   const paperStyling = {padding: '10px 20px'}
 
+  const validateClientName = (newState: Role) => {
+    console.log(newState.name.trim());
+    if(newState.name.trim() === ''){
+      setValidClientName(false);
+    }else{
+      setValidClientName(true);
+    }
+  }
+
   return (
     <Box>
       <Typography variant="h6">
@@ -84,13 +94,16 @@ export function ChannelsClientsStep(props: {
                   fullWidth
                   margin="normal"
                   value={role.name}
-                  onChange={e => setRole({...role, name: e.target.value})}
-                  error={role.name.trim() === ''}
-                  helperText={
-                    role.name.trim() === ''
-                      ? 'Role name cannot be empty'
-                      : undefined
-                  }
+                  onChange={e => {
+                    const newState =  {
+                      ...role,
+                      name: e.target.value
+                    }
+                    setRole(newState);
+                    validateClientName(newState);
+                  }}
+                  error={!validClientName}
+                  helperText={!validClientName && 'Role name cannot be empty'}
                 />
               </Grid>
             </Grid>
