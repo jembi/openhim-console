@@ -306,7 +306,9 @@ export default function OpenhimAppBar() {
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                               }
-                              selected={window.location.href.includes(child.link)}
+                              selected={window.location.href.includes(
+                                child.link
+                              )}
                               component="a"
                               href={child.link}
                             >
@@ -366,14 +368,29 @@ export default function OpenhimAppBar() {
                       onClick={event =>
                         handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        marginRight: '20px',
-                        color: '#00000099'
-                      }}
+                      style={
+                        page.children?.some(
+                          child =>
+                            child != DIVIDER_MENU_ITEM &&
+                            window.location.href.includes(child.link)
+                        )
+                          ? {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#388e3c'
+                            }
+                          : {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#00000099'
+                            }
+                      }
                     >
                       {page.name}
                       <ArrowDropDownIcon />
