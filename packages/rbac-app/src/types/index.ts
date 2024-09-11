@@ -36,6 +36,13 @@ export type Permission = {
   'certificates-manage': boolean
   'logs-view': boolean
   'import-export': boolean
+  'auth-type-view-all': boolean
+  'events-view-all': boolean
+  'metadata-view-all': boolean
+  'metadata-manage-all': boolean
+  'service-manage': boolean
+  'visualizer-manage': boolean
+  'visualizer-view': boolean
 }
 
 export type Role = {

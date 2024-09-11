@@ -7,7 +7,7 @@ export const ClientSchema = z.object({
         message: 'Client ID must be above 1 character',
     }),
     name: z.string().min(1).max(255),
-    roles: z.array(z.string()).min(1),
+    roles: z.array(z.string()).optional(),
     organization: z.string().optional(),
     softwareName: z.string().optional(),
     description: z.string().optional(),

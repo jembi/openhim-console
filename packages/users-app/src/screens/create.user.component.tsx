@@ -6,6 +6,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  SelectChangeEvent,
   Typography
 } from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
@@ -16,16 +17,19 @@ import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {createNewUser, getRoles} from '../services/api'
 import {Routes} from '../types'
-import {defaultUser} from '../utils'
+import {defaultUser, getNestedProp} from '../utils'
 import {BasicInfo} from '../components/common/basic.info.component'
-
-
+import {userSchema} from '../utils'
+import { handleFieldValidationAndUpdateErrors, handleOnChange } from './helper'
 
 function AddUserRole() {
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [user, setUser] = React.useState(structuredClone(defaultUser))
+  const [validationErrors, setValidationErrors] = React.useState<{
+    [key: string]: string
+  }>({})
   const queryKey = React.useMemo(() => ['query.AddUserRole'], [])
   const query = useQuery(queryKey, getRoles, {
     staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
@@ -37,7 +41,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      window.history.pushState({},'',`/#${Routes.USERS}`)
+      window.history.pushState({}, '', `/#${Routes.USERS}`)
     },
     onError: error => {
       hideBackdrop()
@@ -49,7 +53,19 @@ function AddUserRole() {
 
   const onBasicInfoChange = (event: {user: any; isValid: boolean}) => {
     setUser(event.user)
-    setIsFormDataValid(event.isValid)
+  }
+
+  const onChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string[]>,
+    nestedKey?: string
+  ) => {
+    handleOnChange(nestedKey, user, e, setUser, validateUserField)
+  }
+
+  const validateUserField = (field: string, newBasicInfoState?: object) => {
+    handleFieldValidationAndUpdateErrors(newBasicInfoState, user, field, setValidationErrors, validationErrors, setIsFormDataValid)
   }
 
   const handleAddUser = async () => {
@@ -90,13 +106,15 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card style={{width:'600px'}} elevation={4}>
+          <Card style={{width: '600px'}} elevation={4}>
             <Divider />
             <CardContent>
               <BasicInfo
                 roles={roles}
-                onChange={onBasicInfoChange}
+                onChange={onChange}
                 user={user}
+                validationErrors={validationErrors}
+                validateUserField={validateUserField}
               />
             </CardContent>
             <Divider />
@@ -110,7 +128,7 @@ function AddUserRole() {
                   Cancel
                 </Button>
 
-                <span style={{marginRight: '10px' }}></span>
+                <span style={{marginRight: '10px'}}></span>
 
                 <Button
                   variant="contained"
@@ -130,3 +148,5 @@ function AddUserRole() {
 }
 
 export default AddUserRole
+
+

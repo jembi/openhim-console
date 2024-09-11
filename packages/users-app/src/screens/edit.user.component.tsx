@@ -6,6 +6,7 @@ import {
   CardContent,
   Divider,
   Grid,
+  SelectChangeEvent,
   Typography
 } from '@mui/material'
 import {makeStyles} from '@mui/styles'
@@ -18,10 +19,23 @@ import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {createNewUser, editUserByEmail, getRoles, getUsers} from '../services/api'
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
+import { handleFieldValidationAndUpdateErrors, handleOnChange } from './helper'
 
 export async function loader({params}) {
   const users = await getUsers();
   const user = users.find(user => user._id === params['userId']);
+  if(user.settings === undefined) {
+    user.settings = {
+      list:{
+        tabview: false,
+        autoupdate: false
+      },
+      general: {
+        showTooltips: false
+      }
+    }
+
+  }
   return {user}
 }
 
@@ -32,6 +46,9 @@ function AddUserRole() {
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const originalUser = structuredClone(state as User)
   const [user, setUser] = React.useState(structuredClone(originalUser))
+  const [validationErrors, setValidationErrors] = React.useState<{
+    [key: string]: string
+  }>({})
   const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
     mutationFn: async () => editUserByEmail(originalUser.email, user),
@@ -48,11 +65,24 @@ function AddUserRole() {
     }
   })
   const roles = getRolesQuery.data || []
-  const [isFormDataValid, setIsFormDataValid] = React.useState(false)
+  const [isFormDataValid, setIsFormDataValid] = React.useState(true)
 
   const onBasicInfoChange = (event: {user: any; isValid: boolean}) => {
     setUser(event.user)
     setIsFormDataValid(event.isValid)
+  }
+  
+  const onChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string[]>,
+    nestedKey?: string
+  ) => {
+    handleOnChange(nestedKey, user, e, setUser, validateUserField)
+  }
+  
+  const validateUserField = (field: string, newBasicInfoState?: object) => {
+    handleFieldValidationAndUpdateErrors(newBasicInfoState, user, field, setValidationErrors, validationErrors, setIsFormDataValid)
   }
 
   const handleEditUser = async () => {
@@ -96,10 +126,12 @@ function AddUserRole() {
           <Card style={{width:'600px'}} elevation={4}>
             <Divider />
             <CardContent>
-              <BasicInfo
+            <BasicInfo
                 roles={roles}
-                onChange={onBasicInfoChange}
+                onChange={onChange}
                 user={user}
+                validationErrors={validationErrors}
+                validateUserField={validateUserField}
               />
             </CardContent>
             <Divider />
@@ -120,8 +152,7 @@ function AddUserRole() {
                   color="primary"
                   disabled={
                     mutation.isLoading ||
-                    !isFormDataValid ||
-                    JSON.stringify(user) === JSON.stringify(originalUser)
+                    !isFormDataValid
                   }
                   onClick={handleEditUser}
                 >

@@ -55,21 +55,21 @@ const pages: Page[] = [
   },
   {
     name: 'MORE',
-    children: [{name: 'About', link: '#!/about'}]
+    children: [{name: 'About', link: '#!/about'},
+      {name: 'Manage Apps', link: '#!/portal-admin'},
+      {name: 'Audit Log', link: '#!/audits'},
+      {name: 'Tasks', link: '#!/tasks'},
+      {name: 'Visualizer', link: '#!/visualizer'},
+      {name: 'Contact Lists', link: '#!/groups'},
+      {name: 'Mediators', link: '#!/mediators'},
+      {name: 'Certificates', link: '#!/certificates'},
+      {name: 'Import/Export', link: '#!/export-import'},
+      {name: 'Server Logs', link: '#!/logs'}
+    ]
   },
   {
     name: 'APPS',
-    children: [
-      {name: 'MANAGE APPS', link: '#!/portal-admin'},
-      {name: 'AUDIT LOG', link: '#!/audits'},
-      {name: 'TASKS', link: '#!/tasks'},
-      {name: 'VISUALIZER', link: '#!/visualizer'},
-      {name: 'CONTACT LISTS', link: '#!/groups'},
-      {name: 'MEDIATORS', link: '#!/mediators'},
-      {name: 'CERTIFICATES', link: '#!/certificates'},
-      {name: 'IMPORT/EXPORT', link: '#!/export-import'},
-      {name: 'SERVER LOGS', link: '#!/logs'}
-    ]
+    children: [{name: 'Portal', link: '#!/portal'}]
   }
 ]
 
@@ -152,10 +152,41 @@ export default function OpenhimAppBar() {
     setIsAdmin(me.user.groups.includes('admin'))
   }
 
+  const fetchApps = async () => {
+    const resConf = await fetch('/config/default.json')
+    if (!resConf.ok) {
+      return console.error(
+        '[header-app] Failed to fetch OpenHIM console config'
+      )
+    }
+    const {protocol, host, hostPath, port} = await resConf.json()
+    const resApps = await fetch(
+      `${protocol}://${host}:${port}${
+        /^\s*$/.test(hostPath) ? '' : '/' + hostPath
+      }/apps`,
+      {credentials: 'include'}
+    )
+    if (!resApps.ok) {
+      return console.error('[header-app] Failed to fetch apps')
+    }
+    const apps = await resApps.json()
+    if (apps.length === 0) {
+      return
+    }
+    const updatedPages = pages.map((page, index) => 
+      index === pages.length - 1
+        ? { ...page, children: apps.map((app: any) => ({
+            name: app.name,
+            link: `#!${new URL(app.url).pathname}`
+          })) }  
+        : page
+    );
+  }
+
   useEffect(() => {
     const loadEvent = function (e?: PopStateEvent | HashChangeEvent) {
       const newRef = document.location.href
-
+      fetchApps()
       fetchMe()
       setCurrentPage(newRef)
     }

@@ -45,12 +45,12 @@ const defaultClientRoleState: ClientRole = {
 
 const pageHeadingTypography = {
   addClientUserRole: {
-    heading: 'Add User Role',
+    heading: 'Add Client Role',
     caption:
       'Control client systems and their access roles. Add client to enable their request routing and group them by roles for streamlined channel access management'
   },
   editClientUserRole: {
-    heading: 'Edit User Role',
+    heading: 'Edit Client Role',
     caption:
       'Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel access management.'
   }

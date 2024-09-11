@@ -13,9 +13,9 @@ import {
 } from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {
   createNewRole,
   getApps,
@@ -29,7 +29,6 @@ import {defaultRole} from '../utils'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
-import {useBasicBackdrop} from '../contexts/backdrop.context'
 
 const steps = [
   'Channels & Clients',
@@ -55,7 +54,6 @@ const queryFn = async () => {
 }
 
 function AddUserRole() {
-  const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
@@ -71,11 +69,17 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      window.history.pushState({}, `/#${Routes.ROLES}`)
+      window.setTimeout(() => {
+        window.location.href = `/#${Routes.ROLES}`
+      }, 100)
     },
-    onError: error => {
+    onError: (error: any) => {
       hideBackdrop()
-      showAlert('Error creating a new role', 'Error', 'error')
+      showAlert(
+        'Error creating a new role' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   })
   const {channels, clients, mediators, transactions, apps} = query.data || {}
@@ -181,7 +185,7 @@ function AddUserRole() {
                   <Button
                     variant="outlined"
                     color="info"
-                    onClick={() => navigate(-1)}
+                    href={`/#${Routes.ROLES}`}
                   >
                     Cancel
                   </Button>
