@@ -170,10 +170,14 @@ export default function OpenhimAppBar() {
     if (apps.length === 0) {
       return
     }
-    pages[pages.length - 1].children = apps.map((app: any) => ({
-      name: app.name,
-      link: `#!${new URL(app.url).pathname}`
-    }))
+    const updatedPages = pages.map((page, index) => 
+      index === pages.length - 1
+        ? { ...page, children: apps.map((app: any) => ({
+            name: app.name,
+            link: `#!${new URL(app.url).pathname}`
+          })) }  
+        : page
+    );
   }
 
   useEffect(() => {
