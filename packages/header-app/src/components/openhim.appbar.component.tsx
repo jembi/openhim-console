@@ -29,7 +29,7 @@ const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
   link: ''
 })
 
-const pages: Page[] = [
+let pages: Page[] = [
   {name: 'DASHBOARD', link: '#!/dashboard'},
   {name: 'TRANSACTIONS', link: '#!/transactions'},
   {name: 'CHANNELS', link: '#!/channels'},
@@ -181,6 +181,7 @@ export default function OpenhimAppBar() {
           })) }  
         : page
     );
+    pages=updatedPages;
   }
 
   useEffect(() => {
