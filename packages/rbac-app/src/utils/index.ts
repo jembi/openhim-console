@@ -41,7 +41,14 @@ export const defaultRole: Readonly<Role> = {
     'certificates-view': false,
     'certificates-manage': false,
     'logs-view': false,
-    'import-export': false
+    'import-export': false,
+    'auth-type-view-all': false,
+    'events-view-all': false,
+    'metadata-view-all': false,
+    'metadata-manage-all': false,
+    'service-manage': false,
+    'visualizer-manage': false,
+    'visualizer-view': false
   }
 }
 
@@ -85,7 +92,14 @@ export function mapPermissionToHumanReadable(
     'logs-view': 'View logs',
     'user-manage': 'Manage users',
     'user-role-manage': 'Manage user roles',
-    'user-role-view': 'View user roles'
+    'user-role-view': 'View user roles',
+    'auth-type-view-all': 'View all auth types',
+    'events-view-all': 'View all events',
+    'metadata-view-all': 'View all metadata',
+    'metadata-manage-all': 'Manage all metadata',
+    'service-manage': 'Manage services',
+    'visualizer-manage': 'Manage visualizers',
+    'visualizer-view': 'View visualizers'
   }
 
   return Object.keys(permissions).reduce((acc, key) => {
