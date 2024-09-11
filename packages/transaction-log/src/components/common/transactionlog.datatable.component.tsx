@@ -27,7 +27,13 @@ const TransactionLogTable: React.FC<{
   loading: boolean
   initialTransactionLoadComplete: boolean
   onRowClick: (transaction: any) => void
-}> = ({transactions, loadMore, onRowClick, loading,initialTransactionLoadComplete}) => {
+}> = ({
+  transactions,
+  loadMore,
+  onRowClick,
+  loading,
+  initialTransactionLoadComplete
+}) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
@@ -164,7 +170,14 @@ const TransactionLogTable: React.FC<{
               ) : (
                 <TableRow>
                   <TableCell colSpan={11} align="center">
-                  <CircularProgress size={24} />
+                    <CircularProgress size={24} />
+                  </TableCell>
+                </TableRow>
+              )}
+              {initialTransactionLoadComplete && transactions.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={11} align="center">
+                    There are no transactions for the current filters
                   </TableCell>
                 </TableRow>
               )}
