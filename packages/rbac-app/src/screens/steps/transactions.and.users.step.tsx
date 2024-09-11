@@ -307,6 +307,7 @@ export function TransactionsUsersMediatorsStep(props: {
                     labelId="mediator-manage-specified"
                     multiple
                     variant="outlined"
+                    label="Choose options"
                     value={role.permissions['mediator-manage-specified']}
                     disabled={!role.permissions['mediator-manage-all']}
                     onChange={e =>

@@ -75,11 +75,14 @@ function EditUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.ROLES)
+      window.setTimeout(() => {
+        window.location.href = `/#${Routes.ROLES}`
+      }, 100)
     },
-    onError: error => {
+    onError: (error: any) => {
+      const err = error?.response?.data ?? 'An unexpected error occurred'
       hideBackdrop()
-      showAlert('Error editing role', 'Error', 'error')
+      showAlert('Error editing role' + err, 'Error', 'error')
     }
   })
   const {channels, clients, mediators, transactions, apps} = query.data || {}

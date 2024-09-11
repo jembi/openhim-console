@@ -74,12 +74,9 @@ function AddUserRole() {
       }, 100)
     },
     onError: (error: any) => {
+      const err = error?.response?.data ?? 'An unexpected error occurred'
       hideBackdrop()
-      showAlert(
-        'Error creating a new role' + error?.response?.data,
-        'Error',
-        'error'
-      )
+      showAlert('Error creating a new role' + err, 'Error', 'error')
     }
   })
   const {channels, clients, mediators, transactions, apps} = query.data || {}
