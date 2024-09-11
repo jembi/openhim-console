@@ -6,30 +6,29 @@ import {
   CardContent,
   Divider,
   Grid,
-  Step,
-  StepLabel,
-  Stepper,
+  Tab,
+  Tabs,
   Typography
 } from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useLoaderData, useLocation, useNavigate} from 'react-router-dom'
+import {useLoaderData, useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {
   editRoleByName,
   getApps,
   getChannels,
   getClients,
   getMediators,
+  getRoles,
   getTransactions
 } from '../services/api'
 import {Role, Routes} from '../types'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
-import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {getRoles} from '../services/api'
 
 const steps = [
   'Channels & Clients',
@@ -60,12 +59,12 @@ function EditUserRole() {
   const {role: state} = useLoaderData() as {role: Role}
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeTab, setActiveTab] = React.useState(0)
   const originalRole = structuredClone(state)
   const [role, setRole] = React.useState<Role>(structuredClone(state))
   const queryKey = React.useMemo(() => ['query.EditUserRole'], [])
   const query = useQuery(queryKey, queryFn, {
-    staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
+    staleTime: 1000 * 30 // Data is fresh for 30 seconds
   })
 
   const mutation = useMutation({
@@ -99,12 +98,8 @@ function EditUserRole() {
     mutation.mutate()
   }
 
-  const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1)
-  }
-
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1)
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue)
   }
 
   return (
@@ -123,7 +118,7 @@ function EditUserRole() {
           role, viewing and editing its permissions, or creating a new role with
           customized permissions.
           <br />
-          For more details instructions, visit out{' '}
+          For more details instructions, visit our{' '}
           <a
             style={{color: 'grey'}}
             href="https://openhim.org/docs/introduction/about"
@@ -145,17 +140,20 @@ function EditUserRole() {
             <Divider />
             <CardContent>
               <div style={{marginBottom: '10px'}}>
-                <Stepper activeStep={activeStep}>
-                  {steps.map(label => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
+                <Tabs
+                  value={activeTab}
+                  onChange={handleChangeTab}
+                  aria-label="role edit tabs"
+                  variant="fullWidth"
+                >
+                  {steps.map((label, index) => (
+                    <Tab key={index} label={label} />
                   ))}
-                </Stepper>
+                </Tabs>
               </div>
               <Divider />
               <div style={{marginTop: '10px'}}>
-                {activeStep === 0 && (
+                {activeTab === 0 && (
                   <ChannelsClientsStep
                     role={role}
                     clients={clients}
@@ -163,7 +161,7 @@ function EditUserRole() {
                     onChange={setRole}
                   />
                 )}
-                {activeStep === 1 && (
+                {activeTab === 1 && (
                   <TransactionsUsersMediatorsStep
                     role={role}
                     mediators={mediators}
@@ -172,7 +170,7 @@ function EditUserRole() {
                     onChange={setRole}
                   />
                 )}
-                {activeStep === 2 && (
+                {activeTab === 2 && (
                   <AdditionalPermissionsStep
                     role={role}
                     apps={apps}
@@ -184,45 +182,26 @@ function EditUserRole() {
             <Divider />
             <CardActions>
               <Box display="flex" justifyContent="space-between">
-                {activeStep === 0 && (
-                  <Button
-                    variant="outlined"
-                    color="info"
-                    href={`/#${Routes.ROLES}`}
-                  >
-                    Cancel
-                  </Button>
-                )}
-                {activeStep > 0 && (
-                  <Button color="info" variant="outlined" onClick={handleBack}>
-                    Back
-                  </Button>
-                )}
-                <span style={{marginRight: '10px'}}></span>
-                {activeStep != steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    disabled={mutation.isLoading || role.name.trim() === ''}
-                  >
-                    Next
-                  </Button>
-                )}
-                {activeStep == steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={
-                      mutation.isLoading ||
-                      role.name.trim() === '' ||
-                      JSON.stringify(role) === JSON.stringify(originalRole)
-                    }
-                    onClick={handleEditRole}
-                  >
-                    Edit Role
-                  </Button>
-                )}
+                <Button
+                  variant="outlined"
+                  color="info"
+                  href={`/#${Routes.ROLES}`}
+                >
+                  Cancel
+                </Button>
+                &nbsp;&nbsp;
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={
+                    mutation.isLoading ||
+                    role.name.trim() === '' ||
+                    JSON.stringify(role) === JSON.stringify(originalRole)
+                  }
+                  onClick={handleEditRole}
+                >
+                  Edit Role
+                </Button>
               </Box>
             </CardActions>
           </Card>
