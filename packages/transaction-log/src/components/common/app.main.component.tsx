@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const [client, setClient] = useState(NO_FILTER)
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
+  const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] = useState(false)
   const [loading, setLoading] = useState(false)
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
 
@@ -167,8 +168,12 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    fetchTransactionLogs()
-    fetchAvailableChannels(), fetchAvailableClients()
+    ;(async () => {
+      await fetchAvailableChannels()
+      await fetchAvailableClients()
+      await fetchTransactionLogs()
+      setInitialTransactionLoadComplete(true)
+    })()
   }, [fetchTransactionLogs, fetchAvailableChannels, fetchAvailableClients])
 
   useEffect(() => {
@@ -341,6 +346,7 @@ const App: React.FC = () => {
               transactions={filteredTransactions}
               loadMore={loadMore}
               loading={loading}
+              initialTransactionLoadComplete={initialTransactionLoadComplete}
               onRowClick={handleRowClick}
             />
           </CardContent>
