@@ -87,7 +87,8 @@ export default function OpenhimAppBar() {
   const [currentPage, setCurrentPage] = useState<string>(window.location.href)
   const isLoggedIn =
     !window.location.href.includes('#!/login') &&
-    !window.location.href.includes('#!/logout')
+    !window.location.href.includes('#!/logout') &&
+    !window.location.href.includes('#!/forgot-password')
 
   const getCorrectAnchorEl = (
     page: Page
@@ -127,6 +128,8 @@ export default function OpenhimAppBar() {
   )
 
   const fetchMe = async () => {
+    if (window.location.href.includes('#!/forgot-password')) return
+
     setIsAdmin(false)
 
     const resConf = await fetch('/config/default.json')
@@ -189,13 +192,11 @@ export default function OpenhimAppBar() {
     }
 
     window.addEventListener('popstate', loadEvent)
-    // window.addEventListener('hashchange', loadEvent)
 
     loadEvent()
 
     return () => {
       window.removeEventListener('popstate', loadEvent)
-      // window.removeEventListener('hashchange', loadEvent)
     }
   }, [])
 
@@ -291,7 +292,7 @@ export default function OpenhimAppBar() {
                       onClick={handleCloseNavMenu}
                       component="a"
                       href={page.link}
-                      selected={window.location.href.includes(page.link)}
+                      selected={window.location.href.endsWith(page.link)}
                     >
                       <Typography textAlign="center">{page.name}</Typography>
                     </MenuItem>
@@ -336,6 +337,9 @@ export default function OpenhimAppBar() {
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                               }
+                              selected={window.location.href.endsWith(
+                                child.link
+                              )}
                               component="a"
                               href={child.link}
                             >
@@ -395,14 +399,29 @@ export default function OpenhimAppBar() {
                       onClick={event =>
                         handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        marginRight: '20px',
-                        color: '#00000099'
-                      }}
+                      style={
+                        page.children?.some(
+                          child =>
+                            child != DIVIDER_MENU_ITEM &&
+                            window.location.href.includes(child.link)
+                        )
+                          ? {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#388e3c'
+                            }
+                          : {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#00000099'
+                            }
+                      }
                     >
                       {page.name}
                       <ArrowDropDownIcon />
@@ -431,6 +450,7 @@ export default function OpenhimAppBar() {
                             onClick={() =>
                               handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                             }
+                            selected={window.location.href.endsWith(child.link)}
                             component="a"
                             href={child.link}
                           >

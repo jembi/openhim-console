@@ -93,8 +93,8 @@ export function AdditionalPermissionsStep(props: {
                     label="Choose options"
                     multiple
                     variant="outlined"
-                    value={role.permissions['app-view-specified']}
-                    disabled={!role.permissions['app-view-all']}
+                    value={role.permissions?.['app-view-specified'] ?? []}
+                    disabled={!role.permissions?.['app-view-all']}
                     onChange={e =>
                       handleSelectChange('app-view-specified', e.target.value)
                     }
