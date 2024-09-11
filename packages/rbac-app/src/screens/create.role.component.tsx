@@ -135,7 +135,7 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card style={{width: '600px'}} elevation={4}>
+          <Card style={{width: '680px'}} elevation={4}>
             <Divider />
             <CardContent>
               <div style={{marginBottom: '10px'}}>
