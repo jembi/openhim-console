@@ -34,6 +34,10 @@ export default function Charts() {
   })
 
   const getFilteredTransactions = () => {
+    if (!window.location.toString().includes('dashboard')) {
+      return
+    }
+
     setIsFetchingTransactions(true)
     getTimeSeries(filterData.period, {
       startDate: filterData.from,
@@ -55,12 +59,8 @@ export default function Charts() {
       })
   }
 
-  // on mount
   React.useEffect(() => {
-    getFilteredTransactions()
-  }, [])
 
-  React.useEffect(() => {
     getFilteredTransactions()
 
     const int = window.setInterval(getFilteredTransactions, 30000)
