@@ -74,12 +74,9 @@ function AddUserRole() {
       }, 100)
     },
     onError: (error: any) => {
+      const err = error?.response?.data ?? 'An unexpected error occurred'
       hideBackdrop()
-      showAlert(
-        'Error creating a new role' + error?.response?.data,
-        'Error',
-        'error'
-      )
+      showAlert('Error creating a new role' + err, 'Error', 'error')
     }
   })
   const {channels, clients, mediators, transactions, apps} = query.data || {}
@@ -138,7 +135,7 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card style={{width: '600px'}} elevation={4}>
+          <Card style={{width: '680px'}} elevation={4}>
             <Divider />
             <CardContent>
               <div style={{marginBottom: '10px'}}>
