@@ -81,8 +81,8 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3}>
-      <header style={{marginBottom: '40px'}}>
+    <Box padding={3} sx={{height: '100vh'}}>
+      <header style={{marginBottom: '10px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Add User
         </Typography>
