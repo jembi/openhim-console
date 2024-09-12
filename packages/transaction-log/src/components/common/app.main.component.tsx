@@ -41,9 +41,11 @@ const App: React.FC = () => {
   const [client, setClient] = useState(NO_FILTER)
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
-  const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] = useState(false)
+  const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] =
+    useState(false)
   const [loading, setLoading] = useState(false)
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
+  let isIntervalUpdate = false;
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -125,10 +127,24 @@ const App: React.FC = () => {
           })
         )
 
-        setTransactions(prevTransactions => [
-          ...newTransactionsWithChannelDetails,
-          ...prevTransactions
-        ])
+        setTransactions(prevTransactions => {
+          const newTransactionListState = [...prevTransactions]
+
+          newTransactionsWithChannelDetails.forEach(transaction => {
+            if (!newTransactionListState.some(t => t._id === transaction._id)) {
+              if(isIntervalUpdate){
+                newTransactionListState.unshift(transaction)
+                isIntervalUpdate
+              }{
+                newTransactionListState.push(transaction)
+              }
+              
+              
+            }
+          })
+
+          return newTransactionListState
+        })
       } catch (error) {
         console.error('Error fetching logs:', error)
       }
@@ -187,7 +203,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (timestampFilter) {
-      fetchTransactionLogs(timestampFilter)
+      ;(async () => {
+        isIntervalUpdate = true;
+        await fetchTransactionLogs(timestampFilter)
+      })()
     }
   }, [timestampFilter, fetchTransactionLogs])
 
