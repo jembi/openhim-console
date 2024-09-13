@@ -62,8 +62,12 @@ export function RequestMatching(props: {
             fullWidth
             margin="normal"
             InputProps={{
-              startAdornment: channel.addAutoRewriteRules ? <span style={{marginRight: '5px'}}>^</span> : undefined,
-              endAdornment: channel.addAutoRewriteRules ? <span style={{marginLeft: '5px'}}>$</span> : undefined
+              startAdornment: channel.addAutoRewriteRules ? (
+                <span style={{marginRight: '5px'}}>^</span>
+              ) : undefined,
+              endAdornment: channel.addAutoRewriteRules ? (
+                <span style={{marginLeft: '5px'}}>$</span>
+              ) : undefined
             }}
             value={channel.urlPattern}
             onChange={e => setChannel({...channel, urlPattern: e.target.value})}
