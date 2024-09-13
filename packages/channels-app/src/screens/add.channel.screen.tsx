@@ -83,9 +83,9 @@ function AddChannelScreen() {
       route => !!route.primary
     ).length
 
-    if (numOfPrimaryRoutes === 0) {
+    if (numOfPrimaryRoutes !== 1) {
       showAlert(
-        'You must have at least one primary route to create a channel.',
+        'Channel must have exactly only 1 primary route.',
         'Error',
         'error'
       )

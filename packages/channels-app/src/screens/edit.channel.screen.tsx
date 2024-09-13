@@ -44,6 +44,19 @@ function EditChannelScreen() {
   })
 
   const handleEditChannel = () => {
+    const numOfPrimaryRoutes = channel.routes?.filter(
+      route => !!route.primary
+    ).length
+
+    if (numOfPrimaryRoutes !== 1) {
+      showAlert(
+        'Channel must have exactly only 1 primary route.',
+        'Error',
+        'error'
+      )
+      return
+    }
+
     mutation.mutate(channel)
   }
 
