@@ -56,6 +56,7 @@ let pages: Page[] = [
   {
     name: 'MORE',
     children: [{name: 'About', link: '#!/about'},
+      {name: 'Portal', link: '#!/portal'},
       {name: 'Manage Apps', link: '#!/portal-admin'},
       {name: 'Audit Log', link: '#!/audits'},
       {name: 'Tasks', link: '#!/tasks'},
@@ -69,7 +70,7 @@ let pages: Page[] = [
   },
   {
     name: 'APPS',
-    children: [{name: 'Portal', link: '#!/portal'}]
+    children: []
   }
 ]
 
@@ -177,7 +178,7 @@ export default function OpenhimAppBar() {
       index === pages.length - 1
         ? { ...page, children: apps.map((app: any) => ({
             name: app.name,
-            link: `#!${new URL(app.url).pathname}`
+            link: `#!/`+app.url.split('/').pop().split('.')[0]
           })) }  
         : page
     );
