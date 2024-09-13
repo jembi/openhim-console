@@ -69,7 +69,14 @@ export function RequestMatching(props: {
                 <span style={{marginLeft: '5px'}}>$</span>
               ) : undefined
             }}
-            value={channel.urlPattern}
+            value={
+              channel.addAutoRewriteRules
+                ? channel.urlPattern
+                    .trim()
+                    .replace(/^\^/, '')
+                    .replace(/\$$/, '')
+                : channel.urlPattern
+            }
             onChange={e => setChannel({...channel, urlPattern: e.target.value})}
             error={channel.urlPattern.trim() === ''}
             helperText={
