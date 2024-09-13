@@ -102,7 +102,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     multiple
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions?.['transaction-rerun-specified'] ?? []}
+                    value={
+                      role.permissions?.['transaction-rerun-specified'] ?? []
+                    }
                     disabled={!role.permissions?.['transaction-rerun-all']}
                     onChange={e =>
                       handleSelectChange(
@@ -145,7 +147,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     labelId="transaction-view-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions?.['transaction-view-specified'] ?? []}
+                    value={
+                      role.permissions?.['transaction-view-specified'] ?? []
+                    }
                     disabled={!role.permissions?.['transaction-view-all']}
                     onChange={e =>
                       handleSelectChange(
@@ -192,7 +196,10 @@ export function TransactionsUsersMediatorsStep(props: {
                     multiple
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions?.['transaction-view-body-specified'] ?? []}
+                    value={
+                      role.permissions?.['transaction-view-body-specified'] ??
+                      []
+                    }
                     disabled={!role.permissions?.['transaction-view-body-all']}
                     onChange={e =>
                       handleSelectChange(
@@ -308,7 +315,9 @@ export function TransactionsUsersMediatorsStep(props: {
                     multiple
                     variant="outlined"
                     label="Choose options"
-                    value={role.permissions?.['mediator-manage-specified'] ?? []}
+                    value={
+                      role.permissions?.['mediator-manage-specified'] ?? []
+                    }
                     disabled={!role.permissions?.['mediator-manage-all']}
                     onChange={e =>
                       handleSelectChange(
