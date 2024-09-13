@@ -82,8 +82,6 @@ const ManageChannelsScreen: React.FC = () => {
   ) => {
     setAnchorEl(event.currentTarget)
     setSelectedChannel(channel)
-
-    console.log('opening context menu Selected Channel:', channel.name)
   }
 
   const handleCloseContextMenu = () => {
