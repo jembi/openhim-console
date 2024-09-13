@@ -72,7 +72,7 @@ function EditChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Paper style={{width: '600px', borderRadius: '15px'}} elevation={4}>
+          <Paper style={{width: '680px', borderRadius: '15px'}} elevation={4}>
             <TabContext value={activeTab}>
               <TabList
                 onChange={(e, newValue) => setActiveTab(newValue)}

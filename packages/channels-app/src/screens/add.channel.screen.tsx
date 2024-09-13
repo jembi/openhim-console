@@ -9,10 +9,8 @@ import {
   Stepper,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
@@ -58,7 +56,6 @@ const defaultChannel: Channel = {
 }
 
 function AddChannelScreen() {
-  const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [activeStep, setActiveStep] = React.useState(0)
@@ -71,20 +68,30 @@ function AddChannelScreen() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.MANAGE_CHANNELS)
+      window.location.href = `/#${Routes.MANAGE_CHANNELS}`
     },
     onError: (error: any) => {
+      const err = error?.response?.data ?? 'An unexpected error occurred'
       console.error(error)
       hideBackdrop()
-      showAlert(
-        'Error creating a new channel. ' + error?.response?.data,
-        'Error',
-        'error'
-      )
+      showAlert('Error creating a new channel. ' + err, 'Error', 'error')
     }
   })
 
   const handleAddChannel = () => {
+    const numOfPrimaryRoutes = channel.routes?.filter(
+      route => !!route.primary
+    ).length
+
+    if (numOfPrimaryRoutes === 0) {
+      showAlert(
+        'You must have at least one primary route to create a channel.',
+        'Error',
+        'error'
+      )
+      return
+    }
+
     mutation.mutate(channel)
   }
 
@@ -122,7 +129,7 @@ function AddChannelScreen() {
       >
         <Grid item xs={12}>
           <Paper
-            style={{width: '600px', borderRadius: '15px', padding: '20px'}}
+            style={{width: '680px', borderRadius: '15px', padding: '20px'}}
             elevation={4}
           >
             <div style={{marginBottom: '10px'}}>
@@ -170,7 +177,7 @@ function AddChannelScreen() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={() => navigate(-1)}
+                  href={`/#${Routes.MANAGE_CHANNELS}`}
                 >
                   CANCEL
                 </Button>
