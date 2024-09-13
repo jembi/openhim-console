@@ -8,6 +8,7 @@ import BasicFilter, {BasicFilterData} from './filters/basic.filter.component'
 import Loader from './ux/loader.component'
 import {AlertDialog, AlertDialogProps} from './ux/alert.dialog.component'
 import './styles.css'
+import {ErrorMessage} from './ux/error.component'
 
 type Alert = {
   severity: AlertDialogProps['severity']
@@ -20,6 +21,7 @@ export default function Charts() {
   const now = new Date()
   const [timeSeries, setTimeSeries] = useState<TimeSeries[]>([])
   const [isFetchingTransactions, setIsFetchingTransactions] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
   const [filterData, setFilterData] = useState<BasicFilterData>({
     period: TimeSeriesScale.day,
     from: now,
@@ -35,6 +37,7 @@ export default function Charts() {
 
   const getFilteredTransactions = () => {
     setIsFetchingTransactions(true)
+    setError(null)
     getTimeSeries(filterData.period, {
       startDate: filterData.from,
       endDate: filterData.until
@@ -45,13 +48,8 @@ export default function Charts() {
       })
       .catch(err => {
         console.error(err)
+        setError(err)
         setIsFetchingTransactions(false)
-        setAlert({
-          isOpen: true,
-          title: 'Error ',
-          severity: 'error',
-          message: 'Error loading data'
-        })
       })
   }
 
@@ -65,6 +63,10 @@ export default function Charts() {
 
   const onFilterChange = (filter: BasicFilterData) => {
     setFilterData(structuredClone(filter))
+  }
+
+  if (error) {
+    return <ErrorMessage onRetry={getFilteredTransactions} />
   }
 
   if (isFetchingTransactions) {
