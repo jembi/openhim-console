@@ -61,10 +61,10 @@ export function ChannelsClientsStep(props: {
   const paperStyling = {padding: '10px 20px'}
 
   const validateClientName = (newState: Role) => {
-    if(newState.name.trim() === ''){
-      setValidClientName(false);
-    }else{
-      setValidClientName(true);
+    if (newState.name.trim() === '') {
+      setValidClientName(false)
+    } else {
+      setValidClientName(true)
     }
   }
 
@@ -94,12 +94,12 @@ export function ChannelsClientsStep(props: {
                   margin="normal"
                   value={role.name}
                   onChange={e => {
-                    const newState =  {
+                    const newState = {
                       ...role,
                       name: e.target.value
                     }
-                    setRole(newState);
-                    validateClientName(newState);
+                    setRole(newState)
+                    validateClientName(newState)
                   }}
                   error={!validClientName}
                   helperText={!validClientName && 'Role name cannot be empty'}
@@ -323,7 +323,9 @@ export function ChannelsClientsStep(props: {
                     labelId="client-role-manage-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions?.['client-role-manage-specified'] ?? []}
+                    value={
+                      role.permissions?.['client-role-manage-specified'] ?? []
+                    }
                     disabled={!role.permissions?.['client-role-manage-all']}
                     onChange={e =>
                       handleSelectChange(
@@ -360,7 +362,9 @@ export function ChannelsClientsStep(props: {
                     labelId="client-role-view-specified"
                     label="Choose options"
                     variant="outlined"
-                    value={role.permissions?.['client-role-view-specified'] ?? []}
+                    value={
+                      role.permissions?.['client-role-view-specified'] ?? []
+                    }
                     disabled={!role.permissions?.['client-role-view-all']}
                     onChange={e =>
                       handleSelectChange(
