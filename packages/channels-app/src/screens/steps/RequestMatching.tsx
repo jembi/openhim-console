@@ -103,30 +103,6 @@ export function RequestMatching(props: {
             label="Auto-add regex delimiters (Recommended)"
           />
         </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txViewAcl => setChannel({...channel, txViewAcl})}
-            label="Which user groups are allowed to view this channel's transactions?"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txViewFullAcl => setChannel({...channel, txViewFullAcl})}
-            label="Which user groups are allowed to view this channel's transactions full request/response body?"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txRerunAcl => setChannel({...channel, txRerunAcl})}
-            label="Which user groups are allowed to rerun this channel's transactions?"
-          />
-        </Grid>
       </Grid>
 
       <br />
