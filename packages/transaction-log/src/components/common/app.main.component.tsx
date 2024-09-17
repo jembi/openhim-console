@@ -18,8 +18,10 @@ import {
   getChannels,
   getClientById,
   getClients,
-  getTransactions
+  getTransactions,
+  getServerHeartBeat
 } from '../../services/api.service'
+import moment from 'moment'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -45,7 +47,9 @@ const App: React.FC = () => {
     useState(false)
   const [loading, setLoading] = useState(false)
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
-  let isIntervalUpdate = false;
+  let lastPollingComplete = true
+  let lastUpdated
+  let serverDifferenceTime
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -122,7 +126,10 @@ const App: React.FC = () => {
         const newTransactionsWithChannelDetails = await Promise.all(
           newTransactions.map(async transaction => {
             const channelName = await fetchChannelDetails(transaction.channelID)
-            const clientName = await fetchClientDetails(transaction.clientID)
+            //TODO: find what the place holder text is meant to be if there is no client present
+            const clientName = transaction.clientID
+              ? await fetchClientDetails(transaction.clientID)
+              : 'Unknown'
             return {...transaction, channelName, clientName}
           })
         )
@@ -132,16 +139,21 @@ const App: React.FC = () => {
 
           newTransactionsWithChannelDetails.forEach(transaction => {
             if (!newTransactionListState.some(t => t._id === transaction._id)) {
-              if(isIntervalUpdate){
-                newTransactionListState.unshift(transaction)
-                isIntervalUpdate
-              }{
-                newTransactionListState.push(transaction)
-              }
-              
-              
+              newTransactionListState.push(transaction)
             }
           })
+
+          //sort the transactions by timestamp
+          newTransactionListState.sort((a, b) => {
+            return (
+              new Date(b.request.timestamp).getTime() -
+              new Date(a.request.timestamp).getTime()
+            )
+          })
+
+          if(lastPollingComplete) {
+            return newTransactionListState.slice(0, limit)
+          }
 
           return newTransactionListState
         })
@@ -185,6 +197,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     ;(async () => {
+      await setLastUpdated()
       await fetchAvailableChannels()
       await fetchAvailableClients()
       await fetchTransactionLogs()
@@ -194,8 +207,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const currentTimestamp = new Date().toISOString()
+      const currentTimestamp = moment(lastUpdated).format()
       setTimestampFilter(currentTimestamp)
+
+      //@ts-ignore
+      lastUpdated = moment() - serverDifferenceTime
     }, 5000)
 
     return () => clearInterval(interval)
@@ -204,8 +220,9 @@ const App: React.FC = () => {
   useEffect(() => {
     if (timestampFilter) {
       ;(async () => {
-        isIntervalUpdate = true;
+        lastPollingComplete = false
         await fetchTransactionLogs(timestampFilter)
+        lastPollingComplete = true
       })()
     }
   }, [timestampFilter, fetchTransactionLogs])
@@ -234,6 +251,20 @@ const App: React.FC = () => {
       console.error('Error fetching logs:', error)
       return 'Unknown'
     }
+  }
+
+  const setLastUpdated = async () => {
+    if (serverDifferenceTime) {
+      //@ts-ignore
+      lastUpdated = moment() - serverDifferenceTime
+      return
+    }
+
+    const heartBeat = await getServerHeartBeat()
+    //@ts-ignore
+    serverDifferenceTime = moment() - moment(heartBeat.now)
+    //@ts-ignore
+    lastUpdated = moment() - serverDifferenceTime
   }
 
   const loadMore = async () => {

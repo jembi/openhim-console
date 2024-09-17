@@ -12,7 +12,8 @@ import {
   Button,
   IconButton,
   TableFooter,
-  CircularProgress
+  CircularProgress,
+  Slide
 } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
@@ -20,6 +21,7 @@ import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 import StatusButton from '../buttons/status.button.component'
+import {AnimatedTableRow} from './animated.table.row.component'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
@@ -122,10 +124,10 @@ const TransactionLogTable: React.FC<{
             <TableBody>
               {initialTransactionLoadComplete ? (
                 transactions.map((transaction, index) => (
-                  <TableRow
-                    key={index}
-                    hover
-                    style={{cursor: 'pointer'}}
+                  <AnimatedTableRow
+                    key={transaction['_id']}
+                    initialColor="grey"
+                    finalColor="white"
                     onClick={event => handleRowClick(event, transaction)}
                   >
                     <TableCell
@@ -165,7 +167,7 @@ const TransactionLogTable: React.FC<{
                     <TableCell>
                       {convertTimestampFormat(transaction.request.timestamp)}
                     </TableCell>
-                  </TableRow>
+                  </AnimatedTableRow>
                 ))
               ) : (
                 <TableRow>
