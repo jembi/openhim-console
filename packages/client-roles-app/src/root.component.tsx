@@ -8,7 +8,6 @@ import {
 } from './pages/client-role-form/client-role-form'
 import {ClientRole} from './interface'
 import theme from '@jembi/openhim-theme'
-import './app.css'
 import {createHashRouter, RouterProvider} from 'react-router-dom'
 
 export default function Root(props) {
