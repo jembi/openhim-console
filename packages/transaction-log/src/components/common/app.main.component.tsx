@@ -297,7 +297,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1',height: '100vh'}}>
       <Box>
         <Grid item xs={12}>
           <Box>

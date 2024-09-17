@@ -44,11 +44,24 @@ function EditChannelScreen() {
   })
 
   const handleEditChannel = () => {
+    const numOfPrimaryRoutes = channel.routes?.filter(
+      route => !!route.primary
+    ).length
+
+    if (numOfPrimaryRoutes !== 1) {
+      showAlert(
+        'Channel must have exactly only 1 primary route.',
+        'Error',
+        'error'
+      )
+      return
+    }
+
     mutation.mutate(channel)
   }
 
   return (
-    <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
+    <Box padding={1} sx={{backgroundColor: '#F1F1F1',height: '100vh'}}>
       <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit Channel
@@ -72,7 +85,7 @@ function EditChannelScreen() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Paper style={{width: '600px', borderRadius: '15px'}} elevation={4}>
+          <Paper style={{width: '680px', borderRadius: '15px'}} elevation={4}>
             <TabContext value={activeTab}>
               <TabList
                 onChange={(e, newValue) => setActiveTab(newValue)}

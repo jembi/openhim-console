@@ -11,8 +11,6 @@
         </route>
         <route path="#!/audits">
         </route>
-        <route path="#!/channels">
-        </route>
         <route path="#!/audits">
         </route>
         <route path="#!/tasks">
@@ -79,15 +77,16 @@
           <application name="@jembi/users-app"></application>
         </div>
       </route>
-      <route path="#!/channels" exact="true">
+      <route path="#!/channels">
         <div style="flex-grow: 1">
           <application name="@jembi/channels-app"></application>
         </div>
       </route>
       <div id="openhim-console-ems-container"></div>
+      
     </div>
     
-    <application name="@jembi/footer-app"></application>
+   <application name="@jembi/footer-app"></application>
 
   </main>
 </single-spa-router>

@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
-import Search from '@mui/icons-material/Search'
 import ErrorIcon from '@mui/icons-material/Error'
+import Search from '@mui/icons-material/Search'
 import {
   Box,
   Button,
@@ -23,14 +23,15 @@ import {
   Typography
 } from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
+import {GridColDef} from '@mui/x-data-grid'
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
+import {useAlert} from '../contexts/alert.context'
 import {getRoles} from '../services/api'
-import {Permission, Role, Routes} from '../types'
+import {Permission, Role} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 
 const noRolesOverlay = () => (
   <div
@@ -54,6 +55,7 @@ function UserRoleList() {
   const addClientURL = new URL(window.origin + '/#!/rbac/create-role')
   const [search, setSearch] = React.useState('')
   const navigate = useNavigate()
+  const {showAlert} = useAlert()
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const {isLoading, isError, data, error, refetch} = useQuery({
@@ -76,6 +78,11 @@ function UserRoleList() {
   }
 
   const handleRowClick = (role: Role) => {
+    if (['admin', 'manager', 'operator'].includes(role.name.toLowerCase())) {
+      showAlert('Cannot edit a protected role', 'Error', 'error')
+      return
+    }
+
     window.history.pushState({}, '', `/#!/rbac/edit-role/${role.name}`)
   }
 
@@ -197,7 +204,7 @@ function UserRoleList() {
   ]
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1', height: '100vh'}}>
       <Typography variant="h4" gutterBottom>
         User Roles List
       </Typography>

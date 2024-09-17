@@ -89,7 +89,8 @@ const ManageChannelsScreen: React.FC = () => {
     setSelectedChannel(null)
   }
 
-  const onActionDisableChannel = (channel: Channel) => {
+  const onActionDisableChannel = () => {
+    const channel = selectedChannel
     let title = '',
       message = '',
       modifyChannel: Channel
@@ -179,9 +180,7 @@ const ManageChannelsScreen: React.FC = () => {
               <SearchIcon className={classes.actionsIcon} />
               View Logs
             </MenuItem>
-            <MenuItem
-              onClick={() => onActionDisableChannel(channels[params.row.id])}
-            >
+            <MenuItem onClick={onActionDisableChannel}>
               <CancelIcon className={classes.actionsIcon} />
               Toggle Status
             </MenuItem>
@@ -209,7 +208,7 @@ const ManageChannelsScreen: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1',height: '100vh'}}>
       <Typography variant="h4" gutterBottom>
         Manage Channels
       </Typography>

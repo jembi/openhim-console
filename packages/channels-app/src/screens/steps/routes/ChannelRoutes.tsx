@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography
 } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -155,7 +156,18 @@ export function ChannelRoutes(props: {
             <TableBody>
               {props.channel.routes?.map((route, index) => (
                 <TableRow key={index}>
-                  <TableCell>{route.name}</TableCell>
+                  <TableCell>
+                    {route.name}
+                    {route.primary && (
+                      <Tooltip title="This route is a Primary Route">
+                        <Chip
+                          label="primary"
+                          color="primary"
+                          style={{marginLeft: '5px'}}
+                        />
+                      </Tooltip>
+                    )}
+                  </TableCell>
                   <TableCell>{route.type}</TableCell>
                   <TableCell>{`${route.host ?? '-'} : ${
                     route.port ?? '-'

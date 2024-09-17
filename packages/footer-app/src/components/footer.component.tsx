@@ -32,12 +32,12 @@ export function Footer() {
 
   return (
     <Box style={{ backgroundColor: '#F1F1F1',
-      padding: 10,
-      textAlign: 'center'}}>
+      padding: 3,
+      textAlign: 'center',position:"fixed",bottom:0, width:"100%"}}>
       {about?.currentCoreVersion && (
         <Typography
           color={'grey'}
-          fontSize={14}
+          fontSize={10}
           fontWeight={400}
           variant="body2"
         >
@@ -49,7 +49,7 @@ export function Footer() {
       {!about?.currentCoreVersion && (
         <Typography
           color={'grey'}
-          fontSize={14}
+          fontSize={10}
           fontWeight={400}
           variant="body2"
         >

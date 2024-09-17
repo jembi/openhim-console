@@ -62,10 +62,21 @@ export function RequestMatching(props: {
             fullWidth
             margin="normal"
             InputProps={{
-              startAdornment: <span style={{marginRight: '5px'}}>^</span>,
-              endAdornment: <span style={{marginLeft: '5px'}}>$</span>
+              startAdornment: channel.addAutoRewriteRules ? (
+                <span style={{marginRight: '5px'}}>^</span>
+              ) : undefined,
+              endAdornment: channel.addAutoRewriteRules ? (
+                <span style={{marginLeft: '5px'}}>$</span>
+              ) : undefined
             }}
-            value={channel.urlPattern}
+            value={
+              channel.addAutoRewriteRules
+                ? channel.urlPattern
+                    .trim()
+                    .replace(/^\^/, '')
+                    .replace(/\$$/, '')
+                : channel.urlPattern
+            }
             onChange={e => setChannel({...channel, urlPattern: e.target.value})}
             error={channel.urlPattern.trim() === ''}
             helperText={
@@ -90,30 +101,6 @@ export function RequestMatching(props: {
               />
             }
             label="Auto-add regex delimiters (Recommended)"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txViewAcl => setChannel({...channel, txViewAcl})}
-            label="Which user groups are allowed to view this channel's transactions?"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txViewFullAcl => setChannel({...channel, txViewFullAcl})}
-            label="Which user groups are allowed to view this channel's transactions full request/response body?"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TagInputAutocomplete
-            tags={channel.txViewAcl}
-            onChange={txRerunAcl => setChannel({...channel, txRerunAcl})}
-            label="Which user groups are allowed to rerun this channel's transactions?"
           />
         </Grid>
       </Grid>
