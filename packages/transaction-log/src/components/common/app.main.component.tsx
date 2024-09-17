@@ -21,7 +21,7 @@ import {
   getTransactions,
   getServerHeartBeat
 } from '../../services/api.service'
-import moment from 'moment'
+import { format } from 'date-fns'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -207,11 +207,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const currentTimestamp = moment(lastUpdated).format()
+      const ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET = "yyyy-MM-dd'T'HH:mm:ssXXX"
+      const currentTimestamp = format(lastUpdated, ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET)
       setTimestampFilter(currentTimestamp)
 
-      //@ts-ignore
-      lastUpdated = moment() - serverDifferenceTime
+      lastUpdated = new Date().getTime() - serverDifferenceTime
     }, 5000)
 
     return () => clearInterval(interval)
@@ -255,16 +255,16 @@ const App: React.FC = () => {
 
   const setLastUpdated = async () => {
     if (serverDifferenceTime) {
-      //@ts-ignore
-      lastUpdated = moment() - serverDifferenceTime
+      
+      lastUpdated = new Date().getTime() - serverDifferenceTime
       return
     }
 
     const heartBeat = await getServerHeartBeat()
-    //@ts-ignore
-    serverDifferenceTime = moment() - moment(heartBeat.now)
-    //@ts-ignore
-    lastUpdated = moment() - serverDifferenceTime
+    
+    serverDifferenceTime = new Date().getTime() - heartBeat.now
+    
+    lastUpdated = new Date().getTime() - serverDifferenceTime
   }
 
   const loadMore = async () => {

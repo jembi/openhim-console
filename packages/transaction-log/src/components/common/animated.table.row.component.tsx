@@ -23,7 +23,7 @@ export const AnimatedTableRow = ({
         setCompleted(true)
       }
     })()
-  }, [completed])
+  }, [])
 
   return (
     <TableRow
