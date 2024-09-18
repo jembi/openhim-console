@@ -8,7 +8,7 @@ export default function TransactionsLogRootApp(props) {
     <React.StrictMode>
       <ThemeProvider theme={theme}>
         <App />
-      </ThemeProvider>  
+      </ThemeProvider>
     </React.StrictMode>
   )
 }
