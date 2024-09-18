@@ -40,7 +40,7 @@ let pages: Page[] = [
       {name: 'Add Client', link: '#!/clients/add'},
       DIVIDER_MENU_ITEM,
       {name: 'Manage Client Roles', link: '#!/client-roles'},
-      {name: 'Add User Role', link: '#!/client-roles/add'}
+      {name: 'Add Client Role', link: '#!/client-roles/add'}
     ]
   },
   {
