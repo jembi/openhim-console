@@ -12,7 +12,8 @@ import {
   Button,
   IconButton,
   TableFooter,
-  CircularProgress
+  CircularProgress,
+  Slide
 } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
@@ -20,13 +21,21 @@ import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 import StatusButton from '../buttons/status.button.component'
+import {AnimatedTableRow} from './animated.table.row.component'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
   loadMore: () => void
   loading: boolean
+  initialTransactionLoadComplete: boolean
   onRowClick: (transaction: any) => void
-}> = ({transactions, loadMore, onRowClick, loading}) => {
+}> = ({
+  transactions,
+  loadMore,
+  onRowClick,
+  loading,
+  initialTransactionLoadComplete
+}) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
@@ -113,52 +122,67 @@ const TransactionLogTable: React.FC<{
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  style={{cursor: 'pointer'}}
-                  onClick={event => handleRowClick(event, transaction)}
-                >
-                  <TableCell
-                    padding="checkbox"
-                    className="non-clickable-column"
+              {initialTransactionLoadComplete ? (
+                transactions.map((transaction, index) => (
+                  <AnimatedTableRow
+                    key={transaction['_id']}
+                    initialColor="grey"
+                    finalColor="white"
+                    onClick={event => handleRowClick(event, transaction)}
                   >
-                    <Checkbox
-                      checked={selectedRows.has(index)}
-                      onChange={() => handleRowSelect(index)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <IconButton
-                      sx={{
-                        height: '32px',
-                        width: '32px',
-                        backgroundColor: '#FECDD2',
-                        borderRadius: 0
-                      }}
+                    <TableCell
+                      padding="checkbox"
+                      className="non-clickable-column"
                     >
-                      <LockIcon style={{color: '#C62828'}} />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>{transaction.request.method}</TableCell>
-                  <TableCell>{transaction.request.host}</TableCell>
-                  <TableCell>{transaction.request.port}</TableCell>
-                  <TableCell>{transaction.request.path}</TableCell>
-                  <TableCell>{transaction.request.params}</TableCell>
-                  <TableCell>{transaction.channelName}</TableCell>
-                  <TableCell>{transaction.clientName}</TableCell>
-                  <TableCell>
-                    <StatusButton
-                      status={transaction.status}
-                      buttonText={transaction.status}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {convertTimestampFormat(transaction.request.timestamp)}
+                      <Checkbox
+                        checked={selectedRows.has(index)}
+                        onChange={() => handleRowSelect(index)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        sx={{
+                          height: '32px',
+                          width: '32px',
+                          backgroundColor: '#FECDD2',
+                          borderRadius: 0
+                        }}
+                      >
+                        <LockIcon style={{color: '#C62828'}} />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>{transaction.request.method}</TableCell>
+                    <TableCell>{transaction.request.host}</TableCell>
+                    <TableCell>{transaction.request.port}</TableCell>
+                    <TableCell>{transaction.request.path}</TableCell>
+                    <TableCell>{transaction.request.params}</TableCell>
+                    <TableCell>{transaction.channelName}</TableCell>
+                    <TableCell>{transaction.clientName}</TableCell>
+                    <TableCell>
+                      <StatusButton
+                        status={transaction.status}
+                        buttonText={transaction.status}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {convertTimestampFormat(transaction.request.timestamp)}
+                    </TableCell>
+                  </AnimatedTableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={11} align="center">
+                    <CircularProgress size={24} />
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
+              {initialTransactionLoadComplete && transactions.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={11} align="center">
+                    There are no transactions for the current filters
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
             <TableFooter>
               <TableRow>

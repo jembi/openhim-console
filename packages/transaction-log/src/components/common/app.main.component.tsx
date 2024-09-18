@@ -18,8 +18,11 @@ import {
   getChannels,
   getClientById,
   getClients,
-  getTransactions
+  getTransactions,
+  getServerHeartBeat,
+  getTransactionById
 } from '../../services/api.service'
+import {format, set} from 'date-fns'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -41,8 +44,13 @@ const App: React.FC = () => {
   const [client, setClient] = useState(NO_FILTER)
   const [method, setMethod] = useState(NO_FILTER)
   const [clients, setClients] = useState([])
+  const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] =
+    useState(false)
   const [loading, setLoading] = useState(false)
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
+  let lastPollingComplete = true
+  let lastUpdated
+  let serverDifferenceTime
 
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string) => {
@@ -119,15 +127,37 @@ const App: React.FC = () => {
         const newTransactionsWithChannelDetails = await Promise.all(
           newTransactions.map(async transaction => {
             const channelName = await fetchChannelDetails(transaction.channelID)
-            const clientName = await fetchClientDetails(transaction.clientID)
+            //TODO: find what the place holder text is meant to be if there is no client present
+            const clientName = transaction.clientID
+              ? await fetchClientDetails(transaction.clientID)
+              : 'Unknown'
             return {...transaction, channelName, clientName}
           })
         )
 
-        setTransactions(prevTransactions => [
-          ...newTransactionsWithChannelDetails,
-          ...prevTransactions
-        ])
+        setTransactions(prevTransactions => {
+          const newTransactionListState = [...prevTransactions]
+
+          newTransactionsWithChannelDetails.forEach(transaction => {
+            if (!newTransactionListState.some(t => t._id === transaction._id)) {
+              newTransactionListState.push(transaction)
+            }
+          })
+
+          //sort the transactions by timestamp
+          newTransactionListState.sort((a, b) => {
+            return (
+              new Date(b.request.timestamp).getTime() -
+              new Date(a.request.timestamp).getTime()
+            )
+          })
+
+          if (lastPollingComplete) {
+            return newTransactionListState.slice(0, limit)
+          }
+
+          return newTransactionListState
+        })
       } catch (error) {
         console.error('Error fetching logs:', error)
       }
@@ -167,14 +197,27 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    fetchTransactionLogs()
-    fetchAvailableChannels(), fetchAvailableClients()
+    ;(async () => {
+      await setLastUpdated()
+      await fetchAvailableChannels()
+      await fetchAvailableClients()
+      await fetchTransactionLogs()
+      setInitialTransactionLoadComplete(true)
+    })()
   }, [fetchTransactionLogs, fetchAvailableChannels, fetchAvailableClients])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const currentTimestamp = new Date().toISOString()
+      // Checking for new Transactions
+      const ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET = "yyyy-MM-dd'T'HH:mm:ssXXX"
+      const currentTimestamp = format(
+        lastUpdated,
+        ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET
+      )
       setTimestampFilter(currentTimestamp)
+
+      lastUpdated = new Date().getTime() - serverDifferenceTime
+
     }, 5000)
 
     return () => clearInterval(interval)
@@ -182,8 +225,41 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (timestampFilter) {
-      fetchTransactionLogs(timestampFilter)
+      ;(async () => {
+        lastPollingComplete = false
+        await fetchTransactionLogs(timestampFilter)
+        lastPollingComplete = true
+      })()
     }
+
+    const listOfProcessingTransactions = transactions.filter(
+      transaction => transaction.status === 'Processing'
+    )
+
+    if (listOfProcessingTransactions.length > 0) {
+      const transactionIds = listOfProcessingTransactions.map(
+        transaction => transaction._id
+      )
+      ;(async () => {
+        const updatedTransactions = await Promise.all(
+          transactionIds.map(getTransactionById)
+        )
+
+        setTransactions(prevTransactions => {
+          const newTransactionListState = [...prevTransactions]
+          updatedTransactions.forEach(transaction => {
+            const processingTransaction = newTransactionListState.find(
+              t => t._id === transaction._id
+            )
+            if (processingTransaction) {
+              processingTransaction.status = transaction.status
+            }
+          })
+          return newTransactionListState
+        })
+      })()
+    }
+
   }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -210,6 +286,19 @@ const App: React.FC = () => {
       console.error('Error fetching logs:', error)
       return 'Unknown'
     }
+  }
+
+  const setLastUpdated = async () => {
+    if (serverDifferenceTime) {
+      lastUpdated = new Date().getTime() - serverDifferenceTime
+      return
+    }
+
+    const heartBeat = await getServerHeartBeat()
+
+    serverDifferenceTime = new Date().getTime() - heartBeat.now
+
+    lastUpdated = new Date().getTime() - serverDifferenceTime
   }
 
   const loadMore = async () => {
@@ -242,7 +331,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1',height: '100vh'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1', height: '100vh'}}>
       <Box>
         <Grid item xs={12}>
           <Box>
@@ -341,6 +430,7 @@ const App: React.FC = () => {
               transactions={filteredTransactions}
               loadMore={loadMore}
               loading={loading}
+              initialTransactionLoadComplete={initialTransactionLoadComplete}
               onRowClick={handleRowClick}
             />
           </CardContent>

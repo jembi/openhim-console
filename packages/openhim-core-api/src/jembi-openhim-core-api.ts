@@ -86,6 +86,12 @@ export async function fetchApps(): Promise<App[]> {
   return response.data.filter((app: App) => app.showInPortal)
 }
 
+export async function fetchServerHeartBeat(): Promise<{master: number, now: number}> {
+  ensureApiClientInitialized();
+  const response = await apiClient.get('/heartbeat');
+  return response.data;
+}
+
 export async function getAllApps(): Promise<App[]> {
   await ensureApiClientInitialized()
   const response = await apiClient.get('/apps')
@@ -157,6 +163,13 @@ export async function fetchTransactions(filters: { filterLimit: string, filterPa
   });
   return response.data;
 }
+
+export async function fetchTransaction(id:string) {
+  await ensureApiClientInitialized();
+  const response = await apiClient.get(`/transactions/${id}`);
+  return response.data;
+}
+
 
 /**
  * Channels
