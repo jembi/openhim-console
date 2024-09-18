@@ -5,7 +5,8 @@ import {
   fetchChannels,
   fetchChannelById,
   fetchTransactions,
-  fetchServerHeartBeat
+  fetchServerHeartBeat,
+  fetchTransaction,
 } from '@jembi/openhim-core-api'
 
 export async function getClients(): Promise<Client[]> {
@@ -53,6 +54,15 @@ export async function getTransactions(filters: {}): Promise<any[]> {
     const transactions = await fetchTransactions(filters)
 
     return transactions
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function getTransactionById(id: String): Promise<any> {
+  try {
+    const transaction = await fetchTransaction(id)
+    return transaction
   } catch (error) {
     throw error
   }

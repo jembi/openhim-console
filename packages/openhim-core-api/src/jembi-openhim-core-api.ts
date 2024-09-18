@@ -164,6 +164,13 @@ export async function fetchTransactions(filters: { filterLimit: string, filterPa
   return response.data;
 }
 
+export async function fetchTransaction(id:string) {
+  await ensureApiClientInitialized();
+  const response = await apiClient.get(`/transactions/${id}`);
+  return response.data;
+}
+
+
 /**
  * Channels
  * @returns

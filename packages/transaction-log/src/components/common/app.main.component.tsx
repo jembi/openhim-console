@@ -19,9 +19,10 @@ import {
   getClientById,
   getClients,
   getTransactions,
-  getServerHeartBeat
+  getServerHeartBeat,
+  getTransactionById
 } from '../../services/api.service'
-import { format } from 'date-fns'
+import {format, set} from 'date-fns'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -151,7 +152,7 @@ const App: React.FC = () => {
             )
           })
 
-          if(lastPollingComplete) {
+          if (lastPollingComplete) {
             return newTransactionListState.slice(0, limit)
           }
 
@@ -207,11 +208,16 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      // Checking for new Transactions
       const ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET = "yyyy-MM-dd'T'HH:mm:ssXXX"
-      const currentTimestamp = format(lastUpdated, ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET)
+      const currentTimestamp = format(
+        lastUpdated,
+        ISO_8601_FORMAT_WITH_TIMEZONE_OFFSET
+      )
       setTimestampFilter(currentTimestamp)
 
       lastUpdated = new Date().getTime() - serverDifferenceTime
+
     }, 5000)
 
     return () => clearInterval(interval)
@@ -225,6 +231,35 @@ const App: React.FC = () => {
         lastPollingComplete = true
       })()
     }
+
+    const listOfProcessingTransactions = transactions.filter(
+      transaction => transaction.status === 'Processing'
+    )
+
+    if (listOfProcessingTransactions.length > 0) {
+      const transactionIds = listOfProcessingTransactions.map(
+        transaction => transaction._id
+      )
+      ;(async () => {
+        const updatedTransactions = await Promise.all(
+          transactionIds.map(getTransactionById)
+        )
+
+        setTransactions(prevTransactions => {
+          const newTransactionListState = [...prevTransactions]
+          updatedTransactions.forEach(transaction => {
+            const processingTransaction = newTransactionListState.find(
+              t => t._id === transaction._id
+            )
+            if (processingTransaction) {
+              processingTransaction.status = transaction.status
+            }
+          })
+          return newTransactionListState
+        })
+      })()
+    }
+
   }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -255,15 +290,14 @@ const App: React.FC = () => {
 
   const setLastUpdated = async () => {
     if (serverDifferenceTime) {
-      
       lastUpdated = new Date().getTime() - serverDifferenceTime
       return
     }
 
     const heartBeat = await getServerHeartBeat()
-    
+
     serverDifferenceTime = new Date().getTime() - heartBeat.now
-    
+
     lastUpdated = new Date().getTime() - serverDifferenceTime
   }
 
@@ -297,7 +331,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1',height: '100vh'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1', height: '100vh'}}>
       <Box>
         <Grid item xs={12}>
           <Box>
