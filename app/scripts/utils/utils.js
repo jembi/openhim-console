@@ -60,6 +60,11 @@ export function beautifyIndent (type, content) {
     if (/.*application\/\w+\+xml.*/.test(type)) {
       return { lang: 'xml', content: pd.xml(content, 2) }
     }
+
+    // application/{word characters}+json.
+    if (/application\/\w+\+json/.test(type)) {
+      return { lang: 'json', content: pd.json(content, 2) }
+    }
   } catch (err) {
     console.log(err)
     return { lang: '', content }
