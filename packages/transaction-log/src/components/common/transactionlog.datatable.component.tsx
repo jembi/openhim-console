@@ -140,16 +140,56 @@ const TransactionLogTable: React.FC<{
                       />
                     </TableCell>
                     <TableCell>
-                      <IconButton
-                        sx={{
-                          height: '32px',
-                          width: '32px',
-                          backgroundColor: '#FECDD2',
-                          borderRadius: 0
-                        }}
-                      >
-                        <LockIcon style={{color: '#C62828'}} />
-                      </IconButton>
+                        <IconButton
+                          sx={{
+                            height: '32px',
+                            width: '32px',
+                            backgroundColor:
+                              transaction.status === 'Processing'
+                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                                : transaction.status === 'Pending Async'
+                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                                : transaction.status === 'Successful'
+                                ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
+                                : transaction.status === 'Completed'
+                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                                : transaction.status === 'Completed with error(s)'
+                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                                : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
+                            borderRadius: 0,
+                            '&:hover': {
+                              backgroundColor:
+                                transaction.status === 'Processing'
+                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                                  : transaction.status === 'Pending Async'
+                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                                  : transaction.status === 'Successful'
+                                  ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
+                                  : transaction.status === 'Completed'
+                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                                  : transaction.status === 'Completed with error(s)'
+                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                                  : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
+                            },
+                          }}
+                        >
+                          <LockIcon
+                            sx={{
+                              color:
+                                transaction.status === 'Processing'
+                                  ? 'info.main'
+                                  : transaction.status === 'Pending Async'
+                                  ? 'info.main'
+                                  : transaction.status === 'Successful'
+                                  ? 'success.main'
+                                  : transaction.status === 'Completed'
+                                  ? 'warning.main'
+                                  : transaction.status === 'Completed with error(s)'
+                                  ? 'warning.main'
+                                  : 'error.main',
+                            }}
+                          />
+                        </IconButton>
                     </TableCell>
                     <TableCell>{transaction.request.method}</TableCell>
                     <TableCell>{transaction.request.host}</TableCell>
