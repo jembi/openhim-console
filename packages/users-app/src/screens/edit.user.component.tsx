@@ -98,7 +98,7 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} sx={{height: '100vh'}}>
+    <Box padding={3} sx={{minHeight: 'calc(100vh - 64px - 10px)'}}>
     <header style= {{marginBottom: '10px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit User
