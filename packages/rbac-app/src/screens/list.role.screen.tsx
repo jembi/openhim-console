@@ -204,7 +204,7 @@ function UserRoleList() {
   ]
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1', height: '100vh'}}>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1', minHeight: 'calc(100vh - 64px - 10px)'}}>
       <Typography variant="h4" gutterBottom>
         User Roles List
       </Typography>
