@@ -53,7 +53,7 @@ const App: React.FC = () => {
   let serverDifferenceTime
 
   const fetchTransactionLogs = useCallback(
-    async (timestampFilter?: string) => {
+    async (timestampFilter?: string, filteredResults?: boolean) => {
       try {
         const filters: {[key: string]: any} = {}
 
@@ -136,6 +136,9 @@ const App: React.FC = () => {
         )
 
         setTransactions(prevTransactions => {
+          if(filteredResults){
+            return newTransactionsWithChannelDetails
+          }
           let newTransactionListState = [...prevTransactions]
 
           newTransactionsWithChannelDetails.forEach(transaction => {
@@ -393,6 +396,7 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
+                fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
             {tabValue === 1 && (
@@ -425,6 +429,7 @@ const App: React.FC = () => {
                 method={method}
                 setMethod={setMethod}
                 clients={clients}
+                fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
           </CardContent>

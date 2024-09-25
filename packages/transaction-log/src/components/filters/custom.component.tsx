@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Box, TextField, MenuItem, Button, Grid} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
@@ -34,7 +34,8 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
   setClient,
   clients,
   method,
-  setMethod
+  setMethod,
+  fetchTransactionLogs
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -139,6 +140,10 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
     setOpen(false)
   }
 
+  useEffect(() => {
+    fetchTransactionLogs(null, true)
+  }, [status, channel, limit, startDate, endDate, reruns, statusCode, port, path, param, client, method])
+
   return (
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
@@ -158,7 +163,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
               <MenuItem value="Completed with error(s)">
                 Completed with error(s)
               </MenuItem>
-              <MenuItem value="Success">Success</MenuItem>
+              <MenuItem value="Successful">Successful</MenuItem>
             </TextField>
           </Grid>
         )}

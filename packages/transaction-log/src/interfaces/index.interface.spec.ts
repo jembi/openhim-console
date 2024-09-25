@@ -24,7 +24,8 @@ const basicFilterProps: BasicFilterProps = {
   setLimit: (value: number) => {},
   reruns: 'none',
   setReruns: (value: string) => {},
-  channels: [mockChannel]
+  channels: [mockChannel],
+  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise.resolve(),
 }
 
 const customFilterProps: CustomFilterProps = {
@@ -55,7 +56,8 @@ const customFilterProps: CustomFilterProps = {
   setClient: (value: string) => {},
   clients: [mockClient],
   method: 'GET',
-  setMethod: (value: string) => {}
+  setMethod: (value: string) => {},
+  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise.resolve(),
 }
 
 const customizeDialogProps: CustomizeDialogProps = {

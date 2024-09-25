@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Box, TextField, MenuItem, Grid, Button, Card} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
@@ -20,7 +20,8 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   setLimit,
   reruns,
   setReruns,
-  channels
+  channels,
+  fetchTransactionLogs
 }) => {
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
@@ -41,6 +42,10 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReruns(event.target.value)
   }
+
+  useEffect(() => {
+    fetchTransactionLogs(null, true)
+  }, [status, searchQuery, channel, limit, startDate, endDate, reruns])
 
   const handleClearFilters = () => {
     setStatus('NoFilter')
@@ -70,7 +75,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             <MenuItem value="Completed with error(s)">
               Completed with error(s)
             </MenuItem>
-            <MenuItem value="Success">Success</MenuItem>
+            <MenuItem value="Successful">Successful</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={3}>
