@@ -86,6 +86,9 @@ describe('Interface Conformance Tests', () => {
     expect(typeof basicFilterProps.setStatus).toBe('function')
     expect(Array.isArray(basicFilterProps.channels)).toBe(true)
     expect(basicFilterProps.channels[0]._id).toBe('1')
+    expect(typeof basicFilterProps.fetchTransactionLogs).toBe('function')
+    expect(basicFilterProps.fetchTransactionLogs()).resolves.toBe(undefined)
+
   })
 
   it('should conform to CustomFilterProps interface', () => {
@@ -93,6 +96,8 @@ describe('Interface Conformance Tests', () => {
     expect(customFilterProps.host).toBe('localhost')
     expect(customFilterProps.clients[0].name).toBe('Test Client')
     expect(typeof customFilterProps.setClient).toBe('function')
+    expect(typeof customFilterProps.fetchTransactionLogs).toBe('function')
+    expect(customFilterProps.fetchTransactionLogs()).resolves.toBe(undefined)
   })
 
   it('should conform to CustomizeDialogProps interface', () => {
