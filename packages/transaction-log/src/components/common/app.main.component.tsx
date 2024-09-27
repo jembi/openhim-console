@@ -53,7 +53,7 @@ const App: React.FC = () => {
   let serverDifferenceTime
 
   const fetchTransactionLogs = useCallback(
-    async (timestampFilter?: string) => {
+    async (timestampFilter?: string, filteredResults?: boolean) => {
       try {
         const filters: {[key: string]: any} = {}
 
@@ -61,57 +61,57 @@ const App: React.FC = () => {
           filters['request.timestamp'] = JSON.stringify({
             $gte: timestampFilter
           })
-        } else {
-          if (status !== 'NoFilter') {
-            filters.status = status
-          }
+        } 
 
-          if (statusCode) {
-            filters['response.status'] = statusCode
-          }
+        if (startDate || endDate) {
+          filters['request.timestamp'] = JSON.stringify({
+            ...(startDate && {$gte: startDate.toISOString()}),
+            ...(endDate && {$lte: endDate.toISOString()})
+          })
+        }
 
-          if (channel !== 'NoFilter') {
-            filters.channelID = channel
-          }
+        if (status !== 'NoFilter') {
+          filters.status = status
+        }
 
-          if (reruns !== 'NoFilter') {
-            if (reruns === 'Yes') {
-              filters.childIDs = JSON.stringify({$exists: true, $ne: []})
-            } else if (reruns === 'No') {
-              filters.childIDs = JSON.stringify({$eq: []})
-            }
-          }
+        if (statusCode) {
+          filters['response.status'] = statusCode
+        }
 
-          if (startDate && endDate) {
-            filters['request.timestamp'] = JSON.stringify({
-              $gte: startDate.toISOString(),
-              $lte: endDate.toISOString()
-            })
-          }
+        if (channel !== 'NoFilter') {
+          filters.channelID = channel
+        }
 
-          if (host) {
-            filters['request.host'] = host
+        if (reruns !== 'NoFilter') {
+          if (reruns === 'Yes') {
+            filters.childIDs = JSON.stringify({$exists: true, $ne: []})
+          } else if (reruns === 'No') {
+            filters.childIDs = JSON.stringify({$eq: []})
           }
+        }
 
-          if (port) {
-            filters['request.port'] = port
-          }
+        if (host) {
+          filters['request.host'] = host
+        }
 
-          if (path) {
-            filters['request.path'] = path
-          }
+        if (port) {
+          filters['request.port'] = port
+        }
 
-          if (param) {
-            filters['request.querystring'] = param
-          }
+        if (path) {
+          filters['request.path'] = path
+        }
 
-          if (client !== 'NoFilter') {
-            filters.clientID = client
-          }
+        if (param) {
+          filters['request.querystring'] = param
+        }
 
-          if (method !== 'NoFilter') {
-            filters['request.method'] = method
-          }
+        if (client !== 'NoFilter') {
+          filters.clientID = client
+        }
+
+        if (method !== 'NoFilter') {
+          filters['request.method'] = method
         }
 
         const fetchParams: {[key: string]: any} = {
@@ -136,13 +136,23 @@ const App: React.FC = () => {
         )
 
         setTransactions(prevTransactions => {
-          const newTransactionListState = [...prevTransactions]
+          if(filteredResults){
+            return newTransactionsWithChannelDetails
+          }
+          let newTransactionListState = [...prevTransactions]
 
           newTransactionsWithChannelDetails.forEach(transaction => {
             if (!newTransactionListState.some(t => t._id === transaction._id)) {
               newTransactionListState.push(transaction)
             }
           })
+
+          //filter based on the status
+          if (status !== 'NoFilter') {
+            newTransactionListState = newTransactionListState.filter(
+              transaction => transaction.status === status
+            )
+          }
 
           //sort the transactions by timestamp
           newTransactionListState.sort((a, b) => {
@@ -224,7 +234,7 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (timestampFilter) {
+    if (timestampFilter && !startDate && !endDate) {
       ;(async () => {
         lastPollingComplete = false
         await fetchTransactionLogs(timestampFilter)
@@ -386,6 +396,7 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
+                fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
             {tabValue === 1 && (
@@ -418,6 +429,7 @@ const App: React.FC = () => {
                 method={method}
                 setMethod={setMethod}
                 clients={clients}
+                fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
           </CardContent>
