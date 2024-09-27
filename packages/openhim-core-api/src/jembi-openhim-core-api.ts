@@ -396,3 +396,9 @@ export async function addToTaskQueue(payload: {
   const response = await apiClient.post('/tasks', payload)
   return response.data
 }
+
+export async function fetchBulkRunFilterCount(params: { filterLimit: number, filterPage: number, filterRepresentation: string, filters: {} }): Promise<number> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions', { params })
+  return response.data
+}

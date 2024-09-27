@@ -49,6 +49,8 @@ export interface CustomFilterProps {
   clients: Client[]
   method: string
   setMethod: (value: string) => void
+  onReRunMatches?: () => unknown
+  onReRunSelected?: () => unknown
 }
 
 export interface CustomizeDialogProps {

@@ -34,7 +34,9 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
   setClient,
   clients,
   method,
-  setMethod
+  setMethod,
+  onReRunMatches,
+  onReRunSelected
 }) => {
   const [open, setOpen] = useState(false)
 
@@ -355,10 +357,10 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
         sx={{marginTop: 2}}
       >
         <Grid item>
-          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+          <Button onClick={onReRunMatches} variant="outlined" color="primary" sx={{marginRight: 2}}>
             RERUN MATCHES
           </Button>
-          <Button variant="text" color="primary" sx={{marginRight: 2}}>
+          <Button onClick={onReRunSelected} variant="text" color="primary" sx={{marginRight: 2}}>
             RERUN SELECTED
           </Button>
         </Grid>

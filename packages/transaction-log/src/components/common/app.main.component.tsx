@@ -13,6 +13,8 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 import {
   addTransactionsToReRunQueue,
+  addTransactionsToReRunQueueByFilters,
+  getBulkRunFilterCount,
   getChannelById,
   getChannels,
   getClientById,
@@ -27,9 +29,10 @@ import BasicFilters from '../filters/basic.component'
 import CustomFilters from '../filters/custom.component'
 import TransactionLogTable from './transactionlog.datatable.component'
 import {ErrorMessage} from './error.component'
-import { useAlert } from '../../contexts/alert.context'
-import { useBasicBackdrop } from '../../contexts/backdrop.context'
+import {useAlert} from '../../contexts/alert.context'
+import {useBasicBackdrop} from '../../contexts/backdrop.context'
 import Loader from '../helpers/loader.helper.component'
+import {useConfirmation} from '../../contexts/confirmation.context'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -60,8 +63,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const {closeReRunDialog, showReRunDialog} =
     useTransactionRerunConfirmationDialog()
-  const { showAlert, hideAlert } = useAlert()
-  const { showBackdrop, hideBackdrop } = useBasicBackdrop()
+  const {showAlert, hideAlert} = useAlert()
+  const {hideConfirmation, showConfirmation} = useConfirmation()
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
   let lastPollingComplete = true
   let lastUpdated
@@ -334,7 +338,70 @@ const App: React.FC = () => {
   }
 
   const handleReRunMatches = async () => {
-    
+    showBackdrop(<Loader />, true)
+
+    getBulkRunFilterCount({
+      filterLimit: 10000,
+      filterPage: 0,
+      filterRepresentation: 'bulkrerun',
+      filters: {}
+    })
+      .then(res => {
+        hideBackdrop()
+
+        const message =
+          'No date range has been supplied, querying all transactions with the defined filters\n' +
+          `Your filters returned a total of ${res.count} transactions that can be re-run`
+        const title = 'You have opted to do a Bulk Rerun!'
+
+        showConfirmation(
+          message,
+          title,
+          () => {
+            showReRunDialog({
+              selectedTransactions,
+              transactions,
+              onConfirmReRun: async (event: TransactionRerunEvent) => {
+                try {
+                  showBackdrop(<Loader />, true)
+                  await addTransactionsToReRunQueueByFilters({
+                    batchSize: event.batchSize,
+                    filterLimit: 20,
+                    filterPage: 0,
+                    pauseQueue: event.paused,
+                    filters: {}
+                  })
+                } catch (error: any) {
+                  hideBackdrop()
+                  closeReRunDialog()
+                  showAlert(
+                    'Error queing transactions to be rerun' +
+                      error?.response?.data,
+                    'Error',
+                    'error'
+                  )
+                  console.error(error)
+                  return
+                }
+                hideBackdrop()
+                closeReRunDialog()
+                showAlert(
+                  'Successfully queued transactions to be rerun',
+                  'Success',
+                  'success'
+                )
+
+                await fetchTransactionLogs()
+              }
+            })
+          },
+          undefined,
+          'sm'
+        )
+      })
+      .catch(err => {
+        hideBackdrop()
+      })
   }
 
   const handleReRunSelected = async () => {
@@ -344,16 +411,29 @@ const App: React.FC = () => {
       onConfirmReRun: async (event: TransactionRerunEvent) => {
         try {
           showBackdrop(<Loader />, true)
-          await addTransactionsToReRunQueue(selectedTransactions, event.batchSize, event.paused)
+          await addTransactionsToReRunQueue(
+            selectedTransactions,
+            event.batchSize,
+            event.paused
+          )
         } catch (error: any) {
           hideBackdrop()
-          showAlert('Error queing transactions to be rerun' + error?.response?.data, 'Error', 'error')
+          closeReRunDialog()
+          showAlert(
+            'Error queing transactions to be rerun' + error?.response?.data,
+            'Error',
+            'error'
+          )
           console.error(error)
           return
         }
         hideBackdrop()
         closeReRunDialog()
-        showAlert('Successfully queued transactions to be rerun', 'Success', 'success')
+        showAlert(
+          'Successfully queued transactions to be rerun',
+          'Success',
+          'success'
+        )
 
         await fetchTransactionLogs()
       }
@@ -443,8 +523,8 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
-                onReRunMatches={() => handleReRunMatches()}
-                onReRunSelected={() => handleReRunSelected()}
+                onReRunMatches={handleReRunMatches}
+                onReRunSelected={handleReRunSelected}
               />
             )}
             {tabValue === 1 && (
@@ -477,6 +557,8 @@ const App: React.FC = () => {
                 method={method}
                 setMethod={setMethod}
                 clients={clients}
+                onReRunMatches={handleReRunMatches}
+                onReRunSelected={handleReRunSelected}
               />
             )}
           </CardContent>
