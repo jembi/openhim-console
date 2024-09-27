@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Box, TextField, MenuItem, Button, Grid} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
 import CustomizeDialog from '../dialogs/customize.dialog.component'
 import {CustomFilterProps} from '../../interfaces/index.interface'
+import {debounce} from 'lodash'
 
 const CustomFilters: React.FC<CustomFilterProps> = ({
   status,
@@ -36,9 +37,11 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
   method,
   setMethod,
   onReRunMatches,
-  onReRunSelected
+  onReRunSelected,
+  fetchTransactionLogs
 }) => {
   const [open, setOpen] = useState(false)
+  const debounceFetchTransactionLogs = debounce(fetchTransactionLogs, 10000)
 
   const [visibleFilters, setVisibleFilters] = useState({
     status: true,
@@ -141,6 +144,24 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
     setOpen(false)
   }
 
+  useEffect(() => {
+    debounceFetchTransactionLogs(null, true)
+    return () => debounceFetchTransactionLogs.cancel()
+  }, [
+    status,
+    channel,
+    limit,
+    startDate,
+    endDate,
+    reruns,
+    statusCode,
+    port,
+    path,
+    param,
+    client,
+    method
+  ])
+
   return (
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
@@ -160,7 +181,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
               <MenuItem value="Completed with error(s)">
                 Completed with error(s)
               </MenuItem>
-              <MenuItem value="Success">Success</MenuItem>
+              <MenuItem value="Successful">Successful</MenuItem>
             </TextField>
           </Grid>
         )}

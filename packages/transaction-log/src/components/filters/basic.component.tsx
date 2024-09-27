@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Box, TextField, MenuItem, Grid, Button, Card} from '@mui/material'
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns'
 import {BasicFilterProps} from '../../interfaces/index.interface'
+import {debounce} from 'lodash'
 
 const BasicFilters: React.FC<BasicFilterProps> = ({
   status,
@@ -22,8 +23,15 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   setReruns,
   channels,
   onReRunMatches,
-  onReRunSelected
+  onReRunSelected,
+  fetchTransactionLogs
 }) => {
+
+  const debounceFetchTransactionLogs = useCallback(
+    debounce(() => fetchTransactionLogs(null, true), 500),
+    [fetchTransactionLogs]
+  );
+
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
   }
@@ -51,6 +59,13 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   const handleReRunSelected = () => {
     onReRunSelected?.()
   }
+  useEffect(() => {
+    (async () => {
+      await debounceFetchTransactionLogs()
+    })()
+    
+    return () => debounceFetchTransactionLogs.cancel()
+  }, [status, searchQuery, channel, limit, startDate, endDate, reruns])
 
   const handleClearFilters = () => {
     setStatus('NoFilter')
@@ -80,7 +95,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             <MenuItem value="Completed with error(s)">
               Completed with error(s)
             </MenuItem>
-            <MenuItem value="Success">Success</MenuItem>
+            <MenuItem value="Successful">Successful</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={3}>
