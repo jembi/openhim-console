@@ -10,14 +10,17 @@ import Typography from '@mui/material/Typography'
 import * as React from 'react'
 import {Transaction} from '../../types'
 
+export interface TransactionRerunEvent {
+  batchSize: string
+  paused: boolean
+}
+
 export interface TransactionRerunProps {
   open: boolean
   selectedTransactions: Transaction[]
   transactions: Transaction[]
-  batchSize?: string
-  paused?: boolean
-  onConfirmReRun?: () => void
-  onClose?: () => void
+  onConfirmReRun: (event: TransactionRerunEvent) => unknown
+  onClose?: () => unknown
 }
 
 const BootstrapDialog = styled(Dialog)(({theme}) => ({
@@ -32,7 +35,10 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 export const ReRunTransactionsConfirmationDialog: React.FC<
   TransactionRerunProps
 > = (props: TransactionRerunProps) => {
-  console.log('Selected Transactions:', props.selectedTransactions)
+  const [event, setEvent] = React.useState<TransactionRerunEvent>({
+    batchSize: '1',
+    paused: false
+  })
 
   return (
     <React.Fragment>
@@ -81,7 +87,14 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
               }}
             >
               <FormControlLabel
-                control={<Checkbox checked={true} onChange={() => {}} />}
+                control={
+                  <Checkbox
+                    checked={event.paused}
+                    onChange={e =>
+                      setEvent({...event, paused: e.target.checked})
+                    }
+                  />
+                }
                 label="Paused"
               />
             </Box>
@@ -109,7 +122,7 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
                 size="small"
                 color="primary"
                 variant="contained"
-                onClick={props.onConfirmReRun}
+                onClick={() => props.onConfirmReRun(event)}
               >
                 Confirm Batch Rerun
               </Button>

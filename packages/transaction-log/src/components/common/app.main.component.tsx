@@ -1,32 +1,31 @@
-import React, {useState, useEffect, useCallback} from 'react'
 import {
-  Container,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
   Tab,
   Tabs,
-  Box,
-  Typography,
-  Card,
-  Grid,
-  Divider,
-  CardContent
+  Typography
 } from '@mui/material'
-import CustomFilters from '../filters/custom.component'
-import BasicFilters from '../filters/basic.component'
-import TransactionLogTable from './transactionlog.datatable.component'
+import {format} from 'date-fns'
+import React, {useCallback, useEffect, useState} from 'react'
+import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 import {
   getChannelById,
   getChannels,
   getClientById,
   getClients,
-  getTransactions,
   getServerHeartBeat,
-  getTransactionById
+  getTransactionById,
+  getTransactions
 } from '../../services/api.service'
-import {format, set} from 'date-fns'
-import {useBasicDialog} from '../../contexts/dialog.context'
 import {Transaction} from '../../types'
-import {useBasicBackdrop} from '../../contexts/backdrop.context'
-import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
+import {TransactionRerunEvent} from '../dialogs/reruntransactions.confirmation.dialog'
+import BasicFilters from '../filters/basic.component'
+import CustomFilters from '../filters/custom.component'
+import TransactionLogTable from './transactionlog.datatable.component'
+import {ErrorMessage} from './error.component'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -41,6 +40,7 @@ const App: React.FC = () => {
   const [reruns, setReruns] = useState(NO_FILTER)
   const [channels, setChannels] = useState([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [httpError, setHttpError] = useState<any | null>(null)
   const [selectedTransactions, setSelectedTransactions] = useState<
     Transaction[]
   >([])
@@ -131,6 +131,8 @@ const App: React.FC = () => {
           fetchParams.filterPage = 0
         }
 
+        setHttpError(null)
+
         const newTransactions = await getTransactions(fetchParams)
 
         const newTransactionsWithChannelDetails = await Promise.all(
@@ -169,6 +171,7 @@ const App: React.FC = () => {
         })
       } catch (error) {
         console.error('Error fetching logs:', error)
+        setHttpError(error)
       }
     },
     [
@@ -324,9 +327,7 @@ const App: React.FC = () => {
     showReRunDialog({
       selectedTransactions,
       transactions,
-      batchSize: '1',
-      paused: false,
-      onConfirmReRun: async () => {
+      onConfirmReRun: async (event: TransactionRerunEvent) => {
         await fetchTransactionLogs()
         closeReRunDialog()
       }
@@ -355,6 +356,10 @@ const App: React.FC = () => {
 
   const handleRowClick = transaction => {
     console.log('Transaction clicked:', transaction)
+  }
+
+  if (httpError) {
+    return <ErrorMessage onRetry={fetchTransactionLogs} />
   }
 
   return (

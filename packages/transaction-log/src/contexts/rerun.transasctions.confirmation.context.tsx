@@ -1,14 +1,20 @@
 import React, {createContext, useContext, useState, ReactNode} from 'react'
 import {
   ReRunTransactionsConfirmationDialog,
-  TransactionRerunProps
+  TransactionRerunProps,
+  TransactionRerunEvent
 } from '../components/dialogs/reruntransactions.confirmation.dialog'
 
-type _TransactionRerunProps = Omit<TransactionRerunProps, 'close' | 'open'>
+type _TransactionRerunProps = Omit<
+  TransactionRerunProps,
+  'close' | 'open' | 'onClose'
+> & {
+  onConfirmReRun: (event: TransactionRerunEvent) => unknown
+}
 
 interface TransactionRerunContextProps {
-  showReRunDialog: (props: _TransactionRerunProps) => void
-  closeReRunDialog: () => void
+  showReRunDialog: (props: _TransactionRerunProps) => unknown
+  closeReRunDialog: () => unknown
 }
 
 const TransactionRerunConfirmationDialogContext = createContext<
@@ -21,19 +27,19 @@ export const TransactionRerunProvider: React.FC<{children: ReactNode}> = ({
   const [data, setData] = useState<TransactionRerunProps>({
     selectedTransactions: [],
     transactions: [],
-    batchSize: '',
-    paused: false,
-    onConfirmReRun: () => {},
+    onConfirmReRun: (event: TransactionRerunEvent) => {},
     open: false,
     onClose: () => {}
   })
 
   const showReRunDialog = (props: _TransactionRerunProps) =>
     setData({...props, open: true})
-  const closeReRunDialog = () => setData({...data, open: false})
+  const closeReRunDialog = () => {
+    setData({...data, open: false})
+  }
 
-  const confirmRerun = () => {
-    console.log('Rerun confirmed')
+  const confirmRerun = (event: TransactionRerunEvent) => {
+    console.log('Rerun confirmed', event)
     closeReRunDialog()
   }
 
@@ -46,8 +52,6 @@ export const TransactionRerunProvider: React.FC<{children: ReactNode}> = ({
         open={data.open}
         selectedTransactions={data.selectedTransactions}
         transactions={data.transactions}
-        batchSize={data.batchSize}
-        paused={data.paused}
         onConfirmReRun={confirmRerun}
         onClose={closeReRunDialog}
       />
