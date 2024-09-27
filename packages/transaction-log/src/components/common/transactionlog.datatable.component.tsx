@@ -22,6 +22,8 @@ import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
+import {Transaction} from '../../types'
+import {tr} from 'date-fns/locale'
 
 const TransactionLogTable: React.FC<{
   transactions: any[]
@@ -29,18 +31,24 @@ const TransactionLogTable: React.FC<{
   loading: boolean
   initialTransactionLoadComplete: boolean
   onRowClick: (transaction: any) => void
+  onSelectedChange(transactions: Transaction[]): void
 }> = ({
   transactions,
   loadMore,
   onRowClick,
   loading,
-  initialTransactionLoadComplete
+  initialTransactionLoadComplete,
+  onSelectedChange
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
-  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [selectedRows, setSelectedRows] = useState<Transaction[]>([])
   const [selectAll, setSelectAll] = useState(false)
+
+  React.useEffect(() => {
+    onSelectedChange(selectedRows)
+  }, [selectedRows])
 
   const handleSettingsApply = () => {
     setSettingsOpen(false)
@@ -60,24 +68,19 @@ const TransactionLogTable: React.FC<{
     }
   }
 
-  const handleRowSelect = (rowIndex: number) => {
-    setSelectedRows(prevSelectedRows => {
-      const newSelectedRows = new Set(prevSelectedRows)
-      if (newSelectedRows.has(rowIndex)) {
-        newSelectedRows.delete(rowIndex)
-      } else {
-        newSelectedRows.add(rowIndex)
-      }
-      return newSelectedRows
-    })
+  const handleRowSelect = (transaction: Transaction) => {
+    if (selectedRows.some(t => t._id === transaction._id)) {
+      setSelectedRows(selectedRows.filter(t => t._id !== transaction._id))
+    } else {
+      setSelectedRows([...selectedRows, transaction])
+    }
   }
 
   const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedRows(new Set())
+    if (!selectAll) {
+      setSelectedRows(transactions)
     } else {
-      const allRowIndexes = transactions.map((_, index) => index)
-      setSelectedRows(new Set(allRowIndexes))
+      setSelectedRows([])
     }
     setSelectAll(!selectAll)
   }
@@ -123,7 +126,7 @@ const TransactionLogTable: React.FC<{
             </TableHead>
             <TableBody>
               {initialTransactionLoadComplete ? (
-                transactions.map((transaction, index) => (
+                transactions.map(transaction => (
                   <AnimatedTableRow
                     key={transaction['_id']}
                     initialColor="grey"
@@ -135,15 +138,31 @@ const TransactionLogTable: React.FC<{
                       className="non-clickable-column"
                     >
                       <Checkbox
-                        checked={selectedRows.has(index)}
-                        onChange={() => handleRowSelect(index)}
+                        checked={selectedRows.some(
+                          t => t._id === transaction._id
+                        )}
+                        onChange={() => handleRowSelect(transaction)}
                       />
                     </TableCell>
                     <TableCell>
-                        <IconButton
-                          sx={{
-                            height: '32px',
-                            width: '32px',
+                      <IconButton
+                        sx={{
+                          height: '32px',
+                          width: '32px',
+                          backgroundColor:
+                            transaction.status === 'Processing'
+                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                              : transaction.status === 'Pending Async'
+                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                              : transaction.status === 'Successful'
+                              ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
+                              : transaction.status === 'Completed'
+                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                              : transaction.status === 'Completed with error(s)'
+                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                              : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
+                          borderRadius: 0,
+                          '&:hover': {
                             backgroundColor:
                               transaction.status === 'Processing'
                                 ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
@@ -153,43 +172,31 @@ const TransactionLogTable: React.FC<{
                                 ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
                                 : transaction.status === 'Completed'
                                 ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : transaction.status === 'Completed with error(s)'
+                                : transaction.status ===
+                                  'Completed with error(s)'
                                 ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                            borderRadius: 0,
-                            '&:hover': {
-                              backgroundColor:
-                                transaction.status === 'Processing'
-                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                  : transaction.status === 'Pending Async'
-                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                  : transaction.status === 'Successful'
-                                  ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                                  : transaction.status === 'Completed'
-                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                  : transaction.status === 'Completed with error(s)'
-                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                  : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                            },
+                                : 'rgba(244, 67, 54, 0.2)' // error.light with 20% opacity
+                          }
+                        }}
+                      >
+                        <LockIcon
+                          sx={{
+                            color:
+                              transaction.status === 'Processing'
+                                ? 'info.main'
+                                : transaction.status === 'Pending Async'
+                                ? 'info.main'
+                                : transaction.status === 'Successful'
+                                ? 'success.main'
+                                : transaction.status === 'Completed'
+                                ? 'warning.main'
+                                : transaction.status ===
+                                  'Completed with error(s)'
+                                ? 'warning.main'
+                                : 'error.main'
                           }}
-                        >
-                          <LockIcon
-                            sx={{
-                              color:
-                                transaction.status === 'Processing'
-                                  ? 'info.main'
-                                  : transaction.status === 'Pending Async'
-                                  ? 'info.main'
-                                  : transaction.status === 'Successful'
-                                  ? 'success.main'
-                                  : transaction.status === 'Completed'
-                                  ? 'warning.main'
-                                  : transaction.status === 'Completed with error(s)'
-                                  ? 'warning.main'
-                                  : 'error.main',
-                            }}
-                          />
-                        </IconButton>
+                        />
+                      </IconButton>
                     </TableCell>
                     <TableCell>{transaction.request.method}</TableCell>
                     <TableCell>{transaction.request.host}</TableCell>

@@ -16,6 +16,8 @@ export interface BasicFilterProps {
   reruns: string
   setReruns: (value: string) => void
   channels: Channel[]
+  onReRunMatches?: () => unknown
+  onReRunSelected?: () => unknown
 }
 
 export interface CustomFilterProps {

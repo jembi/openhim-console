@@ -23,6 +23,10 @@ import {
   getTransactionById
 } from '../../services/api.service'
 import {format, set} from 'date-fns'
+import {useBasicDialog} from '../../contexts/dialog.context'
+import {Transaction} from '../../types'
+import {useBasicBackdrop} from '../../contexts/backdrop.context'
+import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -36,7 +40,10 @@ const App: React.FC = () => {
   const [limit, setLimit] = useState(10)
   const [reruns, setReruns] = useState(NO_FILTER)
   const [channels, setChannels] = useState([])
-  const [transactions, setTransactions] = useState([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [selectedTransactions, setSelectedTransactions] = useState<
+    Transaction[]
+  >([])
   const [host, setHost] = useState('')
   const [port, setPort] = useState(null)
   const [path, setPath] = useState('')
@@ -47,6 +54,8 @@ const App: React.FC = () => {
   const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] =
     useState(false)
   const [loading, setLoading] = useState(false)
+  const {closeReRunDialog, showReRunDialog} =
+    useTransactionRerunConfirmationDialog()
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
   let lastPollingComplete = true
   let lastUpdated
@@ -217,7 +226,6 @@ const App: React.FC = () => {
       setTimestampFilter(currentTimestamp)
 
       lastUpdated = new Date().getTime() - serverDifferenceTime
-
     }, 5000)
 
     return () => clearInterval(interval)
@@ -259,7 +267,6 @@ const App: React.FC = () => {
         })
       })()
     }
-
   }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -313,14 +320,34 @@ const App: React.FC = () => {
     }
   }
 
+  const handleReRun = async () => {
+    showReRunDialog({
+      selectedTransactions,
+      transactions,
+      batchSize: '1',
+      paused: false,
+      onConfirmReRun: async () => {
+        await fetchTransactionLogs()
+        closeReRunDialog()
+      }
+    })
+  }
+
+  const handleReRunSelected = async () => {
+    handleReRun()
+  }
+
   const filteredTransactions = transactions.filter(transaction => {
     const searchTerm = searchQuery.toLowerCase()
     return [
+      // @ts-ignore
       transaction.channelName,
+      // @ts-ignore
       transaction.clientName,
       transaction.request.method,
       transaction.request.host,
       transaction.request.path,
+      // @ts-ignore
       transaction.request.params,
       transaction.status
     ].some(field => field?.toLowerCase().includes(searchTerm))
@@ -331,7 +358,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1',minHeight: 'calc(100vh - 64px - 10px)'}}>
+    <Box
+      padding={3}
+      sx={{backgroundColor: '#F1F1F1', minHeight: 'calc(100vh - 64px - 10px)'}}
+    >
       <Box>
         <Grid item xs={12}>
           <Box>
@@ -386,6 +416,8 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
+                onReRunMatches={() => handleReRun()}
+                onReRunSelected={() => handleReRunSelected()}
               />
             )}
             {tabValue === 1 && (
@@ -432,6 +464,7 @@ const App: React.FC = () => {
               loading={loading}
               initialTransactionLoadComplete={initialTransactionLoadComplete}
               onRowClick={handleRowClick}
+              onSelectedChange={setSelectedTransactions}
             />
           </CardContent>
         </Card>

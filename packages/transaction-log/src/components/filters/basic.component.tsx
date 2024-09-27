@@ -20,7 +20,9 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   setLimit,
   reruns,
   setReruns,
-  channels
+  channels,
+  onReRunMatches,
+  onReRunSelected
 }) => {
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
@@ -40,6 +42,14 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
 
   const handleRerunsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReruns(event.target.value)
+  }
+
+  const handleReRunMatches = () => {
+    onReRunMatches?.()
+  }
+
+  const handleReRunSelected = () => {
+    onReRunSelected?.()
   }
 
   const handleClearFilters = () => {
@@ -171,10 +181,20 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
         sx={{marginTop: 2}}
       >
         <Grid item>
-          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={handleReRunMatches}
+            variant="outlined"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN MATCHES
           </Button>
-          <Button variant="text" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={handleReRunSelected}
+            variant="text"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN SELECTED
           </Button>
         </Grid>
