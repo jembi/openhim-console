@@ -26,11 +26,10 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   onReRunSelected,
   fetchTransactionLogs
 }) => {
-
   const debounceFetchTransactionLogs = useCallback(
     debounce(() => fetchTransactionLogs(null, true), 500),
     [fetchTransactionLogs]
-  );
+  )
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
@@ -60,10 +59,10 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
     onReRunSelected?.()
   }
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       await debounceFetchTransactionLogs()
     })()
-    
+
     return () => debounceFetchTransactionLogs.cancel()
   }, [status, searchQuery, channel, limit, startDate, endDate, reruns])
 

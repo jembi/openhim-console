@@ -80,7 +80,7 @@ const App: React.FC = () => {
           filters['request.timestamp'] = JSON.stringify({
             $gte: timestampFilter
           })
-        } 
+        }
 
         if (startDate || endDate) {
           filters['request.timestamp'] = JSON.stringify({
@@ -157,7 +157,7 @@ const App: React.FC = () => {
         )
 
         setTransactions(prevTransactions => {
-          if(filteredResults){
+          if (filteredResults) {
             return newTransactionsWithChannelDetails
           }
           let newTransactionListState = [...prevTransactions]
