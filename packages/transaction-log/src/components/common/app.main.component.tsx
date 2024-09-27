@@ -350,7 +350,9 @@ const App: React.FC = () => {
         hideBackdrop()
 
         const message =
-          'No date range has been supplied, querying all transactions with the defined filters\n' +
+          (!(startDate && endDate)
+            ? ''
+            : 'No date range has been supplied, querying all transactions with the defined filters\n') +
           `Your filters returned a total of ${res.count} transactions that can be re-run`
         const title = 'You have opted to do a Bulk Rerun!'
 

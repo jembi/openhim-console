@@ -357,10 +357,20 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
         sx={{marginTop: 2}}
       >
         <Grid item>
-          <Button onClick={onReRunMatches} variant="outlined" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={onReRunMatches}
+            variant="outlined"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN MATCHES
           </Button>
-          <Button onClick={onReRunSelected} variant="text" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={onReRunSelected}
+            variant="text"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN SELECTED
           </Button>
         </Grid>

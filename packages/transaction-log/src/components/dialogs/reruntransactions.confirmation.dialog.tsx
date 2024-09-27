@@ -90,23 +90,18 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
               Are you sure you wish to proceed with this operation?
             </Typography>
           </Box>
-        </DialogContent>
-        <DialogActions>
-          <Stack
-            direction={{xs: 'row-reverse', sm: 'row'}}
-            sx={{justifyContent: 'space-between', gap: 2}}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={event.paused}
-                  onChange={e => setEvent({...event, paused: e.target.checked})}
-                />
-              }
-              label="Paused"
-            />
 
-            <FormControl fullWidth margin="normal">
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              gap: 2,
+              flexGrow: 1,
+              marginTop: 2
+            }}
+          >
+            <FormControl size="small" fullWidth margin="none">
               <InputLabel>Batch size</InputLabel>
               <Select
                 label="Batch size"
@@ -122,8 +117,19 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
                 )}
               </Select>
             </FormControl>
-          </Stack>
 
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={event.paused}
+                  onChange={e => setEvent({...event, paused: e.target.checked})}
+                />
+              }
+              label="Paused"
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
           <Stack
             direction={{
               xs: 'row-reverse',
@@ -138,8 +144,8 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
             <Button
               autoFocus
               size="small"
-              color="secondary"
-              variant="contained"
+              color="primary"
+              variant="outlined"
               onClick={props.onClose}
             >
               Close
