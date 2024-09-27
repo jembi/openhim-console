@@ -1,32 +1,23 @@
-import React, {useState} from 'react'
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
-  Typography,
-  Button,
-  IconButton,
-  TableFooter,
-  CircularProgress,
-  Slide
-} from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings'
-import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
-import convertTimestampFormat from '../helpers/timestampformat.helper.component'
-import StatusButton from '../buttons/status.button.component'
-import {AnimatedTableRow} from './animated.table.row.component'
+import SettingsIcon from '@mui/icons-material/Settings'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+  Checkbox
+} from '@mui/material'
+import {DataGrid, GridColDef} from '@mui/x-data-grid'
+import React, {useState, useEffect} from 'react'
 import {Transaction} from '../../types'
-import {tr} from 'date-fns/locale'
+import StatusButton from '../buttons/status.button.component'
+import SettingsDialog from '../dialogs/settings.dialog.component'
+import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 
 const TransactionLogTable: React.FC<{
-  transactions: any[]
+  transactions: Transaction[]
   loadMore: () => void
   loading: boolean
   initialTransactionLoadComplete: boolean
@@ -44,9 +35,8 @@ const TransactionLogTable: React.FC<{
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
   const [selectedRows, setSelectedRows] = useState<Transaction[]>([])
-  const [selectAll, setSelectAll] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     onSelectedChange(selectedRows)
   }, [selectedRows])
 
@@ -54,35 +44,118 @@ const TransactionLogTable: React.FC<{
     setSettingsOpen(false)
   }
 
-  const handleRowClick = (event: React.MouseEvent, transaction: {_id: any}) => {
-    const nonClickableColumnClass = 'non-clickable-column'
-    if ((event.target as HTMLElement).closest(`.${nonClickableColumnClass}`)) {
-      return
-    }
-    const transactionDetailsUrl = `/#!/transactions/${transaction._id}`
+  const handleRowSelect = (selectedTransactionIds: Array<string>) => {
+    const selectedTransactions = transactions.filter(t =>
+      selectedTransactionIds.includes(t._id)
+    )
+    setSelectedRows(selectedTransactions)
+  }
 
-    if (openInNewTab) {
-      window.open(transactionDetailsUrl, '_blank')
-    } else {
-      window.location.href = transactionDetailsUrl
+  const columns: GridColDef[] = [
+    {
+      field: 'type',
+      headerName: 'Type',
+      flex: 0.2,
+      renderCell: params => (
+        <IconButton
+          sx={{
+            height: '32px',
+            width: '32px',
+            backgroundColor: getStatusColor(params.row.status)
+          }}
+        >
+          <LockIcon sx={{color: getStatusIconColor(params.row.status)}} />
+        </IconButton>
+      )
+    },
+    {
+      field: 'request',
+      headerName: 'Method',
+      valueGetter: params => params.row.request.method
+    },
+    {
+      field: 'host',
+      resizable: true,
+      flex: 1.5,
+      headerName: 'Host',
+      valueGetter: params => params.row.request.host
+    },
+    {
+      field: 'port',
+      headerName: 'Port',
+      valueGetter: params => params.row.request.port
+    },
+    {
+      field: 'path',
+      headerName: 'Path',
+      valueGetter: params => params.row.request.path
+    },
+    {
+      field: 'params',
+      headerName: 'Params',
+      flex: 1,
+      valueGetter: params => params.row.request.params
+    },
+    {
+      field: 'channelName',
+      flex: 1,
+      headerName: 'Channel',
+      valueGetter: params => params.row.channelName
+    },
+    {
+      field: 'clientName',
+      flex: 1,
+      headerName: 'Client',
+      valueGetter: params => params.row.clientName
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      flex: 1,
+      renderCell: params => (
+        <StatusButton
+          status={params.row.status}
+          buttonText={params.row.status}
+        />
+      )
+    },
+    {
+      field: 'timestamp',
+      headerName: 'Time',
+      flex: 2,
+      valueGetter: params =>
+        convertTimestampFormat(params.row.request.timestamp)
+    }
+  ]
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Processing':
+      case 'Pending Async':
+        return 'rgba(33, 150, 243, 0.2)'
+      case 'Successful':
+        return 'rgba(76, 175, 80, 0.2)'
+      case 'Completed':
+      case 'Completed with error(s)':
+        return 'rgba(255, 193, 7, 0.2)'
+      default:
+        return 'rgba(244, 67, 54, 0.2)'
     }
   }
 
-  const handleRowSelect = (transaction: Transaction) => {
-    if (selectedRows.some(t => t._id === transaction._id)) {
-      setSelectedRows(selectedRows.filter(t => t._id !== transaction._id))
-    } else {
-      setSelectedRows([...selectedRows, transaction])
+  const getStatusIconColor = (status: string) => {
+    switch (status) {
+      case 'Processing':
+      case 'Pending Async':
+        return 'info.main'
+      case 'Successful':
+        return 'success.main'
+      case 'Completed':
+      case 'Completed with error(s)':
+        return 'warning.main'
+      default:
+        return 'error.main'
     }
-  }
-
-  const handleSelectAll = () => {
-    if (!selectAll) {
-      setSelectedRows(transactions)
-    } else {
-      setSelectedRows([])
-    }
-    setSelectAll(!selectAll)
   }
 
   return (
@@ -105,151 +178,33 @@ const TransactionLogTable: React.FC<{
         </IconButton>
       </Box>
       <Box>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox checked={selectAll} onChange={handleSelectAll} />
-                </TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Method</TableCell>
-                <TableCell>Host</TableCell>
-                <TableCell>Port</TableCell>
-                <TableCell>Path</TableCell>
-                <TableCell>Params</TableCell>
-                <TableCell>Channel</TableCell>
-                <TableCell>Client</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Time</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {initialTransactionLoadComplete ? (
-                transactions.map(transaction => (
-                  <AnimatedTableRow
-                    key={transaction['_id']}
-                    initialColor="grey"
-                    finalColor="white"
-                    onClick={event => handleRowClick(event, transaction)}
-                  >
-                    <TableCell
-                      padding="checkbox"
-                      className="non-clickable-column"
-                    >
-                      <Checkbox
-                        checked={selectedRows.some(
-                          t => t._id === transaction._id
-                        )}
-                        onChange={() => handleRowSelect(transaction)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        sx={{
-                          height: '32px',
-                          width: '32px',
-                          backgroundColor:
-                            transaction.status === 'Processing'
-                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                              : transaction.status === 'Pending Async'
-                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                              : transaction.status === 'Successful'
-                              ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                              : transaction.status === 'Completed'
-                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                              : transaction.status === 'Completed with error(s)'
-                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                              : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                          borderRadius: 0,
-                          '&:hover': {
-                            backgroundColor:
-                              transaction.status === 'Processing'
-                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                : transaction.status === 'Pending Async'
-                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                : transaction.status === 'Successful'
-                                ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                                : transaction.status === 'Completed'
-                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : transaction.status ===
-                                  'Completed with error(s)'
-                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : 'rgba(244, 67, 54, 0.2)' // error.light with 20% opacity
-                          }
-                        }}
-                      >
-                        <LockIcon
-                          sx={{
-                            color:
-                              transaction.status === 'Processing'
-                                ? 'info.main'
-                                : transaction.status === 'Pending Async'
-                                ? 'info.main'
-                                : transaction.status === 'Successful'
-                                ? 'success.main'
-                                : transaction.status === 'Completed'
-                                ? 'warning.main'
-                                : transaction.status ===
-                                  'Completed with error(s)'
-                                ? 'warning.main'
-                                : 'error.main'
-                          }}
-                        />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>{transaction.request.method}</TableCell>
-                    <TableCell>{transaction.request.host}</TableCell>
-                    <TableCell>{transaction.request.port}</TableCell>
-                    <TableCell>{transaction.request.path}</TableCell>
-                    <TableCell>{transaction.request.params}</TableCell>
-                    <TableCell>{transaction.channelName}</TableCell>
-                    <TableCell>{transaction.clientName}</TableCell>
-                    <TableCell>
-                      <StatusButton
-                        status={transaction.status}
-                        buttonText={transaction.status}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {convertTimestampFormat(transaction.request.timestamp)}
-                    </TableCell>
-                  </AnimatedTableRow>
-                ))
+        <DataGrid
+          rows={transactions}
+          getRowId={t => t._id}
+          columns={columns}
+          checkboxSelection
+          rowSelection
+          onRowSelectionModelChange={handleRowSelect}
+          loading={!initialTransactionLoadComplete}
+          autoHeight
+          // rowsPerPageOptions={[10, 20, 50]}
+          components={{
+            NoRowsOverlay: () =>
+              loading ? (
+                <CircularProgress size={24} />
               ) : (
-                <TableRow>
-                  <TableCell colSpan={11} align="center">
-                    <CircularProgress size={24} />
-                  </TableCell>
-                </TableRow>
-              )}
-              {initialTransactionLoadComplete && transactions.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={11} align="center">
-                    There are no transactions for the current filters
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={11} align="right">
-                  <Button
-                    onClick={loadMore}
-                    endIcon={<ChevronRight />}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <CircularProgress size={24} />
-                    ) : (
-                      'Load 20 more results'
-                    )}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+                <Typography>No transactions available</Typography>
+              )
+          }}
+        />
+        <Button
+          onClick={loadMore}
+          endIcon={<ChevronRight />}
+          disabled={loading}
+          sx={{mt: 2, display: 'flex', justifyContent: 'center'}}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Load 20 more results'}
+        </Button>
       </Box>
       <SettingsDialog
         open={settingsOpen}

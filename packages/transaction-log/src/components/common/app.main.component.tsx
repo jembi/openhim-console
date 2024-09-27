@@ -12,6 +12,7 @@ import {format} from 'date-fns'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 import {
+  addTransactionsToReRunQueue,
   getChannelById,
   getChannels,
   getClientById,
@@ -26,6 +27,9 @@ import BasicFilters from '../filters/basic.component'
 import CustomFilters from '../filters/custom.component'
 import TransactionLogTable from './transactionlog.datatable.component'
 import {ErrorMessage} from './error.component'
+import { useAlert } from '../../contexts/alert.context'
+import { useBasicBackdrop } from '../../contexts/backdrop.context'
+import Loader from '../helpers/loader.helper.component'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -56,6 +60,8 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const {closeReRunDialog, showReRunDialog} =
     useTransactionRerunConfirmationDialog()
+  const { showAlert, hideAlert } = useAlert()
+  const { showBackdrop, hideBackdrop } = useBasicBackdrop()
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
   let lastPollingComplete = true
   let lastUpdated
@@ -197,6 +203,7 @@ const App: React.FC = () => {
       const channels = await getChannels()
       setChannels(channels)
     } catch (error) {
+      showAlert('Error fetching available channels', 'Error', 'error')
       console.error('Error fetching channels:', error)
     }
   }, [])
@@ -205,7 +212,9 @@ const App: React.FC = () => {
     try {
       const clients = await getClients()
       setClients(clients)
-    } catch (error) {}
+    } catch (error) {
+      showAlert('Error fetching available clients', 'Error', 'error')
+    }
   }, [])
 
   useEffect(() => {
@@ -318,24 +327,37 @@ const App: React.FC = () => {
 
       await fetchTransactionLogs()
     } catch (error) {
+      showAlert('Error fetching more transactions', 'Error', 'error')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleReRun = async () => {
+  const handleReRunMatches = async () => {
+    
+  }
+
+  const handleReRunSelected = async () => {
     showReRunDialog({
       selectedTransactions,
       transactions,
       onConfirmReRun: async (event: TransactionRerunEvent) => {
-        await fetchTransactionLogs()
+        try {
+          showBackdrop(<Loader />, true)
+          await addTransactionsToReRunQueue(selectedTransactions, event.batchSize, event.paused)
+        } catch (error: any) {
+          hideBackdrop()
+          showAlert('Error queing transactions to be rerun' + error?.response?.data, 'Error', 'error')
+          console.error(error)
+          return
+        }
+        hideBackdrop()
         closeReRunDialog()
+        showAlert('Successfully queued transactions to be rerun', 'Success', 'success')
+
+        await fetchTransactionLogs()
       }
     })
-  }
-
-  const handleReRunSelected = async () => {
-    handleReRun()
   }
 
   const filteredTransactions = transactions.filter(transaction => {
@@ -421,7 +443,7 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
-                onReRunMatches={() => handleReRun()}
+                onReRunMatches={() => handleReRunMatches()}
                 onReRunSelected={() => handleReRunSelected()}
               />
             )}

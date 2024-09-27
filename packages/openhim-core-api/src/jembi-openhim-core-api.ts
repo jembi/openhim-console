@@ -86,10 +86,13 @@ export async function fetchApps(): Promise<App[]> {
   return response.data.filter((app: App) => app.showInPortal)
 }
 
-export async function fetchServerHeartBeat(): Promise<{master: number, now: number}> {
-  ensureApiClientInitialized();
-  const response = await apiClient.get('/heartbeat');
-  return response.data;
+export async function fetchServerHeartBeat(): Promise<{
+  master: number
+  now: number
+}> {
+  ensureApiClientInitialized()
+  const response = await apiClient.get('/heartbeat')
+  return response.data
 }
 
 export async function getAllApps(): Promise<App[]> {
@@ -156,20 +159,23 @@ export async function getImportMap(): Promise<any> {
  * Transactions
  * @returns
  */
-export async function fetchTransactions(filters: { filterLimit: string, filterPage: number, filters: {} }): Promise<Transactions[]> {
-  await ensureApiClientInitialized();
+export async function fetchTransactions(filters: {
+  filterLimit: string
+  filterPage: number
+  filters: {}
+}): Promise<Transactions[]> {
+  await ensureApiClientInitialized()
   const response = await apiClient.get('/transactions', {
-    params: filters,
-  });
-  return response.data;
+    params: filters
+  })
+  return response.data
 }
 
-export async function fetchTransaction(id:string) {
-  await ensureApiClientInitialized();
-  const response = await apiClient.get(`/transactions/${id}`);
-  return response.data;
+export async function fetchTransaction(id: string) {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get(`/transactions/${id}`)
+  return response.data
 }
-
 
 /**
  * Channels
@@ -185,9 +191,8 @@ export async function createChannel(channel: any): Promise<any> {
   await ensureApiClientInitialized()
   const response = await apiClient.post('/channels', channel)
 
-  return response.data;
+  return response.data
 }
- 
 
 export async function fetchChannelById(id: String): Promise<any> {
   await ensureApiClientInitialized()
@@ -195,7 +200,7 @@ export async function fetchChannelById(id: String): Promise<any> {
   return response.data
 }
 
-export async function editChannel(channel: any){
+export async function editChannel(channel: any) {
   await ensureApiClientInitialized()
   const response = await apiClient.put(`/channels/${channel._id}`, channel)
   return response.data
@@ -244,7 +249,7 @@ export async function deleteClient(clientId: string): Promise<void> {
 }
 
 /**
- * 
+ *
  * Roles
  */
 export async function fetchRoles(): Promise<any> {
@@ -286,7 +291,6 @@ export async function fetchAuthTypes(): Promise<any> {
   const response = await apiClient.get(`/authentication/types`)
   return response.data
 }
-
 
 export async function fetchTimeSeries(
   period: 'minute' | 'month' | 'day' | 'year',
@@ -345,8 +349,8 @@ interface Channel {
 }
 
 export async function fetchClientRoles() {
-  const clients = await fetchClients() as Client[]
-  const channels = await fetchChannels() as Channel[]
+  const clients = (await fetchClients()) as Client[]
+  const channels = (await fetchChannels()) as Channel[]
 
   const roles: ClientRole[] = []
   clients.forEach(client => {
@@ -383,3 +387,12 @@ export async function fetchClientRoles() {
   return roles
 }
 
+export async function addToTaskQueue(payload: {
+  tids: Array<string>
+  batchSize: number
+  paused: boolean
+}) {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/tasks', payload)
+  return response.data
+}

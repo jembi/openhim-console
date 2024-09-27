@@ -5,6 +5,7 @@ import {
   fetchChannels,
   fetchChannelById,
   fetchTransactions,
+  addToTaskQueue,
   fetchServerHeartBeat,
   fetchTransaction
 } from '@jembi/openhim-core-api'
@@ -264,6 +265,21 @@ export async function getServerHeartBeat(): Promise<{
 }> {
   try {
     const heartBeat = await fetchServerHeartBeat()
+
+    return heartBeat
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function addTransactionsToReRunQueue(transactions: Transaction[], batchSize: number, paused: boolean) {
+  try {
+    const payload = {
+      tids: transactions.map(t => t._id),
+      batchSize,
+      paused,
+    }
+    const heartBeat = await addToTaskQueue(payload)
 
     return heartBeat
   } catch (error) {

@@ -39,7 +39,8 @@ export const TransactionRerunProvider: React.FC<{children: ReactNode}> = ({
   }
 
   const confirmRerun = (event: TransactionRerunEvent) => {
-    console.log('Rerun confirmed', event)
+    // would've been set when showReRunDialog() gets
+    data.onConfirmReRun(event)
     closeReRunDialog()
   }
 

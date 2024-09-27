@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button} from '@mui/material'
+import {Button, Chip} from '@mui/material'
 import {StatusButtonProps} from '../../interfaces/index.interface'
 
 const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
@@ -11,16 +11,12 @@ const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
       : status === 'Successful'
       ? 'success'
       : status === 'Completed'
-      ? 'warning'
+      ? 'success'
       : status === 'Completed with error(s)'
       ? 'warning'
       : 'error'
 
-  return (
-    <Button variant="contained" color={buttonColor}>
-      {buttonText}
-    </Button>
-  )
+  return <Chip size="small" color={buttonColor} label={buttonText} />
 }
 
 export default StatusButton
