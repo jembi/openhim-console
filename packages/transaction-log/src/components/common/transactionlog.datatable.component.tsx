@@ -193,18 +193,22 @@ const TransactionLogTable: React.FC<{
               loading ? (
                 <CircularProgress size={24} />
               ) : (
-                <Typography>No transactions available</Typography>
+                <Box sx={{ textAlign: 'center', padding: 2, }}>
+                  <Typography>There are no transactions for the current filters.</Typography>
+                </Box>
               )
           }}
         />
-        <Button
-          onClick={loadMore}
-          endIcon={<ChevronRight />}
-          disabled={loading}
-          sx={{mt: 2, display: 'flex', justifyContent: 'center'}}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Load 20 more results'}
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            onClick={loadMore}
+            endIcon={<ChevronRight />}
+            disabled={loading}
+            sx={{ mt: 2 }}
+          >
+            {loading ? <CircularProgress size={24} /> : 'Load 20 more results'}
+          </Button>
+        </Box>
       </Box>
       <SettingsDialog
         open={settingsOpen}
