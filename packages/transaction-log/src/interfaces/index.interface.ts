@@ -15,8 +15,11 @@ export interface BasicFilterProps {
   setLimit: (value: number) => void
   reruns: string
   setReruns: (value: string) => void
-  channels: Channel[],
-  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise<void>
+  channels: Channel[]
+  fetchTransactionLogs: (
+    timestampFilter?: string,
+    filteredResults?: boolean
+  ) => Promise<void>
 }
 
 export interface CustomFilterProps {
@@ -47,8 +50,11 @@ export interface CustomFilterProps {
   setClient: (value: string) => void
   clients: Client[]
   method: string
-  setMethod: (value: string) => void,
-  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise<void>
+  setMethod: (value: string) => void
+  fetchTransactionLogs: (
+    timestampFilter?: string,
+    filteredResults?: boolean
+  ) => Promise<void>
 }
 
 export interface CustomizeDialogProps {

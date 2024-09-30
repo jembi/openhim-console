@@ -13,7 +13,7 @@ export const AnimatedTableRow = ({
   const [completed, setCompleted] = useState(false)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (ref.current && ref?.current?.style && !completed) {
         ref.current.style.backgroundColor = initialColor
         await sleep(200)

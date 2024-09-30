@@ -25,7 +25,8 @@ const basicFilterProps: BasicFilterProps = {
   reruns: 'none',
   setReruns: (value: string) => {},
   channels: [mockChannel],
-  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise.resolve(),
+  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) =>
+    Promise.resolve()
 }
 
 const customFilterProps: CustomFilterProps = {
@@ -57,7 +58,8 @@ const customFilterProps: CustomFilterProps = {
   clients: [mockClient],
   method: 'GET',
   setMethod: (value: string) => {},
-  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) => Promise.resolve(),
+  fetchTransactionLogs: (timestampFilter?: string, filteredResults?: boolean) =>
+    Promise.resolve()
 }
 
 const customizeDialogProps: CustomizeDialogProps = {
@@ -88,7 +90,6 @@ describe('Interface Conformance Tests', () => {
     expect(basicFilterProps.channels[0]._id).toBe('1')
     expect(typeof basicFilterProps.fetchTransactionLogs).toBe('function')
     expect(basicFilterProps.fetchTransactionLogs()).resolves.toBe(undefined)
-
   })
 
   it('should conform to CustomFilterProps interface', () => {
