@@ -248,8 +248,6 @@ export default function OpenhimAppBar() {
         fontSize: '14px',
         backgroundColor: '#ffffff',
         color: '#000000',
-        // boxShadow: 'none',
-        // borderBottom: '1px solid #e0e0e0',
         position: 'relative',
         zIndex: 1
       }}
