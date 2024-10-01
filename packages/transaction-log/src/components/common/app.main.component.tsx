@@ -221,8 +221,12 @@ const App: React.FC = () => {
     try {
       const channels = await getChannels()
       setChannels(channels)
-    } catch (error) {
-      showAlert('Error fetching available channels', 'Error', 'error')
+    } catch (error: any) {
+      showAlert(
+        'Error fetching available channels. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
       console.error('Error fetching channels:', error)
     }
   }, [])
@@ -231,8 +235,12 @@ const App: React.FC = () => {
     try {
       const clients = await getClients()
       setClients(clients)
-    } catch (error) {
-      showAlert('Error fetching available clients', 'Error', 'error')
+    } catch (error: any) {
+      showAlert(
+        'Error fetching available clients. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   }, [])
 
@@ -345,8 +353,12 @@ const App: React.FC = () => {
       setLimit(prevLimit => prevLimit + 20)
 
       await fetchTransactionLogs()
-    } catch (error) {
-      showAlert('Error fetching more transactions', 'Error', 'error')
+    } catch (error: any) {
+      showAlert(
+        'Error fetching more transactions. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     } finally {
       setLoading(false)
     }
@@ -391,7 +403,7 @@ const App: React.FC = () => {
                   hideBackdrop()
                   closeReRunDialog()
                   showAlert(
-                    'Error queing transactions to be rerun' +
+                    'Error queueing transactions to be rerun. ' +
                       error?.response?.data,
                     'Error',
                     'error'
@@ -436,7 +448,7 @@ const App: React.FC = () => {
           hideBackdrop()
           closeReRunDialog()
           showAlert(
-            'Error queing transactions to be rerun' + error?.response?.data,
+            'Error queing transactions to be rerun. ' + error?.response?.data,
             'Error',
             'error'
           )
