@@ -17,7 +17,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
       : 'error'
 
   return (
-    <Button size='small' variant="text" color={buttonColor}>
+    <Button size="small" variant="text" color={buttonColor}>
       {buttonText}
     </Button>
   )

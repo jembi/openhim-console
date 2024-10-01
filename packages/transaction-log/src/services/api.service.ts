@@ -73,28 +73,10 @@ export async function getServerHeartBeat(): Promise<{
   master: number
   now: number
 }> {
-  try {
-    const heartBeat = await fetchServerHeartBeat()
-
-    return heartBeat
-  } catch (error) {
-    throw error
-  }
+  const heartBeat = await fetchServerHeartBeat()
+  return heartBeat
 }
 
-export async function addTransactionsToReRunQueue(
-  transactions: Transaction[],
-  batchSize: number,
-  paused: boolean
-) {
-  try {
-    const payload = {
-      tids: transactions.map(t => t._id),
-      batchSize,
-      paused
-    }
-    await addToTaskQueue(payload)
-  } catch (error) {
 export async function addTransactionsToReRunQueue(
   transactions: Transaction[],
   batchSize: number,
@@ -107,8 +89,6 @@ export async function addTransactionsToReRunQueue(
   }
   await addToTaskQueue(payload)
 }
-  }
-}
 
 export async function addTransactionsToReRunQueueByFilters(params: {
   batchSize: number
@@ -117,11 +97,7 @@ export async function addTransactionsToReRunQueueByFilters(params: {
   filters: {}
   pauseQueue: boolean
 }) {
-  try {
-    await addToTaskQueue(params)
-  } catch (error) {
-    throw error
-  }
+  await addToTaskQueue(params)
 }
 
 export async function getBulkRunFilterCount(params: {
@@ -130,9 +106,5 @@ export async function getBulkRunFilterCount(params: {
   filterRepresentation: string
   filters: {}
 }): Promise<{count: number}> {
-  try {
-    return await fetchBulkRunFilterCount(params)
-  } catch (error) {
-    throw error
-  }
+  return await fetchBulkRunFilterCount(params)
 }
