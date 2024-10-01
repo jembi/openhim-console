@@ -95,7 +95,18 @@ export async function addTransactionsToReRunQueue(
     }
     await addToTaskQueue(payload)
   } catch (error) {
-    throw error
+export async function addTransactionsToReRunQueue(
+  transactions: Transaction[],
+  batchSize: number,
+  paused: boolean
+) {
+  const payload = {
+    tids: transactions.map(t => t._id),
+    batchSize,
+    paused
+  }
+  await addToTaskQueue(payload)
+}
   }
 }
 
