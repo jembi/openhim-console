@@ -11,7 +11,7 @@ export default function Root() {
           style={{
             marginTop: '16px',
             backgroundColor: '#F1F1F1',
-           minHeight: 'calc(100vh - 64px - 10px)'
+            minHeight: 'calc(100vh - 64px - 10px)'
           }}
         >
           <Charts />

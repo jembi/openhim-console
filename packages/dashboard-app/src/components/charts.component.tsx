@@ -6,16 +6,8 @@ import {getTimeSeries} from '../services/api'
 import {TimeSeries, TimeSeriesScale} from '../types'
 import BasicFilter, {BasicFilterData} from './filters/basic.filter.component'
 import Loader from './ux/loader.component'
-import {AlertDialog, AlertDialogProps} from './ux/alert.dialog.component'
 import './styles.css'
 import {ErrorMessage} from './ux/error.component'
-
-type Alert = {
-  severity: AlertDialogProps['severity']
-  isOpen: boolean
-  title: string
-  message: string
-}
 
 export default function Charts() {
   const now = new Date()
@@ -27,12 +19,6 @@ export default function Charts() {
     from: now,
     until: fns.add(now, {days: 1}),
     option: '1h'
-  })
-  const [alert, setAlert] = useState<Alert>({
-    isOpen: false,
-    title: '',
-    message: '',
-    severity: 'info'
   })
 
   const getFilteredTransactions = () => {
@@ -124,14 +110,6 @@ export default function Charts() {
           </Grid>
         </Grid>
       </Grid>
-
-      <AlertDialog
-        severity={alert.severity}
-        title={alert.title}
-        message={alert.message}
-        open={alert.isOpen}
-        onClose={() => setAlert({...alert, isOpen: false})}
-      />
     </Box>
   )
 }
