@@ -26,8 +26,9 @@ export interface TransactionRerunEvent {
 
 export interface TransactionRerunProps {
   open: boolean
-  selectedTransactions: Readonly<Transaction[]>
-  transactions: Readonly<Transaction[]>
+  bulkReRunFilterCount?: number
+  selectedTransactions?: Readonly<Transaction[]>
+  transactions?: Readonly<Transaction[]>
   onConfirmReRun: (event: TransactionRerunEvent) => unknown
   onClose?: () => unknown
 }
@@ -74,22 +75,36 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Box p={0}>
-            {props.selectedTransactions.length === 1 && (
-              <Typography mb={2}>
-                You have selected that transaction{' '}
-                <strong>{props.selectedTransactions[0]?._id || ''}</strong>{' '}
-                should be rerun.
+          {props.bulkReRunFilterCount >= 0 && (
+            <Box p={0}>
+              <Typography>
+                You have selected a total of {props.bulkReRunFilterCount}{' '}
+                transaction(s) to be rerun.
               </Typography>
-            )}
-            <Typography>
-              You have selected a total of {props.selectedTransactions.length}{' '}
-              transaction(s) to be rerun.
-            </Typography>
-            <Typography mt={2}>
-              Are you sure you wish to proceed with this operation?
-            </Typography>
-          </Box>
+              <Typography mt={2}>
+                Are you sure you wish to proceed with this operation?
+              </Typography>
+            </Box>
+          )}
+
+          {props.bulkReRunFilterCount === undefined && (
+            <Box p={0}>
+              {props.selectedTransactions?.length === 1 && (
+                <Typography mb={2}>
+                  You have selected that transaction{' '}
+                  <strong>{props.selectedTransactions?.[0]?._id || ''}</strong>{' '}
+                  should be rerun.
+                </Typography>
+              )}
+              <Typography>
+                You have selected a total of{' '}
+                {props.selectedTransactions?.length} transaction(s) to be rerun.
+              </Typography>
+              <Typography mt={2}>
+                Are you sure you wish to proceed with this operation?
+              </Typography>
+            </Box>
+          )}
 
           <Stack
             direction="row"
@@ -108,7 +123,7 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
                 variant="outlined"
                 onChange={e => setEvent({...event, batchSize: +e.target.value})}
               >
-                {getBatchSizes(props.selectedTransactions.length).map(
+                {getBatchSizes(props.selectedTransactions?.length).map(
                   (b, i) => (
                     <MenuItem key={i} value={b.value}>
                       {b.label}

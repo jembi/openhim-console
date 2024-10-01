@@ -52,6 +52,7 @@ export const TransactionRerunProvider: React.FC<{children: ReactNode}> = ({
       <ReRunTransactionsConfirmationDialog
         open={data.open}
         selectedTransactions={data.selectedTransactions}
+        bulkReRunFilterCount={data.bulkReRunFilterCount}
         transactions={data.transactions}
         onConfirmReRun={confirmRerun}
         onClose={closeReRunDialog}

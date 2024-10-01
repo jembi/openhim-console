@@ -71,75 +71,80 @@ const App: React.FC = () => {
   let lastUpdated
   let serverDifferenceTime
 
+  const getFilters = (timestampFilter?: string) => {
+    const filters: {[key: string]: any} = {}
+
+    if (timestampFilter) {
+      filters['request.timestamp'] = JSON.stringify({
+        $gte: timestampFilter
+      })
+    }
+
+    if (startDate || endDate) {
+      filters['request.timestamp'] = JSON.stringify({
+        ...(startDate && {$gte: startDate.toISOString()}),
+        ...(endDate && {$lte: endDate.toISOString()})
+      })
+    }
+
+    if (status !== 'NoFilter') {
+      filters.status = status
+    }
+
+    if (statusCode) {
+      filters['response.status'] = statusCode
+    }
+
+    if (channel !== 'NoFilter') {
+      filters.channelID = channel
+    }
+
+    if (reruns !== 'NoFilter') {
+      if (reruns === 'Yes') {
+        filters.childIDs = JSON.stringify({$exists: true, $ne: []})
+      } else if (reruns === 'No') {
+        filters.childIDs = JSON.stringify({$eq: []})
+      }
+    }
+
+    if (host) {
+      filters['request.host'] = host
+    }
+
+    if (port) {
+      filters['request.port'] = port
+    }
+
+    if (path) {
+      filters['request.path'] = path
+    }
+
+    if (param) {
+      filters['request.querystring'] = param
+    }
+
+    if (client !== 'NoFilter') {
+      filters.clientID = client
+    }
+
+    if (method !== 'NoFilter') {
+      filters['request.method'] = method
+    }
+
+    const fetchParams: {[key: string]: any} = {
+      filters: JSON.stringify(filters)
+    }
+    if (!timestampFilter) {
+      fetchParams.filterLimit = limit
+      fetchParams.filterPage = 0
+    }
+    return fetchParams
+  }
+
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string, filteredResults?: boolean) => {
       try {
-        const filters: {[key: string]: any} = {}
-
-        if (timestampFilter) {
-          filters['request.timestamp'] = JSON.stringify({
-            $gte: timestampFilter
-          })
-        }
-
-        if (startDate || endDate) {
-          filters['request.timestamp'] = JSON.stringify({
-            ...(startDate && {$gte: startDate.toISOString()}),
-            ...(endDate && {$lte: endDate.toISOString()})
-          })
-        }
-
-        if (status !== 'NoFilter') {
-          filters.status = status
-        }
-
-        if (statusCode) {
-          filters['response.status'] = statusCode
-        }
-
-        if (channel !== 'NoFilter') {
-          filters.channelID = channel
-        }
-
-        if (reruns !== 'NoFilter') {
-          if (reruns === 'Yes') {
-            filters.childIDs = JSON.stringify({$exists: true, $ne: []})
-          } else if (reruns === 'No') {
-            filters.childIDs = JSON.stringify({$eq: []})
-          }
-        }
-
-        if (host) {
-          filters['request.host'] = host
-        }
-
-        if (port) {
-          filters['request.port'] = port
-        }
-
-        if (path) {
-          filters['request.path'] = path
-        }
-
-        if (param) {
-          filters['request.querystring'] = param
-        }
-
-        if (client !== 'NoFilter') {
-          filters.clientID = client
-        }
-
-        if (method !== 'NoFilter') {
-          filters['request.method'] = method
-        }
-
-        const fetchParams: {[key: string]: any} = {
-          filters: JSON.stringify(filters)
-        }
-        if (!timestampFilter) {
-          fetchParams.filterLimit = limit
-          fetchParams.filterPage = 0
-        }
+        const fetchParams = getFilters(timestampFilter)
 
         setHttpError(null)
 
@@ -354,7 +359,7 @@ const App: React.FC = () => {
       filterLimit: 10000,
       filterPage: 0,
       filterRepresentation: 'bulkrerun',
-      filters: {}
+      filters: getFilters()
     })
       .then(res => {
         hideBackdrop()
@@ -363,7 +368,7 @@ const App: React.FC = () => {
           (!(startDate && endDate)
             ? ''
             : 'No date range has been supplied, querying all transactions with the defined filters\n') +
-          `Your filters returned a total of ${res.count} transactions that can be re-run`
+          `Your filters returned a total of ${res.count} transaction(s) that can be re-run`
         const title = 'You have opted to do a Bulk Rerun!'
 
         showConfirmation(
@@ -371,8 +376,7 @@ const App: React.FC = () => {
           title,
           () => {
             showReRunDialog({
-              selectedTransactions,
-              transactions,
+              bulkReRunFilterCount: res.count,
               onConfirmReRun: async (event: TransactionRerunEvent) => {
                 try {
                   showBackdrop(<Loader />, true)
@@ -381,7 +385,7 @@ const App: React.FC = () => {
                     filterLimit: 20,
                     filterPage: 0,
                     pauseQueue: event.paused,
-                    filters: {}
+                    filters: getFilters()
                   })
                 } catch (error: any) {
                   hideBackdrop()
