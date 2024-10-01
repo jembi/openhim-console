@@ -53,7 +53,7 @@ export async function getChannelById(id: String): Promise<Channel> {
 
 export async function getTransactions(filters: {}): Promise<Transaction[]> {
   try {
-    const transactions: Transaction[] = fetchTransactions()
+    const transactions: Transaction[] = fetchTransactions(filters)
     return transactions
   } catch (error) {
     throw error
