@@ -1,6 +1,5 @@
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
-<<<<<<< HEAD
 import SettingsIcon from '@mui/icons-material/Settings'
 import {
   Box,
@@ -16,10 +15,6 @@ import {Transaction} from '../../types'
 import StatusButton from '../buttons/status.button.component'
 import SettingsDialog from '../dialogs/settings.dialog.component'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
-=======
-import convertTimestampFormat from '../helpers/timestampformat.helper.component'
-import {AnimatedTableRow} from './animated.table.row.component'
->>>>>>> b79eb0661a41509396c957a998a0ff6d1d6f4b9c
 
 const TransactionLogTable: React.FC<{
   transactions: Transaction[]
@@ -183,7 +178,6 @@ const TransactionLogTable: React.FC<{
         </IconButton>
       </Box>
       <Box>
-<<<<<<< HEAD
         <DataGrid
           rows={transactions}
           getRowId={t => t._id}
@@ -198,129 +192,6 @@ const TransactionLogTable: React.FC<{
             NoRowsOverlay: () =>
               loading ? (
                 <CircularProgress size={24} />
-=======
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox checked={selectAll} onChange={handleSelectAll} />
-                </TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Method</TableCell>
-                <TableCell>Host</TableCell>
-                <TableCell>Port</TableCell>
-                <TableCell>Path</TableCell>
-                <TableCell>Params</TableCell>
-                <TableCell>Channel</TableCell>
-                <TableCell>Client</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Time</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {initialTransactionLoadComplete ? (
-                transactions.map((transaction, index) => (
-                  <AnimatedTableRow
-                    key={transaction['_id']}
-                    initialColor="grey"
-                    finalColor="white"
-                    onClick={event => handleRowClick(event, transaction)}
-                  >
-                    <TableCell
-                      padding="checkbox"
-                      className="non-clickable-column"
-                    >
-                      <Checkbox
-                        checked={selectedRows.has(index)}
-                        onChange={() => handleRowSelect(index)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        sx={{
-                          height: '32px',
-                          width: '32px',
-                          backgroundColor:
-                            transaction.status === 'Processing'
-                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                              : transaction.status === 'Pending Async'
-                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                              : transaction.status === 'Successful'
-                              ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                              : transaction.status === 'Completed'
-                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                              : transaction.status === 'Completed with error(s)'
-                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                              : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                          borderRadius: 0,
-                          '&:hover': {
-                            backgroundColor:
-                              transaction.status === 'Processing'
-                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                : transaction.status === 'Pending Async'
-                                ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                : transaction.status === 'Successful'
-                                ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                                : transaction.status === 'Completed'
-                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : transaction.status ===
-                                  'Completed with error(s)'
-                                ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : 'rgba(244, 67, 54, 0.2)' // error.light with 20% opacity
-                          }
-                        }}
-                      >
-                        <LockIcon
-                          sx={{
-                            color:
-                              transaction.status === 'Processing'
-                                ? 'info.main'
-                                : transaction.status === 'Pending Async'
-                                ? 'info.main'
-                                : transaction.status === 'Successful'
-                                ? 'success.main'
-                                : transaction.status === 'Completed'
-                                ? 'warning.main'
-                                : transaction.status ===
-                                  'Completed with error(s)'
-                                ? 'warning.main'
-                                : 'error.main'
-                          }}
-                        />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>{transaction.request.method}</TableCell>
-                    <TableCell>{transaction.request.host}</TableCell>
-                    <TableCell>{transaction.request.port}</TableCell>
-                    <TableCell>{transaction.request.path}</TableCell>
-                    <TableCell>{transaction.request.params}</TableCell>
-                    <TableCell>{transaction.channelName}</TableCell>
-                    <TableCell>{transaction.clientName}</TableCell>
-                    <TableCell
-                      sx={{
-                        color:
-                          transaction.status === 'Processing'
-                            ? 'info.main'
-                            : transaction.status === 'Pending Async'
-                            ? 'info.main'
-                            : transaction.status === 'Successful'
-                            ? 'success.main'
-                            : transaction.status === 'Completed'
-                            ? 'warning.main'
-                            : transaction.status === 'Completed with error(s)'
-                            ? 'warning.main'
-                            : 'error.main'
-                      }}
-                    >
-                      {transaction.status}
-                    </TableCell>
-                    <TableCell>
-                      {convertTimestampFormat(transaction.request.timestamp)}
-                    </TableCell>
-                  </AnimatedTableRow>
-                ))
->>>>>>> b79eb0661a41509396c957a998a0ff6d1d6f4b9c
               ) : (
                 <Box sx={{ textAlign: 'center', padding: 2, }}>
                   <Typography>There are no transactions for the current filters.</Typography>
