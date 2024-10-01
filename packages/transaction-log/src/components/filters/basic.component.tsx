@@ -24,11 +24,10 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   channels,
   fetchTransactionLogs
 }) => {
-
   const debounceFetchTransactionLogs = useCallback(
     debounce(() => fetchTransactionLogs(null, true), 500),
     [fetchTransactionLogs]
-  );
+  )
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value)
@@ -51,10 +50,10 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   }
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       await debounceFetchTransactionLogs()
     })()
-    
+
     return () => debounceFetchTransactionLogs.cancel()
   }, [status, searchQuery, channel, limit, startDate, endDate, reruns])
 
@@ -71,7 +70,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   return (
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={6} md={1.5} lg={1.5}>
           <TextField
             select
             label="Status"
@@ -89,7 +88,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             <MenuItem value="Successful">Successful</MenuItem>
           </TextField>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={6} md={2} lg={2}>
           <TextField
             label="Search"
             type="text"
@@ -99,7 +98,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             InputLabelProps={{shrink: true}}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={6} md={1.5} lg={1.5}>
           <TextField
             select
             label="Channel"
@@ -116,7 +115,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             ))}
           </TextField>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={12} sm={6} md={2} lg={2}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
               label="Start Date"
@@ -127,7 +126,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={12} sm={6} md={2} lg={2}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
               label="End Date"
@@ -138,7 +137,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={12} sm={6} md={1} lg={1}>
           <TextField
             select
             label="Limit"
@@ -166,7 +165,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
             </MenuItem>
           </TextField>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={6} md={2} lg={2}>
           <TextField
             select
             label="Reruns"

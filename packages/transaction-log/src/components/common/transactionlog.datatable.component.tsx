@@ -20,7 +20,6 @@ import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
-import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
 
 const TransactionLogTable: React.FC<{
@@ -140,10 +139,24 @@ const TransactionLogTable: React.FC<{
                       />
                     </TableCell>
                     <TableCell>
-                        <IconButton
-                          sx={{
-                            height: '32px',
-                            width: '32px',
+                      <IconButton
+                        sx={{
+                          height: '32px',
+                          width: '32px',
+                          backgroundColor:
+                            transaction.status === 'Processing'
+                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                              : transaction.status === 'Pending Async'
+                              ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
+                              : transaction.status === 'Successful'
+                              ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
+                              : transaction.status === 'Completed'
+                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                              : transaction.status === 'Completed with error(s)'
+                              ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
+                              : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
+                          borderRadius: 0,
+                          '&:hover': {
                             backgroundColor:
                               transaction.status === 'Processing'
                                 ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
@@ -153,43 +166,31 @@ const TransactionLogTable: React.FC<{
                                 ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
                                 : transaction.status === 'Completed'
                                 ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : transaction.status === 'Completed with error(s)'
+                                : transaction.status ===
+                                  'Completed with error(s)'
                                 ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                            borderRadius: 0,
-                            '&:hover': {
-                              backgroundColor:
-                                transaction.status === 'Processing'
-                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                  : transaction.status === 'Pending Async'
-                                  ? 'rgba(33, 150, 243, 0.2)' // info.light with 20% opacity
-                                  : transaction.status === 'Successful'
-                                  ? 'rgba(76, 175, 80, 0.2)' // success.light with 20% opacity
-                                  : transaction.status === 'Completed'
-                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                  : transaction.status === 'Completed with error(s)'
-                                  ? 'rgba(255, 193, 7, 0.2)' // warning.light with 20% opacity
-                                  : 'rgba(244, 67, 54, 0.2)', // error.light with 20% opacity
-                            },
+                                : 'rgba(244, 67, 54, 0.2)' // error.light with 20% opacity
+                          }
+                        }}
+                      >
+                        <LockIcon
+                          sx={{
+                            color:
+                              transaction.status === 'Processing'
+                                ? 'info.main'
+                                : transaction.status === 'Pending Async'
+                                ? 'info.main'
+                                : transaction.status === 'Successful'
+                                ? 'success.main'
+                                : transaction.status === 'Completed'
+                                ? 'warning.main'
+                                : transaction.status ===
+                                  'Completed with error(s)'
+                                ? 'warning.main'
+                                : 'error.main'
                           }}
-                        >
-                          <LockIcon
-                            sx={{
-                              color:
-                                transaction.status === 'Processing'
-                                  ? 'info.main'
-                                  : transaction.status === 'Pending Async'
-                                  ? 'info.main'
-                                  : transaction.status === 'Successful'
-                                  ? 'success.main'
-                                  : transaction.status === 'Completed'
-                                  ? 'warning.main'
-                                  : transaction.status === 'Completed with error(s)'
-                                  ? 'warning.main'
-                                  : 'error.main',
-                            }}
-                          />
-                        </IconButton>
+                        />
+                      </IconButton>
                     </TableCell>
                     <TableCell>{transaction.request.method}</TableCell>
                     <TableCell>{transaction.request.host}</TableCell>
@@ -198,11 +199,23 @@ const TransactionLogTable: React.FC<{
                     <TableCell>{transaction.request.params}</TableCell>
                     <TableCell>{transaction.channelName}</TableCell>
                     <TableCell>{transaction.clientName}</TableCell>
-                    <TableCell>
-                      <StatusButton
-                        status={transaction.status}
-                        buttonText={transaction.status}
-                      />
+                    <TableCell
+                      sx={{
+                        color:
+                          transaction.status === 'Processing'
+                            ? 'info.main'
+                            : transaction.status === 'Pending Async'
+                            ? 'info.main'
+                            : transaction.status === 'Successful'
+                            ? 'success.main'
+                            : transaction.status === 'Completed'
+                            ? 'warning.main'
+                            : transaction.status === 'Completed with error(s)'
+                            ? 'warning.main'
+                            : 'error.main'
+                      }}
+                    >
+                      {transaction.status}
                     </TableCell>
                     <TableCell>
                       {convertTimestampFormat(transaction.request.timestamp)}
