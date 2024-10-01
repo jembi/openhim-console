@@ -61,7 +61,7 @@ const App: React.FC = () => {
           filters['request.timestamp'] = JSON.stringify({
             $gte: timestampFilter
           })
-        } 
+        }
 
         if (startDate || endDate) {
           filters['request.timestamp'] = JSON.stringify({
@@ -136,7 +136,7 @@ const App: React.FC = () => {
         )
 
         setTransactions(prevTransactions => {
-          if(filteredResults){
+          if (filteredResults) {
             return newTransactionsWithChannelDetails
           }
           let newTransactionListState = [...prevTransactions]
@@ -227,7 +227,6 @@ const App: React.FC = () => {
       setTimestampFilter(currentTimestamp)
 
       lastUpdated = new Date().getTime() - serverDifferenceTime
-
     }, 5000)
 
     return () => clearInterval(interval)
@@ -269,7 +268,6 @@ const App: React.FC = () => {
         })
       })()
     }
-
   }, [timestampFilter, fetchTransactionLogs])
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -341,7 +339,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1', height: '100vh'}}>
+    <Box
+      padding={3}
+      sx={{backgroundColor: '#F1F1F1', minHeight: 'calc(100vh - 64px - 10px)'}}
+    >
       <Box>
         <Grid item xs={12}>
           <Box>
