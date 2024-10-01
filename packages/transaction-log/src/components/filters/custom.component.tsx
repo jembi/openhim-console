@@ -166,7 +166,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
     <Box sx={{padding: '16px'}}>
       <Grid container spacing={2}>
         {visibleFilters.status && (
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={6} md={1.5} lg={1.5}>
             <TextField
               select
               label="Status"
@@ -186,7 +186,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.statusCode && (
-          <Grid item xs={1}>
+          <Grid item xs={12} sm={6} md={1} lg={1}>
             <TextField
               label="Status Code"
               type="number"
@@ -198,7 +198,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.channel && (
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={6} md={1.5} lg={1.5}>
             <TextField
               select
               label="Channel"
@@ -217,7 +217,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.startDate && (
-          <Grid item xs={1}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 label="Start Date"
@@ -230,7 +230,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.endDate && (
-          <Grid item xs={1}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DateTimePicker
                 label="End Date"
@@ -243,7 +243,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.limit && (
-          <Grid item xs={1}>
+          <Grid item xs={12} sm={6} md={1} lg={1}>
             <TextField
               select
               label="Limit"
@@ -273,7 +273,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.reruns && (
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <TextField
               select
               label="Reruns"
@@ -288,7 +288,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.host && (
-          <Grid item xs={1}>
+          <Grid item xs={12} sm={6} md={1} lg={1}>
             <TextField
               label="Host"
               type="text"
@@ -300,7 +300,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.port && (
-          <Grid item xs={1} sm={1} md={1}>
+          <Grid item xs={12} sm={6} md={1} lg={1}>
             <TextField
               label="Port"
               type="number"
@@ -312,7 +312,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.path && (
-          <Grid item xs={2} sm={2} md={2}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <TextField
               label="Path"
               type="string"
@@ -324,7 +324,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.param && (
-          <Grid item xs={2} sm={2} md={2}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <TextField
               label="Request Param Key"
               type="text"
@@ -336,7 +336,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.client && (
-          <Grid item xs={2} sm={2} md={2}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <TextField
               select
               label="Client"
@@ -355,7 +355,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
           </Grid>
         )}
         {visibleFilters.method && (
-          <Grid item xs={2} sm={2} md={2}>
+          <Grid item xs={12} sm={6} md={2} lg={2}>
             <TextField
               select
               label="Method"
