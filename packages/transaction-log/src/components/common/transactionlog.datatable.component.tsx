@@ -20,7 +20,6 @@ import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
-import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
 
 const TransactionLogTable: React.FC<{
@@ -200,11 +199,23 @@ const TransactionLogTable: React.FC<{
                     <TableCell>{transaction.request.params}</TableCell>
                     <TableCell>{transaction.channelName}</TableCell>
                     <TableCell>{transaction.clientName}</TableCell>
-                    <TableCell>
-                      <StatusButton
-                        status={transaction.status}
-                        buttonText={transaction.status}
-                      />
+                    <TableCell
+                      sx={{
+                        color:
+                          transaction.status === 'Processing'
+                            ? 'info.main'
+                            : transaction.status === 'Pending Async'
+                            ? 'info.main'
+                            : transaction.status === 'Successful'
+                            ? 'success.main'
+                            : transaction.status === 'Completed'
+                            ? 'warning.main'
+                            : transaction.status === 'Completed with error(s)'
+                            ? 'warning.main'
+                            : 'error.main'
+                      }}
+                    >
+                      {transaction.status}
                     </TableCell>
                     <TableCell>
                       {convertTimestampFormat(transaction.request.timestamp)}
