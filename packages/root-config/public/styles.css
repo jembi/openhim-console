@@ -7591,6 +7591,7 @@ div.taglist div.tag-input input { margin:0px; font-family: sans-serif; font-size
 
 html,
 body {
+  margin: 0px;
   height: 100%;
 }
 
