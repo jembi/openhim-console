@@ -367,12 +367,16 @@ const App: React.FC = () => {
   const handleReRunMatches = async () => {
     showBackdrop(<Loader />, true)
 
-    getBulkRunFilterCount({
-      filterLimit: 10000,
-      filterPage: 0,
+
+    type BulkRunFilterCountParams = Parameters<typeof getBulkRunFilterCount>;
+
+    const params = {
+      ...getFilters() as any,
+      filterLimit: 1000,
       filterRepresentation: 'bulkrerun',
-      filters: getFilters()
-    })
+    } satisfies BulkRunFilterCountParams[0]
+
+    getBulkRunFilterCount(params)
       .then(res => {
         hideBackdrop()
 
@@ -392,13 +396,17 @@ const App: React.FC = () => {
               onConfirmReRun: async (event: TransactionRerunEvent) => {
                 try {
                   showBackdrop(<Loader />, true)
-                  await addTransactionsToBulkReRunTaskQueue({
+
+                  type BulkReRunParams = Parameters<typeof addTransactionsToBulkReRunTaskQueue>;
+
+                  const params = {
+                    ...getFilters() as any,
                     batchSize: event.batchSize,
-                    filterLimit: 20,
-                    filterPage: 0,
+                    filterLimit: 1000,
                     pauseQueue: event.paused,
-                    filters: getFilters()
-                  })
+                  } satisfies BulkReRunParams[0]
+
+                  await addTransactionsToBulkReRunTaskQueue(params)
                 } catch (error: any) {
                   hideBackdrop()
                   closeReRunDialog()
