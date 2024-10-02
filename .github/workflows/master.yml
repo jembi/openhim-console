@@ -35,7 +35,7 @@ jobs:
         shell: bash
       - name: Run script file
         env:
-         HOST: ${{ secrets.HOST }}
+          HOST: ${{ secrets.HOST }}
         working-directory: ./packaging/import-maps-server
         run: |
           chmod +x ./build.sh 

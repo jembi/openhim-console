@@ -1,7 +1,7 @@
 import moment from 'moment'
 import metricsDateTypeSelectorView from '~/views/partials/metrics-date-type-selector.html'
 
-export function metricsDateTypeSelector () {
+export function metricsDateTypeSelector() {
   return {
     restrict: 'EA',
     template: metricsDateTypeSelectorView,
@@ -20,10 +20,10 @@ export function metricsDateTypeSelector () {
       }
 
       if (!scope.onChange) {
-        scope.onChange = function () { }
+        scope.onChange = function () {}
       }
 
-      function processOptions () {
+      function processOptions() {
         const from = moment(scope.selectedDateType.from)
         const until = moment(scope.selectedDateType.until)
 

@@ -1,4 +1,4 @@
-export function auditOperation () {
+export function auditOperation() {
   return {
     restrict: 'E',
     templateUrl: 'views/partials/audit-operation.html',

@@ -29,9 +29,7 @@ describe('Controller: MediatorDetailsCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
   var testMediator = {
@@ -43,23 +41,65 @@ describe('Controller: MediatorDetailsCtrl', function () {
       {
         name: 'Mediator Channel 1',
         urlPattern: '/channel1',
-        routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+        routes: [
+          {
+            name: 'Route 1',
+            host: 'localhost',
+            port: '1111',
+            primary: true,
+            type: 'http'
+          }
+        ],
         allow: ['xdlab'],
         type: 'http'
       }
     ],
-    endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+    endpoints: [
+      {
+        name: 'Route 1',
+        host: 'localhost',
+        port: '1111',
+        primary: true,
+        type: 'http'
+      }
+    ],
     _lastHeartbeat: new Date(),
     _uptime: 3600
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')).respond(testMediator)
-    $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 1']).respond(201)
-    $httpBackend.when('POST', new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'), ['Mediator Channel 2']).respond(500)
+    $httpBackend
+      .when(
+        'GET',
+        new RegExp('.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')
+      )
+      .respond(testMediator)
+    $httpBackend
+      .when(
+        'POST',
+        new RegExp(
+          '.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'
+        ),
+        ['Mediator Channel 1']
+      )
+      .respond(201)
+    $httpBackend
+      .when(
+        'POST',
+        new RegExp(
+          '.*/mediators/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE/channels'
+        ),
+        ['Mediator Channel 2']
+      )
+      .respond(500)
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -67,7 +107,10 @@ describe('Controller: MediatorDetailsCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('MediatorDetailsCtrl', { $scope: scope, $routeParams: { urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE' } })
+      return $controller('MediatorDetailsCtrl', {
+        $scope: scope,
+        $routeParams: {urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'}
+      })
     }
   }))
 
@@ -79,7 +122,9 @@ describe('Controller: MediatorDetailsCtrl', function () {
   it('should attach a single meditor to the scope', function () {
     createController()
     httpBackend.flush()
-    scope.mediatorDetails.urn.should.equal('AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE')
+    scope.mediatorDetails.urn.should.equal(
+      'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'
+    )
     scope.mediatorDetails.version.should.equal('0.0.1')
     scope.mediatorDetails.name.should.equal('Test 1 Mediator')
     scope.mediatorDetails.description.should.equal('Test 1 Description')
@@ -105,12 +150,14 @@ describe('Controller: MediatorDetailsCtrl', function () {
   })
 
   it('should construct a config def map by parameter', function () {
-    testMediator.configDefs = [{
-      displayName: 'Param 1',
-      description: 'Param 1 description',
-      param: 'param1',
-      type: 'string'
-    }]
+    testMediator.configDefs = [
+      {
+        displayName: 'Param 1',
+        description: 'Param 1 description',
+        param: 'param1',
+        type: 'string'
+      }
+    ]
 
     testMediator.config = {
       param1: 'val1'
@@ -123,7 +170,9 @@ describe('Controller: MediatorDetailsCtrl', function () {
     delete testMediator.configDefs
 
     scope.mediatorDefsMap.param1.displayName.should.be.equal('Param 1')
-    scope.mediatorDefsMap.param1.description.should.be.equal('Param 1 description')
+    scope.mediatorDefsMap.param1.description.should.be.equal(
+      'Param 1 description'
+    )
   })
 
   it('should create an empty map if the mediator has not configDefs', function () {
@@ -131,7 +180,9 @@ describe('Controller: MediatorDetailsCtrl', function () {
     httpBackend.flush()
 
     // empty object test
-    expect(Object.getOwnPropertyNames(scope.mediatorDefsMap).length).to.be.equal(0)
+    expect(
+      Object.getOwnPropertyNames(scope.mediatorDefsMap).length
+    ).to.be.equal(0)
   })
 
   it('should save a mediator channel with a particular name', function () {
@@ -140,7 +191,9 @@ describe('Controller: MediatorDetailsCtrl', function () {
 
     scope.addChannel('Mediator Channel 1')
     httpBackend.flush()
-    scope.alerts.top[0].msg.should.be.equal('Successfully installed mediator channel')
+    scope.alerts.top[0].msg.should.be.equal(
+      'Successfully installed mediator channel'
+    )
   })
 
   it('should alert when there is an error saving mediator channel with a particular name', function () {
@@ -149,6 +202,8 @@ describe('Controller: MediatorDetailsCtrl', function () {
 
     scope.addChannel('Mediator Channel 2')
     httpBackend.flush()
-    scope.alerts.top[0].msg.should.be.equal('Oops, something went wrong. Could not install mediator channel.')
+    scope.alerts.top[0].msg.should.be.equal(
+      'Oops, something went wrong. Could not install mediator channel.'
+    )
   })
 })

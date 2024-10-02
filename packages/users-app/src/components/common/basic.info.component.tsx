@@ -61,7 +61,7 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider style={{marginBottom:"2px"}} />
+      <Divider style={{marginBottom: '2px'}} />
 
       <Grid container spacing={2}>
         <Grid item xs={6}>

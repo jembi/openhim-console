@@ -2,7 +2,7 @@
   {{expanded ? 'Hide' : 'Show'}}
 </button>
 <div>Made {{audit.ops.length}} change(s)</div>
-<ul style="margin-top:5px;padding-left:15px;" ng-if="expanded">
+<ul style="margin-top: 5px; padding-left: 15px" ng-if="expanded">
   <li ng-repeat="op in audit.ops">
     <div ng-switch="op.op">
       <!-- Added a field -->

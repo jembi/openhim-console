@@ -1,7 +1,7 @@
 /* NB! remember to include the factory (Alerting) into your Controllers */
 /* <alert ng-repeat="alert in alerts.top" type="alert.type" close="closeAlert('top', $index)">{{alert.msg}}</alert> */
 
-export function Alerting ($rootScope) {
+export function Alerting($rootScope) {
   $rootScope.alerts = {}
 
   return {
@@ -12,11 +12,13 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      const alertObject = { type: alertType, msg: alertMsg }
+      const alertObject = {type: alertType, msg: alertMsg}
 
       const scopeAlerts = $rootScope.alerts[alertScope]
 
-      if (!scopeAlerts.some(el => el.type === alertType && el.msg === alertMsg)) {
+      if (
+        !scopeAlerts.some(el => el.type === alertType && el.msg === alertMsg)
+      ) {
         scopeAlerts.push(alertObject)
       }
     },
@@ -24,16 +26,19 @@ export function Alerting ($rootScope) {
       let alertMsg
       switch (errCode) {
         case 401:
-          alertMsg = 'The request is not authorised by the server. Please try to log in again.'
+          alertMsg =
+            'The request is not authorised by the server. Please try to log in again.'
           break
         case 403:
-          alertMsg = 'The request has been forbidden by the server. Please contact the server administrator'
+          alertMsg =
+            'The request has been forbidden by the server. Please contact the server administrator'
           break
         case 404:
           alertMsg = 'The request resource could not be found'
           break
         default:
-          alertMsg = 'A server-side error has occurred. Please contact the server administrator'
+          alertMsg =
+            'A server-side error has occurred. Please contact the server administrator'
       }
 
       // check if server object exists
@@ -42,7 +47,7 @@ export function Alerting ($rootScope) {
       }
 
       // create alertObject
-      const alertObject = { type: 'danger', msg: alertMsg }
+      const alertObject = {type: 'danger', msg: alertMsg}
 
       // push alertObject to appropriate alertScope
       $rootScope.alerts.server.push(alertObject)
@@ -61,8 +66,8 @@ export function Alerting ($rootScope) {
     AlertValidationMsgs: function () {
       $rootScope.validationRequiredMsg = 'This field is required!'
       $rootScope.validationPasswordConfirmMsg = 'Please confirm you password!'
-      $rootScope.validationFormErrorsMsg = 'There appears to be some errors in your form. Please correct and try again.'
+      $rootScope.validationFormErrorsMsg =
+        'There appears to be some errors in your form. Please correct and try again.'
     }
-
   }
 }

@@ -53,7 +53,7 @@ import ActiveStepZero from './ActiveStepZero'
 import ActiveStepOne from './ActiveStepOne'
 import ActiveStepTwo from './ActiveStepTwo'
 import {AppProps} from './FormInputProps'
-import { countdown } from './utils'
+import {countdown} from './utils'
 
 const StyledGridOverlay = styled('div')(() => ({
   display: 'flex',
@@ -78,7 +78,7 @@ const AppsDataGrid = () => {
     icon: ''
   }
   //seconds for countdown
-  const seconds = 5;
+  const seconds = 5
 
   const [openDialog, setOpenDialog] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -283,16 +283,15 @@ const AppsDataGrid = () => {
       loadContent()
       enqueueSnackbar('App was deleted successfully', {variant: 'success'})
       if (deleteAppData.type === 'esmodule') {
-        await countdown(seconds, (remainingSeconds) => {
+        await countdown(seconds, remainingSeconds => {
           enqueueSnackbar(
             `The app will have to reload in ${remainingSeconds} seconds.`,
             {
               variant: 'info'
             }
           )
-        }
-        );
-        
+        })
+
         window.location.reload()
       }
     } catch (error) {
@@ -321,14 +320,14 @@ const AppsDataGrid = () => {
         enqueueSnackbar('App was updated successfully', {variant: 'success'})
         setSelectedApp(formInitialState)
         if (data.type === 'esmodule') {
-          await countdown(seconds, (remainingSeconds) => {
+          await countdown(seconds, remainingSeconds => {
             enqueueSnackbar(
               `The app will have to reload in ${remainingSeconds} seconds.`,
               {
                 variant: 'info'
               }
             )
-          });
+          })
           window.location.reload()
         }
       } catch (error) {
@@ -369,13 +368,14 @@ const AppsDataGrid = () => {
       setSelectedApp(formInitialState)
       loadContent()
       if (data.type === 'esmodule') {
-        await countdown(seconds, (remainingSeconds) =>
+        await countdown(seconds, remainingSeconds =>
           enqueueSnackbar(
             `The app will have to reload in ${remainingSeconds} seconds.`,
             {
               variant: 'info'
             }
-          ));
+          )
+        )
         window.location.reload()
       }
     } catch (error) {
@@ -409,14 +409,11 @@ const AppsDataGrid = () => {
   // Function is called inside ActiveStepTwo to set the icon url on button toggle
   // In addition it is used to set the url when adding custom icon.
   const updateIcon = (icon: any) => {
-    
     appValues.icon = icon as string
 
-    if(openEditDialog){
+    if (openEditDialog) {
       selectedApp.icon = icon as string
     }
-    
-
   }
 
   const isStepOptional = (step: number) => {
@@ -428,7 +425,6 @@ const AppsDataGrid = () => {
   }
 
   const validateData = () => {
-
     if (activeStep === 0) {
       const apptTitleValue = appTitleFieldRef.current.value
       const appCategoryValue = appCategoryFieldRef.current.value
@@ -485,8 +481,8 @@ const AppsDataGrid = () => {
         return true
       }
     }
-    if(activeStep === 3){
-      return true;
+    if (activeStep === 3) {
+      return true
     }
   }
   // Function is called to increment activeStep

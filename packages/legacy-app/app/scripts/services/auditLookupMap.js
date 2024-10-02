@@ -1,4 +1,4 @@
-export function AuditLookups () {
+export function AuditLookups() {
   return {
     eventActionMap: function () {
       const eventActionMap = {}
@@ -19,6 +19,5 @@ export function AuditLookups () {
 
       return eventOutcomeMap
     }
-
   }
 }

@@ -31,9 +31,15 @@ export function Footer() {
   }, [])
 
   return (
-    <Box style={{ backgroundColor: '#F1F1F1',
-      padding: 3,
-      textAlign: 'center',position:"fixed",bottom:0, width:"100%"}}>
+    <Box
+      style={{
+        backgroundColor: '#F1F1F1',
+        padding: 3,
+        textAlign: 'center',
+        bottom: 0,
+        width: '100%'
+      }}
+    >
       {about?.currentCoreVersion && (
         <Typography
           color={'grey'}

@@ -1,13 +1,30 @@
 import visualizerModal from '~/views/visualizerModal'
 import confirmModal from '~/views/confirmModal'
-import { VisualizerModalCtrl, ConfirmModalCtrl } from './'
+import {VisualizerModalCtrl, ConfirmModalCtrl} from './'
 
 import moment from 'moment'
 
-export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, login, Api, Alerting, Fullscreen) {
+export function VisualizerCtrl(
+  $scope,
+  $http,
+  $interval,
+  $window,
+  $uibModal,
+  login,
+  Api,
+  Alerting,
+  Fullscreen
+) {
   // initialize global variables
   const settingsStore = {} // a place the push current settings when switching to fullscreen
-  let visualizerUpdateInterval, updatePeriod, diffTime, lastUpdate, maxSpeed, pad, user, consoleSession
+  let visualizerUpdateInterval,
+    updatePeriod,
+    diffTime,
+    lastUpdate,
+    maxSpeed,
+    pad,
+    user,
+    consoleSession
 
   $scope.loadingVisualizer = false
   $scope.loadingVisualizerError = false
@@ -15,7 +32,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   $scope.isUsingOldVisualizerSettings = false
 
   // function to start the visualizer
-  const startVisualizer = function startVisualizer () {
+  const startVisualizer = function startVisualizer() {
     Api.Heartbeat.get(function (heartbeat) {
       diffTime = Date.now() - moment(heartbeat.now)
       $scope.play()
@@ -24,7 +41,15 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
   const loadVisualizer = function (visSettings) {
     $scope.loadingVisualizer = true
-    let visResponsive, visW, visH, inactiveColor, activeColor, errorColor, textColor, minDisplayPeriod, maxTimeout
+    let visResponsive,
+      visW,
+      visH,
+      inactiveColor,
+      activeColor,
+      errorColor,
+      textColor,
+      minDisplayPeriod,
+      maxTimeout
     const components = []
     const channels = []
     const mediators = []
@@ -53,7 +78,10 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     if (components.length === 0 || channels.length === 0) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
-      $scope.loadingVisualizerErrorMsgs.push({ section: 'Visualizations Management', msg: 'Please ensure your visualizer has at least one Component and one Endpoint added!' })
+      $scope.loadingVisualizerErrorMsgs.push({
+        section: 'Visualizations Management',
+        msg: 'Please ensure your visualizer has at least one Component and one Endpoint added!'
+      })
     }
     /** ******** Visualizations Management **********/
 
@@ -67,7 +95,10 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     if (!visW || !visH || !pad) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
-      $scope.loadingVisualizerErrorMsgs.push({ section: 'Size Management', msg: 'Please ensure all size management fields are supplied!' })
+      $scope.loadingVisualizerErrorMsgs.push({
+        section: 'Size Management',
+        msg: 'Please ensure all size management fields are supplied!'
+      })
     }
     /** ******** Size Management **********/
 
@@ -78,10 +109,18 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     textColor = visSettings.color.text
 
     // check if config not empty
-    if (inactiveColor === '' || activeColor === '' || errorColor === '' || textColor === '') {
+    if (
+      inactiveColor === '' ||
+      activeColor === '' ||
+      errorColor === '' ||
+      textColor === ''
+    ) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
-      $scope.loadingVisualizerErrorMsgs.push({ section: 'Color Management', msg: 'Please ensure all color management fields are supplied!' })
+      $scope.loadingVisualizerErrorMsgs.push({
+        section: 'Color Management',
+        msg: 'Please ensure all color management fields are supplied!'
+      })
     }
     /** ******** Color Management **********/
 
@@ -99,7 +138,10 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     if (!updatePeriod || !maxSpeed || !maxTimeout) {
       $scope.loadingVisualizerError = true
       $scope.loadingVisualizer = false
-      $scope.loadingVisualizerErrorMsgs.push({ section: 'Speed Management', msg: 'Please ensure all speed management fields are supplied!' })
+      $scope.loadingVisualizerErrorMsgs.push({
+        section: 'Speed Management',
+        msg: 'Please ensure all speed management fields are supplied!'
+      })
     }
     /** ******** Time Management **********/
 
@@ -136,16 +178,16 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // function to play the visualizer - Pull new events
-  $scope.play = function play () {
+  $scope.play = function play() {
     $scope.showPlay = false
     $scope.showPause = true
 
-    lastUpdate = (Date.now() - diffTime)
+    lastUpdate = Date.now() - diffTime
     visualizerUpdateInterval = $interval(function () {
-      Api.Events.get({ receivedTime: lastUpdate }, function (events) {
+      Api.Events.get({receivedTime: lastUpdate}, function (events) {
         // update the visualizerData object to trigger the directive watcher and update the events
         $scope.visualizerData = events.events
-        lastUpdate = (Date.now() - diffTime)
+        lastUpdate = Date.now() - diffTime
       })
     }, updatePeriod)
   }
@@ -159,7 +201,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // function to pause the visualizer - cancel update interval
-  $scope.pause = function pause () {
+  $scope.pause = function pause() {
     $scope.showPlay = true
     $scope.showPause = false
     cancelVisualizerUpdateInterval()
@@ -169,7 +211,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   $scope.$on('$destroy', cancelVisualizerUpdateInterval)
 
   // funcntion to slow down animate
-  $scope.slowDown = function slowDown () {
+  $scope.slowDown = function slowDown() {
     if ($scope.visualizerSpeed > -1 * maxSpeed + 1) {
       $scope.visualizerSpeed--
     }
@@ -177,7 +219,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // function to speed up animate
-  $scope.speedUp = function speedUp () {
+  $scope.speedUp = function speedUp() {
     if ($scope.visualizerSpeed < maxSpeed - 1) {
       $scope.visualizerSpeed++
     }
@@ -185,18 +227,18 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
   }
 
   // function to set the animate speed
-  $scope.setSpeedText = function setSpeedText () {
+  $scope.setSpeedText = function setSpeedText() {
     if ($scope.visualizerSpeed === 0) {
       return ''
     } else if ($scope.visualizerSpeed < 0) {
-      return (-1 * $scope.visualizerSpeed + 1) + 'X Slower'
+      return -1 * $scope.visualizerSpeed + 1 + 'X Slower'
     } else if ($scope.visualizerSpeed > 0) {
-      return ($scope.visualizerSpeed + 1) + 'X Faster'
+      return $scope.visualizerSpeed + 1 + 'X Faster'
     }
   }
 
   // function to add new visualizer to list
-  $scope.addVisualiser = function addVisualiser () {
+  $scope.addVisualiser = function addVisualiser() {
     Alerting.AlertReset()
 
     // open visualizer settings modal
@@ -204,15 +246,21 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
-        visualizers: function () { return $scope.visualizers },
-        visualizer: function () { return null },
-        duplicate: function () { return null }
+        visualizers: function () {
+          return $scope.visualizers
+        },
+        visualizer: function () {
+          return null
+        },
+        duplicate: function () {
+          return null
+        }
       }
     })
   }
 
   // function to edit a visualizer
-  $scope.editVisualiser = function editVisualiser (vis) {
+  $scope.editVisualiser = function editVisualiser(vis) {
     Alerting.AlertReset()
 
     // open visualizer settings modal
@@ -220,15 +268,21 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
-        visualizers: function () { return $scope.visualizers },
-        visualizer: function () { return null },
-        duplicate: function () { return vis }
+        visualizers: function () {
+          return $scope.visualizers
+        },
+        visualizer: function () {
+          return null
+        },
+        duplicate: function () {
+          return vis
+        }
       }
     })
   }
 
   // function to duplicate a visualizer
-  $scope.duplicateVisualiser = function duplicateVisualiser (vis) {
+  $scope.duplicateVisualiser = function duplicateVisualiser(vis) {
     Alerting.AlertReset()
 
     // open visualizer settings modal
@@ -236,42 +290,55 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       template: visualizerModal,
       controller: VisualizerModalCtrl,
       resolve: {
-        visualizers: function () { return $scope.visualizers },
-        visualizer: function () { return vis },
-        duplicate: function () { return null }
+        visualizers: function () {
+          return $scope.visualizers
+        },
+        visualizer: function () {
+          return vis
+        },
+        duplicate: function () {
+          return null
+        }
       }
     })
   }
 
-  function fetchSessionAndVisualizers () {
+  function fetchSessionAndVisualizers() {
     // Retrieve the session from storage
     consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
     user = null
 
-    Api.Users.get({ email: consoleSession.sessionUser }, function (u) {
-      user = u
+    Api.Users.get(
+      {email: consoleSession.sessionUser},
+      function (u) {
+        user = u
 
-      // visualizer list controls
-      Api.Visualizers.query(function (visualizers) {
-        $scope.visualizers = visualizers
-        if (visualizers.length > 0) {
-          $scope.selectedVis = visualizers[0]
-          if (user.settings && user.settings.selectedVisualizer) {
-            visualizers.forEach(function (vis) {
-              if (vis.name === user.settings.selectedVisualizer) {
-                $scope.selectedVis = vis
+        // visualizer list controls
+        Api.Visualizers.query(
+          function (visualizers) {
+            $scope.visualizers = visualizers
+            if (visualizers.length > 0) {
+              $scope.selectedVis = visualizers[0]
+              if (user.settings && user.settings.selectedVisualizer) {
+                visualizers.forEach(function (vis) {
+                  if (vis.name === user.settings.selectedVisualizer) {
+                    $scope.selectedVis = vis
+                  }
+                })
               }
-            })
+              loadVisualizer($scope.selectedVis)
+            }
+          },
+          function (err) {
+            Alerting.AlertAddServerMsg(err.status)
           }
-          loadVisualizer($scope.selectedVis)
-        }
-      }, function (err) {
+        )
+      },
+      function (err) {
         Alerting.AlertAddServerMsg(err.status)
-      })
-    }, function (err) {
-      Alerting.AlertAddServerMsg(err.status)
-    })
+      }
+    )
   }
 
   $scope.isFullScreen = false
@@ -306,7 +373,7 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
 
   $scope.selectVis = function (vis, callback) {
     if (!callback) {
-      callback = function () { }
+      callback = function () {}
     }
 
     // set current visualizer
@@ -339,7 +406,11 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       }
     }
     vis.$remove(function () {
-      Alerting.AlertAddMsg('top', 'success', 'The visualizer has been deleted successfully')
+      Alerting.AlertAddMsg(
+        'top',
+        'success',
+        'The visualizer has been deleted successfully'
+      )
     })
   }
 
@@ -349,7 +420,8 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
     const deleteObject = {
       title: 'Delete Visualizer',
       button: 'Delete',
-      message: 'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
+      message:
+        'Are you sure you wish to delete this visualizer "' + vis.name + '"?'
     }
 
     const modalInstance = $uibModal.open({
@@ -362,11 +434,14 @@ export function VisualizerCtrl ($scope, $http, $interval, $window, $uibModal, lo
       }
     })
 
-    modalInstance.result.then(function () {
-      // Delete confirmed - delete the visualizer
-      removeVisualizer(vis, i)
-    }, function () {
-      // delete cancelled - do nothing
-    })
+    modalInstance.result.then(
+      function () {
+        // Delete confirmed - delete the visualizer
+        removeVisualizer(vis, i)
+      },
+      function () {
+        // delete cancelled - do nothing
+      }
+    )
   }
 }

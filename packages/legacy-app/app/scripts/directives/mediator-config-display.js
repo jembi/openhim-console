@@ -4,7 +4,7 @@ import * as configDisplay from '~/views/partials/mediator-config-display.html'
 // Makes use of recursive rendering trick from here:
 // http://sporto.github.io/blog/2013/06/24/nested-recursive-directives-in-angular/
 
-export function mediatorConfigDisplay () {
+export function mediatorConfigDisplay() {
   return {
     restrict: 'EA',
     scope: {
@@ -26,7 +26,7 @@ export function mediatorConfigDisplay () {
   }
 }
 
-export function mediatorNestedConfigDisplay ($compile) {
+export function mediatorNestedConfigDisplay($compile) {
   return {
     restrict: 'EA',
     scope: {
@@ -36,7 +36,9 @@ export function mediatorNestedConfigDisplay ($compile) {
     template: '<div/>',
     link: function (scope, element) {
       if (scope.config) {
-        element.append('<div mediator-config-display config-defs="configDefs" config="config"></div>')
+        element.append(
+          '<div mediator-config-display config-defs="configDefs" config="config"></div>'
+        )
         $compile(element.contents())(scope)
       }
     }

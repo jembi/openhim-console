@@ -1,7 +1,7 @@
-import { isCoreVersionCompatible } from '../utils'
+import {isCoreVersionCompatible} from '../utils'
 import * as footerTemplate from './footer-version.html'
 
-export function footerVersion (Api, config) {
+export function footerVersion(Api, config) {
   return {
     template: footerTemplate,
     scope: false,
@@ -9,7 +9,10 @@ export function footerVersion (Api, config) {
       const success = function (result) {
         scope.footerCoreVersion = result.currentCoreVersion
         scope.footerConsoleVersion = config.version
-        scope.footerVersionsCompatible = isCoreVersionCompatible(config.minimumCoreVersion, scope.footerCoreVersion)
+        scope.footerVersionsCompatible = isCoreVersionCompatible(
+          config.minimumCoreVersion,
+          scope.footerCoreVersion
+        )
       }
 
       scope.$root.$watch('sessionUser', function (newVal) {

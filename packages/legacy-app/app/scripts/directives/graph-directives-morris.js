@@ -1,11 +1,11 @@
-import { viewPage } from '../utils'
+import {viewPage} from '../utils'
 import raphael from 'raphael'
 import 'morris.js'
 
 window.Raphael = raphael
-const { Morris } = window
+const {Morris} = window
 
-export function morrisLineChart ($parse) {
+export function morrisLineChart($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
@@ -17,11 +17,11 @@ export function morrisLineChart ($parse) {
         const data = newVal
 
         if (data) {
-        // if morris bar chart exist then update it
+          // if morris bar chart exist then update it
           if (scope.morrisLineChart) {
             scope.morrisLineChart.setData(data.data)
           } else {
-          // create Morris Line Chart if it doesnt yet exist
+            // create Morris Line Chart if it doesnt yet exist
             scope.morrisLineChart = new Morris.Line({
               element: element,
               data: data.data,
@@ -38,7 +38,7 @@ export function morrisLineChart ($parse) {
   }
 }
 
-export function morrisBarChart ($parse) {
+export function morrisBarChart($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {
@@ -50,11 +50,11 @@ export function morrisBarChart ($parse) {
         const data = newVal
 
         if (data) {
-        // if morris bar chart exist then update it
+          // if morris bar chart exist then update it
           if (scope.morrisBarChart) {
             scope.morrisBarChart.setData(data.data)
           } else {
-          // create Morris Bar Chart if it doesnt yet exist
+            // create Morris Bar Chart if it doesnt yet exist
             scope.morrisBarChart = new Morris.Bar({
               element: element,
               data: data.data,
@@ -69,7 +69,7 @@ export function morrisBarChart ($parse) {
               hideHover: 'auto'
             }).on('click', function (i, row) {
               if (row.link) {
-              // on status click direct user to channel metrics page
+                // on status click direct user to channel metrics page
                 viewPage(row.link)
               }
             })
@@ -80,7 +80,7 @@ export function morrisBarChart ($parse) {
   }
 }
 
-export function morrisDonutChart ($parse) {
+export function morrisDonutChart($parse) {
   return {
     restrict: 'EA',
     link: function (scope, elem, attrs) {

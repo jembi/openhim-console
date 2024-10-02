@@ -1,13 +1,22 @@
 import moment from 'moment'
 
-export function LogsCtrl ($scope, $location, Api) {
-  function formatLog (log) {
-    return moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') + ' - ' + log.level + ': [' + log.label + '] ' + log.message + '\n'
+export function LogsCtrl($scope, $location, Api) {
+  function formatLog(log) {
+    return (
+      moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS') +
+      ' - ' +
+      log.level +
+      ': [' +
+      log.label +
+      '] ' +
+      log.message +
+      '\n'
+    )
   }
 
   let lastFetch
   const locParams = $location.search()
-  $scope.params = angular.equals({}, locParams) ? { level: 'info' } : locParams
+  $scope.params = angular.equals({}, locParams) ? {level: 'info'} : locParams
   $scope.logs = ''
   let linesAdded = 0
 
@@ -45,7 +54,7 @@ export function LogsCtrl ($scope, $location, Api) {
     })
   })
 
-  function fetchMoreLogs () {
+  function fetchMoreLogs() {
     const now = new Date()
     const localParam = {
       from: new Date(lastFetch).toISOString(),
@@ -74,7 +83,7 @@ export function LogsCtrl ($scope, $location, Api) {
   const scrollInterval = setInterval(function () {
     if ($scope.tailLogs === true) {
       const textarea = document.getElementById('textarea')
-      if(textarea === null) {
+      if (textarea === null) {
         return
       }
       // scroll to bottom

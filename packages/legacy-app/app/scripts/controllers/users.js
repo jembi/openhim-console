@@ -1,63 +1,83 @@
 import usersmodal from '~/views/usersmodal'
 import confirmModal from '~/views/confirmModal'
-import { UsersModalCtrl, ConfirmModalCtrl } from './'
+import {UsersModalCtrl, ConfirmModalCtrl} from './'
 
-export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
+export function UsersCtrl($scope, $uibModal, $window, Api, Alerting, Notify) {
   /* -------------------------Initial load & onChanged---------------------------- */
   const querySuccess = function (users) {
     $scope.users = users
     if (users.length === 0) {
       Alerting.AlertReset()
-      Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no users created')
+      Alerting.AlertAddMsg(
+        'bottom',
+        'warning',
+        'There are currently no users created'
+      )
     }
 
     /* ----- Users Channels matrix ----- */
     // Query all channels for Users Channels matrix table
-    Api.Channels.query(function (channels) {
-      const usersArray = []
-      const channelsArray = []
+    Api.Channels.query(
+      function (channels) {
+        const usersArray = []
+        const channelsArray = []
 
-      // loop through channels to create channels map
-      angular.forEach(channels, function (channnel) {
-        if (typeof channnel.status === 'undefined' || channnel.status !== 'deleted') {
-          channelsArray.push({ id: channnel._id, name: channnel.name })
-        }
-      })
+        // loop through channels to create channels map
+        angular.forEach(channels, function (channnel) {
+          if (
+            typeof channnel.status === 'undefined' ||
+            channnel.status !== 'deleted'
+          ) {
+            channelsArray.push({id: channnel._id, name: channnel.name})
+          }
+        })
 
-      // loop through all users
-      angular.forEach(users, function (user) {
-        const allowedChannels = []
-        const allowedChannelsRerun = []
-        const allowedChannelsBody = []
+        // loop through all users
+        angular.forEach(users, function (user) {
+          const allowedChannels = []
+          const allowedChannelsRerun = []
+          const allowedChannelsBody = []
 
-        // loop through channels to determine if user has permissions
-        angular.forEach(channels, function (channel) {
-          // loop through each user group to check if channel has access
-          angular.forEach(user.groups, function (group) {
-            // check if user group found in channel txViewAcl
-            if (channel.txViewAcl.indexOf(group) >= 0 || group === 'admin') {
-              allowedChannels.push(channel._id)
-            }
+          // loop through channels to determine if user has permissions
+          angular.forEach(channels, function (channel) {
+            // loop through each user group to check if channel has access
+            angular.forEach(user.groups, function (group) {
+              // check if user group found in channel txViewAcl
+              if (channel.txViewAcl.indexOf(group) >= 0 || group === 'admin') {
+                allowedChannels.push(channel._id)
+              }
 
-            // check if user group found in channel txViewFullAcl
-            if (channel.txViewFullAcl.indexOf(group) >= 0 || group === 'admin') {
-              allowedChannelsBody.push(channel._id)
-            }
+              // check if user group found in channel txViewFullAcl
+              if (
+                channel.txViewFullAcl.indexOf(group) >= 0 ||
+                group === 'admin'
+              ) {
+                allowedChannelsBody.push(channel._id)
+              }
 
-            // check if user group found in channel txRerunAcl
-            if (channel.txRerunAcl.indexOf(group) >= 0 || group === 'admin') {
-              allowedChannelsRerun.push(channel._id)
-            }
+              // check if user group found in channel txRerunAcl
+              if (channel.txRerunAcl.indexOf(group) >= 0 || group === 'admin') {
+                allowedChannelsRerun.push(channel._id)
+              }
+            })
+          })
+
+          usersArray.push({
+            user: user,
+            allowedChannels: allowedChannels,
+            allowedChannelsBody: allowedChannelsBody,
+            allowedChannelsRerun: allowedChannelsRerun
           })
         })
 
-        usersArray.push({ user: user, allowedChannels: allowedChannels, allowedChannelsBody: allowedChannelsBody, allowedChannelsRerun: allowedChannelsRerun })
-      })
-
-      $scope.usersChannelsMatrix = {}
-      $scope.usersChannelsMatrix.channels = channelsArray
-      $scope.usersChannelsMatrix.users = usersArray
-    }, function () { /* server error - could not connect to API to get channels */ })
+        $scope.usersChannelsMatrix = {}
+        $scope.usersChannelsMatrix.channels = channelsArray
+        $scope.usersChannelsMatrix.users = usersArray
+      },
+      function () {
+        /* server error - could not connect to API to get channels */
+      }
+    )
     /* ----- Users Channels matrix ----- */
   }
 
@@ -93,8 +113,7 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
       template: usersmodal,
       controller: UsersModalCtrl,
       resolve: {
-        user: function () {
-        }
+        user: function () {}
       }
     })
   }
@@ -121,7 +140,12 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     const deleteObject = {
       title: 'Delete User',
       button: 'Delete',
-      message: 'Are you sure you wish to delete the user "' + user.firstname + ' ' + user.surname + '"?'
+      message:
+        'Are you sure you wish to delete the user "' +
+        user.firstname +
+        ' ' +
+        user.surname +
+        '"?'
     }
 
     const modalInstance = $uibModal.open({
@@ -134,20 +158,23 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
       }
     })
 
-    modalInstance.result.then(function () {
-      // Delete confirmed - check if current user deleted themself, set flag, then delete user
-      $scope.sessionUserDeleted = false
-      let consoleSession = localStorage.getItem('consoleSession')
-      consoleSession = JSON.parse(consoleSession)
+    modalInstance.result.then(
+      function () {
+        // Delete confirmed - check if current user deleted themself, set flag, then delete user
+        $scope.sessionUserDeleted = false
+        let consoleSession = localStorage.getItem('consoleSession')
+        consoleSession = JSON.parse(consoleSession)
 
-      if (consoleSession.sessionUser === user.email) {
-        $scope.sessionUserDeleted = true
+        if (consoleSession.sessionUser === user.email) {
+          $scope.sessionUserDeleted = true
+        }
+
+        user.$remove(deleteSuccess, deleteError)
+      },
+      function () {
+        // delete cancelled - do nothing
       }
-
-      user.$remove(deleteSuccess, deleteError)
-    }, function () {
-      // delete cancelled - do nothing
-    })
+    )
   }
 
   const deleteSuccess = function () {
@@ -159,13 +186,24 @@ export function UsersCtrl ($scope, $uibModal, $window, Api, Alerting, Notify) {
     $scope.users = Api.Users.query()
     Alerting.AlertReset()
     Notify.notify('usersChanged')
-    Alerting.AlertAddMsg('top', 'success', 'The user has been deleted successfully')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The user has been deleted successfully'
+    )
   }
 
   const deleteError = function (err) {
     // add the error message
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the user: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while deleting the user: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
   }
   /* ---------------------------Delete Confirm---------------------------- */
 }

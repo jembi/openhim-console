@@ -1,6 +1,6 @@
 'use strict'
 
-const { merge } = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const common = require('./webpack.common.js')
 
 const path = require('path')
@@ -14,11 +14,11 @@ module.exports = merge(common, {
   optimization: {
     minimizer: [
       new TerserPlugin({
-          terserOptions: {
-            mangle: false
-          }
-        })
-      ]
+        terserOptions: {
+          mangle: false
+        }
+      })
+    ]
   },
   module: {
     rules: [

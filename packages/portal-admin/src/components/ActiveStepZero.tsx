@@ -11,7 +11,7 @@ import {
   Radio
 } from '@mui/material'
 import {AppProps} from './FormInputProps'
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 
 interface ActiveStepZeroProps {
   values: AppProps
@@ -84,8 +84,8 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
   ]
 
   useEffect(() => {
-    handleFormChanges(values);
-  }, [values]);
+    handleFormChanges(values)
+  }, [values])
 
   const generateRadioOptions = options =>
     options.map(option => {

@@ -1,6 +1,6 @@
-import { isCoreVersionCompatible, getTimeForTimezone } from '../utils'
+import {isCoreVersionCompatible, getTimeForTimezone} from '../utils'
 
-export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
+export function AboutCtrl($scope, $interval, Api, Alerting, config) {
   $scope.aboutInfo = {}
   const success = function (result) {
     $scope.aboutInfo = result
@@ -26,10 +26,14 @@ export function AboutCtrl ($scope, $interval, Api, Alerting, config) {
     $scope.aboutInfo.currentConsoleVersion = config.version
     $scope.aboutInfo.minimumCoreVersion = config.minimumCoreVersion
 
-    const maxCoreMajorVersion = parseInt(config.minimumCoreVersion.split('.')[0]) + 1
+    const maxCoreMajorVersion =
+      parseInt(config.minimumCoreVersion.split('.')[0]) + 1
     $scope.aboutInfo.maximumCoreVersion = maxCoreMajorVersion + '.0.0'
 
-    $scope.aboutInfo.compatible = isCoreVersionCompatible($scope.aboutInfo.minimumCoreVersion, $scope.aboutInfo.currentCoreVersion)
+    $scope.aboutInfo.compatible = isCoreVersionCompatible(
+      $scope.aboutInfo.minimumCoreVersion,
+      $scope.aboutInfo.currentCoreVersion
+    )
   }
 
   $scope.$on('$destroy', function () {

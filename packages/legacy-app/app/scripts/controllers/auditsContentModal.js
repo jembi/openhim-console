@@ -1,6 +1,6 @@
-import { isBase64String, decodeBase64, beautifyIndent } from '../utils'
+import {isBase64String, decodeBase64, beautifyIndent} from '../utils'
 
-export function AuditsContentModalCtrl ($scope, $uibModalInstance, auditData) {
+export function AuditsContentModalCtrl($scope, $uibModalInstance, auditData) {
   $scope.auditData = auditData
 
   // is content view raw audit message

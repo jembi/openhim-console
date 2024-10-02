@@ -1,4 +1,4 @@
-<div style="border-top: 1px solid #eee;">
+<div style="border-top: 1px solid #eee">
   <h3>JSON Web Token (JWT)</h3>
   <p class="text-muted">
     JWTs are used to securely transmit information between a client and a server
@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<div style="border-top: 1px solid #eee;">
+<div style="border-top: 1px solid #eee">
   <h3>Custom Token</h3>
   <p class="text-muted">
     A custom token contains an ID used to verify the client. This ID is
@@ -31,11 +31,11 @@
   >
     <div
       class="form-group flex-column"
-      style="float: left;"
+      style="float: left"
       ng-class="{ 'has-error' : ngError.customTokenID || ngError.duplicateCustomTokenID }"
     >
       <div>
-        <label ng-show="client.customTokenSet" style="float: right;">
+        <label ng-show="client.customTokenSet" style="float: right">
           <i
             tooltip-placement="top"
             uib-tooltip="A custom token ID has been set for this client"
@@ -50,7 +50,7 @@
         placeholder="Set/change Client Token ID..."
         type="text"
       />
-      <div style="margin-top: 10px;" ng-show="client.customTokenSet">
+      <div style="margin-top: 10px" ng-show="client.customTokenSet">
         <button class="btn btn-warning btn-xs" ng-click="removeCustomToken()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
@@ -67,12 +67,12 @@
         </p>
       </div>
     </div>
-    <div class="form-group flex-column" style="float: right;">
+    <div class="form-group flex-column" style="float: right">
       <label>UUID</label>
       <button type="button" class="btn btn-default" ng-click="generateUuid()">
         Generate
       </button>
-      <p class="text-muted" style="padding-top: 10px;">
+      <p class="text-muted" style="padding-top: 10px">
         <i class="glyphicon glyphicon-warning-sign"></i>
         The UUID generated above will only be shown once, therefore store it
         somewhere safe.
@@ -90,7 +90,7 @@
   </div>
 </div>
 
-<div style="border-top: 1px solid #eee;">
+<div style="border-top: 1px solid #eee">
   <h3>Mutual TLS</h3>
   <p class="text-muted">
     Mutual TLS involves setting up an encrypted channel between the server and
@@ -146,10 +146,10 @@
   >
     <div
       class="form-group"
-      style="float: left;"
+      style="float: left"
       ng-class="{ 'has-error' : ngError.password }"
     >
-      <label ng-if="client.passwordHash" style="float: right;">
+      <label ng-if="client.passwordHash" style="float: right">
         <i
           tooltip-placement="top"
           uib-tooltip="A password has been set for this client"
@@ -164,7 +164,7 @@
         type="password"
         ng-model="temp.password"
       />
-      <div style="margin-top: 10px;" ng-show="client.passwordHash">
+      <div style="margin-top: 10px" ng-show="client.passwordHash">
         <button class="btn btn-warning btn-xs" ng-click="removeBasicAuth()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
@@ -177,7 +177,7 @@
     </div>
     <div
       class="form-group"
-      style="float: right;"
+      style="float: right"
       ng-class="{ 'has-error' : ngError.passwordConfirm }"
     >
       <label>Confirm Password</label>

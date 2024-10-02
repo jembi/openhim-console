@@ -10,7 +10,7 @@ import {
   Grid,
   Typography
 } from '@mui/material'
-import {Client } from '../../types'
+import {Client} from '../../types'
 import {
   DataGrid,
   GridActionsCellItem,
@@ -23,8 +23,6 @@ import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-
-import './data-grid-styling.css'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
 
@@ -125,16 +123,14 @@ const ClientsList = () => {
           No Clients Available
         </Typography>
         <a href={addingClient.toString()}>
-          <Button
-            startIcon={<AddIcon />}
-          />
+          <Button startIcon={<AddIcon />} />
         </a>
       </div>
     )
   }
 
   return (
-    <>
+    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
       <Dialog
         open={!!clientToDelete}
         onClose={handleClose}
@@ -214,7 +210,7 @@ const ClientsList = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </div>
   )
 }
 

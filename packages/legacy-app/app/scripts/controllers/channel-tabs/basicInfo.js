@@ -1,13 +1,22 @@
-import { getTimeForTimezone, getTimezoneOffset } from '../../utils'
+import {getTimeForTimezone, getTimezoneOffset} from '../../utils'
 
-export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, Alerting) {
+export function channelBasicInfoCtrl(
+  $scope,
+  $timeout,
+  $interval,
+  Api,
+  Notify,
+  Alerting
+) {
   const updateTime = function (timezone) {
     $scope.aboutInfo.serverTime = getTimeForTimezone(timezone)
   }
 
   const success = function (result) {
     $scope.aboutInfo = result
-    $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(result.serverTimezone)
+    $scope.aboutInfo.serverTimezoneOffset = getTimezoneOffset(
+      result.serverTimezone
+    )
     updateTime(result.serverTimezone)
     $scope.clock = $interval(function () {
       updateTime(result.serverTimezone)
@@ -24,7 +33,10 @@ export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, 
     $scope.channel.$promise.then(function () {
       // check if urlPattern has regex delimiters
       const urlPatternLength = $scope.channel.urlPattern.length
-      if ($scope.channel.urlPattern.indexOf('^') === 0 && $scope.channel.urlPattern.indexOf('$') === urlPatternLength - 1) {
+      if (
+        $scope.channel.urlPattern.indexOf('^') === 0 &&
+        $scope.channel.urlPattern.indexOf('$') === urlPatternLength - 1
+      ) {
         const urlPattern = $scope.channel.urlPattern
         // remove delimiters
         $scope.channel.urlPattern = urlPattern.slice(1, -1)
@@ -38,12 +50,16 @@ export function channelBasicInfoCtrl ($scope, $timeout, $interval, Api, Notify, 
   // Mannually Trigger Polling Channels
   $scope.manuallyTriggerChannel = function () {
     Alerting.AlertReset('manualTrigger')
-    Api.TriggerPollingChannels.save({ channelId: $scope.channel._id }, { _id: $scope.channel._id }, function () {
-      Alerting.AlertAddMsg('manualTrigger', 'success', 'Channel Triggered')
-      $timeout(function () {
-        Alerting.AlertReset('manualTrigger')
-      }, 5000)
-    })
+    Api.TriggerPollingChannels.save(
+      {channelId: $scope.channel._id},
+      {_id: $scope.channel._id},
+      function () {
+        Alerting.AlertAddMsg('manualTrigger', 'success', 'Channel Triggered')
+        $timeout(function () {
+          Alerting.AlertReset('manualTrigger')
+        }, 5000)
+      }
+    )
   }
 
   // if update/channelDuplicate is true

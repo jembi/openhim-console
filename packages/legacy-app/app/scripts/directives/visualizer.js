@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export function visualizer ($parse) {
+export function visualizer($parse) {
   return {
     restrict: 'EA',
     template: '<div id="visualizer"></div>',
@@ -14,8 +14,23 @@ export function visualizer ($parse) {
       let components = []
       let channels = []
       let mediators = []
-      let himRect, himText, visW, visH, pad, himX, himY, himW, himH, topBarY,
-        inactiveColor, activeColor, errorColor, textColor, speed, maxTimeout, minDisplayPeriod,
+      let himRect,
+        himText,
+        visW,
+        visH,
+        pad,
+        himX,
+        himY,
+        himW,
+        himH,
+        topBarY,
+        inactiveColor,
+        activeColor,
+        errorColor,
+        textColor,
+        speed,
+        maxTimeout,
+        minDisplayPeriod,
         vis
 
       /* ---------- Directive Watchers ---------- */
@@ -30,25 +45,31 @@ export function visualizer ($parse) {
 
       /* ---------- Directive Watchers ---------- */
 
-      function getRegistryRect (event) {
+      function getRegistryRect(event) {
         for (let i = 0; i < components.length; i++) {
-          if (components[i].eventType === event.type && components[i].eventName.toLowerCase() === event.name.toLowerCase()) {
+          if (
+            components[i].eventType === event.type &&
+            components[i].eventName.toLowerCase() === event.name.toLowerCase()
+          ) {
             return components[i].rect
           }
         }
         return null
       }
 
-      function getChannelText (event) {
+      function getChannelText(event) {
         for (let i = 0; i < channels.length; i++) {
-          if (channels[i].eventType === event.type && channels[i].eventName.toLowerCase() === event.name.toLowerCase()) {
+          if (
+            channels[i].eventType === event.type &&
+            channels[i].eventName.toLowerCase() === event.name.toLowerCase()
+          ) {
             return channels[i].text
           }
         }
         return null
       }
 
-      function getMediatorRect (event) {
+      function getMediatorRect(event) {
         for (let i = 0; i < mediators.length; i++) {
           if (mediators[i].mediator === event.mediator) {
             return mediators[i].rect
@@ -59,7 +80,7 @@ export function visualizer ($parse) {
 
       /* Component Drawing */
 
-      function setupBasicComponent (compRect, compText, x, y, w, h, text) {
+      function setupBasicComponent(compRect, compText, x, y, w, h, text) {
         compRect
           .attr('rx', 6)
           .attr('ry', 6)
@@ -79,13 +100,27 @@ export function visualizer ($parse) {
           .style('fill', textColor)
       }
 
-      function setupRegistryComponent (compRect, compText, compConnector, index, text) {
+      function setupRegistryComponent(
+        compRect,
+        compText,
+        compConnector,
+        index,
+        text
+      ) {
         const compW = visW / components.length - 2.0 * pad
         const compH = visH / 4.0 - 2.0 * pad
         const compX = index * compW + pad + index * pad * 2.0
         const compY = 0 + pad
 
-        setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
+        setupBasicComponent(
+          compRect,
+          compText,
+          compX,
+          compY,
+          compW,
+          compH,
+          text
+        )
 
         compConnector
           .attr('x1', compX + compW / 2.0)
@@ -96,16 +131,30 @@ export function visualizer ($parse) {
           .style('stroke', '#ddd')
       }
 
-      function setupMediatorComponent (compRect, compText, compConnector, index, text) {
+      function setupMediatorComponent(
+        compRect,
+        compText,
+        compConnector,
+        index,
+        text
+      ) {
         const compW = visW / mediators.length - 2.0 * pad
         const compH = visH / 4.0 - 2.0 * pad
         const compX = index * compW + pad + index * pad * 2.0
         const compY = himY - compH - 0.25 * pad
 
-        setupBasicComponent(compRect, compText, compX, compY, compW, compH, text)
+        setupBasicComponent(
+          compRect,
+          compText,
+          compX,
+          compY,
+          compW,
+          compH,
+          text
+        )
       }
 
-      function setupChannelText (compText, index, text) {
+      function setupChannelText(compText, index, text) {
         const compW = visW / channels.length - 2.0 * pad
         const compH = (visH / 4.0 - 2.0 * pad) / 3.0
         const compX = index * compW + pad + index * pad * 2.0
@@ -120,13 +169,22 @@ export function visualizer ($parse) {
           .style('fill', inactiveColor)
       }
 
-      function setupHIM (vis) {
+      function setupHIM(vis) {
         himRect = vis.append('svg:rect')
         himText = vis.append('svg:text')
-        setupBasicComponent(himRect, himText, himX, himY, himW, himH, 'Health Information Mediator')
+        setupBasicComponent(
+          himRect,
+          himText,
+          himX,
+          himY,
+          himW,
+          himH,
+          'Health Information Mediator'
+        )
 
         // top bar
-        vis.append('svg:rect')
+        vis
+          .append('svg:rect')
           .attr('rx', 6)
           .attr('ry', 6)
           .attr('x', 0 + pad)
@@ -136,7 +194,8 @@ export function visualizer ($parse) {
           .style('fill', inactiveColor)
 
         // bottom bar
-        vis.append('svg:rect')
+        vis
+          .append('svg:rect')
           .attr('rx', 6)
           .attr('ry', 6)
           .attr('x', 0 + pad)
@@ -146,25 +205,37 @@ export function visualizer ($parse) {
           .style('fill', inactiveColor)
       }
 
-      function setupRegistries (vis) {
+      function setupRegistries(vis) {
         for (let i = 0; i < components.length; i++) {
           components[i].rect = vis.append('svg:rect')
           components[i].text = vis.append('svg:text')
           components[i].line = vis.append('svg:line')
-          setupRegistryComponent(components[i].rect, components[i].text, components[i].line, i, components[i].display)
+          setupRegistryComponent(
+            components[i].rect,
+            components[i].text,
+            components[i].line,
+            i,
+            components[i].display
+          )
         }
       }
 
-      function setupMediators (vis) {
+      function setupMediators(vis) {
         for (let i = 0; i < mediators.length; i++) {
           mediators[i].rect = vis.append('svg:rect')
           mediators[i].text = vis.append('svg:text')
           mediators[i].line = vis.append('svg:line')
-          setupMediatorComponent(mediators[i].rect, mediators[i].text, mediators[i].line, i, mediators[i].display)
+          setupMediatorComponent(
+            mediators[i].rect,
+            mediators[i].text,
+            mediators[i].line,
+            i,
+            mediators[i].display
+          )
         }
       }
 
-      function setupChannels (vis) {
+      function setupChannels(vis) {
         for (let i = 0; i < channels.length; i++) {
           channels[i].text = vis.append('svg:text')
           setupChannelText(channels[i].text, i, channels[i].display)
@@ -190,7 +261,7 @@ export function visualizer ($parse) {
           himW = visW - 2.0 * pad
           himH = visH / 4.0 - 2.0 * pad
 
-          topBarY = himY - (visH / 50.0) - 0.25 * pad
+          topBarY = himY - visH / 50.0 - 0.25 * pad
           if (mediators.length > 0) {
             topBarY = topBarY - (visH / 4.0 - 2.0 * pad) - 0.25 * pad
           }
@@ -206,17 +277,23 @@ export function visualizer ($parse) {
 
           // load responsive visualizer
           if (newSettings.visResponsive === true) {
-            vis = d3.select('#visualizer')
+            vis = d3
+              .select('#visualizer')
               .append('svg:svg')
-              .attr('viewBox', '0 0 ' + newSettings.visW + ' ' + newSettings.visH)
+              .attr(
+                'viewBox',
+                '0 0 ' + newSettings.visW + ' ' + newSettings.visH
+              )
               .attr('preserveAspectRatio', 'xMinYMin')
 
-            vis.append('svg:rect')
+            vis
+              .append('svg:rect')
               .attr('width', newSettings.visW)
               .attr('height', newSettings.visH)
           } else {
             // setup fixed size visualizer
-            vis = d3.select('#visualizer')
+            vis = d3
+              .select('#visualizer')
               .append('svg:svg')
               .attr('width', newSettings.visW)
               .attr('height', newSettings.visH)
@@ -232,7 +309,7 @@ export function visualizer ($parse) {
 
       /* Animation */
 
-      function animateComp (comp, event, delay, isError) {
+      function animateComp(comp, event, delay, isError) {
         let color
         let delayMultiplier = 1.0
 
@@ -271,14 +348,18 @@ export function visualizer ($parse) {
         }
       }
 
-      function processEvents (data) {
+      function processEvents(data) {
         if (data.length === 0) {
           return
         }
 
         const baseTime = data[0].normalizedTimestamp
         const isErrorStatus = function (status) {
-          return typeof status !== 'undefined' && status !== null && status.toLowerCase() === 'error'
+          return (
+            typeof status !== 'undefined' &&
+            status !== null &&
+            status.toLowerCase() === 'error'
+          )
         }
 
         angular.forEach(data, function (event) {
@@ -288,16 +369,36 @@ export function visualizer ($parse) {
           if (comp === null) {
             comp = getChannelText(event)
             if (typeof comp !== 'undefined' && comp !== null) {
-              animateComp(comp, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
-              animateComp(himRect, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
+              animateComp(
+                comp,
+                event.event,
+                event.normalizedTimestamp - baseTime,
+                isErrorStatus(event.statusType)
+              )
+              animateComp(
+                himRect,
+                event.event,
+                event.normalizedTimestamp - baseTime,
+                isErrorStatus(event.statusType)
+              )
             }
           } else {
-            animateComp(comp, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
+            animateComp(
+              comp,
+              event.event,
+              event.normalizedTimestamp - baseTime,
+              isErrorStatus(event.statusType)
+            )
           }
 
           if (event.mediator) {
             const med = getMediatorRect(event)
-            animateComp(med, event.event, event.normalizedTimestamp - baseTime, isErrorStatus(event.statusType))
+            animateComp(
+              med,
+              event.event,
+              event.normalizedTimestamp - baseTime,
+              isErrorStatus(event.statusType)
+            )
           }
         })
       }

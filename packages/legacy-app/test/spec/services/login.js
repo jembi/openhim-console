@@ -7,7 +7,14 @@ describe('Service: login', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -19,9 +26,9 @@ describe('Service: login', function () {
     httpBackend = $httpBackend
 
     httpBackend.when('GET', new RegExp('.*/me')).respond(404)
-    
+
     httpBackend.when('POST', new RegExp('.*/authenticate/local')).respond({
-      body: "User Authenticated successfully"
+      body: 'User Authenticated successfully'
     })
 
     httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
@@ -30,11 +37,9 @@ describe('Service: login', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     })
-   
+
     httpBackend.when('GET', new RegExp('.*/logout')).respond(201)
   }))
 
@@ -46,7 +51,7 @@ describe('Service: login', function () {
   it('should login a user and fetch the currently logged in user', function () {
     httpBackend.expectPOST(new RegExp('.*/authenticate/local'))
     httpBackend.expectGET(new RegExp('.*/users/test@user.org'))
-    
+
     login.login('test@user.org', 'test-password', function () {})
     httpBackend.flush()
 
@@ -63,7 +68,7 @@ describe('Service: login', function () {
     httpBackend.flush()
 
     var user = login.getLoggedInUser()
-    expect((user === null)).to.be.true()
+    expect(user === null).to.be.true()
     expect(login.isLoggedIn()).to.be.false()
   })
 
@@ -75,7 +80,7 @@ describe('Service: login', function () {
     httpBackend.flush()
 
     expect(login.isLoggedIn()).to.be.true()
-    
+
     login.logout(function () {})
     httpBackend.flush()
 

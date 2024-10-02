@@ -4,12 +4,12 @@
 
 This application provides a web application to configure and manage the [OpenHIM-core component](https://github.com/jembi/openhim-core-js). It provides the following features:
 
-* Configure and manage OpenHIM channels
-* View logged transactions
-* Configure clients that can access particular routes
-* Monitor the operations of the OpenHIM application
-* Managing the security infrastructure
-* Importing and exporting OpenHIM server configuration
+- Configure and manage OpenHIM channels
+- View logged transactions
+- Configure clients that can access particular routes
+- Monitor the operations of the OpenHIM application
+- Managing the security infrastructure
+- Importing and exporting OpenHIM server configuration
 
 See the [development road-map](http://openhim.org/docs/introduction/roadmap) for more details on what is to come!
 
@@ -18,7 +18,9 @@ See documentation and tutorials at [openhim.org](http://openhim.org).
 ---
 
 ## Getting started with the OpenHIM Console
+
 ### Tech Used
+
 - Node: v16.20.2
 - Lerna (microfrontend)
 - Docker
@@ -49,7 +51,7 @@ To run tests:
 npm test
 ```
 
-**Note:** If you are running from a **microfrontend branch**, be sure to change ``environment`` value inside ```packages/legacy-app/app/config/default.json``` to ``development``. This is when you are running the project locally.
+**Note:** If you are running from a **microfrontend branch**, be sure to change `environment` value inside `packages/legacy-app/app/config/default.json` to `development`. This is when you are running the project locally.
 
 ---
 
@@ -67,6 +69,7 @@ docker exec -it openhim-console bash
 apt-get update && apt-get install vim -y
 vi /usr/share/nginx/html/config/default.json
 ```
+
 Or the sed command can be used
 
 ```sh
@@ -76,7 +79,7 @@ Or the sed command can be used
 
 Your file should look something like this:
 
-``` json
+```json
 {
   "protocol": "https", // Change the protocol to 'http' when the OpenHIM core API protocol is 'http'. The default OpenHIM core API protocol is 'https'
   "host": "localhost", // change this to the hostname for your OpenHIM-core server (This hostname _MUST_ be publicly accessible)
@@ -90,8 +93,8 @@ Your file should look something like this:
 
 Now, navigate to your web server and you should see the OpenHIM-console load (eg. `http://localhost:9000`) and login. The default username and password are:
 
-* username: `root@openhim.org`
-* password: `openhim-password`
+- username: `root@openhim.org`
+- password: `openhim-password`
 
 You will be prompted to change this.
 
@@ -111,9 +114,9 @@ npm install
 
 change the following property from ./packages/legacy-app/app/config/default.json
 
-``` json
+```json
 {
-    "environment": "development"
+  "environment": "development"
 }
 ```
 
@@ -155,82 +158,83 @@ Refer to [this blog](https://developers.redhat.com/blog/2014/05/05/running-syste
 
 1. Setup environment
 
-    Navigate to the infrastructure folder: `infrastructure/centos`
+   Navigate to the infrastructure folder: `infrastructure/centos`
 
-    Provision VM and automatically build RPM package:
+   Provision VM and automatically build RPM package:
 
-    ```bash
-    vagrant up
-    ```
+   ```bash
+   vagrant up
+   ```
 
-    or without automatic provisioning (useful if you prefer manual control of the process):
+   or without automatic provisioning (useful if you prefer manual control of the process):
 
-    ```bash
-    vagrant up --no-provision
-    ```
+   ```bash
+   vagrant up --no-provision
+   ```
 
 1. [Optional] The Vagrant file provisions the VM with the latest source code from master and attempts to compile the RPM package for you. However in the event an error occurs, or if you prefer to have manual control over the process, then you'll need to do the following:
 
-    * Remote into the VM: `vagrant ssh`
-    * Download or sync all source code into VM.
-    * Ensure all dependencies are installed.
+   - Remote into the VM: `vagrant ssh`
+   - Download or sync all source code into VM.
+   - Ensure all dependencies are installed.
 
-    ```bash
-    npm i && npm i speculate
-    ```
+   ```bash
+   npm i && npm i speculate
+   ```
 
-    * Run speculate to generate the SPEC files needed to build the RPM package.
+   - Run speculate to generate the SPEC files needed to build the RPM package.
 
-    ```bash
-    npm run spec
-    ```
+   ```bash
+   npm run spec
+   ```
 
-    * Ensure the directory with the source code is linked to the rpmbuild directory - the     folder RPMBUILD will use.
+   - Ensure the directory with the source code is linked to the rpmbuild directory - the folder RPMBUILD will use.
 
-    ```bash
-    ln -s ~/openhim-console ~/rpmbuild
-    ```
+   ```bash
+   ln -s ~/openhim-console ~/rpmbuild
+   ```
 
-    * Build RPM package.
+   - Build RPM package.
 
-    ```bash
-    rpmbuild -bb ~/rpmbuild/SPECS/openhim-console.spec
-    ```
+   ```bash
+   rpmbuild -bb ~/rpmbuild/SPECS/openhim-console.spec
+   ```
 
 1. Install & Test package
 
-    ```bash
-    sudo yum install -y ~/rpmbuild/RPMS/x86_64/openhim-console-{current_version}.x86_64.rpm
-    sudo systemctl start openhim-console
-    curl http://localhost:9000
-    ```
+   ```bash
+   sudo yum install -y ~/rpmbuild/RPMS/x86_64/openhim-console-{current_version}.x86_64.rpm
+   sudo systemctl start openhim-console
+   curl http://localhost:9000
+   ```
 
-    Note: In order for openhim-console to run successfully, you'll need to point it to a    valid instance of Openhim-core or install it locally:
+   Note: In order for openhim-console to run successfully, you'll need to point it to a valid instance of Openhim-core or install it locally:
 
 1. How to check the logs?
 
-    ```bash
-    sudo systemctl status openhim-console
-    sudo tail -f -n 100 /var/log/messages
-    ```
+   ```bash
+   sudo systemctl status openhim-console
+   sudo tail -f -n 100 /var/log/messages
+   ```
 
 1. If everything checks out then extract the RPM package by leaving the VM.
 
-    Install Vagrant scp [plugin](https://github.com/invernizzi/vagrant-scp):
+   Install Vagrant scp [plugin](https://github.com/invernizzi/vagrant-scp):
 
-    ```bash
-    vagrant plugin install vagrant-scp
-    ```
+   ```bash
+   vagrant plugin install vagrant-scp
+   ```
 
-    Then copy the file from the VM:
+   Then copy the file from the VM:
 
-    ```bash
-    vagrant scp default:/home/vagrant/rpmbuild/RPMS/x86_64/{filename}.rpm .
-    ```
+   ```bash
+   vagrant scp default:/home/vagrant/rpmbuild/RPMS/x86_64/{filename}.rpm .
+   ```
 
 ---
 
 ## Access to services in the dev environement
+
 For dev environment you can access the admin console and signin using the following credentials :
 
 - URL : http://localhost:9000/
@@ -238,6 +242,7 @@ For dev environment you can access the admin console and signin using the follow
 - password : instant101
 
 ---
+
 ## Contributing
 
 You may view/add issues here: <https://github.com/jembi/openhim-console/issues>

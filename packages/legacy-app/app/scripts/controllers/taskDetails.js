@@ -1,8 +1,16 @@
 import confirmModal from '~/views/confirmModal'
-import { ConfirmModalCtrl } from './'
-import { valueNotEmpty } from '../utils'
+import {ConfirmModalCtrl} from './'
+import {valueNotEmpty} from '../utils'
 
-export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, $route) {
+export function TaskDetailsCtrl(
+  $scope,
+  $uibModal,
+  $location,
+  $routeParams,
+  Api,
+  Alerting,
+  $route
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -18,13 +26,23 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   $scope.settings.list.tabview = 'same'
 
   // setup task filtter settings
-  if ($location.search().limit) { $scope.filters.limit = $location.search().limit }
-  if ($location.search().tstatus) { $scope.filters.tstatus = $location.search().tstatus }
-  if ($location.search().rerunStatus) { $scope.filters.rerunStatus = $location.search().rerunStatus }
-  if ($location.search().hasErrors) { $scope.filters.hasErrors = $location.search().hasErrors }
+  if ($location.search().limit) {
+    $scope.filters.limit = $location.search().limit
+  }
+  if ($location.search().tstatus) {
+    $scope.filters.tstatus = $location.search().tstatus
+  }
+  if ($location.search().rerunStatus) {
+    $scope.filters.rerunStatus = $location.search().rerunStatus
+  }
+  if ($location.search().hasErrors) {
+    $scope.filters.hasErrors = $location.search().hasErrors
+  }
 
   // find pagination filter parameters
-  if ($location.search().page) { $scope.showpage = parseInt($location.search().page) }
+  if ($location.search().page) {
+    $scope.showpage = parseInt($location.search().page)
+  }
 
   $scope.setPagination = function (pageNum) {
     // angular reloads controller on route change - Applies the pagination filter to API request
@@ -40,7 +58,12 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     const pages = Math.ceil(task.totalFilteredTransactions / showlimit)
 
     // if page not set AND all transactions in the list - no filtering
-    if ($scope.getProcessedPercentage(task) !== '100%' && task.totalFilteredTransactions > showlimit && !$location.search().page && task.totalTransactions === task.totalFilteredTransactions) {
+    if (
+      $scope.getProcessedPercentage(task) !== '100%' &&
+      task.totalFilteredTransactions > showlimit &&
+      !$location.search().page &&
+      task.totalTransactions === task.totalFilteredTransactions
+    ) {
       // set pagination to current transaction being processed
       const currentProcessed = $scope.getProcessedTotal(task)
       $scope.setPagination(Math.ceil(currentProcessed / showlimit))
@@ -54,7 +77,7 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
       if (showpage === i) {
         status = 'active'
       }
-      $scope.pagesArray.push({ pageNum: i, status: status })
+      $scope.pagesArray.push({pageNum: i, status: status})
     }
   }
 
@@ -114,19 +137,31 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
 
   $scope.applyFiltersToUrl = function () {
     // get the filter params object before clearing them
-    const filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsBeforeClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // first clear existing filters
     clearUrlParams()
 
     // Add filters to url
-    if ($scope.filters.limit) { $location.search('limit', $scope.filters.limit) }
-    if ($scope.filters.tstatus) { $location.search('tstatus', $scope.filters.tstatus) }
-    if ($scope.filters.rerunStatus) { $location.search('rerunStatus', $scope.filters.rerunStatus) }
-    if ($scope.filters.hasErrors) { $location.search('hasErrors', $scope.filters.hasErrors) }
+    if ($scope.filters.limit) {
+      $location.search('limit', $scope.filters.limit)
+    }
+    if ($scope.filters.tstatus) {
+      $location.search('tstatus', $scope.filters.tstatus)
+    }
+    if ($scope.filters.rerunStatus) {
+      $location.search('rerunStatus', $scope.filters.rerunStatus)
+    }
+    if ($scope.filters.hasErrors) {
+      $location.search('hasErrors', $scope.filters.hasErrors)
+    }
 
     // get the filter params object after clearing them
-    const filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsAfterClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // if the filters object stays the same then call refresh function
     // if filters object not the same then angular changes route and loads controller ( refresh )
@@ -157,13 +192,17 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
     $scope.settings.list.tabview = 'same'
 
     // get the filter params object before clearing them
-    const filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsBeforeClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // clear all filter parameters
     clearUrlParams()
 
     // get the filter params object after clearing them
-    const filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsAfterClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // if the filters object stays the same then call refresh function
     // if filters object not the same then angular changes route and loads controller ( refresh )
@@ -189,7 +228,9 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
       const totalTransactions = task.totalTransactions
       const remainingTransactions = task.remainingTransactions
       const completedTransactions = totalTransactions - remainingTransactions
-      return (100 / totalTransactions * completedTransactions).toFixed(0) + '%'
+      return (
+        ((100 / totalTransactions) * completedTransactions).toFixed(0) + '%'
+      )
     }
   }
 
@@ -208,9 +249,18 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   }
 
   $scope.viewTransactionDetails = function (path) {
-    const baseUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/#!/'
+    const baseUrl =
+      $location.protocol() +
+      '://' +
+      $location.host() +
+      ':' +
+      $location.port() +
+      '/#!/'
     const txUrl = baseUrl + path
-    if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
+    if (
+      $scope.settings.list.tabview &&
+      $scope.settings.list.tabview === 'new'
+    ) {
       window.open(txUrl, '_blank')
     } else {
       $location.path(path)
@@ -221,7 +271,7 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
   /**         Task Calculation Functions           **/
   /**************************************************/
 
-  function updateTaskWithStatus (task, status) {
+  function updateTaskWithStatus(task, status) {
     const updated = new Api.Tasks()
     updated._id = task._id
     updated.status = status
@@ -255,11 +305,14 @@ export function TaskDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api
       }
     })
 
-    modalInstance.result.then(function () {
-      // cancel confirmed
-      updateTaskWithStatus(task, 'Cancelled')
-    }, function () {
-      // cancel cancelled
-    })
+    modalInstance.result.then(
+      function () {
+        // cancel confirmed
+        updateTaskWithStatus(task, 'Cancelled')
+      },
+      function () {
+        // cancel cancelled
+      }
+    )
   }
 }

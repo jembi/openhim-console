@@ -7,7 +7,15 @@ describe('Controller: LogsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -17,14 +25,17 @@ describe('Controller: LogsCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $location) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $location
+  ) {
     httpBackend = $httpBackend
     location = $location
     rootScope = $rootScope
@@ -50,7 +61,7 @@ describe('Controller: LogsCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('LogsCtrl', { $scope: scope })
+      return $controller('LogsCtrl', {$scope: scope})
     }
   }))
 
@@ -69,20 +80,32 @@ describe('Controller: LogsCtrl', function () {
   })
 
   it('should send data range in ISO 8601 format', function () {
-    location.search({ level: 'debug', from: '2015-11-03 10:50', until: '2015-11-03 11:00' })
+    location.search({
+      level: 'debug',
+      from: '2015-11-03 10:50',
+      until: '2015-11-03 11:00'
+    })
     httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
     httpBackend.flush()
 
     rootScope.$apply()
 
-    httpBackend.expectGET(new RegExp('.*/logs\\?from=2015-11-03T10:50:00.*&level=debug&until=2015-11-03T11:00:00.*'))
+    httpBackend.expectGET(
+      new RegExp(
+        '.*/logs\\?from=2015-11-03T10:50:00.*&level=debug&until=2015-11-03T11:00:00.*'
+      )
+    )
 
     createController()
     httpBackend.flush()
   })
 
   it('should reset the scope', function () {
-    location.search({ level: 'debug', from: '2015-11-03 10:50', until: '2015-11-03 11:00' })
+    location.search({
+      level: 'debug',
+      from: '2015-11-03 10:50',
+      until: '2015-11-03 11:00'
+    })
     httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
     httpBackend.flush()
 
@@ -94,7 +117,7 @@ describe('Controller: LogsCtrl', function () {
 
     httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
     httpBackend.flush()
-    
+
     scope.params.level.should.equal('info')
     expect(scope.params.from).to.not.exist()
     expect(scope.params.until).to.not.exist()

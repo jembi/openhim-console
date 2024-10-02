@@ -1,8 +1,15 @@
 import confirmModal from '~/views/confirmModal'
 import mediatorConfigModal from '~/views/mediatorConfigModal'
-import { ConfirmModalCtrl, MediatorConfigModalCtrl } from './'
+import {ConfirmModalCtrl, MediatorConfigModalCtrl} from './'
 
-export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, MediatorDisplay) {
+export function MediatorsCtrl(
+  $scope,
+  $uibModal,
+  $location,
+  Api,
+  Alerting,
+  MediatorDisplay
+) {
   /******************************************************************/
   /**   These are the functions for the Mediators initial load     **/
   /******************************************************************/
@@ -10,7 +17,11 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
   const querySuccess = function (mediators) {
     $scope.mediators = mediators
     if (mediators.length === 0) {
-      Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no mediators created')
+      Alerting.AlertAddMsg(
+        'bottom',
+        'warning',
+        'There are currently no mediators created'
+      )
     } else {
       MediatorDisplay.formatMediators(mediators)
     }
@@ -43,12 +54,23 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
   const deleteSuccess = function () {
     // On success
     $scope.mediators = Api.Mediators.query(querySuccess, queryError)
-    Alerting.AlertAddMsg('top', 'success', 'The Mediator has been deleted successfully')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The Mediator has been deleted successfully'
+    )
   }
 
   const deleteError = function (err) {
     // add the error message
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the Mediator: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while deleting the Mediator: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
   }
 
   $scope.confirmDelete = function (mediator) {
@@ -57,7 +79,8 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
     const deleteObject = {
       title: 'Delete Mediator',
       button: 'Delete',
-      message: 'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
+      message:
+        'Are you sure you wish to delete the mediator "' + mediator.name + '"?'
     }
 
     const modalInstance = $uibModal.open({
@@ -70,12 +93,15 @@ export function MediatorsCtrl ($scope, $uibModal, $location, Api, Alerting, Medi
       }
     })
 
-    modalInstance.result.then(function () {
-      // Delete confirmed - delete the user
-      mediator.$remove(deleteSuccess, deleteError)
-    }, function () {
-      // delete cancelled - do nothing
-    })
+    modalInstance.result.then(
+      function () {
+        // Delete confirmed - delete the user
+        mediator.$remove(deleteSuccess, deleteError)
+      },
+      function () {
+        // delete cancelled - do nothing
+      }
+    )
   }
 
   /***********************************/

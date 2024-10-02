@@ -1,89 +1,196 @@
-<p class="text-muted">Describe some basic information about the channel and choose its overall type.</p>
+<p class="text-muted">
+  Describe some basic information about the channel and choose its overall type.
+</p>
 
 <div class="form-group" ng-class="{ 'has-error' : ngError.name }">
   <label><span>*</span> Give this channel a name</label>
-  <input class="form-control" placeholder="e.g. My Awesome Channel" type="text" ng-model="channel.name" focus="{{!update}}" />
-  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  <input
+    class="form-control"
+    placeholder="e.g. My Awesome Channel"
+    type="text"
+    ng-model="channel.name"
+    focus="{{!update}}"
+  />
+  <div class="has-error-msg">
+    <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+  </div>
 </div>
 
 <div class="form-group" ng-class="{ 'has-error' : ngError.description }">
   <label><span></span> What does this channel do?</label>
-  <textarea placeholder="Description..." class="form-control" rows="2" ng-model="channel.description" ng-trim="false"></textarea>
-  <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+  <textarea
+    placeholder="Description..."
+    class="form-control"
+    rows="2"
+    ng-model="channel.description"
+    ng-trim="false"
+  ></textarea>
+  <div class="has-error-msg">
+    <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+  </div>
 </div>
 
 <div class="form-group">
-  <label style="display: block;">What type of channel do you want?</label>
+  <label style="display: block">What type of channel do you want?</label>
   <div class="btn-group">
-    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'http'">HTTP</label>
-    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tcp'">TCP</label>
-    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tls'">TLS</label>
-    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'polling'">Polling</label>
+    <label
+      class="btn btn-primary"
+      ng-model="channel.type"
+      uib-btn-radio="'http'"
+      >HTTP</label
+    >
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tcp'"
+      >TCP</label
+    >
+    <label class="btn btn-primary" ng-model="channel.type" uib-btn-radio="'tls'"
+      >TLS</label
+    >
+    <label
+      class="btn btn-primary"
+      ng-model="channel.type"
+      uib-btn-radio="'polling'"
+      >Polling</label
+    >
   </div>
 </div>
 
 <div class="form-group-2columns" ng-show="channel.type == 'http'">
-    <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.methods }">
+  <div
+    class="form-group"
+    style="float: left"
+    ng-class="{ 'has-error' : ngError.methods }"
+  >
     <label><span>*</span>Allowed HTTP methods:</label>
     <div class="checkbox" ng-repeat="(key, value) in methods">
       <label><input type="checkbox" ng-model="methods[key]" />{{key}}</label>
     </div>
-    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>    
+    <div class="has-error-msg">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+    </div>
   </div>
 </div>
 
-<div class="form-group-2columns" ng-show="channel.type == 'tcp' || channel.type == 'tls'">
-  <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.tcpHost }">
+<div
+  class="form-group-2columns"
+  ng-show="channel.type == 'tcp' || channel.type == 'tls'"
+>
+  <div
+    class="form-group"
+    style="float: left"
+    ng-class="{ 'has-error' : ngError.tcpHost }"
+  >
     <label><span>*</span> TCP Host</label>
     <input ng-model="channel.tcpHost" class="form-control" type="text" />
-    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    <div class="has-error-msg">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+    </div>
   </div>
-  <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.tcpPort }">
+  <div
+    class="form-group"
+    style="float: right"
+    ng-class="{ 'has-error' : ngError.tcpPort }"
+  >
     <label><span>*</span> TCP Port</label>
     <input ng-model="channel.tcpPort" class="form-control" type="text" />
-    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+    <div class="has-error-msg">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+    </div>
   </div>
 </div>
 <div class="form-group-2columns" ng-show="channel.type == 'polling'">
   <div class="form-group" ng-class="{ 'has-error' : ngError.pollingSchedule }">
     <label>
       <span>*</span> What schedule would you like the channel to poll on?
-      <i ng-show="uiSettings.showTooltips" tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      <i
+        ng-show="uiSettings.showTooltips"
+        tooltip-html-unsafe="Cron format: '*/10 * * * *' <br />or<br />Written format: '10 minutes'"
+        class="glyphicon glyphicon-question-sign tooltip-wide"
+      ></i>
     </label>
-    <div class="input-group" style="width: 100%;">
-      <input ng-model="channel.pollingSchedule" class="form-control" type="text" />
-      <div class="input-group-addon tooltip-wide" tooltip-html-unsafe="These schedules always run according to server time<hr style='margin: 4px;' />Timezone:<br /><strong>{{ aboutInfo.serverTimezone }}</strong><br />Server Time:<br /><strong>{{ aboutInfo.serverTime }}</strong>">UTC {{ aboutInfo.serverTimezoneOffset }}</div>
+    <div class="input-group" style="width: 100%">
+      <input
+        ng-model="channel.pollingSchedule"
+        class="form-control"
+        type="text"
+      />
+      <div
+        class="input-group-addon tooltip-wide"
+        tooltip-html-unsafe="These schedules always run according to server time<hr style='margin: 4px;' />Timezone:<br /><strong>{{ aboutInfo.serverTimezone }}</strong><br />Server Time:<br /><strong>{{ aboutInfo.serverTime }}</strong>"
+      >
+        UTC {{ aboutInfo.serverTimezoneOffset }}
+      </div>
     </div>
 
-    <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
-    <br/>
+    <div class="has-error-msg">
+      <i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}
+    </div>
+    <br />
 
     <div class="form-group-2columns" ng-show="channel.type == 'polling'">
-      <div class="form-group" style="float: left;">
-        <button type="button" class="btn btn-primary" ng-click="manuallyTriggerChannel()">Manually Trigger</button>
+      <div class="form-group" style="float: left">
+        <button
+          type="button"
+          class="btn btn-primary"
+          ng-click="manuallyTriggerChannel()"
+        >
+          Manually Trigger
+        </button>
       </div>
-      <div class="form-group" style="float: right;">
-        <div uib-alert ng-repeat="alert in alerts.manualTrigger" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+      <div class="form-group" style="float: right">
+        <div
+          uib-alert
+          ng-repeat="alert in alerts.manualTrigger"
+          ng-class="'alert-' + (alert.type || 'warning')"
+        >
+          {{alert.msg}}
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="form-group-2columns">
-  <label style="display: block;">Channel status</label>
+  <label style="display: block">Channel status</label>
   <div class="btn-group" style="margin-bottom: 10px">
-    <label class="btn btn-primary" ng-model="channel.status" uib-btn-radio="'enabled'">Enabled</label>
-    <label class="btn btn-primary" ng-model="channel.status" uib-btn-radio="'disabled'">Disabled</label>
+    <label
+      class="btn btn-primary"
+      ng-model="channel.status"
+      uib-btn-radio="'enabled'"
+      >Enabled</label
+    >
+    <label
+      class="btn btn-primary"
+      ng-model="channel.status"
+      uib-btn-radio="'disabled'"
+      >Disabled</label
+    >
   </div>
 </div>
 
-<div style="border-top: 1px solid #eee;">
-  <div class="form-group" style="width: 45%" ng-class="{ 'has-error' : ngError.timeout }">
-    <label style="display: block;">
+<div style="border-top: 1px solid #eee">
+  <div
+    class="form-group"
+    style="width: 45%"
+    ng-class="{ 'has-error' : ngError.timeout }"
+  >
+    <label style="display: block">
       Timeout ms
-      <i ng-show="uiSettings.showTooltips" uib-tooltip="Maximum time in ms that the request is allowed" class="glyphicon glyphicon-question-sign tooltip-wide" style="font-size: 12px"></i>
+      <i
+        ng-show="uiSettings.showTooltips"
+        uib-tooltip="Maximum time in ms that the request is allowed"
+        class="glyphicon glyphicon-question-sign tooltip-wide"
+        style="font-size: 12px"
+      ></i>
     </label>
-    <input type="number" class="form-control" ng-model="channel.timeout" ng-model-options="{allowInvalid: true}" ng-min="1">
-    <span ng-if="ngError.timeout" class="help-text">Must be a number greater than 0 or less than 3600000</span>
+    <input
+      type="number"
+      class="form-control"
+      ng-model="channel.timeout"
+      ng-model-options="{allowInvalid: true}"
+      ng-min="1"
+    />
+    <span ng-if="ngError.timeout" class="help-text"
+      >Must be a number greater than 0 or less than 3600000</span
+    >
   </div>
 </div>

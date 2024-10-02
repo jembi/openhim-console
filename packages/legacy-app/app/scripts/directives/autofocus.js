@@ -1,6 +1,6 @@
 'use strict'
 
-export function focus ($timeout) {
+export function focus($timeout) {
   return {
     scope: {
       trigger: '@focus'

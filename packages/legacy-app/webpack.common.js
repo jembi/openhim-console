@@ -16,7 +16,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx', '.css', '.html'],
     alias: {
-      'morris.js': path.resolve(__dirname, '../../node_modules/morris.js/morris.js'),
+      'morris.js': path.resolve(
+        __dirname,
+        '../../node_modules/morris.js/morris.js'
+      ),
       '~': path.resolve(__dirname, 'app')
     }
   },
@@ -55,28 +58,30 @@ module.exports = {
     ]
   },
   plugins: [
-  new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
-    'window.jQuery': 'jquery'
-  }),
-  new HtmlWebpackPlugin({
-    template: 'app/template.html'
-  }),
-  new MiniCssExtractPlugin({
-    filename: 'styles.css'
-  }),
-  new CopyWebpackPlugin({patterns: [
-    { from: 'app/404.html' },
-    { from: 'app/favicon.ico' },
-    { from: 'app/robots.txt' },
-    {
-      context: 'app/config',
-      from: '*',
-      to: 'config/'
-    }
-  ]
-  })],
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'app/template.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css'
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: 'app/404.html'},
+        {from: 'app/favicon.ico'},
+        {from: 'app/robots.txt'},
+        {
+          context: 'app/config',
+          from: '*',
+          to: 'config/'
+        }
+      ]
+    })
+  ],
   externals: {
     '@Jembi/test-microfrontend': '@Jembi/test-microfrontend'
   }
