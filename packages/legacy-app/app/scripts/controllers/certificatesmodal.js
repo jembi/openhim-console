@@ -1,7 +1,16 @@
-export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, certType) {
+export function CertificatesModalCtrl(
+  $rootScope,
+  $scope,
+  $uibModalInstance,
+  $timeout,
+  Api,
+  Notify,
+  Alerting,
+  certType
+) {
   const textFile = null
 
-  function notifyUser () {
+  function notifyUser() {
     // reset backing object and refresh certificate list
     Notify.notify('certificatesChanged')
   }
@@ -9,10 +18,14 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   const NewBlob = function (data, datatype) {
     let out
     try {
-      out = new Blob([data], { type: datatype })
+      out = new Blob([data], {type: datatype})
     } catch (e) {
       const BlobBuilder = function () {
-        window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder
+        window.BlobBuilder =
+          window.BlobBuilder ||
+          window.WebKitBlobBuilder ||
+          window.MozBlobBuilder ||
+          window.MSBlobBuilder
       }
 
       if (e.name === 'TypeError' && window.BlobBuilder) {
@@ -21,9 +34,9 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
         out = bb.getBlob(datatype)
       } else if (e.name === 'InvalidStateError') {
         // InvalidStateError (tested on FF13 WinXP)
-        out = new Blob([data], { type: datatype })
+        out = new Blob([data], {type: datatype})
       } else {
-        out = { error: 'Browser not supported for Blob creation' }
+        out = {error: 'Browser not supported for Blob creation'}
         // We're screwed, blob constructor unsupported entirely
       }
     }
@@ -34,7 +47,6 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
     const data = new NewBlob(text, 'application/text')
     // if blob error exist
     if (data.error) {
-
     } else {
       if (textFile !== null) {
         window.URL.revokeObjectURL(textFile)
@@ -44,7 +56,11 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
   }
 
   const success = function (data) {
-    Alerting.AlertAddMsg('top', 'success', 'The certificate has been created, download the key and cert below.')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The certificate has been created, download the key and cert below.'
+    )
     const keyLink = makeTextFile(data.key)
     $scope.downloadKeyLink = angular.copy(keyLink)
     if (keyLink) {
@@ -68,7 +84,14 @@ export function CertificatesModalCtrl ($rootScope, $scope, $uibModalInstance, $t
 
   const error = function (err) {
     // add the success message
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while creating the certificate: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while creating the certificate: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
     notifyUser()
   }
 

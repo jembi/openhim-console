@@ -4,7 +4,7 @@
 export DOCKERFILE_VERSION=main
 
 # Push vars. Each deployed environment has its own docker tag
-export ENVIRONMENT_NAME=poc-microfrontend
+export ENVIRONMENT_NAME=v2.0.0-alpha.2
 export DOCKER_ORG_NAME=jembi
 PROJECT_UNIQUE_HASH_VERSION=$(git rev-parse HEAD)
 export PROJECT_UNIQUE_HASH_VERSION

@@ -1,11 +1,11 @@
 .css-ob9m3q-MuiButtonBase-root-MuiTab-root.Mui-selected {
-    color: #049D84 !important;
+  color: #049d84 !important;
 }
 
 .css-1yltleu-MuiTabs-indicator {
-    background-color: #049D84 !important;
+  background-color: #049d84 !important;
 }
 
 .selected {
-    box-shadow: inset 0px 0px 1.5px rgba(0,0,0,0.8);
+  box-shadow: inset 0px 0px 1.5px rgba(0, 0, 0, 0.8);
 }

@@ -8,7 +8,15 @@ describe('Controller: ExportImportModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,34 +26,167 @@ describe('Controller: ExportImportModalCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
   var expectedResponse = [
-    { model: 'Clients', record: { _id: '5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Updated', message: 'Successfully inserted Clients with name', uid: 'test1' },
-    { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }, status: 'Updated', message: '', uid: 'normal@openim.org' }
+    {
+      model: 'Clients',
+      record: {
+        _id: '5322fe9d8b6add4b2b059ff6',
+        clientID: 'test1',
+        clientDomain: 'test1.openhim.org',
+        name: 'Test 1',
+        roles: ['test'],
+        passwordAlgorithm: 'sha512',
+        passwordHash: '1234',
+        passwordSalt: '1234'
+      },
+      status: 'Updated',
+      message: 'Successfully inserted Clients with name',
+      uid: 'test1'
+    },
+    {
+      model: 'Users',
+      record: {
+        _id: '1569fe9d8b6addd83l559fd3',
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openim.org',
+        groups: ['limited']
+      },
+      status: 'Updated',
+      message: '',
+      uid: 'normal@openim.org'
+    }
   ]
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    httpBackend.when('POST', new RegExp('.*/metadata')).respond(expectedResponse)
+    httpBackend
+      .when('POST', new RegExp('.*/metadata'))
+      .respond(expectedResponse)
 
     scope = $rootScope.$new()
     modalInstance = {
-      close: function () { return true }
+      close: function () {
+        return true
+      }
     }
 
     data = [
-      { model: 'Channels', record: { name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], _id: '5322fe9d8b6add4b2b059ff5' }, status: 'Valid', message: '', uid: 'Sample JsonStub Channel 1' },
-      { model: 'Clients', record: { _id: '5322fe9d8b6add4b2b059ff6', clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Conflict', message: '', uid: 'test1' },
-      { model: 'Clients', record: { _id: '4567fe9d8b6addd83l559ff8', clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }, status: 'Conflict', message: '', uid: 'test2' },
-      { model: 'Users', record: { _id: '6380fe9d8b6addd83l559fs7', firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] }, status: 'Conflict', message: '', uid: 'super@openim.org' },
-      { model: 'Users', record: { _id: '1569fe9d8b6addd83l559fd3', firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }, status: 'Valid', message: '', uid: 'normal@openim.org' },
-      { model: 'Mediators', record: { _id: '4444fe9d8b6addd83l5595555', urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE', version: '0.0.1', name: 'Test 1 Mediator', description: 'Test 1 Description', defaultChannelConfig: [{ name: 'Mediator Channel 1', urlPattern: '/channel1', routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }], endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }] }, status: 'Conflict', message: '', uid: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE' }
+      {
+        model: 'Channels',
+        record: {
+          name: 'Sample JsonStub Channel 1',
+          urlPattern: 'sample/api',
+          allow: ['PoC'],
+          routes: [{host: 'jsonstub.com', port: 80, primary: true}],
+          _id: '5322fe9d8b6add4b2b059ff5'
+        },
+        status: 'Valid',
+        message: '',
+        uid: 'Sample JsonStub Channel 1'
+      },
+      {
+        model: 'Clients',
+        record: {
+          _id: '5322fe9d8b6add4b2b059ff6',
+          clientID: 'test1',
+          clientDomain: 'test1.openhim.org',
+          name: 'Test 1',
+          roles: ['test'],
+          passwordAlgorithm: 'sha512',
+          passwordHash: '1234',
+          passwordSalt: '1234'
+        },
+        status: 'Conflict',
+        message: '',
+        uid: 'test1'
+      },
+      {
+        model: 'Clients',
+        record: {
+          _id: '4567fe9d8b6addd83l559ff8',
+          clientID: 'test2',
+          clientDomain: 'test2.openhim.org',
+          name: 'Test 2',
+          roles: ['test'],
+          passwordAlgorithm: 'sha512',
+          passwordHash: '1234',
+          passwordSalt: '1234'
+        },
+        status: 'Conflict',
+        message: '',
+        uid: 'test2'
+      },
+      {
+        model: 'Users',
+        record: {
+          _id: '6380fe9d8b6addd83l559fs7',
+          firstname: 'Super',
+          surname: 'User',
+          email: 'super@openim.org',
+          groups: ['admin']
+        },
+        status: 'Conflict',
+        message: '',
+        uid: 'super@openim.org'
+      },
+      {
+        model: 'Users',
+        record: {
+          _id: '1569fe9d8b6addd83l559fd3',
+          firstname: 'Ordinary',
+          surname: 'User',
+          email: 'normal@openim.org',
+          groups: ['limited']
+        },
+        status: 'Valid',
+        message: '',
+        uid: 'normal@openim.org'
+      },
+      {
+        model: 'Mediators',
+        record: {
+          _id: '4444fe9d8b6addd83l5595555',
+          urn: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+          version: '0.0.1',
+          name: 'Test 1 Mediator',
+          description: 'Test 1 Description',
+          defaultChannelConfig: [
+            {
+              name: 'Mediator Channel 1',
+              urlPattern: '/channel1',
+              routes: [
+                {
+                  name: 'Route 1',
+                  host: 'localhost',
+                  port: '1111',
+                  primary: true,
+                  type: 'http'
+                }
+              ],
+              allow: ['xdlab'],
+              type: 'http'
+            }
+          ],
+          endpoints: [
+            {
+              name: 'Route 1',
+              host: 'localhost',
+              port: '1111',
+              primary: true,
+              type: 'http'
+            }
+          ]
+        },
+        status: 'Conflict',
+        message: '',
+        uid: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE'
+      }
     ]
 
     createController = function () {
@@ -183,8 +324,10 @@ describe('Controller: ExportImportModalCtrl', function () {
     scope.selectAll()
 
     // lets change some data in our data object before doing the import
-    scope.conflicts.every(function (item) {
-      return item.action === 'overwrite'
-    }).should.equal(true)
+    scope.conflicts
+      .every(function (item) {
+        return item.action === 'overwrite'
+      })
+      .should.equal(true)
   })
 })

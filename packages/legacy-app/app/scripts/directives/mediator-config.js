@@ -3,7 +3,7 @@ import mediatorConfigView from '~/views/partials/mediator-config.html'
 //
 // Makes use of recursive rendering trick from here:
 // http://sporto.github.io/blog/2013/06/24/nested-recursive-directives-in-angular/
-export function mediatorConfig () {
+export function mediatorConfig() {
   return {
     restrict: 'EA',
     scope: {
@@ -29,7 +29,9 @@ export function mediatorConfig () {
       }
 
       scope.doesNewKeyExist = function (param) {
-        return scope.config[param] && scope.config[param][scope.inputKeys[param]]
+        return (
+          scope.config[param] && scope.config[param][scope.inputKeys[param]]
+        )
       }
 
       scope.isNewKeyValid = function (param) {
@@ -47,17 +49,24 @@ export function mediatorConfig () {
         if (!scope.config[param][index]) {
           scope.config[param][index] = {}
         }
-        scope.config[param][index][scope.inputKeysForArrays[param + index]] = scope.inputValuesForArrays[param + index]
+        scope.config[param][index][scope.inputKeysForArrays[param + index]] =
+          scope.inputValuesForArrays[param + index]
         scope.inputKeysForArrays[param + index] = ''
         scope.inputValuesForArrays[param + index] = ''
       }
 
       scope.doesNewKeyExistInArray = function (param, index) {
-        return scope.config[param][index] && scope.config[param][index][scope.inputKeysForArrays[param + index]]
+        return (
+          scope.config[param][index] &&
+          scope.config[param][index][scope.inputKeysForArrays[param + index]]
+        )
       }
 
       scope.isNewKeyValidInArray = function (param, index) {
-        return scope.inputKeysForArrays[param + index] && !scope.doesNewKeyExistInArray(param, index)
+        return (
+          scope.inputKeysForArrays[param + index] &&
+          !scope.doesNewKeyExistInArray(param, index)
+        )
       }
 
       scope.removeArrayItem = function (param, index) {
@@ -71,11 +80,21 @@ export function mediatorConfig () {
 
         let newItem = ''
         switch (def.type) {
-          case 'bool': newItem = false; break
-          case 'number': newItem = 0; break
-          case 'option': newItem = def.values[0]; break
-          case 'map': newItem = {}; break
-          case 'struct': newItem = {}; break
+          case 'bool':
+            newItem = false
+            break
+          case 'number':
+            newItem = 0
+            break
+          case 'option':
+            newItem = def.values[0]
+            break
+          case 'map':
+            newItem = {}
+            break
+          case 'struct':
+            newItem = {}
+            break
         }
 
         scope.config[def.param].push(newItem)
@@ -84,7 +103,7 @@ export function mediatorConfig () {
   }
 }
 
-export function mediatorNestedConfig ($compile) {
+export function mediatorNestedConfig($compile) {
   return {
     restrict: 'EA',
     scope: {
@@ -98,7 +117,9 @@ export function mediatorNestedConfig ($compile) {
           scope.config = {}
         }
 
-        element.append('<div mediator-config config-defs="configDefs" config="config"></div>')
+        element.append(
+          '<div mediator-config config-defs="configDefs" config="config"></div>'
+        )
         $compile(element.contents())(scope)
       }
     }

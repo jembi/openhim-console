@@ -3,11 +3,11 @@
 </div>
 <table class="table table-striped" ng-if="channelAudits.length > 0">
   <thead>
-      <tr>
-        <th style="width:100px;">Date</th>
-        <th style="width:150px;">User</th>
-        <th>Changes</th>
-      </tr>
+    <tr>
+      <th style="width: 100px">Date</th>
+      <th style="width: 150px">User</th>
+      <th>Changes</th>
+    </tr>
   </thead>
   <tbody>
     <tr ng-repeat="audit in channelAudits | orderBy:['-date']">

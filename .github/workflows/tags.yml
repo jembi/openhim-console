@@ -2,7 +2,7 @@ name: Push OpenHIM Console Docker Image On Tag
 
 on:
   push:
-    tags: ["*"]
+    tags: ['*']
 
   workflow_dispatch:
 

@@ -1,21 +1,26 @@
-export function channelAlertsCtrl ($scope, Api) {
+export function channelAlertsCtrl($scope, Api) {
   // watch parent scope for 'users' change
   $scope.$watch('users', function () {
     // setup usersMap options object
     $scope.usersMap = {}
     angular.forEach($scope.users, function (user) {
-      $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')'
+      $scope.usersMap[user.email] =
+        user.firstname + ' ' + user.surname + ' (' + user.email + ')'
     })
   })
 
   // get the groups for the Channel Alert Group dropdown
-  $scope.alertGroups = Api.ContactGroups.query(function () {
-    $scope.groupsMap = {}
-    angular.forEach($scope.alertGroups, function (group) {
-      $scope.groupsMap[group._id] = group.group
-    })
-  },
-  function () { /* server error - could not connect to API to get Alert Groups */ })
+  $scope.alertGroups = Api.ContactGroups.query(
+    function () {
+      $scope.groupsMap = {}
+      angular.forEach($scope.alertGroups, function (group) {
+        $scope.groupsMap[group._id] = group.group
+      })
+    },
+    function () {
+      /* server error - could not connect to API to get Alert Groups */
+    }
+  )
 
   /**********************************************************/
   /**   These are the functions for the Channel Alerts     **/
@@ -73,7 +78,10 @@ export function channelAlertsCtrl ($scope, Api) {
       }
     }
 
-    if ((!$scope.newAlert.users || $scope.newAlert.users.length === 0) && (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0)) {
+    if (
+      (!$scope.newAlert.users || $scope.newAlert.users.length === 0) &&
+      (!$scope.newAlert.groups || $scope.newAlert.groups.length === 0)
+    ) {
       return false
     }
 
@@ -124,7 +132,11 @@ export function channelAlertsCtrl ($scope, Api) {
   }
 
   $scope.isAlertUserValid = function () {
-    if (!$scope.newAlertUser.user || !$scope.newAlertUser.method || !$scope.newAlertUser.maxAlerts) {
+    if (
+      !$scope.newAlertUser.user ||
+      !$scope.newAlertUser.method ||
+      !$scope.newAlertUser.maxAlerts
+    ) {
       return false
     }
     return true

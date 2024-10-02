@@ -1,6 +1,17 @@
 import visualizerConfig from '../../config/visualizer.json'
 
-export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, visualizers, visualizer, duplicate) {
+export function VisualizerModalCtrl(
+  $http,
+  $scope,
+  $uibModalInstance,
+  $timeout,
+  Api,
+  Notify,
+  Alerting,
+  visualizers,
+  visualizer,
+  duplicate
+) {
   $scope.ngError = {}
   $scope.validationRequiredMsg = 'This field is required.'
 
@@ -13,8 +24,8 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
     $scope.update = false
     // make a copy of the object so that the original doesn't get changed until we save
     duplicate = JSON.parse(angular.toJson(duplicate))
-    delete (duplicate._id)
-    delete (duplicate.name)
+    delete duplicate._id
+    delete duplicate.name
     $scope.visualizer = duplicate
   } else {
     $scope.update = false
@@ -33,47 +44,69 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
   }
 
   // get the allowed channels for the transaction settings
-  Api.Channels.query(function (channels) {
-    $scope.channels = channels
+  Api.Channels.query(
+    function (channels) {
+      $scope.channels = channels
 
-    $scope.primaryRoutes = []
-    $scope.secondaryRoutes = []
+      $scope.primaryRoutes = []
+      $scope.secondaryRoutes = []
 
-    angular.forEach(channels, function (channel) {
-      angular.forEach(channel.routes, function (route) {
-        if (route.primary) {
-          if ($scope.primaryRoutes.indexOf(route.name) < 0) {
-            $scope.primaryRoutes.push(route.name)
+      angular.forEach(channels, function (channel) {
+        angular.forEach(channel.routes, function (route) {
+          if (route.primary) {
+            if ($scope.primaryRoutes.indexOf(route.name) < 0) {
+              $scope.primaryRoutes.push(route.name)
+            }
+          } else {
+            if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
+              $scope.secondaryRoutes.push(route.name)
+            }
           }
-        } else {
-          if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
-            $scope.secondaryRoutes.push(route.name)
-          }
-        }
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get channels */ })
+    },
+    function () {
+      /* server error - could not connect to API to get channels */
+    }
+  )
 
-  Api.Mediators.query(function (mediators) {
-    $scope.mediators = mediators
-  }, function () { /* server error - could not connect to API to get mediators */ })
+  Api.Mediators.query(
+    function (mediators) {
+      $scope.mediators = mediators
+    },
+    function () {
+      /* server error - could not connect to API to get mediators */
+    }
+  )
 
   // setup visualizer object
   $scope.viewModel = {}
 
   $scope.addSelectedChannel = function () {
-    $scope.visualizer.channels.push({ eventType: 'channel', eventName: $scope.viewModel.addSelectChannel.name, display: $scope.viewModel.addSelectChannel.name })
+    $scope.visualizer.channels.push({
+      eventType: 'channel',
+      eventName: $scope.viewModel.addSelectChannel.name,
+      display: $scope.viewModel.addSelectChannel.name
+    })
     $scope.viewModel.addSelectChannel = null
   }
 
   $scope.addSelectedMediator = function () {
-    $scope.visualizer.mediators.push({ mediator: $scope.viewModel.addSelectMediator.urn, name: $scope.viewModel.addSelectMediator.name, display: $scope.viewModel.addSelectMediator.name })
+    $scope.visualizer.mediators.push({
+      mediator: $scope.viewModel.addSelectMediator.urn,
+      name: $scope.viewModel.addSelectMediator.name,
+      display: $scope.viewModel.addSelectMediator.name
+    })
     $scope.viewModel.addSelectMediator = null
   }
 
   $scope.addComponent = function () {
     if ($scope.viewModel.addComponent.eventType) {
-      $scope.visualizer.components.push({ eventType: $scope.viewModel.addComponent.eventType, eventName: $scope.viewModel.addComponent.eventName, display: $scope.viewModel.addComponent.display })
+      $scope.visualizer.components.push({
+        eventType: $scope.viewModel.addComponent.eventType,
+        eventName: $scope.viewModel.addComponent.eventName,
+        display: $scope.viewModel.addComponent.display
+      })
       $scope.viewModel.addComponent.eventType = ''
       $scope.viewModel.addComponent.eventName = ''
       $scope.viewModel.addComponent.display = ''
@@ -156,14 +189,22 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
 
   const success = function () {
     // add the success message
-    Alerting.AlertAddMsg('top', 'success', 'The visualizer has been saved successfully')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The visualizer has been saved successfully'
+    )
 
     notifyUser()
   }
 
   const error = function () {
     // add the success message
-    Alerting.AlertAddMsg('top', 'danger', 'Failed to save the visualizer details because the visualizer name is not unique. Please try again.')
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'Failed to save the visualizer details because the visualizer name is not unique. Please try again.'
+    )
 
     notifyUser()
   }
@@ -176,7 +217,7 @@ export function VisualizerModalCtrl ($http, $scope, $uibModalInstance, $timeout,
         if ($scope.update) {
           Api.Visualizers.update($scope.visualizer, success, error)
         } else {
-          Api.Visualizers.save({ name: '' }, $scope.visualizer, success, error)
+          Api.Visualizers.save({name: ''}, $scope.visualizer, success, error)
         }
       }
     })

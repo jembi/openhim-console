@@ -8,7 +8,15 @@ describe('Controller: ContactGroupsModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,9 +26,7 @@ describe('Controller: ContactGroupsModalCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -88,7 +94,10 @@ describe('Controller: ContactGroupsModalCtrl', function () {
     httpBackend.flush()
 
     scope.contactGroup.group = 'Group 1'
-    scope.contactGroup.users = [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }, { user: 'User 22', method: 'email', maxAlerts: '1 per day' }]
+    scope.contactGroup.users = [
+      {user: 'User 1', method: 'sms', maxAlerts: 'no max'},
+      {user: 'User 22', method: 'email', maxAlerts: '1 per day'}
+    ]
 
     // run the validate
     scope.validateFormContactGroups()
@@ -117,7 +126,10 @@ describe('Controller: ContactGroupsModalCtrl', function () {
     scope.update = false
 
     scope.contactGroup.group = 'Group 1'
-    scope.contactGroup.users = [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }, { user: 'User 22', method: 'email', maxAlerts: '1 per day' }]
+    scope.contactGroup.users = [
+      {user: 'User 1', method: 'sms', maxAlerts: 'no max'},
+      {user: 'User 22', method: 'email', maxAlerts: '1 per day'}
+    ]
 
     // run the submit
     scope.submitFormContactGroups()
@@ -133,7 +145,10 @@ describe('Controller: ContactGroupsModalCtrl', function () {
     scope.update = true
 
     scope.contactGroup.group = 'Group 1'
-    scope.contactGroup.users = [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }, { user: 'User 22', method: 'email', maxAlerts: '1 per day' }]
+    scope.contactGroup.users = [
+      {user: 'User 1', method: 'sms', maxAlerts: 'no max'},
+      {user: 'User 22', method: 'email', maxAlerts: '1 per day'}
+    ]
 
     // run the submit
     scope.submitFormContactGroups()

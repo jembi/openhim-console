@@ -1,9 +1,16 @@
-
 // import $ from 'jquery'
 import moment from 'moment'
-import { valueNotEmpty } from '../utils'
+import {valueNotEmpty} from '../utils'
 
-export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerting, AuditLookups) {
+export function AuditsCtrl(
+  $scope,
+  $uibModal,
+  $location,
+  $interval,
+  Api,
+  Alerting,
+  AuditLookups
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -22,11 +29,14 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
   $scope.validStartDate = true
   $scope.validEndDate = true
 
-  Api.AuditsFilterOptions.get(function (auditsFilterOptions) {
-    $scope.auditsFilterOptions = auditsFilterOptions
-  }, function (err) {
-    console.log('Audits error: ' + err)
-  })
+  Api.AuditsFilterOptions.get(
+    function (auditsFilterOptions) {
+      $scope.auditsFilterOptions = auditsFilterOptions
+    },
+    function (err) {
+      console.log('Audits error: ' + err)
+    }
+  )
 
   /* setup default filter options */
   const setupAuditFilters = function () {
@@ -41,40 +51,98 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     // setup default audits settings
     $scope.settings = {}
     $scope.settings.filter = {}
-    if ($location.search().limit) { $scope.settings.filter.limit = parseInt($location.search().limit, 10) } else { $scope.settings.filter.limit = 10 }
-    if ($location.search().dateStart) { $scope.settings.filter.dateStart = $location.search().dateStart } else { $scope.settings.filter.dateStart = '' }
-    if ($location.search().dateEnd) { $scope.settings.filter.dateEnd = $location.search().dateEnd } else { $scope.settings.filter.dateEnd = '' }
+    if ($location.search().limit) {
+      $scope.settings.filter.limit = parseInt($location.search().limit, 10)
+    } else {
+      $scope.settings.filter.limit = 10
+    }
+    if ($location.search().dateStart) {
+      $scope.settings.filter.dateStart = $location.search().dateStart
+    } else {
+      $scope.settings.filter.dateStart = ''
+    }
+    if ($location.search().dateEnd) {
+      $scope.settings.filter.dateEnd = $location.search().dateEnd
+    } else {
+      $scope.settings.filter.dateEnd = ''
+    }
     $scope.settings.list = {}
     $scope.settings.list.tabview = 'same'
     $scope.settings.list.autoupdate = true
 
     $scope.filters = {}
     $scope.filters.eventIdentification = {}
-    if ($location.search().eventID) { $scope.filters.eventIdentification.eventID = $location.search().eventID }
-    if ($location.search().eventTypeCode) { $scope.filters.eventIdentification.eventTypeCode = $location.search().eventTypeCode }
-    if ($location.search().eventActionCode) { $scope.filters.eventIdentification.eventActionCode = $location.search().eventActionCode }
-    if ($location.search().eventOutcomeIndicator) { $scope.filters.eventIdentification.eventOutcomeIndicator = $location.search().eventOutcomeIndicator }
+    if ($location.search().eventID) {
+      $scope.filters.eventIdentification.eventID = $location.search().eventID
+    }
+    if ($location.search().eventTypeCode) {
+      $scope.filters.eventIdentification.eventTypeCode =
+        $location.search().eventTypeCode
+    }
+    if ($location.search().eventActionCode) {
+      $scope.filters.eventIdentification.eventActionCode =
+        $location.search().eventActionCode
+    }
+    if ($location.search().eventOutcomeIndicator) {
+      $scope.filters.eventIdentification.eventOutcomeIndicator =
+        $location.search().eventOutcomeIndicator
+    }
 
     $scope.filters.participantObjectIdentification = {}
     $scope.filters.participantObjectIdentification.patientID = {}
-    if ($location.search().patientID) { $scope.filters.participantObjectIdentification.patientID.patientID = $location.search().patientID }
-    if ($location.search().assigningAuth) { $scope.filters.participantObjectIdentification.patientID.assigningAuth = $location.search().assigningAuth }
-    if ($location.search().assigningAuthID) { $scope.filters.participantObjectIdentification.patientID.assigningAuthID = $location.search().assigningAuthID }
+    if ($location.search().patientID) {
+      $scope.filters.participantObjectIdentification.patientID.patientID =
+        $location.search().patientID
+    }
+    if ($location.search().assigningAuth) {
+      $scope.filters.participantObjectIdentification.patientID.assigningAuth =
+        $location.search().assigningAuth
+    }
+    if ($location.search().assigningAuthID) {
+      $scope.filters.participantObjectIdentification.patientID.assigningAuthID =
+        $location.search().assigningAuthID
+    }
 
-    if ($location.search().participantObjectID) { $scope.filters.participantObjectIdentification.participantObjectID = $location.search().participantObjectID }
-    if ($location.search().participantObjectIDTypeCode) { $scope.filters.participantObjectIdentification.participantObjectIDTypeCode = $location.search().participantObjectIDTypeCode }
+    if ($location.search().participantObjectID) {
+      $scope.filters.participantObjectIdentification.participantObjectID =
+        $location.search().participantObjectID
+    }
+    if ($location.search().participantObjectIDTypeCode) {
+      $scope.filters.participantObjectIdentification.participantObjectIDTypeCode =
+        $location.search().participantObjectIDTypeCode
+    }
     $scope.filters.participantObjectIdentification.participantObjectDetail = {}
-    if ($location.search().participantObjectDetailType) { $scope.filters.participantObjectIdentification.participantObjectDetail.type = $location.search().participantObjectDetailType }
-    if ($location.search().participantObjectDetailValue) { $scope.filters.participantObjectIdentification.participantObjectDetail.value = $location.search().participantObjectDetailValue }
+    if ($location.search().participantObjectDetailType) {
+      $scope.filters.participantObjectIdentification.participantObjectDetail.type =
+        $location.search().participantObjectDetailType
+    }
+    if ($location.search().participantObjectDetailValue) {
+      $scope.filters.participantObjectIdentification.participantObjectDetail.value =
+        $location.search().participantObjectDetailValue
+    }
 
     $scope.filters.activeParticipant = {}
-    if ($location.search().userID) { $scope.filters.activeParticipant.userID = $location.search().userID }
-    if ($location.search().roleIDCode) { $scope.filters.activeParticipant.roleIDCode = $location.search().roleIDCode }
-    if ($location.search().alternativeUserID) { $scope.filters.activeParticipant.alternativeUserID = $location.search().alternativeUserID }
-    if ($location.search().networkAccessPointID) { $scope.filters.activeParticipant.networkAccessPointID = $location.search().networkAccessPointID }
+    if ($location.search().userID) {
+      $scope.filters.activeParticipant.userID = $location.search().userID
+    }
+    if ($location.search().roleIDCode) {
+      $scope.filters.activeParticipant.roleIDCode =
+        $location.search().roleIDCode
+    }
+    if ($location.search().alternativeUserID) {
+      $scope.filters.activeParticipant.alternativeUserID =
+        $location.search().alternativeUserID
+    }
+    if ($location.search().networkAccessPointID) {
+      $scope.filters.activeParticipant.networkAccessPointID =
+        $location.search().networkAccessPointID
+    }
 
     $scope.filters.auditSourceIdentification = {}
-    if ($location.search().auditSourceID) { $scope.filters.auditSourceIdentification.auditSourceID = $location.search().auditSourceID }
+    if ($location.search().auditSourceID) {
+      $scope.filters.auditSourceIdentification.auditSourceID =
+        $location.search().auditSourceID
+    }
   }
   setupAuditFilters()
 
@@ -85,7 +153,11 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
   if (userSettings) {
     if (userSettings.filter) {
-      if (userSettings.filter.limit && userSettings.filter.limit !== 0 && userSettings.filter.limit === '') {
+      if (
+        userSettings.filter.limit &&
+        userSettings.filter.limit !== 0 &&
+        userSettings.filter.limit === ''
+      ) {
         $scope.settings.filter.limit = userSettings.filter.limit
       }
     }
@@ -125,34 +197,62 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     filtersObject.filters = {}
 
     // date filter
-    filterDateStart = $scope.checkDate($scope.settings.filter.dateStart) ? $scope.settings.filter.dateStart : null
-    filterDateEnd = $scope.checkDate($scope.settings.filter.dateEnd) ? $scope.settings.filter.dateEnd : null
+    filterDateStart = $scope.checkDate($scope.settings.filter.dateStart)
+      ? $scope.settings.filter.dateStart
+      : null
+    filterDateEnd = $scope.checkDate($scope.settings.filter.dateEnd)
+      ? $scope.settings.filter.dateEnd
+      : null
     if (filterDateStart && filterDateEnd) {
       const startDate = moment(filterDateStart).format()
       const endDate = moment(filterDateEnd).endOf('day').format()
-      filtersObject.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $gte: startDate, $lte: endDate })
+      filtersObject.filters['eventIdentification.eventDateTime'] =
+        JSON.stringify({$gte: startDate, $lte: endDate})
     }
-    if (filterDateStart) { filterUrlParams += '&dateStart=' + moment(filterDateStart).format('YYYY-MM-DD') }
-    if (filterDateEnd) { filterUrlParams += '&dateEnd=' + moment(filterDateEnd).format('YYYY-MM-DD') }
+    if (filterDateStart) {
+      filterUrlParams +=
+        '&dateStart=' + moment(filterDateStart).format('YYYY-MM-DD')
+    }
+    if (filterDateEnd) {
+      filterUrlParams +=
+        '&dateEnd=' + moment(filterDateEnd).format('YYYY-MM-DD')
+    }
 
     /* ----- filter by Patient ----- */
-    const patientID = $scope.checkPatientID($scope.filters.participantObjectIdentification.patientID.patientID) ? $scope.filters.participantObjectIdentification.patientID.patientID : null
-    let assigningAuth = $scope.filters.participantObjectIdentification.patientID.assigningAuth
-    let assigningAuthID = $scope.filters.participantObjectIdentification.patientID.assigningAuthID
+    const patientID = $scope.checkPatientID(
+      $scope.filters.participantObjectIdentification.patientID.patientID
+    )
+      ? $scope.filters.participantObjectIdentification.patientID.patientID
+      : null
+    let assigningAuth =
+      $scope.filters.participantObjectIdentification.patientID.assigningAuth
+    let assigningAuthID =
+      $scope.filters.participantObjectIdentification.patientID.assigningAuthID
 
     // if not defined then set wildcard
-    if (assigningAuth === null || assigningAuth === undefined || assigningAuth === '') {
+    if (
+      assigningAuth === null ||
+      assigningAuth === undefined ||
+      assigningAuth === ''
+    ) {
       assigningAuth = '.*'
     }
     // if not defined then set wildcard
-    if (assigningAuthID === null || assigningAuthID === undefined || assigningAuthID === '') {
+    if (
+      assigningAuthID === null ||
+      assigningAuthID === undefined ||
+      assigningAuthID === ''
+    ) {
       assigningAuthID = '.*'
     }
 
     // add patientID filter
-    const participantPatientID = patientID + '\\^\\^\\^' + assigningAuth + '&' + assigningAuthID + '&.*'
+    const participantPatientID =
+      patientID + '\\^\\^\\^' + assigningAuth + '&' + assigningAuthID + '&.*'
     if (valueNotEmpty(patientID) === true) {
-      filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify(participantPatientID)
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectID'
+      ] = JSON.stringify(participantPatientID)
       filterUrlParams += '&patientID=' + patientID
     }
     /* ----- filter by Patient ----- */
@@ -163,9 +263,13 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if (valueNotEmpty(eventTypeCode) === true) {
       // construct object to query in mongo
       const eventTypeArray = eventTypeCode.split('---')
-      filtersObject.filters['eventIdentification.eventTypeCode.code'] = eventTypeArray[0]
-      filtersObject.filters['eventIdentification.eventTypeCode.codeSystemName'] = eventTypeArray[1]
-      filtersObject.filters['eventIdentification.eventTypeCode.displayName'] = eventTypeArray[2]
+      filtersObject.filters['eventIdentification.eventTypeCode.code'] =
+        eventTypeArray[0]
+      filtersObject.filters[
+        'eventIdentification.eventTypeCode.codeSystemName'
+      ] = eventTypeArray[1]
+      filtersObject.filters['eventIdentification.eventTypeCode.displayName'] =
+        eventTypeArray[2]
       filterUrlParams += '&eventTypeCode=' + eventTypeCode
     }
 
@@ -173,23 +277,29 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     const eventID = $scope.filters.eventIdentification.eventID
     if (valueNotEmpty(eventID) === true) {
       const eventIDArray = eventID.split('---')
-      filtersObject.filters['eventIdentification.eventID.code'] = eventIDArray[0]
-      filtersObject.filters['eventIdentification.eventID.codeSystemName'] = eventIDArray[1]
-      filtersObject.filters['eventIdentification.eventID.displayName'] = eventIDArray[2]
+      filtersObject.filters['eventIdentification.eventID.code'] =
+        eventIDArray[0]
+      filtersObject.filters['eventIdentification.eventID.codeSystemName'] =
+        eventIDArray[1]
+      filtersObject.filters['eventIdentification.eventID.displayName'] =
+        eventIDArray[2]
       filterUrlParams += '&eventID=' + eventID
     }
 
     // add eventActionCode filter
     const eventActionCode = $scope.filters.eventIdentification.eventActionCode
     if (valueNotEmpty(eventActionCode) === true) {
-      filtersObject.filters['eventIdentification.eventActionCode'] = eventActionCode
+      filtersObject.filters['eventIdentification.eventActionCode'] =
+        eventActionCode
       filterUrlParams += '&eventActionCode=' + eventActionCode
     }
 
     // add eventOutcomeIndicator filter
-    const eventOutcomeIndicator = $scope.filters.eventIdentification.eventOutcomeIndicator
+    const eventOutcomeIndicator =
+      $scope.filters.eventIdentification.eventOutcomeIndicator
     if (valueNotEmpty(eventOutcomeIndicator) === true) {
-      filtersObject.filters['eventIdentification.eventOutcomeIndicator'] = eventOutcomeIndicator
+      filtersObject.filters['eventIdentification.eventOutcomeIndicator'] =
+        eventOutcomeIndicator
       filterUrlParams += '&eventOutcomeIndicator=' + eventOutcomeIndicator
     }
     /* ----- filter by Event ----- */
@@ -205,14 +315,17 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     // add alternativeUserID filter
     const alternativeUserID = $scope.filters.activeParticipant.alternativeUserID
     if (valueNotEmpty(alternativeUserID) === true) {
-      filtersObject.filters['activeParticipant.alternativeUserID'] = alternativeUserID
+      filtersObject.filters['activeParticipant.alternativeUserID'] =
+        alternativeUserID
       filterUrlParams += '&alternativeUserID=' + alternativeUserID
     }
 
     // add networkAccessPointID filter
-    const networkAccessPointID = $scope.filters.activeParticipant.networkAccessPointID
+    const networkAccessPointID =
+      $scope.filters.activeParticipant.networkAccessPointID
     if (valueNotEmpty(networkAccessPointID) === true) {
-      filtersObject.filters['activeParticipant.networkAccessPointID'] = networkAccessPointID
+      filtersObject.filters['activeParticipant.networkAccessPointID'] =
+        networkAccessPointID
       filterUrlParams += '&networkAccessPointID=' + networkAccessPointID
     }
 
@@ -220,48 +333,73 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     const roleIDCode = $scope.filters.activeParticipant.roleIDCode
     if (valueNotEmpty(roleIDCode) === true) {
       const roleIDCodeArray = roleIDCode.split('---')
-      filtersObject.filters['activeParticipant.roleIDCode.code'] = roleIDCodeArray[0]
-      filtersObject.filters['activeParticipant.roleIDCode.codeSystemName'] = roleIDCodeArray[1]
-      filtersObject.filters['activeParticipant.roleIDCode.displayName'] = roleIDCodeArray[2]
+      filtersObject.filters['activeParticipant.roleIDCode.code'] =
+        roleIDCodeArray[0]
+      filtersObject.filters['activeParticipant.roleIDCode.codeSystemName'] =
+        roleIDCodeArray[1]
+      filtersObject.filters['activeParticipant.roleIDCode.displayName'] =
+        roleIDCodeArray[2]
       filterUrlParams += '&roleIDCode=' + roleIDCode
     }
     /* ----- filter by Active Participant ----- */
 
     /* ----- filter by Participant Object ----- */
     // add objectID filter
-    const objectID = $scope.filters.participantObjectIdentification.participantObjectID
+    const objectID =
+      $scope.filters.participantObjectIdentification.participantObjectID
     if (valueNotEmpty(objectID) === true) {
       filterUrlParams += '&participantObjectID=' + objectID
 
       // if patientID set then update query to include 'AND' operator
       if (valueNotEmpty(patientID) === true) {
-        filtersObject.filters['participantObjectIdentification.participantObjectID'] = { type: 'AND', patientID: participantPatientID, objectID: objectID }
+        filtersObject.filters[
+          'participantObjectIdentification.participantObjectID'
+        ] = {type: 'AND', patientID: participantPatientID, objectID: objectID}
       } else {
-        filtersObject.filters['participantObjectIdentification.participantObjectID'] = JSON.stringify(objectID)
+        filtersObject.filters[
+          'participantObjectIdentification.participantObjectID'
+        ] = JSON.stringify(objectID)
       }
     }
 
     // add objectIDTypeCode filter
-    const participantObjectIDTypeCode = $scope.filters.participantObjectIdentification.participantObjectIDTypeCode
+    const participantObjectIDTypeCode =
+      $scope.filters.participantObjectIdentification.participantObjectIDTypeCode
     if (valueNotEmpty(participantObjectIDTypeCode) === true) {
-      const participantObjectIDTypeCodeArray = participantObjectIDTypeCode.split('---')
-      filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.code'] = participantObjectIDTypeCodeArray[0]
-      filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.codeSystemName'] = participantObjectIDTypeCodeArray[1]
-      filtersObject.filters['participantObjectIdentification.participantObjectIDTypeCode.displayName'] = participantObjectIDTypeCodeArray[2]
-      filterUrlParams += '&participantObjectIDTypeCode=' + participantObjectIDTypeCode
+      const participantObjectIDTypeCodeArray =
+        participantObjectIDTypeCode.split('---')
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectIDTypeCode.code'
+      ] = participantObjectIDTypeCodeArray[0]
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectIDTypeCode.codeSystemName'
+      ] = participantObjectIDTypeCodeArray[1]
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectIDTypeCode.displayName'
+      ] = participantObjectIDTypeCodeArray[2]
+      filterUrlParams +=
+        '&participantObjectIDTypeCode=' + participantObjectIDTypeCode
     }
 
     // add objectDetailType filter
-    const objectDetailType = $scope.filters.participantObjectIdentification.participantObjectDetail.type
+    const objectDetailType =
+      $scope.filters.participantObjectIdentification.participantObjectDetail
+        .type
     if (valueNotEmpty(objectDetailType) === true) {
-      filtersObject.filters['participantObjectIdentification.participantObjectDetail.type'] = objectDetailType
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectDetail.type'
+      ] = objectDetailType
       filterUrlParams += '&participantObjectDetailType=' + objectDetailType
     }
 
     // add objectDetailValue filter
-    const objectDetailValue = $scope.filters.participantObjectIdentification.participantObjectDetail.value
+    const objectDetailValue =
+      $scope.filters.participantObjectIdentification.participantObjectDetail
+        .value
     if (valueNotEmpty(objectDetailValue) === true) {
-      filtersObject.filters['participantObjectIdentification.participantObjectDetail.value'] = objectDetailValue
+      filtersObject.filters[
+        'participantObjectIdentification.participantObjectDetail.value'
+      ] = objectDetailValue
       filterUrlParams += '&participantObjectDetailValue=' + objectDetailValue
     }
     /* ----- filter by Participant Object ----- */
@@ -270,7 +408,8 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     // add auditSource filter
     const auditSourceID = $scope.filters.auditSourceIdentification.auditSourceID
     if (valueNotEmpty(auditSourceID) === true) {
-      filtersObject.filters['auditSourceIdentification.auditSourceID'] = auditSourceID
+      filtersObject.filters['auditSourceIdentification.auditSourceID'] =
+        auditSourceID
       filterUrlParams += '&auditSourceID=' + auditSourceID
     }
     /* ----- filter by Audit Source ----- */
@@ -291,7 +430,11 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if (audits.length < $scope.showlimit) {
       $('#loadMoreBtn').hide()
       if (audits.length === 0) {
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are no audits for the current filters')
+        Alerting.AlertAddMsg(
+          'bottom',
+          'warning',
+          'There are no audits for the current filters'
+        )
       }
     } else {
       // Show the load more button
@@ -362,7 +505,11 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     $scope.showpage = 0
     $scope.showlimit = $scope.settings.filter.limit
 
-    Api.Audits.query($scope.returnFilters('filtersObject'), refreshSuccess, refreshError)
+    Api.Audits.query(
+      $scope.returnFilters('filtersObject'),
+      refreshSuccess,
+      refreshError
+    )
   }
   // run the audit list view for the first time
   $scope.refreshAuditsList()
@@ -374,7 +521,11 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     $scope.audits = $.unique($scope.audits)
     if (audits.length < $scope.showlimit) {
       $('#loadMoreBtn').hide()
-      Alerting.AlertAddMsg('bottom', 'warning', 'There are no more audits to retrieve')
+      Alerting.AlertAddMsg(
+        'bottom',
+        'warning',
+        'There are no more audits to retrieve'
+      )
     }
 
     $scope.busyLoadingMore = false
@@ -398,7 +549,9 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
     if (!filters.filters['eventIdentification.eventDateTime']) {
       // use page load time as an explicit end date
       // this prevents issues with paging when new transactions come in, breaking the pages
-      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $lte: moment(pageLoadDate - serverDiffTime).format() })
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({
+        $lte: moment(pageLoadDate - serverDiffTime).format()
+      })
     }
 
     Api.Audits.query(filters, loadMoreSuccess, loadMoreError)
@@ -412,7 +565,10 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
       const absUrlPath = $location.url()
       const baseUrl = absUrl.replace(absUrlPath, '')
       const txUrl = baseUrl + '/' + path
-      if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
+      if (
+        $scope.settings.list.tabview &&
+        $scope.settings.list.tabview === 'new'
+      ) {
         window.open(txUrl, '_blank')
       } else {
         $location.path(path)
@@ -459,7 +615,10 @@ export function AuditsCtrl ($scope, $uibModal, $location, $interval, Api, Alerti
 
     if (!filters.filters['eventIdentification.eventDateTime']) {
       // only poll for latest if date filters are OFF
-      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({ $gte: moment(lastUpdated).format(), $lte: moment().format() })
+      filters.filters['eventIdentification.eventDateTime'] = JSON.stringify({
+        $gte: moment(lastUpdated).format(),
+        $lte: moment().format()
+      })
       lastUpdated = moment() - serverDiffTime
 
       delete filters.filterPage

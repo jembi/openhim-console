@@ -1,6 +1,17 @@
-import { parseQuery } from '../utils'
+import {parseQuery} from '../utils'
 
-export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootScope, Alerting, Api, config, keycloak) {
+export function LoginCtrl(
+  $scope,
+  login,
+  $window,
+  $location,
+  $timeout,
+  $rootScope,
+  Alerting,
+  Api,
+  config,
+  keycloak
+) {
   $scope.config = config
   $scope.emailFocus = true
   $scope.passwordFocus = false
@@ -22,32 +33,42 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     // Check if we got the OAuth code in the URL back from KeyCloak
     const queryString = $window.location.hash.replace('#!/login#', '')
     const params = parseQuery(queryString)
-    const { code, session_state: sessionState, state } = params
+    const {code, session_state: sessionState, state} = params
 
     const isKeyCloakRedirect = code && sessionState && state
     if (isKeyCloakRedirect) {
       keycloak.setKeycloakState(state)
 
-      login.loginWithKeyCloak(code, sessionState, state, function (result, userProfile) {
-        // reset alert object
-        Alerting.AlertReset()
-        if (result === 'Authentication Success' && userProfile) {
-          // Create the session for the logged in user
-          $scope.createUserSession(userProfile.email)
-          // redirect user to referringURL
-          if ($rootScope.referringURL) {
-            $window.location = '#!' + $rootScope.referringURL
-          } else { // default redirect to transactions page
-            $window.location='#!/transactions'
-          }
-        } else {
-          if (result === 'Internal Server Error') {
-            $scope.coreConnectionError = true
+      login.loginWithKeyCloak(
+        code,
+        sessionState,
+        state,
+        function (result, userProfile) {
+          // reset alert object
+          Alerting.AlertReset()
+          if (result === 'Authentication Success' && userProfile) {
+            // Create the session for the logged in user
+            $scope.createUserSession(userProfile.email)
+            // redirect user to referringURL
+            if ($rootScope.referringURL) {
+              $window.location = '#!' + $rootScope.referringURL
+            } else {
+              // default redirect to transactions page
+              $window.location = '#!/transactions'
+            }
           } else {
-            Alerting.AlertAddMsg('login', 'danger', 'Sign-in with Keycloak failed. Please try again')
+            if (result === 'Internal Server Error') {
+              $scope.coreConnectionError = true
+            } else {
+              Alerting.AlertAddMsg(
+                'login',
+                'danger',
+                'Sign-in with Keycloak failed. Please try again'
+              )
+            }
           }
         }
-      })
+      )
     }
   }
 
@@ -74,11 +95,19 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     const loginPassword = $scope.loginPassword
 
     if (!loginEmail || !loginPassword) {
-      Alerting.AlertAddMsg('login', 'danger', 'Please provide your login credentials')
+      Alerting.AlertAddMsg(
+        'login',
+        'danger',
+        'Please provide your login credentials'
+      )
     } else {
       // reset alert to show processing message
       Alerting.AlertReset()
-      Alerting.AlertAddMsg('login', 'warning', 'Busy checking your credentials...')
+      Alerting.AlertAddMsg(
+        'login',
+        'warning',
+        'Busy checking your credentials...'
+      )
       $scope.coreConnectionError = false
 
       // check login credentials and create session if valid
@@ -92,7 +121,10 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
       Alerting.AlertReset()
       if (result === 'Authentication Success') {
         // check if root and default root password
-        if (loginEmail === 'root@openhim.org' && loginPassword === 'openhim-password') {
+        if (
+          loginEmail === 'root@openhim.org' &&
+          loginPassword === 'openhim-password'
+        ) {
           // reset root password
           $scope.rootPasswordReset = true
         } else {
@@ -102,16 +134,20 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
           // redirect user to referringURL
           if ($rootScope.referringURL) {
             $window.location = '#!' + $rootScope.referringURL
-          } else { // default redirect to transactions page
-            $window.location ='#!/transactions'
-
+          } else {
+            // default redirect to transactions page
+            $window.location = '#!/transactions'
           }
         }
       } else {
         if (result === 'Internal Server Error') {
           $scope.coreConnectionError = true
         } else {
-          Alerting.AlertAddMsg('login', 'danger', 'The supplied credentials were incorrect. Please try again')
+          Alerting.AlertAddMsg(
+            'login',
+            'danger',
+            'The supplied credentials were incorrect. Please try again'
+          )
         }
       }
     })
@@ -122,18 +158,30 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
 
     // validate not empty fields
     if (!$scope.password || !$scope.passwordConfirm) {
-      Alerting.AlertAddMsg('login', 'danger', 'Please provide both password fields')
+      Alerting.AlertAddMsg(
+        'login',
+        'danger',
+        'Please provide both password fields'
+      )
       return
     } else {
       // validate passwords match
       if ($scope.password !== $scope.passwordConfirm) {
-        Alerting.AlertAddMsg('login', 'danger', 'The supplied passwords do not match')
+        Alerting.AlertAddMsg(
+          'login',
+          'danger',
+          'The supplied passwords do not match'
+        )
         return
       }
 
       // check password isnt same as the current one
       if ($scope.password === 'openhim-password') {
-        Alerting.AlertAddMsg('login', 'danger', 'The supplied password is the same as the current one')
+        Alerting.AlertAddMsg(
+          'login',
+          'danger',
+          'The supplied password is the same as the current one'
+        )
         return
       }
     }
@@ -141,38 +189,54 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
     const password = angular.copy($scope.password)
 
     // do the initial request
-    Api.Users.get({ email: 'root@openhim.org' }, function (user) {
-      const newUserInfo = { email: user.email, id: user._id, password }
-      // save the new root password
-      Api.Users.update(newUserInfo, function () {
-        // re-login with new credentials
-        login.login('root@openhim.org', password, function (result) {
-          if (result === 'Authentication Success') {
-            // Create the session for the logged in user
-            $scope.createUserSession('root@openhim.org')
+    Api.Users.get(
+      {email: 'root@openhim.org'},
+      function (user) {
+        const newUserInfo = {email: user.email, id: user._id, password}
+        // save the new root password
+        Api.Users.update(
+          newUserInfo,
+          function () {
+            // re-login with new credentials
+            login.login('root@openhim.org', password, function (result) {
+              if (result === 'Authentication Success') {
+                // Create the session for the logged in user
+                $scope.createUserSession('root@openhim.org')
 
-            $scope.password = ''
-            $scope.passwordConfirm = ''
+                $scope.password = ''
+                $scope.passwordConfirm = ''
 
-            $scope.resetSuccess = true
+                $scope.resetSuccess = true
 
-            Alerting.AlertAddMsg('login', 'success', 'Root Password Successfully Reset.')
-            Alerting.AlertAddMsg('login', 'success', 'You will be redirected to the \'Transactions\' page shortly.')
-            $timeout(function () {
-              // redirect user to landing page (transactions)
-              $window.location= '#/transactions'
-            }, 5000)
-          } else {
-            // add the error message
+                Alerting.AlertAddMsg(
+                  'login',
+                  'success',
+                  'Root Password Successfully Reset.'
+                )
+                Alerting.AlertAddMsg(
+                  'login',
+                  'success',
+                  "You will be redirected to the 'Transactions' page shortly."
+                )
+                $timeout(function () {
+                  // redirect user to landing page (transactions)
+                  $window.location = '#/transactions'
+                }, 5000)
+              } else {
+                // add the error message
+                Alerting.AlertAddServerMsg()
+              }
+            })
+          },
+          function () {
             Alerting.AlertAddServerMsg()
           }
-        })
-      }, function () {
+        )
+      },
+      function () {
         Alerting.AlertAddServerMsg()
-      })
-    }, function () {
-      Alerting.AlertAddServerMsg()
-    })
+      }
+    )
   }
 
   $scope.createUserSession = function (loginEmail) {
@@ -204,7 +268,10 @@ export function LoginCtrl ($scope, login, $window, $location, $timeout, $rootSco
         }
 
         // Put the object into storage
-        localStorage.setItem('consoleSession', JSON.stringify(consoleSessionObject))
+        localStorage.setItem(
+          'consoleSession',
+          JSON.stringify(consoleSessionObject)
+        )
       }
 
       /* ------------------Set sessionID------------------ */

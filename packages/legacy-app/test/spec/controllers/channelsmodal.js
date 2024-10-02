@@ -6,9 +6,7 @@ var meResponse = {
     email: 'test@user.org',
     firstname: 'test',
     surname: 'test',
-    groups: [
-      'admin'
-    ]
+    groups: ['admin']
   }
 }
 
@@ -19,7 +17,15 @@ describe('Controller: ChannelsModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -30,13 +36,33 @@ describe('Controller: ChannelsModalCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
+      {
+        firstname: 'Super',
+        surname: 'User',
+        email: 'super@openim.org',
+        groups: ['admin']
+      },
+      {
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openim.org',
+        groups: ['limited']
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/groups')).respond([
-      { group: 'Group 1', users: [{ user: 'User 1', method: 'sms', maxAlerts: 'no max' }, { user: 'User 2', method: 'email', maxAlerts: '1 per day' }, { user: 'User 3', method: 'email', maxAlerts: '1 per hour' }] },
-      { group: 'Group 2', users: [{ user: 'User 4', method: 'email', maxAlerts: 'no max' }] }
+      {
+        group: 'Group 1',
+        users: [
+          {user: 'User 1', method: 'sms', maxAlerts: 'no max'},
+          {user: 'User 2', method: 'email', maxAlerts: '1 per day'},
+          {user: 'User 3', method: 'email', maxAlerts: '1 per hour'}
+        ]
+      },
+      {
+        group: 'Group 2',
+        users: [{user: 'User 4', method: 'email', maxAlerts: 'no max'}]
+      }
     ])
 
     // http request used in routes controller
@@ -47,25 +73,105 @@ describe('Controller: ChannelsModalCtrl', function () {
         name: 'Test 1 Mediator',
         description: 'Test 1 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 1', urlPattern: '/channel1', routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 1',
+            urlPattern: '/channel1',
+            routes: [
+              {
+                name: 'Route 1',
+                host: 'localhost',
+                port: '1111',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }]
-      }, {
+        endpoints: [
+          {
+            name: 'Route 1',
+            host: 'localhost',
+            port: '1111',
+            primary: true,
+            type: 'http'
+          }
+        ]
+      },
+      {
         urn: 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
         version: '0.1.2',
         name: 'Test 2 Mediator',
         description: 'Test 2 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 2', urlPattern: '/channnel2', routes: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 2',
+            urlPattern: '/channnel2',
+            routes: [
+              {
+                name: 'Route',
+                host: 'localhost',
+                port: '2222',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }, { name: 'Route 2', host: 'localhost2', port: '3333', primary: false, type: 'http' }]
+        endpoints: [
+          {
+            name: 'Route',
+            host: 'localhost',
+            port: '2222',
+            primary: true,
+            type: 'http'
+          },
+          {
+            name: 'Route 2',
+            host: 'localhost2',
+            port: '3333',
+            primary: false,
+            type: 'http'
+          }
+        ]
       }
     ])
 
     // http request used in routes controller
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      { country: 'US', state: 'Missouri', locality: 'St. Louis', organization: 'Mallinckrodt Institute of Radiology', organizationUnit: 'Electronic Radiology Lab', commonName: 'MIR2014-16', emailAddress: 'moultonr@mir.wustl.edu', data: '-----FAKE CERTIFICATE DATA-----', _id: '54e1ca5afa069b5a7b938c4f', validity: { start: '2014-10-09T13:15:28.000Z', end: '2016-11-29T13:15:28.000Z' } },
-      { country: 'ZA', state: 'KZN', locality: 'Durban', organization: 'Jembi Health Systems NPC', organizationUnit: 'eHealth', commonName: 'openhim', emailAddress: 'ryan@jembi.org', data: '-----FAKE CERTIFICATE DATA-----', _id: '54e1ca5afa069b5a7b938c50', validity: { start: '2014-11-25T12:52:21.000Z', end: '2016-10-30T12:52:21.000Z' } }
+      {
+        country: 'US',
+        state: 'Missouri',
+        locality: 'St. Louis',
+        organization: 'Mallinckrodt Institute of Radiology',
+        organizationUnit: 'Electronic Radiology Lab',
+        commonName: 'MIR2014-16',
+        emailAddress: 'moultonr@mir.wustl.edu',
+        data: '-----FAKE CERTIFICATE DATA-----',
+        _id: '54e1ca5afa069b5a7b938c4f',
+        validity: {
+          start: '2014-10-09T13:15:28.000Z',
+          end: '2016-11-29T13:15:28.000Z'
+        }
+      },
+      {
+        country: 'ZA',
+        state: 'KZN',
+        locality: 'Durban',
+        organization: 'Jembi Health Systems NPC',
+        organizationUnit: 'eHealth',
+        commonName: 'openhim',
+        emailAddress: 'ryan@jembi.org',
+        data: '-----FAKE CERTIFICATE DATA-----',
+        _id: '54e1ca5afa069b5a7b938c50',
+        validity: {
+          start: '2014-11-25T12:52:21.000Z',
+          end: '2016-10-30T12:52:21.000Z'
+        }
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels/.+/audits$')).respond([])
@@ -103,7 +209,7 @@ describe('Controller: ChannelsModalCtrl', function () {
 
   it('should fetch channel data from the API when updating', function () {
     httpBackend.expect('GET', new RegExp('.*/channels/.+'))
-    createController({ _id: 'test' })
+    createController({_id: 'test'})
     httpBackend.flush()
   })
 
@@ -161,7 +267,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
 
     // run the validate
     scope.validateFormChannels()
@@ -210,7 +324,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
@@ -234,7 +356,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
@@ -253,7 +383,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.channel.type = 'http'
     scope.channel.name = 'ChannelName'
     scope.channel.urlPattern = 'sample/api'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
@@ -297,7 +435,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.showRequestMatching = true
     scope.channel.name = 'ChannelName'
     scope.channel.urlPattern = 'sample/api'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
 
     // run the submit
     scope.submitFormChannels()
@@ -330,7 +476,15 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.matching.contentMatching = 'XML matching'
     scope.channel.matchContentXpath = 'XPath'
     scope.channel.matchContentValue = 'Value'
-    scope.channel.routes = [{ name: 'testRoute', host: 'localhost', port: '80', path: '/sample/api', primary: true }]
+    scope.channel.routes = [
+      {
+        name: 'testRoute',
+        host: 'localhost',
+        port: '80',
+        path: '/sample/api',
+        primary: true
+      }
+    ]
 
     // run the submit
     scope.submitFormChannels()
@@ -357,7 +511,15 @@ describe('Controller: channelBasicInfoCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope
@@ -398,10 +560,18 @@ describe('Controller: channelRequestMatchingCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, q
-// setup config constant to be used for API server details
+  // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope
@@ -429,7 +599,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
   it('should transform urlPattern accordingly if regex - remove regex additions for input display - Update is True', function () {
     var defer = q.defer()
     defer.resolve()
-    createControllerParent({ _id: 'test', $promise: defer.promise })
+    createControllerParent({_id: 'test', $promise: defer.promise})
 
     defer.promise.then(function () {
       scope.channel.urlPattern = '^/example/path$'
@@ -444,7 +614,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
   it('should set default radio button for Content Matching (JSON matching) - Update is True', function () {
     var defer = q.defer()
     defer.resolve()
-    createControllerParent({ _id: 'test', $promise: defer.promise })
+    createControllerParent({_id: 'test', $promise: defer.promise})
 
     defer.promise.then(function () {
       // set macthContentJson variable to enable JSON matching radio button
@@ -462,22 +632,56 @@ describe('Controller: channelUserAccessCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, httpBackend
-// setup config constant to be used for API server details
+  // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited', 'tester'] }
+      {
+        firstname: 'Super',
+        surname: 'User',
+        email: 'super@openim.org',
+        groups: ['admin']
+      },
+      {
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openim.org',
+        groups: ['limited', 'tester']
+      }
     ])
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
-      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
+      {
+        clientID: 'test1',
+        clientDomain: 'test1.openhim.org',
+        name: 'Test 1',
+        roles: ['test', 'testing2'],
+        passwordAlgorithm: 'sha512',
+        passwordHash: '1234',
+        passwordSalt: '1234'
+      },
+      {
+        clientID: 'test2',
+        clientDomain: 'test2.openhim.org',
+        name: 'Test 2',
+        roles: ['test', 'testing again'],
+        passwordAlgorithm: 'sha512',
+        passwordHash: '1234',
+        passwordSalt: '1234'
+      }
     ])
 
     scope = $rootScope.$new()
@@ -524,10 +728,18 @@ describe('Controller: channelDataControlCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent
-// setup config constant to be used for API server details
+  // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope
@@ -568,10 +780,18 @@ describe('Controller: channelRoutesCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent, httpBackend
-// setup config constant to be used for API server details
+  // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope
@@ -579,8 +799,18 @@ describe('Controller: channelRoutesCtrl', function () {
     httpBackend = $httpBackend
     // http request used in main parent controller
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'] }
+      {
+        firstname: 'Super',
+        surname: 'User',
+        email: 'super@openim.org',
+        groups: ['admin']
+      },
+      {
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openim.org',
+        groups: ['limited']
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
@@ -590,24 +820,104 @@ describe('Controller: channelRoutesCtrl', function () {
         name: 'Test 1 Mediator',
         description: 'Test 1 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 1', urlPattern: '/channel1', routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 1',
+            urlPattern: '/channel1',
+            routes: [
+              {
+                name: 'Route 1',
+                host: 'localhost',
+                port: '1111',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route 1', host: 'localhost', port: 1111, primary: false, type: 'http' }]
-      }, {
+        endpoints: [
+          {
+            name: 'Route 1',
+            host: 'localhost',
+            port: 1111,
+            primary: false,
+            type: 'http'
+          }
+        ]
+      },
+      {
         urn: 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
         version: '0.1.2',
         name: 'Test 2 Mediator',
         description: 'Test 2 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 2', urlPattern: '/channnel2', routes: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 2',
+            urlPattern: '/channnel2',
+            routes: [
+              {
+                name: 'Route',
+                host: 'localhost',
+                port: '2222',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route', host: 'localhost', port: '2222', primary: false, type: 'http' }, { name: 'Route 2', host: 'localhost2', port: '3333', primary: false, type: 'http' }]
+        endpoints: [
+          {
+            name: 'Route',
+            host: 'localhost',
+            port: '2222',
+            primary: false,
+            type: 'http'
+          },
+          {
+            name: 'Route 2',
+            host: 'localhost2',
+            port: '3333',
+            primary: false,
+            type: 'http'
+          }
+        ]
       }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([
-      { country: 'US', state: 'Missouri', locality: 'St. Louis', organization: 'Mallinckrodt Institute of Radiology', organizationUnit: 'Electronic Radiology Lab', commonName: 'MIR2014-16', emailAddress: 'moultonr@mir.wustl.edu', data: '-----FAKE CERTIFICATE DATA-----', _id: '54e1ca5afa069b5a7b938c4f', validity: { start: '2014-10-09T13:15:28.000Z', end: '2016-11-29T13:15:28.000Z' } },
-      { country: 'ZA', state: 'KZN', locality: 'Durban', organization: 'Jembi Health Systems NPC', organizationUnit: 'eHealth', commonName: 'openhim', emailAddress: 'ryan@jembi.org', data: '-----FAKE CERTIFICATE DATA-----', _id: '54e1ca5afa069b5a7b938c50', validity: { start: '2014-11-25T12:52:21.000Z', end: '2016-10-30T12:52:21.000Z' } }
+      {
+        country: 'US',
+        state: 'Missouri',
+        locality: 'St. Louis',
+        organization: 'Mallinckrodt Institute of Radiology',
+        organizationUnit: 'Electronic Radiology Lab',
+        commonName: 'MIR2014-16',
+        emailAddress: 'moultonr@mir.wustl.edu',
+        data: '-----FAKE CERTIFICATE DATA-----',
+        _id: '54e1ca5afa069b5a7b938c4f',
+        validity: {
+          start: '2014-10-09T13:15:28.000Z',
+          end: '2016-11-29T13:15:28.000Z'
+        }
+      },
+      {
+        country: 'ZA',
+        state: 'KZN',
+        locality: 'Durban',
+        organization: 'Jembi Health Systems NPC',
+        organizationUnit: 'eHealth',
+        commonName: 'openhim',
+        emailAddress: 'ryan@jembi.org',
+        data: '-----FAKE CERTIFICATE DATA-----',
+        _id: '54e1ca5afa069b5a7b938c50',
+        validity: {
+          start: '2014-11-25T12:52:21.000Z',
+          end: '2016-10-30T12:52:21.000Z'
+        }
+      }
     ])
 
     scope = $rootScope.$new()
@@ -654,7 +964,7 @@ describe('Controller: channelRoutesCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.ngErrorRoute = { hasErrors: true, name: true, host: true }
+    scope.ngErrorRoute = {hasErrors: true, name: true, host: true}
 
     // reset route erros
     scope.resetRouteErrors()
@@ -681,7 +991,10 @@ describe('Controller: channelRoutesCtrl', function () {
     scope.ngErrorRoute.should.have.property('name', true)
     scope.ngErrorRoute.should.have.property('host', true)
     scope.ngErrorRoute.should.have.property('port', true)
-    scope.ngErrorRoute.should.have.property('portError', 'Only numbers allowed!')
+    scope.ngErrorRoute.should.have.property(
+      'portError',
+      'Only numbers allowed!'
+    )
   })
 
   it('should saveRoute() and return errors - FAILED', function () {
@@ -701,7 +1014,10 @@ describe('Controller: channelRoutesCtrl', function () {
     scope.ngErrorRoute.should.have.property('name', true)
     scope.ngErrorRoute.should.have.property('host', true)
     scope.ngErrorRoute.should.have.property('port', true)
-    scope.ngErrorRoute.should.have.property('portError', 'Only numbers allowed!')
+    scope.ngErrorRoute.should.have.property(
+      'portError',
+      'Only numbers allowed!'
+    )
   })
 
   it('should saveRoute() and return NO errors - SUCCESS', function () {
@@ -726,18 +1042,20 @@ describe('Controller: channelRoutesCtrl', function () {
     createController()
     httpBackend.flush()
 
-    var route = [{
-      name: 'Test Route',
-      secured: false,
-      host: 'localhost',
-      port: '1234',
-      path: '/path',
-      pathTransform: '',
-      primary: false,
-      username: '',
-      password: '',
-      type: 'http'
-    }]
+    var route = [
+      {
+        name: 'Test Route',
+        secured: false,
+        host: 'localhost',
+        port: '1234',
+        path: '/path',
+        pathTransform: '',
+        primary: false,
+        username: '',
+        password: '',
+        type: 'http'
+      }
+    ]
     scope.channel.routes.push(route)
     scope.channel.routes.should.have.length(1)
 
@@ -894,10 +1212,18 @@ describe('Controller: channelAlertsCtrl', function () {
   // load the controller's module
   beforeEach(module('openhimConsoleApp'))
   var scope, createController, createControllerParent
-// setup config constant to be used for API server details
+  // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
   // Initialize the controller and a mock scope

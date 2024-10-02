@@ -1,11 +1,5 @@
 import {useState, useEffect, useMemo} from 'react'
-import {
-  Box,
-  Grid,
-  Typography,
-  Divider,
-  Button
-} from '@mui/material'
+import {Box, Grid, Typography, Divider, Button} from '@mui/material'
 import green from '@mui/material/colors/green'
 import {useSnackbar} from 'notistack'
 import {Settings} from '@mui/icons-material'
@@ -55,7 +49,14 @@ function PortalHome() {
   }, [])
 
   return (
-    <Box mt={'5%'} ml={'10%'} mr={'10%'}>
+    <Box
+      mt={'5%'}
+      ml={'10%'}
+      mr={'10%'}
+      style={{
+        minHeight: 'calc(100vh - 119px - 10px)'
+      }}
+    >
       <section id="PortalHeader">
         <Grid sx={{ml: 0, mt: 0}}>
           <Box width="100%" display="flex" justifyContent="space-between">

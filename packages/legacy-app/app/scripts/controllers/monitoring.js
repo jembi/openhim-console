@@ -1,3 +1,3 @@
-export function MonitoringCtrl ($scope) {
+export function MonitoringCtrl($scope) {
   $scope.setSomething = true
 }

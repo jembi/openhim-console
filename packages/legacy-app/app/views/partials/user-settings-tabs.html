@@ -1,25 +1,59 @@
-<uib-tabset class="transaction_settings_tabset" justified="false" style="margin-bottom: 0px;">
+<uib-tabset
+  class="transaction_settings_tabset"
+  justified="false"
+  style="margin-bottom: 0px"
+>
   <!-- LIST SETTINGS -->
   <uib-tab>
     <uib-tab-heading>List Settings</uib-tab-heading>
     <div class="settings_div">
       <label style="float: left">
         Transaction View
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i
+          ng-show="uiSettings.showTooltips"
+          tooltip-placement="top"
+          uib-tooltip="Set whether a transaction opens in the 'Same Tab' or in a 'New Tab'"
+          class="glyphicon glyphicon-question-sign tooltip-wide"
+        ></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
-        <label class="btn btn-primary" ng-model="user.settings.list.tabview" uib-btn-radio="'same'">Same Tab</label>
-        <label class="btn btn-primary" ng-model="user.settings.list.tabview" uib-btn-radio="'new'">New Tab</label>
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.list.tabview"
+          uib-btn-radio="'same'"
+          >Same Tab</label
+        >
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.list.tabview"
+          uib-btn-radio="'new'"
+          >New Tab</label
+        >
       </div>
     </div>
     <div class="settings_div">
       <label style="float: left">
         Auto-Update Transaction List
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i
+          ng-show="uiSettings.showTooltips"
+          tooltip-placement="top"
+          uib-tooltip="If enabled, the transaction list will be updated automatically whenever new transactions come in"
+          class="glyphicon glyphicon-question-sign tooltip-wide"
+        ></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
-        <label class="btn btn-primary" ng-model="user.settings.list.autoupdate" uib-btn-radio="true">Enabled</label>
-        <label class="btn btn-primary" ng-model="user.settings.list.autoupdate" uib-btn-radio="false">Disabled</label>
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.list.autoupdate"
+          uib-btn-radio="true"
+          >Enabled</label
+        >
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.list.autoupdate"
+          uib-btn-radio="false"
+          >Disabled</label
+        >
       </div>
     </div>
   </uib-tab>
@@ -30,11 +64,26 @@
     <div class="settings_div">
       <label style="float: left">
         Show Tooltips
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set whether to show tooltips, like this one" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i
+          ng-show="uiSettings.showTooltips"
+          tooltip-placement="top"
+          uib-tooltip="Set whether to show tooltips, like this one"
+          class="glyphicon glyphicon-question-sign tooltip-wide"
+        ></i>
       </label>
       <div class="btn-group" style="float: left; clear: both">
-        <label class="btn btn-primary" ng-model="user.settings.general.showTooltips" uib-btn-radio="true">Yes</label>
-        <label class="btn btn-primary"ng-model="user.settings.general.showTooltips" uib-btn-radio="false">No</label>
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.general.showTooltips"
+          uib-btn-radio="true"
+          >Yes</label
+        >
+        <label
+          class="btn btn-primary"
+          ng-model="user.settings.general.showTooltips"
+          uib-btn-radio="false"
+          >No</label
+        >
       </div>
     </div>
   </uib-tab>

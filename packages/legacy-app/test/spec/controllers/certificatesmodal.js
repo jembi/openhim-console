@@ -8,7 +8,14 @@ describe('Controller: CertificatesModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,9 +25,7 @@ describe('Controller: CertificatesModalCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -28,12 +33,10 @@ describe('Controller: CertificatesModalCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('POST', new RegExp('.*/certificates')).respond(
-      {
-        certificate: '---BEGIN CERTIFICATE ---',
-        key: '---BEGIN KEY ---'
-      }
-    )
+    $httpBackend.when('POST', new RegExp('.*/certificates')).respond({
+      certificate: '---BEGIN CERTIFICATE ---',
+      key: '---BEGIN KEY ---'
+    })
 
     scope = $rootScope.$new()
     var modalInstance = sinon.spy()

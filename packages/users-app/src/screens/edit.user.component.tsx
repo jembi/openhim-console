@@ -16,17 +16,22 @@ import {useNavigate, useLocation, useLoaderData} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {createNewUser, editUserByEmail, getRoles, getUsers} from '../services/api'
+import {
+  createNewUser,
+  editUserByEmail,
+  getRoles,
+  getUsers
+} from '../services/api'
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
-import { handleFieldValidationAndUpdateErrors, handleOnChange } from './helper'
+import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
 
 export async function loader({params}) {
-  const users = await getUsers();
-  const user = users.find(user => user._id === params['userId']);
-  if(user.settings === undefined) {
+  const users = await getUsers()
+  const user = users.find(user => user._id === params['userId'])
+  if (user.settings === undefined) {
     user.settings = {
-      list:{
+      list: {
         tabview: false,
         autoupdate: false
       },
@@ -34,13 +39,12 @@ export async function loader({params}) {
         showTooltips: false
       }
     }
-
   }
   return {user}
 }
 
 function AddUserRole() {
-  const {user: state} = useLoaderData() as { user: User }
+  const {user: state} = useLoaderData() as {user: User}
   const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
@@ -57,7 +61,7 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      window.history.pushState({},'',`/#${Routes.USERS}`)
+      window.history.pushState({}, '', `/#${Routes.USERS}`)
     },
     onError: error => {
       hideBackdrop()
@@ -71,7 +75,7 @@ function AddUserRole() {
     setUser(event.user)
     setIsFormDataValid(event.isValid)
   }
-  
+
   const onChange = (
     e:
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -80,9 +84,16 @@ function AddUserRole() {
   ) => {
     handleOnChange(nestedKey, user, e, setUser, validateUserField)
   }
-  
+
   const validateUserField = (field: string, newBasicInfoState?: object) => {
-    handleFieldValidationAndUpdateErrors(newBasicInfoState, user, field, setValidationErrors, validationErrors, setIsFormDataValid)
+    handleFieldValidationAndUpdateErrors(
+      newBasicInfoState,
+      user,
+      field,
+      setValidationErrors,
+      validationErrors,
+      setIsFormDataValid
+    )
   }
 
   const handleEditUser = async () => {
@@ -98,8 +109,8 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} sx={{minHeight: 'calc(100vh - 64px - 10px)'}}>
-    <header style= {{marginBottom: '10px'}}>
+    <Box padding={3} sx={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+      <header style={{marginBottom: '10px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit User
         </Typography>
@@ -123,10 +134,10 @@ function AddUserRole() {
         justifyContent="center"
       >
         <Grid item xs={12}>
-          <Card style={{width:'600px'}} elevation={4}>
+          <Card style={{width: '600px'}} elevation={4}>
             <Divider />
             <CardContent>
-            <BasicInfo
+              <BasicInfo
                 roles={roles}
                 onChange={onChange}
                 user={user}
@@ -150,10 +161,7 @@ function AddUserRole() {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={
-                    mutation.isLoading ||
-                    !isFormDataValid
-                  }
+                  disabled={mutation.isLoading || !isFormDataValid}
                   onClick={handleEditUser}
                 >
                   UPDATE USER

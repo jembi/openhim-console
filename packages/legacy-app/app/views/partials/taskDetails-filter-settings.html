@@ -1,12 +1,14 @@
 <!--remove me-->
 <div class="auditFilterDiv">
   <label class="auditFilterDivLabel">Basic Filters: </label>
-  <div class="settings_div" style="float: left; margin-right: 15px;">
+  <div class="settings_div" style="float: left; margin-right: 15px">
     <label>Processing Status: </label>
-    <select class="form-control" 
-      ng-model="filters.tstatus" 
+    <select
+      class="form-control"
+      ng-model="filters.tstatus"
       ng-class="{formControlNotEmpty: filters.tstatus}"
-      ng-change="applyFiltersToUrl()">
+      ng-change="applyFiltersToUrl()"
+    >
       <option value="">Don't filter</option>
       <option value="Queued">Show Queued</option>
       <option value="Processing">Show Processing</option>
@@ -14,37 +16,52 @@
       <option value="Completed">Show Completed</option>
     </select>
   </div>
-  <div class="settings_div" style="float: left; margin-right: 15px;">
+  <div class="settings_div" style="float: left; margin-right: 15px">
     <label>Rerun Status: </label>
-    <select class="form-control" 
-      ng-model="filters.rerunStatus" 
+    <select
+      class="form-control"
+      ng-model="filters.rerunStatus"
       ng-class="{formControlNotEmpty: filters.rerunStatus}"
-      ng-change="applyFiltersToUrl()">
+      ng-change="applyFiltersToUrl()"
+    >
       <option value="">Don't filter</option>
       <option value="Failed">Show Failed</option>
       <option value="Processing">Show Processing</option>
       <option value="Completed">Show Completed</option>
-      <option value="Completed with error(s)">Show Completed with error(s)</option>
+      <option value="Completed with error(s)">
+        Show Completed with error(s)
+      </option>
       <option value="Successful">Show Successful</option>
     </select>
   </div>
-  <div class="settings_div" style="float: left; margin-right: 15px;">
+  <div class="settings_div" style="float: left; margin-right: 15px">
     <label>Has Errors: </label>
-    <select class="form-control" 
-      ng-model="filters.hasErrors" 
+    <select
+      class="form-control"
+      ng-model="filters.hasErrors"
       ng-class="{formControlNotEmpty: filters.hasErrors}"
-      ng-change="applyFiltersToUrl()">
+      ng-change="applyFiltersToUrl()"
+    >
       <option value="">Don't filter</option>
       <option value="yes">Yes</option>
       <option value="no">No</option>
     </select>
   </div>
-  <div class="settings_div" style="float: left;">
+  <div class="settings_div" style="float: left">
     <label>
-      Limit: 
-      <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Set the limit of how many records to display" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+      Limit:
+      <i
+        ng-show="uiSettings.showTooltips"
+        tooltip-placement="top"
+        uib-tooltip="Set the limit of how many records to display"
+        class="glyphicon glyphicon-question-sign tooltip-wide"
+      ></i>
     </label>
-    <select class="form-control" ng-model="filters.limit" ng-change="applyFiltersToUrl()">
+    <select
+      class="form-control"
+      ng-model="filters.limit"
+      ng-change="applyFiltersToUrl()"
+    >
       <option value="10">10</option>
       <option value="50">50</option>
       <option value="100">100</option>
@@ -55,5 +72,7 @@
 </div>
 
 <div class="transactionsFilterRefreshDiv">
-  <button class="btn btn-primary" ng-click="clearFilters();"><i class="glyphicon glyphicon-remove"></i> Clear Filters</button>
+  <button class="btn btn-primary" ng-click="clearFilters();">
+    <i class="glyphicon glyphicon-remove"></i> Clear Filters
+  </button>
 </div>

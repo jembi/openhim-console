@@ -15,7 +15,7 @@ import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles, createRole, fetchClientRoles} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
-import { useSnackbar } from 'notistack'
+import {useSnackbar} from 'notistack'
 
 const styleForTextAreas = {
   marginBottom: 2
@@ -45,22 +45,23 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
 
   useEffect(() => {
     //@ts-ignore
-    fetchClientRoles().then(roles => {
-      //@ts-ignore
-      if(roles.length === 0){
-        setRoles(['instant']);
-      }else {
-        setRoles(roles.map(role => role.roleName))
-      }
-      
-    }).catch((error) => {
-      if (error?.response && error?.response?.data) {
-        enqueueSnackbar(error.response.data, {variant: 'error'})
-      } else {
-        console.log(JSON.stringify(error))
-        enqueueSnackbar('Error fetching roles', {variant: 'error'})
-      }
-    });
+    fetchClientRoles()
+      .then(roles => {
+        //@ts-ignore
+        if (roles.length === 0) {
+          setRoles(['instant'])
+        } else {
+          setRoles(roles.map(role => role.roleName))
+        }
+      })
+      .catch(error => {
+        if (error?.response && error?.response?.data) {
+          enqueueSnackbar(error.response.data, {variant: 'error'})
+        } else {
+          console.log(JSON.stringify(error))
+          enqueueSnackbar('Error fetching roles', {variant: 'error'})
+        }
+      })
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {

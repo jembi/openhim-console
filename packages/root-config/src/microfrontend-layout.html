@@ -1,40 +1,25 @@
 <single-spa-router>
   <main>
     <application name="@jembi/openhim-header"></application>
-    <div style="padding: 0 5%; background-color: #f1f1f1; min-height: auto;">
+    <div style="background-color: #f1f1f1; min-height: auto; margin: 20px">
       <route default>
-        <route path="#!" exact="true">
-        </route>
-        <route path="#!/transactions">
-        </route>
-        <route path="#!/transactions/:transactionId">
-        </route>
-        <route path="#!/audits">
-        </route>
-        <route path="#!/audits">
-        </route>
-        <route path="#!/tasks">
-        </route>
-        <route path="#!/visualizer">
-        </route>
-        <route path="#!/groups">
-        </route>
-        <route path="#!/mediators">
-        </route>
-        <route path="#!/certificates">
-        </route>
-        <route path="#!/export-import">
-        </route>
-        <route path="#!/logs">
-        </route>
-        <route path="#!/about">
-        </route>
-        <route path="#!/profile">
-        </route>
-        <route path="#!/portal-admin">
-        </route>
-        <div style="flex-grow: 1">	
-          <application name="@jembi/legacy-console"></application>	
+        <route path="#!" exact="true"> </route>
+        <route path="#!/transactions"> </route>
+        <route path="#!/transactions/:transactionId"> </route>
+        <route path="#!/audits"> </route>
+        <route path="#!/audits"> </route>
+        <route path="#!/tasks"> </route>
+        <route path="#!/visualizer"> </route>
+        <route path="#!/groups"> </route>
+        <route path="#!/mediators"> </route>
+        <route path="#!/certificates"> </route>
+        <route path="#!/export-import"> </route>
+        <route path="#!/logs"> </route>
+        <route path="#!/about"> </route>
+        <route path="#!/profile"> </route>
+        <route path="#!/portal-admin"> </route>
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
         </div>
       </route>
       <route path="#!/portal">
@@ -83,10 +68,8 @@
         </div>
       </route>
       <div id="openhim-console-ems-container"></div>
-      
     </div>
-    
-   <application name="@jembi/footer-app"></application>
 
+    <application name="@jembi/footer-app"></application>
   </main>
 </single-spa-router>

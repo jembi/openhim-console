@@ -1,7 +1,16 @@
 import mediatorConfigModal from '~/views/mediatorConfigModal'
-import { MediatorConfigModalCtrl } from './'
+import {MediatorConfigModalCtrl} from './'
 
-export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $routeParams, Api, Alerting, MediatorDisplay) {
+export function MediatorDetailsCtrl(
+  $rootScope,
+  $scope,
+  $uibModal,
+  $location,
+  $routeParams,
+  Api,
+  Alerting,
+  MediatorDisplay
+) {
   const createParamDefMap = function (mediator) {
     const map = {}
     if (mediator.config) {
@@ -26,11 +35,11 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
   }
 
   $scope.$on('mediatorConfigChanged', function () {
-    Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError)
+    Api.Mediators.get({urn: $routeParams.urn}, querySuccess, queryError)
   })
 
   // get the Data for the supplied ID and store in 'mediatorDetails' object
-  Api.Mediators.get({ urn: $routeParams.urn }, querySuccess, queryError)
+  Api.Mediators.get({urn: $routeParams.urn}, querySuccess, queryError)
 
   $scope.editMediatorConfig = function () {
     Alerting.AlertReset()
@@ -48,10 +57,23 @@ export function MediatorDetailsCtrl ($rootScope, $scope, $uibModal, $location, $
 
   $scope.addChannel = function (channelName) {
     Alerting.AlertReset('top')
-    Api.MediatorChannels.save({ urn: $routeParams.urn }, [channelName], function () {
-      Alerting.AlertAddMsg('top', 'success', 'Successfully installed mediator channel')
-    }, function () {
-      Alerting.AlertAddMsg('top', 'danger', 'Oops, something went wrong. Could not install mediator channel.')
-    })
+    Api.MediatorChannels.save(
+      {urn: $routeParams.urn},
+      [channelName],
+      function () {
+        Alerting.AlertAddMsg(
+          'top',
+          'success',
+          'Successfully installed mediator channel'
+        )
+      },
+      function () {
+        Alerting.AlertAddMsg(
+          'top',
+          'danger',
+          'Oops, something went wrong. Could not install mediator channel.'
+        )
+      }
+    )
   }
 }

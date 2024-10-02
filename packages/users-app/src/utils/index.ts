@@ -1,11 +1,11 @@
-import z, { boolean, string } from 'zod';
-import { User } from '../types';
+import z, {boolean, string} from 'zod'
+import {User} from '../types'
 
 export const userSchema = z.object({
   _id: z.string(),
   email: z.string().email(),
-  firstname: z.string().min(1, "Firstname cannot be empty"),
-  surname: z.string().min(1, "Surname cannot be empty"),
+  firstname: z.string().min(1, 'Firstname cannot be empty'),
+  surname: z.string().min(1, 'Surname cannot be empty'),
   provider: z.string().optional(),
   groups: z.array(z.string()).min(1),
   msisdn: z.string().optional(),
@@ -27,9 +27,6 @@ export const userSchema = z.object({
   tokenType: z.string().nullable().optional()
 })
 
-
-
-
 export const defaultUser: Readonly<User> = {
   _id: undefined,
   email: '',
@@ -44,7 +41,7 @@ export const defaultUser: Readonly<User> = {
   locked: false,
   passports: '',
   settings: {
-    list:{
+    list: {
       tabview: true,
       autoupdate: false
     },
@@ -56,10 +53,6 @@ export const defaultUser: Readonly<User> = {
   tokenType: null
 }
 
-
-
-
-
 export function getNestedProp(obj, path) {
-  return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }

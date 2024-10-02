@@ -91,6 +91,7 @@ export async function fetchServerHeartBeat(): Promise<{
   now: number
 }> {
   await ensureApiClientInitialized()
+  ensureApiClientInitialized()
   const response = await apiClient.get('/heartbeat')
   return response.data
 }

@@ -1,20 +1,42 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">
+    &times;
+  </button>
   <h4 class="modal-title" id="addClientLabel">
     <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
     <span ng-show="!update">Add</span>
-     a {{cert.type}} certificate</h4>
+    a {{cert.type}} certificate
+  </h4>
 </div>
 <form name="form" novalidate>
   <div class="modal-body">
-
     <!-- Top Alerts -->
-    <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+    <div
+      uib-alert
+      ng-repeat="alert in alerts.top"
+      ng-class="'alert-' + (alert.type || 'warning')"
+    >
+      {{alert.msg}}
+    </div>
     <!-- Top Alerts -->
 
     <div class="panel-body">
-      <a ng-if="downloadKeyLink" download="{{keyName}}" class="btn btn-primary" ng-href="{{downloadKeyLink}}" ng-click="downloadKeyFile()"><i class="glyphicon glyphicon-export"></i> Download Key</a>
-      <a ng-if="downloadCertLink" download="{{certName}}" class="btn btn-primary" ng-href="{{downloadCertLink}}" ng-click="downloadCertFile()"><i class="glyphicon glyphicon-export"></i> Download Cert</a>
+      <a
+        ng-if="downloadKeyLink"
+        download="{{keyName}}"
+        class="btn btn-primary"
+        ng-href="{{downloadKeyLink}}"
+        ng-click="downloadKeyFile()"
+        ><i class="glyphicon glyphicon-export"></i> Download Key</a
+      >
+      <a
+        ng-if="downloadCertLink"
+        download="{{certName}}"
+        class="btn btn-primary"
+        ng-href="{{downloadCertLink}}"
+        ng-click="downloadCertFile()"
+        ><i class="glyphicon glyphicon-export"></i> Download Cert</a
+      >
     </div>
 
     <div class="form-group has-error-key">
@@ -23,64 +45,164 @@
 
     <fieldset>
       <div class="form-group-2columns">
-        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.days }">
+        <div
+          class="form-group pull-left"
+          ng-class="{ 'has-error' : ngError.days }"
+        >
           <label><span>*</span> Validity in days [365]</label>
-          <input class="form-control" type="number" ng-model="cert.days" ng-disabled="update" focus="true" />
+          <input
+            class="form-control"
+            type="number"
+            ng-model="cert.days"
+            ng-disabled="update"
+            focus="true"
+          />
         </div>
-        <div class="form-group pull-right"  ng-class="{ 'has-error' : ngError.commonName }">
-          <label><span>*</span> Common Name (e.g. server FQDN or YOUR name)</label>
-          <input class="form-control" placeholder="" type="text" ng-model="cert.commonName">
+        <div
+          class="form-group pull-right"
+          ng-class="{ 'has-error' : ngError.commonName }"
+        >
+          <label
+            ><span>*</span> Common Name (e.g. server FQDN or YOUR name)</label
+          >
+          <input
+            class="form-control"
+            placeholder=""
+            type="text"
+            ng-model="cert.commonName"
+          />
         </div>
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group pull-left"  ng-class="{ 'has-error' : ngError.state }">
+        <div
+          class="form-group pull-left"
+          ng-class="{ 'has-error' : ngError.state }"
+        >
           <label> State or Province Name [Some-State]</label>
-          <input class="form-control" type="text" ng-model="cert.state" name="state" >
+          <input
+            class="form-control"
+            type="text"
+            ng-model="cert.state"
+            name="state"
+          />
         </div>
-        <div class="form-group pull-right" ng-class="{ 'has-error' : ngError.country }">
+        <div
+          class="form-group pull-right"
+          ng-class="{ 'has-error' : ngError.country }"
+        >
           <label>Country Name (2 letter code) [ZA]</label>
-          <input class="form-control" type="text" ng-model="cert.country" ng-disabled="update"  >
+          <input
+            class="form-control"
+            type="text"
+            ng-model="cert.country"
+            ng-disabled="update"
+          />
         </div>
       </div>
 
-      <div class="form-group-2columns" ng-class="{ 'has-error' : ngError.locality }">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.locality }">
+      <div
+        class="form-group-2columns"
+        ng-class="{ 'has-error' : ngError.locality }"
+      >
+        <div
+          class="form-group"
+          style="float: left"
+          ng-class="{ 'has-error' : ngError.locality }"
+        >
           <label> Locality Name (eg, city)</label>
-          <input class="form-control" type="text" ng-model="cert.locality" ng-disabled="update"  >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="cert.locality"
+            ng-disabled="update"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationRequiredMsg}}
+          </div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.emailAddress }">
+        <div
+          class="form-group"
+          style="float: right"
+          ng-class="{ 'has-error' : ngError.emailAddress }"
+        >
           <label> Email Address</label>
-          <input class="form-control" type="text" ng-model="cert.emailAddress" name="emailAddress" >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="cert.emailAddress"
+            name="emailAddress"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationRequiredMsg}}
+          </div>
         </div>
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group pull-left" ng-class="{ 'has-error' : ngError.organization }">
-          <label> Organization Name (eg, company) [Internet Widgits Pty Ltd] </label>
-          <input class="form-control" type="text" ng-model="cert.organization" ng-disabled="update"  >
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <div
+          class="form-group pull-left"
+          ng-class="{ 'has-error' : ngError.organization }"
+        >
+          <label>
+            Organization Name (eg, company) [Internet Widgits Pty Ltd]
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="cert.organization"
+            ng-disabled="update"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationRequiredMsg}}
+          </div>
         </div>
-        <div class="form-group pull-right" ng-class="{ 'has-error' : ngError.organizationUnit }">
+        <div
+          class="form-group pull-right"
+          ng-class="{ 'has-error' : ngError.organizationUnit }"
+        >
           <label> Organizational Unit Name (eg, section)</label>
-          <input class="form-control" placeholder="" type="text" ng-model="cert.organizationUnit">
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign">{{validationRequiredMsg}}</i></div>
+          <input
+            class="form-control"
+            placeholder=""
+            type="text"
+            ng-model="cert.organizationUnit"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"
+              >{{validationRequiredMsg}}</i
+            >
+          </div>
         </div>
       </div>
     </fieldset>
   </div>
   <div class="modal-footer">
     <!-- hasErrors Alerts -->
-    <div uib-alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
+    <div
+      uib-alert
+      style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px"
+      ng-repeat="alert in alerts.hasErrors"
+      ng-class="'alert-' + (alert.type || 'warning')"
+    >
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
     </div>
     <!-- hasErrors Alerts -->
 
     <div>
-      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="submitFormCertificate()">Create Certificate</button>
+      <button type="button" class="btn btn-default" ng-click="cancel()">
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        ng-click="submitFormCertificate()"
+      >
+        Create Certificate
+      </button>
     </div>
   </div>
 </form>

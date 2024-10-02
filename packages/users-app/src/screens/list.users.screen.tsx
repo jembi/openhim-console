@@ -1,14 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/Create'
 import ErrorIcon from '@mui/icons-material/Error'
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  Typography
-} from '@mui/material'
+import {Box, Button, Card, Divider, Grid, Typography} from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import {useQuery} from '@tanstack/react-query'
@@ -110,7 +103,7 @@ function UsersList() {
   ]
 
   return (
-    <Box padding={3} sx={{minHeight: 'calc(100vh - 64px - 10px)'}}>
+    <Box padding={3} sx={{minHeight: 'calc(100vh - 119px - 10px)'}}>
       <Typography variant="h4" gutterBottom>
         Manager Users
       </Typography>
