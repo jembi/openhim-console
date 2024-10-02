@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import * as fns from 'date-fns'
+import {sub} from 'date-fns'
 import {Grid, Typography, Card, Divider, Box} from '@mui/material'
 import TransactionLineChart from './charts/transaction-line-chart.component'
 import {getTimeSeries} from '../services/api'
@@ -15,9 +15,9 @@ export default function Charts() {
   const [isFetchingTransactions, setIsFetchingTransactions] = useState(true)
   const [error, setError] = useState<Error | null>(null)
   const [filterData, setFilterData] = useState<BasicFilterData>({
-    period: TimeSeriesScale.day,
-    from: now,
-    until: fns.add(now, {days: 1}),
+    period: TimeSeriesScale.minute,
+    from: sub(now, {hours: 1}),
+    until: now,
     option: '1h'
   })
 
@@ -39,11 +39,6 @@ export default function Charts() {
       })
   }
 
-  // on mount.
-  React.useEffect(() => {
-    getFilteredTransactions()
-  }, [])
-
   React.useEffect(() => {
     getFilteredTransactions()
 
@@ -51,10 +46,6 @@ export default function Charts() {
 
     return () => window.clearInterval(int)
   }, [filterData])
-
-  const onFilterChange = (filter: BasicFilterData) => {
-    setFilterData(structuredClone(filter))
-  }
 
   if (error) {
     return <ErrorMessage onRetry={getFilteredTransactions} />
@@ -77,7 +68,7 @@ export default function Charts() {
           <Divider />
         </Grid>
         <Grid item xs={12}>
-          <BasicFilter value={filterData} onChange={onFilterChange} />
+          <BasicFilter value={filterData} onChange={setFilterData} />
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
