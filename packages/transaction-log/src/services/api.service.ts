@@ -8,7 +8,8 @@ import {
   addToTaskQueue,
   fetchBulkRunFilterCount,
   fetchServerHeartBeat,
-  fetchTransaction
+  fetchTransaction,
+  addToBulkReRunTaskQueue
 } from '@jembi/openhim-core-api'
 
 export async function getClients(): Promise<Client[]> {
@@ -90,14 +91,14 @@ export async function addTransactionsToReRunQueue(
   await addToTaskQueue(payload)
 }
 
-export async function addTransactionsToReRunQueueByFilters(params: {
+export async function addTransactionsToBulkReRunTaskQueue(params: {
   batchSize: number
   filterLimit: number
   filterPage: number
   filters: {}
   pauseQueue: boolean
 }) {
-  await addToTaskQueue(params)
+  await addToBulkReRunTaskQueue(params)
 }
 
 export async function getBulkRunFilterCount(params: {

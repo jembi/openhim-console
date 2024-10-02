@@ -13,7 +13,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 import {
   addTransactionsToReRunQueue,
-  addTransactionsToReRunQueueByFilters,
+  addTransactionsToBulkReRunTaskQueue,
   getBulkRunFilterCount,
   getChannelById,
   getChannels,
@@ -392,7 +392,7 @@ const App: React.FC = () => {
               onConfirmReRun: async (event: TransactionRerunEvent) => {
                 try {
                   showBackdrop(<Loader />, true)
-                  await addTransactionsToReRunQueueByFilters({
+                  await addTransactionsToBulkReRunTaskQueue({
                     batchSize: event.batchSize,
                     filterLimit: 20,
                     filterPage: 0,
