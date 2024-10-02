@@ -8,7 +8,15 @@ describe('Controller: VisualizerCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,113 +26,120 @@ describe('Controller: VisualizerCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
-  var visualizers = [{
-    name: 'Test Visualizer 1',
-    components: [
-      {
-        eventType: 'primary',
-        eventName: 'OpenHIM Mediator FHIR Proxy Route',
-        display: 'FHIR Server'
+  var visualizers = [
+    {
+      name: 'Test Visualizer 1',
+      components: [
+        {
+          eventType: 'primary',
+          eventName: 'OpenHIM Mediator FHIR Proxy Route',
+          display: 'FHIR Server'
+        },
+        {
+          eventType: 'primary',
+          eventName: 'echo',
+          display: 'Echo'
+        }
+      ],
+      color: {
+        inactive: '#c8cacf',
+        active: '#10e057',
+        error: '#a84b5c',
+        text: '#4a4254'
       },
-      {
-        eventType: 'primary',
-        eventName: 'echo',
-        display: 'Echo'
-      }
-    ],
-    color: {
-      inactive: '#c8cacf',
-      active: '#10e057',
-      error: '#a84b5c',
-      text: '#4a4254'
-    },
-    size: {
-      responsive: true,
-      width: 1000,
-      height: 400,
-      padding: 20
-    },
-    time: {
-      updatePeriod: 200,
-      maxSpeed: 5,
-      maxTimeout: 5000,
-      minDisplayPeriod: 500
-    },
-    channels: [
-      {
-        eventType: 'channel',
-        eventName: 'FHIR Proxy',
-        display: 'FHIR Proxy'
+      size: {
+        responsive: true,
+        width: 1000,
+        height: 400,
+        padding: 20
       },
-      {
-        eventType: 'channel',
-        eventName: 'Echo',
-        display: 'Echo'
-      }
-    ],
-    mediators: [
-      {
-        mediator: 'urn:mediator:fhir-proxy',
-        name: 'OpenHIM Mediator FHIR Proxy',
-        display: 'OpenHIM Mediator FHIR Proxy'
+      time: {
+        updatePeriod: 200,
+        maxSpeed: 5,
+        maxTimeout: 5000,
+        minDisplayPeriod: 500
       },
-      {
-        mediator: 'urn:mediator:shell-script',
-        name: 'OpenHIM Shell Script Mediator',
-        display: 'OpenHIM Shell Script Mediator'
-      }
-    ]
-  },
-  {
-    name: 'Test Visualizer 2',
-    components: [
-      {
-        eventType: 'primary',
-        eventName: 'echo',
-        display: 'Echo'
-      }
-    ],
-    color: {
-      inactive: '#c8cacf',
-      active: '#10e057',
-      error: '#a84b5c',
-      text: '#4a4254'
+      channels: [
+        {
+          eventType: 'channel',
+          eventName: 'FHIR Proxy',
+          display: 'FHIR Proxy'
+        },
+        {
+          eventType: 'channel',
+          eventName: 'Echo',
+          display: 'Echo'
+        }
+      ],
+      mediators: [
+        {
+          mediator: 'urn:mediator:fhir-proxy',
+          name: 'OpenHIM Mediator FHIR Proxy',
+          display: 'OpenHIM Mediator FHIR Proxy'
+        },
+        {
+          mediator: 'urn:mediator:shell-script',
+          name: 'OpenHIM Shell Script Mediator',
+          display: 'OpenHIM Shell Script Mediator'
+        }
+      ]
     },
-    size: {
-      responsive: true,
-      width: 1000,
-      height: 400,
-      padding: 20
-    },
-    time: {
-      updatePeriod: 200,
-      maxSpeed: 5,
-      maxTimeout: 5000,
-      minDisplayPeriod: 500
-    },
-    channels: [
-      {
-        eventType: 'channel',
-        eventName: 'Echo',
-        display: 'Echo'
-      }
-    ],
-    mediators: []
-  }]
+    {
+      name: 'Test Visualizer 2',
+      components: [
+        {
+          eventType: 'primary',
+          eventName: 'echo',
+          display: 'Echo'
+        }
+      ],
+      color: {
+        inactive: '#c8cacf',
+        active: '#10e057',
+        error: '#a84b5c',
+        text: '#4a4254'
+      },
+      size: {
+        responsive: true,
+        width: 1000,
+        height: 400,
+        padding: 20
+      },
+      time: {
+        updatePeriod: 200,
+        maxSpeed: 5,
+        maxTimeout: 5000,
+        minDisplayPeriod: 500
+      },
+      channels: [
+        {
+          eventType: 'channel',
+          eventName: 'Echo',
+          display: 'Echo'
+        }
+      ],
+      mediators: []
+    }
+  ]
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
     modal = $uibModal
 
     $httpBackend.when('GET', new RegExp('.*/visualizers')).respond(visualizers)
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
+    $httpBackend
+      .when('GET', new RegExp('.*/heartbeat'))
+      .respond({now: Date.now()})
 
     $httpBackend.when('PUT', new RegExp('.*/users/test@user.org')).respond()
 
@@ -132,7 +147,7 @@ describe('Controller: VisualizerCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('VisualizerCtrl', { $scope: scope })
+      return $controller('VisualizerCtrl', {$scope: scope})
     }
   }))
 
@@ -142,7 +157,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should add visualizer settings to the scope, defaulting to the first visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     createController()
     httpBackend.flush()
@@ -202,7 +219,12 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should add visualizer settings to the scope, defaulting to a user last viewed visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org', settings: { selectedVisualizer: 'Test Visualizer 2' } })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({
+        email: 'test@user.org',
+        settings: {selectedVisualizer: 'Test Visualizer 2'}
+      })
 
     createController()
     httpBackend.flush()
@@ -211,7 +233,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should load another visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     createController()
     httpBackend.flush()
@@ -223,25 +247,33 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should update a users last viewed visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     createController()
     httpBackend.flush()
 
-    httpBackend.expect('PUT', new RegExp('.*/users/test@user.org'), function (data) {
-      return !!JSON.parse(data).settings.selectedVisualizer
-    }).respond({})
+    httpBackend
+      .expect('PUT', new RegExp('.*/users/test@user.org'), function (data) {
+        return !!JSON.parse(data).settings.selectedVisualizer
+      })
+      .respond({})
     scope.selectVis(visualizers[1])
     httpBackend.flush()
 
     var consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
 
-    consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal('Test Visualizer 2')
+    consoleSession.sessionUserSettings.selectedVisualizer.should.be.equal(
+      'Test Visualizer 2'
+    )
   })
 
   it('should open a modal to confirm deletion of a visualizer and remove a visualizer on confirmation', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
@@ -267,7 +299,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should open a modal to confirm deletion of a visualizer and NOT remove a visualizer on cancellation', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
@@ -293,7 +327,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should open a modal to add a new visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open').callsFake(function () {
       return {
@@ -313,7 +349,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should open a modal to edit a visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open')
 
@@ -325,7 +363,9 @@ describe('Controller: VisualizerCtrl', function () {
   })
 
   it('should open a modal to duplicate a visualizer', function () {
-    httpBackend.when('GET', new RegExp('.*/users/test@user.org')).respond({ email: 'test@user.org' })
+    httpBackend
+      .when('GET', new RegExp('.*/users/test@user.org'))
+      .respond({email: 'test@user.org'})
 
     var modalSpy = sinon.stub(modal, 'open')
 

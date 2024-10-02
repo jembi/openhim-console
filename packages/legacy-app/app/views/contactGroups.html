@@ -1,19 +1,26 @@
 <div class="page-content">
   <div class="row">
-
     <div class="content-box-large">
       <div class="panel-heading">
         <div class="panel-title">
-          <h2><i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Lists</h2>
+          <h2>
+            <i class="glyphicon glyphicon-tasks"></i>&nbsp;&nbsp;Contact Lists
+          </h2>
           <p class="text-muted">
-            Manage OpenHIM contact lists. These contact lists are used for transaction alerting (found in each
-            channel's configuration) and user reports (found in each user's configuration).
+            Manage OpenHIM contact lists. These contact lists are used for
+            transaction alerting (found in each channel's configuration) and
+            user reports (found in each user's configuration).
           </p>
         </div>
       </div>
 
       <!-- Top Alerts -->
-      <div uib-alert ng-repeat="alert in alerts.top" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
+      <div
+        uib-alert
+        ng-repeat="alert in alerts.top"
+        ng-class="'alert-' + (alert.type || 'warning')"
+      >
+        {{alert.msg}}
       </div>
       <!-- Top Alerts -->
 
@@ -30,15 +37,32 @@
             </thead>
             <tbody>
               <tr ng-repeat="group in contactGroups | orderBy:['group']">
-                <td data-title="#{{ $index +1 }}"><span id="counter">{{ $index +1 }}</span></td>
-                <td data-title="Group"><a href="" ng-click="editContactGroup(group)">{{ group.group }}</a></td>
-                <td data-title="Users"><span ng-repeat="user in group.users"> {{ user.user }}{{$last ? '' : ', '}}
-                  </span></td>
+                <td data-title="#{{ $index +1 }}">
+                  <span id="counter">{{ $index +1 }}</span>
+                </td>
+                <td data-title="Group">
+                  <a href="" ng-click="editContactGroup(group)"
+                    >{{ group.group }}</a
+                  >
+                </td>
+                <td data-title="Users">
+                  <span ng-repeat="user in group.users">
+                    {{ user.user }}{{$last ? '' : ', '}}
+                  </span>
+                </td>
                 <td>
-                  <button class="btn btn-warning btn-xs" ng-click="editContactGroup(group)"><i
-                      class="glyphicon glyphicon-pencil"></i></button>
-                  <button class="btn btn-danger btn-xs" ng-click="confirmDelete(group)"><i
-                      class="glyphicon glyphicon-remove"></i></button>
+                  <button
+                    class="btn btn-warning btn-xs"
+                    ng-click="editContactGroup(group)"
+                  >
+                    <i class="glyphicon glyphicon-pencil"></i>
+                  </button>
+                  <button
+                    class="btn btn-danger btn-xs"
+                    ng-click="confirmDelete(group)"
+                  >
+                    <i class="glyphicon glyphicon-remove"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -46,22 +70,40 @@
         </div>
 
         <!-- show loading gif when scope object empty and no server errors exist -->
-        <div class="loadingContainer" ng-show="!(contactGroups || alerts.server)">
+        <div
+          class="loadingContainer"
+          ng-show="!(contactGroups || alerts.server)"
+        >
           <span id="loading-spinner" alt="Loading..."></span>
         </div>
 
         <!-- Server Alerts -->
-        <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
-          {{alert.msg}}</div>
+        <div
+          uib-alert
+          ng-repeat="alert in alerts.server"
+          ng-class="'alert-' + (alert.type || 'warning')"
+        >
+          {{alert.msg}}
+        </div>
         <!-- Server Alerts -->
 
         <!-- Bottom Alerts -->
-        <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">
-          {{alert.msg}}</div>
+        <div
+          uib-alert
+          ng-repeat="alert in alerts.bottom"
+          ng-class="'alert-' + (alert.type || 'warning')"
+        >
+          {{alert.msg}}
+        </div>
         <!-- Bottom Alerts -->
 
-        <button class="btn btn-primary" ng-click="addContactGroup()" ng-show="!alerts.server"><i
-            class="glyphicon glyphicon-plus"></i> Contact List</button>
+        <button
+          class="btn btn-primary"
+          ng-click="addContactGroup()"
+          ng-show="!alerts.server"
+        >
+          <i class="glyphicon glyphicon-plus"></i> Contact List
+        </button>
       </div>
     </div>
   </div>

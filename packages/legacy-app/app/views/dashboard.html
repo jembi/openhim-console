@@ -1,8 +1,6 @@
 <div class="page-content">
   <div class="row">
-
     <div class="content-box-large">
-
       <div class="panel-heading">
         <div class="panel-title" style="float: inherit">
           <h2><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;Dashboard</h2>
@@ -10,43 +8,78 @@
       </div>
 
       <!-- server Alerts -->
-      <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}
+      <div
+        uib-alert
+        ng-repeat="alert in alerts.server"
+        ng-class="'alert-' + (alert.type || 'warning')"
+      >
+        {{alert.msg}}
       </div>
       <!-- Server Alerts -->
 
       <div class="panel-body" ng-show="!alerts.server">
-
         <div class="content-box-large bordered-box">
-          <div metrics-date-type-selector selected-date-type="selectedDateType" on-change="updateMetrics" />
+          <div
+            metrics-date-type-selector
+            selected-date-type="selectedDateType"
+            on-change="updateMetrics"
+          />
         </div>
 
-        <div style="margin: 20px 0px;" ng-if="activeChannels || loadTotal || avgResponseTime">
+        <div
+          style="margin: 20px 0px"
+          ng-if="activeChannels || loadTotal || avgResponseTime"
+        >
           <div class="panel-body">
-            <div ng-if="activeChannels" class="content-box-large dashboard-info-box">
+            <div
+              ng-if="activeChannels"
+              class="content-box-large dashboard-info-box"
+            >
               Active Channels: <br /><strong>{{activeChannels}}</strong>
             </div>
-            <div ng-if="transactionLoadData.loadTotal" class="content-box-large dashboard-info-box">
-              Total Transactions: <br /><strong>{{transactionLoadData.loadTotal}}</strong>
+            <div
+              ng-if="transactionLoadData.loadTotal"
+              class="content-box-large dashboard-info-box"
+            >
+              Total Transactions: <br /><strong
+                >{{transactionLoadData.loadTotal}}</strong
+              >
             </div>
-            <div ng-if="transactionLoadData.avgResponseTime" class="content-box-large dashboard-info-box">
-              Average Response Time: <br /><strong>{{transactionLoadData.avgResponseTime}} ms</strong>
+            <div
+              ng-if="transactionLoadData.avgResponseTime"
+              class="content-box-large dashboard-info-box"
+            >
+              Average Response Time: <br /><strong
+                >{{transactionLoadData.avgResponseTime}} ms</strong
+              >
             </div>
           </div>
         </div>
 
         <div class="content-box-large bordered-box">
           <div class="panel-heading">
-            <div class="panel-title">Transaction Load (per {{selectedDateType.type}})</div>
+            <div class="panel-title">
+              Transaction Load (per {{selectedDateType.type}})
+            </div>
           </div>
 
           <!-- Transaction Load Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.load" ng-class="'alert-' + (alert.type || 'warning')">
-            {{alert.msg}}</div>
+          <div
+            uib-alert
+            ng-repeat="alert in alerts.load"
+            ng-class="'alert-' + (alert.type || 'warning')"
+          >
+            {{alert.msg}}
+          </div>
           <!-- Transaction Load Alerts -->
 
           <div class="panel-body" ng-if="!alerts.load">
-            <div morris-line-chart id="transaction-load-graph" data="transactionLoadData" style="height: 250px;">
-            </div>
+            <div
+              morris-line-chart
+              id="transaction-load-graph"
+              data="transactionLoadData"
+              style="height: 250px"
+            ></div>
           </div>
         </div>
 
@@ -56,13 +89,22 @@
           </div>
 
           <!-- Transaction Load Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.responseTime" ng-class="'alert-' + (alert.type || 'warning')">
-            {{alert.msg}}</div>
+          <div
+            uib-alert
+            ng-repeat="alert in alerts.responseTime"
+            ng-class="'alert-' + (alert.type || 'warning')"
+          >
+            {{alert.msg}}
+          </div>
           <!-- Transaction Load Alerts -->
 
           <div class="panel-body" ng-if="!alerts.responseTime">
-            <div morris-line-chart id="response-time-graph" data="transactionResponseTimeData" style="height: 250px;">
-            </div>
+            <div
+              morris-line-chart
+              id="response-time-graph"
+              data="transactionResponseTimeData"
+              style="height: 250px"
+            ></div>
           </div>
         </div>
 
@@ -72,13 +114,22 @@
           </div>
 
           <!-- Transaction Load Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.status" ng-class="'alert-' + (alert.type || 'warning')">
-            {{alert.msg}}</div>
+          <div
+            uib-alert
+            ng-repeat="alert in alerts.status"
+            ng-class="'alert-' + (alert.type || 'warning')"
+          >
+            {{alert.msg}}
+          </div>
           <!-- Transaction Load Alerts -->
 
           <div class="panel-body" ng-if="!alerts.status">
-            <div morris-bar-chart id="transaction-status-graph" data="channelsData" style="height: 250px;">
-            </div>
+            <div
+              morris-bar-chart
+              id="transaction-status-graph"
+              data="channelsData"
+              style="height: 250px"
+            ></div>
           </div>
         </div>
       </div>

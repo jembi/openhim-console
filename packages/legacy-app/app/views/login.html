@@ -5,67 +5,148 @@
         <div class="content-wrap" ng-show="!rootPasswordReset">
           <h6>Sign In</h6>
           <form ng-submit="validateLogin()" ng-show="config.showLoginForm">
-            <input class="form-control" type="text" ng-model="loginEmail" placeholder="E-mail address" focus="{{emailFocus}}">
-            <input class="form-control" type="password" ng-model="loginPassword" placeholder="Password" focus="{{passwordFocus}}">
+            <input
+              class="form-control"
+              type="text"
+              ng-model="loginEmail"
+              placeholder="E-mail address"
+              focus="{{emailFocus}}"
+            />
+            <input
+              class="form-control"
+              type="password"
+              ng-model="loginPassword"
+              placeholder="Password"
+              focus="{{passwordFocus}}"
+            />
             <div class="loginBoxLink">
-              <a href="#!/forgot-password/{{ linkUserEmail }}">Forgot your password?</a>
+              <a href="#!/forgot-password/{{ linkUserEmail }}"
+                >Forgot your password?</a
+              >
             </div>
             <div class="action">
-              <input type="submit" class="btn btn-primary signup" value="Login" />
+              <input
+                type="submit"
+                class="btn btn-primary signup"
+                value="Login"
+              />
             </div>
           </form>
           <div ng-show="config.ssoEnabled">
-            <hr/>
+            <hr />
             <button ng-click="signInWithKeyCloak()" class="btn btn-primary">
               <i class="glyphicon glyphicon-lock"></i>
               Sign-In with KeyCloak
             </button>
           </div>
-          <hr/>
+          <hr />
           <!-- Login Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+          <div
+            uib-alert
+            ng-repeat="alert in alerts.login"
+            ng-class="'alert-' + (alert.type || 'warning')"
+          >
+            {{alert.msg}}
+          </div>
           <!-- Login Alerts -->
 
           <!-- Server Alerts -->
-          <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+          <div
+            uib-alert
+            ng-repeat="alert in alerts.server"
+            ng-class="'alert-' + (alert.type || 'warning')"
+          >
+            {{alert.msg}}
+          </div>
           <!-- Server Alerts -->
-          <div ng-show="!config.ssoEnabled && !config.showLoginForm" class="alert alert-danger">
+          <div
+            ng-show="!config.ssoEnabled && !config.showLoginForm"
+            class="alert alert-danger"
+          >
             Login is not enabled. Please contact your system administrator.
-          </div>    
+          </div>
         </div>
-
 
         <div class="content-wrap" ng-show="rootPasswordReset">
           <h6>Root Password Reset</h6>
-          <p><u><strong>Please change your default root password!</strong></u></p>
+          <p>
+            <u><strong>Please change your default root password!</strong></u>
+          </p>
           <form ng-submit="resetRootPassword()">
-            <input ng-show="!resetSuccess" class="form-control" type="password" ng-model="password" placeholder="New Password" focus="true">
-            <input ng-show="!resetSuccess" class="form-control" type="password" ng-model="passwordConfirm" placeholder="Confirm Password">
+            <input
+              ng-show="!resetSuccess"
+              class="form-control"
+              type="password"
+              ng-model="password"
+              placeholder="New Password"
+              focus="true"
+            />
+            <input
+              ng-show="!resetSuccess"
+              class="form-control"
+              type="password"
+              ng-model="passwordConfirm"
+              placeholder="Confirm Password"
+            />
 
             <!-- Login Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.login" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+            <div
+              uib-alert
+              ng-repeat="alert in alerts.login"
+              ng-class="'alert-' + (alert.type || 'warning')"
+            >
+              {{alert.msg}}
+            </div>
             <!-- Login Alerts -->
 
             <!-- Server Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+            <div
+              uib-alert
+              ng-repeat="alert in alerts.server"
+              ng-class="'alert-' + (alert.type || 'warning')"
+            >
+              {{alert.msg}}
+            </div>
             <!-- Server Alerts -->
 
             <div class="action" ng-show="!resetSuccess">
-              <input type="submit" class="btn btn-primary signup" value="RESET" />
+              <input
+                type="submit"
+                class="btn btn-primary signup"
+                value="RESET"
+              />
             </div>
           </form>
         </div>
       </div>
 
-      <div ng-if="coreConnectionError" class="alert alert-danger" style="padding: 10px; margin: 15px 10%;">
-          An error occurred while attempting to connect to the OpenHIM Core on https://{{config.host}}:{{config.port}}.<br><br>
-          The service may not be running or may not be accessible from you current location.<br><br>
-          Additionally if Core is using a self-signed certificate, you may first need to instruct your browser to accept it. You can do so by accessing the following <a target="_blank" href="https://{{config.host}}:{{config.port}}/heartbeat">link</a>.<br><br>
-          Please contact your system administrator if the error persists or if the service was not accessible using the above link.
+      <div
+        ng-if="coreConnectionError"
+        class="alert alert-danger"
+        style="padding: 10px; margin: 15px 10%"
+      >
+        An error occurred while attempting to connect to the OpenHIM Core on
+        https://{{config.host}}:{{config.port}}.<br /><br />
+        The service may not be running or may not be accessible from you current
+        location.<br /><br />
+        Additionally if Core is using a self-signed certificate, you may first
+        need to instruct your browser to accept it. You can do so by accessing
+        the following
+        <a
+          target="_blank"
+          href="https://{{config.host}}:{{config.port}}/heartbeat"
+          >link</a
+        >.<br /><br />
+        Please contact your system administrator if the error persists or if the
+        service was not accessible using the above link.
       </div>
 
-      <div ng-if="loginBanner" class="box" ng-bind-html="loginBanner" style="padding: 10px; margin: 15px 10%;"></div>
-
+      <div
+        ng-if="loginBanner"
+        class="box"
+        ng-bind-html="loginBanner"
+        style="padding: 10px; margin: 15px 10%"
+      ></div>
     </div>
   </div>
 </div>

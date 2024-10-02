@@ -8,7 +8,15 @@ describe('Controller: TasksCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,9 +26,7 @@ describe('Controller: TasksCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -28,17 +34,54 @@ describe('Controller: TasksCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/tasks\\?(filterLimit|filterPage)')).respond([
-      { _id: '53e1eac5e907b57711509853', completedDate: '2014-08-11T11:57:15.145Z', totalTransactions: 2, remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed' }], status: 'Completed' },
-      { _id: '52e1eac5e807b57711509854', completedDate: '2014-08-11T11:53:46.483Z', totalTransactions: 1, remainingTransactions: 1, user: 'testuser', created: '2014-08-11T11:53:39.971Z', transactions: [{ tid: '54e072e1ccbb302937ffb772', tstatus: 'Processing' }], status: 'Processing' }
-    ])
+    $httpBackend
+      .when('GET', new RegExp('.*/tasks\\?(filterLimit|filterPage)'))
+      .respond([
+        {
+          _id: '53e1eac5e907b57711509853',
+          completedDate: '2014-08-11T11:57:15.145Z',
+          totalTransactions: 2,
+          remainingTransactions: 0,
+          user: 'super@openim.org',
+          created: '2014-08-11T11:57:10.253Z',
+          transactions: [
+            {tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed'},
+            {tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed'}
+          ],
+          status: 'Completed'
+        },
+        {
+          _id: '52e1eac5e807b57711509854',
+          completedDate: '2014-08-11T11:53:46.483Z',
+          totalTransactions: 1,
+          remainingTransactions: 1,
+          user: 'testuser',
+          created: '2014-08-11T11:53:39.971Z',
+          transactions: [
+            {tid: '54e072e1ccbb302937ffb772', tstatus: 'Processing'}
+          ],
+          status: 'Processing'
+        }
+      ])
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openhim.org', groups: ['admin'] },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openhim.org', groups: ['limited'] }
+      {
+        firstname: 'Super',
+        surname: 'User',
+        email: 'super@openhim.org',
+        groups: ['admin']
+      },
+      {
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openhim.org',
+        groups: ['limited']
+      }
     ])
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
+    $httpBackend
+      .when('GET', new RegExp('.*/heartbeat'))
+      .respond({now: Date.now()})
 
     createController = function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
@@ -47,7 +90,7 @@ describe('Controller: TasksCtrl', function () {
       var route = {
         reload: sinon.spy()
       }
-      return $controller('TasksCtrl', { $scope: scope, $route: route })
+      return $controller('TasksCtrl', {$scope: scope, $route: route})
     }
   }))
 
@@ -117,8 +160,29 @@ describe('Controller: TasksCtrl', function () {
     httpBackend.flush()
 
     var tasks = [
-      { _id: '53e1eac5e907b57711509853', completedDate: '2014-08-11T11:57:15.145Z', remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed' }], status: 'Completed' },
-      { _id: '52e1eac5e807b57711509854', completedDate: '2014-08-11T11:53:46.483Z', remainingTransactions: 1, user: 'testuser', created: '2014-08-11T11:53:39.971Z', transactions: [{ tid: '54e072e1ccbb302937ffb772', tstatus: 'Processing' }], status: 'Processing' }
+      {
+        _id: '53e1eac5e907b57711509853',
+        completedDate: '2014-08-11T11:57:15.145Z',
+        remainingTransactions: 0,
+        user: 'super@openim.org',
+        created: '2014-08-11T11:57:10.253Z',
+        transactions: [
+          {tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed'},
+          {tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed'}
+        ],
+        status: 'Completed'
+      },
+      {
+        _id: '52e1eac5e807b57711509854',
+        completedDate: '2014-08-11T11:53:46.483Z',
+        remainingTransactions: 1,
+        user: 'testuser',
+        created: '2014-08-11T11:53:39.971Z',
+        transactions: [
+          {tid: '54e072e1ccbb302937ffb772', tstatus: 'Processing'}
+        ],
+        status: 'Processing'
+      }
     ]
 
     scope.refreshSuccess(tasks)
@@ -134,17 +198,33 @@ describe('Controller: TasksCtrl', function () {
     scope.refreshSuccess(tasks)
     scope.tasks.length.should.equal(0)
     scope.alerts.bottom.length.should.equal(1)
-    scope.alerts.bottom[0].should.have.property('msg', 'There are no tasks for the current filters')
+    scope.alerts.bottom[0].should.have.property(
+      'msg',
+      'There are no tasks for the current filters'
+    )
   })
 
   it('should send a correct update after pausing a task', function () {
     createController()
 
     var task = [
-      { _id: '53e1eac5e907b57711509853', completedDate: '2014-08-11T11:57:15.145Z', remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued' }], status: 'Processing' }
+      {
+        _id: '53e1eac5e907b57711509853',
+        completedDate: '2014-08-11T11:57:15.145Z',
+        remainingTransactions: 0,
+        user: 'super@openim.org',
+        created: '2014-08-11T11:57:10.253Z',
+        transactions: [
+          {tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing'},
+          {tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued'}
+        ],
+        status: 'Processing'
+      }
     ]
 
-    httpBackend.expectPUT(new RegExp('.*/tasks'), { status: 'Paused' }).respond(200, '')
+    httpBackend
+      .expectPUT(new RegExp('.*/tasks'), {status: 'Paused'})
+      .respond(200, '')
     scope.pauseTask(task)
     httpBackend.flush()
   })
@@ -153,10 +233,23 @@ describe('Controller: TasksCtrl', function () {
     createController()
 
     var task = [
-      { _id: '53e1eac5e907b57711509853', completedDate: '2014-08-11T11:57:15.145Z', remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued' }], status: 'Processing' }
+      {
+        _id: '53e1eac5e907b57711509853',
+        completedDate: '2014-08-11T11:57:15.145Z',
+        remainingTransactions: 0,
+        user: 'super@openim.org',
+        created: '2014-08-11T11:57:10.253Z',
+        transactions: [
+          {tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing'},
+          {tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued'}
+        ],
+        status: 'Processing'
+      }
     ]
 
-    httpBackend.expectPUT(new RegExp('.*/tasks'), { status: 'Queued' }).respond(200, '')
+    httpBackend
+      .expectPUT(new RegExp('.*/tasks'), {status: 'Queued'})
+      .respond(200, '')
     scope.resumeTask(task)
     httpBackend.flush()
   })
@@ -165,7 +258,18 @@ describe('Controller: TasksCtrl', function () {
     createController()
 
     var task = [
-      { _id: '53e1eac5e907b57711509853', completedDate: '2014-08-11T11:57:15.145Z', remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued' }], status: 'Processing' }
+      {
+        _id: '53e1eac5e907b57711509853',
+        completedDate: '2014-08-11T11:57:15.145Z',
+        remainingTransactions: 0,
+        user: 'super@openim.org',
+        created: '2014-08-11T11:57:10.253Z',
+        transactions: [
+          {tid: '53e072e1ccbb302937ffb773', tstatus: 'Processing'},
+          {tid: '53e064d1ccbb302937ffb772', tstatus: 'Queued'}
+        ],
+        status: 'Processing'
+      }
     ]
 
     scope.cancelTask(task)
@@ -179,7 +283,19 @@ describe('Controller: TasksCtrl', function () {
     var originalLength = scope.tasks.length
 
     httpBackend.when('GET', new RegExp('.*/tasks')).respond([
-      { _id: '53e1eac5e907b57711509999', completedDate: '2014-08-11T11:57:15.145Z', totalTransactions: 2, remainingTransactions: 0, user: 'super@openim.org', created: '2014-08-11T11:57:10.253Z', transactions: [{ tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed' }, { tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed' }], status: 'Completed' }
+      {
+        _id: '53e1eac5e907b57711509999',
+        completedDate: '2014-08-11T11:57:15.145Z',
+        totalTransactions: 2,
+        remainingTransactions: 0,
+        user: 'super@openim.org',
+        created: '2014-08-11T11:57:10.253Z',
+        transactions: [
+          {tid: '53e072e1ccbb302937ffb773', tstatus: 'Completed'},
+          {tid: '53e064d1ccbb302937ffb772', tstatus: 'Completed'}
+        ],
+        status: 'Completed'
+      }
     ])
 
     scope.pollForLatest()
@@ -197,9 +313,19 @@ describe('Controller: TasksCtrl', function () {
     scope.tasks[1]._id.should.equal('52e1eac5e807b57711509854')
     scope.tasks[1].status.should.equal('Processing')
 
-    httpBackend.when('GET', new RegExp('.*/tasks/52e1eac5e807b57711509854')).respond(
-      { _id: '52e1eac5e807b57711509854', completedDate: '2014-08-11T11:53:46.483Z', remainingTransactions: 0, user: 'testuser', created: '2014-08-11T11:53:39.971Z', transactions: [{ tid: '54e072e1ccbb302937ffb772', tstatus: 'Successful' }], status: 'Completed' }
-    )
+    httpBackend
+      .when('GET', new RegExp('.*/tasks/52e1eac5e807b57711509854'))
+      .respond({
+        _id: '52e1eac5e807b57711509854',
+        completedDate: '2014-08-11T11:53:46.483Z',
+        remainingTransactions: 0,
+        user: 'testuser',
+        created: '2014-08-11T11:53:39.971Z',
+        transactions: [
+          {tid: '54e072e1ccbb302937ffb772', tstatus: 'Successful'}
+        ],
+        status: 'Completed'
+      })
 
     scope.pollForProcessingUpdates()
     httpBackend.flush()

@@ -30,14 +30,17 @@ describe('Controller: MediatorsCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
@@ -50,12 +53,28 @@ describe('Controller: MediatorsCtrl', function () {
           {
             name: 'Mediator Channel 1',
             urlPattern: '/channel1',
-            routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+            routes: [
+              {
+                name: 'Route 1',
+                host: 'localhost',
+                port: '1111',
+                primary: true,
+                type: 'http'
+              }
+            ],
             allow: ['xdlab'],
             type: 'http'
           }
         ],
-        endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }],
+        endpoints: [
+          {
+            name: 'Route 1',
+            host: 'localhost',
+            port: '1111',
+            primary: true,
+            type: 'http'
+          }
+        ],
         _lastHeartbeat: new Date(),
         _uptime: 3600
       },
@@ -68,12 +87,35 @@ describe('Controller: MediatorsCtrl', function () {
           {
             name: 'Mediator Channel 2',
             urlPattern: '/channnel2',
-            routes: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }],
+            routes: [
+              {
+                name: 'Route',
+                host: 'localhost',
+                port: '2222',
+                primary: true,
+                type: 'http'
+              }
+            ],
             allow: ['xdlab'],
             type: 'http'
           }
         ],
-        endpoints: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }, { name: 'Route 2', host: 'localhost2', port: '3333', primary: false, type: 'http' }],
+        endpoints: [
+          {
+            name: 'Route',
+            host: 'localhost',
+            port: '2222',
+            primary: true,
+            type: 'http'
+          },
+          {
+            name: 'Route 2',
+            host: 'localhost2',
+            port: '3333',
+            primary: false,
+            type: 'http'
+          }
+        ],
         _lastHeartbeat: moment().subtract(3, 'minutes').toDate(),
         _uptime: 5443200 // over 2 months
       }
@@ -85,7 +127,7 @@ describe('Controller: MediatorsCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('MediatorsCtrl', { $scope: scope })
+      return $controller('MediatorsCtrl', {$scope: scope})
     }
   }))
 

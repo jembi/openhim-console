@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "declarationDir": "dist",
-    "skipLibCheck": true  
+    "skipLibCheck": true
   },
   "files": ["src/jembi-openhim-portal.tsx"],
   "include": ["src/**/**/*", "src/utils/*"],

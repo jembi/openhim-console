@@ -1,4 +1,4 @@
-export function Authinterceptor ($q, $location) {
+export function Authinterceptor($q, $location) {
   return {
     responseError: function (response) {
       // Redirect user to login page in case he is not authorized

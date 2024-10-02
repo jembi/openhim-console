@@ -22,8 +22,7 @@ angular
   .directive('datetimepicker', [
     '$timeout',
     'datetimepicker',
-    function ($timeout,
-      datetimepicker) {
+    function ($timeout, datetimepicker) {
       const defaultOptions = datetimepicker.getOptions()
 
       return {
@@ -46,16 +45,14 @@ angular
             })
             .datetimepicker(options)
 
-          function setPickerValue () {
+          function setPickerValue() {
             let date = options.defaultDate || null
 
             if (ngModelCtrl && ngModelCtrl.$viewValue) {
               date = ngModelCtrl.$viewValue
             }
 
-            $element
-              .data('DateTimePicker')
-              .date(date)
+            $element.data('DateTimePicker').date(date)
           }
 
           if (ngModelCtrl) {

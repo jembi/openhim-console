@@ -1,6 +1,5 @@
 <div class="page-content">
   <div class="row">
-
     <div class="content-box-large">
       <div class="panel-heading">
         <div class="panel-title">
@@ -8,42 +7,66 @@
         </div>
       </div>
       <div class="panel-body">
-
         <!-- Filter options -->
         <div class="transaction-filter-options">
-
           <uib-tabset class="transaction_settings_tabset" justified="false">
             <uib-tab heading="Filter Settings">
-              <div ng-include="'views/partials/audit-filter-settings.html'"></div>
+              <div
+                ng-include="'views/partials/audit-filter-settings.html'"
+              ></div>
             </uib-tab>
 
             <uib-tab heading="List Settings">
               <div class="settings_div">
                 <label class="float-left">
                   Audit View
-                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
+                  <i
+                    ng-show="uiSettings.showTooltips"
+                    tooltip-placement="top"
                     uib-tooltip="Set whether an audit opens in the 'Same Tab' or in a 'New Tab'"
-                    class="glyphicon glyphicon-question-sign"></i>
+                    class="glyphicon glyphicon-question-sign"
+                  ></i>
                 </label>
                 <div class="btn-group float-left clear-both">
-                  <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'same'">Same
-                    Tab</label>
-                  <label class="btn btn-primary" ng-model="settings.list.tabview" uib-btn-radio="'new'">New
-                    Tab</label>
+                  <label
+                    class="btn btn-primary"
+                    ng-model="settings.list.tabview"
+                    uib-btn-radio="'same'"
+                    >Same Tab</label
+                  >
+                  <label
+                    class="btn btn-primary"
+                    ng-model="settings.list.tabview"
+                    uib-btn-radio="'new'"
+                    >New Tab</label
+                  >
                 </div>
               </div>
               <div class="settings_div">
                 <label style="float: left">
                   Auto-Update Audit List
-                  <i ng-show="uiSettings.showTooltips" tooltip-placement="top"
+                  <i
+                    ng-show="uiSettings.showTooltips"
+                    tooltip-placement="top"
                     uib-tooltip="If enabled, the audit list will be updated automatically whenever new audit come in"
-                    class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+                    class="glyphicon glyphicon-question-sign tooltip-wide"
+                  ></i>
                 </label>
-                <div class="btn-group" style="float: left; clear: both;">
-                  <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="true"
-                    ng-click="startPolling()">Enabled</label>
-                  <label class="btn btn-primary" ng-model="settings.list.autoupdate" uib-btn-radio="false"
-                    ng-click="stopPolling()">Disabled</label>
+                <div class="btn-group" style="float: left; clear: both">
+                  <label
+                    class="btn btn-primary"
+                    ng-model="settings.list.autoupdate"
+                    uib-btn-radio="true"
+                    ng-click="startPolling()"
+                    >Enabled</label
+                  >
+                  <label
+                    class="btn btn-primary"
+                    ng-model="settings.list.autoupdate"
+                    uib-btn-radio="false"
+                    ng-click="stopPolling()"
+                    >Disabled</label
+                  >
                 </div>
               </div>
             </uib-tab>
@@ -53,7 +76,7 @@
         <div id="no-more-tables">
           <!-- Table with all the transaction logs -->
 
-          <table class="table table-striped ">
+          <table class="table table-striped">
             <thead>
               <tr>
                 <th>#</th>
@@ -65,46 +88,86 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="table-list" ng-repeat="audit in audits" ng-class="{transactionsNew: baseIndex + $index < 0}"
-                ng-click='viewAuditDetails("audits/" + audit._id, $event)'>
-                <td data-title="# {{ baseIndex + $index +1 }}" class="responsiveTransactionIndexCheckbox">
+              <tr
+                class="table-list"
+                ng-repeat="audit in audits"
+                ng-class="{transactionsNew: baseIndex + $index < 0}"
+                ng-click='viewAuditDetails("audits/" + audit._id, $event)'
+              >
+                <td
+                  data-title="# {{ baseIndex + $index +1 }}"
+                  class="responsiveTransactionIndexCheckbox"
+                >
                   <span ng-if="baseIndex + $index < 0">-</span>
-                  <span ng-if="baseIndex + $index >= 0">{{ baseIndex + $index +1 }}</span>
+                  <span ng-if="baseIndex + $index >= 0"
+                    >{{ baseIndex + $index +1 }}</span
+                  >
                 </td>
-                <td data-title="Event Action / Outcome">{{ eventActionMap[audit.eventIdentification.eventActionCode]
-                  }} / {{ eventOutcomeMap[audit.eventIdentification.eventOutcomeIndicator] }}</td>
-                <td data-title="Event Type">{{ audit.eventIdentification.eventTypeCode.code }} (
+                <td data-title="Event Action / Outcome">
+                  {{ eventActionMap[audit.eventIdentification.eventActionCode]
+                  }} / {{
+                  eventOutcomeMap[audit.eventIdentification.eventOutcomeIndicator]
+                  }}
+                </td>
+                <td data-title="Event Type">
+                  {{ audit.eventIdentification.eventTypeCode.code }} (
                   {{audit.eventIdentification.eventTypeCode.codeSystemName}} ) -
-                  {{audit.eventIdentification.eventTypeCode.displayName}}</td>
-                <td data-title="Event ID">{{ audit.eventIdentification.eventID.code }} (
+                  {{audit.eventIdentification.eventTypeCode.displayName}}
+                </td>
+                <td data-title="Event ID">
+                  {{ audit.eventIdentification.eventID.code }} (
                   {{audit.eventIdentification.eventID.codeSystemName}} ) -
-                  {{audit.eventIdentification.eventID.displayName}}</td>
-                <td data-title="Source ID">{{ audit.auditSourceIdentification.auditSourceID }}</td>
-                <td data-title="Event Time">{{ audit.eventIdentification.eventDateTime | date:'yyyy-MM-dd HH:mm:ss Z'
-                  }}</td>
+                  {{audit.eventIdentification.eventID.displayName}}
+                </td>
+                <td data-title="Source ID">
+                  {{ audit.auditSourceIdentification.auditSourceID }}
+                </td>
+                <td data-title="Event Time">
+                  {{ audit.eventIdentification.eventDateTime | date:'yyyy-MM-dd
+                  HH:mm:ss Z' }}
+                </td>
               </tr>
             </tbody>
           </table>
 
           <div>
             <!-- show loading gif when scope object empty and no server errors exist -->
-            <div class="loadingContainer" ng-show="!(audits || alerts.server) || busyLoadingMore">
+            <div
+              class="loadingContainer"
+              ng-show="!(audits || alerts.server) || busyLoadingMore"
+            >
               <span id="loading-spinner" alt="Loading..."></span>
             </div>
 
             <!-- Transaction Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.server" ng-class="'alert-' + (alert.type || 'warning')">
-              {{alert.msg}}</div>
+            <div
+              uib-alert
+              ng-repeat="alert in alerts.server"
+              ng-class="'alert-' + (alert.type || 'warning')"
+            >
+              {{alert.msg}}
+            </div>
             <!-- Server Alerts -->
 
             <!-- transaction Alerts -->
-            <div uib-alert ng-repeat="alert in alerts.bottom" ng-class="'alert-' + (alert.type || 'warning')">
-              {{alert.msg}}</div>
+            <div
+              uib-alert
+              ng-repeat="alert in alerts.bottom"
+              ng-class="'alert-' + (alert.type || 'warning')"
+            >
+              {{alert.msg}}
+            </div>
             <!-- Server Alerts -->
 
             <div class="transactionsButtonsDiv" ng-show="audits.length > 0">
-              <button id="loadMoreBtn" class="btn btn-primary loadMoreBtn" ng-click="loadMoreAudits();"><i
-                  class="glyphicon glyphicon-refresh"></i> Load {{showlimit}} more results</button>
+              <button
+                id="loadMoreBtn"
+                class="btn btn-primary loadMoreBtn"
+                ng-click="loadMoreAudits();"
+              >
+                <i class="glyphicon glyphicon-refresh"></i> Load {{showlimit}}
+                more results
+              </button>
             </div>
           </div>
         </div>

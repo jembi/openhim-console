@@ -1,4 +1,4 @@
-export function ConfirmModalCtrl ($scope, $uibModalInstance, confirmObject) {
+export function ConfirmModalCtrl($scope, $uibModalInstance, confirmObject) {
   $scope.confirmObject = confirmObject
 
   $scope.confirmed = function () {

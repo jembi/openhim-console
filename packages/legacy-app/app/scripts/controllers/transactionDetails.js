@@ -1,13 +1,25 @@
 import moment from 'moment'
 
-import { TransactionsRerunModalCtrl, TransactionsAddReqResModalCtrl, TransactionsBodyModalCtrl } from './'
-import { beautifyIndent, returnContentType } from '../utils'
+import {
+  TransactionsRerunModalCtrl,
+  TransactionsAddReqResModalCtrl,
+  TransactionsBodyModalCtrl
+} from './'
+import {beautifyIndent, returnContentType} from '../utils'
 
 import transactionsRerunModal from '~/views/transactionsRerunModal'
 import transactionsAddReqResModal from '~/views/transactionsAddReqResModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
 
-export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, $routeParams, Api, Alerting) {
+export function TransactionDetailsCtrl(
+  $scope,
+  $uibModal,
+  $compile,
+  $location,
+  $routeParams,
+  Api,
+  Alerting
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -44,29 +56,51 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
     // transform request body with indentation/formatting
     if (transactionDetails.request && transactionDetails.request.body) {
-      if (transactionDetails.request.headers && returnContentType(transactionDetails.request.headers)) {
-        const requestTransform = beautifyIndent(returnContentType(transactionDetails.request.headers), transactionDetails.request.body)
+      if (
+        transactionDetails.request.headers &&
+        returnContentType(transactionDetails.request.headers)
+      ) {
+        const requestTransform = beautifyIndent(
+          returnContentType(transactionDetails.request.headers),
+          transactionDetails.request.body
+        )
         $scope.transactionDetails.request.body = requestTransform.content
       }
     }
 
     // transform response body with indentation/formatting
     if (transactionDetails.response && transactionDetails.response.body) {
-      if (transactionDetails.response.headers && returnContentType(transactionDetails.response.headers)) {
-        const responseTransform = beautifyIndent(returnContentType(transactionDetails.response.headers), transactionDetails.response.body)
+      if (
+        transactionDetails.response.headers &&
+        returnContentType(transactionDetails.response.headers)
+      ) {
+        const responseTransform = beautifyIndent(
+          returnContentType(transactionDetails.response.headers),
+          transactionDetails.response.body
+        )
         $scope.transactionDetails.response.body = responseTransform.content
       }
     }
 
     // calculate total transaction time
-    if ((transactionDetails.request && transactionDetails.request.timestamp) &&
-      (transactionDetails.response && transactionDetails.response.timestamp)) {
-      const diff = moment(transactionDetails.response.timestamp) - moment(transactionDetails.request.timestamp)
+    if (
+      transactionDetails.request &&
+      transactionDetails.request.timestamp &&
+      transactionDetails.response &&
+      transactionDetails.response.timestamp
+    ) {
+      const diff =
+        moment(transactionDetails.response.timestamp) -
+        moment(transactionDetails.request.timestamp)
 
       if (diff >= 1000) {
         // display in seconds
         const round = function (value, decimalPlaces) {
-          return +(Math.round(value + 'e+' + decimalPlaces) + 'e-' + decimalPlaces)
+          return +(
+            Math.round(value + 'e+' + decimalPlaces) +
+            'e-' +
+            decimalPlaces
+          )
         }
 
         transactionDetails.transactionTime = round(diff / 1000.0, 3) + ' s'
@@ -81,33 +115,51 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
     $scope.consoleSession = consoleSession
 
     // get the user to find user roles
-    Api.Users.get({ email: $scope.consoleSession.sessionUser }, function (user) {
-      // get the channels for the transactions filter dropdown
-      Api.Channels.get({ channelId: transactionDetails.channelID }, function (channel) {
-        $scope.channel = channel
-        $scope.routeDefs = {}
-        channel.routes.forEach(function (route) {
-          $scope.routeDefs[route.name] = route
-        })
-
-        if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
-          if (user.groups.indexOf('admin') >= 0) {
-            $scope.rerunAllowed = true
-          } else {
-            angular.forEach(user.groups, function (role) {
-              if (channel.txRerunAcl.indexOf(role) >= 0) {
-                $scope.rerunAllowed = true
-              }
+    Api.Users.get(
+      {email: $scope.consoleSession.sessionUser},
+      function (user) {
+        // get the channels for the transactions filter dropdown
+        Api.Channels.get(
+          {channelId: transactionDetails.channelID},
+          function (channel) {
+            $scope.channel = channel
+            $scope.routeDefs = {}
+            channel.routes.forEach(function (route) {
+              $scope.routeDefs[route.name] = route
             })
+
+            if (
+              typeof channel.status === 'undefined' ||
+              channel.status === 'enabled'
+            ) {
+              if (user.groups.indexOf('admin') >= 0) {
+                $scope.rerunAllowed = true
+              } else {
+                angular.forEach(user.groups, function (role) {
+                  if (channel.txRerunAcl.indexOf(role) >= 0) {
+                    $scope.rerunAllowed = true
+                  }
+                })
+              }
+            }
+          },
+          function () {
+            /* server error - could not connect to API to get channels */
           }
-        }
-      }, function () { /* server error - could not connect to API to get channels */ })
-    }, function () { /* server error - could not connect to API to get user details */ })
+        )
+      },
+      function () {
+        /* server error - could not connect to API to get user details */
+      }
+    )
 
     // if clientID exist - fetch details
     if (transactionDetails.clientID) {
       // get the client object for the transactions details page
-      $scope.client = Api.Clients.get({ clientId: transactionDetails.clientID, property: 'clientName' })
+      $scope.client = Api.Clients.get({
+        clientId: transactionDetails.clientID,
+        property: 'clientName'
+      })
     }
   }
 
@@ -117,7 +169,14 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
   }
 
   // get the Data for the supplied ID and store in 'transactionsDetails' object
-  Api.Transactions.get({ transactionId: $routeParams.transactionId, filterRepresentation: 'fulltruncate' }, querySuccess, queryError)
+  Api.Transactions.get(
+    {
+      transactionId: $routeParams.transactionId,
+      filterRepresentation: 'fulltruncate'
+    },
+    querySuccess,
+    queryError
+  )
 
   /***************************************************/
   /**         Initial page load functions           **/
@@ -141,13 +200,16 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
 
   // Refresh transactions list
   $scope.fetchChildTransactions = function () {
-    Api.Transactions.query($scope.returnFilterObject(), function (values) {
-      // on success
-      $scope.childTransactions = values
-    },
-    function (err) {
-      Alerting.AlertAddServerMsg(err.status)
-    })
+    Api.Transactions.query(
+      $scope.returnFilterObject(),
+      function (values) {
+        // on success
+        $scope.childTransactions = values
+      },
+      function (err) {
+        Alerting.AlertAddServerMsg(err.status)
+      }
+    )
   }
   // run the transaction list view for the first time
   $scope.fetchChildTransactions()
@@ -239,7 +301,7 @@ export function TransactionDetailsCtrl ($scope, $uibModal, $compile, $location, 
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: headers }
+          return {type: type, content: content, headers: headers}
         }
       }
     })

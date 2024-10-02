@@ -8,7 +8,15 @@ describe('Controller: ClientsModalCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -24,9 +32,7 @@ describe('Controller: ClientsModalCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -35,15 +41,35 @@ describe('Controller: ClientsModalCtrl', function () {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/clients$')).respond([
-      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test', 'testing2'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' },
-      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test', 'testing again'], passwordAlgorithm: 'sha512', passwordHash: '1234', passwordSalt: '1234' }
+      {
+        clientID: 'test1',
+        clientDomain: 'test1.openhim.org',
+        name: 'Test 1',
+        roles: ['test', 'testing2'],
+        passwordAlgorithm: 'sha512',
+        passwordHash: '1234',
+        passwordSalt: '1234'
+      },
+      {
+        clientID: 'test2',
+        clientDomain: 'test2.openhim.org',
+        name: 'Test 2',
+        roles: ['test', 'testing again'],
+        passwordAlgorithm: 'sha512',
+        passwordHash: '1234',
+        passwordSalt: '1234'
+      }
     ])
 
-    $httpBackend.when('GET', new RegExp('.*/authentication/types')).respond(['basic-auth', 'mutual-tls-auth', 'custom-token-auth'])
+    $httpBackend
+      .when('GET', new RegExp('.*/authentication/types'))
+      .respond(['basic-auth', 'mutual-tls-auth', 'custom-token-auth'])
 
     $httpBackend.when('GET', new RegExp('.*/roles$')).respond([{}])
 
-    $httpBackend.when('GET', new RegExp('.*/keystore/ca')).respond([{ commonName: 'test1' }, { commonName: 'test2' }])
+    $httpBackend
+      .when('GET', new RegExp('.*/keystore/ca'))
+      .respond([{commonName: 'test1'}, {commonName: 'test2'}])
 
     scope = $rootScope.$new()
     var modalInstance = sinon.spy()
@@ -65,7 +91,9 @@ describe('Controller: ClientsModalCtrl', function () {
   })
 
   it('should create a new client if this is not an update', function () {
-    httpBackend.when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd')).respond(client)
+    httpBackend
+      .when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd'))
+      .respond(client)
     createController(client)
     httpBackend.flush()
 
@@ -154,7 +182,9 @@ describe('Controller: ClientsModalCtrl', function () {
   })
 
   it('should run submitFormClients() and check any validation errors - TRUE - Should save the record', function () {
-    httpBackend.when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd')).respond(client)
+    httpBackend
+      .when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd'))
+      .respond(client)
     createController(client)
     httpBackend.flush()
 
@@ -176,7 +206,9 @@ describe('Controller: ClientsModalCtrl', function () {
   })
 
   it('should run submitFormClients() and check any validation errors - TRUE - Should update the record', function () {
-    httpBackend.when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd')).respond(client)
+    httpBackend
+      .when('GET', new RegExp('.*/clients/553516b69fdbfc281db58efd'))
+      .respond(client)
     createController(client)
     httpBackend.flush()
 

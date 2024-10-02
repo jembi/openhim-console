@@ -16,7 +16,7 @@ import {AuthenticationModel} from '../../interfaces'
 import {v4 as uuidv4} from 'uuid'
 import {Client} from '../../types'
 import {fetchCertificate, fetchAuthTypes} from '@jembi/openhim-core-api'
-import "./styles.css";
+import './styles.css'
 
 const buttonStyle = {
   borderColor: '#049D84',

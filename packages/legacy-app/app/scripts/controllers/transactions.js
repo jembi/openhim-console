@@ -1,9 +1,17 @@
 import moment from 'moment'
-import { valueNotEmpty } from '../utils'
+import {valueNotEmpty} from '../utils'
 import transactionsRerunModal from '~/views/transactionsRerunModal'
-import { TransactionsRerunModalCtrl } from './transactionsRerunModal'
+import {TransactionsRerunModalCtrl} from './transactionsRerunModal'
 
-export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $interval, Api, Alerting) {
+export function TransactionsCtrl(
+  $scope,
+  $uibModal,
+  $location,
+  $timeout,
+  $interval,
+  Api,
+  Alerting
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -67,10 +75,18 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   const attachUserFiltersToScope = function (filters) {
-    if (filters.limit && filters.limit !== 0) { $scope.settings.filter.limit = parseInt(filters.limit, 10) }
-    if (!isEmpty(filters.transaction)) { $scope.settings.filter.transaction = filters.transaction }
-    if (!isEmpty(filters.orchestration)) { $scope.settings.filter.orchestration = filters.orchestration }
-    if (!isEmpty(filters.route)) { $scope.settings.filter.route = filters.route }
+    if (filters.limit && filters.limit !== 0) {
+      $scope.settings.filter.limit = parseInt(filters.limit, 10)
+    }
+    if (!isEmpty(filters.transaction)) {
+      $scope.settings.filter.transaction = filters.transaction
+    }
+    if (!isEmpty(filters.orchestration)) {
+      $scope.settings.filter.orchestration = filters.orchestration
+    }
+    if (!isEmpty(filters.route)) {
+      $scope.settings.filter.route = filters.route
+    }
     $scope.settings.filter.startDate = filters.startDate
     $scope.settings.filter.endDate = filters.endDate
   }
@@ -90,17 +106,30 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   // setup default transaction settings
-  if ($location.search().limit) { $scope.settings.filter.limit = $location.search().limit }
-  if ($location.search().startDate) { $scope.settings.filter.startDate = $location.search().startDate }
-  if ($location.search().endDate) { $scope.settings.filter.endDate = $location.search().endDate }
-  if ($location.search().txWasRerun) { $scope.settings.filter.transaction.wasRerun = $location.search().txWasRerun }
+  if ($location.search().limit) {
+    $scope.settings.filter.limit = $location.search().limit
+  }
+  if ($location.search().startDate) {
+    $scope.settings.filter.startDate = $location.search().startDate
+  }
+  if ($location.search().endDate) {
+    $scope.settings.filter.endDate = $location.search().endDate
+  }
+  if ($location.search().txWasRerun) {
+    $scope.settings.filter.transaction.wasRerun = $location.search().txWasRerun
+  }
 
   // search for transaction filters
-  if ($location.search().txStatus) { $scope.settings.filter.transaction.status = $location.search().txStatus }
-  if ($location.search().txChannel) { $scope.settings.filter.transaction.channel = $location.search().txChannel }
+  if ($location.search().txStatus) {
+    $scope.settings.filter.transaction.status = $location.search().txStatus
+  }
+  if ($location.search().txChannel) {
+    $scope.settings.filter.transaction.channel = $location.search().txChannel
+  }
 
   if ($location.search().txStatusCode) {
-    $scope.settings.filter.transaction.statusCode = $location.search().txStatusCode
+    $scope.settings.filter.transaction.statusCode =
+      $location.search().txStatusCode
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txHost) {
@@ -116,11 +145,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txParamKey) {
-    $scope.settings.filter.transaction.requestParamKey = $location.search().txParamKey
+    $scope.settings.filter.transaction.requestParamKey =
+      $location.search().txParamKey
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txParamValue) {
-    $scope.settings.filter.transaction.requestParamValue = $location.search().txParamValue
+    $scope.settings.filter.transaction.requestParamValue =
+      $location.search().txParamValue
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txClient) {
@@ -128,11 +159,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txPropertyKey) {
-    $scope.settings.filter.transaction.propertyKey = $location.search().txPropertyKey
+    $scope.settings.filter.transaction.propertyKey =
+      $location.search().txPropertyKey
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txPropertyValue) {
-    $scope.settings.filter.transaction.propertyValue = $location.search().txPropertyValue
+    $scope.settings.filter.transaction.propertyValue =
+      $location.search().txPropertyValue
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().txHttpMethod) {
@@ -158,17 +191,20 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().routeParamKey) {
-    $scope.settings.filter.route.requestParamKey = $location.search().routeParamKey
+    $scope.settings.filter.route.requestParamKey =
+      $location.search().routeParamKey
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().routeParamValue) {
-    $scope.settings.filter.route.requestParamValue = $location.search().routeParamValue
+    $scope.settings.filter.route.requestParamValue =
+      $location.search().routeParamValue
     $scope.advancedFilters.isCollapsed = false
   }
 
   // search for orchestration filters
   if ($location.search().orchStatusCode) {
-    $scope.settings.filter.orchestration.statusCode = $location.search().orchStatusCode
+    $scope.settings.filter.orchestration.statusCode =
+      $location.search().orchStatusCode
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().orchHost) {
@@ -184,11 +220,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().orchParamKey) {
-    $scope.settings.filter.orchestration.requestParamKey = $location.search().orchParamKey
+    $scope.settings.filter.orchestration.requestParamKey =
+      $location.search().orchParamKey
     $scope.advancedFilters.isCollapsed = false
   }
   if ($location.search().orchParamValue) {
-    $scope.settings.filter.orchestration.requestParamValue = $location.search().orchParamValue
+    $scope.settings.filter.orchestration.requestParamValue =
+      $location.search().orchParamValue
     $scope.advancedFilters.isCollapsed = false
   }
 
@@ -198,24 +236,35 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   }
 
   // get the channels for the transactions filter dropdown
-  $scope.channels = Api.Channels.query(function () {
-    $scope.channelsMap = {}
-    angular.forEach($scope.channels, function (channel) {
-      $scope.channelsMap[channel._id] = {}
-      $scope.channelsMap[channel._id].name = channel.name
+  $scope.channels = Api.Channels.query(
+    function () {
+      $scope.channelsMap = {}
+      angular.forEach($scope.channels, function (channel) {
+        $scope.channelsMap[channel._id] = {}
+        $scope.channelsMap[channel._id].name = channel.name
 
-      if (typeof channel.status === 'undefined' || channel.status === 'enabled') {
-        if (userGroups.indexOf('admin') >= 0) {
-          $scope.channelsMap[channel._id].rerun = true
+        if (
+          typeof channel.status === 'undefined' ||
+          channel.status === 'enabled'
+        ) {
+          if (userGroups.indexOf('admin') >= 0) {
+            $scope.channelsMap[channel._id].rerun = true
+          } else {
+            const groupsAllowedToRerun = userGroups.filter(group =>
+              channel.txRerunAcl.includes(group)
+            )
+            $scope.channelsMap[channel._id].rerun =
+              groupsAllowedToRerun.length > 0
+          }
         } else {
-          const groupsAllowedToRerun = userGroups.filter(group => channel.txRerunAcl.includes(group))
-          $scope.channelsMap[channel._id].rerun = groupsAllowedToRerun.length > 0
+          $scope.channelsMap[channel._id].rerun = false
         }
-      } else {
-        $scope.channelsMap[channel._id].rerun = false
-      }
-    })
-  }, function () { /* server error - could not connect to API to get channels */ })
+      })
+    },
+    function () {
+      /* server error - could not connect to API to get channels */
+    }
+  )
 
   $scope.clientsIdNameMap = {}
 
@@ -259,10 +308,15 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if (filterDateStart || filterDateEnd) {
       const dateFilterObject = {}
 
-      if (filterDateStart) { buildDateFilterObject(dateFilterObject, '$gte', filterDateStart) }
-      if (filterDateEnd) { buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd) }
+      if (filterDateStart) {
+        buildDateFilterObject(dateFilterObject, '$gte', filterDateStart)
+      }
+      if (filterDateEnd) {
+        buildDateFilterObject(dateFilterObject, '$lte', filterDateEnd)
+      }
 
-      filtersObject.filters['request.timestamp'] = JSON.stringify(dateFilterObject)
+      filtersObject.filters['request.timestamp'] =
+        JSON.stringify(dateFilterObject)
     }
 
     /* ----- filter by transaction (basic) ----- */
@@ -319,9 +373,12 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if (valueNotEmpty(txWasRerun) === true) {
       // if wasRerun is 'yes' - query all transactions that have child IDs
       if (txWasRerun === 'yes') {
-        filtersObject.filters.childIDs = JSON.stringify({ $exists: true, $ne: [] })
+        filtersObject.filters.childIDs = JSON.stringify({
+          $exists: true,
+          $ne: []
+        })
       } else if (txWasRerun === 'no') {
-        filtersObject.filters.childIDs = JSON.stringify({ $eq: [] })
+        filtersObject.filters.childIDs = JSON.stringify({$eq: []})
       }
     }
 
@@ -370,7 +427,8 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       filtersObject.filters['routes.request.querystring'] = routeParamKey
 
       if (valueNotEmpty(routeParamValue) === true) {
-        filtersObject.filters['routes.request.querystring'] += '=' + routeParamValue
+        filtersObject.filters['routes.request.querystring'] +=
+          '=' + routeParamValue
       }
     }
     /* ----- filter by route ----- */
@@ -397,12 +455,14 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
 
     const orchParamKey = $scope.settings.filter.orchestration.requestParamKey
-    const orchParamValue = $scope.settings.filter.orchestration.requestParamValue
+    const orchParamValue =
+      $scope.settings.filter.orchestration.requestParamValue
     if (valueNotEmpty(orchParamKey) === true) {
       filtersObject.filters['orchestrations.request.querystring'] = orchParamKey
 
       if (valueNotEmpty(orchParamValue) === true) {
-        filtersObject.filters['orchestrations.request.querystring'] += '=' + orchParamValue
+        filtersObject.filters['orchestrations.request.querystring'] +=
+          '=' + orchParamValue
       }
     }
     /* ----- filter by orchestration ----- */
@@ -422,7 +482,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
     // save latest returned transaction to session storage for use in transaction
     // details paging.
-    const idList = $scope.transactions.map(function (tx) { return tx._id })
+    const idList = $scope.transactions.map(function (tx) {
+      return tx._id
+    })
     sessionStorage.setItem('currTxList', angular.toJson(idList))
     sessionStorage.setItem('currFilterURL', `!${$location.url()}`)
 
@@ -430,7 +492,11 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       $scope.loadMoreBtn = false
 
       if ($scope.transactions.length === 0 && !transactions.count) {
-        Alerting.AlertAddMsg('bottom', 'warning', 'There are no transactions for the current filters')
+        Alerting.AlertAddMsg(
+          'bottom',
+          'warning',
+          'There are no transactions for the current filters'
+        )
       }
     } else {
       // Show the load more button
@@ -445,7 +511,10 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       // do the checkAll function to add the transactions to the transactionsSelected object
       $scope.toggleCheckedAll()
 
-      if (!$scope.settings.filter.startDate || !$scope.settings.filter.endDate) {
+      if (
+        !$scope.settings.filter.startDate ||
+        !$scope.settings.filter.endDate
+      ) {
         $scope.NoDateRange = true
       }
     } else {
@@ -472,19 +541,30 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     $scope.ngError.hasErrors = false
 
     // transaction status code validation
-    if ($scope.settings.filter.transaction.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.transaction.statusCode) === false) {
+    if (
+      $scope.settings.filter.transaction.statusCode &&
+      /^\d(\d\d|xx)$/.test($scope.settings.filter.transaction.statusCode) ===
+        false
+    ) {
       $scope.ngError.txStatusCode = true
       $scope.ngError.hasErrors = true
     }
 
     // route status code validation
-    if ($scope.settings.filter.route.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.route.statusCode) === false) {
+    if (
+      $scope.settings.filter.route.statusCode &&
+      /^\d(\d\d|xx)$/.test($scope.settings.filter.route.statusCode) === false
+    ) {
       $scope.ngError.routeStatusCode = true
       $scope.ngError.hasErrors = true
     }
 
     // orchestration status code validation
-    if ($scope.settings.filter.orchestration.statusCode && /^\d(\d\d|xx)$/.test($scope.settings.filter.orchestration.statusCode) === false) {
+    if (
+      $scope.settings.filter.orchestration.statusCode &&
+      /^\d(\d\d|xx)$/.test($scope.settings.filter.orchestration.statusCode) ===
+        false
+    ) {
       $scope.ngError.orchStatusCode = true
       $scope.ngError.hasErrors = true
     }
@@ -494,7 +574,11 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 
@@ -514,8 +598,13 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   $scope.applyEndDate = function (date) {
     refreshDateFilters(date, function () {
-      if (moment(new Date(date)).hour() === 0 && moment(new Date(date)).minute() === 0) {
-        $scope.settings.filter.endDate = moment(new Date(date)).endOf('day').format('YYYY-MM-DD HH:mm:ss:SSSS')
+      if (
+        moment(new Date(date)).hour() === 0 &&
+        moment(new Date(date)).minute() === 0
+      ) {
+        $scope.settings.filter.endDate = moment(new Date(date))
+          .endOf('day')
+          .format('YYYY-MM-DD HH:mm:ss:SSSS')
       }
       $scope.applyFiltersToUrl()
     })
@@ -523,50 +612,149 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
   $scope.applyFiltersToUrl = function () {
     // get the filter params object before clearing them
-    const filterParamsBeforeClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsBeforeClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // first clear existing filters
     $location.search({})
 
     // Add filters to url
     // set filter limit only if url parameter set
-    if ($scope.settings.filter.limit) { $location.search('limit', $scope.settings.filter.limit) }
-    if ($scope.settings.filter.startDate) { $location.search('startDate', $scope.settings.filter.startDate) }
-    if ($scope.settings.filter.endDate) { $location.search('endDate', $scope.settings.filter.endDate) }
+    if ($scope.settings.filter.limit) {
+      $location.search('limit', $scope.settings.filter.limit)
+    }
+    if ($scope.settings.filter.startDate) {
+      $location.search('startDate', $scope.settings.filter.startDate)
+    }
+    if ($scope.settings.filter.endDate) {
+      $location.search('endDate', $scope.settings.filter.endDate)
+    }
 
     // add transaction filters
-    if ($scope.settings.filter.transaction.status) { $location.search('txStatus', $scope.settings.filter.transaction.status) }
-    if ($scope.settings.filter.transaction.channel) { $location.search('txChannel', $scope.settings.filter.transaction.channel) }
-    if ($scope.settings.filter.transaction.statusCode) { $location.search('txStatusCode', $scope.settings.filter.transaction.statusCode) }
-    if ($scope.settings.filter.transaction.host) { $location.search('txHost', $scope.settings.filter.transaction.host) }
-    if ($scope.settings.filter.transaction.port) { $location.search('txPort', $scope.settings.filter.transaction.port) }
-    if ($scope.settings.filter.transaction.path) { $location.search('txPath', $scope.settings.filter.transaction.path) }
-    if ($scope.settings.filter.transaction.requestParamKey) { $location.search('txParamKey', $scope.settings.filter.transaction.requestParamKey) }
-    if ($scope.settings.filter.transaction.requestParamValue) { $location.search('txParamValue', $scope.settings.filter.transaction.requestParamValue) }
-    if ($scope.settings.filter.transaction.client) { $location.search('txClient', $scope.settings.filter.transaction.client) }
-    if ($scope.settings.filter.transaction.wasRerun) { $location.search('txWasRerun', $scope.settings.filter.transaction.wasRerun) }
-    if ($scope.settings.filter.transaction.propertyKey) { $location.search('txPropertyKey', $scope.settings.filter.transaction.propertyKey) }
-    if ($scope.settings.filter.transaction.propertyValue) { $location.search('txPropertyValue', $scope.settings.filter.transaction.propertyValue) }
-    if ($scope.settings.filter.transaction.method) { $location.search('txHttpMethod', $scope.settings.filter.transaction.method) }
+    if ($scope.settings.filter.transaction.status) {
+      $location.search('txStatus', $scope.settings.filter.transaction.status)
+    }
+    if ($scope.settings.filter.transaction.channel) {
+      $location.search('txChannel', $scope.settings.filter.transaction.channel)
+    }
+    if ($scope.settings.filter.transaction.statusCode) {
+      $location.search(
+        'txStatusCode',
+        $scope.settings.filter.transaction.statusCode
+      )
+    }
+    if ($scope.settings.filter.transaction.host) {
+      $location.search('txHost', $scope.settings.filter.transaction.host)
+    }
+    if ($scope.settings.filter.transaction.port) {
+      $location.search('txPort', $scope.settings.filter.transaction.port)
+    }
+    if ($scope.settings.filter.transaction.path) {
+      $location.search('txPath', $scope.settings.filter.transaction.path)
+    }
+    if ($scope.settings.filter.transaction.requestParamKey) {
+      $location.search(
+        'txParamKey',
+        $scope.settings.filter.transaction.requestParamKey
+      )
+    }
+    if ($scope.settings.filter.transaction.requestParamValue) {
+      $location.search(
+        'txParamValue',
+        $scope.settings.filter.transaction.requestParamValue
+      )
+    }
+    if ($scope.settings.filter.transaction.client) {
+      $location.search('txClient', $scope.settings.filter.transaction.client)
+    }
+    if ($scope.settings.filter.transaction.wasRerun) {
+      $location.search(
+        'txWasRerun',
+        $scope.settings.filter.transaction.wasRerun
+      )
+    }
+    if ($scope.settings.filter.transaction.propertyKey) {
+      $location.search(
+        'txPropertyKey',
+        $scope.settings.filter.transaction.propertyKey
+      )
+    }
+    if ($scope.settings.filter.transaction.propertyValue) {
+      $location.search(
+        'txPropertyValue',
+        $scope.settings.filter.transaction.propertyValue
+      )
+    }
+    if ($scope.settings.filter.transaction.method) {
+      $location.search(
+        'txHttpMethod',
+        $scope.settings.filter.transaction.method
+      )
+    }
 
     // add route filters
-    if ($scope.settings.filter.route.statusCode) { $location.search('routeStatusCode', $scope.settings.filter.route.statusCode) }
-    if ($scope.settings.filter.route.host) { $location.search('routeHost', $scope.settings.filter.route.host) }
-    if ($scope.settings.filter.route.port) { $location.search('routePort', $scope.settings.filter.route.port) }
-    if ($scope.settings.filter.route.path) { $location.search('routePath', $scope.settings.filter.route.path) }
-    if ($scope.settings.filter.route.requestParamKey) { $location.search('routeParamKey', $scope.settings.filter.route.requestParamKey) }
-    if ($scope.settings.filter.route.requestParamValue) { $location.search('routeParamValue', $scope.settings.filter.route.requestParamValue) }
+    if ($scope.settings.filter.route.statusCode) {
+      $location.search(
+        'routeStatusCode',
+        $scope.settings.filter.route.statusCode
+      )
+    }
+    if ($scope.settings.filter.route.host) {
+      $location.search('routeHost', $scope.settings.filter.route.host)
+    }
+    if ($scope.settings.filter.route.port) {
+      $location.search('routePort', $scope.settings.filter.route.port)
+    }
+    if ($scope.settings.filter.route.path) {
+      $location.search('routePath', $scope.settings.filter.route.path)
+    }
+    if ($scope.settings.filter.route.requestParamKey) {
+      $location.search(
+        'routeParamKey',
+        $scope.settings.filter.route.requestParamKey
+      )
+    }
+    if ($scope.settings.filter.route.requestParamValue) {
+      $location.search(
+        'routeParamValue',
+        $scope.settings.filter.route.requestParamValue
+      )
+    }
 
     // add orchestration filters
-    if ($scope.settings.filter.orchestration.statusCode) { $location.search('orchStatusCode', $scope.settings.filter.orchestration.statusCode) }
-    if ($scope.settings.filter.orchestration.host) { $location.search('orchHost', $scope.settings.filter.orchestration.host) }
-    if ($scope.settings.filter.orchestration.port) { $location.search('orchPort', $scope.settings.filter.orchestration.port) }
-    if ($scope.settings.filter.orchestration.path) { $location.search('orchPath', $scope.settings.filter.orchestration.path) }
-    if ($scope.settings.filter.orchestration.requestParamKey) { $location.search('orchParamKey', $scope.settings.filter.orchestration.requestParamKey) }
-    if ($scope.settings.filter.orchestration.requestParamValue) { $location.search('orchParamValue', $scope.settings.filter.orchestration.requestParamValue) }
+    if ($scope.settings.filter.orchestration.statusCode) {
+      $location.search(
+        'orchStatusCode',
+        $scope.settings.filter.orchestration.statusCode
+      )
+    }
+    if ($scope.settings.filter.orchestration.host) {
+      $location.search('orchHost', $scope.settings.filter.orchestration.host)
+    }
+    if ($scope.settings.filter.orchestration.port) {
+      $location.search('orchPort', $scope.settings.filter.orchestration.port)
+    }
+    if ($scope.settings.filter.orchestration.path) {
+      $location.search('orchPath', $scope.settings.filter.orchestration.path)
+    }
+    if ($scope.settings.filter.orchestration.requestParamKey) {
+      $location.search(
+        'orchParamKey',
+        $scope.settings.filter.orchestration.requestParamKey
+      )
+    }
+    if ($scope.settings.filter.orchestration.requestParamValue) {
+      $location.search(
+        'orchParamValue',
+        $scope.settings.filter.orchestration.requestParamValue
+      )
+    }
 
     // get the filter params object after clearing them
-    const filterParamsAfterClear = JSON.stringify(angular.copy($location.search()))
+    const filterParamsAfterClear = JSON.stringify(
+      angular.copy($location.search())
+    )
 
     // if the filters object stays the same then call refresh function
     // if filters object not the same then angular changes route and loads controller ( refresh )
@@ -621,11 +809,19 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
         Api.Transactions.get(returnFilters, refreshSuccess, refreshError)
       } else {
         //  do normal transaction API call for transactions
-        Api.Transactions.query($scope.returnFilters(), refreshSuccess, refreshError)
+        Api.Transactions.query(
+          $scope.returnFilters(),
+          refreshSuccess,
+          refreshError
+        )
       }
       updateConsoleSession()
     } else {
-      Alerting.AlertAddMsg('server', 'danger', 'You appear to have errors in your filter query. Please correct and try again')
+      Alerting.AlertAddMsg(
+        'server',
+        'danger',
+        'You appear to have errors in your filter query. Please correct and try again'
+      )
     }
   }
   // run the transaction list view for the first time
@@ -637,7 +833,11 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
     if (transactions.length < $scope.settings.filter.limit) {
       $scope.loadMoreBtn = false
-      Alerting.AlertAddMsg('bottom', 'warning', 'There are no more transactions to retrieve')
+      Alerting.AlertAddMsg(
+        'bottom',
+        'warning',
+        'There are no more transactions to retrieve'
+      )
     }
 
     // make sure newly added transactions are checked as well
@@ -663,7 +863,9 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     if (!filters.filters['request.timestamp']) {
       // use page load time as an explicit end date
       // this prevents issues with paging when new transactions come in, breaking the pages
-      filters.filters['request.timestamp'] = JSON.stringify({ $lte: moment(pageLoadDate - serverDiffTime).format() })
+      filters.filters['request.timestamp'] = JSON.stringify({
+        $lte: moment(pageLoadDate - serverDiffTime).format()
+      })
     }
 
     Api.Transactions.query(filters, loadMoreSuccess, loadMoreError)
@@ -677,7 +879,10 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       const absUrlPath = $location.url()
       const baseUrl = absUrl.replace(absUrlPath, '')
       const txUrl = baseUrl + '/' + path
-      if ($scope.settings.list.tabview && $scope.settings.list.tabview === 'new') {
+      if (
+        $scope.settings.list.tabview &&
+        $scope.settings.list.tabview === 'new'
+      ) {
         window.open(txUrl, '_blank')
       } else {
         $location.path(path)
@@ -689,12 +894,24 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   $scope.filtersApplied = function () {
     // We can't just check the scope date variables, as these are set before the filters are applied
     // This is why we have a date applied variable, which checks if date filter is applied to transaction list
-    if ($scope.dateApplied) { return true }
-    if ($scope.settings.filter.limit !== defaultLimit) { return true }
-    if ($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) { return true }
-    if (Object.keys($scope.settings.filter.transaction).length > 1) { return true }
-    if (!isEmpty($scope.settings.filter.orchestration)) { return true }
-    if (!isEmpty($scope.settings.filter.route)) { return true }
+    if ($scope.dateApplied) {
+      return true
+    }
+    if ($scope.settings.filter.limit !== defaultLimit) {
+      return true
+    }
+    if ($scope.settings.filter.transaction.wasRerun !== defaultWasRerun) {
+      return true
+    }
+    if (Object.keys($scope.settings.filter.transaction).length > 1) {
+      return true
+    }
+    if (!isEmpty($scope.settings.filter.orchestration)) {
+      return true
+    }
+    if (!isEmpty($scope.settings.filter.route)) {
+      return true
+    }
     return false
   }
 
@@ -734,10 +951,17 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     }
 
     const error = function (err) {
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching the users\' filters: #' + err.status + ' - ' + err.data)
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        "An error has occurred while fetching the users' filters: #" +
+          err.status +
+          ' - ' +
+          err.data
+      )
     }
 
-    Api.Users.get({ email: sessionUserEmail }, success, error)
+    Api.Users.get({email: sessionUserEmail}, success, error)
   }
 
   // Persist Current Filters to Session and Database
@@ -745,11 +969,22 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
     Alerting.AlertReset()
 
     const success = function () {
-      Alerting.AlertAddMsg('top', 'success', 'User filters have been saved successfully')
+      Alerting.AlertAddMsg(
+        'top',
+        'success',
+        'User filters have been saved successfully'
+      )
     }
 
     const error = function (err) {
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' filters: #' + err.status + ' - ' + err.data)
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        "An error has occurred while saving the users' filters: #" +
+          err.status +
+          ' - ' +
+          err.data
+      )
     }
 
     const updateUser = function (user) {
@@ -759,10 +994,14 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
       }, error)
     }
 
-    const currentUser = Api.Users.get({ email: sessionUserEmail }, function () {
+    const currentUser = Api.Users.get({email: sessionUserEmail}, function () {
       // check settings properties exist
-      if (!currentUser.settings) { currentUser.settings = {} }
-      if (!currentUser.settings.filter) { currentUser.settings.filter = {} }
+      if (!currentUser.settings) {
+        currentUser.settings = {}
+      }
+      if (!currentUser.settings.filter) {
+        currentUser.settings.filter = {}
+      }
 
       // add user filters to the user object
       currentUser.settings.filter = $scope.settings.filter
@@ -913,13 +1152,17 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
   let lastPollingCompleted = true
 
   $scope.pollForLatest = function () {
-    if (!$scope.transactions) { return }
+    if (!$scope.transactions) {
+      return
+    }
     const filters = $scope.returnFilters()
 
     if (!filters.filters['request.timestamp']) {
       // only poll for latest if date filters are OFF
 
-      filters.filters['request.timestamp'] = JSON.stringify({ $gte: moment(lastUpdated).format() })
+      filters.filters['request.timestamp'] = JSON.stringify({
+        $gte: moment(lastUpdated).format()
+      })
       lastUpdated = moment() - serverDiffTime
 
       delete filters.filterPage
@@ -927,35 +1170,44 @@ export function TransactionsCtrl ($scope, $uibModal, $location, $timeout, $inter
 
       lastPollingCompleted = false
 
-      Api.Transactions.query(filters, function (transactions) {
-        lastPollingCompleted = true
-        transactions.reverse().forEach(function (trx) {
-          $scope.transactions.unshift(trx)
-          if ($scope.transactions.length > $scope.settings.filter.limit) {
-            $scope.transactions.pop()
-          }
-          $scope.baseIndex--
-        })
-      }, loadMoreError)
+      Api.Transactions.query(
+        filters,
+        function (transactions) {
+          lastPollingCompleted = true
+          transactions.reverse().forEach(function (trx) {
+            $scope.transactions.unshift(trx)
+            if ($scope.transactions.length > $scope.settings.filter.limit) {
+              $scope.transactions.pop()
+            }
+            $scope.baseIndex--
+          })
+        },
+        loadMoreError
+      )
     }
   }
 
   // poll for updates for any transactions that are marked as 'Processing'
   // TODO need an endpoint in core to lookup a several transactions by _id at once
   $scope.pollForProcessingUpdates = function () {
-    if (!$scope.transactions) { return }
+    if (!$scope.transactions) {
+      return
+    }
     $scope.transactions.forEach(function (trx) {
       if (trx.status === 'Processing') {
-        Api.Transactions.get({
-          transactionId: trx._id,
-          filterRepresentation: 'simple'
-        }, function (result) {
-          $scope.transactions.forEach(function (scopeTrx) {
-            if (scopeTrx._id === result._id) {
-              scopeTrx.status = result.status
-            }
-          })
-        })
+        Api.Transactions.get(
+          {
+            transactionId: trx._id,
+            filterRepresentation: 'simple'
+          },
+          function (result) {
+            $scope.transactions.forEach(function (scopeTrx) {
+              if (scopeTrx._id === result._id) {
+                scopeTrx.status = result.status
+              }
+            })
+          }
+        )
       }
     })
   }

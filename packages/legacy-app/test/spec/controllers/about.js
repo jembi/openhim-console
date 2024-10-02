@@ -10,7 +10,17 @@ describe('Controller: AboutCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { version: '1.7.0', minimumCoreVersion: '3.0.0', protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        version: '1.7.0',
+        minimumCoreVersion: '3.0.0',
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -25,14 +35,17 @@ describe('Controller: AboutCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/about')).respond(coreResponse)
@@ -43,7 +56,7 @@ describe('Controller: AboutCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('AboutCtrl', { $scope: scope })
+      return $controller('AboutCtrl', {$scope: scope})
     }
   }))
 

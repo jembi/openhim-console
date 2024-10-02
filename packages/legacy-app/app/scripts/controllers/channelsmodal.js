@@ -10,24 +10,45 @@ const defaultHttpMethods = {
   PATCH: false
 }
 
-export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Notify, Alerting, channel, channelDuplicate, tab) {
-  function notifyUser () {
+export function ChannelsModalCtrl(
+  $scope,
+  $uibModalInstance,
+  $timeout,
+  Api,
+  Notify,
+  Alerting,
+  channel,
+  channelDuplicate,
+  tab
+) {
+  function notifyUser() {
     // I have no idea what the correct channels changed is supposed to be
     Notify.notify('channelsChanged')
     $uibModalInstance.close()
-  };
+  }
 
-  function success () {
-    Alerting.AlertAddMsg('top', 'success', 'The channel configuration was updated successfully')
+  function success() {
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The channel configuration was updated successfully'
+    )
     notifyUser()
-  };
+  }
 
-  function error (err) {
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the channel config: #' + err.status + ' - ' + err.data)
+  function error(err) {
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while saving the channel config: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
     notifyUser()
-  };
+  }
 
-  function filterEmptyAdds (operation) {
+  function filterEmptyAdds(operation) {
     // Only filter adds
     if (operation.op !== 'add') {
       return true
@@ -64,19 +85,26 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   $scope.methods = Object.assign({}, defaultHttpMethods)
 
   // get the users for the Channel taglist option and alert users - used in two child controllers
-  Api.Users.query(function (users) {
-    $scope.users = users
-  },
-  function () { /* server error - could not connect to API to get Users */ })
+  Api.Users.query(
+    function (users) {
+      $scope.users = users
+    },
+    function () {
+      /* server error - could not connect to API to get Users */
+    }
+  )
 
   $scope.channelAudits = []
   if (channel) {
     $scope.update = true
-    $scope.channel = Api.Channels.get({ channelId: channel._id }, function (channel) {
-      $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0
-      populateHttpMethods(channel, $scope.methods)
-    })
-    Api.Channels.audits({ channelId: channel._id }, function (audits) {
+    $scope.channel = Api.Channels.get(
+      {channelId: channel._id},
+      function (channel) {
+        $scope.autoRetry.enableMaxAttempts = channel.autoRetryMaxAttempts > 0
+        populateHttpMethods(channel, $scope.methods)
+      }
+    )
+    Api.Channels.audits({channelId: channel._id}, function (audits) {
       for (const audit of audits) {
         audit.ops = audit.ops.filter(filterEmptyAdds)
       }
@@ -86,13 +114,16 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     $scope.update = false
     if (channelDuplicate) {
       $scope.channelDuplicate = true
-      $scope.channel = Api.Channels.get({ channelId: channelDuplicate }, function (result) {
-        delete (result._id)
-        delete (result.name)
-        $scope.channel = result
-        $scope.autoRetry.enableMaxAttempts = result.autoRetryMaxAttempts > 0
-        populateHttpMethods($scope.channel, $scope.methods)
-      })
+      $scope.channel = Api.Channels.get(
+        {channelId: channelDuplicate},
+        function (result) {
+          delete result._id
+          delete result.name
+          $scope.channel = result
+          $scope.autoRetry.enableMaxAttempts = result.autoRetryMaxAttempts > 0
+          populateHttpMethods($scope.channel, $scope.methods)
+        }
+      )
     } else {
       $scope.channel = new Api.Channels()
       populateHttpMethods($scope.channel, $scope.methods)
@@ -101,14 +132,30 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
   $scope.selectedTab = {}
   switch (tab) {
-    case 'Basic Info': $scope.selectedTab.basicInfo = true; break
-    case 'Request Matching': $scope.selectedTab.requestMatching = true; break
-    case 'Routes': $scope.selectedTab.routes = true; break
-    case 'Data Control': $scope.selectedTab.dataControl = true; break
-    case 'Access Control': $scope.selectedTab.accessControl = true; break
-    case 'Alerts': $scope.selectedTab.alerts = true; break
-    case 'Logs': $scope.selectedTab.logs = true; break
-    default: $scope.selectedTab.basicInfo = true; break
+    case 'Basic Info':
+      $scope.selectedTab.basicInfo = true
+      break
+    case 'Request Matching':
+      $scope.selectedTab.requestMatching = true
+      break
+    case 'Routes':
+      $scope.selectedTab.routes = true
+      break
+    case 'Data Control':
+      $scope.selectedTab.dataControl = true
+      break
+    case 'Access Control':
+      $scope.selectedTab.accessControl = true
+      break
+    case 'Alerts':
+      $scope.selectedTab.alerts = true
+      break
+    case 'Logs':
+      $scope.selectedTab.logs = true
+      break
+    default:
+      $scope.selectedTab.basicInfo = true
+      break
   }
 
   /****************************************************************/
@@ -179,7 +226,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
     if ($scope.update) {
       channel.$update(success, error)
     } else {
-      channel.$save({ channelId: '' }, success, error)
+      channel.$save({channelId: ''}, success, error)
     }
   }
 
@@ -215,13 +262,21 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
       $scope.ngError.name = true
     }
 
-    if ($scope.channel.maxBodyAgeDays != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 36500)) {
+    if (
+      $scope.channel.maxBodyAgeDays != null &&
+      ($scope.channel.maxBodyAgeDays < 1 ||
+        $scope.channel.maxBodyAgeDays > 36500)
+    ) {
       $scope.ngError.hasErrors = true
       $scope.ngError.dataControlTab = true
       $scope.ngError.maxBodyAgeDays = true
     }
 
-    if ($scope.channel.timeout != null && ($scope.channel.maxBodyAgeDays < 1 || $scope.channel.maxBodyAgeDays > 3600000)) {
+    if (
+      $scope.channel.timeout != null &&
+      ($scope.channel.maxBodyAgeDays < 1 ||
+        $scope.channel.maxBodyAgeDays > 3600000)
+    ) {
       $scope.ngError.hasErrors = true
       $scope.ngError.basicInfoTab = true
       $scope.ngError.timeout = true
@@ -347,13 +402,19 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
 
     // auto retry errors
     if ($scope.channel.autoRetryEnabled) {
-      if (!$scope.channel.autoRetryPeriodMinutes || $scope.channel.autoRetryPeriodMinutes <= 0) {
+      if (
+        !$scope.channel.autoRetryPeriodMinutes ||
+        $scope.channel.autoRetryPeriodMinutes <= 0
+      ) {
         $scope.ngError.hasErrors = true
         $scope.ngError.dataControlTab = true
         $scope.ngError.autoRetryPeriodMinutes = true
       }
-      if ($scope.autoRetry.enableMaxAttempts &&
-        (!$scope.channel.autoRetryMaxAttempts || $scope.channel.autoRetryMaxAttempts <= 0)) {
+      if (
+        $scope.autoRetry.enableMaxAttempts &&
+        (!$scope.channel.autoRetryMaxAttempts ||
+          $scope.channel.autoRetryMaxAttempts <= 0)
+      ) {
         $scope.ngError.hasErrors = true
         $scope.ngError.dataControlTab = true
         $scope.ngError.maxAttempts = true
@@ -369,7 +430,11 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
         // send broadcast to children ( routes controller ) to check route warnings
         $scope.$broadcast('parentCheckRouteWarnings')
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 
@@ -399,7 +464,7 @@ export function ChannelsModalCtrl ($scope, $uibModalInstance, $timeout, Api, Not
   /***************************************************************************/
 }
 
-function populateHttpMethods (channel, methods) {
+function populateHttpMethods(channel, methods) {
   if (channel.methods) {
     for (const channelMethod of channel.methods) {
       if (channelMethod) {
