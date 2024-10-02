@@ -90,7 +90,7 @@ export async function fetchServerHeartBeat(): Promise<{
   master: number
   now: number
 }> {
-  ensureApiClientInitialized()
+  await ensureApiClientInitialized()
   const response = await apiClient.get('/heartbeat')
   return response.data
 }
