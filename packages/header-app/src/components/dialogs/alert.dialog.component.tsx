@@ -16,7 +16,6 @@ export function AlertDialog(props: AlertDialogProps) {
   return (
     <Backdrop
       sx={{color: '#fff', zIndex: theme => theme.zIndex.drawer + 1}}
-      onClick={props.onClose}
       open={props.open}
     >
       <div style={{minWidth: '500px'}}>

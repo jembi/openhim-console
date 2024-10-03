@@ -192,23 +192,33 @@ export default function OpenhimAppBar() {
   }
 
   const fetchApps = async () => {
-    const apps = await getApps()
-    if (apps.length === 0) {
-      return
-    }
-    const updatedPages = pages.map((page, index) =>
-      index === pages.length - 1
-        ? {
-            ...page,
-            children: apps.map(app => ({
-              name: app.name,
-              link: `#!/` + app.url.split('/').pop().split('.')[0]
-            }))
-          }
-        : page
-    )
+    try {
+      const apps = await getApps()
+      if (apps.length === 0) {
+        return
+      }
+      const updatedPages = pages.map((page, index) =>
+        index === pages.length - 1
+          ? {
+              ...page,
+              children: apps.map(app => ({
+                name: app.name,
+                link: `#!/` + app.url.split('/').pop().split('.')[0]
+              }))
+            }
+          : page
+      )
 
-    setPages(updatedPages)
+      setPages(updatedPages)
+
+    } catch (err: any) {
+      console.error(err)
+      showAlert(
+        'Error fetching user apps. ' + err?.response?.data,
+        'Error',
+        'error'
+      )
+    }
   }
 
   useEffect(() => {
