@@ -1,5 +1,5 @@
+import {Typography} from '@mui/material'
 import React from 'react'
-import {Button} from '@mui/material'
 import {StatusButtonProps} from '../../interfaces/index.interface'
 
 const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
@@ -17,9 +17,9 @@ const StatusButton: React.FC<StatusButtonProps> = ({status, buttonText}) => {
       : 'error'
 
   return (
-    <Button size="small" variant="text" color={buttonColor}>
+    <Typography fontSize={14} color={buttonColor}>
       {buttonText}
-    </Button>
+    </Typography>
   )
 }
 

@@ -25,6 +25,7 @@ export interface RequestDef {
   body?: string
   method?: string
   timestamp: string
+  params?: {}
 }
 
 export interface ResponseDef {
@@ -76,4 +77,6 @@ export interface Transaction {
   wasRerun?: boolean
   error?: ErrorDetailsDef
   status: TransactionStatus
+  clientName?: string
+  channelName?: string
 }

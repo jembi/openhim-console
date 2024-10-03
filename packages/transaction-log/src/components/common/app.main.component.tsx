@@ -367,13 +367,12 @@ const App: React.FC = () => {
   const handleReRunMatches = async () => {
     showBackdrop(<Loader />, true)
 
-
-    type BulkRunFilterCountParams = Parameters<typeof getBulkRunFilterCount>;
+    type BulkRunFilterCountParams = Parameters<typeof getBulkRunFilterCount>
 
     const params = {
-      ...getFilters() as any,
+      ...(getFilters() as any),
       filterLimit: 1000,
-      filterRepresentation: 'bulkrerun',
+      filterRepresentation: 'bulkrerun'
     } satisfies BulkRunFilterCountParams[0]
 
     getBulkRunFilterCount(params)
@@ -397,13 +396,15 @@ const App: React.FC = () => {
                 try {
                   showBackdrop(<Loader />, true)
 
-                  type BulkReRunParams = Parameters<typeof addTransactionsToBulkReRunTaskQueue>;
+                  type BulkReRunParams = Parameters<
+                    typeof addTransactionsToBulkReRunTaskQueue
+                  >
 
                   const params = {
-                    ...getFilters() as any,
+                    ...(getFilters() as any),
                     batchSize: event.batchSize,
                     filterLimit: 1000,
-                    pauseQueue: event.paused,
+                    pauseQueue: event.paused
                   } satisfies BulkReRunParams[0]
 
                   await addTransactionsToBulkReRunTaskQueue(params)
@@ -479,17 +480,18 @@ const App: React.FC = () => {
   const filteredTransactions = transactions.filter(transaction => {
     const searchTerm = searchQuery.toLowerCase()
     return [
-      // @ts-ignore
       transaction.channelName,
-      // @ts-ignore
       transaction.clientName,
       transaction.request.method,
       transaction.request.host,
       transaction.request.path,
-      // @ts-ignore
       transaction.request.params,
       transaction.status
-    ].some(field => field?.toLowerCase().includes(searchTerm))
+    ].some(field =>
+      typeof field === 'string'
+        ? field?.toLowerCase().includes(searchTerm)
+        : false
+    )
   })
 
   const handleRowClick = transaction => {
