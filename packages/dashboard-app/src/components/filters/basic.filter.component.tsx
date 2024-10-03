@@ -106,7 +106,7 @@ function FilterComponent(props: BasicFilterProps) {
     setFromDate(data.from)
     setUntilDate(data.until)
 
-    props.onChange(data)
+    props.onChange(structuredClone(data))
   }
 
   const handleBreakdownChange = (

@@ -22,6 +22,8 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   reruns,
   setReruns,
   channels,
+  onReRunMatches,
+  onReRunSelected,
   fetchTransactionLogs
 }) => {
   const debounceFetchTransactionLogs = useCallback(
@@ -49,6 +51,13 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
     setReruns(event.target.value)
   }
 
+  const handleReRunMatches = () => {
+    onReRunMatches?.()
+  }
+
+  const handleReRunSelected = () => {
+    onReRunSelected?.()
+  }
   useEffect(() => {
     ;(async () => {
       await debounceFetchTransactionLogs()
@@ -186,10 +195,20 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
         sx={{marginTop: 2}}
       >
         <Grid item>
-          <Button variant="outlined" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={handleReRunMatches}
+            variant="outlined"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN MATCHES
           </Button>
-          <Button variant="text" color="primary" sx={{marginRight: 2}}>
+          <Button
+            onClick={handleReRunSelected}
+            variant="text"
+            color="primary"
+            sx={{marginRight: 2}}
+          >
             RERUN SELECTED
           </Button>
         </Grid>
