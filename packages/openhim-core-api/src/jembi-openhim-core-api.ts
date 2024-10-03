@@ -90,6 +90,7 @@ export async function fetchServerHeartBeat(): Promise<{
   master: number
   now: number
 }> {
+  await ensureApiClientInitialized()
   ensureApiClientInitialized()
   const response = await apiClient.get('/heartbeat')
   return response.data
@@ -385,4 +386,37 @@ export async function fetchClientRoles() {
   })
 
   return roles
+}
+
+export async function addToTaskQueue(payload: {
+  tids: Array<string>
+  batchSize: number
+  paused: boolean
+}) {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/tasks', payload)
+  return response.data
+}
+
+export async function addToBulkReRunTaskQueue(payload: {
+  batchSize: number
+  filterLimit: number
+  filterPage: number
+  filters: {}
+  pauseQueue: boolean
+}) {
+  await ensureApiClientInitialized()
+  const response = await apiClient.post('/bulkrerun', payload)
+  return response.data
+}
+
+export async function fetchBulkRunFilterCount(params: {
+  filterLimit: number
+  filterPage: number
+  filterRepresentation: string
+  filters: {}
+}): Promise<number> {
+  await ensureApiClientInitialized()
+  const response = await apiClient.get('/transactions', {params})
+  return response.data
 }

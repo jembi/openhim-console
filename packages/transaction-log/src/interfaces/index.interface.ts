@@ -15,6 +15,8 @@ export interface BasicFilterProps {
   setLimit: (value: number) => void
   reruns: string
   setReruns: (value: string) => void
+  onReRunMatches?: () => unknown
+  onReRunSelected?: () => unknown
   channels: Channel[]
   fetchTransactionLogs: (
     timestampFilter?: string,
@@ -51,6 +53,8 @@ export interface CustomFilterProps {
   clients: Client[]
   method: string
   setMethod: (value: string) => void
+  onReRunMatches?: () => unknown
+  onReRunSelected?: () => unknown
   fetchTransactionLogs: (
     timestampFilter?: string,
     filteredResults?: boolean

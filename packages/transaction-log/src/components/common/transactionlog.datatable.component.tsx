@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Box,
   Table,
@@ -20,26 +20,37 @@ import SettingsDialog from '../dialogs/settings.dialog.component'
 import {ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
+import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
+import {Transaction} from '../../types'
+import {tr} from 'date-fns/locale'
 
 const TransactionLogTable: React.FC<{
-  transactions: any[]
+  transactions: Transaction[]
   loadMore: () => void
   loading: boolean
   initialTransactionLoadComplete: boolean
   onRowClick: (transaction: any) => void
+  onSelectedChange(transactions: Transaction[]): void
 }> = ({
   transactions,
   loadMore,
   onRowClick,
   loading,
-  initialTransactionLoadComplete
+  initialTransactionLoadComplete,
+  onSelectedChange
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
-  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [selectedRows, setSelectedRows] = useState<Set<Transaction>>(
+    new Set([])
+  )
   const [selectAll, setSelectAll] = useState(false)
+
+  useEffect(() => {
+    onSelectedChange(Array.from(selectedRows))
+  }, [selectedRows])
 
   const handleSettingsApply = () => {
     setSettingsOpen(false)
@@ -59,13 +70,13 @@ const TransactionLogTable: React.FC<{
     }
   }
 
-  const handleRowSelect = (rowIndex: number) => {
+  const handleRowSelect = (transaction: Transaction) => {
     setSelectedRows(prevSelectedRows => {
       const newSelectedRows = new Set(prevSelectedRows)
-      if (newSelectedRows.has(rowIndex)) {
-        newSelectedRows.delete(rowIndex)
+      if (newSelectedRows.has(transaction)) {
+        newSelectedRows.delete(transaction)
       } else {
-        newSelectedRows.add(rowIndex)
+        newSelectedRows.add(transaction)
       }
       return newSelectedRows
     })
@@ -73,10 +84,9 @@ const TransactionLogTable: React.FC<{
 
   const handleSelectAll = () => {
     if (selectAll) {
-      setSelectedRows(new Set())
+      setSelectedRows(new Set([]))
     } else {
-      const allRowIndexes = transactions.map((_, index) => index)
-      setSelectedRows(new Set(allRowIndexes))
+      setSelectedRows(new Set(transactions))
     }
     setSelectAll(!selectAll)
   }
@@ -134,8 +144,8 @@ const TransactionLogTable: React.FC<{
                       className="non-clickable-column"
                     >
                       <Checkbox
-                        checked={selectedRows.has(index)}
-                        onChange={() => handleRowSelect(index)}
+                        checked={selectedRows.has(transaction)}
+                        onChange={() => handleRowSelect(transaction)}
                       />
                     </TableCell>
                     <TableCell>
@@ -196,29 +206,19 @@ const TransactionLogTable: React.FC<{
                     <TableCell>{transaction.request.host}</TableCell>
                     <TableCell>{transaction.request.port}</TableCell>
                     <TableCell>{transaction.request.path}</TableCell>
-                    <TableCell>{transaction.request.params}</TableCell>
-                    <TableCell>{transaction.channelName}</TableCell>
-                    <TableCell>{transaction.clientName}</TableCell>
-                    <TableCell
-                      sx={{
-                        color:
-                          transaction.status === 'Processing'
-                            ? 'info.main'
-                            : transaction.status === 'Pending Async'
-                            ? 'info.main'
-                            : transaction.status === 'Successful'
-                            ? 'success.main'
-                            : transaction.status === 'Completed'
-                            ? 'warning.main'
-                            : transaction.status === 'Completed with error(s)'
-                            ? 'warning.main'
-                            : 'error.main'
-                      }}
-                    >
-                      {transaction.status}
+                    <TableCell>{(transaction.request as any).params}</TableCell>
+                    <TableCell>{(transaction as any).channelName}</TableCell>
+                    <TableCell>{(transaction as any).clientName}</TableCell>
+                    <TableCell>
+                      <StatusButton
+                        status={transaction.status}
+                        buttonText={transaction.status}
+                      />
                     </TableCell>
                     <TableCell>
-                      {convertTimestampFormat(transaction.request.timestamp)}
+                      {convertTimestampFormat(
+                        transaction.request.timestamp as any
+                      )}
                     </TableCell>
                   </AnimatedTableRow>
                 ))
