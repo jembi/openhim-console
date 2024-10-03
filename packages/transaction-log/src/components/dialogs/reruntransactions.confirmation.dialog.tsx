@@ -123,13 +123,14 @@ export const ReRunTransactionsConfirmationDialog: React.FC<
                 variant="outlined"
                 onChange={e => setEvent({...event, batchSize: +e.target.value})}
               >
-                {getBatchSizes(props.selectedTransactions?.length).map(
-                  (b, i) => (
-                    <MenuItem key={i} value={b.value}>
-                      {b.label}
-                    </MenuItem>
-                  )
-                )}
+                {getBatchSizes(
+                  props.bulkReRunFilterCount ||
+                    props.selectedTransactions?.length
+                ).map((b, i) => (
+                  <MenuItem key={i} value={b.value}>
+                    {b.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
 
