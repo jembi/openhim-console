@@ -210,7 +210,6 @@ export default function OpenhimAppBar() {
       )
 
       setPages(updatedPages)
-
     } catch (err: any) {
       console.error(err)
       showAlert(
