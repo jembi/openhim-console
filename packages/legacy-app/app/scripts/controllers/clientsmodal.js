@@ -1,7 +1,16 @@
 import * as CryptoJS from 'crypto-js'
-import { v4 as uuidV4 } from 'uuid'
+import {v4 as uuidV4} from 'uuid'
 
-export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeout, Api, Notify, Alerting, client) {
+export function ClientsModalCtrl(
+  $rootScope,
+  $scope,
+  $uibModalInstance,
+  $timeout,
+  Api,
+  Notify,
+  Alerting,
+  client
+) {
   /***************************************************************/
   /**   These are the functions for the Client initial load     **/
   /***************************************************************/
@@ -83,7 +92,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
       } else {
         $scope.formData.duplicateNewRole = false
         $scope.client.roles.push(newRole)
-        $scope.roles.push({ name: newRole })
+        $scope.roles.push({name: newRole})
         $scope.formData.assigned[newRole] = true
         $scope.formData.newClientRole = null
       }
@@ -105,7 +114,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
   }
 
   // fetch the keystore for cert dropdown
-  Api.Keystore.query({ type: 'ca' }, function (certs) {
+  Api.Keystore.query({type: 'ca'}, function (certs) {
     $scope.certs = certs
   })
 
@@ -137,13 +146,24 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
 
   const success = function () {
     // add the success message
-    Alerting.AlertAddMsg('client', 'success', 'The client has been saved successfully')
+    Alerting.AlertAddMsg(
+      'client',
+      'success',
+      'The client has been saved successfully'
+    )
     notifyUser()
   }
 
   const error = function (err) {
     // add the success message
-    Alerting.AlertAddMsg('client', 'danger', 'An error has occurred while saving the clients\' details: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'client',
+      'danger',
+      "An error has occurred while saving the clients' details: #" +
+        err.status +
+        ' - ' +
+        err.data
+    )
     notifyUser()
   }
 
@@ -153,7 +173,7 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
     if ($scope.update) {
       client.$update(success, error)
     } else {
-      client.$save({ clientId: '' }, success, error)
+      client.$save({clientId: ''}, success, error)
     }
   }
 
@@ -258,7 +278,10 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
 
     // password validation
     if ($scope.temp.password) {
-      if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
+      if (
+        !$scope.temp.passwordConfirm ||
+        $scope.temp.password !== $scope.temp.passwordConfirm
+      ) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
         $scope.ngError.clientAuthenticationTab = true
@@ -271,7 +294,11 @@ export function ClientsModalCtrl ($rootScope, $scope, $uibModalInstance, $timeou
         $scope.ngError = {}
         Alerting.AlertReset('hasErrors')
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

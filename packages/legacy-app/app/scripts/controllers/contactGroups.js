@@ -1,15 +1,19 @@
 import contactGroupsModal from '~/views/contactGroupsModal'
 import confirmModal from '~/views/confirmModal'
-import { ContactGroupsModalCtrl, ConfirmModalCtrl } from './'
+import {ContactGroupsModalCtrl, ConfirmModalCtrl} from './'
 
-export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
+export function ContactGroupsCtrl($scope, $uibModal, Api, Alerting) {
   /************************************************/
   /**         Initial load & onChanged           **/
   /************************************************/
   const querySuccess = function (contactGroups) {
     $scope.contactGroups = contactGroups
     if (contactGroups.length === 0) {
-      Alerting.AlertAddMsg('bottom', 'warning', 'There are currently no contact lists created')
+      Alerting.AlertAddMsg(
+        'bottom',
+        'warning',
+        'There are currently no contact lists created'
+      )
     }
   }
 
@@ -37,8 +41,7 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
       template: contactGroupsModal,
       controller: ContactGroupsModalCtrl,
       resolve: {
-        contactGroup: function () {
-        }
+        contactGroup: function () {}
       }
     })
   }
@@ -66,12 +69,17 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
   const deleteSuccess = function () {
     // On success
     $scope.contactGroups = Api.ContactGroups.query()
-    Alerting.AlertAddMsg('top', 'success', 'The contact list has been deleted successfully')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The contact list has been deleted successfully'
+    )
   }
 
   const deleteError = function (err) {
     if (err.status === 409) {
-      let warningMessage = 'Could not delete the contact list because it is associated with the following channels: '
+      let warningMessage =
+        'Could not delete the contact list because it is associated with the following channels: '
       for (let i = 0; i < err.data.length; i++) {
         if (i > 0) {
           warningMessage += ', '
@@ -81,7 +89,14 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
       Alerting.AlertAddMsg('top', 'warning', warningMessage)
     } else {
       // add the error message
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while deleting the contact list: #' + err.status + ' - ' + err.data)
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        'An error has occurred while deleting the contact list: #' +
+          err.status +
+          ' - ' +
+          err.data
+      )
     }
   }
 
@@ -91,7 +106,10 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
     const deleteObject = {
       title: 'Delete Contact Group',
       button: 'Delete',
-      message: 'Are you sure you wish to delete the Contact list "' + contactGroup.group + '"?'
+      message:
+        'Are you sure you wish to delete the Contact list "' +
+        contactGroup.group +
+        '"?'
     }
 
     const modalInstance = $uibModal.open({
@@ -104,12 +122,15 @@ export function ContactGroupsCtrl ($scope, $uibModal, Api, Alerting) {
       }
     })
 
-    modalInstance.result.then(function () {
-      // Delete confirmed - delete the contact group
-      contactGroup.$remove(deleteSuccess, deleteError)
-    }, function () {
-      // delete cancelled - do nothing
-    })
+    modalInstance.result.then(
+      function () {
+        // Delete confirmed - delete the contact group
+        contactGroup.$remove(deleteSuccess, deleteError)
+      },
+      function () {
+        // delete cancelled - do nothing
+      }
+    )
   }
 
   /*******************************************/

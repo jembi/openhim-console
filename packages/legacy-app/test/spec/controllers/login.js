@@ -7,7 +7,19 @@ describe('Controller: LoginCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy', "ssoEnabled": true, keyCloakUrl: "http://urlExample:9088", keyCloakRealm: "exampleRealm", keyCloakClientId: "exampleID" })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy',
+        ssoEnabled: true,
+        keyCloakUrl: 'http://urlExample:9088',
+        keyCloakRealm: 'exampleRealm',
+        keyCloakClientId: 'exampleID'
+      })
     })
   })
 
@@ -16,7 +28,14 @@ describe('Controller: LoginCtrl', function () {
   var scope, login, createController, httpBackend, keycloak, window
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _login_, $httpBackend, _keycloak_, $window) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    _login_,
+    $httpBackend,
+    _keycloak_,
+    $window
+  ) {
     // reset localStorage session variable
     localStorage.removeItem('consoleSession')
 
@@ -35,39 +54,52 @@ describe('Controller: LoginCtrl', function () {
 
     httpBackend = $httpBackend
 
-    httpBackend.when('GET', new RegExp('.*/users/.*')).respond({
-      __v: 0,
-      _id: '539846c240f2eb682ffeca4b',
-      email: 'test@user.org',
-      firstname: 'test',
-      surname: 'test',
-      groups: ['admin'],
-      settings: {
-        filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
-        list: { tabview: 'new' }
+    httpBackend.when('GET', new RegExp('.*/users/.*')).respond(
+      {
+        __v: 0,
+        _id: '539846c240f2eb682ffeca4b',
+        email: 'test@user.org',
+        firstname: 'test',
+        surname: 'test',
+        groups: ['admin'],
+        settings: {
+          filter: {
+            status: 'Successful',
+            channel: '5322fe9d8b6add4b2b059dd8',
+            limit: '200'
+          },
+          list: {tabview: 'new'}
+        }
+      },
+      {
+        _id: '349274c136f2eb682aodye4c',
+        email: 'root@openhim.org',
+        firstname: 'Super',
+        surname: 'User',
+        groups: ['admin'],
+        settings: {
+          filter: {
+            status: 'Successful',
+            channel: '5322fe9d8b6add4b2b059dd8',
+            limit: '200'
+          },
+          list: {tabview: 'new'}
+        }
       }
-    }, {
-      _id: '349274c136f2eb682aodye4c',
-      email: 'root@openhim.org',
-      firstname: 'Super',
-      surname: 'User',
-      groups: ['admin'],
-      settings: {
-        filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
-        list: { tabview: 'new' }
-      }
-    })
+    )
 
-    httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
+    httpBackend
+      .when('PUT', new RegExp('.*/users'))
+      .respond('user has been successfully updated')
     httpBackend.when('GET', new RegExp('.*/logout')).respond(200)
 
     createController = function (options = {}) {
       let config = {ssoEnabled: true}
 
-      if(!options.ssoEnabled) {
+      if (!options.ssoEnabled) {
         config.ssoEnabled = false
       }
-      if(options.window) {
+      if (options.window) {
         $window = options.window
       }
 
@@ -75,7 +107,12 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.flush()
 
       scope = $rootScope.$new()
-      return $controller('LoginCtrl', { $scope: scope, config, keycloak, $window})
+      return $controller('LoginCtrl', {
+        $scope: scope,
+        config,
+        keycloak,
+        $window
+      })
     }
   }))
 
@@ -94,7 +131,9 @@ describe('Controller: LoginCtrl', function () {
       scope.validateLogin()
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('Please provide your login credentials')
+      scope.alerts.login[0].msg.should.equal(
+        'Please provide your login credentials'
+      )
     })
 
     // once all fields supplied, check if user exist based on credentials
@@ -110,13 +149,17 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
       httpBackend.flush()
 
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('The supplied credentials were incorrect. Please try again')
+      scope.alerts.login[0].msg.should.equal(
+        'The supplied credentials were incorrect. Please try again'
+      )
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
@@ -140,7 +183,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
 
       httpBackend.flush()
 
@@ -170,7 +215,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
 
       httpBackend.flush()
 
@@ -183,7 +230,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Supply all fields'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('Please provide both password fields')
+      scope.alerts.login[0].msg.should.equal(
+        'Please provide both password fields'
+      )
     })
 
     it('should run the resetRootPassword() function return error for password not matching', function () {
@@ -205,7 +254,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
 
       httpBackend.flush()
 
@@ -218,7 +269,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Supply all fields'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('The supplied passwords do not match')
+      scope.alerts.login[0].msg.should.equal(
+        'The supplied passwords do not match'
+      )
     })
 
     it('should run the resetRootPassword() function return error for new password being same as default one', function () {
@@ -238,7 +291,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
 
       httpBackend.flush()
 
@@ -251,7 +306,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Supply all fields'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('The supplied password is the same as the current one')
+      scope.alerts.login[0].msg.should.equal(
+        'The supplied password is the same as the current one'
+      )
     })
 
     it('should run the resetRootPassword() function and update the root users password', function () {
@@ -271,7 +328,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'Busy checking login credentials'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('warning')
-      scope.alerts.login[0].msg.should.equal('Busy checking your credentials...')
+      scope.alerts.login[0].msg.should.equal(
+        'Busy checking your credentials...'
+      )
 
       httpBackend.flush()
 
@@ -288,9 +347,13 @@ describe('Controller: LoginCtrl', function () {
 
       scope.alerts.login.length.should.equal(2)
       scope.alerts.login[0].type.should.equal('success')
-      scope.alerts.login[0].msg.should.equal('Root Password Successfully Reset.')
+      scope.alerts.login[0].msg.should.equal(
+        'Root Password Successfully Reset.'
+      )
       scope.alerts.login[1].type.should.equal('success')
-      scope.alerts.login[1].msg.should.equal("You will be redirected to the 'Transactions' page shortly.")
+      scope.alerts.login[1].msg.should.equal(
+        "You will be redirected to the 'Transactions' page shortly."
+      )
     })
   })
 
@@ -313,7 +376,9 @@ describe('Controller: LoginCtrl', function () {
       // One error should exist - 'The supplied credentials were incorrect. Please try again'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('The supplied credentials were incorrect. Please try again')
+      scope.alerts.login[0].msg.should.equal(
+        'The supplied credentials were incorrect. Please try again'
+      )
 
       // user should not exist if incorrect login credentials
       user = login.getLoggedInUser()
@@ -415,50 +480,66 @@ describe('Controller: LoginCtrl', function () {
   // Testing the signInWithKeyCloak() function
   describe('*signInWithKeyCloak() tests', function () {
     it('should init keycloak if ssoEnabled config is set to true', function () {
-      createController({ ssoEnabled: true })
+      createController({ssoEnabled: true})
       scope.signInWithKeyCloak()
 
-      scope.alerts.should.not.have.property("login")
+      scope.alerts.should.not.have.property('login')
     })
 
     it('should login after getting the redirected url', function () {
-      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond({ user: {
-        __v: 0,
-        _id: '539846c240f2eb682ffeca4b',
-        email: 'test@user.org',
-        firstname: 'test',
-        surname: 'test',
-        groups: ['admin'],
-        provider: 'keycloak',
-        settings: {
-          filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
-          list: { tabview: 'new' }
+      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond({
+        user: {
+          __v: 0,
+          _id: '539846c240f2eb682ffeca4b',
+          email: 'test@user.org',
+          firstname: 'test',
+          surname: 'test',
+          groups: ['admin'],
+          provider: 'keycloak',
+          settings: {
+            filter: {
+              status: 'Successful',
+              channel: '5322fe9d8b6add4b2b059dd8',
+              limit: '200'
+            },
+            list: {tabview: 'new'}
+          }
         }
-    }})
+      })
 
       let window = {}
 
-      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
-  
+      window.location = {hash: '#!/login#state=x&session_state=x&code=x'}
+
       const expectedSession = {
         sessionUser: 'test@user.org',
         sessionUserGroups: ['admin'],
-        sessionProvider: "keycloak",
-        sessionUserSettings:  {
-          filter: { status: 'Successful', channel: '5322fe9d8b6add4b2b059dd8', limit: '200' },
-          list: { tabview: 'new' }
+        sessionProvider: 'keycloak',
+        sessionUserSettings: {
+          filter: {
+            status: 'Successful',
+            channel: '5322fe9d8b6add4b2b059dd8',
+            limit: '200'
+          },
+          list: {tabview: 'new'}
         }
       }
 
-      createController({ ssoEnabled: true, window })
+      createController({ssoEnabled: true, window})
       httpBackend.flush()
-      
+
       const consoleSession = JSON.parse(localStorage.getItem('consoleSession'))
 
       expectedSession.sessionUser.should.equal(consoleSession.sessionUser)
-      expectedSession.sessionProvider.should.equal(consoleSession.sessionProvider)
-      expectedSession.sessionUserGroups[0].should.equal(consoleSession.sessionUserGroups[0])
-      expectedSession.sessionUserSettings.should.deep.equal(consoleSession.sessionUserSettings)
+      expectedSession.sessionProvider.should.equal(
+        consoleSession.sessionProvider
+      )
+      expectedSession.sessionUserGroups[0].should.equal(
+        consoleSession.sessionUserGroups[0]
+      )
+      expectedSession.sessionUserSettings.should.deep.equal(
+        consoleSession.sessionUserSettings
+      )
 
       // user should exist
       var user = login.getLoggedInUser()
@@ -467,20 +548,23 @@ describe('Controller: LoginCtrl', function () {
     })
 
     it('should return an error message if login failed after getting the redirected url', function () {
-      httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond(401)
+      httpBackend
+        .when('POST', new RegExp('.*/authenticate/openid'))
+        .respond(401)
 
       let window = {}
-      
-      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
 
-      createController({ ssoEnabled: true, window })
+      window.location = {hash: '#!/login#state=x&session_state=x&code=x'}
+
+      createController({ssoEnabled: true, window})
       httpBackend.flush()
-
 
       // One error should exist - 'The supplied credentials were incorrect. Please try again'
       scope.alerts.login.length.should.equal(1)
       scope.alerts.login[0].type.should.equal('danger')
-      scope.alerts.login[0].msg.should.equal('Sign-in with Keycloak failed. Please try again')
+      scope.alerts.login[0].msg.should.equal(
+        'Sign-in with Keycloak failed. Please try again'
+      )
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
@@ -491,10 +575,10 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.when('POST', new RegExp('.*/authenticate/openid')).respond(90)
 
       let window = {}
-      
-      window.location = { hash: "#!/login#state=x&session_state=x&code=x"}
 
-      createController({ ssoEnabled: true, window })
+      window.location = {hash: '#!/login#state=x&session_state=x&code=x'}
+
+      createController({ssoEnabled: true, window})
       httpBackend.flush()
 
       scope.coreConnectionError.should.equal(true)
@@ -510,17 +594,17 @@ describe('Controller: LoginCtrl', function () {
     // Logout of a local login
     it('should logout when local provider and remove session', function () {
       const sessionExample = {
-        sessionID: "sessionId", 
-        sessionUser: "test@test.org",
+        sessionID: 'sessionId',
+        sessionUser: 'test@test.org',
         sessionUserGroups: [],
-        sessionProvider: "local"
+        sessionProvider: 'local'
       }
       localStorage.setItem('consoleSession', sessionExample)
 
       let window = {}
-      window.location = { hash: '#/logout'}
+      window.location = {hash: '#/logout'}
 
-      createController({ ssoEnabled: true, window })
+      createController({ssoEnabled: true, window})
       httpBackend.flush()
 
       const consoleSession = localStorage.getItem('consoleSession')

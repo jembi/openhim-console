@@ -19,15 +19,15 @@ import {editClient} from '@jembi/openhim-core-api'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
 import {fetchClientById} from '@jembi/openhim-core-api'
-import { useLoaderData } from 'react-router-dom'
+import {useLoaderData} from 'react-router-dom'
 
 export async function loader({params}) {
-  const client = await fetchClientById(params['clientId']);
-  return {client};
+  const client = await fetchClientById(params['clientId'])
+  return {client}
 }
 
 const EditClient = () => {
-  const { client } = useLoaderData() as { client: BasicInfoModel };
+  const {client} = useLoaderData() as {client: BasicInfoModel}
 
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string
@@ -171,58 +171,58 @@ const EditClient = () => {
         <Divider />
       </Grid>
       <Grid item xs={12}>
-          <Card sx={{width: 550, margin: 'auto'}}>
-            <Box>
-              <Tabs
-                value={tabValue}
-                onChange={handleChange}
-                variant="fullWidth"
-              >
-                <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
-                <Tab label="Authentication" id={`edit-client-tab-${1}`} />
-              </Tabs>
-            </Box>
-            <BasicInfo
-              basicInfo={basicInfo}
-              onBasicInfoChange={onBasicInfoChange}
-              setBasicInfo={setBasicInfo}
-              validationErrors={validationErrors}
-              validateBasicInfoField={validateBasicInfoField}
-              hidden={tabValue !== 0}
-              editMode={true}
-            />
-            <Authentication
-              authType={authType}
-              authentication={authentication}
-              basicInfo={basicInfo}
-              setAuthentication={setAuthentication}
-              selectAuthenticationType={selectAuthenticationType}
-              onAuthenticationChange={onAuthenticationChange}
-              hidden={tabValue !== 1}
-            />
-            <Divider />
-            <br />
-            <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
-              <Button
-                variant="outlined"
-                id="cancel"
-                color="success"
-                sx={{color: '#29AC96'}}
-                onClick={() => window.history.pushState({}, '', '/#!/clients')}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                id="save"
-                color="success"
-                sx={{backgroundColor: '#29AC96'}}
-                onClick={() => onSaveButtonClicked()}
-              >
-                Save
-              </Button>
-            </Stack>
-          </Card>
+        <Card sx={{width: 550, margin: 'auto'}}>
+          <Box>
+            <Tabs value={tabValue} onChange={handleChange} variant="fullWidth">
+              <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
+              <Tab label="Authentication" id={`edit-client-tab-${1}`} />
+            </Tabs>
+          </Box>
+          <BasicInfo
+            basicInfo={basicInfo}
+            onBasicInfoChange={onBasicInfoChange}
+            setBasicInfo={setBasicInfo}
+            validationErrors={validationErrors}
+            validateBasicInfoField={validateBasicInfoField}
+            hidden={tabValue !== 0}
+            editMode={true}
+          />
+          <Authentication
+            authType={authType}
+            authentication={authentication}
+            basicInfo={basicInfo}
+            setAuthentication={setAuthentication}
+            selectAuthenticationType={selectAuthenticationType}
+            onAuthenticationChange={onAuthenticationChange}
+            hidden={tabValue !== 1}
+          />
+          <Divider />
+          <br />
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{marginBottom: 1, marginLeft: 2}}
+          >
+            <Button
+              variant="outlined"
+              id="cancel"
+              color="success"
+              sx={{color: '#29AC96'}}
+              onClick={() => window.history.pushState({}, '', '/#!/clients')}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              id="save"
+              color="success"
+              sx={{backgroundColor: '#29AC96'}}
+              onClick={() => onSaveButtonClicked()}
+            >
+              Save
+            </Button>
+          </Stack>
+        </Card>
       </Grid>
     </Grid>
   )

@@ -409,7 +409,11 @@ const ngLifecycles = singleSpaAngularJS({
   template: '<div id="body" ng-view=""></div>'
 })
 const cssLifecycles = singleSpaCss({
-  cssUrls: [defaultConfig.environment==="production" ? 'styles.css':'http://localhost:9001/styles.css']
+  cssUrls: [
+    defaultConfig.environment === 'production'
+      ? 'styles.css'
+      : 'http://localhost:9001/styles.css'
+  ]
 })
 
 export const bootstrap = [

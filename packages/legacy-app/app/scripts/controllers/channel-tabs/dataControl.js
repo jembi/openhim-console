@@ -1,4 +1,4 @@
-export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
+export function channelDataControlCtrl($scope, $timeout, Api, Alerting) {
   // store settings
   if (!$scope.update) {
     // set default variables if new channel
@@ -19,7 +19,7 @@ export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
   } else {
     // wait for channel fetch promise to be completed
     $scope.channel.$promise.then(function () {
-      if (typeof ($scope.channel.rewriteUrlsConfig) === 'undefined') {
+      if (typeof $scope.channel.rewriteUrlsConfig === 'undefined') {
         // set default rewriteUrlsConfig array variable
         $scope.channel.rewriteUrlsConfig = []
         $scope.channel.rewriteUrls = false
@@ -51,7 +51,7 @@ export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
     // push the route object to channel.rewriteUrlsConfig if no errors exist
     if ($scope.ngErrorUrlRewrite.hasErrors === false) {
       // if index then this is an update - delete old urlRewrite based on index
-      if (typeof (index) !== 'undefined' && index !== null) {
+      if (typeof index !== 'undefined' && index !== null) {
         // remove old urlRewrite from array
         $scope.channel.rewriteUrlsConfig.splice(index, 1)
       }
@@ -172,7 +172,11 @@ export function channelDataControlCtrl ($scope, $timeout, Api, Alerting) {
         $scope.resetUrlRewriteErrors()
         $scope.checkUrlRewriteWarnings()
       }, 5000)
-      Alerting.AlertAddMsg('hasErrorsUrlRewrite', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrorsUrlRewrite',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

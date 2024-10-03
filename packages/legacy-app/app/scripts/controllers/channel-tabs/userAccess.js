@@ -1,4 +1,4 @@
-export function channelUserAccessCtrl ($scope) {
+export function channelUserAccessCtrl($scope) {
   // object for the taglist roles
   $scope.taglistUserRoleOptions = []
 

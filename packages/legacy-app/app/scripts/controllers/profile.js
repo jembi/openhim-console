@@ -1,6 +1,6 @@
-import { isValidMSISDN } from '../utils'
+import {isValidMSISDN} from '../utils'
 
-export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
+export function ProfileCtrl($http, $scope, $timeout, Api, login, Alerting) {
   /****************************************************************/
   /**   These are the functions for the Profile initial load     **/
   /****************************************************************/
@@ -16,41 +16,56 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   $scope.temp = {}
 
   // get the allowed channels for the transaction settings
-  Api.Channels.query(function (channels) {
-    $scope.channels = channels
+  Api.Channels.query(
+    function (channels) {
+      $scope.channels = channels
 
-    $scope.primaryRoutes = []
-    $scope.secondaryRoutes = []
+      $scope.primaryRoutes = []
+      $scope.secondaryRoutes = []
 
-    angular.forEach(channels, function (channel) {
-      angular.forEach(channel.routes, function (route) {
-        if (route.primary) {
-          if ($scope.primaryRoutes.indexOf(route.name) < 0) {
-            $scope.primaryRoutes.push(route.name)
+      angular.forEach(channels, function (channel) {
+        angular.forEach(channel.routes, function (route) {
+          if (route.primary) {
+            if ($scope.primaryRoutes.indexOf(route.name) < 0) {
+              $scope.primaryRoutes.push(route.name)
+            }
+          } else {
+            if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
+              $scope.secondaryRoutes.push(route.name)
+            }
           }
-        } else {
-          if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
-            $scope.secondaryRoutes.push(route.name)
-          }
-        }
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get channels */ })
+    },
+    function () {
+      /* server error - could not connect to API to get channels */
+    }
+  )
 
-  Api.Mediators.query(function (mediators) {
-    $scope.mediators = mediators
-  }, function () { /* server error - could not connect to API to get mediators */ })
+  Api.Mediators.query(
+    function (mediators) {
+      $scope.mediators = mediators
+    },
+    function () {
+      /* server error - could not connect to API to get mediators */
+    }
+  )
 
   // get the users for the taglist roles options
-  Api.Users.query(function (users) {
-    angular.forEach(users, function (user) {
-      angular.forEach(user.groups, function (group) {
-        if ($scope.taglistUserRoleOptions.indexOf(group) === -1) {
-          $scope.taglistUserRoleOptions.push(group)
-        }
+  Api.Users.query(
+    function (users) {
+      angular.forEach(users, function (user) {
+        angular.forEach(user.groups, function (group) {
+          if ($scope.taglistUserRoleOptions.indexOf(group) === -1) {
+            $scope.taglistUserRoleOptions.push(group)
+          }
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get Users */ })
+    },
+    function () {
+      /* server error - could not connect to API to get Users */
+    }
+  )
 
   const querySuccess = function (user) {
     $scope.user = user
@@ -64,8 +79,10 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
       $scope.user.settings.list = {}
     }
 
-    const isUsingOldVisualizerSettings = $scope.user.settings.visualizer &&
-      $scope.user.settings.visualizer.endpoints && !$scope.user.settings.visualizer.mediators
+    const isUsingOldVisualizerSettings =
+      $scope.user.settings.visualizer &&
+      $scope.user.settings.visualizer.endpoints &&
+      !$scope.user.settings.visualizer.mediators
 
     if (!$scope.user.settings.visualizer || isUsingOldVisualizerSettings) {
       if (!isUsingOldVisualizerSettings) {
@@ -74,7 +91,10 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         // load default visualizer config for user with no visualizer settings
 
         $http.get('config/visualizer.json').then(function (visualizerConfig) {
-          angular.extend($scope.user.settings.visualizer, angular.copy(visualizerConfig))
+          angular.extend(
+            $scope.user.settings.visualizer,
+            angular.copy(visualizerConfig)
+          )
         })
       } else {
         // migrate settings
@@ -82,28 +102,34 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         $scope.user.settings.visualizer.mediators = []
         $scope.user.settings.visualizer.time.minDisplayPeriod = 100
 
-        angular.forEach($scope.user.settings.visualizer.endpoints, function (endpoint) {
-          $scope.user.settings.visualizer.channels.push({
-            eventType: 'channel',
-            eventName: endpoint.event.replace('channel-', ''),
-            display: endpoint.desc
-          })
-        })
+        angular.forEach(
+          $scope.user.settings.visualizer.endpoints,
+          function (endpoint) {
+            $scope.user.settings.visualizer.channels.push({
+              eventType: 'channel',
+              eventName: endpoint.event.replace('channel-', ''),
+              display: endpoint.desc
+            })
+          }
+        )
         delete $scope.user.settings.visualizer.endpoints
 
-        angular.forEach($scope.user.settings.visualizer.components, function (component) {
-          const split = component.event.split('-')
-          if (split.length > 1) {
-            component.eventType = split[0]
-            component.eventName = split[1]
-          } else {
-            component.eventType = 'channel'
-            component.eventName = component.event
+        angular.forEach(
+          $scope.user.settings.visualizer.components,
+          function (component) {
+            const split = component.event.split('-')
+            if (split.length > 1) {
+              component.eventType = split[0]
+              component.eventName = split[1]
+            } else {
+              component.eventType = 'channel'
+              component.eventName = component.event
+            }
+            component.display = component.desc
+            delete component.event
+            delete component.desc
           }
-          component.display = component.desc
-          delete component.event
-          delete component.desc
-        })
+        )
       }
     }
   }
@@ -114,7 +140,11 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   }
 
   // do the initial request
-  Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError)
+  Api.Users.get(
+    {email: $scope.consoleSession.sessionUser},
+    querySuccess,
+    queryError
+  )
 
   /****************************************************************/
   /**   These are the functions for the Profile initial load     **/
@@ -127,40 +157,70 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   const error = function (err) {
     // add the error message
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while saving your details: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
   }
 
   const success = function (user, password) {
     // update consoleSession with new userSettings
     $scope.consoleSession.sessionUserSettings = user.settings
-    localStorage.setItem('consoleSession', JSON.stringify($scope.consoleSession))
+    localStorage.setItem(
+      'consoleSession',
+      JSON.stringify($scope.consoleSession)
+    )
 
     // add the success message
     if (password !== '') {
       // re-login with new credentials
-      login.login($scope.consoleSession.sessionUser, password, function (loggedIn) {
-        if (loggedIn) {
-          Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError)
-        } else {
-          error()
+      login.login(
+        $scope.consoleSession.sessionUser,
+        password,
+        function (loggedIn) {
+          if (loggedIn) {
+            Api.Users.get(
+              {email: $scope.consoleSession.sessionUser},
+              querySuccess,
+              queryError
+            )
+          } else {
+            error()
+          }
         }
-      })
+      )
     } else {
-      Api.Users.get({ email: $scope.consoleSession.sessionUser }, querySuccess, queryError)
+      Api.Users.get(
+        {email: $scope.consoleSession.sessionUser},
+        querySuccess,
+        queryError
+      )
     }
 
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'Your user details have been updated succesfully.'
+    )
   }
 
   $scope.save = function (user, password) {
-    const userObject = { ...angular.copy(user), id: user._id, password }
-    Api.Users.update(userObject, function () {
-      success(userObject, password)
+    const userObject = {...angular.copy(user), id: user._id, password}
+    Api.Users.update(
+      userObject,
+      function () {
+        success(userObject, password)
 
-      // rootScope function to scroll to top
-      $scope.goToTop()
-    }, error)
+        // rootScope function to scroll to top
+        $scope.goToTop()
+      },
+      error
+    )
   }
 
   /****************************************************************/
@@ -175,18 +235,30 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
   $scope.visualizer = {}
 
   $scope.addSelectedChannel = function () {
-    $scope.user.settings.visualizer.channels.push({ eventType: 'channel', eventName: $scope.visualizer.addSelectChannel.name, display: $scope.visualizer.addSelectChannel.name })
+    $scope.user.settings.visualizer.channels.push({
+      eventType: 'channel',
+      eventName: $scope.visualizer.addSelectChannel.name,
+      display: $scope.visualizer.addSelectChannel.name
+    })
     $scope.visualizer.addSelectChannel = null
   }
 
   $scope.addSelectedMediator = function () {
-    $scope.user.settings.visualizer.mediators.push({ mediator: $scope.visualizer.addSelectMediator.urn, name: $scope.visualizer.addSelectMediator.name, display: $scope.visualizer.addSelectMediator.name })
+    $scope.user.settings.visualizer.mediators.push({
+      mediator: $scope.visualizer.addSelectMediator.urn,
+      name: $scope.visualizer.addSelectMediator.name,
+      display: $scope.visualizer.addSelectMediator.name
+    })
     $scope.visualizer.addSelectMediator = null
   }
 
   $scope.addComponent = function () {
     if ($scope.visualizer.addComponent.eventType) {
-      $scope.user.settings.visualizer.components.push({ eventType: $scope.visualizer.addComponent.eventType, eventName: $scope.visualizer.addComponent.eventName, display: $scope.visualizer.addComponent.display })
+      $scope.user.settings.visualizer.components.push({
+        eventType: $scope.visualizer.addComponent.eventType,
+        eventName: $scope.visualizer.addComponent.eventName,
+        display: $scope.visualizer.addComponent.display
+      })
       $scope.visualizer.addComponent.eventType = ''
       $scope.visualizer.addComponent.eventName = ''
       $scope.visualizer.addComponent.display = ''
@@ -250,7 +322,10 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
 
     // password validation
     if ($scope.temp.password) {
-      if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
+      if (
+        !$scope.temp.passwordConfirm ||
+        $scope.temp.password !== $scope.temp.passwordConfirm
+      ) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
       }
@@ -261,7 +336,11 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

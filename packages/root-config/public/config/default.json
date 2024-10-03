@@ -17,6 +17,6 @@
   "keyCloakRealm": "platform-realm",
   "keyCloakClientId": "openhim-oauth",
   "environment": "development",
-  "openHIMAPIhost":"localhost",
-  "openHIMAPIport":"5001"
+  "openHIMAPIhost": "localhost",
+  "openHIMAPIport": "5001"
 }

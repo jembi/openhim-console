@@ -1,16 +1,13 @@
 {
-	"sourceMaps": true,
-	"presets": [
-		[
-			"@babel/env",
-			{
-				"targets": {
-					"browsers": [
-						"last 2 versions",
-						"IE 9"
-					]
-				}
-			}
-		]
-	]
+  "sourceMaps": true,
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "IE 9"]
+        }
+      }
+    ]
+  ]
 }

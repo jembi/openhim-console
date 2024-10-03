@@ -11,7 +11,7 @@ import {
   FormHelperText
 } from '@mui/material'
 import {AppProps} from './FormInputProps'
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 
 interface ActiveStepOneProps {
   appLinkFieldRef: React.MutableRefObject<HTMLInputElement>
@@ -72,8 +72,8 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
   }
 
   useEffect(() => {
-    handleFormChanges(values);
-  }, [values]);
+    handleFormChanges(values)
+  }, [values])
 
   return (
     <>

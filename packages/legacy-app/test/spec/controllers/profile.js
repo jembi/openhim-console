@@ -8,7 +8,15 @@ describe('Controller: ProfileCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -18,9 +26,7 @@ describe('Controller: ProfileCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -34,9 +40,19 @@ describe('Controller: ProfileCtrl', function () {
       components: [],
       channels: [],
       mediators: [],
-      color: { inactive: '#cccccc', active: '#4cae4c', error: '#d43f3a', text: '#000000' },
-      size: { width: 1000, height: 400, padding: 20 },
-      time: { updatePeriod: 200, maxSpeed: 5, minDisplayPeriod: 100, maxTimeout: 5000 }
+      color: {
+        inactive: '#cccccc',
+        active: '#4cae4c',
+        error: '#d43f3a',
+        text: '#000000'
+      },
+      size: {width: 1000, height: 400, padding: 20},
+      time: {
+        updatePeriod: 200,
+        maxSpeed: 5,
+        minDisplayPeriod: 100,
+        maxTimeout: 5000
+      }
     })
 
     $httpBackend.when('GET', new RegExp('.*/mediators')).respond([
@@ -46,18 +62,70 @@ describe('Controller: ProfileCtrl', function () {
         name: 'Test 1 Mediator',
         description: 'Test 1 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 1', urlPattern: '/channel1', routes: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 1',
+            urlPattern: '/channel1',
+            routes: [
+              {
+                name: 'Route 1',
+                host: 'localhost',
+                port: '1111',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route 1', host: 'localhost', port: '1111', primary: true, type: 'http' }]
-      }, {
+        endpoints: [
+          {
+            name: 'Route 1',
+            host: 'localhost',
+            port: '1111',
+            primary: true,
+            type: 'http'
+          }
+        ]
+      },
+      {
         urn: 'EEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAAAAAA',
         version: '0.1.2',
         name: 'Test 2 Mediator',
         description: 'Test 2 Description',
         defaultChannelConfig: [
-          { name: 'Mediator Channel 2', urlPattern: '/channnel2', routes: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }], allow: ['xdlab'], type: 'http' }
+          {
+            name: 'Mediator Channel 2',
+            urlPattern: '/channnel2',
+            routes: [
+              {
+                name: 'Route',
+                host: 'localhost',
+                port: '2222',
+                primary: true,
+                type: 'http'
+              }
+            ],
+            allow: ['xdlab'],
+            type: 'http'
+          }
         ],
-        endpoints: [{ name: 'Route', host: 'localhost', port: '2222', primary: true, type: 'http' }, { name: 'Route 2', host: 'localhost2', port: '3333', primary: false, type: 'http' }]
+        endpoints: [
+          {
+            name: 'Route',
+            host: 'localhost',
+            port: '2222',
+            primary: true,
+            type: 'http'
+          },
+          {
+            name: 'Route 2',
+            host: 'localhost2',
+            port: '3333',
+            primary: false,
+            type: 'http'
+          }
+        ]
       }
     ])
 
@@ -69,24 +137,49 @@ describe('Controller: ProfileCtrl', function () {
       surname: 'test',
       weeklyAlert: true,
       dailyAlert: true,
-      groups: [
-        'test',
-        'other'
-      ],
+      groups: ['test', 'other'],
       settings: {}
     })
 
     $httpBackend.when('GET', new RegExp('.*/users')).respond([
-      { firstname: 'Super', surname: 'User', email: 'super@openim.org', groups: ['admin'], settings: {} },
-      { firstname: 'Ordinary', surname: 'User', email: 'normal@openim.org', groups: ['limited'], settings: {} }
+      {
+        firstname: 'Super',
+        surname: 'User',
+        email: 'super@openim.org',
+        groups: ['admin'],
+        settings: {}
+      },
+      {
+        firstname: 'Ordinary',
+        surname: 'User',
+        email: 'normal@openim.org',
+        groups: ['limited'],
+        settings: {}
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      { name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], _id: '5322fe9d8b6add4b2b059dd8' },
-      { name: 'Sample JsonStub Channel 2', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['testing'], routes: [{ host: 'jsonstub.com', port: 80 }], _id: '5322fe9d8b6add4b2b059aa3' }
+      {
+        name: 'Sample JsonStub Channel 1',
+        urlPattern: 'sample/api',
+        allow: ['PoC'],
+        txRerunAcl: ['test'],
+        routes: [{host: 'jsonstub.com', port: 80, primary: true}],
+        _id: '5322fe9d8b6add4b2b059dd8'
+      },
+      {
+        name: 'Sample JsonStub Channel 2',
+        urlPattern: 'sample/api',
+        allow: ['PoC'],
+        txRerunAcl: ['testing'],
+        routes: [{host: 'jsonstub.com', port: 80}],
+        _id: '5322fe9d8b6add4b2b059aa3'
+      }
     ])
 
-    httpBackend.when('PUT', new RegExp('.*/users')).respond('user has been successfully updated')
+    httpBackend
+      .when('PUT', new RegExp('.*/users'))
+      .respond('user has been successfully updated')
 
     createController = function () {
       httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)

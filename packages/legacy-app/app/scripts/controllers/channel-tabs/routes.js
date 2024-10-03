@@ -1,4 +1,4 @@
-export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
+export function channelRoutesCtrl($scope, $timeout, Api, Alerting) {
   /*************************************************/
   /**   Default Channel Routes configurations     **/
   /*************************************************/
@@ -14,24 +14,41 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   $scope.routeAddEdit = false
 
   // get the mediators for the route option
-  Api.Mediators.query(function (mediators) {
-    // foreach mediator
-    angular.forEach(mediators, function (mediator) {
-      // foreach endpoint in the mediator
-      angular.forEach(mediator.endpoints, function (endpoint) {
-        $scope.mediatorRoutes.push({ fullName: mediator.name + ' - ' + endpoint.name, mediator: mediator.urn, endpoint: endpoint })
+  Api.Mediators.query(
+    function (mediators) {
+      // foreach mediator
+      angular.forEach(mediators, function (mediator) {
+        // foreach endpoint in the mediator
+        angular.forEach(mediator.endpoints, function (endpoint) {
+          $scope.mediatorRoutes.push({
+            fullName: mediator.name + ' - ' + endpoint.name,
+            mediator: mediator.urn,
+            endpoint: endpoint
+          })
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get Mediators */ })
+    },
+    function () {
+      /* server error - could not connect to API to get Mediators */
+    }
+  )
 
   // get the Trusted Certificates for the Channel routes cert dropdown
-  Api.Keystore.query({ type: 'ca' }, function (result) {
-    $scope.trustedCerts = []
-    angular.forEach(result, function (cert) {
-      $scope.trustedCerts.push({ _id: cert._id, commonName: 'cn=' + cert.commonName })
-    })
-  },
-  function () { /* server error - could not connect to API to get Trusted Certificates */ })
+  Api.Keystore.query(
+    {type: 'ca'},
+    function (result) {
+      $scope.trustedCerts = []
+      angular.forEach(result, function (cert) {
+        $scope.trustedCerts.push({
+          _id: cert._id,
+          commonName: 'cn=' + cert.commonName
+        })
+      })
+    },
+    function () {
+      /* server error - could not connect to API to get Trusted Certificates */
+    }
+  )
 
   /*************************************************/
   /**   Default Channel Routes configurations     **/
@@ -54,7 +71,7 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     // push the route object to channel.routes if no errors exist
     if ($scope.ngErrorRoute.hasErrors === false) {
       // if index then this is an update - delete old route based on idex
-      if (typeof (index) !== 'undefined' && index !== null) {
+      if (typeof index !== 'undefined' && index !== null) {
         // remove old route from array
         $scope.channel.routes.splice(index, 1)
       }
@@ -146,16 +163,37 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
     let routeType = 'http'
     let forwardAuthHeader = false
 
-    if ($scope.selected.mediatorRoute.endpoint.name) { name = $scope.selected.mediatorRoute.endpoint.name }
-    if ($scope.selected.mediatorRoute.endpoint.secured) { secured = $scope.selected.mediatorRoute.endpoint.secured }
-    if ($scope.selected.mediatorRoute.endpoint.host) { host = $scope.selected.mediatorRoute.endpoint.host }
-    if ($scope.selected.mediatorRoute.endpoint.port) { port = $scope.selected.mediatorRoute.endpoint.port }
-    if ($scope.selected.mediatorRoute.endpoint.path) { path = $scope.selected.mediatorRoute.endpoint.path }
-    if ($scope.selected.mediatorRoute.endpoint.pathTransform) { pathTransform = $scope.selected.mediatorRoute.endpoint.pathTransform }
-    if ($scope.selected.mediatorRoute.endpoint.username) { username = $scope.selected.mediatorRoute.endpoint.username }
-    if ($scope.selected.mediatorRoute.endpoint.password) { password = $scope.selected.mediatorRoute.endpoint.password }
-    if ($scope.selected.mediatorRoute.endpoint.type) { routeType = $scope.selected.mediatorRoute.endpoint.type }
-    if ($scope.selected.mediatorRoute.endpoint.forwardAuthHeader) { forwardAuthHeader = $scope.selected.mediatorRoute.endpoint.forwardAuthHeader }
+    if ($scope.selected.mediatorRoute.endpoint.name) {
+      name = $scope.selected.mediatorRoute.endpoint.name
+    }
+    if ($scope.selected.mediatorRoute.endpoint.secured) {
+      secured = $scope.selected.mediatorRoute.endpoint.secured
+    }
+    if ($scope.selected.mediatorRoute.endpoint.host) {
+      host = $scope.selected.mediatorRoute.endpoint.host
+    }
+    if ($scope.selected.mediatorRoute.endpoint.port) {
+      port = $scope.selected.mediatorRoute.endpoint.port
+    }
+    if ($scope.selected.mediatorRoute.endpoint.path) {
+      path = $scope.selected.mediatorRoute.endpoint.path
+    }
+    if ($scope.selected.mediatorRoute.endpoint.pathTransform) {
+      pathTransform = $scope.selected.mediatorRoute.endpoint.pathTransform
+    }
+    if ($scope.selected.mediatorRoute.endpoint.username) {
+      username = $scope.selected.mediatorRoute.endpoint.username
+    }
+    if ($scope.selected.mediatorRoute.endpoint.password) {
+      password = $scope.selected.mediatorRoute.endpoint.password
+    }
+    if ($scope.selected.mediatorRoute.endpoint.type) {
+      routeType = $scope.selected.mediatorRoute.endpoint.type
+    }
+    if ($scope.selected.mediatorRoute.endpoint.forwardAuthHeader) {
+      forwardAuthHeader =
+        $scope.selected.mediatorRoute.endpoint.forwardAuthHeader
+    }
 
     // if no routes exist yet then make mediator primary
     if ($scope.channel.routes.length === 0) {
@@ -248,7 +286,11 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         $scope.resetRouteErrors()
         $scope.checkRouteWarnings()
       }, 5000)
-      Alerting.AlertAddMsg('hasErrorsRoute', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrorsRoute',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 
@@ -280,27 +322,42 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
   $scope.noRoutes = function () {
     // no routes found - return true
     if (!$scope.channel.routes || $scope.channel.routes.length === 0) {
-      Alerting.AlertAddMsg('route', 'warning', 'You must supply atleast one route.')
+      Alerting.AlertAddMsg(
+        'route',
+        'warning',
+        'You must supply atleast one route.'
+      )
       return true
     }
     return false
   }
 
   const isRouteEnabled = function (route) {
-    return (typeof route.status === 'undefined' || route.status === null) || route.status === 'enabled'
+    return (
+      typeof route.status === 'undefined' ||
+      route.status === null ||
+      route.status === 'enabled'
+    )
   }
 
   $scope.noPrimaries = function () {
     if ($scope.channel.routes) {
       for (let i = 0; i < $scope.channel.routes.length; i++) {
-        if (isRouteEnabled($scope.channel.routes[i]) && $scope.channel.routes[i].primary === true) {
+        if (
+          isRouteEnabled($scope.channel.routes[i]) &&
+          $scope.channel.routes[i].primary === true
+        ) {
           // atleast one primary so return false
           return false
         }
       }
     }
     // return true if no primary routes found
-    Alerting.AlertAddMsg('route', 'warning', 'At least one of your enabled routes must be set to primary.')
+    Alerting.AlertAddMsg(
+      'route',
+      'warning',
+      'At least one of your enabled routes must be set to primary.'
+    )
     return true
   }
 
@@ -314,7 +371,11 @@ export function channelRoutesCtrl ($scope, $timeout, Api, Alerting) {
         }
 
         if (count > 1) {
-          Alerting.AlertAddMsg('route', 'warning', 'You cannot have multiple primary routes.')
+          Alerting.AlertAddMsg(
+            'route',
+            'warning',
+            'You cannot have multiple primary routes.'
+          )
           return true
         }
       }

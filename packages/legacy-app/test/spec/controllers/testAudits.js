@@ -10,7 +10,15 @@ describe('Controller: AuditsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -20,9 +28,7 @@ describe('Controller: AuditsCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ],
+      groups: ['admin'],
       settings: {
         list: {
           tabview: 'new'
@@ -32,29 +38,47 @@ describe('Controller: AuditsCtrl', function () {
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/audits-filter-options')).respond(
-      {
-        eventType: [{ code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }],
-        eventID: [{ code: '222', displayName: 'Read', codeSystemName: 'DCM' }],
-        activeParticipantRoleID: [{ code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }],
-        participantObjectIDTypeCode: [{ code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }],
-        auditSourceID: ['openhim']
-      }
-    )
+    $httpBackend.when('GET', new RegExp('.*/audits-filter-options')).respond({
+      eventType: [
+        {
+          code: 'ITI-9',
+          displayName: 'PIX Read',
+          codeSystemName: 'IHE Transactions'
+        }
+      ],
+      eventID: [{code: '222', displayName: 'Read', codeSystemName: 'DCM'}],
+      activeParticipantRoleID: [
+        {code: '110152', displayName: 'Destination', codeSystemName: 'DCM'}
+      ],
+      participantObjectIDTypeCode: [
+        {code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881'}
+      ],
+      auditSourceID: ['openhim']
+    })
 
     auditsEndpoint = $httpBackend.when('GET', new RegExp('.*/audits'))
     auditsEndpoint.respond([
       {
-        rawMessage: 'This will be the raw ATNA message that gets received to be used as a backup reference',
+        rawMessage:
+          'This will be the raw ATNA message that gets received to be used as a backup reference',
         eventIdentification: {
           eventDateTime: '2015-02-17T15:38:25.282+02:00',
           eventOutcomeIndicator: '0',
           eventActionCode: 'R',
-          eventID: { code: '222', displayName: 'Read', codeSystemName: 'DCM' },
-          eventTypeCode: { code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }
+          eventID: {code: '222', displayName: 'Read', codeSystemName: 'DCM'},
+          eventTypeCode: {
+            code: 'ITI-9',
+            displayName: 'PIX Read',
+            codeSystemName: 'IHE Transactions'
+          }
         },
         activeParticipant: [
           {
@@ -63,26 +87,41 @@ describe('Controller: AuditsCtrl', function () {
             userIsRequestor: 'false',
             networkAccessPointID: 'localhost',
             networkAccessPointTypeCode: '1',
-            roleIDCode: { code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }
+            roleIDCode: {
+              code: '110152',
+              displayName: 'Destination',
+              codeSystemName: 'DCM'
+            }
           }
         ],
-        auditSourceIdentification: { auditSourceID: 'openhim' },
+        auditSourceIdentification: {auditSourceID: 'openhim'},
         participantObjectIdentification: [
           {
-            participantObjectID: '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
+            participantObjectID:
+              '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
             participantObjectTypeCode: '1',
             participantObjectTypeCodeRole: '1',
-            participantObjectIDTypeCode: { code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }
+            participantObjectIDTypeCode: {
+              code: '2',
+              displayName: 'PatientNumber',
+              codeSystemName: 'RFC-3881'
+            }
           }
         ]
-      }, {
-        rawMessage: 'This will be the raw ATNA message that gets received to be used as a backup reference',
+      },
+      {
+        rawMessage:
+          'This will be the raw ATNA message that gets received to be used as a backup reference',
         eventIdentification: {
           eventDateTime: '2015-02-17T15:38:25.282+02:00',
           eventOutcomeIndicator: '0',
           eventActionCode: 'R',
-          eventID: { code: '222', displayName: 'Read', codeSystemName: 'DCM' },
-          eventTypeCode: { code: 'ITI-9', displayName: 'PIX Read', codeSystemName: 'IHE Transactions' }
+          eventID: {code: '222', displayName: 'Read', codeSystemName: 'DCM'},
+          eventTypeCode: {
+            code: 'ITI-9',
+            displayName: 'PIX Read',
+            codeSystemName: 'IHE Transactions'
+          }
         },
         activeParticipant: [
           {
@@ -91,22 +130,33 @@ describe('Controller: AuditsCtrl', function () {
             userIsRequestor: 'false',
             networkAccessPointID: 'localhost',
             networkAccessPointTypeCode: '1',
-            roleIDCode: { code: '110152', displayName: 'Destination', codeSystemName: 'DCM' }
+            roleIDCode: {
+              code: '110152',
+              displayName: 'Destination',
+              codeSystemName: 'DCM'
+            }
           }
         ],
-        auditSourceIdentification: { auditSourceID: 'openhim' },
+        auditSourceIdentification: {auditSourceID: 'openhim'},
         participantObjectIdentification: [
           {
-            participantObjectID: '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
+            participantObjectID:
+              '975cac30-68e5-11e4-bf2a-04012ce65b02^^^ECID&amp;ECID&amp;ISO',
             participantObjectTypeCode: '1',
             participantObjectTypeCodeRole: '1',
-            participantObjectIDTypeCode: { code: '2', displayName: 'PatientNumber', codeSystemName: 'RFC-3881' }
+            participantObjectIDTypeCode: {
+              code: '2',
+              displayName: 'PatientNumber',
+              codeSystemName: 'RFC-3881'
+            }
           }
         ]
       }
     ])
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
+    $httpBackend
+      .when('GET', new RegExp('.*/heartbeat'))
+      .respond({now: Date.now()})
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -114,7 +164,7 @@ describe('Controller: AuditsCtrl', function () {
       httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('AuditsCtrl', { $scope: scope })
+      return $controller('AuditsCtrl', {$scope: scope})
     }
   }))
 
@@ -154,10 +204,12 @@ describe('Controller: AuditsCtrl', function () {
     scope.settings.filter.dateStart = startDate
     scope.settings.filter.dateEnd = endDate
     scope.filters.eventIdentification.eventID = '222---Read---DCM'
-    scope.filters.eventIdentification.eventTypeCode = 'ITI-9---PIX Read---IHE Transactions'
+    scope.filters.eventIdentification.eventTypeCode =
+      'ITI-9---PIX Read---IHE Transactions'
     scope.filters.eventIdentification.eventActionCode = 'R'
     scope.filters.eventIdentification.eventOutcomeIndicator = '0'
-    scope.filters.participantObjectIdentification.patientID.patientID = '975cac30-68e5-11e4-bf2a-04012ce65b02'
+    scope.filters.participantObjectIdentification.patientID.patientID =
+      '975cac30-68e5-11e4-bf2a-04012ce65b02'
     scope.filters.auditSourceIdentification.auditSourceID = 'openhim'
 
     var filters = scope.returnFilters('filtersObject')
@@ -165,20 +217,50 @@ describe('Controller: AuditsCtrl', function () {
 
     // filter object that gets sent through the API for query filtering
     filters.filterLimit.should.equal(10)
-    filters.filters['eventIdentification.eventDateTime'].should.equal('{"$gte":"' + moment(startDate).format() + '","$lte":"' + moment(endDate).endOf('day').format() + '"}')
-    filters.filters['participantObjectIdentification.participantObjectID'].should.equal('"975cac30-68e5-11e4-bf2a-04012ce65b02\\\\^\\\\^\\\\^.*&.*&.*"')
-    filters.filters['eventIdentification.eventTypeCode.code'].should.equal('ITI-9')
-    filters.filters['eventIdentification.eventTypeCode.codeSystemName'].should.equal('PIX Read')
-    filters.filters['eventIdentification.eventTypeCode.displayName'].should.equal('IHE Transactions')
+    filters.filters['eventIdentification.eventDateTime'].should.equal(
+      '{"$gte":"' +
+        moment(startDate).format() +
+        '","$lte":"' +
+        moment(endDate).endOf('day').format() +
+        '"}'
+    )
+    filters.filters[
+      'participantObjectIdentification.participantObjectID'
+    ].should.equal(
+      '"975cac30-68e5-11e4-bf2a-04012ce65b02\\\\^\\\\^\\\\^.*&.*&.*"'
+    )
+    filters.filters['eventIdentification.eventTypeCode.code'].should.equal(
+      'ITI-9'
+    )
+    filters.filters[
+      'eventIdentification.eventTypeCode.codeSystemName'
+    ].should.equal('PIX Read')
+    filters.filters[
+      'eventIdentification.eventTypeCode.displayName'
+    ].should.equal('IHE Transactions')
     filters.filters['eventIdentification.eventID.code'].should.equal('222')
-    filters.filters['eventIdentification.eventID.codeSystemName'].should.equal('Read')
-    filters.filters['eventIdentification.eventID.displayName'].should.equal('DCM')
+    filters.filters['eventIdentification.eventID.codeSystemName'].should.equal(
+      'Read'
+    )
+    filters.filters['eventIdentification.eventID.displayName'].should.equal(
+      'DCM'
+    )
     filters.filters['eventIdentification.eventActionCode'].should.equal('R')
-    filters.filters['eventIdentification.eventOutcomeIndicator'].should.equal('0')
-    filters.filters['auditSourceIdentification.auditSourceID'].should.equal('openhim')
+    filters.filters['eventIdentification.eventOutcomeIndicator'].should.equal(
+      '0'
+    )
+    filters.filters['auditSourceIdentification.auditSourceID'].should.equal(
+      'openhim'
+    )
 
     // url params string that gets used to reload the audits URL with selected paramaters
-    urlParams.should.equal('&limit=10&dateStart=' + moment(startDate).format('YYYY-MM-DD') + '&dateEnd=' + moment(endDate).endOf('day').format('YYYY-MM-DD') + '&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim')
+    urlParams.should.equal(
+      '&limit=10&dateStart=' +
+        moment(startDate).format('YYYY-MM-DD') +
+        '&dateEnd=' +
+        moment(endDate).endOf('day').format('YYYY-MM-DD') +
+        '&patientID=975cac30-68e5-11e4-bf2a-04012ce65b02&eventTypeCode=ITI-9---PIX Read---IHE Transactions&eventID=222---Read---DCM&eventActionCode=R&eventOutcomeIndicator=0&auditSourceID=openhim'
+    )
   })
 
   it('should prepend new audits to the scope', function () {
@@ -193,7 +275,7 @@ describe('Controller: AuditsCtrl', function () {
           eventDateTime: new Date(),
           eventOutcomeIndicator: '0'
         },
-        auditSourceIdentification: { auditSourceID: 'test2' },
+        auditSourceIdentification: {auditSourceID: 'test2'},
         rawMessage: 'auto-added'
       }
     ])

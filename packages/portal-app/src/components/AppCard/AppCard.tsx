@@ -16,7 +16,7 @@ const AppCard = ({app}) => {
   useEffect(() => {
     if (app.type == 'esmodule') {
       setAppPath(
-        window.location.origin+'/#!/' + generateRoutingPathFromURL(app.url)
+        window.location.origin + '/#!/' + generateRoutingPathFromURL(app.url)
       )
     }
   }, [])

@@ -3,9 +3,7 @@ import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
-import React, {useEffect, useState} from 'react'
-import {ClientRole} from '../../interface'
-import './data-grid-styling.css'
+import {useEffect, useState} from 'react'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
 
 export const ListRoles = () => {
@@ -64,59 +62,70 @@ export const ListRoles = () => {
   )
 
   return (
-    <Grid container padding={2} spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-          Manage User Roles
-        </Typography>
-        <Grid container>
-          <Grid item xs={11}>
-            <p style={{opacity: 0.6, fontSize: '16px'}}>
-              Control client systems and their access roles. Add clients to
-              enable their request routing and group them by roles for
-              streamlined channel access management.
-            </p>
+    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+      <Grid container padding={2} spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+            Manage User Roles
+          </Typography>
+          <Grid container>
+            <Grid item xs={11}>
+              <p style={{opacity: 0.6, fontSize: '16px'}}>
+                Control client systems and their access roles. Add clients to
+                enable their request routing and group them by roles for
+                streamlined channel access management.
+              </p>
+            </Grid>
+            <Grid item xs={1}>
+              <a href={addClientRole.toString()}>
+                <Button
+                  variant="contained"
+                  style={{backgroundColor: '#29AC96'}}
+                >
+                  <AddIcon /> Add
+                </Button>
+              </a>
+            </Grid>
           </Grid>
-          <Grid item xs={1}>
-            <a href={addClientRole.toString()}>
-              <Button variant="contained" style={{backgroundColor: '#29AC96'}}>
-                <AddIcon /> Add
-              </Button>
-            </a>
-          </Grid>
+          <Divider />
         </Grid>
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <DataGrid
-            getRowId={row => row.id}
-            autoHeight
-            checkboxSelection
-            disableRowSelectionOnClick
-            rows={roles}
-            onRowClick={params => window.history.pushState({}, '', '/#!/client-roles/edit/' + params.row['roleName'])}
-            slots={{
-              toolbar: GridToolbar,
-              noRowsOverlay: noRolesOverlay
-            }}
-            columns={columns}
-            pageSizeOptions={[10, 25, 50]}
-            initialState={{
-              pagination: {
-                paginationModel: {page: 0, pageSize: 10}
+        <Grid item xs={12}>
+          <Card>
+            <DataGrid
+              getRowId={row => row.id}
+              autoHeight
+              checkboxSelection
+              disableRowSelectionOnClick
+              rows={roles}
+              onRowClick={params =>
+                window.history.pushState(
+                  {},
+                  '',
+                  '/#!/client-roles/edit/' + params.row['roleName']
+                )
               }
-            }}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                printOptions: {disableToolbarButton: true},
-                csvOptions: {disableToolbarButton: true}
-              }
-            }}
-          />
-        </Card>
+              slots={{
+                toolbar: GridToolbar,
+                noRowsOverlay: noRolesOverlay
+              }}
+              columns={columns}
+              pageSizeOptions={[10, 25, 50]}
+              initialState={{
+                pagination: {
+                  paginationModel: {page: 0, pageSize: 10}
+                }
+              }}
+              slotProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  printOptions: {disableToolbarButton: true},
+                  csvOptions: {disableToolbarButton: true}
+                }
+              }}
+            />
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   )
 }

@@ -1,7 +1,15 @@
 import auditsContentModal from '~/views/auditsContentModal'
-import { AuditsContentModalCtrl } from './'
+import {AuditsContentModalCtrl} from './'
 
-export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Api, Alerting, AuditLookups) {
+export function AuditDetailsCtrl(
+  $scope,
+  $uibModal,
+  $location,
+  $routeParams,
+  Api,
+  Alerting,
+  AuditLookups
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -20,7 +28,7 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
   }
 
   // get the Data for the supplied ID and store in 'auditsDetails' object
-  Api.Audits.get({ auditId: $routeParams.auditId }, querySuccess, queryError)
+  Api.Audits.get({auditId: $routeParams.auditId}, querySuccess, queryError)
 
   /***************************************************/
   /**         Initial page load functions           **/
@@ -60,7 +68,7 @@ export function AuditDetailsCtrl ($scope, $uibModal, $location, $routeParams, Ap
       controller: AuditsContentModalCtrl,
       resolve: {
         auditData: function () {
-          return { type: type, content: content }
+          return {type: type, content: content}
         }
       }
     })

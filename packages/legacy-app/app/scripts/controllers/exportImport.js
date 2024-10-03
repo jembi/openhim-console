@@ -1,9 +1,9 @@
-import { buildBlob } from '../utils'
+import {buildBlob} from '../utils'
 import exportImportModal from '~/views/exportImportModal'
 import transactionsBodyModal from '~/views/transactionsBodyModal'
-import { TransactionsBodyModalCtrl, ExportImportModalCtrl } from './'
+import {TransactionsBodyModalCtrl, ExportImportModalCtrl} from './'
 
-export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
+export function ExportImportCtrl($scope, $uibModal, Api, Alerting) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -19,7 +19,8 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
     $scope.selectedExports.Clients = $scope.exportCollections.Clients
     $scope.selectedExports.Channels = $scope.exportCollections.Channels
     $scope.selectedExports.Mediators = $scope.exportCollections.Mediators
-    $scope.selectedExports.ContactGroups = $scope.exportCollections.ContactGroups
+    $scope.selectedExports.ContactGroups =
+      $scope.exportCollections.ContactGroups
     $scope.selectedExports.Keystore = $scope.exportCollections.Keystore
 
     // set show all records to false - Entire collections being exported
@@ -45,7 +46,14 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   const getMetadataError = function (err) {
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while fetching metadata: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while fetching metadata: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
   }
 
   const openValidationModal = function () {
@@ -53,7 +61,9 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
       template: exportImportModal,
       controller: ExportImportModalCtrl,
       resolve: {
-        data: function () { return $scope.validatedData }
+        data: function () {
+          return $scope.validatedData
+        }
       }
     })
 
@@ -64,11 +74,14 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   }
 
   // Make API requests for the export configuration options
-  Api.Metadata.query(function (result) {
-    getMetadataSuccess(result)
-  }, function (err) {
-    getMetadataError(err)
-  })
+  Api.Metadata.query(
+    function (result) {
+      getMetadataSuccess(result)
+    },
+    function (err) {
+      getMetadataError(err)
+    }
+  )
 
   /***************************************************/
   /**         Initial page load functions           **/
@@ -123,7 +136,11 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
     Alerting.AlertReset()
     if (exportData && exportData.Keystore && exportData.Keystore.length > 0) {
-      Alerting.AlertAddMsg('top', 'warning', 'Warning: The server\'s TLS private key will be exported and should be protected!')
+      Alerting.AlertAddMsg(
+        'top',
+        'warning',
+        "Warning: The server's TLS private key will be exported and should be protected!"
+      )
     }
 
     // create the export script as a blob file
@@ -133,7 +150,6 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
       // if blob error exist
       if (data.error) {
-
       } else {
         // If we are replacing a previously generated file we need to
         // manually revoke the object URL to avoid memory leaks.
@@ -171,7 +187,14 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
 
   const validateFail = function (err) {
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while validating the import: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      'An error has occurred while validating the import: #' +
+        err.status +
+        ' - ' +
+        err.data
+    )
   }
 
   const validateSuccess = function (result) {
@@ -221,7 +244,11 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
       windowClass: 'modal-fullview',
       resolve: {
         bodyData: function () {
-          return { type: type, content: content, headers: { 'content-type': 'application/json' } }
+          return {
+            type: type,
+            content: content,
+            headers: {'content-type': 'application/json'}
+          }
         }
       }
     })
@@ -232,15 +259,19 @@ export function ExportImportCtrl ($scope, $uibModal, Api, Alerting) {
   }
 
   $scope.numberOfSuccessfulImports = function () {
-    return $scope.importResults.filter(function (item) { return item.status !== 'Error' }).length
+    return $scope.importResults.filter(function (item) {
+      return item.status !== 'Error'
+    }).length
   }
 
   $scope.numberOfFailedImports = function () {
-    return $scope.importResults.filter(function (item) { return item.status === 'Error' }).length
+    return $scope.importResults.filter(function (item) {
+      return item.status === 'Error'
+    }).length
   }
 
   $scope.areThereAnyImports = function () {
-    return !!(($scope.importResults && $scope.importResults.length > 0))
+    return !!($scope.importResults && $scope.importResults.length > 0)
   }
 
   /****************************************/

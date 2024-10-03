@@ -1,52 +1,125 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-  <h3 class="modal-title"><i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;Transactions Rerun Confirmation</h3>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">
+    &times;
+  </button>
+  <h3 class="modal-title">
+    <i class="glyphicon glyphicon-repeat"></i>&nbsp;&nbsp;Transactions Rerun
+    Confirmation
+  </h3>
 </div>
 <form name="form" novalidate>
   <div class="modal-body">
-
     <div ng-if="rerunSuccess != true">
-      <h4 ng-show="transactionsSelected.length === 0 && transactionsCount === 0">You have not selected any transactions to be rerun. <br /><br />
-      Please select the transactions you wish to rerun by ticking the boxes on the left and try again</h4>
+      <h4
+        ng-show="transactionsSelected.length === 0 && transactionsCount === 0"
+      >
+        You have not selected any transactions to be rerun. <br /><br />
+        Please select the transactions you wish to rerun by ticking the boxes on
+        the left and try again
+      </h4>
 
       <h4 ng-show="transactionsSelected.length > 0 || transactionsCount > 0">
-        <div ng-show="transactionsSelected.length === 1" style="margin-bottom: 15px;">You have selected that transaction <strong>#{{transactionsSelected[0]}}</strong> should be rerun. </div>
-        <div ng-show="transactionsSelected.length > 1 || transactionsCount" style="margin-bottom: 15px;">You have selected a total of <strong>{{bulkRerunActive ? transactionsCount : transactionsSelected.length}}</strong> transactions to be rerun. </div>
+        <div
+          ng-show="transactionsSelected.length === 1"
+          style="margin-bottom: 15px"
+        >
+          You have selected that transaction
+          <strong>#{{transactionsSelected[0]}}</strong> should be rerun.
+        </div>
+        <div
+          ng-show="transactionsSelected.length > 1 || transactionsCount"
+          style="margin-bottom: 15px"
+        >
+          You have selected a total of
+          <strong
+            >{{bulkRerunActive ? transactionsCount :
+            transactionsSelected.length}}</strong
+          >
+          transactions to be rerun.
+        </div>
 
         <!-- Rerun Alerts -->
-        <div uib-alert ng-repeat="alert in alerts.rerun" ng-class="'alert-' + (alert.type || 'warning')">{{alert.msg}}</div>
+        <div
+          uib-alert
+          ng-repeat="alert in alerts.rerun"
+          ng-class="'alert-' + (alert.type || 'warning')"
+        >
+          {{alert.msg}}
+        </div>
         <!-- Rerun Alerts -->
 
         <div>Are you sure you wish to proceed with this operation?</div>
       </h4>
     </div>
-    
-    <div ng-if="rerunSuccess === true">
-      <h4 ng-show="transactionsSelected.length === 1">Your selected transaction has been added to the queue to be rerun.</h4>
-      <h4 ng-show="transactionsSelected.length > 1 || transactionsCount > 0">Your selected transactions have been added to the queue to be rerun.</h4>
-    </div>
 
+    <div ng-if="rerunSuccess === true">
+      <h4 ng-show="transactionsSelected.length === 1">
+        Your selected transaction has been added to the queue to be rerun.
+      </h4>
+      <h4 ng-show="transactionsSelected.length > 1 || transactionsCount > 0">
+        Your selected transactions have been added to the queue to be rerun.
+      </h4>
+    </div>
   </div>
   <div class="modal-footer">
-    <div ng-show="transactionsSelected.length > 1 || transactionsCount > 0" ng-if="rerunSuccess != true" style="float: left;">
-      <label style="float: left; margin: 10px 10px 0px 0px;">
+    <div
+      ng-show="transactionsSelected.length > 1 || transactionsCount > 0"
+      ng-if="rerunSuccess != true"
+      style="float: left"
+    >
+      <label style="float: left; margin: 10px 10px 0px 0px">
         Batch size
-        <i style="right: -20px;" ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="The number of transactions that the task processor should run concurrently" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i
+          style="right: -20px"
+          ng-show="uiSettings.showTooltips"
+          tooltip-placement="top"
+          uib-tooltip="The number of transactions that the task processor should run concurrently"
+          class="glyphicon glyphicon-question-sign tooltip-wide"
+        ></i>
       </label>
-      <select style="float: left; width: auto; margin-left: 15px;" class="form-control" 
-      ng-model="taskSetup.batchSize"
-      ng-options="batch.value as batch.label for batch in batchSizes">
-      </select>
+      <select
+        style="float: left; width: auto; margin-left: 15px"
+        class="form-control"
+        ng-model="taskSetup.batchSize"
+        ng-options="batch.value as batch.label for batch in batchSizes"
+      ></select>
     </div>
-    <div ng-show="transactionsSelected.length > 0 || transactionsCount > 0" ng-if="rerunSuccess != true" style="float: left;">
-      <input style="float: left; margin: 10px 10px 0px 20px" id="taskSetupPaused" type="checkbox" ng-model="taskSetup.paused"/>
-      <label style="float: left; margin: 10px 10px 0px 0px;" for="taskSetupPaused">
+    <div
+      ng-show="transactionsSelected.length > 0 || transactionsCount > 0"
+      ng-if="rerunSuccess != true"
+      style="float: left"
+    >
+      <input
+        style="float: left; margin: 10px 10px 0px 20px"
+        id="taskSetupPaused"
+        type="checkbox"
+        ng-model="taskSetup.paused"
+      />
+      <label
+        style="float: left; margin: 10px 10px 0px 0px"
+        for="taskSetupPaused"
+      >
         Paused
-        <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Do not start processing the task immediately" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+        <i
+          ng-show="uiSettings.showTooltips"
+          tooltip-placement="top"
+          uib-tooltip="Do not start processing the task immediately"
+          class="glyphicon glyphicon-question-sign tooltip-wide"
+        ></i>
       </label>
     </div>
 
-    <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="confirmRerun()" ng-show="transactionsSelected.length > 0 || transactionsCount > 0" ng-if="rerunSuccess != true">Confirm Batch Rerun</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      ng-click="confirmRerun()"
+      ng-show="transactionsSelected.length > 0 || transactionsCount > 0"
+      ng-if="rerunSuccess != true"
+    >
+      Confirm Batch Rerun
+    </button>
   </div>
 </form>
