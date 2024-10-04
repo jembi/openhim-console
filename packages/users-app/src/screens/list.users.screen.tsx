@@ -103,7 +103,7 @@ function UsersList() {
   ]
 
   return (
-    <Box padding={3} sx={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+    <Box padding={3} sx={{ }}>
       <Typography variant="h4" gutterBottom>
         Manager Users
       </Typography>

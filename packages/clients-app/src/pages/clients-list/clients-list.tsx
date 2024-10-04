@@ -130,7 +130,7 @@ const ClientsList = () => {
   }
 
   return (
-    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+    <>
       <Dialog
         open={!!clientToDelete}
         onClose={handleClose}
@@ -210,7 +210,7 @@ const ClientsList = () => {
           </Card>
         </Grid>
       </Grid>
-    </div>
+    </>
   )
 }
 

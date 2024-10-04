@@ -83,7 +83,7 @@ export default function TransactionLineChart(props: TransactionLineChartProps) {
   const hasDataToShow = yData.some(y => y > 0)
 
   return (
-    <Card style={{minWidth: '100%', backgroundColor: '#fff'}}>
+    <Card>
       <CardHeader
         title={
           props.type == 'load' ? 'Transaction Load' : 'Average Response Time'
