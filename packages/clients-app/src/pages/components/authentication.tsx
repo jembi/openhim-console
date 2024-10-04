@@ -90,7 +90,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="jwt"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -103,7 +104,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="customToken"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -116,7 +118,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="mutualTLS"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -129,7 +132,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="basicAuth"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -143,7 +147,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               object, signed using a secret or key pair
             </Typography>
             <Typography
-              sx={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+              sx={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
               hidden={authTypes.find(auth => auth === 'jwt') !== undefined}
             >
               JWT authentication is disabled on the OpenHIM Core.
@@ -189,7 +193,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               }}
             />
             <p
-              style={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+              style={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
               hidden={checkAuthType('custom-token-auth')}
             >
               Custom Token Authentication is disabled on the OpenHIM Core.
