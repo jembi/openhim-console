@@ -346,72 +346,78 @@ export default function OpenhimAppBar() {
                 display: {xs: 'block', md: 'none'}
               }}
             >
-              {pages.map(page =>
-                page.link ? (
-                  <MenuItem
-                    key={page.name}
-                    onClick={handleCloseNavMenu}
-                    component="a"
-                    href={page.link}
-                    disabled={!canViewPageBasedOnPermissions(page)}
-                    selected={window.location.href.endsWith(page.link)}
-                  >
-                    <Typography textAlign="center">{page.name}</Typography>
-                  </MenuItem>
-                ) : (
-                  <MenuItem
-                    key={page.name}
-                    onClick={event =>
-                      handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
-                    }
-                  >
-                    <Typography textAlign="center">{page.name}</Typography>
-                    <ArrowDropDownIcon />
-                    <Menu
-                      anchorEl={
-                        page.name.toUpperCase() === 'MORE'
-                          ? anchorElMore
-                          : anchorElApps
-                      }
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                      }}
-                      open={
-                        page.name.toUpperCase() === 'MORE'
-                          ? Boolean(anchorElMore)
-                          : Boolean(anchorElApps)
-                      }
-                      onClose={() =>
-                        handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                      }
-                      style={{marginTop: 4}}
+              {pages
+                .filter(page => canViewPageBasedOnPermissions(page))
+                .map(page =>
+                  page.link ? (
+                    <MenuItem
+                      key={page.name}
+                      onClick={handleCloseNavMenu}
+                      component="a"
+                      href={page.link}
+                      selected={window.location.href.endsWith(page.link)}
                     >
-                      {page.children.map((child, index, items) =>
-                        child === DIVIDER_MENU_ITEM ? null : (
-                          <MenuItem
-                            disabled={!canViewPageBasedOnPermissions(child)}
-                            divider={items[index + 1] === DIVIDER_MENU_ITEM}
-                            key={child.name}
-                            onClick={() =>
-                              handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                            }
-                            selected={window.location.href.endsWith(child.link)}
-                            component="a"
-                            href={child.link}
-                          >
-                            {child.name}
-                          </MenuItem>
-                        )
-                      )}
-                    </Menu>
-                  </MenuItem>
-                )
-              )}
+                      <Typography textAlign="center">{page.name}</Typography>
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      key={page.name}
+                      onClick={event =>
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
+                      }
+                    >
+                      <Typography textAlign="center">{page.name}</Typography>
+                      <ArrowDropDownIcon />
+                      <Menu
+                        anchorEl={
+                          page.name.toUpperCase() === 'MORE'
+                            ? anchorElMore
+                            : anchorElApps
+                        }
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right'
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right'
+                        }}
+                        open={
+                          page.name.toUpperCase() === 'MORE'
+                            ? Boolean(anchorElMore)
+                            : Boolean(anchorElApps)
+                        }
+                        onClose={() =>
+                          handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                        }
+                        style={{marginTop: 4}}
+                      >
+                        {page.children
+                          .filter(child => canViewPageBasedOnPermissions(child))
+                          .map((child, index, items) =>
+                            child === DIVIDER_MENU_ITEM ? null : (
+                              <MenuItem
+                                divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                                key={child.name}
+                                onClick={() =>
+                                  handleCloseMoreMenu(
+                                    getCorrectAnchorEl(page)[1]
+                                  )
+                                }
+                                selected={window.location.href.endsWith(
+                                  child.link
+                                )}
+                                component="a"
+                                href={child.link}
+                              >
+                                {child.name}
+                              </MenuItem>
+                            )
+                          )}
+                      </Menu>
+                    </MenuItem>
+                  )
+                )}
             </Menu>
           </Box>
         )}
@@ -426,102 +432,106 @@ export default function OpenhimAppBar() {
               display: {xs: 'none', md: 'flex', marginLeft: '64px'}
             }}
           >
-            {pages.map(page =>
-              page.link ? (
-                <Button
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  disabled={!canViewPageBasedOnPermissions(page)}
-                  style={
-                    window.location.href.includes(page.link)
-                      ? {
-                          textTransform: 'none',
-                          fontWeight: 500,
-                          marginRight: '20px',
-                          color: '#388e3c'
-                        }
-                      : {
-                          textTransform: 'none',
-                          fontWeight: 500,
-                          marginRight: '20px',
-                          color: '#00000099'
-                        }
-                  }
-                  href={page.link}
-                  variant="text"
-                >
-                  {page.name}
-                </Button>
-              ) : (
-                <Box key={page.name}>
+            {pages
+              .filter(page => canViewPageBasedOnPermissions(page))
+              .map(page =>
+                page.link ? (
                   <Button
-                    onClick={event =>
-                      handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
-                    }
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
                     style={
-                      page.children?.some(
-                        child =>
-                          child != DIVIDER_MENU_ITEM &&
-                          window.location.href.includes(child.link)
-                      )
+                      window.location.href.includes(page.link)
                         ? {
-                            display: 'flex',
-                            alignItems: 'center',
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
                             color: '#388e3c'
                           }
                         : {
-                            display: 'flex',
-                            alignItems: 'center',
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
                             color: '#00000099'
                           }
                     }
+                    href={page.link}
+                    variant="text"
                   >
                     {page.name}
-                    <ArrowDropDownIcon />
                   </Button>
-                  <Menu
-                    anchorEl={getCorrectAnchorEl(page)[0]}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right'
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right'
-                    }}
-                    open={Boolean(getCorrectAnchorEl(page)[0])}
-                    onClose={() =>
-                      handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                    }
-                    style={{marginTop: 4}}
-                  >
-                    {page.children.map((child, index, items) =>
-                      child === DIVIDER_MENU_ITEM ? null : (
-                        <MenuItem
-                          disabled={!canViewPageBasedOnPermissions(child)}
-                          divider={items[index + 1] === DIVIDER_MENU_ITEM}
-                          key={child.name}
-                          onClick={() =>
-                            handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
-                          }
-                          selected={window.location.href.endsWith(child.link)}
-                          component="a"
-                          href={child.link}
-                        >
-                          {child.name}
-                        </MenuItem>
-                      )
-                    )}
-                  </Menu>
-                </Box>
-              )
-            )}
+                ) : (
+                  <Box key={page.name}>
+                    <Button
+                      onClick={event =>
+                        handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
+                      }
+                      style={
+                        page.children?.some(
+                          child =>
+                            child != DIVIDER_MENU_ITEM &&
+                            window.location.href.includes(child.link)
+                        )
+                          ? {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#388e3c'
+                            }
+                          : {
+                              display: 'flex',
+                              alignItems: 'center',
+                              textTransform: 'none',
+                              fontWeight: 500,
+                              marginRight: '20px',
+                              color: '#00000099'
+                            }
+                      }
+                    >
+                      {page.name}
+                      <ArrowDropDownIcon />
+                    </Button>
+                    <Menu
+                      anchorEl={getCorrectAnchorEl(page)[0]}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                      }}
+                      open={Boolean(getCorrectAnchorEl(page)[0])}
+                      onClose={() =>
+                        handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                      }
+                      style={{marginTop: 4}}
+                    >
+                      {page.children
+                        .filter(child => canViewPageBasedOnPermissions(child))
+                        .map((child, index, items) =>
+                          child === DIVIDER_MENU_ITEM ? null : (
+                            <MenuItem
+                              divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                              key={child.name}
+                              onClick={() =>
+                                handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
+                              }
+                              selected={window.location.href.endsWith(
+                                child.link
+                              )}
+                              component="a"
+                              href={child.link}
+                            >
+                              {child.name}
+                            </MenuItem>
+                          )
+                        )}
+                    </Menu>
+                  </Box>
+                )
+              )}
           </Box>
         )}
 
