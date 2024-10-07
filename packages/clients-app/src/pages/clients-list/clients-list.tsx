@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   Dialog,
@@ -8,6 +9,7 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  Paper,
   Typography
 } from '@mui/material'
 import {Client} from '../../types'
@@ -51,35 +53,19 @@ const ClientsList = () => {
       })
   }, [])
 
-  const [clientToDelete, setClientToDelete] = useState<string | null>(null)
-  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (e.currentTarget.id === 'confirm') {
-      deleteClient(clientToDelete)
-        .then(() => {})
-        .catch((error: any) => {
-          console.error(error)
-        })
-      const newClients = clients.filter(
-        client => client['_id'] !== clientToDelete
-      )
-      setClients(newClients)
-    }
-    setClientToDelete(null)
-  }
-
   const columns: GridColDef[] = [
-    {field: 'clientID', headerName: 'ID', width: 80},
-    {field: 'name', headerName: 'Name', width: 95},
-    {field: 'organization', headerName: 'Organization', width: 170},
-    {field: 'softwareName', headerName: 'Software Name', width: 180},
-    {field: 'description', headerName: 'Description', width: 177},
-    {field: 'contactPerson', headerName: 'Contact Person', width: 140},
-    {field: 'clientDomain', headerName: 'Domain', width: 200},
-    {field: 'roles', headerName: 'Roles', width: 200},
+    {field: 'clientID', headerName: 'ID', flex: 1},
+    {field: 'name', headerName: 'Name', flex: 1},
+    {field: 'organization', headerName: 'Organization', flex: 0.7},
+    {field: 'softwareName', headerName: 'Software Name', flex: 0.7},
+    {field: 'description', headerName: 'Description', flex: 0.6},
+    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.6},
+    {field: 'clientDomain', headerName: 'Domain', flex: 0.5},
+    {field: 'roles', headerName: 'Roles', flex: 0.6},
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 70,
+      flex: 0.3,
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
@@ -93,15 +79,6 @@ const ClientsList = () => {
               '',
               `/#!/clients/edit/${params.row['_id']}`
             )
-          }}
-        />,
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          id="delete"
-          label="Delete"
-          key="delete"
-          onClick={() => {
-            setClientToDelete(params.row['_id'])
           }}
         />
       ]
@@ -130,69 +107,58 @@ const ClientsList = () => {
   }
 
   return (
-    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
-      <Dialog
-        open={!!clientToDelete}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {'Are you sure you want to delete this client?'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Warning: This action cannot be undone. Once you delete a client, all
-            of its data will be permanently removed from the system.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button id="confirm" onClick={handleClose}>
-            Confirm
-          </Button>
-          <Button id="cancel" onClick={handleClose} autoFocus>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+    <Box
+      padding={1}
+      sx={{
+        backgroundColor: '#F1F1F1',
+        minHeight: 'calc(100vh - 119px - 10px)'
+      }}
+    >
       <Grid container spacing={2} padding={2}>
         <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-            Client List
+          <Typography variant="h4" gutterBottom>
+            Manage Clients
           </Typography>
-          <Grid container>
-            <Grid item xs={11}>
-              <p style={{opacity: 0.6, fontSize: '16px'}}>
+          <Grid
+            container
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <Grid item>
+              <Typography variant="subtitle1" gutterBottom>
                 Control client systems and their access roles. Add clients to
                 enable their request routing and group them by roles for
                 streamlined channel access management
-              </p>
+              </Typography>
             </Grid>
-            <Grid item xs={1}>
+            <Grid item>
               <a href={addingClient.toString()}>
-                <Button
-                  style={{backgroundColor: '#29AC96'}}
-                  variant="contained"
-                >
-                  <AddIcon /> Add
+                <Button variant="contained" startIcon={<AddIcon />}>
+                  Add
                 </Button>
               </a>
             </Grid>
           </Grid>
-
-          <Divider />
+          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
         </Grid>
         <Grid item xs={12}>
           <Card>
             <DataGrid
               autoHeight
               checkboxSelection
+              disableColumnMenu
               disableRowSelectionOnClick
+              density="comfortable"
               getRowId={row => row.clientID}
               rows={clients}
               columns={columns}
-              slots={{toolbar: GridToolbar, noRowsOverlay: CustomNoRowsOverlay}}
+              slots={{
+                toolbar: GridToolbar,
+                noRowsOverlay: CustomNoRowsOverlay
+              }}
               slotProps={{
                 toolbar: {
                   showQuickFilter: true,
@@ -210,7 +176,7 @@ const ClientsList = () => {
           </Card>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   )
 }
 

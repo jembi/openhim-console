@@ -12,12 +12,7 @@ export default function PortalAdminRoot(props: any) {
     <ThemeProvider theme={theme}>
       <FormStateProvider>
         <SnackbarProvider maxSnack={3} preventDuplicate>
-          <Box
-            p={5}
-            style={{
-              minHeight: 'calc(100vh - 119px - 10px)'
-            }}
-          >
+          <Box p={5}>
             <Paper>
               <Box p={2}>
                 <Typography variant="h4">Manage Apps</Typography>
