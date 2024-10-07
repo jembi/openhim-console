@@ -112,7 +112,7 @@ export default function OpenhimAppBar() {
         {
           name: 'Mediators',
           link: '#!/mediators',
-          permissions: ['metadata-manage-all']
+          permissions: ['mediator-manage-all']
         },
         {
           name: 'Certificates',
