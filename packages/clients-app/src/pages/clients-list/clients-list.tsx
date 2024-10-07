@@ -54,18 +54,18 @@ const ClientsList = () => {
   }, [])
 
   const columns: GridColDef[] = [
-    {field: 'clientID', headerName: 'ID', flex: 0.3},
+    {field: 'clientID', headerName: 'ID', flex: 1},
     {field: 'name', headerName: 'Name', flex: 1},
-    {field: 'organization', headerName: 'Organization', flex: 1},
-    {field: 'softwareName', headerName: 'Software Name', flex: 1},
-    {field: 'description', headerName: 'Description', flex: 1},
-    {field: 'contactPerson', headerName: 'Contact Person', flex: 1},
-    {field: 'clientDomain', headerName: 'Domain', flex: 1},
-    {field: 'roles', headerName: 'Roles', flex: 1},
+    {field: 'organization', headerName: 'Organization', flex: .7},
+    {field: 'softwareName', headerName: 'Software Name', flex: .7},
+    {field: 'description', headerName: 'Description', flex: .6},
+    {field: 'contactPerson', headerName: 'Contact Person', flex: .6},
+    {field: 'clientDomain', headerName: 'Domain', flex: .5},
+    {field: 'roles', headerName: 'Roles', flex: .6},
     {
       field: 'actions',
       headerName: 'Actions',
-      flex: 0.5,
+      flex: 0.3,
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
@@ -148,6 +148,7 @@ const ClientsList = () => {
           <Card>
             <DataGrid
               autoHeight
+              checkboxSelection
               disableColumnMenu
               disableRowSelectionOnClick
               density="comfortable"
