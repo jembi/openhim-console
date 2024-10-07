@@ -62,7 +62,7 @@ export const ListRoles = () => {
   )
 
   return (
-    <>
+    <Box padding={1}>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h4" gutterBottom>
@@ -130,6 +130,6 @@ export const ListRoles = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   )
 }
