@@ -2,6 +2,11 @@ import {
   Box,
   Button,
   Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   Stack,
@@ -18,7 +23,7 @@ import CryptoJS from 'crypto-js'
 import {editClient} from '@jembi/openhim-core-api'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
-import {fetchClientById} from '@jembi/openhim-core-api'
+import {fetchClientById, deleteClient} from '@jembi/openhim-core-api'
 import {useLoaderData} from 'react-router-dom'
 
 export async function loader({params}) {
@@ -152,79 +157,130 @@ const EditClient = () => {
   }
 
   const [tabValue, setTabValue] = useState(0)
+  const [dialog, setDialog] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
-  return (
-    <Grid container spacing={2} padding={2}>
-      <Grid item xs={12}>
-        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-          Edit Client
-        </Typography>
 
-        <p style={{opacity: 0.6, fontSize: '16px'}}>
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          access management
-        </p>
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <Card sx={{width: 550, margin: 'auto'}}>
-          <Box>
-            <Tabs value={tabValue} onChange={handleChange} variant="fullWidth">
-              <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
-              <Tab label="Authentication" id={`edit-client-tab-${1}`} />
-            </Tabs>
-          </Box>
-          <BasicInfo
-            basicInfo={basicInfo}
-            onBasicInfoChange={onBasicInfoChange}
-            setBasicInfo={setBasicInfo}
-            validationErrors={validationErrors}
-            validateBasicInfoField={validateBasicInfoField}
-            hidden={tabValue !== 0}
-            editMode={true}
-          />
-          <Authentication
-            authType={authType}
-            authentication={authentication}
-            basicInfo={basicInfo}
-            setAuthentication={setAuthentication}
-            selectAuthenticationType={selectAuthenticationType}
-            onAuthenticationChange={onAuthenticationChange}
-            hidden={tabValue !== 1}
-          />
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (e.currentTarget.id === 'confirm') {
+      deleteClient(client['_id'])
+      .then(() => {
+        window.history.pushState({}, '', '/#!/clients')
+      })
+    }
+    setDialog(false)
+  }
+
+  return (
+    <>
+    <Dialog
+        open={dialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Are you sure you want to delete this client?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Warning: This action cannot be undone. Once you delete a client, all
+            of its data will be permanently removed from the system.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button id="confirm" onClick={handleClose}>
+            Confirm
+          </Button>
+          <Button id="cancel" onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Grid container spacing={2} padding={2}>
+        <Grid item xs={12}>
+          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+            Edit Client
+          </Typography>
+
+          <p style={{opacity: 0.6, fontSize: '16px'}}>
+            Control client systems and their access roles. Add clients to enable
+            their request routing and group them by roles for streamlined
+            channel access management
+          </p>
           <Divider />
-          <br />
-          <Stack
-            spacing={2}
-            direction="row"
-            sx={{marginBottom: 1, marginLeft: 2}}
-          >
-            <Button
-              variant="outlined"
-              id="cancel"
-              color="success"
-              sx={{color: '#29AC96'}}
-              onClick={() => window.history.pushState({}, '', '/#!/clients')}
+        </Grid>
+        <Grid item xs={12}>
+          <Card sx={{width: 550, margin: 'auto'}}>
+            <Box>
+              <Tabs
+                value={tabValue}
+                onChange={handleChange}
+                variant="fullWidth"
+              >
+                <Tab label="Basic Info" id={`edit-client-tab-${0}`} />
+                <Tab label="Authentication" id={`edit-client-tab-${1}`} />
+              </Tabs>
+            </Box>
+            <BasicInfo
+              basicInfo={basicInfo}
+              onBasicInfoChange={onBasicInfoChange}
+              setBasicInfo={setBasicInfo}
+              validationErrors={validationErrors}
+              validateBasicInfoField={validateBasicInfoField}
+              hidden={tabValue !== 0}
+              editMode={true}
+            />
+            <Authentication
+              authType={authType}
+              authentication={authentication}
+              basicInfo={basicInfo}
+              setAuthentication={setAuthentication}
+              selectAuthenticationType={selectAuthenticationType}
+              onAuthenticationChange={onAuthenticationChange}
+              hidden={tabValue !== 1}
+            />
+            <Divider />
+            <br />
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{marginBottom: 1, marginLeft: 2}}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              id="save"
-              color="success"
-              sx={{backgroundColor: '#29AC96'}}
-              onClick={() => onSaveButtonClicked()}
-            >
-              Save
-            </Button>
-          </Stack>
-        </Card>
+              <Button
+                variant="outlined"
+                id="cancel"
+                color="success"
+                sx={{color: '#29AC96'}}
+                onClick={() => window.history.pushState({}, '', '/#!/clients')}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                id="save"
+                color="success"
+                sx={{backgroundColor: '#29AC96'}}
+                onClick={() => onSaveButtonClicked()}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                id="delete"
+                color="error"
+                sx={{backgroundColor: '#FF0000'}}
+                onClick={() => setDialog(true)}
+              >
+                Delete
+              </Button>
+            </Stack>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   )
 }
 
