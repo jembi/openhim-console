@@ -103,7 +103,7 @@ function UsersList() {
   ]
 
   return (
-    <Box padding={3} sx={{ }}>
+    <Box padding={3}>
       <Typography variant="h4" gutterBottom>
         Manager Users
       </Typography>
