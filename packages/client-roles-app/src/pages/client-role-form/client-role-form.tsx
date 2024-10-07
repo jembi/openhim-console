@@ -207,7 +207,7 @@ export const ClientRoleForm = () => {
   }
 
   return (
-    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+    <>
       <Grid container spacing={2} padding={2}>
         <Grid item xs={12}>
           <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
@@ -326,6 +326,6 @@ export const ClientRoleForm = () => {
           </Card>
         </Grid>
       </Grid>
-    </div>
+    </>
   )
 }

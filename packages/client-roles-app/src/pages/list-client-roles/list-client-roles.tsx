@@ -62,7 +62,7 @@ export const ListRoles = () => {
   )
 
   return (
-    <div style={{minHeight: 'calc(100vh - 119px - 10px)'}}>
+    <>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
@@ -126,6 +126,6 @@ export const ListRoles = () => {
           </Card>
         </Grid>
       </Grid>
-    </div>
+    </>
   )
 }

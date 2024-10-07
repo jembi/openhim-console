@@ -53,9 +53,6 @@ function PortalHome() {
       mt={'5%'}
       ml={'10%'}
       mr={'10%'}
-      style={{
-        minHeight: 'calc(100vh - 119px - 10px)'
-      }}
     >
       <section id="PortalHeader">
         <Grid sx={{ml: 0, mt: 0}}>
