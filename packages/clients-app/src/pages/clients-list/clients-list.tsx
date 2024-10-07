@@ -56,12 +56,12 @@ const ClientsList = () => {
   const columns: GridColDef[] = [
     {field: 'clientID', headerName: 'ID', flex: 1},
     {field: 'name', headerName: 'Name', flex: 1},
-    {field: 'organization', headerName: 'Organization', flex: .7},
-    {field: 'softwareName', headerName: 'Software Name', flex: .7},
-    {field: 'description', headerName: 'Description', flex: .6},
-    {field: 'contactPerson', headerName: 'Contact Person', flex: .6},
-    {field: 'clientDomain', headerName: 'Domain', flex: .5},
-    {field: 'roles', headerName: 'Roles', flex: .6},
+    {field: 'organization', headerName: 'Organization', flex: 0.7},
+    {field: 'softwareName', headerName: 'Software Name', flex: 0.7},
+    {field: 'description', headerName: 'Description', flex: 0.6},
+    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.6},
+    {field: 'clientDomain', headerName: 'Domain', flex: 0.5},
+    {field: 'roles', headerName: 'Roles', flex: 0.6},
     {
       field: 'actions',
       headerName: 'Actions',
@@ -107,7 +107,6 @@ const ClientsList = () => {
   }
 
   return (
-
     <Box
       padding={1}
       sx={{
