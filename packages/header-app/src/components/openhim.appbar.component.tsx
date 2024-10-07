@@ -185,6 +185,7 @@ export default function OpenhimAppBar() {
 
   const fetchMe = async () => {
     if (window.location.href.includes('#!/forgot-password')) return
+    if (window.location.href.includes('#!/login')) return
 
     const me = await getUser()
     setUser(me)
