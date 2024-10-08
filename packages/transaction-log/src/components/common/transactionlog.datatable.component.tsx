@@ -17,7 +17,7 @@ import {
 } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SettingsDialog from '../dialogs/settings.dialog.component'
-import {ChevronRight} from '@mui/icons-material'
+import {BorderBottom, ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
 import {AnimatedTableRow} from './animated.table.row.component'
@@ -82,7 +82,7 @@ const TransactionLogTable: React.FC<{
   }
 
   return (
-    <Box sx={{padding: '16px'}}>
+    <Box>
       <Box
         sx={{
           display: 'flex',
@@ -104,41 +104,59 @@ const TransactionLogTable: React.FC<{
         <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
+              <TableRow sx={{borderBottom: 'none', backgroundColor: '#F8F8F8'}}>
+                <TableCell
+                  padding="checkbox"
+                  sx={{
+                    borderBottom: 'none',
+                    borderTopLeftRadius: '12px',
+                    borderBottomLeftRadius: '12px'
+                  }}
+                >
                   <Checkbox checked={selectAll} onChange={handleSelectAll} />
                 </TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Method</TableCell>
-                <TableCell>Host</TableCell>
-                <TableCell>Port</TableCell>
-                <TableCell>Path</TableCell>
-                <TableCell>Params</TableCell>
-                <TableCell>Channel</TableCell>
-                <TableCell>Client</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Time</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Type</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Status</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Method</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Host</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Port</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Path</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Params</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Channel</TableCell>
+                <TableCell sx={{borderBottom: 'none'}}>Client</TableCell>
+                <TableCell
+                  sx={{
+                    borderBottom: 'none',
+                    borderTopRightRadius: '12px',
+                    borderBottomRightRadius: '12px'
+                  }}
+                >
+                  Time
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {initialTransactionLoadComplete ? (
                 transactions.map((transaction, index) => (
-                  <AnimatedTableRow
+                  <TableRow
                     key={transaction['_id']}
-                    initialColor="grey"
-                    finalColor="white"
                     onClick={event => handleRowClick(event, transaction)}
+                    sx={{
+                      borderBottom: 'none',
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+                    }}
                   >
                     <TableCell
                       padding="checkbox"
                       className="non-clickable-column"
+                      sx={{borderBottom: 'none'}}
                     >
                       <Checkbox
                         checked={selectedRows.has(index)}
                         onChange={() => handleRowSelect(index)}
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
                       <IconButton
                         sx={{
                           height: '32px',
@@ -192,13 +210,6 @@ const TransactionLogTable: React.FC<{
                         />
                       </IconButton>
                     </TableCell>
-                    <TableCell>{transaction.request.method}</TableCell>
-                    <TableCell>{transaction.request.host}</TableCell>
-                    <TableCell>{transaction.request.port}</TableCell>
-                    <TableCell>{transaction.request.path}</TableCell>
-                    <TableCell>{transaction.request.params}</TableCell>
-                    <TableCell>{transaction.channelName}</TableCell>
-                    <TableCell>{transaction.clientName}</TableCell>
                     <TableCell
                       sx={{
                         color:
@@ -212,15 +223,37 @@ const TransactionLogTable: React.FC<{
                             ? 'warning.main'
                             : transaction.status === 'Completed with error(s)'
                             ? 'warning.main'
-                            : 'error.main'
+                            : 'error.main',
+                        borderBottom: 'none'
                       }}
                     >
                       {transaction.status}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.request.method}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.request.host}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.request.port}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.request.path}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.request.params}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.channelName}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
+                      {transaction.clientName}
+                    </TableCell>
+                    <TableCell sx={{borderBottom: 'none'}}>
                       {convertTimestampFormat(transaction.request.timestamp)}
                     </TableCell>
-                  </AnimatedTableRow>
+                  </TableRow>
                 ))
               ) : (
                 <TableRow>
@@ -230,16 +263,24 @@ const TransactionLogTable: React.FC<{
                 </TableRow>
               )}
               {initialTransactionLoadComplete && transactions.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={11} align="center">
+                <TableRow sx={{borderBottom: 'none'}}>
+                  <TableCell
+                    colSpan={11}
+                    align="center"
+                    sx={{borderBottom: 'none'}}
+                  >
                     There are no transactions for the current filters
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
             <TableFooter>
-              <TableRow>
-                <TableCell colSpan={11} align="right">
+              <TableRow sx={{borderBottom: 'none'}}>
+                <TableCell
+                  colSpan={11}
+                  align="right"
+                  sx={{borderBottom: 'none'}}
+                >
                   <Button
                     onClick={loadMore}
                     endIcon={<ChevronRight />}

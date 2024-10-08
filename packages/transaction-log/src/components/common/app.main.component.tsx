@@ -349,7 +349,13 @@ const App: React.FC = () => {
             <Typography variant="h4">Transaction Log</Typography>
           </Box>
           <Box>
-            <Typography variant="subtitle1" sx={{color: 'var(--Light-Text-Secondary, var(--text-secondary, rgba(0, 0, 0, 0.60)))'}}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color:
+                  'var(--Light-Text-Secondary, var(--text-secondary, rgba(0, 0, 0, 0.60)))'
+              }}
+            >
               A log of the recent transactions through the system. Use Basic or
               Advanced filters to find specific transactions to investigate or
               rerun. Use settings to modify the list behaviour.
