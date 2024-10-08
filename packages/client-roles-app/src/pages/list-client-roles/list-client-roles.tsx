@@ -62,32 +62,36 @@ export const ListRoles = () => {
   )
 
   return (
-    <>
+    <Box padding={1}>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-            Manage User Roles
+          <Typography variant="h4" gutterBottom>
+            Manage Client Roles
           </Typography>
-          <Grid container>
-            <Grid item xs={11}>
-              <p style={{opacity: 0.6, fontSize: '16px'}}>
+          <Grid
+            container
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <Grid item>
+              <Typography variant="subtitle1" gutterBottom>
                 Control client systems and their access roles. Add clients to
                 enable their request routing and group them by roles for
                 streamlined channel access management.
-              </p>
+              </Typography>
             </Grid>
-            <Grid item xs={1}>
+            <Grid item>
               <a href={addClientRole.toString()}>
-                <Button
-                  variant="contained"
-                  style={{backgroundColor: '#29AC96'}}
-                >
+                <Button variant="contained">
                   <AddIcon /> Add
                 </Button>
               </a>
             </Grid>
           </Grid>
-          <Divider />
+          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
         </Grid>
         <Grid item xs={12}>
           <Card>
@@ -126,6 +130,6 @@ export const ListRoles = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   )
 }

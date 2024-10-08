@@ -224,86 +224,57 @@ export const ClientRoleForm = () => {
         </Grid>
         <Grid item xs={12}>
           <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
-            <FormControl sx={{m: 1, width: 580}}>
-              <TextField
-                id="role-name"
-                label="Role Name"
-                variant="outlined"
-                helperText="Choose a short but descriptive name"
-                value={clientRole.roleName}
-                onChange={e => {
-                  setClientRole(prevClientRole => ({
-                    ...prevClientRole,
-                    roleName: e.target.value
-                  }))
-                }}
-              />
-            </FormControl>
-            <FormControl sx={{m: 1, width: 580}}>
-              <Typography variant="h5" component="h5">
-                Clients
-              </Typography>
-              <Typography variant="caption">
-                Please choose at least one.
-              </Typography>
-            </FormControl>
-            <FormControl sx={{m: 1, width: 580}}>
-              <InputLabel id="selected-clients-label">Clients</InputLabel>
-              <Select
-                id="selected-clients"
-                multiple
-                value={clientRole.clients}
-                onChange={handleClientSelectionChange}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={selected => (
-                  <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                    {selected.map(value => (
-                      <Chip key={value} label={value} variant="filled" />
-                    ))}
-                  </Box>
-                )}
-              >
-                {clientNames.map(name => (
-                  <MenuItem key={name} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>
-                Search for clients and select from an autocomplete list
-              </FormHelperText>
-            </FormControl>
+            <Box sx={{margin: 1}}>
+              <FormControl sx={{m: 1, width: 580}}>
+                <TextField
+                  id="role-name"
+                  label="Role Name"
+                  variant="outlined"
+                  helperText="Choose a short but descriptive name"
+                  value={clientRole.roleName}
+                  onChange={e => {
+                    setClientRole(prevClientRole => ({
+                      ...prevClientRole,
+                      roleName: e.target.value
+                    }))
+                  }}
+                />
+              </FormControl>
 
-            <FormControl sx={{m: 1, width: 580}}>
-              <Typography variant="h5" component="h5">
-                Channels
-              </Typography>
-              <Typography variant="caption">
-                Please choose at least one
-              </Typography>
-              <FormGroup
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 200,
-                  overflow: 'auto'
-                }}
-              >
-                {channelNames.map(channel => (
-                  <FormControlLabel
-                    key={channel}
-                    control={
-                      <Checkbox
-                        name={channel}
-                        onChange={handleChannelCheckboxChange}
-                        checked={clientRole.channels.includes(channel)}
-                      />
-                    }
-                    label={channel}
-                  />
-                ))}
-              </FormGroup>
-            </FormControl>
+              <FormControl sx={{m: 1, width: 580}}>
+                <Typography
+                  variant="h5"
+                  component="h5"
+                  sx={{fontWeight: 'bold'}}
+                >
+                  Channels
+                </Typography>
+                <Typography variant="caption">Select one or more</Typography>
+                <FormGroup
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'auto'
+                  }}
+                >
+                  {channelNames.map(channel => (
+                    <FormControlLabel
+                      sx={{marginLeft: 0.5}}
+                      key={channel}
+                      control={
+                        <Checkbox
+                          name={channel}
+                          onChange={handleChannelCheckboxChange}
+                          checked={clientRole.channels.includes(channel)}
+                        />
+                      }
+                      label={channel}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+            </Box>
+
             <Divider />
             <Box sx={{display: 'flex', justifyContent: 'flex-start', p: 1}}>
               <Button
