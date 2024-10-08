@@ -7,6 +7,23 @@ import CustomizeDialog from '../dialogs/customize.dialog.component'
 import {CustomFilterProps} from '../../interfaces/index.interface'
 import {debounce} from 'lodash'
 
+const defaultVisibleFilters = {
+  status: true,
+  statusCode: true,
+  searchQuery: true,
+  channel: true,
+  startDate: true,
+  endDate: true,
+  limit: true,
+  reruns: true,
+  host: false,
+  port: false,
+  path: false,
+  param: false,
+  client: false,
+  method: false
+}
+
 const CustomFilters: React.FC<CustomFilterProps> = ({
   status,
   setStatus,
@@ -42,24 +59,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
 }) => {
   const [open, setOpen] = useState(false)
   const debounceFetchTransactionLogs = debounce(fetchTransactionLogs, 10000)
-
-  const [visibleFilters, setVisibleFilters] = useState({
-    status: true,
-    statusCode: true,
-    searchQuery: true,
-    channel: true,
-    startDate: true,
-    endDate: true,
-    limit: true,
-    reruns: true,
-    host: false,
-    port: false,
-    path: false,
-    param: false,
-    client: false,
-    method: false
-  })
-
+  const [visibleFilters, setVisibleFilters] = useState(defaultVisibleFilters)
   const [tempVisibleFilters, setTempVisibleFilters] = useState(visibleFilters)
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,6 +142,16 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
   const handleApplyFilters = () => {
     setVisibleFilters(tempVisibleFilters)
     setOpen(false)
+  }
+
+  const handleRestoreDefaults = () => {
+    setTempVisibleFilters(defaultVisibleFilters)
+  }
+
+  const isDefaultState = filters => {
+    return Object.keys(defaultVisibleFilters).every(
+      key => filters[key] === defaultVisibleFilters[key]
+    )
   }
 
   useEffect(() => {
@@ -414,6 +424,8 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
         onApply={handleApplyFilters}
         visibleFilters={tempVisibleFilters}
         handleFilterVisibilityChange={handleFilterVisibilityChange}
+        onRestoreDefaults={handleRestoreDefaults}
+        isDefaultState={isDefaultState(tempVisibleFilters)}
       />
     </Box>
   )
