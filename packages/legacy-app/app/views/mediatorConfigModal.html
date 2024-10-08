@@ -1,24 +1,40 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">
+    &times;
+  </button>
   <h4 class="modal-title" id="addMediatorConfigLabel">
-    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp;
-    Edit mediator configuration
+    <i class="glyphicon glyphicon-th"></i>&nbsp;&nbsp; Edit mediator
+    configuration
   </h4>
 </div>
-<div ng-if="!mediator.configDefs || mediator.configDefs.length === 0" class="med-no-config">
+<div
+  ng-if="!mediator.configDefs || mediator.configDefs.length === 0"
+  class="med-no-config"
+>
   <center>
-    <span>This mediator has does not have any config options that can be specified here.</span>
+    <span
+      >This mediator has does not have any config options that can be specified
+      here.</span
+    >
   </center>
 </div>
 <form class="form-horizontal" ng-submit="saveConfig()" novalidate>
   <div class="modal-body">
-    <div mediator-config config-defs="mediator.configDefs" config="mediator.config"></div>
+    <div
+      mediator-config
+      config-defs="mediator.configDefs"
+      config="mediator.config"
+    ></div>
   </div>
 
   <div class="modal-footer">
     <div>
-      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="saveConfig()">Save changes</button>
+      <button type="button" class="btn btn-default" ng-click="cancel()">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" ng-click="saveConfig()">
+        Save changes
+      </button>
     </div>
   </div>
 </form>

@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js'
 
 let keycloakInstance = null
 
-export function keycloak (config) {
+export function keycloak(config) {
   let keycloakState = ''
   // Init SSO with keycloak
   if (config.ssoEnabled) {

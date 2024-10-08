@@ -2,6 +2,11 @@ import {
   Box,
   Button,
   Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
   Stack,
@@ -18,16 +23,16 @@ import CryptoJS from 'crypto-js'
 import {editClient} from '@jembi/openhim-core-api'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
-import {fetchClientById} from '@jembi/openhim-core-api'
-import { useLoaderData } from 'react-router-dom'
+import {fetchClientById, deleteClient} from '@jembi/openhim-core-api'
+import {useLoaderData} from 'react-router-dom'
 
 export async function loader({params}) {
-  const client = await fetchClientById(params['clientId']);
-  return {client};
+  const client = await fetchClientById(params['clientId'])
+  return {client}
 }
 
 const EditClient = () => {
-  const { client } = useLoaderData() as { client: BasicInfoModel };
+  const {client} = useLoaderData() as {client: BasicInfoModel}
 
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string
@@ -152,25 +157,62 @@ const EditClient = () => {
   }
 
   const [tabValue, setTabValue] = useState(0)
+  const [dialog, setDialog] = useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
-  return (
-    <Grid container spacing={2} padding={2}>
-      <Grid item xs={12}>
-        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-          Edit Client
-        </Typography>
 
-        <p style={{opacity: 0.6, fontSize: '16px'}}>
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          access management
-        </p>
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (e.currentTarget.id === 'confirm') {
+      deleteClient(client['_id'])
+      .then(() => {
+        window.history.pushState({}, '', '/#!/clients')
+      })
+    }
+    setDialog(false)
+  }
+
+  return (
+    <>
+    <Dialog
+        open={dialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Are you sure you want to delete this client?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Warning: This action cannot be undone. Once you delete a client, all
+            of its data will be permanently removed from the system.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button id="confirm" onClick={handleClose}>
+            Confirm
+          </Button>
+          <Button id="cancel" onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Grid container spacing={2} padding={2}>
+        <Grid item xs={12}>
+          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+            Edit Client
+          </Typography>
+
+          <p style={{opacity: 0.6, fontSize: '16px'}}>
+            Control client systems and their access roles. Add clients to enable
+            their request routing and group them by roles for streamlined
+            channel access management
+          </p>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
           <Card sx={{width: 550, margin: 'auto'}}>
             <Box>
               <Tabs
@@ -202,7 +244,11 @@ const EditClient = () => {
             />
             <Divider />
             <br />
-            <Stack spacing={2} direction="row" sx={{marginBottom: 1, marginLeft: 2}}>
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{marginBottom: 1, marginLeft: 2}}
+            >
               <Button
                 variant="outlined"
                 id="cancel"
@@ -221,10 +267,20 @@ const EditClient = () => {
               >
                 Save
               </Button>
+              <Button
+                variant="contained"
+                id="delete"
+                color="error"
+                sx={{backgroundColor: '#FF0000'}}
+                onClick={() => setDialog(true)}
+              >
+                Delete
+              </Button>
             </Stack>
           </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   )
 }
 

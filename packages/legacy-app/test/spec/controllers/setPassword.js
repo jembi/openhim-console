@@ -7,7 +7,15 @@ describe('Controller: SetPasswordCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -17,9 +25,7 @@ describe('Controller: SetPasswordCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ]
+      groups: ['admin']
     }
   }
 
@@ -27,21 +33,28 @@ describe('Controller: SetPasswordCtrl', function () {
   beforeEach(inject(function ($controller, $rootScope, $httpBackend) {
     httpBackend = $httpBackend
 
-    $httpBackend.when('GET', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond({
-      firstname: 'John',
-      surname: 'Smith',
-      msisdn: '',
-      token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'
-    })
+    $httpBackend
+      .when('GET', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'))
+      .respond({
+        firstname: 'John',
+        surname: 'Smith',
+        msisdn: '',
+        token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'
+      })
 
-    $httpBackend.when('PUT', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')).respond('Successfully set new user password.')
+    $httpBackend
+      .when('PUT', new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'))
+      .respond('Successfully set new user password.')
 
     createController = function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      scope.user = { }
-      return $controller('SetPasswordCtrl', { $scope: scope, $routeParams: { token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU' } })
+      scope.user = {}
+      return $controller('SetPasswordCtrl', {
+        $scope: scope,
+        $routeParams: {token: 'ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'}
+      })
     }
   }))
 
@@ -51,7 +64,9 @@ describe('Controller: SetPasswordCtrl', function () {
   })
 
   it('should fetch a new user profile', function () {
-    httpBackend.expectGET(new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU'))
+    httpBackend.expectGET(
+      new RegExp('.*/token/ngYKZLaHLHgHQCwoEjhcPoJAfLquvmXU')
+    )
     createController()
     httpBackend.flush()
 

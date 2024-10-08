@@ -1,13 +1,26 @@
-import { isValidMSISDN } from '../utils'
+import {isValidMSISDN} from '../utils'
 
-export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout, Api, login, Notify, Alerting, user) {
+export function UsersModalCtrl(
+  $http,
+  $scope,
+  $uibModalInstance,
+  $sce,
+  $timeout,
+  Api,
+  login,
+  Notify,
+  Alerting,
+  user
+) {
   /*************************************************************/
   /**   These are the functions for the User initial load     **/
   /*************************************************************/
 
   // default - update is false
   $scope.update = false
-  $scope.phoneNumberTooltip = $sce.trustAsHtml('Accepted format: <br />27123456789 <br />( 5 - 15 digits )')
+  $scope.phoneNumberTooltip = $sce.trustAsHtml(
+    'Accepted format: <br />27123456789 <br />( 5 - 15 digits )'
+  )
 
   // object for the taglist roles
   $scope.taglistUserRoleOptions = []
@@ -16,42 +29,52 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
   $scope.temp = {}
 
   // get the allowed channels for the transaction settings
-  Api.Channels.query(function (channels) {
-    $scope.channels = channels
+  Api.Channels.query(
+    function (channels) {
+      $scope.channels = channels
 
-    $scope.primaryRoutes = []
-    $scope.secondaryRoutes = []
+      $scope.primaryRoutes = []
+      $scope.secondaryRoutes = []
 
-    angular.forEach(channels, function (channel) {
-      angular.forEach(channel.routes, function (route) {
-        if (route.primary) {
-          if ($scope.primaryRoutes.indexOf(route.name) < 0) {
-            $scope.primaryRoutes.push(route.name)
+      angular.forEach(channels, function (channel) {
+        angular.forEach(channel.routes, function (route) {
+          if (route.primary) {
+            if ($scope.primaryRoutes.indexOf(route.name) < 0) {
+              $scope.primaryRoutes.push(route.name)
+            }
+          } else {
+            if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
+              $scope.secondaryRoutes.push(route.name)
+            }
           }
-        } else {
-          if ($scope.secondaryRoutes.indexOf(route.name) < 0) {
-            $scope.secondaryRoutes.push(route.name)
-          }
-        }
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get channels */ })
+    },
+    function () {
+      /* server error - could not connect to API to get channels */
+    }
+  )
 
   // get the users for the taglist roles options
-  Api.Users.query(function (users) {
-    angular.forEach(users, function (user) {
-      angular.forEach(user.groups, function (group) {
-        if ($scope.taglistUserRoleOptions.indexOf(group) === -1) {
-          $scope.taglistUserRoleOptions.push(group)
-        }
+  Api.Users.query(
+    function (users) {
+      angular.forEach(users, function (user) {
+        angular.forEach(user.groups, function (group) {
+          if ($scope.taglistUserRoleOptions.indexOf(group) === -1) {
+            $scope.taglistUserRoleOptions.push(group)
+          }
+        })
       })
-    })
-  }, function () { /* server error - could not connect to API to get Users */ })
+    },
+    function () {
+      /* server error - could not connect to API to get Users */
+    }
+  )
 
   // get/set the users scope whether new or update
   if (user) {
     $scope.update = true
-    $scope.user = Api.Users.get({ email: user.email }, function () {
+    $scope.user = Api.Users.get({email: user.email}, function () {
       // check visualizer settings properties exist
       if (!$scope.user.settings) {
         $scope.user.settings = {}
@@ -99,42 +122,69 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
         login.login(consoleSession.sessionUser, password, function (loggedIn) {
           if (loggedIn) {
             // add the success message
-            Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully and you were logged in with your new credentials')
+            Alerting.AlertAddMsg(
+              'top',
+              'success',
+              'Your details has been saved succesfully and you were logged in with your new credentials'
+            )
             notifyUser()
           } else {
             // add the error message
-            Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while trying to log you in again with your new credentials')
+            Alerting.AlertAddMsg(
+              'top',
+              'danger',
+              'An error has occurred while trying to log you in again with your new credentials'
+            )
             notifyUser()
           }
         })
       } else {
         // add the success message
-        Alerting.AlertAddMsg('top', 'success', 'Your details has been saved succesfully')
+        Alerting.AlertAddMsg(
+          'top',
+          'success',
+          'Your details has been saved succesfully'
+        )
         notifyUser()
       }
     } else {
       // add the success message
-      Alerting.AlertAddMsg('top', 'success', 'The user has been saved successfully')
+      Alerting.AlertAddMsg(
+        'top',
+        'success',
+        'The user has been saved successfully'
+      )
       notifyUser()
     }
   }
 
   const error = function (err) {
     // add the success message
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the users\' details: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      "An error has occurred while saving the users' details: #" +
+        err.status +
+        ' - ' +
+        err.data
+    )
     notifyUser()
   }
 
   $scope.save = function (user, password) {
     if ($scope.update) {
-      const userObject = { ...angular.copy(user), id: user._id, password }
-      Api.Users.update(userObject, function () {
-        success(userObject, password)
-        // rootScope function to scroll to top
-        $scope.goToTop()
-      }, error)
+      const userObject = {...angular.copy(user), id: user._id, password}
+      Api.Users.update(
+        userObject,
+        function () {
+          success(userObject, password)
+          // rootScope function to scroll to top
+          $scope.goToTop()
+        },
+        error
+      )
     } else {
-      user.$save({ email: '' }, success, error)
+      user.$save({email: ''}, success, error)
     }
   }
 
@@ -194,7 +244,10 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
     if ($scope.update) {
       // password validation
       if ($scope.temp.password) {
-        if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
+        if (
+          !$scope.temp.passwordConfirm ||
+          $scope.temp.password !== $scope.temp.passwordConfirm
+        ) {
           $scope.ngError.passwordConfirm = true
           $scope.ngError.hasErrors = true
         }
@@ -206,7 +259,11 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
         // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

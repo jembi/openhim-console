@@ -81,5 +81,5 @@ export enum Routes {
   CREATE_USER = '!/users/create-user',
   EDIT_USER = '!/users/edit-user/:userId',
 
-  ADD_ROLE = '/#!/rbac/create-role',
+  ADD_ROLE = '/#!/rbac/create-role'
 }

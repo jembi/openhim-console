@@ -1,4 +1,13 @@
-export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api, login, Notify, Alerting, contactGroup) {
+export function ContactGroupsModalCtrl(
+  $scope,
+  $uibModalInstance,
+  $timeout,
+  Api,
+  login,
+  Notify,
+  Alerting,
+  contactGroup
+) {
   /*********************************************************************/
   /**   These are the functions for the contactGroup initial load     **/
   /*********************************************************************/
@@ -7,20 +16,23 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
   $scope.temp = {}
 
   // get the users for the Channel Alert User dropdown
-  $scope.alertUsers = Api.Users.query(function () {
-    $scope.usersMap = {}
-    angular.forEach($scope.alertUsers, function (user) {
-      $scope.usersMap[user.email] = user.firstname + ' ' + user.surname + ' (' + user.email + ')'
-    })
-  },
-  function () {
-    // server error - could not connect to API to get channels
-  })
+  $scope.alertUsers = Api.Users.query(
+    function () {
+      $scope.usersMap = {}
+      angular.forEach($scope.alertUsers, function (user) {
+        $scope.usersMap[user.email] =
+          user.firstname + ' ' + user.surname + ' (' + user.email + ')'
+      })
+    },
+    function () {
+      // server error - could not connect to API to get channels
+    }
+  )
 
   // get/set the contactGroup scope whether new or update
   if (contactGroup) {
     $scope.update = true
-    $scope.contactGroup = Api.ContactGroups.get({ groupId: contactGroup._id })
+    $scope.contactGroup = Api.ContactGroups.get({groupId: contactGroup._id})
   } else {
     $scope.update = false
     $scope.contactGroup = new Api.ContactGroups()
@@ -42,13 +54,24 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
 
   const success = function () {
     // add the success message
-    Alerting.AlertAddMsg('top', 'success', 'The contact list has been saved successfully')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'The contact list has been saved successfully'
+    )
     notifyContactGroup()
   }
 
   const error = function (err) {
     // add the success message
-    Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving the contact lists\' details: #' + err.status + ' - ' + err.data)
+    Alerting.AlertAddMsg(
+      'top',
+      'danger',
+      "An error has occurred while saving the contact lists' details: #" +
+        err.status +
+        ' - ' +
+        err.data
+    )
     notifyContactGroup()
   }
 
@@ -109,7 +132,11 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
   }
 
   $scope.isGroupUserValid = function () {
-    if (!$scope.newGroupUser.user || !$scope.newGroupUser.method || !$scope.newGroupUser.maxAlerts) {
+    if (
+      !$scope.newGroupUser.user ||
+      !$scope.newGroupUser.method ||
+      !$scope.newGroupUser.maxAlerts
+    ) {
       return false
     }
     return true
@@ -150,7 +177,11 @@ export function ContactGroupsModalCtrl ($scope, $uibModalInstance, $timeout, Api
         // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

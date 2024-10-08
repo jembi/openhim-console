@@ -87,7 +87,7 @@ async function loadAndStartMicrofrontends(): Promise<void> {
     for (const app of esmodules) {
       const path = generateRoutingPathFromURL(app.url)
       newMicrofrontendLayout += `<route path="#!/${path}">`
-      newMicrofrontendLayout += `<div style="flex-grow: 1;background-color: #f1f1f1;" id="${path}">`
+      newMicrofrontendLayout += `<div style="background-color: #f1f1f1;" id="${path}">`
       newMicrofrontendLayout += `<application name="${app.name}"></application>`
       newMicrofrontendLayout += `</div>`
       newMicrofrontendLayout += '</route>'

@@ -1,28 +1,38 @@
-import React, {useState, useEffect, useCallback} from 'react'
 import {
-  Container,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
   Tab,
   Tabs,
-  Box,
-  Typography,
-  Card,
-  Grid,
-  Divider,
-  CardContent
+  Typography
 } from '@mui/material'
-import CustomFilters from '../filters/custom.component'
-import BasicFilters from '../filters/basic.component'
-import TransactionLogTable from './transactionlog.datatable.component'
+import {format} from 'date-fns'
+import React, {useCallback, useEffect, useState} from 'react'
+import {useTransactionRerunConfirmationDialog} from '../../contexts/rerun.transasctions.confirmation.context'
 import {
+  addTransactionsToReRunQueue,
+  addTransactionsToBulkReRunTaskQueue,
+  getBulkRunFilterCount,
   getChannelById,
   getChannels,
   getClientById,
   getClients,
-  getTransactions,
   getServerHeartBeat,
-  getTransactionById
+  getTransactionById,
+  getTransactions
 } from '../../services/api.service'
-import {format, set} from 'date-fns'
+import {Transaction} from '../../types'
+import {TransactionRerunEvent} from '../dialogs/reruntransactions.confirmation.dialog'
+import BasicFilters from '../filters/basic.component'
+import CustomFilters from '../filters/custom.component'
+import TransactionLogTable from './transactionlog.datatable.component'
+import {ErrorMessage} from './error.component'
+import {useAlert} from '../../contexts/alert.context'
+import {useBasicBackdrop} from '../../contexts/backdrop.context'
+import Loader from '../helpers/loader.helper.component'
+import {useConfirmation} from '../../contexts/confirmation.context'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -36,7 +46,11 @@ const App: React.FC = () => {
   const [limit, setLimit] = useState(10)
   const [reruns, setReruns] = useState(NO_FILTER)
   const [channels, setChannels] = useState([])
-  const [transactions, setTransactions] = useState([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [httpError, setHttpError] = useState<any | null>(null)
+  const [selectedTransactions, setSelectedTransactions] = useState<
+    Transaction[]
+  >([])
   const [host, setHost] = useState('')
   const [port, setPort] = useState(null)
   const [path, setPath] = useState('')
@@ -47,80 +61,92 @@ const App: React.FC = () => {
   const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] =
     useState(false)
   const [loading, setLoading] = useState(false)
+  const {closeReRunDialog, showReRunDialog} =
+    useTransactionRerunConfirmationDialog()
+  const {showAlert, hideAlert} = useAlert()
+  const {hideConfirmation, showConfirmation} = useConfirmation()
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [timestampFilter, setTimestampFilter] = useState<string | null>(null)
   let lastPollingComplete = true
   let lastUpdated
   let serverDifferenceTime
 
+  const getFilters = (timestampFilter?: string) => {
+    const filters: {[key: string]: any} = {}
+
+    if (timestampFilter) {
+      filters['request.timestamp'] = JSON.stringify({
+        $gte: timestampFilter
+      })
+    }
+
+    if (startDate || endDate) {
+      filters['request.timestamp'] = JSON.stringify({
+        ...(startDate && {$gte: startDate.toISOString()}),
+        ...(endDate && {$lte: endDate.toISOString()})
+      })
+    }
+
+    if (status !== 'NoFilter') {
+      filters.status = status
+    }
+
+    if (statusCode) {
+      filters['response.status'] = statusCode
+    }
+
+    if (channel !== 'NoFilter') {
+      filters.channelID = channel
+    }
+
+    if (reruns !== 'NoFilter') {
+      if (reruns === 'Yes') {
+        filters.childIDs = JSON.stringify({$exists: true, $ne: []})
+      } else if (reruns === 'No') {
+        filters.childIDs = JSON.stringify({$eq: []})
+      }
+    }
+
+    if (host) {
+      filters['request.host'] = host
+    }
+
+    if (port) {
+      filters['request.port'] = port
+    }
+
+    if (path) {
+      filters['request.path'] = path
+    }
+
+    if (param) {
+      filters['request.querystring'] = param
+    }
+
+    if (client !== 'NoFilter') {
+      filters.clientID = client
+    }
+
+    if (method !== 'NoFilter') {
+      filters['request.method'] = method
+    }
+
+    const fetchParams: {[key: string]: any} = {
+      filters: JSON.stringify(filters)
+    }
+    if (!timestampFilter) {
+      fetchParams.filterLimit = limit
+      fetchParams.filterPage = 0
+    }
+    return fetchParams
+  }
+
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string, filteredResults?: boolean) => {
       try {
-        const filters: {[key: string]: any} = {}
+        const fetchParams = getFilters(timestampFilter)
 
-        if (timestampFilter) {
-          filters['request.timestamp'] = JSON.stringify({
-            $gte: timestampFilter
-          })
-        }
-
-        if (startDate || endDate) {
-          filters['request.timestamp'] = JSON.stringify({
-            ...(startDate && {$gte: startDate.toISOString()}),
-            ...(endDate && {$lte: endDate.toISOString()})
-          })
-        }
-
-        if (status !== 'NoFilter') {
-          filters.status = status
-        }
-
-        if (statusCode) {
-          filters['response.status'] = statusCode
-        }
-
-        if (channel !== 'NoFilter') {
-          filters.channelID = channel
-        }
-
-        if (reruns !== 'NoFilter') {
-          if (reruns === 'Yes') {
-            filters.childIDs = JSON.stringify({$exists: true, $ne: []})
-          } else if (reruns === 'No') {
-            filters.childIDs = JSON.stringify({$eq: []})
-          }
-        }
-
-        if (host) {
-          filters['request.host'] = host
-        }
-
-        if (port) {
-          filters['request.port'] = port
-        }
-
-        if (path) {
-          filters['request.path'] = path
-        }
-
-        if (param) {
-          filters['request.querystring'] = param
-        }
-
-        if (client !== 'NoFilter') {
-          filters.clientID = client
-        }
-
-        if (method !== 'NoFilter') {
-          filters['request.method'] = method
-        }
-
-        const fetchParams: {[key: string]: any} = {
-          filters: JSON.stringify(filters)
-        }
-        if (!timestampFilter) {
-          fetchParams.filterLimit = limit
-          fetchParams.filterPage = 0
-        }
+        setHttpError(null)
 
         const newTransactions = await getTransactions(fetchParams)
 
@@ -170,6 +196,7 @@ const App: React.FC = () => {
         })
       } catch (error) {
         console.error('Error fetching logs:', error)
+        setHttpError(error)
       }
     },
     [
@@ -194,7 +221,12 @@ const App: React.FC = () => {
     try {
       const channels = await getChannels()
       setChannels(channels)
-    } catch (error) {
+    } catch (error: any) {
+      showAlert(
+        'Error fetching available channels. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
       console.error('Error fetching channels:', error)
     }
   }, [])
@@ -203,7 +235,13 @@ const App: React.FC = () => {
     try {
       const clients = await getClients()
       setClients(clients)
-    } catch (error) {}
+    } catch (error: any) {
+      showAlert(
+        'Error fetching available clients. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
+    }
   }, [])
 
   useEffect(() => {
@@ -315,10 +353,128 @@ const App: React.FC = () => {
       setLimit(prevLimit => prevLimit + 20)
 
       await fetchTransactionLogs()
-    } catch (error) {
+    } catch (error: any) {
+      showAlert(
+        'Error fetching more transactions. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleReRunMatches = async () => {
+    showBackdrop(<Loader />, true)
+
+    type BulkRunFilterCountParams = Parameters<typeof getBulkRunFilterCount>
+
+    const params = {
+      ...(getFilters() as any),
+      filterLimit: 1000,
+      filterRepresentation: 'bulkrerun'
+    } satisfies BulkRunFilterCountParams[0]
+
+    getBulkRunFilterCount(params)
+      .then(res => {
+        hideBackdrop()
+
+        const message =
+          (!(startDate && endDate)
+            ? ''
+            : 'No date range has been supplied, querying all transactions with the defined filters\n') +
+          `Your filters returned a total of ${res.count} transaction(s) that can be re-run`
+        const title = 'You have opted to do a Bulk Rerun!'
+
+        showConfirmation(
+          message,
+          title,
+          () => {
+            showReRunDialog({
+              bulkReRunFilterCount: res.count,
+              onConfirmReRun: async (event: TransactionRerunEvent) => {
+                try {
+                  showBackdrop(<Loader />, true)
+
+                  type BulkReRunParams = Parameters<
+                    typeof addTransactionsToBulkReRunTaskQueue
+                  >
+
+                  const params = {
+                    ...(getFilters() as any),
+                    batchSize: event.batchSize,
+                    filterLimit: 1000,
+                    pauseQueue: event.paused
+                  } satisfies BulkReRunParams[0]
+
+                  await addTransactionsToBulkReRunTaskQueue(params)
+                } catch (error: any) {
+                  hideBackdrop()
+                  closeReRunDialog()
+                  showAlert(
+                    'Error queueing transactions to be rerun. ' +
+                      error?.response?.data,
+                    'Error',
+                    'error'
+                  )
+                  console.error(error)
+                  return
+                }
+                hideBackdrop()
+                closeReRunDialog()
+                showAlert(
+                  'Successfully queued transactions to be rerun',
+                  'Success',
+                  'success'
+                )
+
+                await fetchTransactionLogs()
+              }
+            })
+          },
+          undefined,
+          'sm'
+        )
+      })
+      .catch(err => {
+        hideBackdrop()
+      })
+  }
+
+  const handleReRunSelected = async () => {
+    showReRunDialog({
+      selectedTransactions,
+      transactions,
+      onConfirmReRun: async (event: TransactionRerunEvent) => {
+        try {
+          showBackdrop(<Loader />, true)
+          await addTransactionsToReRunQueue(
+            selectedTransactions,
+            event.batchSize,
+            event.paused
+          )
+        } catch (error: any) {
+          hideBackdrop()
+          closeReRunDialog()
+          showAlert(
+            'Error queing transactions to be rerun. ' + error?.response?.data,
+            'Error',
+            'error'
+          )
+          console.error(error)
+          return
+        }
+        hideBackdrop()
+        closeReRunDialog()
+        showAlert(
+          'Successfully queued transactions to be rerun',
+          'Success',
+          'success'
+        )
+
+        await fetchTransactionLogs()
+      }
+    })
   }
 
   const filteredTransactions = transactions.filter(transaction => {
@@ -331,18 +487,23 @@ const App: React.FC = () => {
       transaction.request.path,
       transaction.request.params,
       transaction.status
-    ].some(field => field?.toLowerCase().includes(searchTerm))
+    ].some(field =>
+      typeof field === 'string'
+        ? field?.toLowerCase().includes(searchTerm)
+        : false
+    )
   })
 
   const handleRowClick = transaction => {
     console.log('Transaction clicked:', transaction)
   }
 
+  if (httpError) {
+    return <ErrorMessage onRetry={fetchTransactionLogs} />
+  }
+
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1', minHeight: 'calc(100vh - 64px - 10px)'}}
-    >
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Box>
         <Grid item xs={12}>
           <Box>
@@ -403,6 +564,8 @@ const App: React.FC = () => {
                 reruns={reruns}
                 setReruns={setReruns}
                 channels={channels}
+                onReRunMatches={handleReRunMatches}
+                onReRunSelected={handleReRunSelected}
                 fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
@@ -436,6 +599,8 @@ const App: React.FC = () => {
                 method={method}
                 setMethod={setMethod}
                 clients={clients}
+                onReRunMatches={handleReRunMatches}
+                onReRunSelected={handleReRunSelected}
                 fetchTransactionLogs={fetchTransactionLogs}
               />
             )}
@@ -451,6 +616,7 @@ const App: React.FC = () => {
               loading={loading}
               initialTransactionLoadComplete={initialTransactionLoadComplete}
               onRowClick={handleRowClick}
+              onSelectedChange={setSelectedTransactions}
             />
           </CardContent>
         </Card>

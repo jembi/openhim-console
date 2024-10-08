@@ -1,4 +1,4 @@
-export function toggleSubMenu (element) {
+export function toggleSubMenu(element) {
   const $li = $(element).parent('li')
   const $ul = $(element).next('ul')
 

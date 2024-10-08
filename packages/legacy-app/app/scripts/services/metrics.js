@@ -1,7 +1,7 @@
 'use strict'
 import moment from 'moment'
 
-export function Metrics () {
+export function Metrics() {
   return {
     refreshDatesForSelectedPeriod: function (selectedPeriod) {
       if (selectedPeriod.period === '1h') {
@@ -31,7 +31,13 @@ export function Metrics () {
       }
     },
 
-    buildLineChartData: function (selectedPeriod, metrics, key, label, valueFormatter) {
+    buildLineChartData: function (
+      selectedPeriod,
+      metrics,
+      key,
+      label,
+      valueFormatter
+    ) {
       const graphData = []
       const from = moment(selectedPeriod.from)
       const until = moment(selectedPeriod.until)
@@ -59,7 +65,10 @@ export function Metrics () {
           }
         }
 
-        graphData.push({ timestamp: timestamp.format('YYYY-MM-DD HH:mm'), value: value })
+        graphData.push({
+          timestamp: timestamp.format('YYYY-MM-DD HH:mm'),
+          value: value
+        })
       }
 
       avgResponseTime = (avgResponseTimeTotal / metrics.length).toFixed(2)

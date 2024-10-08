@@ -1,6 +1,14 @@
-import { isValidMSISDN } from '../utils'
+import {isValidMSISDN} from '../utils'
 
-export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $location, Api, Alerting) {
+export function SetPasswordCtrl(
+  $scope,
+  $uibModal,
+  $routeParams,
+  $timeout,
+  $location,
+  Api,
+  Alerting
+) {
   /***************************************************/
   /**         Initial page load functions           **/
   /***************************************************/
@@ -22,14 +30,22 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
       Alerting.AlertAddMsg('top', 'danger', 'Invalid token')
     } else if (err.status === 410) {
       // expired new user
-      Alerting.AlertAddMsg('top', 'danger', 'The time to set the new user password has expired. Please contact your OpenHIM administrator to set your password')
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        'The time to set the new user password has expired. Please contact your OpenHIM administrator to set your password'
+      )
     } else {
       Alerting.AlertAddServerMsg(err.status)
     }
   }
 
   // get the Data for the supplied token
-  Api.UserPasswordToken.get({ token: $routeParams.token }, setPassSuccess, setPassError)
+  Api.UserPasswordToken.get(
+    {token: $routeParams.token},
+    setPassSuccess,
+    setPassError
+  )
 
   /***************************************************/
   /**         Initial page load functions           **/
@@ -42,12 +58,16 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
   const success = function () {
     $scope.goToTop()
     Alerting.AlertReset()
-    Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully. You will be redirected to the login screen shortly.')
+    Alerting.AlertAddMsg(
+      'top',
+      'success',
+      'Your user details have been updated succesfully. You will be redirected to the login screen shortly.'
+    )
     $scope.passwordSetSuccessful = true
 
     $scope.redirectToLogin = $timeout(function () {
       // redirect after 5 seconds
-      $location.path('/login').search({ email: $scope.user.email })
+      $location.path('/login').search({email: $scope.user.email})
     }, 5000)
   }
 
@@ -56,17 +76,37 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
     // add the error message
     if (err.status === 410) {
       // expired new user
-      Alerting.AlertAddMsg('top', 'danger', 'The time to set the new user password has expired. Please contact your OpenHIM administrator to set your password')
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        'The time to set the new user password has expired. Please contact your OpenHIM administrator to set your password'
+      )
     } else {
-      Alerting.AlertAddMsg('top', 'danger', 'An error has occurred while saving your details: #' + err.status + ' - ' + err.data)
-      Alerting.AlertAddMsg('top', 'danger', 'Please contact your OpenHIM administrator to set your password')
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        'An error has occurred while saving your details: #' +
+          err.status +
+          ' - ' +
+          err.data
+      )
+      Alerting.AlertAddMsg(
+        'top',
+        'danger',
+        'Please contact your OpenHIM administrator to set your password'
+      )
     }
   }
 
   $scope.save = function (user, password) {
     if (password) {
-      const userObject = { ...angular.copy(user), password }
-      Api.UserPasswordToken.update({ token: $routeParams.token }, userObject, success, error)
+      const userObject = {...angular.copy(user), password}
+      Api.UserPasswordToken.update(
+        {token: $routeParams.token},
+        userObject,
+        success,
+        error
+      )
     }
   }
 
@@ -109,7 +149,10 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
 
     // password validation
     if ($scope.temp.password) {
-      if (!$scope.temp.passwordConfirm || $scope.temp.password !== $scope.temp.passwordConfirm) {
+      if (
+        !$scope.temp.passwordConfirm ||
+        $scope.temp.password !== $scope.temp.passwordConfirm
+      ) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
       }
@@ -123,7 +166,11 @@ export function SetPasswordCtrl ($scope, $uibModal, $routeParams, $timeout, $loc
         // clear errors after 5 seconds
         $scope.ngError = {}
       }, 5000)
-      Alerting.AlertAddMsg('hasErrors', 'danger', $scope.validationFormErrorsMsg)
+      Alerting.AlertAddMsg(
+        'hasErrors',
+        'danger',
+        $scope.validationFormErrorsMsg
+      )
     }
   }
 

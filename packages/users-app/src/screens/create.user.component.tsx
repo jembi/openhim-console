@@ -20,7 +20,7 @@ import {Routes} from '../types'
 import {defaultUser, getNestedProp} from '../utils'
 import {BasicInfo} from '../components/common/basic.info.component'
 import {userSchema} from '../utils'
-import { handleFieldValidationAndUpdateErrors, handleOnChange } from './helper'
+import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
 
 function AddUserRole() {
   const navigate = useNavigate()
@@ -65,7 +65,14 @@ function AddUserRole() {
   }
 
   const validateUserField = (field: string, newBasicInfoState?: object) => {
-    handleFieldValidationAndUpdateErrors(newBasicInfoState, user, field, setValidationErrors, validationErrors, setIsFormDataValid)
+    handleFieldValidationAndUpdateErrors(
+      newBasicInfoState,
+      user,
+      field,
+      setValidationErrors,
+      validationErrors,
+      setIsFormDataValid
+    )
   }
 
   const handleAddUser = async () => {
@@ -81,72 +88,70 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} sx={{minHeight: 'calc(100vh - 64px - 10px)'}}>
+    <Box padding={3}>
       <header style={{marginBottom: '10px'}}>
-      <Typography variant="h4" gutterBottom fontWeight={400}>
-        Add User
-      </Typography>
-      <Typography
-        variant="subtitle1"
-        fontSize={16}
-        gutterBottom
-        fontWeight={400}
-      >
-        Control client systems and their access roles. Add clients to enable
-        their request routing and group them by roles for streamlined channel
-        management.
-      </Typography>
-      <Divider />
+        <Typography variant="h4" gutterBottom fontWeight={400}>
+          Add User
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          fontSize={16}
+          gutterBottom
+          fontWeight={400}
+        >
+          Control client systems and their access roles. Add clients to enable
+          their request routing and group them by roles for streamlined channel
+          management.
+        </Typography>
+        <Divider />
       </header>
 
       <Grid
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
       >
-      <Grid item xs={12}>
-        <Card style={{width: '600px'}} elevation={4}>
-        <Divider />
-        <CardContent>
-          <BasicInfo
-          roles={roles}
-          onChange={onChange}
-          user={user}
-          validationErrors={validationErrors}
-          validateUserField={validateUserField}
-          />
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Box display="flex" justifyContent="space-between">
-          <Button
-            variant="outlined"
-            color="info"
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </Button>
+        <Grid item xs={12}>
+          <Card style={{width: '600px'}} elevation={4}>
+            <Divider />
+            <CardContent>
+              <BasicInfo
+                roles={roles}
+                onChange={onChange}
+                user={user}
+                validationErrors={validationErrors}
+                validateUserField={validateUserField}
+              />
+            </CardContent>
+            <Divider />
+            <CardActions>
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  variant="outlined"
+                  color="info"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </Button>
 
-          <span style={{marginRight: '10px'}}></span>
+                <span style={{marginRight: '10px'}}></span>
 
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={mutation.isLoading || !isFormDataValid}
-            onClick={handleAddUser}
-          >
-            Add User
-          </Button>
-          </Box>
-        </CardActions>
-        </Card>
-      </Grid>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={mutation.isLoading || !isFormDataValid}
+                  onClick={handleAddUser}
+                >
+                  Add User
+                </Button>
+              </Box>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
     </Box>
   )
 }
 
 export default AddUserRole
-
-

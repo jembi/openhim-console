@@ -38,5 +38,5 @@ declare module '*.svg' {
   export default src
 }
 
-declare module '@jembi/openhim-core-api';
+declare module '@jembi/openhim-core-api'
 declare module '@jembi/openhim-theme'

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Box,
   Table,
@@ -20,26 +20,37 @@ import SettingsDialog from '../dialogs/settings.dialog.component'
 import {BorderBottom, ChevronRight} from '@mui/icons-material'
 import LockIcon from '@mui/icons-material/Lock'
 import convertTimestampFormat from '../helpers/timestampformat.helper.component'
+import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
+import {Transaction} from '../../types'
+import {tr} from 'date-fns/locale'
 
 const TransactionLogTable: React.FC<{
-  transactions: any[]
+  transactions: Transaction[]
   loadMore: () => void
   loading: boolean
   initialTransactionLoadComplete: boolean
   onRowClick: (transaction: any) => void
+  onSelectedChange(transactions: Transaction[]): void
 }> = ({
   transactions,
   loadMore,
   onRowClick,
   loading,
-  initialTransactionLoadComplete
+  initialTransactionLoadComplete,
+  onSelectedChange
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
   const [autoUpdate, setAutoUpdate] = useState(false)
-  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [selectedRows, setSelectedRows] = useState<Set<Transaction>>(
+    new Set([])
+  )
   const [selectAll, setSelectAll] = useState(false)
+
+  useEffect(() => {
+    onSelectedChange(Array.from(selectedRows))
+  }, [selectedRows])
 
   const handleSettingsApply = () => {
     setSettingsOpen(false)
@@ -59,13 +70,13 @@ const TransactionLogTable: React.FC<{
     }
   }
 
-  const handleRowSelect = (rowIndex: number) => {
+  const handleRowSelect = (transaction: Transaction) => {
     setSelectedRows(prevSelectedRows => {
       const newSelectedRows = new Set(prevSelectedRows)
-      if (newSelectedRows.has(rowIndex)) {
-        newSelectedRows.delete(rowIndex)
+      if (newSelectedRows.has(transaction)) {
+        newSelectedRows.delete(transaction)
       } else {
-        newSelectedRows.add(rowIndex)
+        newSelectedRows.add(transaction)
       }
       return newSelectedRows
     })
@@ -73,10 +84,9 @@ const TransactionLogTable: React.FC<{
 
   const handleSelectAll = () => {
     if (selectAll) {
-      setSelectedRows(new Set())
+      setSelectedRows(new Set([]))
     } else {
-      const allRowIndexes = transactions.map((_, index) => index)
-      setSelectedRows(new Set(allRowIndexes))
+      setSelectedRows(new Set(transactions))
     }
     setSelectAll(!selectAll)
   }
@@ -172,8 +182,8 @@ const TransactionLogTable: React.FC<{
                       sx={{borderBottom: 'none'}}
                     >
                       <Checkbox
-                        checked={selectedRows.has(index)}
-                        onChange={() => handleRowSelect(index)}
+                        checked={selectedRows.has(transaction)}
+                        onChange={() => handleRowSelect(transaction)}
                       />
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
@@ -262,16 +272,18 @@ const TransactionLogTable: React.FC<{
                       {transaction.request.path}
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
-                      {transaction.request.params}
+                      {(transaction.request as any).params}
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
-                      {transaction.channelName}
+                      {(transaction as any).channelName}
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
-                      {transaction.clientName}
+                      {(transaction as any).clientName}
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
-                      {convertTimestampFormat(transaction.request.timestamp)}
+                      {convertTimestampFormat(
+                        transaction.request.timestamp as any
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

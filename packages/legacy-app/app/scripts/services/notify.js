@@ -1,4 +1,4 @@
-export function Notify ($rootScope) {
+export function Notify($rootScope) {
   const notifyService = {}
 
   notifyService.notify = function (event) {

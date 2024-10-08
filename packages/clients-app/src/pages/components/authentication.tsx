@@ -16,7 +16,7 @@ import {AuthenticationModel} from '../../interfaces'
 import {v4 as uuidv4} from 'uuid'
 import {Client} from '../../types'
 import {fetchCertificate, fetchAuthTypes} from '@jembi/openhim-core-api'
-import "./styles.css";
+import './styles.css'
 
 const buttonStyle = {
   borderColor: '#049D84',
@@ -73,18 +73,16 @@ export const Authentication: React.FC<AuthenticationProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2}}>
-        <h3 style={{fontSize: 24, fontWeight: 'normal', marginBottom: -10}}>
-          Authentication
-        </h3>
-        <p style={{opacity: 0.6, fontSize: '12px'}}>
+        <Typography variant="h4">Authentication</Typography>
+        <Typography variant="subtitle1">
           Choose and configure the authentication type for securing
           client-server communication.
-        </p>
+        </Typography>
       </Box>
 
       <Divider />
       <Box sx={{marginLeft: 6, marginTop: 2, marginBottom: 4, width: 450}}>
-        <p>Select Type</p>
+        <Typography variant='body1'>Select Type</Typography>
         <Button
           variant="outlined"
           className={authType === 'jwt' ? 'selected' : ''}
@@ -92,7 +90,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="jwt"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -105,7 +104,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="customToken"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -118,7 +118,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="mutualTLS"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -131,7 +132,8 @@ export const Authentication: React.FC<AuthenticationProps> = ({
           id="basicAuth"
           style={{
             ...buttonStyle,
-            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white'
+            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white',
+            fontSize:10
           }}
           onClick={selectAuthenticationType}
         >
@@ -139,25 +141,25 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         </Button>
         {authType === 'jwt' && (
           <>
-            <h3 style={{fontSize: 20}}>JSON Web Token (JWT)</h3>
-            <p style={{fontSize: 12}}>
+            <Typography variant="h5">JSON Web Token (JWT)</Typography>
+            <Typography variant="caption">
               Securely transmit information between a client and server as JSON
               object, signed using a secret or key pair
-            </p>
-            <p
-              style={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+            </Typography>
+            <Typography
+              sx={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
               hidden={authTypes.find(auth => auth === 'jwt') !== undefined}
             >
               JWT authentication is disabled on the OpenHIM Core.
-            </p>
+            </Typography>
           </>
         )}
         {authType === 'customToken' && (
           <>
-            <h3 style={{fontSize: 20}}>Custom Token</h3>
-            <p style={{fontSize: 12}}>
+            <Typography variant="h5">Custom Token</Typography>
+            <Typography variant="caption">
               Set an ID to verify the client. The ID can be any unique string
-            </p>
+            </Typography>
             <TextField
               id="customToken"
               label="Custom Token"
@@ -191,7 +193,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               }}
             />
             <p
-              style={{color: '#E65100', fontSize: 12, textAlign: 'center'}}
+              style={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
               hidden={checkAuthType('custom-token-auth')}
             >
               Custom Token Authentication is disabled on the OpenHIM Core.
@@ -200,11 +202,11 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'mutualTLS' && (
           <>
-            <h3 style={{fontSize: 20}}>Mutual TLS</h3>
-            <p style={{fontSize: 12}}>
+            <Typography variant="h5">Mutual TLS</Typography>
+            <Typography variant="caption">
               Set Up an encrypted channel by providing the client's domain and
               certificate
-            </p>
+            </Typography>
             <Stack spacing={2} direction="row">
               <TextField
                 id="domain"
@@ -244,10 +246,10 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'basicAuth' && (
           <>
-            <h3 style={{fontSize: 20}}>Basic Auth</h3>
-            <p style={{fontSize: 12}}>
+            <Typography variant="h5">Basic Auth</Typography>
+            <Typography variant="caption">
               Requires a username and password. Set the password below
-            </p>
+            </Typography>
             <Stack spacing={2} direction="row">
               <TextField
                 fullWidth

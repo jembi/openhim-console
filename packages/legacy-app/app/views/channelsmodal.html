@@ -1,86 +1,152 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">
+    &times;
+  </button>
   <h4 class="modal-title" id="addChannelLabel">
     <i class="glyphicon glyphicon-random"></i>&nbsp;&nbsp;
     <span ng-show="update">Edit</span>
     <span ng-show="!update">Add</span>
-     a channel
+    a channel
   </h4>
 </div>
 
 <div class="modal-body">
-
   <div class="form-group has-error-key">
     <span>*</span> Indicates a required field<br />
-    <span>*</span><span>*</span> Indicates one or the other field may be supplied - Not both
+    <span>*</span><span>*</span> Indicates one or the other field may be
+    supplied - Not both
   </div>
 
   <fieldset>
     <uib-tabset justified="true">
       <!-- ************* TAB FOR CHANNEL BASIC INFO ************** -->
-      <uib-tab class="{{ngError.basicInfoTab === true ? 'has-error-tab' : ''}}" active="selectedTab.basicInfo">
-        <uib-tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Basic Info</uib-tab-heading>
+      <uib-tab
+        class="{{ngError.basicInfoTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.basicInfo"
+      >
+        <uib-tab-heading
+          ><i class="glyphicon glyphicon-warning-sign" style="display: none"></i
+          >Basic Info</uib-tab-heading
+        >
         <h3>Basic Info</h3>
-        <div ng-controller="channelBasicInfoCtrl" ng-include="'views/partials/channels-tab-basic-info.html'"></div>
+        <div
+          ng-controller="channelBasicInfoCtrl"
+          ng-include="'views/partials/channels-tab-basic-info.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL REQUEST MATCHING ************** -->
-      <uib-tab class="{{ngError.requestMatchingTab === true ? 'has-error-tab' : ''}}" active="selectedTab.requestMatching">
-        <uib-tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Request Matching</uib-tab-heading>
+      <uib-tab
+        class="{{ngError.requestMatchingTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.requestMatching"
+      >
+        <uib-tab-heading
+          ><i class="glyphicon glyphicon-warning-sign" style="display: none"></i
+          >Request Matching</uib-tab-heading
+        >
         <h3>Request Matching</h3>
-        <div ng-controller="channelRequestMatchingCtrl" ng-include="'views/partials/channels-tab-request-matching.html'"></div>
+        <div
+          ng-controller="channelRequestMatchingCtrl"
+          ng-include="'views/partials/channels-tab-request-matching.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL ROUTES ************** -->
-      <uib-tab class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}" active="selectedTab.routes">
-        <uib-tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Routes</uib-tab-heading>
+      <uib-tab
+        class="{{ngError.routesTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.routes"
+      >
+        <uib-tab-heading
+          ><i class="glyphicon glyphicon-warning-sign" style="display: none"></i
+          >Routes</uib-tab-heading
+        >
         <h3>Routes</h3>
-        <div ng-controller="channelRoutesCtrl" ng-include="'views/partials/channels-tab-routes.html'"></div>
+        <div
+          ng-controller="channelRoutesCtrl"
+          ng-include="'views/partials/channels-tab-routes.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL DATA CONTROL ************** -->
-      <uib-tab class="{{ngError.dataControlTab === true ? 'has-error-tab' : ''}}" active="selectedTab.dataControl">
-        <uib-tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>Data Control</uib-tab-heading>
+      <uib-tab
+        class="{{ngError.dataControlTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.dataControl"
+      >
+        <uib-tab-heading
+          ><i class="glyphicon glyphicon-warning-sign" style="display: none"></i
+          >Data Control</uib-tab-heading
+        >
         <h3>Data Control</h3>
-        <div ng-controller="channelDataControlCtrl" ng-include="'views/partials/channels-tab-data-control.html'"></div>
+        <div
+          ng-controller="channelDataControlCtrl"
+          ng-include="'views/partials/channels-tab-data-control.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL ACCESS CONTROL ************** -->
-      <uib-tab class="{{ngError.userAccessTab === true ? 'has-error-tab' : ''}}" active="selectedTab.accessControl">
-        <uib-tab-heading><i class="glyphicon glyphicon-warning-sign" style="display: none"></i>User Access</uib-tab-heading>
+      <uib-tab
+        class="{{ngError.userAccessTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.accessControl"
+      >
+        <uib-tab-heading
+          ><i class="glyphicon glyphicon-warning-sign" style="display: none"></i
+          >User Access</uib-tab-heading
+        >
         <h3>User Access</h3>
-        <div ng-controller="channelUserAccessCtrl" ng-include="'views/partials/channels-tab-user-access.html'"></div>
+        <div
+          ng-controller="channelUserAccessCtrl"
+          ng-include="'views/partials/channels-tab-user-access.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL ALERTS ************** -->
-      <uib-tab class="{{ngError.alertsTab === true ? 'has-error-tab' : ''}}" active="selectedTab.alerts">
+      <uib-tab
+        class="{{ngError.alertsTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.alerts"
+      >
         <uib-tab-heading>Alerts</uib-tab-heading>
         <h3>Alerts</h3>
-        <div ng-controller="channelAlertsCtrl" ng-include="'views/partials/channels-tab-alerts.html'"></div>
+        <div
+          ng-controller="channelAlertsCtrl"
+          ng-include="'views/partials/channels-tab-alerts.html'"
+        ></div>
       </uib-tab>
 
       <!-- ************* TAB FOR CHANNEL LOGS ************** -->
-      <uib-tab class="{{ngError.logsTab === true ? 'has-error-tab' : ''}}" active="selectedTab.logs">
+      <uib-tab
+        class="{{ngError.logsTab === true ? 'has-error-tab' : ''}}"
+        active="selectedTab.logs"
+      >
         <uib-tab-heading>Logs</uib-tab-heading>
         <h3>Audit Logs</h3>
         <div ng-include="'views/partials/channels-tab-logs.html'"></div>
       </uib-tab>
-
     </uib-tabset>
   </fieldset>
 </div>
 
-
 <div class="modal-footer">
-
   <!-- hasErrors Alerts -->
-  <div uib-alert style="width: auto; float: left; text-align: left; margin: 0; padding: 8px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
+  <div
+    uib-alert
+    style="width: auto; float: left; text-align: left; margin: 0; padding: 8px"
+    ng-repeat="alert in alerts.hasErrors"
+    ng-class="'alert-' + (alert.type || 'warning')"
+  >
     <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
   </div>
   <!-- hasErrors Alerts -->
 
   <div>
-    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
-    <button type="button" class="btn btn-primary" ng-click="submitFormChannels()">Save changes</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      ng-click="submitFormChannels()"
+    >
+      Save changes
+    </button>
   </div>
 </div>

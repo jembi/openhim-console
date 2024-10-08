@@ -3,19 +3,22 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Card,
+  CardHeader,
   Checkbox,
   Divider,
   FormControl,
   FormControlLabel,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import React, {useEffect, useState} from 'react'
 import {BasicInfoModel} from '../../interfaces'
 import {fetchRoles, createRole, fetchClientRoles} from '@jembi/openhim-core-api'
 import {Client} from '../../types'
-import { useSnackbar } from 'notistack'
+import {useSnackbar} from 'notistack'
 
 const styleForTextAreas = {
   marginBottom: 2
@@ -45,22 +48,23 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
 
   useEffect(() => {
     //@ts-ignore
-    fetchClientRoles().then(roles => {
-      //@ts-ignore
-      if(roles.length === 0){
-        setRoles(['instant']);
-      }else {
-        setRoles(roles.map(role => role.roleName))
-      }
-      
-    }).catch((error) => {
-      if (error?.response && error?.response?.data) {
-        enqueueSnackbar(error.response.data, {variant: 'error'})
-      } else {
-        console.log(JSON.stringify(error))
-        enqueueSnackbar('Error fetching roles', {variant: 'error'})
-      }
-    });
+    fetchClientRoles()
+      .then(roles => {
+        //@ts-ignore
+        if (roles.length === 0) {
+          setRoles(['instant'])
+        } else {
+          setRoles(roles.map(role => role.roleName))
+        }
+      })
+      .catch(error => {
+        if (error?.response && error?.response?.data) {
+          enqueueSnackbar(error.response.data, {variant: 'error'})
+        } else {
+          console.log(JSON.stringify(error))
+          enqueueSnackbar('Error fetching roles', {variant: 'error'})
+        }
+      })
   }, [])
 
   const onBlurValidation = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -97,11 +101,11 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2, marginRight: 2, marginBottom: 3}}>
-        <p style={{fontSize: 24, marginBottom: -10}}>Basic Info</p>
-        <p style={{opacity: '0.6', fontSize: 11}}>
+        <Typography variant="h4">Basic Info</Typography>
+        <Typography variant="subtitle1">
           Provide the required client information and assign existing roles for
           access management
-        </p>
+        </Typography>
         <Divider style={{marginLeft: -100, marginRight: -100}} />
         <br />
         <Stack direction="row" spacing={2}>
@@ -130,34 +134,35 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
             sx={{marginLeft: 1}}
           />
         </Stack>
-
-        <h2>Assign Existing Roles</h2>
-        {validationErrors?.roles && (
-          <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
-        )}
-        <FormControl
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: 150,
-            overflow: 'auto'
-          }}
-        >
-          {roles.map(role => (
-            <FormControlLabel
-              key={role}
-              control={
-                <Checkbox
-                  id={role}
-                  checked={basicInfo.roles.includes(role)}
-                  onChange={onCheckBoxChange}
-                />
-              }
-              label={role}
-            />
-          ))}
-          {roles.length === 0 && <p>No roles available</p>}
-        </FormControl>
+        <Card elevation={0}>
+          <CardHeader title="Assign Existing Roles" />
+          {validationErrors?.roles && (
+            <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
+          )}
+          <FormControl
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: 150,
+              overflow: 'auto'
+            }}
+          >
+            {roles.map(role => (
+              <FormControlLabel
+                key={role}
+                control={
+                  <Checkbox
+                    id={role}
+                    checked={basicInfo.roles.includes(role)}
+                    onChange={onCheckBoxChange}
+                  />
+                }
+                label={role}
+              />
+            ))}
+            {roles.length === 0 && <p>No roles available</p>}
+          </FormControl>
+        </Card>
         <Divider />
         <br />
         <Accordion square={false}>

@@ -1,56 +1,114 @@
 <div class="modal-header">
-  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
+  <button type="button" class="close" ng-click="cancel()" aria-hidden="true">
+    &times;
+  </button>
   <h4 class="modal-title" id="addUserLabel">
     <i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;
     <span ng-show="update">Edit</span>
     <span ng-show="!update">Add</span>
-     a user
+    a user
   </h4>
 </div>
 
 <form name="form" novalidate>
   <div class="modal-body">
-
     <div class="form-group has-error-key">
       <span>*</span> Indicates a required field<br />
     </div>
 
-    <div uib-alert ng-show="user.provider === 'openid'" ng-class="'alert-info'">User supplied by OpenID Connect provider. Certain fields are disabled and can only be updated on the authentication provider.</div>
-
+    <div uib-alert ng-show="user.provider === 'openid'" ng-class="'alert-info'">
+      User supplied by OpenID Connect provider. Certain fields are disabled and
+      can only be updated on the authentication provider.
+    </div>
 
     <fieldset>
       <div class="form-group" ng-class="{ 'has-error' : ngError.email }">
         <label><span>*</span> Email</label>
-        <input class="form-control" type="text" ng-model="user.email" ng-disabled="update || user.provider === 'openid'" focus="{{!update}}"/>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <input
+          class="form-control"
+          type="text"
+          ng-model="user.email"
+          ng-disabled="update || user.provider === 'openid'"
+          focus="{{!update}}"
+        />
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i
+          >{{validationRequiredMsg}}
+        </div>
       </div>
 
       <div class="form-group-2columns">
-        <div class="form-group" style="float: left;" ng-class="{ 'has-error' : ngError.firstname }">
+        <div
+          class="form-group"
+          style="float: left"
+          ng-class="{ 'has-error' : ngError.firstname }"
+        >
           <label><span>*</span> First Name</label>
-          <input class="form-control" type="text" ng-model="user.firstname" ng-disabled="user.provider === 'openid'"/>
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="user.firstname"
+            ng-disabled="user.provider === 'openid'"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationRequiredMsg}}
+          </div>
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.surname }">
+        <div
+          class="form-group"
+          style="float: right"
+          ng-class="{ 'has-error' : ngError.surname }"
+        >
           <label><span>*</span> Surname</label>
-          <input class="form-control" type="text" ng-model="user.surname" ng-disabled="user.provider === 'openid'"/>
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="user.surname"
+            ng-disabled="user.provider === 'openid'"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationRequiredMsg}}
+          </div>
         </div>
       </div>
 
       <div class="form-group" ng-class="{ 'has-error' : ngError.msisdn }">
         <label>
           Phone number (MSISDN format)
-          <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip-html="'Accepted format: <br />27123456789 <br />( 5 - 15 digits )'" class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+          <i
+            ng-show="uiSettings.showTooltips"
+            tooltip-placement="top"
+            uib-tooltip-html="'Accepted format: <br />27123456789 <br />( 5 - 15 digits )'"
+            class="glyphicon glyphicon-question-sign tooltip-wide"
+          ></i>
         </label>
         <input class="form-control" type="text" ng-model="user.msisdn" />
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>MSISDN is not in the accepeted format: 27123456789 ( 5 - 15 digits )</div>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i>MSISDN is not in the
+          accepeted format: 27123456789 ( 5 - 15 digits )
+        </div>
       </div>
 
-      <div ng-show="user.provider !== 'openid'" class="form-group" ng-class="{ 'has-error' : ngError.groups }">
+      <div
+        ng-show="user.provider !== 'openid'"
+        class="form-group"
+        ng-class="{ 'has-error' : ngError.groups }"
+      >
         <label><span>*</span> Permission Groups</label>
-        <taglist tag-data="user.groups" taglist-blur-timeout="200"><input class="form-control" placeholder="Enter a group and press enter..." type="text" ng-model="roles" typeahead="group for group in taglistUserRoleOptions | filter:$viewValue" /></taglist>
-        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationRequiredMsg}}</div>
+        <taglist tag-data="user.groups" taglist-blur-timeout="200"
+          ><input
+            class="form-control"
+            placeholder="Enter a group and press enter..."
+            type="text"
+            ng-model="roles"
+            typeahead="group for group in taglistUserRoleOptions | filter:$viewValue"
+        /></taglist>
+        <div class="has-error-msg">
+          <i class="glyphicon glyphicon-warning-sign"></i
+          >{{validationRequiredMsg}}
+        </div>
       </div>
 
       <div ng-show="user.provider === 'openid'" class="form-group">
@@ -61,57 +119,102 @@
       </div>
 
       <!-- Password fields - only on update -->
-      <div class="form-group-2columns" ng-show="update" >
-        <div class="form-group" style="float: left;">
+      <div class="form-group-2columns" ng-show="update">
+        <div class="form-group" style="float: left">
           <label>Password</label>
-          <input class="form-control" type="password" ng-model="temp.password" ng-required='!update' ng-disabled="user.provider === 'openid'"/>
+          <input
+            class="form-control"
+            type="password"
+            ng-model="temp.password"
+            ng-required="!update"
+            ng-disabled="user.provider === 'openid'"
+          />
         </div>
-        <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
+        <div
+          class="form-group"
+          style="float: right"
+          ng-class="{ 'has-error' : ngError.passwordConfirm }"
+        >
           <label>Confirm password</label>
-          <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-required='!update' ng-disabled="user.provider === 'openid'"/>
-          <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
+          <input
+            class="form-control"
+            type="password"
+            ng-model="temp.passwordConfirm"
+            ng-required="!update"
+            ng-disabled="user.provider === 'openid'"
+          />
+          <div class="has-error-msg">
+            <i class="glyphicon glyphicon-warning-sign"></i
+            >{{validationPasswordConfirmMsg}}
+          </div>
         </div>
       </div>
       <!-- Password fields - must be set by user on new user add -->
-      <div class="form-group" ng-show="!update" >
+      <div class="form-group" ng-show="!update">
         <label>Password</label>
-        <p>An email will be sent to the user for them to set their password. <br />
-        Their account will be locked until the password has been set</p>
+        <p>
+          An email will be sent to the user for them to set their password.
+          <br />
+          Their account will be locked until the password has been set
+        </p>
       </div>
 
       <div class="form-group">
         <label>Reports</label>
-        <div class="checkbox" style="margin-top: 0px;">
+        <div class="checkbox" style="margin-top: 0px">
           <label>
-            <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily Channel Reports?
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <input type="checkbox" ng-model="user.dailyReport" /> Receive Daily
+            Channel Reports?
+            <i
+              ng-show="uiSettings.showTooltips"
+              tooltip-placement="top"
+              uib-tooltip="Receive daily channel reports that give a summary of the transactions run through channel that you can view."
+              class="glyphicon glyphicon-question-sign tooltip-wide"
+            ></i>
           </label>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" ng-model="user.weeklyReport" /> Receive Weekly Channel Reports?
-            <i ng-show="uiSettings.showTooltips" tooltip-placement="top" uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view." class="glyphicon glyphicon-question-sign tooltip-wide"></i>
+            <input type="checkbox" ng-model="user.weeklyReport" /> Receive
+            Weekly Channel Reports?
+            <i
+              ng-show="uiSettings.showTooltips"
+              tooltip-placement="top"
+              uib-tooltip="Receive weekly channel reports that give a summary of the transactions run through channel that you can view."
+              class="glyphicon glyphicon-question-sign tooltip-wide"
+            ></i>
           </label>
         </div>
       </div>
 
       <!-- include for user settings tabs -->
       <div ng-include="'views/partials/user-settings-tabs.html'"></div>
-
     </fieldset>
   </div>
 
   <div class="modal-footer">
-
     <!-- hasErrors Alerts -->
-    <div uib-alert style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px;" ng-repeat="alert in alerts.hasErrors" ng-class="'alert-' + (alert.type || 'warning')">
+    <div
+      uib-alert
+      style="width: 50%; float: left; text-align: left; margin: 0; padding: 5px"
+      ng-repeat="alert in alerts.hasErrors"
+      ng-class="'alert-' + (alert.type || 'warning')"
+    >
       <i class="glyphicon glyphicon-warning-sign"></i>{{alert.msg}}
     </div>
     <!-- hasErrors Alerts -->
 
     <div>
-      <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
-      <button type="button" class="btn btn-primary" ng-click="submitFormUsers()">Save changes</button>
+      <button type="button" class="btn btn-default" ng-click="cancel()">
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        ng-click="submitFormUsers()"
+      >
+        Save changes
+      </button>
     </div>
   </div>
 </form>

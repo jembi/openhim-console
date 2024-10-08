@@ -10,8 +10,7 @@ import {ThemeProvider} from '@emotion/react'
 import theme from '@jembi/openhim-theme'
 import {SnackbarProvider} from 'notistack'
 
-export default function Root(props) {  
-
+export default function Root(props) {
   const router = createHashRouter([
     {
       path: '!/clients',
@@ -19,7 +18,7 @@ export default function Root(props) {
     },
     {
       path: '!/clients/add',
-      element: <AddClient/>
+      element: <AddClient />
     },
     {
       path: '!/clients/edit/:clientId',

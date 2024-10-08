@@ -9,7 +9,15 @@ describe('Controller: TransactionsCtrl', function () {
   // setup config constant to be used for API server details
   beforeEach(function () {
     module('openhimConsoleApp', function ($provide) {
-      $provide.constant('config', { protocol: 'https', host: 'localhost', hostPath: '', port: 8080, title: 'Title', footerTitle: 'FooterTitle', footerPoweredBy: 'FooterPoweredBy' })
+      $provide.constant('config', {
+        protocol: 'https',
+        host: 'localhost',
+        hostPath: '',
+        port: 8080,
+        title: 'Title',
+        footerTitle: 'FooterTitle',
+        footerPoweredBy: 'FooterPoweredBy'
+      })
     })
   })
 
@@ -19,30 +27,61 @@ describe('Controller: TransactionsCtrl', function () {
       email: 'test@user.org',
       firstname: 'test',
       surname: 'test',
-      groups: [
-        'admin'
-      ],
+      groups: ['admin'],
       settings: {
         filter: {
           limit: 200
         },
-        list: { tabview: 'new' }
+        list: {tabview: 'new'}
       }
     }
   }
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $uibModal) {
+  beforeEach(inject(function (
+    $controller,
+    $rootScope,
+    $httpBackend,
+    $uibModal
+  ) {
     httpBackend = $httpBackend
 
     $httpBackend.when('GET', new RegExp('.*/channels')).respond([
-      { _id: '5322fe9d8b6add4b2b059dd8', status: 'enabled', name: 'Sample JsonStub Channel 1', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['test'], routes: [{ host: 'jsonstub.com', port: 80, primary: true }], rerun: true },
-      { _id: '5322fe9d8b6add4b2b059aa3', status: 'deleted', name: 'Sample JsonStub Channel 2', urlPattern: 'sample/api', allow: ['PoC'], txRerunAcl: ['testing'], routes: [{ host: 'jsonstub.com', port: 80 }], rerun: true }
+      {
+        _id: '5322fe9d8b6add4b2b059dd8',
+        status: 'enabled',
+        name: 'Sample JsonStub Channel 1',
+        urlPattern: 'sample/api',
+        allow: ['PoC'],
+        txRerunAcl: ['test'],
+        routes: [{host: 'jsonstub.com', port: 80, primary: true}],
+        rerun: true
+      },
+      {
+        _id: '5322fe9d8b6add4b2b059aa3',
+        status: 'deleted',
+        name: 'Sample JsonStub Channel 2',
+        urlPattern: 'sample/api',
+        allow: ['PoC'],
+        txRerunAcl: ['testing'],
+        routes: [{host: 'jsonstub.com', port: 80}],
+        rerun: true
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/clients')).respond([
-      { clientID: 'test1', clientDomain: 'test1.openhim.org', name: 'Test 1', roles: ['test'] },
-      { clientID: 'test2', clientDomain: 'test2.openhim.org', name: 'Test 2', roles: ['test'] }
+      {
+        clientID: 'test1',
+        clientDomain: 'test1.openhim.org',
+        name: 'Test 1',
+        roles: ['test']
+      },
+      {
+        clientID: 'test2',
+        clientDomain: 'test2.openhim.org',
+        name: 'Test 2',
+        roles: ['test']
+      }
     ])
 
     $httpBackend.when('GET', new RegExp('.*/users/*')).respond({
@@ -63,48 +102,98 @@ describe('Controller: TransactionsCtrl', function () {
           },
           limit: 70
         },
-        list: { tabview: 'new' }
+        list: {tabview: 'new'}
       }
     })
 
     $httpBackend.when('PUT', new RegExp('.*/users/*')).respond()
 
-    $httpBackend.when('GET', new RegExp('.*/transactions\\?(filterLimit|filterPage)')).respond([
-      {
-        _id: '550936d307756ef72b525111',
-        status: 'Successful',
-        clientID: '5506aed5348ac60d23840a9e',
-        channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 },
-        canRerun: true
-      }, {
-        _id: '660936d307756ef72b525222',
-        status: 'Successful',
-        clientID: '5506aed5348ac60d23840a9e',
-        channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/successful/successful', headers: {}, querystring: '', body: 'Successful Successful', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 200 },
-        canRerun: true
-      }, {
-        _id: '770936d307756ef72b525333',
-        status: 'Processing',
-        clientID: '5506aed5348ac60d23840a9e',
-        channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        canRerun: true
-      }, {
-        _id: '880936d307756ef72b525444',
-        status: 'Failed',
-        clientID: '5506aed5348ac60d23840a9e',
-        channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/failed', headers: {}, querystring: '', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 },
-        canRerun: true
-      }
-    ])
+    $httpBackend
+      .when('GET', new RegExp('.*/transactions\\?(filterLimit|filterPage)'))
+      .respond([
+        {
+          _id: '550936d307756ef72b525111',
+          status: 'Successful',
+          clientID: '5506aed5348ac60d23840a9e',
+          channelID: '5322fe9d8b6add4b2b059dd8',
+          request: {
+            path: '/path/successful',
+            headers: {},
+            querystring: 'test=testing',
+            body: 'Successful',
+            method: 'GET',
+            timestamp: '2015-03-18T08:26:59.417Z'
+          },
+          response: {
+            timestamp: '2015-03-18T08:26:59.430Z',
+            body: 'Body',
+            headers: {},
+            status: 200
+          },
+          canRerun: true
+        },
+        {
+          _id: '660936d307756ef72b525222',
+          status: 'Successful',
+          clientID: '5506aed5348ac60d23840a9e',
+          channelID: '5322fe9d8b6add4b2b059dd8',
+          request: {
+            path: '/path/successful/successful',
+            headers: {},
+            querystring: '',
+            body: 'Successful Successful',
+            method: 'GET',
+            timestamp: '2015-03-18T08:26:59.417Z'
+          },
+          response: {
+            timestamp: '2015-03-18T08:26:59.430Z',
+            body: 'Body',
+            headers: {},
+            status: 200
+          },
+          canRerun: true
+        },
+        {
+          _id: '770936d307756ef72b525333',
+          status: 'Processing',
+          clientID: '5506aed5348ac60d23840a9e',
+          channelID: '5322fe9d8b6add4b2b059dd8',
+          request: {
+            path: '/path/failed',
+            headers: {},
+            querystring: 'test=world',
+            body: 'Failed',
+            method: 'GET',
+            timestamp: '2015-03-18T08:26:59.417Z'
+          },
+          canRerun: true
+        },
+        {
+          _id: '880936d307756ef72b525444',
+          status: 'Failed',
+          clientID: '5506aed5348ac60d23840a9e',
+          channelID: '5322fe9d8b6add4b2b059dd8',
+          request: {
+            path: '/path/failed',
+            headers: {},
+            querystring: '',
+            body: 'Failed',
+            method: 'GET',
+            timestamp: '2015-03-18T08:26:59.417Z'
+          },
+          response: {
+            timestamp: '2015-03-18T08:26:59.430Z',
+            body: 'Body',
+            headers: {},
+            status: 500
+          },
+          canRerun: true
+        }
+      ])
 
-    $httpBackend.when('GET', new RegExp('.*/heartbeat')).respond({ now: Date.now() })
+    $httpBackend
+      .when('GET', new RegExp('.*/heartbeat'))
+      .respond({now: Date.now()})
 
     modalSpy = sinon.spy($uibModal, 'open')
 
@@ -112,7 +201,7 @@ describe('Controller: TransactionsCtrl', function () {
       $httpBackend.when('GET', new RegExp('.*/me')).respond(meResponse)
 
       scope = $rootScope.$new()
-      return $controller('TransactionsCtrl', { $scope: scope })
+      return $controller('TransactionsCtrl', {$scope: scope})
     }
   }))
 
@@ -136,10 +225,22 @@ describe('Controller: TransactionsCtrl', function () {
     scope.channels[1].should.have.property('name', 'Sample JsonStub Channel 2')
     scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059dd8')
     scope.channelsMap.should.have.property('5322fe9d8b6add4b2b059aa3')
-    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('name', 'Sample JsonStub Channel 1')
-    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('name', 'Sample JsonStub Channel 2')
-    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', true)
-    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property(
+      'name',
+      'Sample JsonStub Channel 1'
+    )
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property(
+      'name',
+      'Sample JsonStub Channel 2'
+    )
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property(
+      'rerun',
+      true
+    )
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property(
+      'rerun',
+      false
+    )
     scope.should.have.property('rerunAllowedAdmin', true)
   })
 
@@ -174,7 +275,9 @@ describe('Controller: TransactionsCtrl', function () {
     var consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
     consoleSession.sessionUserSettings.filter.limit.should.equal(20)
-    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal('dont-filter')
+    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal(
+      'dont-filter'
+    )
   })
 
   it("should apply user's default settings to the session", function () {
@@ -195,10 +298,16 @@ describe('Controller: TransactionsCtrl', function () {
     var consoleSession = localStorage.getItem('consoleSession')
     consoleSession = JSON.parse(consoleSession)
     consoleSession.sessionUserSettings.filter.limit.should.equal(70)
-    consoleSession.sessionUserSettings.filter.startDate.should.equal('2016-08-16')
+    consoleSession.sessionUserSettings.filter.startDate.should.equal(
+      '2016-08-16'
+    )
     consoleSession.sessionUserSettings.filter.endDate.should.equal('2016-08-17')
-    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal('yes')
-    consoleSession.sessionUserSettings.filter.transaction.status.should.equal('Failed')
+    consoleSession.sessionUserSettings.filter.transaction.wasRerun.should.equal(
+      'yes'
+    )
+    consoleSession.sessionUserSettings.filter.transaction.status.should.equal(
+      'Failed'
+    )
 
     // clear dates for polling tests
     scope.clearFilters()
@@ -241,7 +350,13 @@ describe('Controller: TransactionsCtrl', function () {
     var filters = scope.returnFilters()
 
     // filter object that gets sent through the API for query filtering
-    filters.filters['request.timestamp'].should.equal('{"$gte":"' + moment(startDate).format() + '","$lte":"' + moment(endDate).format() + '"}')
+    filters.filters['request.timestamp'].should.equal(
+      '{"$gte":"' +
+        moment(startDate).format() +
+        '","$lte":"' +
+        moment(endDate).format() +
+        '"}'
+    )
     filters.filters.status.should.equal('Successful')
     filters.filters.channelID.should.equal('5322fe9d8b6add4b2b059dd8')
     filters.filters['response.status'].should.equal('2xx')
@@ -269,7 +384,13 @@ describe('Controller: TransactionsCtrl', function () {
     var filters = scope.returnFilters()
 
     // filter object that gets sent through the API for query filtering
-    filters.filters['request.timestamp'].should.equal('{"$gte":"' + moment(startDate).format() + '","$lte":"' + moment(endDate).format() + '"}')
+    filters.filters['request.timestamp'].should.equal(
+      '{"$gte":"' +
+        moment(startDate).format() +
+        '","$lte":"' +
+        moment(endDate).format() +
+        '"}'
+    )
     filters.filters.childIDs.should.equal('{"$eq":[]}')
     filters.filters['routes.response.status'].should.equal('2xx')
     filters.filters['orchestrations.response.status'].should.equal('2xx')
@@ -287,16 +408,40 @@ describe('Controller: TransactionsCtrl', function () {
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
         channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2017-08-25T11:55:38.953Z' },
-        response: { timestamp: '2017-08-25T11:56:38.953Z', body: 'Body', headers: {}, status: 200 }
+        request: {
+          path: '/path/successful',
+          headers: {},
+          querystring: 'test=testing',
+          body: 'Successful',
+          method: 'GET',
+          timestamp: '2017-08-25T11:55:38.953Z'
+        },
+        response: {
+          timestamp: '2017-08-25T11:56:38.953Z',
+          body: 'Body',
+          headers: {},
+          status: 200
+        }
       },
       {
         _id: '550936d307756ef72b525555',
         status: 'Successful',
         clientID: '5506aed5348ac60d23840a9e',
         channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/successful', headers: {}, querystring: 'test=testing', body: 'Successful', method: 'GET', timestamp: '2015-07-15T15:26:59.417Z' },
-        response: { timestamp: '2015-07-15T15:26:59.430Z', body: 'Body', headers: {}, status: 200 }
+        request: {
+          path: '/path/successful',
+          headers: {},
+          querystring: 'test=testing',
+          body: 'Successful',
+          method: 'GET',
+          timestamp: '2015-07-15T15:26:59.417Z'
+        },
+        response: {
+          timestamp: '2015-07-15T15:26:59.430Z',
+          body: 'Body',
+          headers: {},
+          status: 200
+        }
       }
     ])
 
@@ -316,16 +461,28 @@ describe('Controller: TransactionsCtrl', function () {
     scope.transactions[2]._id.should.equal('770936d307756ef72b525333')
     scope.transactions[2].status.should.equal('Processing')
 
-    httpBackend.when('GET', new RegExp('.*/transactions/770936d307756ef72b525333')).respond(
-      {
+    httpBackend
+      .when('GET', new RegExp('.*/transactions/770936d307756ef72b525333'))
+      .respond({
         _id: '770936d307756ef72b525333',
         status: 'Failed',
         clientID: '5506aed5348ac60d23840a9e',
         channelID: '5322fe9d8b6add4b2b059dd8',
-        request: { path: '/path/failed', headers: {}, querystring: 'test=world', body: 'Failed', method: 'GET', timestamp: '2015-03-18T08:26:59.417Z' },
-        response: { timestamp: '2015-03-18T08:26:59.430Z', body: 'Body', headers: {}, status: 500 }
-      }
-    )
+        request: {
+          path: '/path/failed',
+          headers: {},
+          querystring: 'test=world',
+          body: 'Failed',
+          method: 'GET',
+          timestamp: '2015-03-18T08:26:59.417Z'
+        },
+        response: {
+          timestamp: '2015-03-18T08:26:59.430Z',
+          body: 'Body',
+          headers: {},
+          status: 500
+        }
+      })
 
     scope.pollForProcessingUpdates()
     httpBackend.flush()
@@ -361,8 +518,14 @@ describe('Controller: TransactionsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', true)
-    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property(
+      'rerun',
+      true
+    )
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property(
+      'rerun',
+      false
+    )
   })
 
   it('should check rerun permissions (non admin user should not have permission on enabled channel)', function () {
@@ -377,7 +540,13 @@ describe('Controller: TransactionsCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property('rerun', false)
-    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property('rerun', false)
+    scope.channelsMap['5322fe9d8b6add4b2b059dd8'].should.have.property(
+      'rerun',
+      false
+    )
+    scope.channelsMap['5322fe9d8b6add4b2b059aa3'].should.have.property(
+      'rerun',
+      false
+    )
   })
 })
