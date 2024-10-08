@@ -8,7 +8,8 @@ import {
   FormControlLabel,
   Checkbox,
   List,
-  ListItem
+  ListItem,
+  Box
 } from '@mui/material'
 import {CustomizeDialogProps} from '../../interfaces/index.interface'
 
@@ -17,7 +18,8 @@ const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
   onClose,
   onApply,
   visibleFilters,
-  handleFilterVisibilityChange
+  handleFilterVisibilityChange,
+  onRestoreDefaults
 }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
@@ -43,12 +45,19 @@ const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
         </List>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          CANCEL
-        </Button>
-        <Button onClick={onApply} color="primary">
-          APPLY
-        </Button>
+        <Box sx={{flexGrow: 1}}>
+          <Button onClick={onRestoreDefaults} color="primary">
+            RESTORE DEFAULT
+          </Button>
+        </Box>
+        <Box>
+          <Button onClick={onClose} color="primary">
+            CANCEL
+          </Button>
+          <Button onClick={onApply} color="primary">
+            APPLY
+          </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   )

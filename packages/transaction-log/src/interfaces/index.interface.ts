@@ -65,10 +65,25 @@ export interface CustomizeDialogProps {
   open: boolean
   onClose: () => void
   onApply: () => void
-  visibleFilters: {[key: string]: boolean}
+  visibleFilters: {
+    status: boolean
+    statusCode: boolean
+    channel: boolean
+    startDate: boolean
+    endDate: boolean
+    limit: boolean
+    reruns: boolean
+    host: boolean
+    port: boolean
+    path: boolean
+    param: boolean
+    client: boolean
+    method: boolean
+  }
   handleFilterVisibilityChange: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
+  onRestoreDefaults: () => void
 }
 
 export interface SettingsDialogProps {

@@ -66,10 +66,25 @@ const customizeDialogProps: CustomizeDialogProps = {
   open: true,
   onClose: () => {},
   onApply: () => {},
-  visibleFilters: {status: true, channel: false},
+  visibleFilters: {
+    status: true,
+    statusCode: true,
+    channel: true,
+    startDate: true,
+    endDate: true,
+    limit: true,
+    reruns: true,
+    host: true,
+    port: true,
+    path: true,
+    param: true,
+    client: true,
+    method: true
+  },
   handleFilterVisibilityChange: (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {}
+  ) => {},
+  onRestoreDefaults: () => {}
 }
 
 const settingsDialogProps: SettingsDialogProps = {
