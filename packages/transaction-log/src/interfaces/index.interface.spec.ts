@@ -84,7 +84,8 @@ const customizeDialogProps: CustomizeDialogProps = {
   handleFilterVisibilityChange: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {},
-  onRestoreDefaults: () => {}
+  onRestoreDefaults: () => {},
+  isDefaultState: true
 }
 
 const settingsDialogProps: SettingsDialogProps = {

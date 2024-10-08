@@ -19,7 +19,8 @@ const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
   onApply,
   visibleFilters,
   handleFilterVisibilityChange,
-  onRestoreDefaults
+  onRestoreDefaults,
+  isDefaultState
 }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
@@ -46,7 +47,11 @@ const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Box sx={{flexGrow: 1}}>
-          <Button onClick={onRestoreDefaults} color="primary">
+          <Button
+            onClick={onRestoreDefaults}
+            color="primary"
+            disabled={isDefaultState}
+          >
             RESTORE DEFAULT
           </Button>
         </Box>

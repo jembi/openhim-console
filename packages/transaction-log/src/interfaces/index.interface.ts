@@ -84,6 +84,7 @@ export interface CustomizeDialogProps {
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
   onRestoreDefaults: () => void
+  isDefaultState: boolean
 }
 
 export interface SettingsDialogProps {

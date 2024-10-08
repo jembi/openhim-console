@@ -148,6 +148,12 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
     setTempVisibleFilters(defaultVisibleFilters)
   }
 
+  const isDefaultState = filters => {
+    return Object.keys(defaultVisibleFilters).every(
+      key => filters[key] === defaultVisibleFilters[key]
+    )
+  }
+
   useEffect(() => {
     debounceFetchTransactionLogs(null, true)
     return () => debounceFetchTransactionLogs.cancel()
@@ -419,6 +425,7 @@ const CustomFilters: React.FC<CustomFilterProps> = ({
         visibleFilters={tempVisibleFilters}
         handleFilterVisibilityChange={handleFilterVisibilityChange}
         onRestoreDefaults={handleRestoreDefaults}
+        isDefaultState={isDefaultState(tempVisibleFilters)}
       />
     </Box>
   )
