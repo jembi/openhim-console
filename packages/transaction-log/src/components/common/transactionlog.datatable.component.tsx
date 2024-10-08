@@ -110,25 +110,45 @@ const TransactionLogTable: React.FC<{
                   sx={{
                     borderBottom: 'none',
                     borderTopLeftRadius: '12px',
-                    borderBottomLeftRadius: '12px'
+                    borderBottomLeftRadius: '12px',
+                    fontWeight: 'bold'
                   }}
                 >
                   <Checkbox checked={selectAll} onChange={handleSelectAll} />
                 </TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Type</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Status</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Method</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Host</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Port</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Path</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Params</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Channel</TableCell>
-                <TableCell sx={{borderBottom: 'none'}}>Client</TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Type
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Status
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Method
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Host
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Port
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Path
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Params
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Channel
+                </TableCell>
+                <TableCell sx={{borderBottom: 'none', fontWeight: 'bold'}}>
+                  Client
+                </TableCell>
                 <TableCell
                   sx={{
                     borderBottom: 'none',
                     borderTopRightRadius: '12px',
-                    borderBottomRightRadius: '12px'
+                    borderBottomRightRadius: '12px',
+                    fontWeight: 'bold'
                   }}
                 >
                   Time

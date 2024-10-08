@@ -68,7 +68,7 @@ const BasicFilters: React.FC<BasicFilterProps> = ({
   }
 
   return (
-    <Box sx={{padding: '16px'}}>
+    <Box>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={1.5} lg={1.5}>
           <TextField
