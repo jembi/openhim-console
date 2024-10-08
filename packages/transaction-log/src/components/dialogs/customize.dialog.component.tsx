@@ -20,12 +20,12 @@ const CustomizeDialog: React.FC<CustomizeDialogProps> = ({
   handleFilterVisibilityChange
 }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>Customize displayed filters</DialogTitle>
       <DialogContent>
         <List>
           {Object.keys(visibleFilters).map(filter => (
-            <ListItem key={filter}>
+            <ListItem key={filter} sx={{padding: '0px 0px'}}>
               <FormControlLabel
                 control={
                   <Checkbox

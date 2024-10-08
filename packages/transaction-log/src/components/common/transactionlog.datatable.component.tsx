@@ -90,7 +90,7 @@ const TransactionLogTable: React.FC<{
           mb: 2
         }}
       >
-        <IconButton onClick={() => setSettingsOpen(true)} color="primary">
+        <Button onClick={() => setSettingsOpen(true)} color="primary">
           <SettingsIcon />
           <Typography
             variant="body1"
@@ -98,7 +98,7 @@ const TransactionLogTable: React.FC<{
           >
             SETTINGS
           </Typography>
-        </IconButton>
+        </Button>
       </Box>
       <Box>
         <TableContainer>
