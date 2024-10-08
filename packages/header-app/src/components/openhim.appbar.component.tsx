@@ -204,7 +204,7 @@ export default function OpenhimAppBar() {
               ...page,
               children: apps.map(app => ({
                 name: app.name,
-                link: `#!/` + app.url.split('/').pop().split('.')[0]
+                link: app.type === 'esmodule' ? `#!/` + app.url.split('/').pop().split('.')[0] : app.url
               }))
             }
           : page
