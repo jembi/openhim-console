@@ -208,10 +208,7 @@ const ManageChannelsScreen: React.FC = () => {
   }
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
-    >
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
         Manage Channels
       </Typography>

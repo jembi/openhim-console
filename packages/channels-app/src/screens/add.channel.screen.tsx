@@ -104,10 +104,7 @@ function AddChannelScreen() {
   }
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
-    >
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <header style={{marginBottom: '40px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Add Channel
