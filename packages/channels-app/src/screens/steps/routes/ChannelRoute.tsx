@@ -25,6 +25,7 @@ export function ChannelRoute(props: {
   onCancel?: () => unknown
 }) {
   const isEditMode = !!props.route
+  const [isFormTouched, setFormIsTouched] = React.useState(false)
   const isCreateMode = !isEditMode
   const [route, setRoute] = React.useState(
     structuredClone(props.route ?? defaultRoute)
@@ -44,10 +45,13 @@ export function ChannelRoute(props: {
             fullWidth
             margin="normal"
             value={route.name}
-            onChange={e => setRoute({...route, name: e.target.value})}
-            error={route.name.trim() === ''}
+            onChange={e => {
+              setFormIsTouched(true)
+              setRoute({...route, name: e.target.value})
+            }}
+            error={route.name.trim() === '' && isFormTouched}
             helperText={
-              route.name.trim() === ''
+              route.name.trim() === '' && isFormTouched
                 ? 'Route Name cannot be empty'
                 : undefined
             }

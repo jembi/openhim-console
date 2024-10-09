@@ -29,7 +29,7 @@ export function RequestMatching(props: {
   channel: Channel
   onChange: (event: {channel: Channel; isValid: boolean}) => unknown
 }) {
-  const navigate = useNavigate()
+  const [formTouched, setFormTouched] = React.useState(false)
   const [channel, setChannel] = React.useState(props.channel)
   const [expandOptionalSettings, setExpandOptionalSettings] =
     React.useState(false)
@@ -77,10 +77,13 @@ export function RequestMatching(props: {
                     .replace(/\$$/, '')
                 : channel.urlPattern
             }
-            onChange={e => setChannel({...channel, urlPattern: e.target.value})}
-            error={channel.urlPattern.trim() === ''}
+            onChange={e => {
+              setFormTouched(true)
+              setChannel({...channel, urlPattern: e.target.value})
+            }}
+            error={channel.urlPattern.trim() === '' && formTouched}
             helperText={
-              channel.urlPattern.trim() === ''
+              formTouched && channel.urlPattern.trim() === ''
                 ? 'URL patterns cannot be empty'
                 : undefined
             }
