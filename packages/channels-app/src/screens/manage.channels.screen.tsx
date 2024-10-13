@@ -27,7 +27,7 @@ import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
-import {Channel} from '../types'
+import {Channel, ChannelStatus} from '../types'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
@@ -140,18 +140,25 @@ const ManageChannelsScreen: React.FC = () => {
       field: 'status',
       headerName: 'Status',
       flex: 0.5,
-      renderCell: params => (
-        <Chip
-          label={params.value}
-          color={params.value === 'enabled' ? 'success' : 'error'}
-        />
-      )
+      renderCell: params => {
+        const status = params.value as ChannelStatus
+
+        return (
+          <Typography pt={3} fontSize={14}
+            sx={{color: status === 'enabled' ? 'green' : 'red'}}
+          >
+            {status[0].toUpperCase() + status.slice(1)}
+          </Typography>
+        )
+      }
     },
     {field: 'priority', headerName: 'Priority', flex: 0.5},
     {field: 'allow', headerName: 'Access', flex: 1},
     {
       field: 'actions',
       headerName: 'Actions',
+      align: 'right',
+      headerAlign: 'right',
       flex: 0.5,
       sortable: false,
       renderCell: params => (
@@ -234,11 +241,13 @@ const ManageChannelsScreen: React.FC = () => {
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
-      <Paper elevation={4} className={classes.tableContainer}>
+      <Paper elevation={4} sx={{paddingX: '15px'}} className={classes.tableContainer}>
         <DataGrid
           disableRowSelectionOnClick
+          disableColumnSelector
           disableDensitySelector
           density="comfortable"
+          disableMultipleRowSelection
           loading={isLoading || mutation.isLoading}
           rows={rows ?? []}
           columns={columns}
@@ -246,10 +255,19 @@ const ManageChannelsScreen: React.FC = () => {
           slots={{toolbar: CustomToolbar}}
           slotProps={{
             toolbar: {
-              showQuickFilter: true
+              showQuickFilter: true,
             }
           }}
           pagination
+          sx={{
+            border: 'none',
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none'
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              borderBottom: 'none'
+            }
+          }}
         />
       </Paper>
     </Box>

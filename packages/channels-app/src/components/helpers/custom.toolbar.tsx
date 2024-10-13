@@ -5,6 +5,8 @@ import {
   GridToolbarFilterButton,
   GridToolbarQuickFilter
 } from '@mui/x-data-grid'
+import { TextField } from '@mui/material'
+import React from 'react'
 
 export function CustomToolbar() {
   return (
@@ -20,7 +22,13 @@ export function CustomToolbar() {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
       </div>
-      <GridToolbarQuickFilter />
+      <GridToolbarQuickFilter
+        quickFilterProps={{
+          InputProps: {
+            variant: 'outlined',
+          }
+        }}
+      />
     </div>
   )
 }

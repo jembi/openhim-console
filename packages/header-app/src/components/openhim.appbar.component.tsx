@@ -87,32 +87,10 @@ export default function OpenhimAppBar() {
       name: 'MORE',
       children: [
         {name: 'About', link: '#!/about'},
-        {name: 'Portal', link: '#!/portal'},
-        {
-          name: 'Manage Apps',
-          link: '#!/portal-admin',
-          permissions: ['app-manage-all']
-        },
         {
           name: 'Audit Log',
           link: '#!/audits',
           permissions: ['audit-trail-manage']
-        },
-        {name: 'Tasks', link: '#!/tasks'},
-        {
-          name: 'Visualizer',
-          link: '#!/visualizer',
-          permissions: ['visualizer-manage']
-        },
-        {
-          name: 'Contact Lists',
-          link: '#!/groups',
-          permissions: ['contact-list-manage']
-        },
-        {
-          name: 'Mediators',
-          link: '#!/mediators',
-          permissions: ['mediator-manage-all']
         },
         {
           name: 'Certificates',
@@ -120,14 +98,36 @@ export default function OpenhimAppBar() {
           permissions: ['certificates-manage']
         },
         {
+          name: 'Contact Lists',
+          link: '#!/groups',
+          permissions: ['contact-list-manage']
+        },
+        {
           name: 'Import/Export',
           link: '#!/export-import',
           permissions: ['import-export']
         },
         {
+          name: 'Manage Apps',
+          link: '#!/portal-admin',
+          permissions: ['app-manage-all']
+        },
+        {
+          name: 'Mediators',
+          link: '#!/mediators',
+          permissions: ['mediator-manage-all']
+        },
+        {name: 'Portal', link: '#!/portal'},
+        {
           name: 'Server Logs',
           link: '#!/logs',
           permissions: ['logs-view']
+        },
+        {name: 'Tasks', link: '#!/tasks'},
+        {
+          name: 'Visualizer',
+          link: '#!/visualizer',
+          permissions: ['visualizer-manage']
         }
       ]
     },
@@ -202,10 +202,12 @@ export default function OpenhimAppBar() {
         index === pages.length - 1
           ? {
               ...page,
-              children: apps.map(app => ({
-                name: app.name,
-                link: `#!/` + app.url.split('/').pop().split('.')[0]
-              }))
+              children: apps
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(app => ({
+                  name: app.name,
+                  link: `#!/` + app.url.split('/').pop().split('.')[0]
+                }))
             }
           : page
       )

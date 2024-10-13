@@ -62,7 +62,7 @@ function EditChannelScreen() {
 
   return (
     <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{marginBottom: '40px'}}>
+      <header style={{marginBottom: '24px'}}>
         <Typography variant="h4" gutterBottom fontWeight={400}>
           Edit Channel
         </Typography>
