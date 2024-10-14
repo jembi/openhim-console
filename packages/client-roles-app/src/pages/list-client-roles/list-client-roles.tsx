@@ -1,4 +1,11 @@
-import {Box, Button, Card, Divider, Grid, Typography} from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Typography
+} from '@mui/material'
 import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
@@ -10,13 +17,13 @@ export const ListRoles = () => {
   const addClientRole = new URL(window.origin + '/#!/client-roles/add')
 
   const columns: GridColDef[] = [
-    {field: 'roleName', headerName: 'Name', width: 200},
-    {field: 'clients', headerName: 'Clients', width: 600},
-    {field: 'channels', headerName: 'Channels', width: 600},
+    {field: 'roleName', headerName: 'Name', flex: 0.5},
+    {field: 'clients', headerName: 'Clients', flex: 1},
+    {field: 'channels', headerName: 'Channels', flex: 1},
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 100,
+      flex: 0.4,
       renderCell: () => (
         <>
           <CreateIcon style={{cursor: 'pointer'}} />
