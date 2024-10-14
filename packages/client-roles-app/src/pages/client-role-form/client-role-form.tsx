@@ -68,8 +68,7 @@ export const ClientRoleForm = () => {
     ...existingClientRole
   })
   const [channelNames, setChannelNames] = useState<string[]>([])
-  const [clientNames, setClientNames] = useState<string[]>([])
-  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+  const {enqueueSnackbar} = useSnackbar()
 
   const updateListOfSelectedClientsAndChannels = async () => {
     try {
@@ -104,8 +103,7 @@ export const ClientRoleForm = () => {
 
   useEffect(() => {
     getAllClientsAndChannels()
-      .then(({clients, channels}) => {
-        setClientNames(clients.map(client => client.clientID))
+      .then(({channels}) => {
         setChannelNames(channels.map(channel => channel.name))
       })
       .catch(error => {
