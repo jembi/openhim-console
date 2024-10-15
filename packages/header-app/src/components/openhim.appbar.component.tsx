@@ -26,6 +26,7 @@ const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
+    {name: 'HOME', link: '#!/portal'},
     {name: 'DASHBOARD', link: '#!/dashboard'},
     {
       name: 'TRANSACTIONS',
@@ -302,7 +303,7 @@ export default function OpenhimAppBar() {
         fontSize: '14px',
         backgroundColor: '#ffffff',
         color: '#000000',
-        position: 'relative',
+        position: 'fixed',
         zIndex: 1
       }}
     >
@@ -327,7 +328,7 @@ export default function OpenhimAppBar() {
               variant="body1"
               noWrap
               component={isAdmin && isLoggedIn ? 'a' : undefined}
-              href={isAdmin && isLoggedIn ? '#!/dashboard' : undefined}
+              href={isAdmin && isLoggedIn ? '#!/portal' : undefined}
               style={{paddingRight: '30px'}}
             >
               <OpenhimLogo />
@@ -425,7 +426,9 @@ export default function OpenhimAppBar() {
           </Box>
         )}
         <Box sx={{display: {xs: 'none', md: 'flex'}}}>
-          <OpenhimLogo />
+          <Typography sx={{mt: 1}} component={'a'} href="#!/portal">
+            <OpenhimLogo />
+          </Typography>
         </Box>
 
         {isLoggedIn && isAdmin && (
