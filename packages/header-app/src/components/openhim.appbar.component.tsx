@@ -297,10 +297,10 @@ export default function OpenhimAppBar() {
 
   return (
     <AppBar
-      sx={{backgroundColor: '#ffffff'}}
-      style={{
+      sx={{
         fontFamily: 'Roboto, sans-serif',
         fontSize: '14px',
+        boxShadow: 6,
         backgroundColor: '#ffffff',
         color: '#000000',
         position: 'fixed',
