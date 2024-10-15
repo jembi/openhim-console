@@ -27,7 +27,7 @@ import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
-import {Channel} from '../types'
+import {Channel, ChannelStatus} from '../types'
 
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
@@ -140,18 +140,27 @@ const ManageChannelsScreen: React.FC = () => {
       field: 'status',
       headerName: 'Status',
       flex: 0.5,
-      renderCell: params => (
-        <Chip
-          label={params.value}
-          color={params.value === 'enabled' ? 'success' : 'error'}
-        />
-      )
+      renderCell: params => {
+        const status = params.value as ChannelStatus
+
+        return (
+          <Typography
+            pt={3}
+            fontSize={14}
+            sx={{color: status === 'enabled' ? 'green' : 'red'}}
+          >
+            {status[0].toUpperCase() + status.slice(1)}
+          </Typography>
+        )
+      }
     },
     {field: 'priority', headerName: 'Priority', flex: 0.5},
     {field: 'allow', headerName: 'Access', flex: 1},
     {
       field: 'actions',
       headerName: 'Actions',
+      align: 'right',
+      headerAlign: 'right',
       flex: 0.5,
       sortable: false,
       renderCell: params => (
@@ -208,10 +217,7 @@ const ManageChannelsScreen: React.FC = () => {
   }
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
-    >
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Typography variant="h4" gutterBottom>
         Manage Channels
       </Typography>
@@ -223,36 +229,47 @@ const ManageChannelsScreen: React.FC = () => {
             <a href="">How do channels work?</a>
           </Typography>
         </Grid>
-        <Grid item xs={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            href="/#!/channels/create-channel"
-          >
-            Add
-          </Button>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              href="/#!/channels/create-channel"
+            >
+              Add
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
-      <Paper elevation={4} className={classes.tableContainer}>
+      <Paper
+        elevation={4}
+        sx={{paddingX: '25px'}}
+        className={classes.tableContainer}
+      >
         <DataGrid
           disableRowSelectionOnClick
           disableDensitySelector
           density="comfortable"
+          disableMultipleRowSelection
           loading={isLoading || mutation.isLoading}
           rows={rows ?? []}
           columns={columns}
           disableColumnMenu
           slots={{toolbar: CustomToolbar}}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true
+          pagination
+          sx={{
+            border: 'none',
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none'
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              borderBottom: 'none'
             }
           }}
-          pagination
         />
       </Paper>
     </Box>
