@@ -247,7 +247,7 @@ const ManageChannelsScreen: React.FC = () => {
 
       <Paper
         elevation={4}
-        sx={{paddingX: '15px'}}
+        sx={{paddingX: '25px'}}
         className={classes.tableContainer}
       >
         <DataGrid
