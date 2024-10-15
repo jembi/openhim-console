@@ -229,15 +229,17 @@ const ManageChannelsScreen: React.FC = () => {
             <a href="">How do channels work?</a>
           </Typography>
         </Grid>
-        <Grid item xs={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            href="/#!/channels/create-channel"
-          >
-            Add
-          </Button>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              href="/#!/channels/create-channel"
+            >
+              Add
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
 
