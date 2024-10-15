@@ -313,7 +313,6 @@ export default function OpenhimAppBar() {
             <IconButton
               size="large"
               aria-label="open navigation menu"
-              aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               style={{color: 'grey'}}
@@ -334,10 +333,9 @@ export default function OpenhimAppBar() {
               <OpenhimLogo />
             </Typography>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
+                vertical: 'center',
                 horizontal: 'left'
               }}
               transformOrigin={{
@@ -349,6 +347,7 @@ export default function OpenhimAppBar() {
               sx={{
                 display: {xs: 'block', md: 'none'}
               }}
+              style={{marginTop: 40}}
             >
               {pages
                 .filter(page => canViewPageBasedOnPermissions(page))
@@ -394,7 +393,7 @@ export default function OpenhimAppBar() {
                         onClose={() =>
                           handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                         }
-                        style={{marginTop: 4}}
+                        style={{marginTop: 40}}
                       >
                         {page.children
                           .filter(child => canViewPageBasedOnPermissions(child))
@@ -499,6 +498,7 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                     </Button>
                     <Menu
+                      style={{marginTop: 40}}
                       anchorEl={getCorrectAnchorEl(page)[0]}
                       anchorOrigin={{
                         vertical: 'top',
@@ -512,7 +512,6 @@ export default function OpenhimAppBar() {
                       onClose={() =>
                         handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                       }
-                      style={{marginTop: 4}}
                     >
                       {page.children
                         .filter(child => canViewPageBasedOnPermissions(child))
@@ -549,15 +548,13 @@ export default function OpenhimAppBar() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{mt: '45px'}}
-              id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
+                vertical: 'center',
                 horizontal: 'right'
               }}
               transformOrigin={{
-                vertical: 'top',
+                vertical: 'center',
                 horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
