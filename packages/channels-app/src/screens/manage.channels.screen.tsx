@@ -144,7 +144,9 @@ const ManageChannelsScreen: React.FC = () => {
         const status = params.value as ChannelStatus
 
         return (
-          <Typography pt={3} fontSize={14}
+          <Typography
+            pt={3}
+            fontSize={14}
             sx={{color: status === 'enabled' ? 'green' : 'red'}}
           >
             {status[0].toUpperCase() + status.slice(1)}
@@ -241,7 +243,11 @@ const ManageChannelsScreen: React.FC = () => {
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
 
-      <Paper elevation={4} sx={{paddingX: '15px'}} className={classes.tableContainer}>
+      <Paper
+        elevation={4}
+        sx={{paddingX: '15px'}}
+        className={classes.tableContainer}
+      >
         <DataGrid
           disableRowSelectionOnClick
           disableDensitySelector
@@ -252,11 +258,6 @@ const ManageChannelsScreen: React.FC = () => {
           columns={columns}
           disableColumnMenu
           slots={{toolbar: CustomToolbar}}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-            }
-          }}
           pagination
           sx={{
             border: 'none',
