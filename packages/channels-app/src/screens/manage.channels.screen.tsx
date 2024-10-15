@@ -244,7 +244,6 @@ const ManageChannelsScreen: React.FC = () => {
       <Paper elevation={4} sx={{paddingX: '15px'}} className={classes.tableContainer}>
         <DataGrid
           disableRowSelectionOnClick
-          disableColumnSelector
           disableDensitySelector
           density="comfortable"
           disableMultipleRowSelection
