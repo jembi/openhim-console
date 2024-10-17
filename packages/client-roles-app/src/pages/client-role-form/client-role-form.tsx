@@ -68,6 +68,7 @@ export const ClientRoleForm = () => {
     ...existingClientRole
   })
   const [channelNames, setChannelNames] = useState<string[]>([])
+  const [setClientNames] = useState<string[]>([])
   const {enqueueSnackbar} = useSnackbar()
 
   const updateListOfSelectedClientsAndChannels = async () => {

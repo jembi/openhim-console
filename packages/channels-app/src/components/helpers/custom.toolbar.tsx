@@ -1,4 +1,3 @@
-import {makeStyles} from '@mui/styles'
 import {
   GridToolbarColumnsButton,
   GridToolbarDensitySelector,
@@ -20,7 +19,7 @@ export function CustomToolbar() {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
       </div>
-      <GridToolbarQuickFilter />
+      <GridToolbarQuickFilter variant="outlined" />
     </div>
   )
 }

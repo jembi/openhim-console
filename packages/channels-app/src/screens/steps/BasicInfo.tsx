@@ -34,6 +34,7 @@ export function BasicInfo(props: {
     'PATCH',
     'OPTIONS'
   ]
+  const [formTouched, setFormTouched] = React.useState(false)
   const channelTypes: Array<ChannelType> = ['http', 'tcp', 'tls', 'polling']
   const [expandOptionalSettings, setExpandOptionalSettings] =
     React.useState(false)
@@ -86,10 +87,13 @@ export function BasicInfo(props: {
             fullWidth
             margin="normal"
             value={channel.name}
-            onChange={e => setChannel({...channel, name: e.target.value})}
-            error={channel.name.trim() === ''}
+            onChange={e => {
+              setFormTouched(true)
+              setChannel({...channel, name: e.target.value})
+            }}
+            error={channel.name.trim() === '' && formTouched}
             helperText={
-              channel.name.trim() === ''
+              channel.name.trim() === '' && formTouched
                 ? 'Channel Name cannot be empty'
                 : undefined
             }
