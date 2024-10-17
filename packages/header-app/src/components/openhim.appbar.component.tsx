@@ -26,6 +26,7 @@ const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
+    {name: 'HOME', link: '#!/portal'},
     {name: 'DASHBOARD', link: '#!/dashboard'},
     {
       name: 'TRANSACTIONS',
@@ -87,32 +88,10 @@ export default function OpenhimAppBar() {
       name: 'MORE',
       children: [
         {name: 'About', link: '#!/about'},
-        {name: 'Portal', link: '#!/portal'},
-        {
-          name: 'Manage Apps',
-          link: '#!/portal-admin',
-          permissions: ['app-manage-all']
-        },
         {
           name: 'Audit Log',
           link: '#!/audits',
           permissions: ['audit-trail-manage']
-        },
-        {name: 'Tasks', link: '#!/tasks'},
-        {
-          name: 'Visualizer',
-          link: '#!/visualizer',
-          permissions: ['visualizer-manage']
-        },
-        {
-          name: 'Contact Lists',
-          link: '#!/groups',
-          permissions: ['contact-list-manage']
-        },
-        {
-          name: 'Mediators',
-          link: '#!/mediators',
-          permissions: ['mediator-manage-all']
         },
         {
           name: 'Certificates',
@@ -120,14 +99,36 @@ export default function OpenhimAppBar() {
           permissions: ['certificates-manage']
         },
         {
+          name: 'Contact Lists',
+          link: '#!/groups',
+          permissions: ['contact-list-manage']
+        },
+        {
           name: 'Import/Export',
           link: '#!/export-import',
           permissions: ['import-export']
         },
         {
+          name: 'Manage Apps',
+          link: '#!/portal-admin',
+          permissions: ['app-manage-all']
+        },
+        {
+          name: 'Mediators',
+          link: '#!/mediators',
+          permissions: ['mediator-manage-all']
+        },
+        {name: 'Portal', link: '#!/portal'},
+        {
           name: 'Server Logs',
           link: '#!/logs',
           permissions: ['logs-view']
+        },
+        {name: 'Tasks', link: '#!/tasks'},
+        {
+          name: 'Visualizer',
+          link: '#!/visualizer',
+          permissions: ['visualizer-manage']
         }
       ]
     },
@@ -202,10 +203,12 @@ export default function OpenhimAppBar() {
         index === pages.length - 1
           ? {
               ...page,
-              children: apps.map(app => ({
-                name: app.name,
-                link: `#!/` + app.url.split('/').pop().split('.')[0]
-              }))
+              children: apps
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(app => ({
+                  name: app.name,
+                  link: `#!/` + app.url.split('/').pop().split('.')[0]
+                }))
             }
           : page
       )
@@ -294,13 +297,13 @@ export default function OpenhimAppBar() {
 
   return (
     <AppBar
-      sx={{backgroundColor: '#ffffff'}}
-      style={{
+      sx={{
         fontFamily: 'Roboto, sans-serif',
         fontSize: '14px',
+        boxShadow: 6,
         backgroundColor: '#ffffff',
         color: '#000000',
-        position: 'relative',
+        position: 'fixed',
         zIndex: 1
       }}
     >
@@ -310,7 +313,6 @@ export default function OpenhimAppBar() {
             <IconButton
               size="large"
               aria-label="open navigation menu"
-              aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               style={{color: 'grey'}}
@@ -325,16 +327,15 @@ export default function OpenhimAppBar() {
               variant="body1"
               noWrap
               component={isAdmin && isLoggedIn ? 'a' : undefined}
-              href={isAdmin && isLoggedIn ? '#!/dashboard' : undefined}
+              href={isAdmin && isLoggedIn ? '#!/portal' : undefined}
               style={{paddingRight: '30px'}}
             >
               <OpenhimLogo />
             </Typography>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
+                vertical: 'center',
                 horizontal: 'left'
               }}
               transformOrigin={{
@@ -346,6 +347,7 @@ export default function OpenhimAppBar() {
               sx={{
                 display: {xs: 'block', md: 'none'}
               }}
+              style={{marginTop: 40}}
             >
               {pages
                 .filter(page => canViewPageBasedOnPermissions(page))
@@ -391,7 +393,7 @@ export default function OpenhimAppBar() {
                         onClose={() =>
                           handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                         }
-                        style={{marginTop: 4}}
+                        style={{marginTop: 40}}
                       >
                         {page.children
                           .filter(child => canViewPageBasedOnPermissions(child))
@@ -423,7 +425,9 @@ export default function OpenhimAppBar() {
           </Box>
         )}
         <Box sx={{display: {xs: 'none', md: 'flex'}}}>
-          <OpenhimLogo />
+          <Typography sx={{mt: 1}} component={'a'} href="#!/portal">
+            <OpenhimLogo />
+          </Typography>
         </Box>
 
         {isLoggedIn && isAdmin && (
@@ -494,6 +498,7 @@ export default function OpenhimAppBar() {
                       <ArrowDropDownIcon />
                     </Button>
                     <Menu
+                      style={{marginTop: 40}}
                       anchorEl={getCorrectAnchorEl(page)[0]}
                       anchorOrigin={{
                         vertical: 'top',
@@ -507,7 +512,6 @@ export default function OpenhimAppBar() {
                       onClose={() =>
                         handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
                       }
-                      style={{marginTop: 4}}
                     >
                       {page.children
                         .filter(child => canViewPageBasedOnPermissions(child))
@@ -544,15 +548,13 @@ export default function OpenhimAppBar() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{mt: '45px'}}
-              id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
+                vertical: 'center',
                 horizontal: 'right'
               }}
               transformOrigin={{
-                vertical: 'top',
+                vertical: 'center',
                 horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
