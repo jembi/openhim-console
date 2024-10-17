@@ -3,26 +3,17 @@ import {
   Button,
   Card,
   Checkbox,
-  Chip,
   Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormHelperText,
   Grid,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
   TextField,
   Typography
 } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
 import {
-  Channel,
-  Client,
   getAllClientsAndChannels,
   upsertRole
 } from '../../utils'
@@ -86,8 +77,8 @@ export const ClientRoleForm = () => {
     ...existingClientRole
   })
   const [channelNames, setChannelNames] = useState<string[]>([])
-  const [clientNames, setClientNames] = useState<string[]>([])
-  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+  const [setClientNames] = useState<string[]>([])
+  const {enqueueSnackbar} = useSnackbar()
 
   const updateListOfSelectedClientsAndChannels = async () => {
     try {
@@ -134,34 +125,12 @@ export const ClientRoleForm = () => {
   useEffect(() => {
     getAllClientsAndChannels()
       .then(({clients, channels}) => {
-        setClientNames(clients.map(client => client.clientID))
         setChannelNames(channels.map(channel => channel.name))
       })
       .catch(error => {
         console.error('Error fetching clients and channels', error)
       })
   }, [])
-
-  const handleClientSelectionChange = (
-    event: SelectChangeEvent<typeof clientRole.clients>,
-    child: any
-  ) => {
-    const {
-      target: {value}
-    } = event
-
-    const selectedClients = typeof value === 'string' ? value.split(',') : value
-    // what has been added from the client selection of ClientRoles state
-    // check the current values of clients against the incoming values and is there are any values that are not presents update the roles of the specific client with the role
-
-    // what has been removed from the client selection of ClientRoles state
-    // check the new values of clients against the current values and if there are any values that are not present remove the role from the specific client
-
-    setClientRole(prevClientRole => ({
-      ...prevClientRole,
-      clients: selectedClients
-    }))
-  }
 
   const handleChannelCheckboxChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -189,8 +158,8 @@ export const ClientRoleForm = () => {
       return
     }
 
-    if (clientRole.clients.length === 0 || clientRole.channels.length === 0) {
-      enqueueSnackbar('Please select at least one client', {
+    if (clientRole.channels.length === 0) {
+      enqueueSnackbar('Please select at least one channel', {
         variant: 'error'
       })
       return
