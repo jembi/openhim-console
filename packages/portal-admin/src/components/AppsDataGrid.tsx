@@ -424,7 +424,7 @@ const AppsDataGrid = () => {
     return skipped.has(step)
   }
 
-  const validateData = () => {
+  const validateData = async () => {
     if (activeStep === 0) {
       const apptTitleValue = appTitleFieldRef.current.value
       const appCategoryValue = appCategoryFieldRef.current.value
@@ -462,24 +462,36 @@ const AppsDataGrid = () => {
 
     if (activeStep === 1) {
       const appLinkValue = appLinkFieldRef?.current?.value?.trim()
-      const regExp =
-        /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
-
-      const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
 
       if (!appLinkValue) {
         setAppLinkHelperMessage('App Link is required')
         return false
-      } else if (!regExp.test(appLinkValue)) {
+      }
+
+      const regExp =
+        /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
+
+      if (!regExp.test(appLinkValue)) {
         setAppLinkHelperMessage('Invalid URL')
         return false
-      } else if (accessRoleValue.length === 0) {
+      }
+
+      try {
+        await fetch(appLinkValue)
+      } catch (error) {
+        setAppLinkHelperMessage(
+          'Service Unreachable Please Check The URL Or Contact The Services Administrator'
+        )
+        return false
+      }
+      const accessRoleValue = Array.from(appAccessRoleieldRef.current.value)
+
+      if (accessRoleValue.length === 0) {
         setAppAccessRoleHelperMessage('User Access Role is required')
         return false
-      } else {
-        appValues.url = appLinkValue
-        return true
       }
+      appValues.url = appLinkValue
+      return true
     }
     if (activeStep === 3) {
       return true
@@ -489,14 +501,15 @@ const AppsDataGrid = () => {
   // Validate the form before going to the next steps
   // Validation is performed with the actual input value from the DOM. Hence we use "useRef"
   // Set the app URL to avoid delay with useState.
-  const handleNext = () => {
+  const handleNext = async () => {
     let newSkipped = skipped
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values())
       newSkipped.delete(activeStep)
     }
+    const isValid = await validateData()
 
-    if (validateData()) {
+    if (isValid) {
       setActiveStep(activeStep + 1)
       setSkipped(newSkipped)
     }
@@ -852,7 +865,10 @@ const AppsDataGrid = () => {
                     Confirm
                   </Button>
                 ) : (
-                  <Button onClick={handleNext} variant="outlined">
+                  <Button
+                    onClick={async () => await handleNext()}
+                    variant="outlined"
+                  >
                     Continue
                   </Button>
                 )}
