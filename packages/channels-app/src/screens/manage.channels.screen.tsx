@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
+import {Wrapper} from '../../../openhim-theme/src/Wrapper'
 import CancelIcon from '@mui/icons-material/Cancel'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -221,6 +222,9 @@ const ManageChannelsScreen: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Manage Channels
       </Typography>
+      <Wrapper>
+        <p>Words on the screen</p>
+      </Wrapper>
 
       <Grid container>
         <Grid item xs={11}>

@@ -4,7 +4,19 @@
     "jsx": "react-jsx",
     "declarationDir": "dist"
   },
-  "files": ["src/jembi-client-roles-app.tsx"],
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test*"]
+  "files": [
+    "src/jembi-client-roles-app.tsx"
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test*"
+  ],
+  "baseUrl": "../../",
+  "paths": {
+    "@/*": [
+      "./packages/*"
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 {
   "name": "openhim-console-mf",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": "16.x"
