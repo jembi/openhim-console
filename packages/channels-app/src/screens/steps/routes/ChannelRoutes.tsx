@@ -60,7 +60,7 @@ export function ChannelRoutes(props: {
   }) => {
     if (isValid) {
       for (let i = 0; i < channel.routes?.length; i++) {
-        if (channel.routes[i].name === route.name) {
+        if (channel.routes[i]._id === route._id) {
           channel.routes[i] = route
 
           setChannel(structuredClone(channel))
