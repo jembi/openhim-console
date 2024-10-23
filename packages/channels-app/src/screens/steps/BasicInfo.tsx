@@ -35,7 +35,7 @@ export function BasicInfo(props: {
     'OPTIONS'
   ]
   const [formTouched, setFormTouched] = React.useState(false)
-  const channelTypes: Array<ChannelType> = ['http', 'tcp', 'tls', 'polling']
+  const channelTypes: Array<ChannelType> = ['http', 'polling']
   const [expandOptionalSettings, setExpandOptionalSettings] =
     React.useState(false)
 
@@ -191,6 +191,32 @@ export function BasicInfo(props: {
                 </Box>
 
                 <Grid item xs={5}>
+                  {channel.type === 'polling' && (
+                    <TextField
+                      label="Polling Schedule"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      type="string"
+                      value={channel.pollingSchedule}
+                      onChange={e =>
+                        setChannel({
+                          ...channel,
+                          pollingSchedule: e.target.value
+                        })
+                      }
+                      error={
+                        channel.type === 'polling' &&
+                        channel.pollingSchedule === ''
+                      }
+                      helperText={
+                        channel.type === 'polling' &&
+                        channel.pollingSchedule === ''
+                          ? `Cron format: '*/10 * * * *'\nor Written format: '10 minutes'`
+                          : undefined
+                      }
+                    />
+                  )}
                   <TextField
                     label="Timeout ms"
                     variant="outlined"

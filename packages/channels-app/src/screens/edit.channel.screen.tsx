@@ -30,7 +30,7 @@ function EditChannelScreen() {
     },
     onSuccess: () => {
       hideBackdrop()
-      navigate(Routes.MANAGE_CHANNELS)
+      window.location.href = `/#${Routes.MANAGE_CHANNELS}`
     },
     onError: (error: any) => {
       console.error(error)

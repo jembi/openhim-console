@@ -15,6 +15,8 @@ import React from 'react'
 import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
 const defaultRoute: ChannelRouteDef = {
+  _id: Math.random().toString(),
+  status: 'enabled',
   name: '',
   type: 'http'
 }
@@ -101,7 +103,7 @@ export function ChannelRoute(props: {
                 }
               />
             }
-            label="Status"
+            label="Enabled"
           />
           <FormHelperText style={{marginLeft: '45px'}}>
             Toggle on to enable this route.
