@@ -1,15 +1,32 @@
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/Create'
 import ErrorIcon from '@mui/icons-material/Error'
-import {Box, Button, Card, Divider, Grid, Typography} from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  IconButton,
+  Typography
+} from '@mui/material'
 import debounce from '@mui/material/utils/debounce'
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridColDef,
+  GridDeleteForeverIcon,
+  GridToolbar
+} from '@mui/x-data-grid'
 import {useQuery} from '@tanstack/react-query'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import Loader from '../components/helpers/loader.component'
-import {getUsers} from '../services/api'
+import {deleteUserByEmail, getUsers} from '../services/api'
 import {User, Routes} from '../types'
+import {CustomToolbar} from '../components/helpers/custom.toolbar'
+import {useBasicBackdrop} from '../contexts/backdrop.context'
+import {useAlert} from '../contexts/alert.context'
+import {useConfirmation} from '../contexts/confirmation.context'
 
 const noRolesOverlay = () => (
   <div
@@ -30,16 +47,14 @@ const noRolesOverlay = () => (
 )
 
 function UsersList() {
-  const [search, setSearch] = React.useState('')
-  const navigate = useNavigate()
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
-  const {isLoading, isError, data, error, refetch} = useQuery({
+  const {isLoading, isError, data: users, error, refetch} = useQuery({
     queryKey: ['query.UsersList'],
     queryFn: getUsers,
     enabled: false
   })
-  const users = data || []
+  const {showBackdrop, hideBackdrop} = useBasicBackdrop()
+  const {showConfirmation, hideConfirmation} = useConfirmation()
+  const {showAlert} = useAlert()
 
   React.useEffect(() => {
     refetch()
@@ -53,50 +68,60 @@ function UsersList() {
     return <div>{error}</div>
   }
 
-  const handleRowClick = (user: User) => {
-    window.history.pushState({}, '', `/#!/users/edit-user/${user._id}`)
+  const onEditUser = (user: User) => {
+    window.history.pushState({}, '', `/#!/users/edit-user/` + user._id)
   }
 
-  const handleOnSearchChange = debounce((value: string) => {
-    setSearch(value)
-  }, 500)
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
-
-  // @FIXME: Once the search API is implemented, this should be updated to use the filtered roles
-  const filteredUsers = users.filter(user => {
-    const name = user.firstname.toLowerCase()
-    const surname = user.surname.toLowerCase()
-    const email = user.email.toLowerCase()
-    // const organisation = user.organisation.toLowerCase()
-
-    return (
-      name.includes(search.toLowerCase()) ||
-      surname.includes(search.toLowerCase()) ||
-      email.includes(search.toLowerCase())
+  const onDeleteUser = (user: User) => {
+    showConfirmation(
+      'Are you sure you want to delete this user?',
+      'Delete User',
+      () => {
+        showBackdrop(<Loader />, true)
+        deleteUserByEmail(user.email)
+          .then(() => {
+            hideBackdrop()
+            showAlert('User deleted successfully', 'Success', 'success')
+            refetch()
+          })
+          .catch(error => {
+            hideBackdrop()
+            showAlert(
+              'Error deleting user. ' + error?.response?.data,
+              'Error',
+              'error'
+            )
+          })
+      }
     )
-  })
+  }
 
   const columns: GridColDef[] = [
-    {field: 'firstname', headerName: 'First Name', width: 200},
-    {field: 'surname', headerName: 'Surname', width: 200},
-    {field: 'email', headerName: 'Email', width: 200},
+    {field: 'firstname', headerName: 'First Name', flex: 1},
+    {field: 'surname', headerName: 'Surname', flex: 1},
+    {field: 'email', headerName: 'Email', flex: 1},
+    {
+      field: 'groups',
+      headerName: 'Roles',
+      flex: 1,
+      valueGetter: (params: any) => {
+        return Array.isArray(params) ? params.join(', ') : ''
+      }
+    },
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 100,
-      renderCell: () => (
+      align: 'right',
+      headerAlign: 'right',
+      flex: 0.5,
+      renderCell: params => (
         <>
-          <CreateIcon style={{cursor: 'pointer'}} />
+          <IconButton onClick={() => onEditUser(params.row)}>
+            <CreateIcon />
+          </IconButton>
+          <IconButton onClick={() => onDeleteUser(params.row)}>
+            <GridDeleteForeverIcon />
+          </IconButton>
         </>
       )
     }
@@ -130,25 +155,19 @@ function UsersList() {
       </Grid>
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-      <Card elevation={4}>
+      <Card elevation={4} sx={{paddingX: '25px'}}>
         <DataGrid
           getRowId={row => row._id}
-          autoHeight
-          checkboxSelection
           disableRowSelectionOnClick
+          disableDensitySelector
+          density="comfortable"
+          disableMultipleRowSelection
+          disableColumnSelector
+          disableColumnResize
+          disableColumnMenu
           columns={columns}
+          slots={{toolbar: CustomToolbar}}
           rows={users}
-          onRowClick={params =>
-            window.history.pushState(
-              {},
-              '',
-              `/#!/users/edit-user/` + params.row['_id']
-            )
-          }
-          slots={{
-            toolbar: GridToolbar,
-            noRowsOverlay: noRolesOverlay
-          }}
           pageSizeOptions={[10, 25, 50]}
           initialState={{
             pagination: {
@@ -160,6 +179,21 @@ function UsersList() {
               showQuickFilter: true,
               printOptions: {disableToolbarButton: true},
               csvOptions: {disableToolbarButton: true}
+            }
+          }}
+          sx={{
+            border: 'none',
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none'
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              borderBottom: 'none'
+            },
+            '& .MuiDataGrid-cell:focus': {
+              outline: 'none'
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold'
             }
           }}
         />

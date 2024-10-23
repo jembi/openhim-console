@@ -332,6 +332,11 @@ export async function updateUser(email: string, user: any): Promise<any> {
   return response.data
 }
 
+export async function deleteUser(email: string): Promise<any> {
+  await ensureApiClientInitialized()
+  await apiClient.delete(`/users/${email}`)
+}
+
 interface ClientRole {
   roleName: string
   clients: string[]
