@@ -193,87 +193,84 @@ export const AddClient = () => {
   }
 
   return (
-    <Grid container spacing={2} padding={2}>
-      <Grid item xs={12}>
-        <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-          Add Client
-        </Typography>
+    <Box padding={1}>
+      <Grid container spacing={2} padding={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom>
+            Add Client
+          </Typography>
 
-        <Typography
-          variant="body1"
-          component="p"
-          style={{opacity: 0.6, fontSize: '16px'}}
-        >
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          access management
-        </Typography>
-        <Divider />
-      </Grid>
+          <Typography variant="subtitle1" gutterBottom>
+            Control client systems and their access roles. Add clients to enable
+            their request routing and group them by roles for streamlined
+            channel access management
+          </Typography>
+          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
+        </Grid>
 
-      <Grid item xs={12}>
-        <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
-          <Box>
-            <Stepper sx={{paddingTop: 2}} activeStep={activeStep}>
-              <Step key={'basic-info'}>
-                <StepLabel sx={{fontSize: 20}} {...labelProps}>
-                  <p style={{fontSize: 14}}>Basic Info</p>
-                </StepLabel>
-              </Step>
-              <Step key={'authentication'}>
-                <StepLabel {...labelProps}>
-                  <p style={{fontSize: 14}}>Authentication</p>
-                </StepLabel>
-              </Step>
-            </Stepper>
-          </Box>
-          <Divider />
-          <Box>
-            {activeStep === 0 ? (
-              <BasicInfo
-                basicInfo={basicInfo}
-                onBasicInfoChange={onBasicInfoChange}
-                setBasicInfo={setBasicInfo}
-                validationErrors={validationErrors}
-                validateBasicInfoField={validateBasicInfoField}
-              />
-            ) : (
-              <Authentication
-                authType={authType}
-                authentication={authentication}
-                basicInfo={basicInfo}
-                setAuthentication={setAuthentication}
-                selectAuthenticationType={selectAuthenticationType}
-                onAuthenticationChange={onAuthenticationChange}
-              />
-            )}
-            <br />
-            <Stack
-              spacing={2}
-              direction="row"
-              sx={{marginBottom: 1, marginLeft: 2}}
-            >
-              <Button
-                variant="outlined"
-                id={activeStep === 0 ? 'cancel' : 'back'}
-                color="success"
-                onClick={e => onNavigateClicked(e.currentTarget.id)}
+        <Grid item xs={12}>
+          <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
+            <Box>
+              <Stepper sx={{paddingTop: 2}} activeStep={activeStep}>
+                <Step key={'basic-info'}>
+                  <StepLabel sx={{fontSize: 20}} {...labelProps}>
+                    <p style={{fontSize: 14}}>Basic Info</p>
+                  </StepLabel>
+                </Step>
+                <Step key={'authentication'}>
+                  <StepLabel {...labelProps}>
+                    <p style={{fontSize: 14}}>Authentication</p>
+                  </StepLabel>
+                </Step>
+              </Stepper>
+            </Box>
+            <Divider />
+            <Box>
+              {activeStep === 0 ? (
+                <BasicInfo
+                  basicInfo={basicInfo}
+                  onBasicInfoChange={onBasicInfoChange}
+                  setBasicInfo={setBasicInfo}
+                  validationErrors={validationErrors}
+                  validateBasicInfoField={validateBasicInfoField}
+                />
+              ) : (
+                <Authentication
+                  authType={authType}
+                  authentication={authentication}
+                  basicInfo={basicInfo}
+                  setAuthentication={setAuthentication}
+                  selectAuthenticationType={selectAuthenticationType}
+                  onAuthenticationChange={onAuthenticationChange}
+                />
+              )}
+              <br />
+              <Stack
+                spacing={2}
+                direction="row"
+                sx={{marginBottom: 1, marginLeft: 2}}
               >
-                {activeStep === 0 ? 'Cancel' : 'Back'}
-              </Button>
-              <Button
-                variant="contained"
-                id={activeStep === 0 ? 'next' : 'save'}
-                color="success"
-                sx={{backgroundColor: '#29AC96'}}
-                onClick={e => onNavigateClicked(e.currentTarget.id)}
-              >
-                {activeStep === 0 ? 'Next' : 'Save'}
-              </Button>
-            </Stack>
-          </Box>
-        </Card>
+                <Button
+                  variant="outlined"
+                  id={activeStep === 0 ? 'cancel' : 'back'}
+                  color="success"
+                  onClick={e => onNavigateClicked(e.currentTarget.id)}
+                >
+                  {activeStep === 0 ? 'Cancel' : 'Back'}
+                </Button>
+                <Button
+                  variant="contained"
+                  id={activeStep === 0 ? 'next' : 'save'}
+                  color="success"
+                  onClick={e => onNavigateClicked(e.currentTarget.id)}
+                >
+                  {activeStep === 0 ? 'Next' : 'Save'}
+                </Button>
+              </Stack>
+            </Box>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   )
 }

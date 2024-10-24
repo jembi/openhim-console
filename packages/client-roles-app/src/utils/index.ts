@@ -35,18 +35,14 @@ export async function getAllClientsAndChannels(): Promise<{
   }
 }
 
-export async function upsertRole(clients: Client[], channels: Channel[]) {
-  const upsertClientPromises = clients.map(client => {
-    return editClient(client._id, client)
-  })
-
+export async function upsertRole(channels: Channel[]) {
   const upsertChannelPromises = channels.map(channel => {
     return editChannel(channel)
   })
 
   console.log(
-    `upserting ${upsertClientPromises.length} clients and ${upsertChannelPromises.length} channels`
+    `upserting ${upsertChannelPromises.length} channels`
   )
 
-  await Promise.all([...upsertClientPromises, ...upsertChannelPromises])
+  await Promise.all([...upsertChannelPromises])
 }

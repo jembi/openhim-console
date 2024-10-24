@@ -1,26 +1,52 @@
-import {Box, Button, Card, Divider, Grid, Typography} from '@mui/material'
-import {DataGrid, GridColDef, GridToolbar} from '@mui/x-data-grid'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Paper,
+  Typography
+} from '@mui/material'
+import {
+  DataGrid,
+  GridColDef,
+  GridToolbarDensitySelector,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter
+} from '@mui/x-data-grid'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
 import {useEffect, useState} from 'react'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
 
+const CustomToolbar = () => {
+  return (
+    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+      <div>
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+      </div>
+      <GridToolbarQuickFilter variant="standard" />
+    </div>
+  )
+}
+
 export const ListRoles = () => {
   const addClientRole = new URL(window.origin + '/#!/client-roles/add')
 
   const columns: GridColDef[] = [
-    {field: 'roleName', headerName: 'Name', width: 200},
-    {field: 'clients', headerName: 'Clients', width: 600},
-    {field: 'channels', headerName: 'Channels', width: 600},
+    {field: 'roleName', headerName: 'Name', flex: 0.5},
+    {field: 'clients', headerName: 'Clients', flex: 0.65},
+    {field: 'channels', headerName: 'Channels', flex: 1},
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 100,
+      flex: 0.1,
       renderCell: () => (
-        <>
+        <div style={{padding:8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <CreateIcon style={{cursor: 'pointer'}} />
-        </>
+        </div>
       )
     }
   ]
@@ -33,8 +59,8 @@ export const ListRoles = () => {
         const formattedRoles = roles.map(role => ({
           id: role.roleName,
           roleName: role.roleName,
-          clients: role.clients,
-          channels: role.channels
+          clients: role.clients.join(', '),
+          channels: role.channels.join(', ')
         }))
         setRoles(formattedRoles)
       })
@@ -94,12 +120,19 @@ export const ListRoles = () => {
           <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
         </Grid>
         <Grid item xs={12}>
-          <Card>
+          <Paper
+            elevation={4}
+            sx={{paddingX: '15px', borderRadius: '12px', paddingTop: '30px'}}
+          >
             <DataGrid
               getRowId={row => row.id}
               autoHeight
               checkboxSelection
               disableRowSelectionOnClick
+              sx={{
+                '&, [class^=MuiDataGrid]': {border: 'none'},
+                '--DataGrid-containerBackground': '#f8f8f8'
+              }}
               rows={roles}
               onRowClick={params =>
                 window.history.pushState(
@@ -109,7 +142,7 @@ export const ListRoles = () => {
                 )
               }
               slots={{
-                toolbar: GridToolbar,
+                toolbar: CustomToolbar,
                 noRowsOverlay: noRolesOverlay
               }}
               columns={columns}
@@ -127,7 +160,7 @@ export const ListRoles = () => {
                 }
               }}
             />
-          </Card>
+          </Paper>
         </Grid>
       </Grid>
     </Box>

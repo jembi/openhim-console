@@ -24,18 +24,9 @@ import {useLoaderData} from 'react-router-dom'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
-}
 
 const defaultClientRoleState: ClientRole = {
   roleName: '',
-  clients: [],
   channels: []
 }
 
@@ -82,18 +73,7 @@ export const ClientRoleForm = () => {
 
   const updateListOfSelectedClientsAndChannels = async () => {
     try {
-      const {channels, clients} = await getAllClientsAndChannels()
-      clients.forEach(client => {
-        if (clientRole.clients.includes(client.clientID)) {
-          if (!client.roles.includes(clientRole.roleName)) {
-            client.roles.push(clientRole.roleName)
-          }
-        } else {
-          client.roles = client.roles.filter(
-            role => role !== clientRole.roleName
-          )
-        }
-      })
+      const {channels} = await getAllClientsAndChannels()
       channels.forEach(channel => {
         if (clientRole.channels.includes(channel.name)) {
           if (!channel.allow.includes(clientRole.roleName)) {
@@ -105,7 +85,7 @@ export const ClientRoleForm = () => {
           )
         }
       })
-      await upsertRole(clients, channels)
+      await upsertRole(channels)
     } catch (e) {
       const error = e as AxiosError
       if (error.response) {
@@ -124,7 +104,7 @@ export const ClientRoleForm = () => {
 
   useEffect(() => {
     getAllClientsAndChannels()
-      .then(({clients, channels}) => {
+      .then(({channels}) => {
         setChannelNames(channels.map(channel => channel.name))
       })
       .catch(error => {
@@ -176,20 +156,20 @@ export const ClientRoleForm = () => {
   }
 
   return (
-    <>
+    <Box padding={1}>
       <Grid container spacing={2} padding={2}>
         <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+          <Typography variant="h4" gutterBottom>
             {existingClientRole
               ? pageHeadingTypography.editClientUserRole.heading
               : pageHeadingTypography.addClientUserRole.heading}
           </Typography>
-          <Typography variant="caption" fontSize={16} style={{opacity: 0.6}}>
+          <Typography variant="subtitle1" gutterBottom>
             {existingClientRole
               ? pageHeadingTypography.editClientUserRole.caption
               : pageHeadingTypography.addClientUserRole.caption}
           </Typography>
-          <Divider />
+          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
         </Grid>
         <Grid item xs={12}>
           <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
@@ -250,14 +230,13 @@ export const ClientRoleForm = () => {
                 onClick={() =>
                   window.history.pushState({}, '', '/#!/client-roles')
                 }
-                sx={{borderColor: '#29AC96', color: '#29AC96'}}
                 variant="outlined"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleSaveButtonClicked}
-                sx={{ml: 1, backgroundColor: '#29AC96'}}
+                sx={{ml: 1}}
                 variant="contained"
               >
                 Save
@@ -266,6 +245,6 @@ export const ClientRoleForm = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   )
 }
