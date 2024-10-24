@@ -1,4 +1,4 @@
-import {Channel, Client} from '../types'
+import {Channel, Client, Transaction} from '../types'
 
 export interface BasicFilterProps {
   status: string
@@ -100,4 +100,14 @@ export interface SettingsDialogProps {
 export interface StatusButtonProps {
   status: string
   buttonText: string
+}
+
+export interface TransactionLogTableProps {
+  transactions: Transaction[]
+  loadMore: () => void
+  loading: boolean
+  initialTransactionLoadComplete: boolean
+  onRowClick: (transaction: any) => void
+  onSelectedChange(transactions: Transaction[]): void
+  onAutoUpdateChange: (newAutoUpdate: boolean) => void
 }
