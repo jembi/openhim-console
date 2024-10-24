@@ -2,7 +2,8 @@ import {
   BasicFilterProps,
   CustomFilterProps,
   CustomizeDialogProps,
-  SettingsDialogProps
+  SettingsDialogProps,
+  TransactionLogTableProps
 } from './index.interface'
 import {Channel, Client} from '../types'
 
@@ -129,3 +130,13 @@ describe('Interface Conformance Tests', () => {
     expect(typeof settingsDialogProps.setAutoUpdate).toBe('function')
   })
 })
+
+const transactionLogTableProps: TransactionLogTableProps = {
+  transactions: [],
+  loadMore: () => {},
+  loading: false,
+  initialTransactionLoadComplete: true,
+  onRowClick: () => {},
+  onSelectedChange: () => {},
+  onAutoUpdateChange: (value: boolean) => {}
+}

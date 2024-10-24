@@ -24,16 +24,9 @@ import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
 import {Transaction} from '../../types'
 import {tr} from 'date-fns/locale'
+import {TransactionLogTableProps} from '../../interfaces/index.interface'
 
-const TransactionLogTable: React.FC<{
-  transactions: Transaction[]
-  loadMore: () => void
-  loading: boolean
-  initialTransactionLoadComplete: boolean
-  onRowClick: (transaction: any) => void
-  onSelectedChange(transactions: Transaction[]): void
-  onAutoUpdateChange: (newAutoUpdate: boolean) => void
-}> = ({
+const TransactionLogTable: React.FC<TransactionLogTableProps> = ({
   transactions,
   loadMore,
   onRowClick,
