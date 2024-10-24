@@ -4,7 +4,8 @@ import {
   ButtonGroup,
   Divider,
   FormControl,
-  Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -18,6 +19,7 @@ import {v4 as uuidv4} from 'uuid'
 import {Client} from '../../types'
 import {fetchCertificate, fetchAuthTypes} from '@jembi/openhim-core-api'
 import './styles.css'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
 
 const buttonStyle = {
   borderColor: '#049D84',
@@ -49,6 +51,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
 }) => {
   const [certificates, setCertificates] = useState<any>([])
   const [authTypes, setAuthTypes] = useState<string[]>([])
+  const [showPassword, setShowPassword] = useState(false)
 
   const checkAuthType = (authType: string) => {
     return !!authTypes.find(auth => auth === authType)
@@ -144,12 +147,14 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             BASIC AUTH
           </Button>
         </ButtonGroup>
-        
+
         {authType === 'jwt' && (
           <>
-          <br />
-          <br />
-            <Typography variant="h6" sx={{fontWeight: 'bold'}}>JSON Web Token (JWT)</Typography>
+            <br />
+            <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+              JSON Web Token (JWT)
+            </Typography>
             <br />
             <Typography variant="caption">
               Securely transmit information between a client and server as JSON
@@ -158,7 +163,12 @@ export const Authentication: React.FC<AuthenticationProps> = ({
             <br />
             <br />
             <Typography
-              sx={{color: '#E65100', fontSize: 10, fontWeight: 'bold', textAlign: 'center'}}
+              sx={{
+                color: '#E65100',
+                fontSize: 10,
+                fontWeight: 'bold',
+                textAlign: 'center'
+              }}
               hidden={authTypes.find(auth => auth === 'jwt') !== undefined}
             >
               JWT authentication is disabled on the OpenHIM Core.
@@ -167,9 +177,11 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'customToken' && (
           <>
-          <br />
-          <br />
-            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Custom Token</Typography>
+            <br />
+            <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+              Custom Token
+            </Typography>
             <br />
             <Typography variant="caption">
               Set an ID to verify the client. The ID can be any unique string
@@ -207,7 +219,12 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               }}
             />
             <p
-              style={{color: '#E65100', fontSize: 10, fontWeight: 'bold', textAlign: 'center'}}
+              style={{
+                color: '#E65100',
+                fontSize: 10,
+                fontWeight: 'bold',
+                textAlign: 'center'
+              }}
               hidden={checkAuthType('custom-token-auth')}
             >
               Custom Token Authentication is disabled on the OpenHIM Core.
@@ -216,9 +233,11 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'mutualTLS' && (
           <>
-          <br />
-          <br />  
-            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Mutual TLS</Typography>
+            <br />
+            <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+              Mutual TLS
+            </Typography>
             <br />
             <Typography variant="caption">
               Set Up an encrypted channel by providing the client's domain and
@@ -263,9 +282,11 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'basicAuth' && (
           <>
-          <br />
-          <br />
-            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Basic Auth</Typography>
+            <br />
+            <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+              Basic Auth
+            </Typography>
             <br />
             <Typography variant="caption">
               Requires a username and password. Set the password below
@@ -281,8 +302,20 @@ export const Authentication: React.FC<AuthenticationProps> = ({
                 fullWidth
                 id="password"
                 label="Password"
-                type="password"
+                sx={{fontSize: 13, color: '#049D84'}}
+                type={showPassword ? 'text' : 'password'}
                 onChange={onAuthenticationChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
             </Stack>
           </>
