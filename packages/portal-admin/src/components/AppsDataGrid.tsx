@@ -866,7 +866,7 @@ const AppsDataGrid = () => {
                   </Button>
                 ) : (
                   <Button
-                    onClick={async () => await handleNext()}
+                    onClick={handleNext}
                     variant="outlined"
                   >
                     Continue
