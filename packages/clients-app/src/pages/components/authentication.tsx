@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Divider,
   FormControl,
   Grid,
@@ -73,81 +74,91 @@ export const Authentication: React.FC<AuthenticationProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2}}>
-        <Typography variant="h4">Authentication</Typography>
-        <Typography variant="subtitle1">
+        <br />
+        <Typography variant="h5">Authentication</Typography>
+        <Typography variant="subtitle1" sx={{fontSize: 13}}>
           Choose and configure the authentication type for securing
           client-server communication.
         </Typography>
+        <br />
       </Box>
 
       <Divider />
       <Box sx={{marginLeft: 6, marginTop: 2, marginBottom: 4, width: 450}}>
-        <Typography variant='body1'>Select Type</Typography>
-        <Button
-          variant="outlined"
-          className={authType === 'jwt' ? 'selected' : ''}
-          color="success"
-          id="jwt"
-          style={{
-            ...buttonStyle,
-            backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white',
-            fontSize:10
-          }}
-          onClick={selectAuthenticationType}
-        >
-          JSON WEB TOKEN
-        </Button>
-        <Button
-          variant="outlined"
-          className={authType === 'customToken' ? 'selected' : ''}
-          color="success"
-          id="customToken"
-          style={{
-            ...buttonStyle,
-            backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white',
-            fontSize:10
-          }}
-          onClick={selectAuthenticationType}
-        >
-          CUSTOM TOKEN
-        </Button>
-        <Button
-          variant="outlined"
-          className={authType === 'mutualTLS' ? 'selected' : ''}
-          color="success"
-          id="mutualTLS"
-          style={{
-            ...buttonStyle,
-            backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white',
-            fontSize:10
-          }}
-          onClick={selectAuthenticationType}
-        >
-          MUTUAL TLS
-        </Button>
-        <Button
-          variant="outlined"
-          className={authType === 'basicAuth' ? 'selected' : ''}
-          color="success"
-          id="basicAuth"
-          style={{
-            ...buttonStyle,
-            backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white',
-            fontSize:10
-          }}
-          onClick={selectAuthenticationType}
-        >
-          BASIC AUTH
-        </Button>
+        <Typography variant="body1">Select Type</Typography>
+        <ButtonGroup>
+          <Button
+            variant="outlined"
+            className={authType === 'jwt' ? 'selected' : ''}
+            color="success"
+            id="jwt"
+            style={{
+              ...buttonStyle,
+              backgroundColor: authType === 'jwt' ? '#F3F3F3' : 'white',
+              fontSize: 10
+            }}
+            onClick={selectAuthenticationType}
+          >
+            JSON WEB TOKEN
+          </Button>
+          <Button
+            variant="outlined"
+            className={authType === 'customToken' ? 'selected' : ''}
+            color="success"
+            id="customToken"
+            style={{
+              ...buttonStyle,
+              backgroundColor: authType === 'customToken' ? '#F3F3F3' : 'white',
+              fontSize: 10
+            }}
+            onClick={selectAuthenticationType}
+          >
+            CUSTOM TOKEN
+          </Button>
+          <Button
+            variant="outlined"
+            className={authType === 'mutualTLS' ? 'selected' : ''}
+            color="success"
+            id="mutualTLS"
+            style={{
+              ...buttonStyle,
+              backgroundColor: authType === 'mutualTLS' ? '#F3F3F3' : 'white',
+              fontSize: 10
+            }}
+            onClick={selectAuthenticationType}
+          >
+            MUTUAL TLS
+          </Button>
+          <Button
+            variant="outlined"
+            className={authType === 'basicAuth' ? 'selected' : ''}
+            color="success"
+            id="basicAuth"
+            style={{
+              ...buttonStyle,
+              backgroundColor: authType === 'basicAuth' ? '#F3F3F3' : 'white',
+              fontSize: 10
+            }}
+            onClick={selectAuthenticationType}
+          >
+            BASIC AUTH
+          </Button>
+        </ButtonGroup>
+        
         {authType === 'jwt' && (
           <>
-            <Typography variant="h5">JSON Web Token (JWT)</Typography>
+          <br />
+          <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>JSON Web Token (JWT)</Typography>
+            <br />
             <Typography variant="caption">
               Securely transmit information between a client and server as JSON
               object, signed using a secret or key pair
             </Typography>
+            <br />
+            <br />
             <Typography
-              sx={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
+              sx={{color: '#E65100', fontSize: 10, fontWeight: 'bold', textAlign: 'center'}}
               hidden={authTypes.find(auth => auth === 'jwt') !== undefined}
             >
               JWT authentication is disabled on the OpenHIM Core.
@@ -156,7 +167,10 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'customToken' && (
           <>
-            <Typography variant="h5">Custom Token</Typography>
+          <br />
+          <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Custom Token</Typography>
+            <br />
             <Typography variant="caption">
               Set an ID to verify the client. The ID can be any unique string
             </Typography>
@@ -193,7 +207,7 @@ export const Authentication: React.FC<AuthenticationProps> = ({
               }}
             />
             <p
-              style={{color: '#E65100', fontSize: 10, textAlign: 'center'}}
+              style={{color: '#E65100', fontSize: 10, fontWeight: 'bold', textAlign: 'center'}}
               hidden={checkAuthType('custom-token-auth')}
             >
               Custom Token Authentication is disabled on the OpenHIM Core.
@@ -202,7 +216,10 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'mutualTLS' && (
           <>
-            <Typography variant="h5">Mutual TLS</Typography>
+          <br />
+          <br />  
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Mutual TLS</Typography>
+            <br />
             <Typography variant="caption">
               Set Up an encrypted channel by providing the client's domain and
               certificate
@@ -246,7 +263,10 @@ export const Authentication: React.FC<AuthenticationProps> = ({
         )}
         {authType === 'basicAuth' && (
           <>
-            <Typography variant="h5">Basic Auth</Typography>
+          <br />
+          <br />
+            <Typography variant="h6" sx={{fontWeight: 'bold'}}>Basic Auth</Typography>
+            <br />
             <Typography variant="caption">
               Requires a username and password. Set the password below
             </Typography>
