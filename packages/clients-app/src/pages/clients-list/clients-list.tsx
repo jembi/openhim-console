@@ -27,6 +27,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
+import { Wrapper } from "../../../../base-components/Wrapper";
 
 const ClientsList = () => {
   const [clients, setClients] = useState<Client[]>([])
@@ -119,6 +120,9 @@ const ClientsList = () => {
           <Typography variant="h4" gutterBottom>
             Manage Clients
           </Typography>
+          <Wrapper>
+            <p>Hello World</p>
+          </Wrapper>
           <Grid
             container
             direction="row"

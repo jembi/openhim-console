@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
 import {useEffect, useState} from 'react'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
+import {BasePageTemplate} from '../../../../base-components/BasePageTemplate'
 
 export const ListRoles = () => {
   const addClientRole = new URL(window.origin + '/#!/client-roles/add')
@@ -61,6 +62,56 @@ export const ListRoles = () => {
     </div>
   )
 
+  return (
+    <BasePageTemplate
+      title="Manage Client Roles"
+      subtitle="Control client systems and their access roles. Add clients to
+                enable their request routing and group them by roles for
+                streamlined channel access management."
+      button={
+        <a href={addClientRole.toString()}>
+          <Button variant="contained">
+            <AddIcon /> Add
+          </Button>
+        </a>
+      }
+    >
+      <Card>
+        <DataGrid
+          getRowId={row => row.id}
+          autoHeight
+          checkboxSelection
+          disableRowSelectionOnClick
+          rows={roles}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              '/#!/client-roles/edit/' + params.row['roleName']
+            )
+          }
+          slots={{
+            toolbar: GridToolbar,
+            noRowsOverlay: noRolesOverlay
+          }}
+          columns={columns}
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: {page: 0, pageSize: 10}
+            }
+          }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              printOptions: {disableToolbarButton: true},
+              csvOptions: {disableToolbarButton: true}
+            }
+          }}
+        />
+      </Card>
+    </BasePageTemplate>
+  )
   return (
     <Box padding={1}>
       <Grid container padding={2} spacing={2}>
