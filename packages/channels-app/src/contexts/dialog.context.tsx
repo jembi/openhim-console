@@ -1,11 +1,15 @@
 import React, {createContext, useContext, useState, ReactNode} from 'react'
-import {BasicDialog} from '../components/dialogs/basic.dialog.component'
+import {
+  BasicDialog,
+  BasicDialogProps
+} from '../components/dialogs/basic.dialog.component'
 
 interface BasicDialogContextProps {
   showBasicDialog: (
     children: ReactNode,
     title?: string,
-    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
+    sx?: BasicDialogProps['sx']
   ) => void
   hideBasicDialog: () => void
 }
@@ -22,19 +26,22 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
     children: ReactNode
     open: boolean
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    sx?: BasicDialogProps['sx']
   }>({
     title: '',
     children: null,
     open: false,
-    size: 'xs'
+    size: 'xs',
+    sx: undefined
   })
 
   const showBasicDialog = (
     children: ReactNode,
     title?: string,
-    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs'
+    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs',
+    sx?: BasicDialogProps['sx']
   ) => {
-    setDialogProps({title, children, open: true, size})
+    setDialogProps({title, children, open: true, size, sx})
   }
 
   const hideBasicDialog = () => {
@@ -49,6 +56,7 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
         open={dialogProps.open}
         onClose={hideBasicDialog}
         size={dialogProps.size}
+        sx={dialogProps.sx}
       >
         {dialogProps.children}
       </BasicDialog>

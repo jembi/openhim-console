@@ -47,7 +47,13 @@ const noRolesOverlay = () => (
 )
 
 function UsersList() {
-  const {isLoading, isError, data: users, error, refetch} = useQuery({
+  const {
+    isLoading,
+    isError,
+    data: users,
+    error,
+    refetch
+  } = useQuery({
     queryKey: ['query.UsersList'],
     queryFn: getUsers,
     enabled: false
