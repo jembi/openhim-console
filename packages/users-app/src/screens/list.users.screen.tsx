@@ -79,6 +79,13 @@ function UsersList() {
   }
 
   const onDeleteUser = (user: User) => {
+    const isRootRole =
+      user?.groups?.includes('admin') && user.email == 'root@openhim.org'
+
+    if (isRootRole) {
+      return showAlert('Cannot delete the root user', 'Error', 'error')
+    }
+
     showConfirmation(
       'Are you sure you want to delete this user?',
       'Delete User',
@@ -146,17 +153,19 @@ function UsersList() {
             specific roles to ensure appropriate access and functionality.
           </Typography>
         </Grid>
-        <Grid item xs={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() =>
-              window.history.pushState({}, '', `/#${Routes.CREATE_USER}`)
-            }
-          >
-            Add
-          </Button>
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={() =>
+                window.history.pushState({}, '', `/#${Routes.CREATE_USER}`)
+              }
+            >
+              Add
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
 
