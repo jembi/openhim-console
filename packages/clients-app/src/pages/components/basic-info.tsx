@@ -101,11 +101,13 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
   return (
     <div hidden={hidden}>
       <Box sx={{marginLeft: 2, marginRight: 2, marginBottom: 3}}>
-        <Typography variant="h4">Basic Info</Typography>
-        <Typography variant="subtitle1">
+        <br />
+        <Typography variant="h5">Basic Info</Typography>
+        <Typography variant="subtitle1" sx={{fontSize: 13}}>
           Provide the required client information and assign existing roles for
           access management
         </Typography>
+        <br />
         <Divider style={{marginLeft: -100, marginRight: -100}} />
         <br />
         <Stack direction="row" spacing={2}>
@@ -134,8 +136,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
             sx={{marginLeft: 1}}
           />
         </Stack>
+        <br />
+        <Typography variant="h6" sx={{fontWeight: 'bold'}}>Assign Existing Roles</Typography>
         <Card elevation={0}>
-          <CardHeader title="Assign Existing Roles" />
           {validationErrors?.roles && (
             <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
           )}
@@ -147,8 +150,10 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
               overflow: 'auto'
             }}
           >
+            <br />
             {roles.map(role => (
               <FormControlLabel
+                
                 key={role}
                 control={
                   <Checkbox
@@ -157,7 +162,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                     onChange={onCheckBoxChange}
                   />
                 }
-                label={role}
+                label={<Typography sx={{fontSize: 13}} variant="body1">{role}</Typography>}
               />
             ))}
             {roles.length === 0 && <p>No roles available</p>}
