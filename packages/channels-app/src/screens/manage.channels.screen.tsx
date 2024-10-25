@@ -154,6 +154,7 @@ const ManageChannelsScreen: React.FC = () => {
         )
       }
     },
+    {field: 'type', headerName: 'Type', flex: 0.5},
     {field: 'priority', headerName: 'Priority', flex: 0.5},
     {field: 'allow', headerName: 'Access', flex: 1},
     {
@@ -203,6 +204,7 @@ const ManageChannelsScreen: React.FC = () => {
     id: index,
     name: channel.name,
     urlPattern: channel.urlPattern,
+    type: channel.type,
     status: channel.status,
     priority: channel.priority ?? '',
     allow: channel.allow.join(', ')
@@ -268,6 +270,12 @@ const ManageChannelsScreen: React.FC = () => {
             },
             '& .MuiDataGrid-columnHeaders': {
               borderBottom: 'none'
+            },
+            '& .MuiDataGrid-cell:focus': {
+              outline: 'none'
+            },
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold'
             }
           }}
         />

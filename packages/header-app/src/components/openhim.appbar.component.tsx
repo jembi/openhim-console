@@ -304,7 +304,7 @@ export default function OpenhimAppBar() {
         backgroundColor: '#ffffff',
         color: '#000000',
         position: 'fixed',
-        zIndex: 1
+        zIndex: 99
       }}
     >
       <Toolbar disableGutters>

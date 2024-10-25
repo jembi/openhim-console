@@ -61,7 +61,9 @@ export function BasicInfo(props: {
         access management.
       </Typography>
 
-      <Divider style={{marginBottom: '2px'}} />
+      <Divider sx={{pt: '10px', pb: '10px'}} />
+      <br />
+      <br />
 
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -131,7 +133,7 @@ export function BasicInfo(props: {
             Specific user role missing? &nbsp;
             <Typography
               component={'a'}
-              onClick={() => navigate(Routes.ADD_ROLE)}
+              href={`${Routes.ADD_ROLE}`}
               color="primary"
             >
               Add a new role

@@ -5,7 +5,8 @@ const {
   fetchUsers,
   createUser,
   updateUser,
-  fetchRoles
+  fetchRoles,
+  deleteUser
 } = require('@jembi/openhim-core-api')
 
 export async function getUsers(): Promise<User[]> {
@@ -43,6 +44,15 @@ export async function getRoles(): Promise<Role[]> {
     const roles = await fetchRoles()
 
     return roles
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+export async function deleteUserByEmail(email: string) {
+  try {
+    await deleteUser(email)
   } catch (err) {
     console.error(err)
     throw err

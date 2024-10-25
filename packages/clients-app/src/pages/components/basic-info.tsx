@@ -108,7 +108,7 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           access management
         </Typography>
         <br />
-        <Divider style={{marginLeft: -100, marginRight: -100}} />
+        <Divider />
         <br />
         <Stack direction="row" spacing={2}>
           <TextField

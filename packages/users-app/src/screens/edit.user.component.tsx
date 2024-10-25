@@ -151,7 +151,9 @@ function AddUserRole() {
                 <Button
                   variant="outlined"
                   color="info"
-                  onClick={() => navigate(-1)}
+                  onClick={() =>
+                    window.history.pushState({}, '', `#${Routes.USERS}`)
+                  }
                 >
                   CANCEL
                 </Button>
