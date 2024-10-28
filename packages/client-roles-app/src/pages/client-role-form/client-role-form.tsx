@@ -13,14 +13,12 @@ import {
 } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
-import {
-  getAllClientsAndChannels,
-  upsertRole
-} from '../../utils'
+import {getAllClientsAndChannels, upsertRole} from '../../utils'
 import {AxiosError} from 'axios'
 import {useSnackbar} from 'notistack'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
 import {useLoaderData} from 'react-router-dom'
+import {BasePageTemplate} from '../../../../base-components'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -156,95 +154,83 @@ export const ClientRoleForm = () => {
   }
 
   return (
-    <Box padding={1}>
-      <Grid container spacing={2} padding={2}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            {existingClientRole
-              ? pageHeadingTypography.editClientUserRole.heading
-              : pageHeadingTypography.addClientUserRole.heading}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            {existingClientRole
-              ? pageHeadingTypography.editClientUserRole.caption
-              : pageHeadingTypography.addClientUserRole.caption}
-          </Typography>
-          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-        </Grid>
-        <Grid item xs={12}>
-          <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
-            <Box sx={{margin: 1}}>
-              <FormControl sx={{m: 1, width: 580}}>
-                <TextField
-                  id="role-name"
-                  label="Role Name"
-                  variant="outlined"
-                  helperText="Choose a short but descriptive name"
-                  value={clientRole.roleName}
-                  onChange={e => {
-                    setClientRole(prevClientRole => ({
-                      ...prevClientRole,
-                      roleName: e.target.value
-                    }))
-                  }}
-                />
-              </FormControl>
+    <BasePageTemplate
+      title={
+        existingClientRole
+          ? pageHeadingTypography.editClientUserRole.heading
+          : pageHeadingTypography.addClientUserRole.heading
+      }
+      subtitle={
+        existingClientRole
+          ? pageHeadingTypography.editClientUserRole.caption
+          : pageHeadingTypography.addClientUserRole.caption
+      }
+    >
+      <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
+        <Box sx={{margin: 1}}>
+          <FormControl sx={{m: 1, width: 580}}>
+            <TextField
+              id="role-name"
+              label="Role Name"
+              variant="outlined"
+              helperText="Choose a short but descriptive name"
+              value={clientRole.roleName}
+              onChange={e => {
+                setClientRole(prevClientRole => ({
+                  ...prevClientRole,
+                  roleName: e.target.value
+                }))
+              }}
+            />
+          </FormControl>
 
-              <FormControl sx={{m: 1, width: 580}}>
-                <Typography
-                  variant="h5"
-                  component="h5"
-                  sx={{fontWeight: 'bold'}}
-                >
-                  Channels
-                </Typography>
-                <Typography variant="caption">Select one or more</Typography>
-                <FormGroup
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'auto'
-                  }}
-                >
-                  {channelNames.map(channel => (
-                    <FormControlLabel
-                      sx={{marginLeft: 0.5}}
-                      key={channel}
-                      control={
-                        <Checkbox
-                          name={channel}
-                          onChange={handleChannelCheckboxChange}
-                          checked={clientRole.channels.includes(channel)}
-                        />
-                      }
-                      label={channel}
+          <FormControl sx={{m: 1, width: 580}}>
+            <Typography variant="h5" component="h5" sx={{fontWeight: 'bold'}}>
+              Channels
+            </Typography>
+            <Typography variant="caption">Select one or more</Typography>
+            <FormGroup
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'auto'
+              }}
+            >
+              {channelNames.map(channel => (
+                <FormControlLabel
+                  sx={{marginLeft: 0.5}}
+                  key={channel}
+                  control={
+                    <Checkbox
+                      name={channel}
+                      onChange={handleChannelCheckboxChange}
+                      checked={clientRole.channels.includes(channel)}
                     />
-                  ))}
-                </FormGroup>
-              </FormControl>
-            </Box>
+                  }
+                  label={channel}
+                />
+              ))}
+            </FormGroup>
+          </FormControl>
+        </Box>
 
-            <Divider />
-            <Box sx={{display: 'flex', justifyContent: 'flex-start', p: 1}}>
-              <Button
-                onClick={() =>
-                  window.history.pushState({}, '', '/#!/client-roles')
-                }
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleSaveButtonClicked}
-                sx={{ml: 1}}
-                variant="contained"
-              >
-                Save
-              </Button>
-            </Box>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+        <Divider />
+        <Box sx={{display: 'flex', justifyContent: 'flex-start', p: 1}}>
+          <Button
+            onClick={() => window.history.pushState({}, '', '/#!/client-roles')}
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSaveButtonClicked}
+            sx={{ml: 1}}
+            variant="contained"
+          >
+            Save
+          </Button>
+        </Box>
+      </Card>
+    </BasePageTemplate>
   )
 }

@@ -27,7 +27,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
-
+import {BaseDataGrid, BasePageTemplate} from '../../../../base-components'
 const ClientsList = () => {
   const [clients, setClients] = useState<Client[]>([])
   const {enqueueSnackbar} = useSnackbar()
@@ -62,27 +62,6 @@ const ClientsList = () => {
     {field: 'contactPerson', headerName: 'Contact Person', flex: 0.6},
     {field: 'clientDomain', headerName: 'Domain', flex: 0.5},
     {field: 'roles', headerName: 'Roles', flex: 0.6},
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      flex: 0.3,
-      type: 'actions',
-      getActions: (params: GridRowParams) => [
-        <GridActionsCellItem
-          icon={<CreateIcon />}
-          id="edit"
-          label="Edit"
-          key="edit"
-          onClick={() => {
-            window.history.pushState(
-              {client: params.row},
-              '',
-              `/#!/clients/edit/${params.row['_id']}`
-            )
-          }}
-        />
-      ]
-    }
   ]
 
   const CustomNoRowsOverlay = () => {
@@ -107,76 +86,34 @@ const ClientsList = () => {
   }
 
   return (
-    <Box
-      padding={1}
-      sx={{
-        backgroundColor: '#F1F1F1',
-        minHeight: 'calc(100vh - 119px - 10px)'
-      }}
+    <>
+    <BasePageTemplate
+      title="Manage Clients"
+      subtitle="Add clients to enable their request routing and group them by roles for streamlined channel access management."
+      button={
+        <a href={addingClient.toString()}>
+          <Button variant="contained" startIcon={<AddIcon />}>
+            Add
+          </Button>
+        </a>
+      }
     >
-      <Grid container spacing={2} padding={2}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            Manage Clients
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            sx={{
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <Grid item>
-              <Typography variant="subtitle1" gutterBottom>
-                Control client systems and their access roles. Add clients to
-                enable their request routing and group them by roles for
-                streamlined channel access management
-              </Typography>
-            </Grid>
-            <Grid item>
-              <a href={addingClient.toString()}>
-                <Button variant="contained" startIcon={<AddIcon />}>
-                  Add
-                </Button>
-              </a>
-            </Grid>
-          </Grid>
-          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-        </Grid>
-        <Grid item xs={12}>
-          <Card>
-            <DataGrid
-              autoHeight
-              checkboxSelection
-              disableColumnMenu
-              disableRowSelectionOnClick
-              density="comfortable"
-              getRowId={row => row.clientID}
-              rows={clients}
-              columns={columns}
-              slots={{
-                toolbar: GridToolbar,
-                noRowsOverlay: CustomNoRowsOverlay
-              }}
-              slotProps={{
-                toolbar: {
-                  showQuickFilter: true,
-                  printOptions: {disableToolbarButton: true},
-                  csvOptions: {disableToolbarButton: true}
-                }
-              }}
-              initialState={{
-                pagination: {
-                  paginationModel: {page: 0, pageSize: 10}
-                }
-              }}
-              pageSizeOptions={[10, 25, 50]}
-            />
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+      <BaseDataGrid
+        getRowId={row => row.clientID}
+        rows={clients}
+        columns={columns}
+        noRowsOverlay={CustomNoRowsOverlay}
+        onRowClick={params =>
+          window.history.pushState(
+            {},
+            '',
+            '/#!/clients/edit/' + params.row['_id']
+          )
+        }
+      />
+    </BasePageTemplate>
+    </>
+    
   )
 }
 
