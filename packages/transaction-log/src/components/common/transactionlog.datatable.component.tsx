@@ -24,7 +24,8 @@ import StatusButton from '../buttons/status.button.component'
 import {AnimatedTableRow} from './animated.table.row.component'
 import {Transaction} from '../../types'
 import {tr} from 'date-fns/locale'
-
+import AutorenewIcon from '@mui/icons-material/Autorenew'
+import RefreshIcon from '@mui/icons-material/Refresh'
 const TransactionLogTable: React.FC<{
   transactions: Transaction[]
   loadMore: () => void
@@ -179,12 +180,21 @@ const TransactionLogTable: React.FC<{
                     <TableCell
                       padding="checkbox"
                       className="non-clickable-column"
-                      sx={{borderBottom: 'none'}}
+                      sx={{
+                        borderBottom: 'none',
+                        height: '100%',
+                        minWidth: '100px',
+                        width: '100px'
+                      }}
                     >
-                      <Checkbox
-                        checked={selectedRows.has(transaction)}
-                        onChange={() => handleRowSelect(transaction)}
-                      />
+                      <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        <Checkbox
+                          checked={selectedRows.has(transaction)}
+                          onChange={() => handleRowSelect(transaction)}
+                        />
+                        {transaction.childIDs.length > 0 && <RefreshIcon />}
+                        {transaction.parentID && <AutorenewIcon />}
+                      </Box>
                     </TableCell>
                     <TableCell sx={{borderBottom: 'none'}}>
                       <IconButton
