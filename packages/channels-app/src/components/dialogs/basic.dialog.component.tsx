@@ -8,6 +8,7 @@ export type BasicDialogProps = {
   children: React.ReactNode
   size?: DialogProps['maxWidth']
   defaultContentWrapper?: boolean
+  sx?: DialogProps['sx']
 }
 
 export function BasicDialog(props: BasicDialogProps) {
@@ -16,6 +17,7 @@ export function BasicDialog(props: BasicDialogProps) {
       open={props.open}
       onClose={props.onClose}
       maxWidth={props.size ?? 'lg'}
+      sx={props.sx}
     >
       {props.title && <DialogTitle>{props.title}</DialogTitle>}
       <DialogContent>{props.children}</DialogContent>

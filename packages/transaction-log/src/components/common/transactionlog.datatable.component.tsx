@@ -26,24 +26,20 @@ import {Transaction} from '../../types'
 import {tr} from 'date-fns/locale'
 import AutorenewIcon from '@mui/icons-material/Autorenew'
 import RefreshIcon from '@mui/icons-material/Refresh'
-const TransactionLogTable: React.FC<{
-  transactions: Transaction[]
-  loadMore: () => void
-  loading: boolean
-  initialTransactionLoadComplete: boolean
-  onRowClick: (transaction: any) => void
-  onSelectedChange(transactions: Transaction[]): void
-}> = ({
+import {TransactionLogTableProps} from '../../interfaces/index.interface'
+
+const TransactionLogTable: React.FC<TransactionLogTableProps> = ({
   transactions,
   loadMore,
   onRowClick,
   loading,
   initialTransactionLoadComplete,
-  onSelectedChange
+  onSelectedChange,
+  onAutoUpdateChange
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openInNewTab, setOpenInNewTab] = useState(false)
-  const [autoUpdate, setAutoUpdate] = useState(false)
+  const [autoUpdate, setAutoUpdate] = useState(true)
   const [selectedRows, setSelectedRows] = useState<Set<Transaction>>(
     new Set([])
   )
@@ -91,6 +87,10 @@ const TransactionLogTable: React.FC<{
     }
     setSelectAll(!selectAll)
   }
+
+  useEffect(() => {
+    onAutoUpdateChange(autoUpdate)
+  }, [autoUpdate, onAutoUpdateChange])
 
   return (
     <Box>

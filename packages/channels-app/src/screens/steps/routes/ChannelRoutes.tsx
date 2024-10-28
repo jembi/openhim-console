@@ -80,7 +80,8 @@ export function ChannelRoutes(props: {
         onCancel={hideBasicDialog}
       />,
       undefined,
-      'sm'
+      'sm',
+      {paddingX: 0}
     )
   }
 
