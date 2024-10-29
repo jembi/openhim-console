@@ -159,21 +159,6 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
           }
           label="Display in Portal Apps Shelf"
         />
-        <FormControlLabel
-          control={
-            <Switch
-              name="showInSideBar"
-              id="showInSideBar"
-              sx={{'& .MuiSvgIcon-root': {fontSize: 18}}}
-              onChange={e => {
-                setShowInSideBarValue(e.target.checked)
-                handleChange(e)
-              }}
-              checked={values.showInSideBar}
-            />
-          }
-          label="Display in Sidebar Menu"
-        />
       </FormGroup>
     </>
   )
