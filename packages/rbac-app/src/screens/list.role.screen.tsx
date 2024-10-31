@@ -204,17 +204,30 @@ function UserRoleList() {
   ]
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
-    >
-      <Typography variant="h4" gutterBottom>
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontSmooth: 'never',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale'
+        }}
+      >
         Manage User Roles
       </Typography>
 
       <Grid container>
         <Grid item xs={11}>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             Easily assign and manage roles and permissions to users by selecting
             a role, viewing and editing its permissions, or creating a new role
             with customized permissions.

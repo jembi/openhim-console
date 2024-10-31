@@ -13,10 +13,7 @@ import {
 } from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {ClientRole} from '../../interface'
-import {
-  getAllClientsAndChannels,
-  upsertRole
-} from '../../utils'
+import {getAllClientsAndChannels, upsertRole} from '../../utils'
 import {AxiosError} from 'axios'
 import {useSnackbar} from 'notistack'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
@@ -159,12 +156,28 @@ export const ClientRoleForm = () => {
     <Box padding={1}>
       <Grid container spacing={2} padding={2}>
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             {existingClientRole
               ? pageHeadingTypography.editClientUserRole.heading
               : pageHeadingTypography.addClientUserRole.heading}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             {existingClientRole
               ? pageHeadingTypography.editClientUserRole.caption
               : pageHeadingTypography.addClientUserRole.caption}

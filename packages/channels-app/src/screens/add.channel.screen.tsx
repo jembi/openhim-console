@@ -106,7 +106,16 @@ function AddChannelScreen() {
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <header style={{marginBottom: '24px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
+        >
           Add Channel
         </Typography>
         <Typography
@@ -114,6 +123,11 @@ function AddChannelScreen() {
           fontSize={16}
           gutterBottom
           fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
         >
           Control client systems and their access roles. Add clients to enable
           their request routing and group them by roles for streamlined channel

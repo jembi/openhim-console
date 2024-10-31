@@ -67,7 +67,16 @@ function AddUserRole() {
   return (
     <Box padding={3}>
       <header style={{marginBottom: '10px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
+        >
           Add User
         </Typography>
         <Typography
@@ -75,6 +84,11 @@ function AddUserRole() {
           fontSize={16}
           gutterBottom
           fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
         >
           Control client systems and their access roles. Add clients to enable
           their request routing and group them by roles for streamlined channel

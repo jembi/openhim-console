@@ -105,7 +105,16 @@ function EditUserRole() {
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <header style={{marginBottom: '40px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
+        >
           Edit User Role
         </Typography>
         <Typography
@@ -113,6 +122,11 @@ function EditUserRole() {
           fontSize={16}
           gutterBottom
           fontWeight={400}
+          sx={{
+            fontSmooth: 'never',
+            '-webkit-font-smoothing': 'antialiased',
+            '-moz-osx-font-smoothing': 'grayscale'
+          }}
         >
           Easily assign and manage roles and permissions to users by selecting a
           role, viewing and editing its permissions, or creating a new role with

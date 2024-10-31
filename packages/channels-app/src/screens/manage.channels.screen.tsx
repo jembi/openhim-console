@@ -220,13 +220,29 @@ const ManageChannelsScreen: React.FC = () => {
 
   return (
     <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontSmooth: 'never',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale'
+        }}
+      >
         Manage Channels
       </Typography>
 
       <Grid container>
         <Grid item xs={11}>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             Setup and control your channels.&nbsp;
             <a href="">How do channels work?</a>
           </Typography>

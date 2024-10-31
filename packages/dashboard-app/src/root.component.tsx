@@ -10,8 +10,7 @@ export default function Root() {
         <div
           style={{
             marginTop: '16px',
-            backgroundColor: '#F1F1F1',
-             
+            backgroundColor: '#F1F1F1'
           }}
         >
           <Charts />

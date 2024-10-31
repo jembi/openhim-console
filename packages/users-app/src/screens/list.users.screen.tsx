@@ -142,13 +142,29 @@ function UsersList() {
 
   return (
     <Box padding={3}>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontSmooth: 'never',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale'
+        }}
+      >
         Manager Users
       </Typography>
 
       <Grid container>
         <Grid item xs={11}>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             View and manage OpenHIM users, add new users and assign them
             specific roles to ensure appropriate access and functionality.
           </Typography>

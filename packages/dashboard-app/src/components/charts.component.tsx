@@ -59,12 +59,28 @@ export default function Charts() {
     <Box>
       <Grid container spacing={2} padding={2} fontFamily={'sans-serif'}>
         <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
+          <Typography
+            variant="h3"
+            fontSize={'32px'}
+            fontWeight={400}
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             Dashboard
           </Typography>
-          <p className={'subtitle'}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
+            }}
+          >
             An overview of recent transactions through your mediator.
-          </p>
+          </Typography>
           <Divider />
         </Grid>
         <Grid item xs={12}>

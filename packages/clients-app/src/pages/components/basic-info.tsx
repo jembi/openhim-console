@@ -137,7 +137,9 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
           />
         </Stack>
         <br />
-        <Typography variant="h6" sx={{fontWeight: 'bold'}}>Assign Existing Roles</Typography>
+        <Typography variant="h6" sx={{fontWeight: 'bold'}}>
+          Assign Existing Roles
+        </Typography>
         <Card elevation={0}>
           {validationErrors?.roles && (
             <p style={{color: '#FF0000'}}>No Role Selected for Client</p>
@@ -153,7 +155,6 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
             <br />
             {roles.map(role => (
               <FormControlLabel
-                
                 key={role}
                 control={
                   <Checkbox
@@ -162,7 +163,11 @@ export const BasicInfo: React.FC<BasicInfoProps> = ({
                     onChange={onCheckBoxChange}
                   />
                 }
-                label={<Typography sx={{fontSize: 13}} variant="body1">{role}</Typography>}
+                label={
+                  <Typography sx={{fontSize: 13}} variant="body1">
+                    {role}
+                  </Typography>
+                }
               />
             ))}
             {roles.length === 0 && <p>No roles available</p>}

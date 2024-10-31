@@ -309,10 +309,10 @@ export const Authentication: React.FC<AuthenticationProps> = ({
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
                     </InputAdornment>
                   )
                 }}
