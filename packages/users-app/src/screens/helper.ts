@@ -1,6 +1,6 @@
 import {SelectChangeEvent} from '@mui/material'
 import {User} from '../types'
-import {userSchema} from '../utils'
+import {basicInfoSchema} from '../utils'
 
 export function handleOnChange(
   nestedKey: string,
@@ -47,7 +47,7 @@ export function handleFieldValidationAndUpdateErrors(
   validationErrors: {[key: string]: string},
   setIsFormDataValid: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  const validate = userSchema.safeParse(newBasicInfoState || user)
+  const validate = basicInfoSchema.safeParse(newBasicInfoState || user)
   if (!validate.success) {
     const message = validate.error.errors.filter(
       error => error.path[0] === field

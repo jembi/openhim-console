@@ -69,7 +69,15 @@ export type User = {
   msisdn?: string
   dailyReport?: boolean
   weeklyReport?: boolean
-  settings?: Record<string, any>
+  settings?: {
+    list?: {
+      autoupdate: boolean
+      tabview: boolean
+    }
+    general?: {
+      showTooltips: boolean
+    }
+  }
   token?: string
   tokenType?: 'newUser' | 'existingUser' | null
   expiry?: Date
