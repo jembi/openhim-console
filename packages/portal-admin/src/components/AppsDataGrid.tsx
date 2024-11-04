@@ -197,21 +197,6 @@ const AppsDataGrid = () => {
       )
     },
     {
-      field: 'showInSideBar',
-      headerName: 'Show In Side Bar',
-      type: 'boolean',
-      renderCell: params => (
-        <Checkbox
-          disabled
-          checked={params.value}
-          icon={<VisibilityOffIcon />}
-          checkedIcon={<VisibilityIcon />}
-          name="showInSideBar"
-          inputProps={{'aria-label': 'Show In Side Bar'}}
-        />
-      )
-    },
-    {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
@@ -264,7 +249,16 @@ const AppsDataGrid = () => {
     try {
       setLoading(true)
       await getAllApps().then(apps => {
-        setApps(apps)
+        const mappings = {
+          internal: 'Built-in',
+          external: 'Shortcut',
+          esmodule: 'Extension'
+        }
+        const updatedApps = apps.map(app => ({
+          ...app,
+          type: mappings[app.type]
+        }))
+        setApps(updatedApps)
       })
     } catch (error) {
       enqueueSnackbar('Unable to fetch Apps', {variant: 'error'})
