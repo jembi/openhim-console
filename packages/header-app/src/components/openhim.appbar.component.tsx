@@ -203,12 +203,10 @@ export default function OpenhimAppBar() {
         index === pages.length - 1
           ? {
               ...page,
-              children: apps
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(app => ({
-                  name: app.name,
-                  link: `#!/` + app.url.split('/').pop().split('.')[0]
-                }))
+              children: apps.sort((a, b) => a.name.localeCompare(b.name)).map(app => ({
+                name: app.name,
+                link: app.type === 'esmodule' ? `#!/` + app.url.split('/').pop().split('.')[0] : app.url
+              }))
             }
           : page
       )

@@ -21,6 +21,7 @@ export interface UserProfile {
 export interface App {
   _id: string
   name: string
+  type: 'esmodule' | 'external'
   url: string
 }
 
