@@ -29,6 +29,7 @@ import {defaultRole} from '../utils'
 import {AdditionalPermissionsStep} from './steps/additional.permissions.step'
 import {ChannelsClientsStep} from './steps/channels.and.clients.step'
 import {TransactionsUsersMediatorsStep} from './steps/transactions.and.users.step'
+import {BasePageTemplate} from '../../../base-components'
 
 const steps = [
   'Channels & Clients',
@@ -102,32 +103,10 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{marginBottom: '10px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
-          Add User Role
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          fontSize={16}
-          gutterBottom
-          fontWeight={400}
-        >
-          Easily assign and manage roles and permissions to users by selecting a
-          role, viewing and editing its permissions, or creating a new role with
-          customized permissions.
-          <br />
-          For more details instructions, visit out{' '}
-          <a
-            style={{color: 'grey'}}
-            href="https://openhim.org/docs/introduction/about"
-          >
-            Help Section
-          </a>
-          .
-        </Typography>
-      </header>
-
+    <BasePageTemplate
+      title="Add User Role"
+      subtitle="Easily assign and manage roles and permissions to users by selecting a role, viewing and editing its permissions, or creating a new role with customized permissions."
+    >
       <Grid
         container
         direction="column"
@@ -218,7 +197,7 @@ function AddUserRole() {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

@@ -29,8 +29,8 @@ export const ListRoles = () => {
     {field: 'clients', headerName: 'Clients', flex: 0.65},
     {field: 'channels', headerName: 'Channels', flex: 1},
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: 'action',
+      headerName: 'Action',
       flex: 0.1,
       renderCell: () => (
         <div

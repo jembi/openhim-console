@@ -58,8 +58,8 @@ export function BaseDataGrid({
   return (
     <>
       <Paper
-        elevation={4}
-        sx={{paddingX: '15px', borderRadius: '12px', paddingTop: '30px'}}
+        elevation={2}
+        sx={{paddingX: '15px', borderRadius: '4px', paddingTop: '30px'}}
       >
         <DataGrid
           getRowId={getRowId}
@@ -67,8 +67,11 @@ export function BaseDataGrid({
           checkboxSelection
           disableRowSelectionOnClick
           sx={{
-            '&, [class^=MuiDataGrid]': {border: 'none'},
-            '--DataGrid-containerBackground': '#f8f8f8'
+            '.css-1iyq7zh-MuiDataGrid-columnHeaders': {
+              backgroundColor: '#f8f8f8',
+              borderRadius: '8px'
+            },
+            '&, [class^=MuiDataGrid]': {border: 'none'}
           }}
           rows={rows}
           onRowClick={onRowClick}

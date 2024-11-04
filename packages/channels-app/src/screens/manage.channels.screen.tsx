@@ -28,7 +28,7 @@ import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {getChannels, modifyChannel} from '../services/api'
 import {Channel, ChannelStatus} from '../types'
-
+import {BasePageTemplate} from '../../../base-components'
 const useStyles = makeStyles(_theme => ({
   actionsIcon: {
     marginRight: '10px'
@@ -219,34 +219,25 @@ const ManageChannelsScreen: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <Typography variant="h4" gutterBottom>
-        Manage Channels
-      </Typography>
-
-      <Grid container>
-        <Grid item xs={11}>
-          <Typography variant="subtitle1" gutterBottom>
-            Setup and control your channels.&nbsp;
-            <a href="">How do channels work?</a>
-          </Typography>
-        </Grid>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              href="/#!/channels/create-channel"
-            >
-              Add
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-
+    <BasePageTemplate
+      title="Manage Channels"
+      subtitle={
+        <>
+          Setup and control your channels. 
+          <a href="https://openhim.org/docs/configuration/channels">How do channels work?</a>
+        </>
+      }
+      button={
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          href="/#!/channels/create-channel"
+        >
+          Add
+        </Button>
+      }
+    >
       <Paper
         elevation={4}
         sx={{paddingX: '25px'}}
@@ -280,7 +271,7 @@ const ManageChannelsScreen: React.FC = () => {
           }}
         />
       </Paper>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

@@ -54,14 +54,31 @@ const ClientsList = () => {
   }, [])
 
   const columns: GridColDef[] = [
-    {field: 'clientID', headerName: 'ID', flex: 1},
+    {field: 'clientID', headerName: 'ID', flex: 0.7},
     {field: 'name', headerName: 'Name', flex: 1},
-    {field: 'organization', headerName: 'Organization', flex: 0.7},
-    {field: 'softwareName', headerName: 'Software Name', flex: 0.7},
-    {field: 'description', headerName: 'Description', flex: 0.6},
-    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.6},
+    {field: 'organization', headerName: 'Organization', flex: 0.5},
+    {field: 'softwareName', headerName: 'Software Name', flex: 0.5},
+    {field: 'description', headerName: 'Description', flex: 0.5},
+    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.5},
     {field: 'clientDomain', headerName: 'Domain', flex: 0.5},
     {field: 'roles', headerName: 'Roles', flex: 0.6},
+    {
+      field: 'action',
+      headerName: 'Action',
+      flex: 0.3,
+      renderCell: () => (
+        <div
+          style={{
+            padding: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <CreateIcon style={{cursor: 'pointer'}} />
+        </div>
+      )
+    }
   ]
 
   const CustomNoRowsOverlay = () => {

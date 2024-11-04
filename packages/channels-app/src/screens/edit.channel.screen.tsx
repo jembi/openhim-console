@@ -14,6 +14,7 @@ import {Channel, Routes} from '../types'
 import {BasicInfo} from './steps/BasicInfo'
 import {RequestMatching} from './steps/RequestMatching'
 import {ChannelRoutes} from './steps/routes/ChannelRoutes'
+import {BasePageTemplate} from '../../../base-components'
 
 function EditChannelScreen() {
   const navigate = useNavigate()
@@ -61,23 +62,10 @@ function EditChannelScreen() {
   }
 
   return (
-    <Box padding={1} sx={{backgroundColor: '#F1F1F1'}}>
-      <header style={{marginBottom: '24px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
-          Edit Channel
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          fontSize={16}
-          gutterBottom
-          fontWeight={400}
-        >
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          accesss managment.
-        </Typography>
-      </header>
-
+    <BasePageTemplate
+      title="Edit Channel"
+      subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel accesss managment."
+    >
       <Grid
         container
         direction="column"
@@ -152,7 +140,7 @@ function EditChannelScreen() {
           </Paper>
         </Grid>
       </Grid>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

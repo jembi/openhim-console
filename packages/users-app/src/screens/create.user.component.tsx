@@ -21,6 +21,7 @@ import {defaultUser, getNestedProp} from '../utils'
 import {BasicInfo} from '../components/common/basic.info.component'
 import {userSchema} from '../utils'
 import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
+import {BasePageTemplate} from '../../../base-components'
 
 function AddUserRole() {
   const navigate = useNavigate()
@@ -88,24 +89,10 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3}>
-      <header style={{marginBottom: '10px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
-          Add User
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          fontSize={16}
-          gutterBottom
-          fontWeight={400}
-        >
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          management.
-        </Typography>
-        <Divider />
-      </header>
-
+    <BasePageTemplate
+      title="Add User"
+      subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel management."
+    >
       <Grid
         container
         direction="column"
@@ -152,7 +139,7 @@ function AddUserRole() {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

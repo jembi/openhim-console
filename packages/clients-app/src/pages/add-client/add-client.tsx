@@ -25,6 +25,7 @@ import CryptoJS from 'crypto-js'
 import './style.css'
 import {AxiosError} from 'axios'
 import {useSnackbar} from 'notistack'
+import { BasePageTemplate } from '../../../../base-components'
 
 export const AddClient = () => {
   //TODO: Make sure that there is a safe guard when incrementing this value to prevent it from going over the number of steps
@@ -193,21 +194,11 @@ export const AddClient = () => {
   }
 
   return (
-    <Box padding={1}>
-      <Grid container spacing={2} padding={2}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            Add Client
-          </Typography>
-
-          <Typography variant="subtitle1" gutterBottom>
-            Control client systems and their access roles. Add clients to enable
-            their request routing and group them by roles for streamlined
-            channel access management
-          </Typography>
-          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-        </Grid>
-
+    <>
+      <BasePageTemplate
+        title="Add Client"
+        subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel access management"
+      >
         <Grid item xs={12}>
           <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
             <Box>
@@ -270,7 +261,7 @@ export const AddClient = () => {
             </Box>
           </Card>
         </Grid>
-      </Grid>
-    </Box>
+      </BasePageTemplate>
+    </>
   )
 }
