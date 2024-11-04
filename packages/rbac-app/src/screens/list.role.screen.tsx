@@ -209,7 +209,7 @@ function UserRoleList() {
       sx={{backgroundColor: '#F1F1F1'}}
     >
       <Typography variant="h4" gutterBottom>
-        User Roles List
+        Manage User Roles
       </Typography>
 
       <Grid container>

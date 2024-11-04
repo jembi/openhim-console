@@ -2,7 +2,8 @@ import {
   BasicFilterProps,
   CustomFilterProps,
   CustomizeDialogProps,
-  SettingsDialogProps
+  SettingsDialogProps,
+  TransactionLogTableProps
 } from './index.interface'
 import {Channel, Client} from '../types'
 
@@ -66,10 +67,26 @@ const customizeDialogProps: CustomizeDialogProps = {
   open: true,
   onClose: () => {},
   onApply: () => {},
-  visibleFilters: {status: true, channel: false},
+  visibleFilters: {
+    status: true,
+    statusCode: true,
+    channel: true,
+    startDate: true,
+    endDate: true,
+    limit: true,
+    reruns: true,
+    host: true,
+    port: true,
+    path: true,
+    param: true,
+    client: true,
+    method: true
+  },
   handleFilterVisibilityChange: (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => {}
+  ) => {},
+  onRestoreDefaults: () => {},
+  isDefaultState: true
 }
 
 const settingsDialogProps: SettingsDialogProps = {
@@ -113,3 +130,13 @@ describe('Interface Conformance Tests', () => {
     expect(typeof settingsDialogProps.setAutoUpdate).toBe('function')
   })
 })
+
+const transactionLogTableProps: TransactionLogTableProps = {
+  transactions: [],
+  loadMore: () => {},
+  loading: false,
+  initialTransactionLoadComplete: true,
+  onRowClick: () => {},
+  onSelectedChange: () => {},
+  onAutoUpdateChange: (value: boolean) => {}
+}

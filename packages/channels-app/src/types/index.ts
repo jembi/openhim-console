@@ -30,9 +30,10 @@ export type ChannelRouteType = 'http' | 'kafka'
 export type ChannelRouteStatus = 'enabled' | 'disabled'
 
 export type ChannelRoute = {
+  _id?: string
   name: string
   type?: ChannelRouteType
-  cert?: string // Assuming ObjectId is represented as a string
+  cert?: string
   status?: ChannelRouteStatus
   secured?: boolean
   host?: string

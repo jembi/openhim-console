@@ -70,6 +70,7 @@ const App: React.FC = () => {
   let lastPollingComplete = true
   let lastUpdated
   let serverDifferenceTime
+  const [autoUpdate, setAutoUpdate] = useState(true)
 
   const getFilters = (timestampFilter?: string) => {
     const filters: {[key: string]: any} = {}
@@ -271,40 +272,42 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (timestampFilter && !startDate && !endDate) {
-      ;(async () => {
-        lastPollingComplete = false
-        await fetchTransactionLogs(timestampFilter)
-        lastPollingComplete = true
-      })()
-    }
+    if (autoUpdate) {
+      if (timestampFilter && !startDate && !endDate) {
+        ;(async () => {
+          lastPollingComplete = false
+          await fetchTransactionLogs(timestampFilter)
+          lastPollingComplete = true
+        })()
+      }
 
-    const listOfProcessingTransactions = transactions.filter(
-      transaction => transaction.status === 'Processing'
-    )
-
-    if (listOfProcessingTransactions.length > 0) {
-      const transactionIds = listOfProcessingTransactions.map(
-        transaction => transaction._id
+      const listOfProcessingTransactions = transactions.filter(
+        transaction => transaction.status === 'Processing'
       )
-      ;(async () => {
-        const updatedTransactions = await Promise.all(
-          transactionIds.map(getTransactionById)
-        )
 
-        setTransactions(prevTransactions => {
-          const newTransactionListState = [...prevTransactions]
-          updatedTransactions.forEach(transaction => {
-            const processingTransaction = newTransactionListState.find(
-              t => t._id === transaction._id
-            )
-            if (processingTransaction) {
-              processingTransaction.status = transaction.status
-            }
+      if (listOfProcessingTransactions.length > 0) {
+        const transactionIds = listOfProcessingTransactions.map(
+          transaction => transaction._id
+        )
+        ;(async () => {
+          const updatedTransactions = await Promise.all(
+            transactionIds.map(getTransactionById)
+          )
+
+          setTransactions(prevTransactions => {
+            const newTransactionListState = [...prevTransactions]
+            updatedTransactions.forEach(transaction => {
+              const processingTransaction = newTransactionListState.find(
+                t => t._id === transaction._id
+              )
+              if (processingTransaction) {
+                processingTransaction.status = transaction.status
+              }
+            })
+            return newTransactionListState
           })
-          return newTransactionListState
-        })
-      })()
+        })()
+      }
     }
   }, [timestampFilter, fetchTransactionLogs])
 
@@ -498,22 +501,29 @@ const App: React.FC = () => {
     console.log('Transaction clicked:', transaction)
   }
 
+  const handleAutoUpdateChange = (newAutoUpdate: boolean) => {
+    setAutoUpdate(newAutoUpdate)
+  }
+
   if (httpError) {
     return <ErrorMessage onRetry={fetchTransactionLogs} />
   }
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
-    >
+    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
       <Box>
         <Grid item xs={12}>
           <Box>
             <Typography variant="h4">Transaction Log</Typography>
           </Box>
           <Box>
-            <Typography variant="subtitle1">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color:
+                  'var(--Light-Text-Secondary, var(--text-secondary, rgba(0, 0, 0, 0.60)))'
+              }}
+            >
               A log of the recent transactions through the system. Use Basic or
               Advanced filters to find specific transactions to investigate or
               rerun. Use settings to modify the list behaviour.
@@ -536,7 +546,7 @@ const App: React.FC = () => {
               >
                 <Tab
                   label="Basic Filters"
-                  sx={{color: tabValue === 0 ? '#54C4A4' : '#54C4A4'}}
+                  sx={{color: tabValue === 0 ? '#54C4A4' : 'inherit'}}
                 />
                 <Tab
                   label="Custom Filters"
@@ -614,6 +624,7 @@ const App: React.FC = () => {
               initialTransactionLoadComplete={initialTransactionLoadComplete}
               onRowClick={handleRowClick}
               onSelectedChange={setSelectedTransactions}
+              onAutoUpdateChange={handleAutoUpdateChange}
             />
           </CardContent>
         </Card>

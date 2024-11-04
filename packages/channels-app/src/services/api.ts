@@ -37,6 +37,11 @@ export async function addChannel(channel: Channel): Promise<void> {
       channelPayload.urlPattern = `^${channelPayload.urlPattern.trim()}$`
     }
 
+    // make sure _id is not included in the routes payload
+    for (const route of channelPayload.routes ?? []) {
+      delete route._id
+    }
+
     await createChannel(channelPayload)
   } catch (err) {
     console.error(err)

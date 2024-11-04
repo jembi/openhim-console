@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -15,6 +16,7 @@ import React from 'react'
 import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
 const defaultRoute: ChannelRouteDef = {
+  status: 'enabled',
   name: '',
   type: 'http'
 }
@@ -25,18 +27,27 @@ export function ChannelRoute(props: {
   onCancel?: () => unknown
 }) {
   const isEditMode = !!props.route
+  const [isFormTouched, setFormIsTouched] = React.useState(false)
   const isCreateMode = !isEditMode
   const [route, setRoute] = React.useState(
-    structuredClone(props.route ?? defaultRoute)
+    structuredClone(
+      props.route ?? {...defaultRoute, _id: Math.random().toString()}
+    )
   )
 
   return (
     <Box>
-      <Typography variant="h5">
+      <Typography variant="h5" sx={{pb: '10px'}}>
         {isCreateMode ? 'Add New Route' : 'Edit Route'}
       </Typography>
 
-      <Grid container spacing={2}>
+      <Divider />
+
+      <Grid spacing={1} container sx={{pt: '10px'}}>
+        <Grid item xs={12}>
+          <Typography variant="h6">Essential Details</Typography>
+        </Grid>
+
         <Grid item xs={12}>
           <TextField
             label="Route Name"
@@ -44,117 +55,21 @@ export function ChannelRoute(props: {
             fullWidth
             margin="normal"
             value={route.name}
-            onChange={e => setRoute({...route, name: e.target.value})}
-            error={route.name.trim() === ''}
+            onChange={e => {
+              setFormIsTouched(true)
+              setRoute({...route, name: e.target.value})
+            }}
+            error={route.name.trim() === '' && isFormTouched}
             helperText={
-              route.name.trim() === ''
+              route.name.trim() === '' && isFormTouched
                 ? 'Route Name cannot be empty'
                 : undefined
             }
           />
         </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={route.primary}
-                onChange={e => setRoute({...route, primary: e.target.checked})}
-              />
-            }
-            label="Primary Route?"
-          />
-          <FormHelperText style={{marginLeft: '45px'}}>
-            Toggle on if this is the primary route.
-          </FormHelperText>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={route.waitPrimaryResponse}
-                onChange={e =>
-                  setRoute({...route, waitPrimaryResponse: e.target.checked})
-                }
-              />
-            }
-            label="Wait for Primary Response?"
-          />
-          <FormHelperText style={{marginLeft: '45px'}}>
-            Toggle on to wait for the response from the primary route before
-            proceeding.
-          </FormHelperText>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={route.status === 'enabled'}
-                onChange={e =>
-                  setRoute({
-                    ...route,
-                    status: e.target.checked ? 'enabled' : 'disabled'
-                  })
-                }
-              />
-            }
-            label="Status"
-          />
-          <FormHelperText style={{marginLeft: '45px'}}>
-            Toggle on to enable this route.
-          </FormHelperText>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={2}>
-              <Typography variant="subtitle1">Route Type</Typography>
-            </Grid>
-            <Grid item xs={10}>
-              <RadioGroup
-                style={{paddingLeft: '10px'}}
-                defaultValue="http"
-                value={route.type}
-                row
-                onChange={e =>
-                  setRoute({
-                    ...route,
-                    type: e.target.value as ChannelRouteType
-                  })
-                }
-              >
-                <FormControlLabel
-                  value="http"
-                  control={<Radio />}
-                  label="HTTP"
-                />
-                <FormControlLabel
-                  value="kafka"
-                  control={<Radio />}
-                  label="KAFKA"
-                />
-              </RadioGroup>
-            </Grid>
-          </Grid>
-        </Grid>
 
         {route.type === 'http' && (
           <React.Fragment key="http">
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={route.secured}
-                    onChange={e =>
-                      setRoute({...route, secured: e.target.checked})
-                    }
-                  />
-                }
-                label="Secured Route?"
-              />
-              <FormHelperText style={{marginLeft: '45px'}}>
-                Toggle on if the route is secured. Uses default certificate
-                authority.
-              </FormHelperText>
-            </Grid>
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -239,23 +154,6 @@ export function ChannelRoute(props: {
                 </Grid>
               </Grid>
             </Grid>
-
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={route.forwardAuthHeader}
-                    onChange={e =>
-                      setRoute({...route, forwardAuthHeader: e.target.checked})
-                    }
-                  />
-                }
-                label="Forward Auth Header?"
-              />
-              <FormHelperText style={{marginLeft: '45px'}}>
-                Toggle on to foward the existing authorization header
-              </FormHelperText>
-            </Grid>
           </React.Fragment>
         )}
 
@@ -292,15 +190,131 @@ export function ChannelRoute(props: {
           </React.Fragment>
         )}
 
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={route.status === 'enabled'}
+                onChange={e =>
+                  setRoute({
+                    ...route,
+                    status: e.target.checked ? 'enabled' : 'disabled'
+                  })
+                }
+              />
+            }
+            label="Enable Route"
+          />
+          <FormHelperText style={{marginLeft: '45px'}}>
+            Toggle on to enable this route.
+          </FormHelperText>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h6">Route Type</Typography>
+          <RadioGroup
+            style={{paddingLeft: '10px'}}
+            defaultValue="http"
+            value={route.type}
+            onChange={e =>
+              setRoute({
+                ...route,
+                type: e.target.value as ChannelRouteType
+              })
+            }
+          >
+            <FormControlLabel value="http" control={<Radio />} label="HTTP" />
+            <FormControlLabel value="kafka" control={<Radio />} label="KAFKA" />
+          </RadioGroup>
+        </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Typography variant="h6">Settings</Typography>
+        <FormHelperText>Choose all that apply.</FormHelperText>
+      </Grid>
+
+      {route.type === 'http' && (
+        <React.Fragment>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={route.primary}
+                  onChange={e =>
+                    setRoute({...route, primary: e.target.checked})
+                  }
+                />
+              }
+              label="Primary Route?"
+            />
+            <FormHelperText style={{marginLeft: '45px'}}>
+              Toggle on if this is the primary route.
+            </FormHelperText>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={route.waitPrimaryResponse}
+                  onChange={e =>
+                    setRoute({...route, waitPrimaryResponse: e.target.checked})
+                  }
+                />
+              }
+              label="Wait for Primary Response?"
+            />
+            <FormHelperText style={{marginLeft: '45px'}}>
+              Toggle on to wait for the response from the primary route before
+              proceeding.
+            </FormHelperText>
+          </Grid>
+        </React.Fragment>
+      )}
+
+      <Grid item xs={12}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={route.secured}
+              onChange={e => setRoute({...route, secured: e.target.checked})}
+            />
+          }
+          label="Secured Route?"
+        />
+        <FormHelperText style={{marginLeft: '45px'}}>
+          Toggle on if the route is secured. Uses default certificate authority.
+        </FormHelperText>
+      </Grid>
+
+      <Grid item xs={12}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={route.forwardAuthHeader}
+              onChange={e =>
+                setRoute({
+                  ...route,
+                  forwardAuthHeader: e.target.checked
+                })
+              }
+            />
+          }
+          label="Forward Auth Header?"
+        />
+        <FormHelperText style={{marginLeft: '45px'}}>
+          Toggle on to foward the existing authorization header
+        </FormHelperText>
+      </Grid>
+
+      <Divider sx={{pt: '10px'}} />
+
+      <Grid container>
         <Grid item xs={6}></Grid>
         <Grid item xs={6}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} sx={{pt: '20px'}}>
             <Grid item xs={6}>
-              <Button
-                variant="text"
-                color="info"
-                onClick={() => props.onCancel?.()}
-              >
+              <Button variant="text" color="info" onClick={props.onCancel}>
                 CANCEL
               </Button>
             </Grid>

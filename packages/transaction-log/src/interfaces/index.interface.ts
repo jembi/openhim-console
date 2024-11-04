@@ -1,4 +1,4 @@
-import {Channel, Client} from '../types'
+import {Channel, Client, Transaction} from '../types'
 
 export interface BasicFilterProps {
   status: string
@@ -65,10 +65,26 @@ export interface CustomizeDialogProps {
   open: boolean
   onClose: () => void
   onApply: () => void
-  visibleFilters: {[key: string]: boolean}
+  visibleFilters: {
+    status: boolean
+    statusCode: boolean
+    channel: boolean
+    startDate: boolean
+    endDate: boolean
+    limit: boolean
+    reruns: boolean
+    host: boolean
+    port: boolean
+    path: boolean
+    param: boolean
+    client: boolean
+    method: boolean
+  }
   handleFilterVisibilityChange: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void
+  onRestoreDefaults: () => void
+  isDefaultState: boolean
 }
 
 export interface SettingsDialogProps {
@@ -84,4 +100,14 @@ export interface SettingsDialogProps {
 export interface StatusButtonProps {
   status: string
   buttonText: string
+}
+
+export interface TransactionLogTableProps {
+  transactions: Transaction[]
+  loadMore: () => void
+  loading: boolean
+  initialTransactionLoadComplete: boolean
+  onRowClick: (transaction: any) => void
+  onSelectedChange(transactions: Transaction[]): void
+  onAutoUpdateChange: (newAutoUpdate: boolean) => void
 }

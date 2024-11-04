@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -21,6 +21,20 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   autoUpdate,
   setAutoUpdate
 }) => {
+  const [localOpenInNewTab, setLocalOpenInNewTab] = useState(openInNewTab)
+  const [localAutoUpdate, setLocalAutoUpdate] = useState(autoUpdate)
+
+  useEffect(() => {
+    setLocalOpenInNewTab(openInNewTab)
+    setLocalAutoUpdate(autoUpdate)
+  }, [open, openInNewTab, autoUpdate])
+
+  const handleApply = () => {
+    setOpenInNewTab(localOpenInNewTab)
+    setAutoUpdate(localAutoUpdate)
+    onApply()
+  }
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle variant="h6">Set the transaction list behaviour</DialogTitle>
@@ -30,8 +44,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             <FormControlLabel
               control={
                 <Switch
-                  checked={openInNewTab}
-                  onChange={e => setOpenInNewTab(e.target.checked)}
+                  checked={localOpenInNewTab}
+                  onChange={e => setLocalOpenInNewTab(e.target.checked)}
                 />
               }
               label="Open transactions in a new tab"
@@ -41,8 +55,8 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
             <FormControlLabel
               control={
                 <Switch
-                  checked={autoUpdate}
-                  onChange={e => setAutoUpdate(e.target.checked)}
+                  checked={localAutoUpdate}
+                  onChange={e => setLocalAutoUpdate(e.target.checked)}
                 />
               }
               label="Auto-update transaction list with new entries"
@@ -54,7 +68,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         <Button onClick={onClose} color="primary">
           CANCEL
         </Button>
-        <Button onClick={onApply} color="primary">
+        <Button onClick={handleApply} color="primary">
           APPLY
         </Button>
       </DialogActions>
