@@ -38,7 +38,10 @@ export function BasePageTemplate({
               fontFamily: 'Fira Sans',
               color: alpha('#000', 0.87),
               textAlign: 'left',
-              display: 'inline-block'
+              display: 'inline-block',
+              fontSmooth: 'never',
+              '-webkit-font-smoothing': 'antialiased',
+              '-moz-osx-font-smoothing': 'grayscale'
             }}
           >
             {title}
@@ -55,7 +58,12 @@ export function BasePageTemplate({
               <Typography
                 variant="subtitle1"
                 gutterBottom
-                sx={{color: alpha('#000', 0.6)}}
+                sx={{
+                  color: alpha('#000', 0.6),
+                  fontSmooth: 'never',
+                  '-webkit-font-smoothing': 'antialiased',
+                  '-moz-osx-font-smoothing': 'grayscale'
+                }}
               >
                 {subtitle}
               </Typography>
