@@ -196,27 +196,11 @@ export const AddClient = () => {
     <Box padding={1}>
       <Grid container spacing={2} padding={2}>
         <Grid item xs={12}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              fontSmooth: 'never',
-              '-webkit-font-smoothing': 'antialiased',
-              '-moz-osx-font-smoothing': 'grayscale'
-            }}
-          >
+          <Typography variant="h4" gutterBottom>
             Add Client
           </Typography>
 
-          <Typography
-            variant="subtitle1"
-            gutterBottom
-            sx={{
-              fontSmooth: 'never',
-              '-webkit-font-smoothing': 'antialiased',
-              '-moz-osx-font-smoothing': 'grayscale'
-            }}
-          >
+          <Typography variant="subtitle1" gutterBottom>
             Control client systems and their access roles. Add clients to enable
             their request routing and group them by roles for streamlined
             channel access management

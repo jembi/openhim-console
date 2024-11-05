@@ -44,14 +44,7 @@ export const ListRoles = () => {
       headerName: 'Actions',
       flex: 0.1,
       renderCell: () => (
-        <div
-          style={{
-            padding: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
+        <div style={{padding:8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <CreateIcon style={{cursor: 'pointer'}} />
         </div>
       )
@@ -98,15 +91,7 @@ export const ListRoles = () => {
     <Box padding={1}>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              fontSmooth: 'never',
-              '-webkit-font-smoothing': 'antialiased',
-              '-moz-osx-font-smoothing': 'grayscale'
-            }}
-          >
+          <Typography variant="h4" gutterBottom>
             Manage Client Roles
           </Typography>
           <Grid
@@ -118,15 +103,7 @@ export const ListRoles = () => {
             }}
           >
             <Grid item>
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                sx={{
-                  fontSmooth: 'never',
-                  '-webkit-font-smoothing': 'antialiased',
-                  '-moz-osx-font-smoothing': 'grayscale'
-                }}
-              >
+              <Typography variant="subtitle1" gutterBottom>
                 Control client systems and their access roles. Add clients to
                 enable their request routing and group them by roles for
                 streamlined channel access management.
