@@ -37,16 +37,16 @@ const navbarTextStyle = {
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
-    {name: 'Home', link: '#!/portal'},
-    {name: 'Dashboard', link: '#!/dashboard'},
+    {name: 'HOME', link: '#!/portal'},
+    {name: 'DASHBOARD', link: '#!/dashboard'},
     {
-      name: 'Transactions',
+      name: 'TRANSACTIONS',
       link: '#!/transactions',
       permissions: ['transaction-view-all']
     },
-    {name: 'Channels', link: '#!/channels', permissions: ['channel-view-all']},
+    {name: 'CHANNELS', link: '#!/channels', permissions: ['channel-view-all']},
     {
-      name: 'Clients',
+      name: 'CLIENTS',
       permissions: ['client-view-all'],
       children: [
         {
@@ -73,7 +73,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'Users',
+      name: 'USERS',
       permissions: ['user-view'],
       children: [
         {name: 'Manage Users', link: '#!/users', permissions: ['user-manage']},
@@ -96,7 +96,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'More',
+      name: 'MORE',
       children: [
         {name: 'About', link: '#!/about'},
         {
@@ -144,7 +144,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'Apps',
+      name: 'APPS',
       children: []
     }
   ])
