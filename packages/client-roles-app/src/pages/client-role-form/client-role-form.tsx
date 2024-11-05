@@ -175,7 +175,7 @@ export const ClientRoleForm = () => {
               variant="outlined"
               helperText="Choose a short but descriptive name"
               aria-required="true"  
-+             aria-describedby="role-name-helper-text" 
+              aria-describedby="role-name-helper-text" 
               value={clientRole.roleName}
               onChange={e => {
                 setClientRole(prevClientRole => ({
