@@ -1,30 +1,15 @@
 import {
-  Box,
   Button,
-  Card,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  Paper,
   Typography
 } from '@mui/material'
 import {Client} from '../../types'
 import {
-  DataGrid,
-  GridActionsCellItem,
   GridColDef,
-  GridRowParams,
-  GridToolbar
 } from '@mui/x-data-grid'
 import {useEffect, useState} from 'react'
 import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
 import {BaseDataGrid, BasePageTemplate} from '../../../../base-components'
@@ -95,42 +80,42 @@ const ClientsList = () => {
         <Typography variant="h6" color="black" gutterBottom>
           No Clients Available
         </Typography>
-        <a href={addingClient.toString()}>
-          <Button startIcon={<AddIcon />} />
-        </a>
+
+        <Button href={addingClient.toString()} startIcon={<AddIcon />} />
       </div>
     )
   }
 
   return (
     <>
-    <BasePageTemplate
-      title="Manage Clients"
-      subtitle="Add clients to enable their request routing and group them by roles for streamlined channel access management."
-      button={
-        <a href={addingClient.toString()}>
-          <Button variant="contained" startIcon={<AddIcon />}>
+      <BasePageTemplate
+        title="Manage Clients"
+        subtitle="Add clients to enable their request routing and group them by roles for streamlined channel access management."
+        button={
+          <Button
+            variant="contained"
+            href={addingClient.toString()}
+            startIcon={<AddIcon />}
+          >
             Add
           </Button>
-        </a>
-      }
-    >
-      <BaseDataGrid
-        getRowId={row => row.clientID}
-        rows={clients}
-        columns={columns}
-        noRowsOverlay={CustomNoRowsOverlay}
-        onRowClick={params =>
-          window.history.pushState(
-            {},
-            '',
-            '/#!/clients/edit/' + params.row['_id']
-          )
         }
-      />
-    </BasePageTemplate>
+      >
+        <BaseDataGrid
+          getRowId={row => row.clientID}
+          rows={clients}
+          columns={columns}
+          noRowsOverlay={CustomNoRowsOverlay}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              '/#!/clients/edit/' + params.row['_id']
+            )
+          }
+        />
+      </BasePageTemplate>
     </>
-    
   )
 }
 

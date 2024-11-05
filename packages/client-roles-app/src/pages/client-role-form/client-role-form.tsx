@@ -167,13 +167,15 @@ export const ClientRoleForm = () => {
       }
     >
       <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
-        <Box sx={{margin: 1}}>
+        <Box sx={{margin: 1}} role="form" aria-label="Client Role Form">
           <FormControl sx={{m: 1, width: 580}}>
             <TextField
               id="role-name"
               label="Role Name"
               variant="outlined"
               helperText="Choose a short but descriptive name"
+              aria-required="true"  
++             aria-describedby="role-name-helper-text" 
               value={clientRole.roleName}
               onChange={e => {
                 setClientRole(prevClientRole => ({

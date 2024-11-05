@@ -9,8 +9,8 @@ import {
 } from '@mui/x-data-grid'
 import ErrorIcon from '@mui/icons-material/Error'
 
-interface BaseDataGridProps {
-  rows: any[]
+interface BaseDataGridProps <T> {
+  rows: T[]
   getRowId: (row: any) => any
   onRowClick?: (params: GridRowParams) => void
   columns: any[]
@@ -47,14 +47,14 @@ const DefaultNoRowsOverlay = () => {
   )
 }
 
-export function BaseDataGrid({
+export function BaseDataGrid<T>({
   rows,
   getRowId,
   onRowClick,
   columns,
   customToolbar = DefaultCustomToolbar,
   noRowsOverlay = DefaultNoRowsOverlay
-}: BaseDataGridProps) {
+}: BaseDataGridProps<T>) {
   return (
     <>
       <Paper
