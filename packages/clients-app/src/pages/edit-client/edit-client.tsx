@@ -25,6 +25,7 @@ import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
 import {fetchClientById, deleteClient} from '@jembi/openhim-core-api'
 import {useLoaderData} from 'react-router-dom'
+import {BasePageTemplate} from '../../../../base-components'
 
 export async function loader({params}) {
   const client = await fetchClientById(params['clientId'])
@@ -157,7 +158,7 @@ const EditClient = () => {
   }
 
   const [tabValue, setTabValue] = useState(0)
-  const [dialog, setDialog] = useState(false);
+  const [dialog, setDialog] = useState(false)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -165,8 +166,7 @@ const EditClient = () => {
 
   const handleClose = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (e.currentTarget.id === 'confirm') {
-      deleteClient(client['_id'])
-      .then(() => {
+      deleteClient(client['_id']).then(() => {
         window.history.pushState({}, '', '/#!/clients')
       })
     }
@@ -175,7 +175,7 @@ const EditClient = () => {
 
   return (
     <>
-    <Dialog
+      <Dialog
         open={dialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -199,19 +199,10 @@ const EditClient = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Grid container spacing={2} padding={2}>
-        <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-            Edit Client
-          </Typography>
-
-          <p style={{opacity: 0.6, fontSize: '16px'}}>
-            Control client systems and their access roles. Add clients to enable
-            their request routing and group them by roles for streamlined
-            channel access management
-          </p>
-          <Divider />
-        </Grid>
+      <BasePageTemplate
+        title="Edit Client"
+        subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel access management"
+      >
         <Grid item xs={12}>
           <Card sx={{width: 550, margin: 'auto'}}>
             <Box>
@@ -279,7 +270,7 @@ const EditClient = () => {
             </Stack>
           </Card>
         </Grid>
-      </Grid>
+      </BasePageTemplate>
     </>
   )
 }

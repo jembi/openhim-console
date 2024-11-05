@@ -17,12 +17,23 @@ import {Page, Role, UserProfile} from '../types'
 import {getApps, getUser, getUserPermissionRoles} from '../services/api'
 import {useAlert} from '../contexts/alert.context'
 import {OpenhimLogo} from './common/openhim.logo'
+import {alpha} from '@mui/material'
 
 const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
   name: '__',
   children: [],
   link: ''
 })
+
+const navbarTextStyle = {
+  fontSize: '14px',
+  letterSpacing: '0.4px',
+  lineHeight: '24px',
+  textTransform: 'uppercase',
+  fontWeight: '500',
+  fontFamily: 'Roboto',
+  color: alpha('#000', 0.6)
+}
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
@@ -298,10 +309,13 @@ export default function OpenhimAppBar() {
       sx={{
         fontFamily: 'Roboto, sans-serif',
         fontSize: '14px',
-        boxShadow: 6,
         backgroundColor: '#ffffff',
-        color: '#000000',
         position: 'fixed',
+        letterSpacing: '0.4px',
+        lineHeight: '24px',
+        textTransform: 'uppercase',
+        fontWeight: '500',
+        color: alpha('#000', 0.6),
         zIndex: 99
       }}
     >
@@ -358,7 +372,9 @@ export default function OpenhimAppBar() {
                       href={page.link}
                       selected={window.location.href.endsWith(page.link)}
                     >
-                      <Typography textAlign="center">{page.name}</Typography>
+                      <Typography sx={navbarTextStyle} textAlign="center">
+                        {page.name}
+                      </Typography>
                     </MenuItem>
                   ) : (
                     <MenuItem
@@ -367,7 +383,9 @@ export default function OpenhimAppBar() {
                         handleOpenMoreMenu(event, getCorrectAnchorEl(page)[1])
                       }
                     >
-                      <Typography textAlign="center">{page.name}</Typography>
+                      <Typography sx={navbarTextStyle} textAlign="center">
+                        {page.name}
+                      </Typography>
                       <ArrowDropDownIcon />
                       <Menu
                         anchorEl={
@@ -448,19 +466,23 @@ export default function OpenhimAppBar() {
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
-                            color: '#388e3c'
+                            
+                            lineHeight: '24px'
                           }
                         : {
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
+                            
                             color: '#00000099'
                           }
                     }
                     href={page.link}
                     variant="text"
                   >
-                    {page.name}
+                    <Typography sx={navbarTextStyle} textAlign="center">
+                      {page.name}
+                    </Typography>
                   </Button>
                 ) : (
                   <Box key={page.name}>
@@ -492,7 +514,9 @@ export default function OpenhimAppBar() {
                             }
                       }
                     >
-                      {page.name}
+                      <Typography sx={navbarTextStyle} textAlign="center">
+                        {page.name}
+                      </Typography>
                       <ArrowDropDownIcon />
                     </Button>
                     <Menu
@@ -527,7 +551,9 @@ export default function OpenhimAppBar() {
                               component="a"
                               href={child.link}
                             >
-                              {child.name}
+                              <Typography sx={navbarTextStyle} textAlign="center">
+                                {child.name}
+                              </Typography>
                             </MenuItem>
                           )
                         )}

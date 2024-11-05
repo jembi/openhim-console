@@ -33,6 +33,7 @@ import {useAlert} from '../../contexts/alert.context'
 import {useBasicBackdrop} from '../../contexts/backdrop.context'
 import Loader from '../helpers/loader.helper.component'
 import {useConfirmation} from '../../contexts/confirmation.context'
+import {BasePageTemplate} from '../../../../base-components'
 import { CircularProgress } from '@mui/material'
 
 const App: React.FC = () => {
@@ -519,28 +520,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <Box padding={3} sx={{backgroundColor: '#F1F1F1'}}>
-      <Box>
-        <Grid item xs={12}>
-          <Box>
-            <Typography variant="h4">Transaction Log</Typography>
-          </Box>
-          <Box>
-            <Typography
-              variant="subtitle1"
-              sx={{
-                color:
-                  'var(--Light-Text-Secondary, var(--text-secondary, rgba(0, 0, 0, 0.60)))'
-              }}
-            >
-              A log of the recent transactions through the system. Use Basic or
-              Advanced filters to find specific transactions to investigate or
-              rerun. Use settings to modify the list behaviour.
-            </Typography>
-          </Box>
-        </Grid>
-      </Box>
-      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
+    <BasePageTemplate
+      title="Transaction Log"
+      subtitle="A log of the recent transactions through the system. Use Basic or Advanced filters to find specific transactions to investigate or rerun. Use settings to modify the list behaviour."
+    >
       <Box>
         <Card elevation={4}>
           <CardContent>
@@ -644,7 +627,7 @@ const App: React.FC = () => {
           </CardContent>
         </Card>
       </Box>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

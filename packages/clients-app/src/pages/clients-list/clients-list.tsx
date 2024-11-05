@@ -1,33 +1,18 @@
 import {
-  Box,
   Button,
-  Card,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  Paper,
   Typography
 } from '@mui/material'
 import {Client} from '../../types'
 import {
-  DataGrid,
-  GridActionsCellItem,
   GridColDef,
-  GridRowParams,
-  GridToolbar
 } from '@mui/x-data-grid'
 import {useEffect, useState} from 'react'
 import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
 import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
 import {useSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
-
+import {BaseDataGrid, BasePageTemplate} from '../../../../base-components'
 const ClientsList = () => {
   const [clients, setClients] = useState<Client[]>([])
   const {enqueueSnackbar} = useSnackbar()
@@ -54,34 +39,30 @@ const ClientsList = () => {
   }, [])
 
   const columns: GridColDef[] = [
-    {field: 'clientID', headerName: 'ID', flex: 1},
+    {field: 'clientID', headerName: 'ID', flex: 0.7},
     {field: 'name', headerName: 'Name', flex: 1},
-    {field: 'organization', headerName: 'Organization', flex: 0.7},
-    {field: 'softwareName', headerName: 'Software Name', flex: 0.7},
-    {field: 'description', headerName: 'Description', flex: 0.6},
-    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.6},
+    {field: 'organization', headerName: 'Organization', flex: 0.5},
+    {field: 'softwareName', headerName: 'Software Name', flex: 0.5},
+    {field: 'description', headerName: 'Description', flex: 0.5},
+    {field: 'contactPerson', headerName: 'Contact Person', flex: 0.5},
     {field: 'clientDomain', headerName: 'Domain', flex: 0.5},
     {field: 'roles', headerName: 'Roles', flex: 0.6},
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: 'action',
+      headerName: 'Action',
       flex: 0.3,
-      type: 'actions',
-      getActions: (params: GridRowParams) => [
-        <GridActionsCellItem
-          icon={<CreateIcon />}
-          id="edit"
-          label="Edit"
-          key="edit"
-          onClick={() => {
-            window.history.pushState(
-              {client: params.row},
-              '',
-              `/#!/clients/edit/${params.row['_id']}`
-            )
+      renderCell: () => (
+        <div
+          style={{
+            padding: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
-        />
-      ]
+        >
+          <CreateIcon style={{cursor: 'pointer'}} />
+        </div>
+      )
     }
   ]
 
@@ -99,84 +80,42 @@ const ClientsList = () => {
         <Typography variant="h6" color="black" gutterBottom>
           No Clients Available
         </Typography>
-        <a href={addingClient.toString()}>
-          <Button startIcon={<AddIcon />} />
-        </a>
+
+        <Button href={addingClient.toString()} startIcon={<AddIcon />} />
       </div>
     )
   }
 
   return (
-    <Box
-      padding={1}
-      sx={{
-        backgroundColor: '#F1F1F1',
-        minHeight: 'calc(100vh - 119px - 10px)'
-      }}
-    >
-      <Grid container spacing={2} padding={2}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            Manage Clients
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            sx={{
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
+    <>
+      <BasePageTemplate
+        title="Manage Clients"
+        subtitle="Add clients to enable their request routing and group them by roles for streamlined channel access management."
+        button={
+          <Button
+            variant="contained"
+            href={addingClient.toString()}
+            startIcon={<AddIcon />}
           >
-            <Grid item>
-              <Typography variant="subtitle1" gutterBottom>
-                Control client systems and their access roles. Add clients to
-                enable their request routing and group them by roles for
-                streamlined channel access management
-              </Typography>
-            </Grid>
-            <Grid item>
-              <a href={addingClient.toString()}>
-                <Button variant="contained" startIcon={<AddIcon />}>
-                  Add
-                </Button>
-              </a>
-            </Grid>
-          </Grid>
-          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-        </Grid>
-        <Grid item xs={12}>
-          <Card>
-            <DataGrid
-              autoHeight
-              checkboxSelection
-              disableColumnMenu
-              disableRowSelectionOnClick
-              density="comfortable"
-              getRowId={row => row.clientID}
-              rows={clients}
-              columns={columns}
-              slots={{
-                toolbar: GridToolbar,
-                noRowsOverlay: CustomNoRowsOverlay
-              }}
-              slotProps={{
-                toolbar: {
-                  showQuickFilter: true,
-                  printOptions: {disableToolbarButton: true},
-                  csvOptions: {disableToolbarButton: true}
-                }
-              }}
-              initialState={{
-                pagination: {
-                  paginationModel: {page: 0, pageSize: 10}
-                }
-              }}
-              pageSizeOptions={[10, 25, 50]}
-            />
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+            Add
+          </Button>
+        }
+      >
+        <BaseDataGrid
+          getRowId={row => row.clientID}
+          rows={clients}
+          columns={columns}
+          noRowsOverlay={CustomNoRowsOverlay}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              '/#!/clients/edit/' + params.row['_id']
+            )
+          }
+        />
+      </BasePageTemplate>
+    </>
   )
 }
 

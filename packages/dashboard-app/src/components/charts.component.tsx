@@ -8,6 +8,7 @@ import BasicFilter, {BasicFilterData} from './filters/basic.filter.component'
 import Loader from './ux/loader.component'
 import './styles.css'
 import {ErrorMessage} from './ux/error.component'
+import {BasePageTemplate} from '../../../base-components'
 
 export default function Charts() {
   const now = new Date()
@@ -56,20 +57,15 @@ export default function Charts() {
   }
 
   return (
-    <Box>
-      <Grid container spacing={2} padding={2} fontFamily={'sans-serif'}>
-        <Grid item xs={12}>
-          <Typography variant="h3" fontSize={'32px'} fontWeight={400}>
-            Dashboard
-          </Typography>
-          <p className={'subtitle'}>
-            An overview of recent transactions through your mediator.
-          </p>
-          <Divider />
-        </Grid>
+    <BasePageTemplate
+      title="Dashboard"
+      subtitle="An overview of recent transactions through your mediator."
+    >
+        <Grid container spacing={2} fontFamily={'sans-serif'}>
         <Grid item xs={12}>
           <BasicFilter value={filterData} onChange={setFilterData} />
         </Grid>
+        
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
@@ -101,6 +97,6 @@ export default function Charts() {
           </Grid>
         </Grid>
       </Grid>
-    </Box>
+    </BasePageTemplate>
   )
 }

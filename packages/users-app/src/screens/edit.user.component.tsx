@@ -25,6 +25,7 @@ import {
 import {Routes, User} from '../types'
 import {BasicInfo} from '../components/common/basic.info.component'
 import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
+import {BasePageTemplate} from '../../../base-components'
 
 export async function loader({params}) {
   const users = await getUsers()
@@ -109,24 +110,10 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3}>
-      <header style={{marginBottom: '10px'}}>
-        <Typography variant="h4" gutterBottom fontWeight={400}>
-          Edit User
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          fontSize={16}
-          gutterBottom
-          fontWeight={400}
-        >
-          Control client systems and their access roles. Edit clients to enable
-          their request routing and group them by roles for streamlined channel
-          management.
-        </Typography>
-        <Divider />
-      </header>
-
+    <BasePageTemplate
+      title="Edit User"
+      subtitle="Control client systems and their access roles. Edit clients to enable their request routing and group them by roles for streamlined channel management."
+    >
       <Grid
         container
         direction="column"
@@ -173,7 +160,7 @@ function AddUserRole() {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </BasePageTemplate>
   )
 }
 

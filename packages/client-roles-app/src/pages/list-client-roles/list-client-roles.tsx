@@ -19,18 +19,7 @@ import AddIcon from '@mui/icons-material/Add'
 import ErrorIcon from '@mui/icons-material/Error'
 import {useEffect, useState} from 'react'
 import {fetchClientRoles} from '@jembi/openhim-core-api'
-
-const CustomToolbar = () => {
-  return (
-    <div style={{display: 'flex', justifyContent: 'space-between'}}>
-      <div>
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-      </div>
-      <GridToolbarQuickFilter variant="standard" />
-    </div>
-  )
-}
+import {BaseDataGrid, BasePageTemplate} from '../../../../base-components'
 
 export const ListRoles = () => {
   const addClientRole = new URL(window.origin + '/#!/client-roles/add')
@@ -40,11 +29,18 @@ export const ListRoles = () => {
     {field: 'clients', headerName: 'Clients', flex: 0.65},
     {field: 'channels', headerName: 'Channels', flex: 1},
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: 'action',
+      headerName: 'Action',
       flex: 0.1,
       renderCell: () => (
-        <div style={{padding:8, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div
+          style={{
+            padding: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
           <CreateIcon style={{cursor: 'pointer'}} />
         </div>
       )
@@ -88,81 +84,32 @@ export const ListRoles = () => {
   )
 
   return (
-    <Box padding={1}>
-      <Grid container padding={2} spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            Manage Client Roles
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            sx={{
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            <Grid item>
-              <Typography variant="subtitle1" gutterBottom>
-                Control client systems and their access roles. Add clients to
-                enable their request routing and group them by roles for
-                streamlined channel access management.
-              </Typography>
-            </Grid>
-            <Grid item>
-              <a href={addClientRole.toString()}>
-                <Button variant="contained">
-                  <AddIcon /> Add
-                </Button>
-              </a>
-            </Grid>
-          </Grid>
-          <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-        </Grid>
-        <Grid item xs={12}>
-          <Paper
-            elevation={4}
-            sx={{paddingX: '15px', borderRadius: '12px', paddingTop: '30px'}}
-          >
-            <DataGrid
-              getRowId={row => row.id}
-              autoHeight
-              checkboxSelection
-              disableRowSelectionOnClick
-              sx={{
-                '&, [class^=MuiDataGrid]': {border: 'none'},
-                '--DataGrid-containerBackground': '#f8f8f8'
-              }}
-              rows={roles}
-              onRowClick={params =>
-                window.history.pushState(
-                  {},
-                  '',
-                  '/#!/client-roles/edit/' + params.row['roleName']
-                )
-              }
-              slots={{
-                toolbar: CustomToolbar,
-                noRowsOverlay: noRolesOverlay
-              }}
-              columns={columns}
-              pageSizeOptions={[10, 25, 50]}
-              initialState={{
-                pagination: {
-                  paginationModel: {page: 0, pageSize: 10}
-                }
-              }}
-              slotProps={{
-                toolbar: {
-                  showQuickFilter: true,
-                  printOptions: {disableToolbarButton: true},
-                  csvOptions: {disableToolbarButton: true}
-                }
-              }}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
-    </Box>
+    <>
+      <BasePageTemplate
+        title="Manage Client Roles"
+        subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel access management."
+        button={
+          <a href={addClientRole.toString()}>
+            <Button variant="contained" startIcon={<AddIcon />}>
+              Add
+            </Button>
+          </a>
+        }
+      >
+        <BaseDataGrid
+          rows={roles}
+          columns={columns}
+          getRowId={row => row.id}
+          noRowsOverlay={noRolesOverlay}
+          onRowClick={params =>
+            window.history.pushState(
+              {},
+              '',
+              '/#!/client-roles/edit/' + params.row['roleName']
+            )
+          }
+        />
+      </BasePageTemplate>
+    </>
   )
 }
