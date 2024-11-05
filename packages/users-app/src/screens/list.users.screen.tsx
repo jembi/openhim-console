@@ -145,11 +145,6 @@ function UsersList() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{
-          fontSmooth: 'never',
-          '-webkit-font-smoothing': 'antialiased',
-          '-moz-osx-font-smoothing': 'grayscale'
-        }}
       >
         Manager Users
       </Typography>
@@ -159,11 +154,6 @@ function UsersList() {
           <Typography
             variant="subtitle1"
             gutterBottom
-            sx={{
-              fontSmooth: 'never',
-              '-webkit-font-smoothing': 'antialiased',
-              '-moz-osx-font-smoothing': 'grayscale'
-            }}
           >
             View and manage OpenHIM users, add new users and assign them
             specific roles to ensure appropriate access and functionality.
