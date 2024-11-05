@@ -33,6 +33,7 @@ import {useAlert} from '../../contexts/alert.context'
 import {useBasicBackdrop} from '../../contexts/backdrop.context'
 import Loader from '../helpers/loader.helper.component'
 import {useConfirmation} from '../../contexts/confirmation.context'
+import { CircularProgress } from '@mui/material'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -61,6 +62,7 @@ const App: React.FC = () => {
   const [initialTransactionLoadComplete, setInitialTransactionLoadComplete] =
     useState(false)
   const [loading, setLoading] = useState(false)
+  const [filterLoading, setFilterLoading] = useState(false)
   const {closeReRunDialog, showReRunDialog} =
     useTransactionRerunConfirmationDialog()
   const {showAlert, hideAlert} = useAlert()
@@ -145,6 +147,9 @@ const App: React.FC = () => {
   const fetchTransactionLogs = useCallback(
     async (timestampFilter?: string, filteredResults?: boolean) => {
       try {
+        if (filteredResults) {
+          setFilterLoading(true)
+        }
         const fetchParams = getFilters(timestampFilter)
 
         setHttpError(null)
@@ -198,6 +203,10 @@ const App: React.FC = () => {
       } catch (error) {
         console.error('Error fetching logs:', error)
         setHttpError(error)
+      } finally {
+        if (filteredResults) {
+          setFilterLoading(false)
+        }
       }
     },
     [
@@ -617,15 +626,21 @@ const App: React.FC = () => {
       <Box sx={{mt: 3}}>
         <Card elevation={4}>
           <CardContent>
-            <TransactionLogTable
-              transactions={filteredTransactions}
-              loadMore={loadMore}
-              loading={loading}
-              initialTransactionLoadComplete={initialTransactionLoadComplete}
-              onRowClick={handleRowClick}
-              onSelectedChange={setSelectedTransactions}
-              onAutoUpdateChange={handleAutoUpdateChange}
-            />
+            {filterLoading ? (
+              <Box display="flex" justifyContent="center" alignItems="center" p={3}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <TransactionLogTable
+                transactions={filteredTransactions}
+                loadMore={loadMore}
+                loading={loading}
+                initialTransactionLoadComplete={initialTransactionLoadComplete}
+                onRowClick={handleRowClick}
+                onSelectedChange={setSelectedTransactions}
+                onAutoUpdateChange={handleAutoUpdateChange}
+              />
+            )}
           </CardContent>
         </Card>
       </Box>

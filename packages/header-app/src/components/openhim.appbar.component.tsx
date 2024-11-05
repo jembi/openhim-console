@@ -180,8 +180,10 @@ export default function OpenhimAppBar() {
 
       // if there aren't any apps then remove the divider menu item from the apps menu
       if (apps.length === 0) {
-        const pagesClone = structuredClone(pages);
-        const appsChildren = pagesClone.at(-1).children.filter(child => child.name !== DIVIDER_MENU_ITEM.name)
+        const pagesClone = structuredClone(pages)
+        const appsChildren = pagesClone
+          .at(-1)
+          .children.filter(child => child.name !== DIVIDER_MENU_ITEM.name)
         pagesClone.at(-1).children = appsChildren
 
         setPages(pagesClone)
@@ -198,7 +200,10 @@ export default function OpenhimAppBar() {
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map(app => ({
                     name: app.name,
-                    link: `#!/` + app.url.split('/').pop().split('.')[0]
+                    link:
+                      app.type === 'esmodule'
+                        ? `#!/` + app.url.split('/').pop().split('.')[0]
+                        : app.url
                   })),
                 ...page.children
               ]

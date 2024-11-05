@@ -8,7 +8,8 @@ import {
   FormHelperText,
   FormControlLabel,
   MenuItem,
-  Radio
+  Radio,
+  Autocomplete
 } from '@mui/material'
 import {AppProps} from './FormInputProps'
 import {useEffect} from 'react'
@@ -110,7 +111,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
       )
     })
   }
-
+ 
   return (
     <>
       <FormControl fullWidth component="fieldset" required>
@@ -130,23 +131,30 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         </RadioGroup>
       </FormControl>
       <FormControl fullWidth required sx={{mt: 1}}>
-        <InputLabel>{'category'}</InputLabel>
-        <Select
-          margin="dense"
-          fullWidth
-          inputRef={appCategoryFieldRef}
-          onChange={e => {
+        <Autocomplete
+          freeSolo
+          renderInput={params => (
+            <TextField
+              {...params}
+              id="category"
+              name="category"
+              label="Category *"
+              inputRef={appCategoryFieldRef}
+              onChange={e => {
+                appCategoryFieldRef.current.value = e.target.value
+              }}
+            />
+          )}
+          options={categoryOptions}
+          value={values.category}
+          onBlur={e => {
+            console.log(`appCategoryFieldRef.current.value: ${appCategoryFieldRef.current.value}`)
+            
             handleChange(e)
             setAppCategoryHelperMessage('')
           }}
-          id={'category'}
-          error={appCategoryHelperMessage ? true : false}
-          name={'category'}
-          value={values.category}
-          label={'category'}
-        >
-          {generateSingleOptions(categoryOptions)}
-        </Select>
+          
+        />
         <FormHelperText error={appCategoryHelperMessage ? true : false}>
           {appCategoryHelperMessage}
         </FormHelperText>
