@@ -4,7 +4,6 @@
 export DOCKERFILE_VERSION=main
 
 # Push vars. Each deployed environment has its own docker tag
-export ENVIRONMENT_NAME=v2.0.0-alpha.2
 export DOCKER_ORG_NAME=jembi
 PROJECT_UNIQUE_HASH_VERSION=$(git rev-parse HEAD)
 export PROJECT_UNIQUE_HASH_VERSION
@@ -54,6 +53,10 @@ for package in "packages"/*; do
     fi
 done
 cd  packaging/import-maps-server/ || exit
+
+# Get environment name from first parameter or use default
+ENVIRONMENT_NAME=${1:-poc-microfrontend}
+export ENVIRONMENT_NAME
 
 docker build -f Dockerfile-mf --progress=plain --no-cache . -t $DOCKER_ORG_NAME/openhim-console:$ENVIRONMENT_NAME --build-arg WORK_DIR=$(pwd) --build-arg sourceDir=$(pwd)/packaging --build-arg libVersion=$PROJECT_UNIQUE_HASH_VERSION --build-arg baseImage=singlespa/import-maps-mfe-server
 
