@@ -29,7 +29,7 @@ const navbarTextStyle = {
   fontSize: '14px',
   letterSpacing: '0.4px',
   lineHeight: '24px',
-  textTransform: 'uppercase',
+  textTransform: 'capitalize',
   fontWeight: '500',
   fontFamily: 'Roboto',
   color: alpha('#000', 0.6)
@@ -37,16 +37,16 @@ const navbarTextStyle = {
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
-    {name: 'HOME', link: '#!/portal'},
-    {name: 'DASHBOARD', link: '#!/dashboard'},
+    {name: 'Home', link: '#!/portal'},
+    {name: 'Dashboard', link: '#!/dashboard'},
     {
-      name: 'TRANSACTIONS',
+      name: 'Transactions',
       link: '#!/transactions',
       permissions: ['transaction-view-all']
     },
-    {name: 'CHANNELS', link: '#!/channels', permissions: ['channel-view-all']},
+    {name: 'Channels', link: '#!/channels', permissions: ['channel-view-all']},
     {
-      name: 'CLIENTS',
+      name: 'Clients',
       permissions: ['client-view-all'],
       children: [
         {
@@ -73,7 +73,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'USERS',
+      name: 'Users',
       permissions: ['user-view'],
       children: [
         {name: 'Manage Users', link: '#!/users', permissions: ['user-manage']},
@@ -96,7 +96,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'MORE',
+      name: 'More',
       children: [
         {name: 'About', link: '#!/about'},
         {
@@ -144,7 +144,7 @@ export default function OpenhimAppBar() {
       ]
     },
     {
-      name: 'APPS',
+      name: 'Apps',
       children: []
     }
   ])
@@ -313,7 +313,7 @@ export default function OpenhimAppBar() {
         position: 'fixed',
         letterSpacing: '0.4px',
         lineHeight: '24px',
-        textTransform: 'uppercase',
+        textTransform: 'capitalize',
         fontWeight: '500',
         color: alpha('#000', 0.6),
         zIndex: 99
@@ -499,7 +499,7 @@ export default function OpenhimAppBar() {
                           ? {
                               display: 'flex',
                               alignItems: 'center',
-                              textTransform: 'none',
+                              textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
                               color: '#388e3c'
@@ -507,7 +507,7 @@ export default function OpenhimAppBar() {
                           : {
                               display: 'flex',
                               alignItems: 'center',
-                              textTransform: 'none',
+                              textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
                               color: '#00000099'
