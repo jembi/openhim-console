@@ -67,88 +67,55 @@ function AddUserRole() {
   }
 
   return (
-    <Box padding={3}>
-      <header style={{marginBottom: '10px'}}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          fontWeight={400}
-          sx={{
-            fontSmooth: 'never',
-            '-webkit-font-smoothing': 'antialiased',
-            '-moz-osx-font-smoothing': 'grayscale'
-          }}
-        >
-          Add User
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          fontSize={16}
-          gutterBottom
-          fontWeight={400}
-          sx={{
-            fontSmooth: 'never',
-            '-webkit-font-smoothing': 'antialiased',
-            '-moz-osx-font-smoothing': 'grayscale'
-          }}
-        >
-          Control client systems and their access roles. Add clients to enable
-          their request routing and group them by roles for streamlined channel
-          management.
-        </Typography>
-        <Divider />
-      </header>
-
-      <BasePageTemplate
-        title="Add User"
-        subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel management."
+    <BasePageTemplate
+      title="Add User"
+      subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel management."
+    >
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
       >
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Grid item xs={12}>
-            <Card style={{width: '600px'}} elevation={4}>
-              <Divider />
-              <CardContent>
-                <BasicInfo
-                  roles={roles}
-                  onChange={onBasicInfoChange}
-                  user={user}
-                />
-              </CardContent>
-              <Divider />
-              <CardActions>
-                <Box display="flex" justifyContent="space-between">
-                  <Button
-                    variant="outlined"
-                    color="info"
-                    onClick={() =>
-                      window.history.pushState({}, '', `#${Routes.USERS}`)
-                    }
-                  >
-                    Cancel
-                  </Button>
+        <Grid item xs={12}>
+          <Card style={{width: '600px'}} elevation={4}>
+            <Divider />
+            <CardContent>
+              <BasicInfo
+                roles={roles}
+                onChange={onBasicInfoChange}
+                user={user}
+              />
+            </CardContent>
+            <Divider />
+            <CardActions>
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  variant="outlined"
+                  color="info"
+                  onClick={() =>
+                    window.history.pushState({}, '', `#${Routes.USERS}`)
+                  }
+                >
+                  Cancel
+                </Button>
 
-                  <span style={{marginRight: '10px'}}></span>
+                <span style={{marginRight: '10px'}}></span>
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={mutation.isLoading || !isFormDataValid}
-                    onClick={handleAddUser}
-                  >
-                    Add User
-                  </Button>
-                </Box>
-              </CardActions>
-            </Card>
-          </Grid>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={mutation.isLoading || !isFormDataValid}
+                  onClick={handleAddUser}
+                >
+                  Add User
+                </Button>
+              </Box>
+            </CardActions>
+          </Card>
         </Grid>
-      </BasePageTemplate>
-    </Box>
+      </Grid>
+    </BasePageTemplate>
   )
 }
 
