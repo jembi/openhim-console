@@ -15,6 +15,7 @@ export default function Root() {
         >
           <Charts />
         </div>
+        <Charts />
       </ThemeProvider>
     </React.StrictMode>
   )

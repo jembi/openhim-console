@@ -27,7 +27,7 @@ import {CustomToolbar} from '../components/helpers/custom.toolbar'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {useAlert} from '../contexts/alert.context'
 import {useConfirmation} from '../contexts/confirmation.context'
-
+import {BasePageTemplate} from '../../../base-components'
 const noRolesOverlay = () => (
   <div
     style={{
@@ -176,6 +176,22 @@ function UsersList() {
       </Grid>
 
       <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
+    <BasePageTemplate
+      title="Manager Users"
+      subtitle="View and manage OpenHIM users, add new users and assign them specific roles to ensure appropriate access and functionality."
+      button={
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() =>
+            window.history.pushState({}, '', `/#${Routes.CREATE_USER}`)
+          }
+        >
+          Add
+        </Button>
+      }
+    >
       <Card elevation={4} sx={{paddingX: '25px'}}>
         <DataGrid
           getRowId={row => row._id}
@@ -219,6 +235,7 @@ function UsersList() {
           }}
         />
       </Card>
+    </BasePageTemplate>
     </Box>
   )
 }

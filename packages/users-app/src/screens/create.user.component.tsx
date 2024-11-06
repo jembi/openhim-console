@@ -17,6 +17,8 @@ import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {createNewUser, getRoles} from '../services/api'
 import {Routes, User} from '../types'
 import {defaultUser} from '../utils'
+import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
+import {BasePageTemplate} from '../../../base-components'
 
 function AddUserRole() {
   const {showAlert, hideAlert} = useAlert()
@@ -97,6 +99,10 @@ function AddUserRole() {
         <Divider />
       </header>
 
+    <BasePageTemplate
+      title="Add User"
+      subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel management."
+    >
       <Grid
         container
         direction="column"
@@ -141,6 +147,8 @@ function AddUserRole() {
           </Card>
         </Grid>
       </Grid>
+    </BasePageTemplate>
+
     </Box>
   )
 }

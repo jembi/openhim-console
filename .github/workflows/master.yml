@@ -41,18 +41,4 @@ jobs:
           chmod +x ./build.sh 
           ./build.sh
       - name: Docker Push
-        run: docker push $IMAGE_ID
-      - name: Set permissions for private key
-        run: |
-          echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem
-          chmod 600 key.pem
-      - name: Pull Docker image
-        run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker pull' $IMAGE_ID
-      - name: Stop running container
-        run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker stop jembi-mfe-server || true'
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker rm jembi-mfe-server || true'
-      - name: Run new container
-        run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.HOST }} 'sudo docker run -d --name jembi-mfe-server -p 80:80' -v /home/ubuntu/openhim-console/default.json:/usr/share/nginx/html/config/default.json $IMAGE_ID
+        run: docker push ${{ env.IMAGE_ID }}

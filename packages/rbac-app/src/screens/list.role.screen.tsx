@@ -32,6 +32,7 @@ import {useAlert} from '../contexts/alert.context'
 import {getRoles} from '../services/api'
 import {Permission, Role} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
+import { BasePageTemplate } from '../../../base-components'
 
 const noRolesOverlay = () => (
   <div
@@ -204,33 +205,17 @@ function UserRoleList() {
   ]
 
   return (
-    <Box
-      padding={3}
-      sx={{backgroundColor: '#F1F1F1'}}
+    <BasePageTemplate
+      title="Manage User Roles"
+      subtitle="Easily assign and manage roles and permissions to users by selecting a role, viewing and editing its permissions, or creating a new role with customized permissions."
+      button={
+        <a href={addClientURL.toString()}>
+          <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+            Add
+          </Button>
+        </a>
+      }
     >
-      <Typography variant="h4" gutterBottom>
-        Manage User Roles
-      </Typography>
-
-      <Grid container>
-        <Grid item xs={11}>
-          <Typography variant="subtitle1" gutterBottom>
-            Easily assign and manage roles and permissions to users by selecting
-            a role, viewing and editing its permissions, or creating a new role
-            with customized permissions.
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <a href={addClientURL.toString()}>
-            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
-              Add
-            </Button>
-          </a>
-        </Grid>
-      </Grid>
-
-      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
-
       <Card elevation={4}>
         <CardContent>
           <Grid container>
@@ -291,7 +276,8 @@ function UserRoleList() {
           />
         </CardContent>
       </Card>
-    </Box>
+    </BasePageTemplate>
+
   )
 }
 
