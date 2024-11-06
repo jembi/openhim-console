@@ -50,6 +50,7 @@ export type User = {
   surname: string
   email: string
   passports?: string
+  password?: string
   /**
    * @deprecated
    */

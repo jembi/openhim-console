@@ -23,12 +23,12 @@ export const basicInfoSchema = z.object({
   email: z.string().email(),
   firstname: z.string().min(1, 'Firstname cannot be empty'),
   surname: z.string().min(1, 'Surname cannot be empty'),
+  password: z.string().optional(),
   groups: z.array(z.string()).min(1, 'Please select at least one role'),
   provider: z.string().optional(),
   msisdn: z.string().optional(),
   dailyReport: z.boolean().optional(),
   weeklyReport: z.boolean().optional(),
-  expiry: z.string().nullable().optional(),
   locked: z.boolean().optional(),
   passports: z.string().optional(),
   settings: z
@@ -51,6 +51,7 @@ export function BasicInfo(props: {
   roles: Readonly<Role[]>
   onChange: (event: {user: User; isValid: boolean}) => void
 }) {
+  const [confirmPassword, setConfirmPassword] = React.useState('')
   const hasMounted = React.useRef(false)
   const [isTouched, setIsTouched] = React.useState(false)
   const [user, setUser] = React.useState(props.user)
@@ -87,9 +88,15 @@ export function BasicInfo(props: {
       setValidationErrors(validationResult.error.errors)
     }
 
+    let passwordValid = true
+
+    if (user.password) {
+      passwordValid = user.password == confirmPassword
+    }
+
     props.onChange({
       user,
-      isValid: validationResult.success
+      isValid: validationResult.success && passwordValid
     })
   }
 
@@ -151,6 +158,41 @@ export function BasicInfo(props: {
             error={isTouched && getFieldErrorMessage('email') !== undefined}
             helperText={isTouched && getFieldErrorMessage('email')}
             onChange={e => setUser({...user, email: e.target.value})}
+          />
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            label="Password"
+            variant="outlined"
+            fullWidth
+            type="type"
+            value={user.password}
+            onChange={e => setUser({...user, password: e.target.value})}
+            error={isTouched && getFieldErrorMessage('password') !== undefined}
+            helperText={isTouched && getFieldErrorMessage('password')}
+          />
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            label="Confirm Password"
+            variant="outlined"
+            fullWidth
+            value={confirmPassword}
+            error={
+              isTouched && !!user.password && confirmPassword != user.password
+            }
+            helperText={
+              isTouched &&
+              !!user.password &&
+              confirmPassword != user.password &&
+              'Passwords do not match'
+            }
+            onChange={e => {
+              setConfirmPassword(e.target.value)
+              handleValidation()
+            }}
           />
         </Grid>
 
