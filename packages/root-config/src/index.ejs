@@ -46,6 +46,11 @@
       href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
       as="script"
     />
+    <style>
+      body {
+        overflow-x: hidden;
+      }
+    </style>
     <% if (!isLocal) { %>
     <script id="fetch-config">
       fetch('/config/default.json')
