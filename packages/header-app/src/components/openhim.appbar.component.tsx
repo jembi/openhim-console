@@ -31,8 +31,7 @@ const navbarTextStyle = {
   lineHeight: '24px',
   textTransform: 'capitalize',
   fontWeight: '500',
-  fontFamily: 'Roboto',
-  color: alpha('#000', 0.6)
+  fontFamily: 'Roboto'
 }
 
 export default function OpenhimAppBar() {
@@ -315,7 +314,6 @@ export default function OpenhimAppBar() {
         lineHeight: '24px',
         textTransform: 'capitalize',
         fontWeight: '500',
-        color: alpha('#000', 0.6),
         zIndex: 99
       }}
     >
@@ -466,14 +464,13 @@ export default function OpenhimAppBar() {
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
-                            
+                            color: '#388e3c',
                             lineHeight: '24px'
                           }
                         : {
                             textTransform: 'none',
                             fontWeight: 500,
-                            marginRight: '20px',
-                            
+                            marginRight: '20px',                            
                             color: '#00000099'
                           }
                     }
