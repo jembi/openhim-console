@@ -31,8 +31,11 @@ const navbarTextStyle = {
   lineHeight: '24px',
   textTransform: 'capitalize',
   fontWeight: '500',
-  fontFamily: 'Roboto'
+  fontFamily: 'Roboto',
+  fontStyle: 'normal',
+  order: 1
 }
+
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
@@ -464,14 +467,16 @@ export default function OpenhimAppBar() {
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
-                            color: '#388e3c',
+                            color: '#049D84',
+                            fontFamily:"Roboto",  
                             lineHeight: '24px'
                           }
                         : {
                             textTransform: 'none',
                             fontWeight: 500,
-                            marginRight: '20px',                            
-                            color: '#00000099'
+                            marginRight: '20px',
+                            fontFamily:"Roboto",                            
+                            color: 'rgba(0, 0, 0, 0.6)'
                           }
                     }
                     href={page.link}
@@ -499,7 +504,8 @@ export default function OpenhimAppBar() {
                               textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
-                              color: '#388e3c'
+                              fontFamily:"Roboto",  
+                              color: '#049D84'
                             }
                           : {
                               display: 'flex',
@@ -507,7 +513,8 @@ export default function OpenhimAppBar() {
                               textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
-                              color: '#00000099'
+                              fontFamily:"Roboto",
+                              color: 'rgba(0, 0, 0, 0.6)'
                             }
                       }
                     >
