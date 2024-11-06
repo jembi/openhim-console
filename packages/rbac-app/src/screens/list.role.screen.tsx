@@ -32,7 +32,7 @@ import {useAlert} from '../contexts/alert.context'
 import {getRoles} from '../services/api'
 import {Permission, Role} from '../types'
 import {mapPermissionToHumanReadable} from '../utils'
-import { BasePageTemplate } from '../../../base-components'
+import {BasePageTemplate} from '../../../base-components'
 
 const noRolesOverlay = () => (
   <div
@@ -277,7 +277,6 @@ function UserRoleList() {
         </CardContent>
       </Card>
     </BasePageTemplate>
-
   )
 }
 

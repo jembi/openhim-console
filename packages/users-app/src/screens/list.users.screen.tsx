@@ -141,41 +141,6 @@ function UsersList() {
   ]
 
   return (
-    <Box padding={3}>
-      <Typography
-        variant="h4"
-        gutterBottom
-      >
-        Manager Users
-      </Typography>
-
-      <Grid container>
-        <Grid item xs={11}>
-          <Typography
-            variant="subtitle1"
-            gutterBottom
-          >
-            View and manage OpenHIM users, add new users and assign them
-            specific roles to ensure appropriate access and functionality.
-          </Typography>
-        </Grid>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() =>
-                window.history.pushState({}, '', `/#${Routes.CREATE_USER}`)
-              }
-            >
-              Add
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Divider sx={{marginTop: '10px', marginBottom: '30px'}} />
     <BasePageTemplate
       title="Manager Users"
       subtitle="View and manage OpenHIM users, add new users and assign them specific roles to ensure appropriate access and functionality."
@@ -236,7 +201,6 @@ function UsersList() {
         />
       </Card>
     </BasePageTemplate>
-    </Box>
   )
 }
 

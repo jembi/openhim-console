@@ -33,7 +33,17 @@ export function AdditionalPermissionsStep(props: {
   ) => {
     const newRole = structuredClone(role)
 
-    ;(newRole.permissions[permission] as boolean) = checked
+    // @ts-ignore
+    newRole['permissions'][permission] = checked
+
+    if (checked) {
+      const apps = props.apps.map(c => c.name)
+
+      if (permission === 'app-view-all') {
+        newRole['permissions']['app-view-specified'].length === 0 &&
+          (newRole['permissions']['app-view-specified'] = apps)
+      }
+    }
 
     setRole(newRole)
   }
@@ -53,12 +63,38 @@ export function AdditionalPermissionsStep(props: {
     })
   }
 
-  const paperStyling = {padding: '10px 20px'}
+  const paperStyling = {
+    padding: '10px 20px',
+    borderRadius: '8px',
+    background: '#FDFDFD',
+    border: '1px solid #EEE'
+  }
 
   return (
     <Box>
-      <Typography variant="h6">Set Additional Permissions</Typography>
-      <Typography variant="subtitle1">
+      <Typography
+        sx={{
+          fontSize: '24px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '133.4%',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.87))'
+        }}
+        variant="h5"
+      >
+        Set Additional Permissions
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          fontSize: '14px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '143%',
+          letterSpacing: '0.17px',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.60))'
+        }}
+      >
         Edit an existing role by changing the categorised permissions.
       </Typography>
 
@@ -66,8 +102,20 @@ export function AdditionalPermissionsStep(props: {
 
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Apps</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Apps
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -113,8 +161,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Audit Trails & Logs</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Audit Trails & Logs
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -148,8 +208,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Certificates</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Certificates
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -189,8 +261,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Contacts</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Contacts
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -230,8 +314,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Metadata</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Metadata
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -271,8 +367,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Visualizer</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Visualizer
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -309,8 +417,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Data Management</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Data Management
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -345,8 +465,20 @@ export function AdditionalPermissionsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">MISC.</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              MISC.
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>

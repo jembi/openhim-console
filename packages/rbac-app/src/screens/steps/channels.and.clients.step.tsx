@@ -34,13 +34,41 @@ export function ChannelsClientsStep(props: {
     permission: keyof Permission,
     checked: boolean
   ) => {
-    setRole({
-      ...role,
-      permissions: {
-        ...role.permissions,
-        [permission]: checked
+    const newRole = structuredClone(role)
+
+    // @ts-ignore
+    newRole['permissions'][permission] = checked
+
+    if (checked) {
+      const channels = props.channels.map(c => c.name)
+      const clients = props.clients.map(c => c.name)
+
+      if (permission === 'channel-manage-all') {
+        newRole['permissions']['channel-manage-specified'].length === 0 &&
+          (newRole['permissions']['channel-manage-specified'] = channels)
+
+        if (!newRole.permissions['channel-view-all']) {
+          newRole['permissions']['channel-view-all'] = true
+          newRole['permissions']['channel-view-specified'] = channels
+        }
+      } else if (permission === 'channel-view-all') {
+        newRole['permissions']['channel-view-specified'].length === 0 &&
+          (newRole['permissions']['channel-view-specified'] = channels)
+      } else if (permission === 'client-manage-all') {
+        newRole['permissions']['client-manage-specified'].length === 0 &&
+          (newRole['permissions']['client-manage-specified'] = clients)
+
+        if (!newRole.permissions['client-view-all']) {
+          newRole['permissions']['client-view-all'] = true
+          newRole['permissions']['client-view-specified'] = clients
+        }
+      } else if (permission === 'client-view-all') {
+        newRole['permissions']['client-view-specified'].length === 0 &&
+          (newRole['permissions']['client-view-specified'] = clients)
       }
-    })
+    }
+
+    setRole(newRole)
   }
 
   const handleSelectChange = (
@@ -58,7 +86,12 @@ export function ChannelsClientsStep(props: {
     })
   }
 
-  const paperStyling = {padding: '10px 20px'}
+  const paperStyling = {
+    padding: '10px 20px',
+    borderRadius: '8px',
+    background: '#FDFDFD',
+    border: '1px solid #EEE'
+  }
 
   const validateClientName = (newState: Role) => {
     if (newState.name.trim() === '') {
@@ -70,10 +103,29 @@ export function ChannelsClientsStep(props: {
 
   return (
     <Box>
-      <Typography variant="h6">
+      <Typography
+        sx={{
+          fontSize: '24px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '133.4%',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.87))'
+        }}
+        variant="h5"
+      >
         Set Channels, Clients and Client Roles
       </Typography>
-      <Typography variant="subtitle1">
+      <Typography
+        variant="body2"
+        sx={{
+          fontSize: '14px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '143%',
+          letterSpacing: '0.17px',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.60))'
+        }}
+      >
         Manage permissions for viewing and managing channels, clients and client
         roles.
       </Typography>
@@ -82,8 +134,20 @@ export function ChannelsClientsStep(props: {
 
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <Paper style={paperStyling}>
-            <Typography variant="h5">Role Name</Typography>
+          <Paper style={paperStyling} elevation={0}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Role Name
+            </Typography>
 
             <Grid container>
               <Grid item xs={8}>
@@ -110,8 +174,20 @@ export function ChannelsClientsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Channels</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Channels
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -202,8 +278,20 @@ export function ChannelsClientsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper style={paperStyling}>
-            <Typography variant="h5">Clients</Typography>
+          <Paper style={paperStyling} elevation={0}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Clients
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -294,8 +382,20 @@ export function ChannelsClientsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper style={paperStyling}>
-            <Typography variant="h5">Client Roles</Typography>
+          <Paper style={paperStyling} elevation={0}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Client Roles
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
