@@ -462,7 +462,7 @@ export default function OpenhimAppBar() {
                     key={page.name}
                     onClick={handleCloseNavMenu}
                     style={
-                      window.location.href.includes(page.link)
+                      window.location.href.endsWith(page.link)
                         ? {
                             textTransform: 'none',
                             fontWeight: 500,
@@ -496,7 +496,7 @@ export default function OpenhimAppBar() {
                         page.children?.some(
                           child =>
                             child != DIVIDER_MENU_ITEM &&
-                            window.location.href.includes(child.link)
+                            window.location.href.endsWith(child.link)
                         )
                           ? {
                               display: 'flex',
