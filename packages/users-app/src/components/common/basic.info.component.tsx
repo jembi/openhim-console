@@ -166,7 +166,7 @@ export function BasicInfo(props: {
             label="Password"
             variant="outlined"
             fullWidth
-            type="type"
+            type="password"
             value={user.password}
             onChange={e => setUser({...user, password: e.target.value})}
             error={isTouched && getFieldErrorMessage('password') !== undefined}
@@ -177,6 +177,7 @@ export function BasicInfo(props: {
         <Grid item xs={6}>
           <TextField
             label="Confirm Password"
+            type="password"
             variant="outlined"
             fullWidth
             value={confirmPassword}
