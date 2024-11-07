@@ -265,7 +265,7 @@ export function BasicInfo(props: {
                         }}
                       />
                     }
-                    label="Auto-update Transaction LisshowTooltipst."
+                    label="Auto-update Transaction List."
                   />
                 </Grid>
                 <Grid item xs={12}>
