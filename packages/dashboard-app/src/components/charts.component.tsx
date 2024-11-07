@@ -61,11 +61,11 @@ export default function Charts() {
       title="Dashboard"
       subtitle="An overview of recent transactions through your mediator."
     >
-        <Grid container spacing={2} fontFamily={'sans-serif'}>
+      <Grid container spacing={2} fontFamily={'sans-serif'}>
         <Grid item xs={12}>
           <BasicFilter value={filterData} onChange={setFilterData} />
         </Grid>
-        
+
         <Grid item xs={12}>
           <Grid container spacing={2} height={420}>
             <Grid item md={6} xs={12}>
