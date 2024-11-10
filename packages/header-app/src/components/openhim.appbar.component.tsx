@@ -210,6 +210,7 @@ export default function OpenhimAppBar() {
               ...page,
               children: [
                 ...apps
+                  .filter(app => app.type !== 'internal')
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map(app => ({
                     name: app.name,
