@@ -9,13 +9,11 @@ export default function Root() {
       <ThemeProvider theme={theme}>
         <div
           style={{
-            marginTop: '16px',
             backgroundColor: '#F1F1F1'
           }}
         >
           <Charts />
         </div>
-        <Charts />
       </ThemeProvider>
     </React.StrictMode>
   )
