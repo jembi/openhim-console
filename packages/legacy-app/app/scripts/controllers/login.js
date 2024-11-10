@@ -135,8 +135,8 @@ export function LoginCtrl(
           if ($rootScope.referringURL) {
             $window.location = '#!' + $rootScope.referringURL
           } else {
-            // default redirect to transactions page
-            $window.location = '#!/transactions'
+            // default redirect to Home page
+            $window.location.replace('/')
           }
         }
       } else {
