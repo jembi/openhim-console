@@ -224,8 +224,13 @@ const ManageChannelsScreen: React.FC = () => {
       title="Manage Channels"
       subtitle={
         <>
-          Setup and control your channels. 
-          <a href="https://openhim.org/docs/configuration/channels">How do channels work?</a>
+          Setup and control your channels.{' '}
+          <a
+            href="https://openhim.org/docs/configuration/channels"
+            target="_blank"
+          >
+            How do channels work?
+          </a>
         </>
       }
       button={
