@@ -216,11 +216,11 @@ export function LoginCtrl(
                 Alerting.AlertAddMsg(
                   'login',
                   'success',
-                  "You will be redirected to the 'Transactions' page shortly."
+                  "You will be redirected to the 'Home' page shortly."
                 )
                 $timeout(function () {
                   // redirect user to landing page (transactions)
-                  $window.location = '#/transactions'
+                  $window.location = '#!/portal'
                 }, 5000)
               } else {
                 // add the error message
