@@ -196,7 +196,7 @@ export default function OpenhimAppBar() {
         const pagesClone = structuredClone(pages)
         const appsChildren = pagesClone
           .at(-1)
-          .children.filter(child => child.name !== DIVIDER_MENU_ITEM.name)
+          .children.filter(child => child.name != DIVIDER_MENU_ITEM.name)
         pagesClone.at(-1).children = appsChildren
 
         setPages(pagesClone)
@@ -239,9 +239,9 @@ export default function OpenhimAppBar() {
   useEffect(() => {
     const loadEvent = function (e?: PopStateEvent | HashChangeEvent) {
       const newRef = document.location.href
+      setCurrentPage(newRef)
       fetchApps()
       fetchMe()
-      setCurrentPage(newRef)
     }
 
     window.addEventListener('popstate', loadEvent)
@@ -416,9 +416,9 @@ export default function OpenhimAppBar() {
                         {page.children
                           .filter(child => canViewPageBasedOnPermissions(child))
                           .map((child, index, items) =>
-                            child === DIVIDER_MENU_ITEM ? null : (
+                            child.name == DIVIDER_MENU_ITEM.name ? null : (
                               <MenuItem
-                                divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                                divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
                                 key={child.name}
                                 onClick={() =>
                                   handleCloseMoreMenu(
@@ -496,7 +496,7 @@ export default function OpenhimAppBar() {
                       style={
                         page.children?.some(
                           child =>
-                            child != DIVIDER_MENU_ITEM &&
+                            child.name != DIVIDER_MENU_ITEM.name &&
                             window.location.href.endsWith(child.link)
                         )
                           ? {
@@ -543,9 +543,9 @@ export default function OpenhimAppBar() {
                       {page.children
                         .filter(child => canViewPageBasedOnPermissions(child))
                         .map((child, index, items) =>
-                          child === DIVIDER_MENU_ITEM ? null : (
+                          child.name == DIVIDER_MENU_ITEM.name ? null : (
                             <MenuItem
-                              divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                              divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
                               key={child.name}
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
