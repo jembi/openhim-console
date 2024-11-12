@@ -136,7 +136,7 @@ export function LoginCtrl(
             $window.location = '#!' + $rootScope.referringURL
           } else {
             // default redirect to Home page
-            $window.location.replace('/')
+            $window.location.replace('#!/portal')
           }
         }
       } else {
