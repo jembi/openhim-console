@@ -135,7 +135,12 @@ function PortalHome() {
       title="Portal"
       subtitle="Setup and Manage your apps"
       button={
-        <Button href="#!/portal-admin" startIcon={<Settings />}>
+        <Button
+          variant="contained"
+          color="primary"
+          href="#!/portal-admin"
+          startIcon={<Settings />}
+        >
           Manage
         </Button>
       }
