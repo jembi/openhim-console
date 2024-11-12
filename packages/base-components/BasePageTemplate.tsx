@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 
 interface BasePageTemplateProps {
-  children: React.ReactNode
+  children: React.ReactNode | React.ReactNode[]
   title: string
   subtitle: string | React.ReactNode
   button?: React.ReactNode

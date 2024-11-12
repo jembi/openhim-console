@@ -24,7 +24,8 @@ import {
   StepLabel,
   DialogContent,
   DialogActions,
-  Divider
+  Divider,
+  Paper
 } from '@mui/material'
 import WarningIcon from '@mui/icons-material/Warning'
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported'
@@ -54,6 +55,7 @@ import ActiveStepOne from './ActiveStepOne'
 import ActiveStepTwo from './ActiveStepTwo'
 import {AppProps} from './FormInputProps'
 import {countdown} from './utils'
+import {BasePageTemplate} from '../../../base-components'
 
 const StyledGridOverlay = styled('div')(() => ({
   display: 'flex',
@@ -227,7 +229,7 @@ const AppsDataGrid = () => {
   const CustomNoRowsOverlay = () => {
     return (
       <>
-        <StyledGridOverlay>
+        <StyledGridOverlay sx={{py: 1}}>
           <ErrorIcon fontSize="large" color="disabled" />
           <Box sx={{m: 1}}>No apps found</Box>
           <Button
@@ -609,34 +611,35 @@ const AppsDataGrid = () => {
   }
 
   return (
-    <>
-      <Box paddingX={0}>
-        <section id="apps-toolbar">
-          <Stack direction="row" spacing={2} p={2} justifyContent="flex-end">
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={loadContent}
-              startIcon={<RefreshIcon />}
-            >
-              Refresh
-            </Button>
-            <Button
-              aria-label="add app"
-              onClick={() => {
-                setOpenDialog(true)
-                setSelectedApp(formInitialState)
-              }}
-              size="small"
-              color="primary"
-              variant="contained"
-              startIcon={<AddIcon />}
-            >
-              ADD
-            </Button>
-          </Stack>
-        </section>
+    <BasePageTemplate
+      title="Manage Apps"
+      subtitle="Add and update all the Portal apps details and settings"
+      button={
+        <Stack direction="row" spacing={2} p={2} justifyContent="flex-end">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={loadContent}
+            startIcon={<RefreshIcon />}
+          >
+            Refresh
+          </Button>
+          <Button
+            aria-label="add app"
+            onClick={() => {
+              setOpenDialog(true)
+              setSelectedApp(formInitialState)
+            }}
+            color="primary"
+            variant="contained"
+            startIcon={<AddIcon />}
+          >
+            ADD
+          </Button>
+        </Stack>
+      }
+    >
+      <Paper sx={{paddingX: 0}}>
         <Box sx={{height: '100%', width: '100%'}}>
           <DataGrid
             columnVisibilityModel={{
@@ -663,7 +666,7 @@ const AppsDataGrid = () => {
             pageSizeOptions={[10]}
           />
         </Box>
-      </Box>
+      </Paper>
 
       <Dialog
         maxWidth={'lg'}
@@ -859,10 +862,7 @@ const AppsDataGrid = () => {
                     Confirm
                   </Button>
                 ) : (
-                  <Button
-                    onClick={handleNext}
-                    variant="outlined"
-                  >
+                  <Button onClick={handleNext} variant="outlined">
                     Continue
                   </Button>
                 )}
@@ -950,7 +950,7 @@ const AppsDataGrid = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </BasePageTemplate>
   )
 }
 

@@ -111,7 +111,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
       )
     })
   }
- 
+
   return (
     <>
       <FormControl fullWidth component="fieldset" required>
@@ -148,12 +148,13 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
           options={categoryOptions}
           value={values.category}
           onBlur={e => {
-            console.log(`appCategoryFieldRef.current.value: ${appCategoryFieldRef.current.value}`)
-            
+            console.log(
+              `appCategoryFieldRef.current.value: ${appCategoryFieldRef.current.value}`
+            )
+
             handleChange(e)
             setAppCategoryHelperMessage('')
           }}
-          
         />
         <FormHelperText error={appCategoryHelperMessage ? true : false}>
           {appCategoryHelperMessage}

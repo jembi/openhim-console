@@ -397,11 +397,11 @@ export default function OpenhimAppBar() {
                         }
                         anchorOrigin={{
                           vertical: 'top',
-                          horizontal: 'right'
+                          horizontal: 'center'
                         }}
                         transformOrigin={{
                           vertical: 'top',
-                          horizontal: 'right'
+                          horizontal: 'center'
                         }}
                         open={
                           page.name.toUpperCase() === 'MORE'
@@ -529,11 +529,11 @@ export default function OpenhimAppBar() {
                       anchorEl={getCorrectAnchorEl(page)[0]}
                       anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right'
+                        horizontal: 'center'
                       }}
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'right'
+                        horizontal: 'center'
                       }}
                       open={Boolean(getCorrectAnchorEl(page)[0])}
                       onClose={() =>
@@ -580,11 +580,11 @@ export default function OpenhimAppBar() {
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'center',
-                horizontal: 'right'
+                horizontal: 'center'
               }}
               transformOrigin={{
                 vertical: 'center',
-                horizontal: 'right'
+                horizontal: 'center'
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
