@@ -135,8 +135,8 @@ export function LoginCtrl(
           if ($rootScope.referringURL) {
             $window.location = '#!' + $rootScope.referringURL
           } else {
-            // default redirect to transactions page
-            $window.location = '#!/transactions'
+            // default redirect to Home page
+            $window.location.replace('#!/portal')
           }
         }
       } else {
@@ -216,11 +216,11 @@ export function LoginCtrl(
                 Alerting.AlertAddMsg(
                   'login',
                   'success',
-                  "You will be redirected to the 'Transactions' page shortly."
+                  "You will be redirected to the 'Home' page shortly."
                 )
                 $timeout(function () {
                   // redirect user to landing page (transactions)
-                  $window.location = '#/transactions'
+                  $window.location = '#!/portal'
                 }, 5000)
               } else {
                 // add the error message

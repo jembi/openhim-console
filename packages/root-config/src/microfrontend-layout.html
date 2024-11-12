@@ -1,28 +1,96 @@
 <single-spa-router>
-  <main style="display:flex; flex-direction:column; 
-            justify-content:space-between;">
+  <main
+    style="
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    "
+  >
     <application name="@jembi/openhim-header"></application>
-    <div style="background-color: #f1f1f1; margin: 20px; min-height: 80vh; margin-top: 90px;">
-      <route default>
-        <route path="#!" exact="true"> </route>
-        <route path="#!/transactions"> </route>
-        <route path="#!/transactions/:transactionId"> </route>
-        <route path="#!/audits"> </route>
-        <route path="#!/audits"> </route>
-        <route path="#!/tasks"> </route>
-        <route path="#!/visualizer"> </route>
-        <route path="#!/groups"> </route>
-        <route path="#!/mediators"> </route>
-        <route path="#!/certificates"> </route>
-        <route path="#!/export-import"> </route>
-        <route path="#!/logs"> </route>
-        <route path="#!/about"> </route>
-        <route path="#!/profile"> </route>
-        <route path="#!/portal-admin"> </route>
+    <div
+      style="
+        background-color: #f1f1f1;
+        margin: 20px;
+        min-height: 80vh;
+        margin-top: 90px;
+      "
+    >
+      <route path="#!/transactions/:transactionId">
         <div style="flex-grow: 1">
           <application name="@jembi/legacy-console"></application>
         </div>
       </route>
+      <route path="#!/login">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/logout">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/forgot-password">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/channels-legacy">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/audits">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/tasks">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/visualizer">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/groups">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/mediators">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/certificates">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/export-import">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/logs">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/about">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+      <route path="#!/profile">
+        <div style="flex-grow: 1">
+          <application name="@jembi/legacy-console"></application>
+        </div>
+      </route>
+
       <route path="#!/portal">
         <div style="flex-grow: 1">
           <application name="@jembi/openhim-portal"></application>
@@ -66,6 +134,12 @@
       <route path="#!/channels">
         <div style="flex-grow: 1">
           <application name="@jembi/channels-app"></application>
+        </div>
+      </route>
+
+      <route default="true">
+        <div style="flex-grow: 1">
+          <application name="@jembi/openhim-portal"></application>
         </div>
       </route>
       <div id="openhim-console-ems-container"></div>

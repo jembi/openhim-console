@@ -352,7 +352,7 @@ describe('Controller: LoginCtrl', function () {
       )
       scope.alerts.login[1].type.should.equal('success')
       scope.alerts.login[1].msg.should.equal(
-        "You will be redirected to the 'Transactions' page shortly."
+        "You will be redirected to the 'Home' page shortly."
       )
     })
   })

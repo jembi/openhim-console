@@ -6,24 +6,17 @@ import {
   CardContent,
   Divider,
   Grid,
-  SelectChangeEvent,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate, useLocation, useLoaderData} from 'react-router-dom'
+import {useLoaderData} from 'react-router-dom'
+import {BasicInfo} from '../components/common/basic.info.component'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
-import {
-  createNewUser,
-  editUserByEmail,
-  getRoles,
-  getUsers
-} from '../services/api'
+import {editUserByEmail, getRoles, getUsers} from '../services/api'
 import {Routes, User} from '../types'
-import {BasicInfo} from '../components/common/basic.info.component'
 import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
 import {BasePageTemplate} from '../../../base-components'
 
@@ -46,14 +39,10 @@ export async function loader({params}) {
 
 function AddUserRole() {
   const {user: state} = useLoaderData() as {user: User}
-  const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const originalUser = structuredClone(state as User)
   const [user, setUser] = React.useState(structuredClone(originalUser))
-  const [validationErrors, setValidationErrors] = React.useState<{
-    [key: string]: string
-  }>({})
   const getRolesQuery = useQuery(['AddUserRole.getRolesQuery'], getRoles)
   const mutation = useMutation({
     mutationFn: async () => editUserByEmail(originalUser.email, user),
@@ -62,39 +51,27 @@ function AddUserRole() {
     },
     onSuccess: () => {
       hideBackdrop()
-      window.history.pushState({}, '', `/#${Routes.USERS}`)
+      showAlert('User edited successfully', 'Success', 'success')
+      window.setTimeout(
+        () => window.history.pushState({}, '', `/#${Routes.USERS}`),
+        1000
+      )
     },
-    onError: error => {
+    onError: (error: any) => {
       hideBackdrop()
-      showAlert('Error editing user', 'Error', 'error')
+      showAlert(
+        'Error editing user. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   })
   const roles = getRolesQuery.data || []
   const [isFormDataValid, setIsFormDataValid] = React.useState(true)
 
-  const onBasicInfoChange = (event: {user: any; isValid: boolean}) => {
+  const onBasicInfoChange = (event: {user: User; isValid: boolean}) => {
     setUser(event.user)
     setIsFormDataValid(event.isValid)
-  }
-
-  const onChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string[]>,
-    nestedKey?: string
-  ) => {
-    handleOnChange(nestedKey, user, e, setUser, validateUserField)
-  }
-
-  const validateUserField = (field: string, newBasicInfoState?: object) => {
-    handleFieldValidationAndUpdateErrors(
-      newBasicInfoState,
-      user,
-      field,
-      setValidationErrors,
-      validationErrors,
-      setIsFormDataValid
-    )
   }
 
   const handleEditUser = async () => {
@@ -126,10 +103,8 @@ function AddUserRole() {
             <CardContent>
               <BasicInfo
                 roles={roles}
-                onChange={onChange}
+                onChange={onBasicInfoChange}
                 user={user}
-                validationErrors={validationErrors}
-                validateUserField={validateUserField}
               />
             </CardContent>
             <Divider />
@@ -150,7 +125,11 @@ function AddUserRole() {
                 <Button
                   variant="contained"
                   color="primary"
-                  disabled={mutation.isLoading || !isFormDataValid}
+                  disabled={
+                    mutation.isLoading ||
+                    !isFormDataValid ||
+                    JSON.stringify(originalUser) === JSON.stringify(user)
+                  }
                   onClick={handleEditUser}
                 >
                   UPDATE USER

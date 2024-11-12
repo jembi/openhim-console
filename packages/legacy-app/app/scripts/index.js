@@ -280,7 +280,7 @@ app.config(function ($routeProvider) {
       template: require('~/views/channels'),
       controller: controllers.ChannelsCtrl
     })
-    .when('/channels/:channelId', {
+    .when('/channels-legacy/:channelId', {
       template: require('~/views/channelMonitoring'),
       controller: controllers.ChannelMonitoringCtrl
     })

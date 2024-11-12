@@ -7,7 +7,13 @@ export default function Root() {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <Charts />
+        <div
+          style={{
+            backgroundColor: '#F1F1F1'
+          }}
+        >
+          <Charts />
+        </div>
       </ThemeProvider>
     </React.StrictMode>
   )

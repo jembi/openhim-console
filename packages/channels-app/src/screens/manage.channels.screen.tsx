@@ -125,7 +125,7 @@ const ManageChannelsScreen: React.FC = () => {
 
   const handleViewChannelMetrics = () => {
     if (selectedChannel) {
-      window.location.href = `/#!/channels/${selectedChannel._id}`
+      window.location.href = `/#!/channels-legacy/${selectedChannel._id}`
     }
   }
 
@@ -177,6 +177,7 @@ const ManageChannelsScreen: React.FC = () => {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleCloseContextMenu}
+            sx={{boxShadow: 'none'}}
           >
             <MenuItem onClick={handleEditChannel}>
               <EditIcon className={classes.actionsIcon} />

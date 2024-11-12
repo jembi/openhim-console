@@ -40,9 +40,7 @@ export async function upsertRole(channels: Channel[]) {
     return editChannel(channel)
   })
 
-  console.log(
-    `upserting ${upsertChannelPromises.length} channels`
-  )
+  console.log(`upserting ${upsertChannelPromises.length} channels`)
 
   await Promise.all([...upsertChannelPromises])
 }

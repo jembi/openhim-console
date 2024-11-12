@@ -79,6 +79,20 @@ export function RequestMatching(props: {
             }
             onChange={e => {
               setFormTouched(true)
+              if (channel.addAutoRewriteRules) {
+                if (!e.target.value.startsWith('^')) {
+                  e.target.value = '^' + e.target.value
+                }
+                if (!e.target.value.endsWith('$')) {
+                  e.target.value = e.target.value + '$'
+                }
+              } else {
+                e.target.value = e.target.value
+                  .trim()
+                  .replace(/^\^/, '')
+                  .replace(/\$$/, '')
+              }
+
               setChannel({...channel, urlPattern: e.target.value})
             }}
             error={channel.urlPattern.trim() === '' && formTouched}
@@ -95,12 +109,29 @@ export function RequestMatching(props: {
             control={
               <Checkbox
                 checked={channel.addAutoRewriteRules}
-                onChange={e =>
+                onChange={e => {
+                  let urlPattern = channel.urlPattern
+
+                  if (e.target.checked) {
+                    if (!channel.urlPattern.startsWith('^')) {
+                      urlPattern = `^${urlPattern}`
+                    }
+                    if (!channel.urlPattern.endsWith('$')) {
+                      urlPattern = `${urlPattern}$`
+                    }
+                  } else {
+                    urlPattern = urlPattern
+                      .trim()
+                      .replace(/^\^/, '')
+                      .replace(/\$$/, '')
+                  }
+
                   setChannel({
                     ...channel,
+                    urlPattern,
                     addAutoRewriteRules: e.target.checked
                   })
-                }
+                }}
               />
             }
             label="Auto-add regex delimiters (Recommended)"

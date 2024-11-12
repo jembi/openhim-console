@@ -33,13 +33,42 @@ export function TransactionsUsersMediatorsStep(props: {
     permission: keyof Permission,
     checked: boolean
   ) => {
-    setRole({
-      ...role,
-      permissions: {
-        ...role.permissions,
-        [permission]: checked
+    const newRole = structuredClone(role)
+
+    // @ts-ignore
+    newRole['permissions'][permission] = checked
+
+    if (checked) {
+      const channels = props.channels.map(c => c.name)
+      const mediators = props.mediators.map(m => m.name)
+
+      if (permission === 'transaction-rerun-all') {
+        newRole['permissions']['transaction-rerun-specified'].length === 0 &&
+          (newRole['permissions']['transaction-rerun-specified'] = channels)
+
+        if (!newRole.permissions['transaction-view-all']) {
+          newRole['permissions']['transaction-view-all'] = true
+          newRole['permissions']['transaction-view-specified'] = channels
+        }
+      } else if (permission === 'transaction-view-all') {
+        newRole['permissions']['transaction-view-specified'].length === 0 &&
+          (newRole['permissions']['transaction-view-specified'] = channels)
+      } else if (permission === 'transaction-view-body-all') {
+        newRole['permissions']['transaction-view-body-specified'].length ===
+          0 &&
+          (newRole['permissions']['transaction-view-body-specified'] = channels)
+      } else if (permission === 'mediator-manage-all') {
+        newRole['permissions']['mediator-manage-specified'].length === 0 &&
+          (newRole['permissions']['mediator-manage-specified'] = mediators)
+
+        if (!newRole.permissions['mediator-view-all']) {
+          newRole['permissions']['mediator-view-all'] = true
+          newRole['permissions']['mediator-view-specified'] = mediators
+        }
       }
-    })
+    }
+
+    setRole(newRole)
   }
 
   const handleSelectChange = (
@@ -57,14 +86,38 @@ export function TransactionsUsersMediatorsStep(props: {
     })
   }
 
-  const paperStyling = {padding: '10px 20px'}
+  const paperStyling = {
+    padding: '10px 20px',
+    borderRadius: '8px',
+    background: '#FDFDFD',
+    border: '1px solid #EEE'
+  }
 
   return (
     <Box>
-      <Typography variant="h6">
+      <Typography
+        sx={{
+          fontSize: '24px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '133.4%',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.87))'
+        }}
+        variant="h5"
+      >
         Set Transactions, Users and Mediators
       </Typography>
-      <Typography variant="subtitle1">
+      <Typography
+        variant="body2"
+        sx={{
+          fontSize: '14px',
+          fontStyle: 'normal',
+          fontWeight: '400',
+          lineHeight: '143%',
+          letterSpacing: '0.17px',
+          color: 'var(--text-primary, rgba(0, 0, 0, 0.60))'
+        }}
+      >
         Edit an existing role by changing the categorised permissions.
       </Typography>
 
@@ -72,8 +125,20 @@ export function TransactionsUsersMediatorsStep(props: {
 
       <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Transactions</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Transactions
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -222,8 +287,20 @@ export function TransactionsUsersMediatorsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Users</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Users
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -286,8 +363,20 @@ export function TransactionsUsersMediatorsStep(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Paper elevation={1} style={paperStyling}>
-            <Typography variant="h5">Mediators</Typography>
+          <Paper elevation={0} style={paperStyling}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'var(--text-primary, rgba(0, 0, 0, 0.87))',
+                fontSize: '20px',
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: '160%',
+                letterSpacing: '0.15px'
+              }}
+            >
+              Mediators
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={6}>

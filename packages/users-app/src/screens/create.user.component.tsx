@@ -6,31 +6,24 @@ import {
   CardContent,
   Divider,
   Grid,
-  SelectChangeEvent,
   Typography
 } from '@mui/material'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import {BasicInfo} from '../components/common/basic.info.component'
 import Loader from '../components/helpers/loader.component'
 import {useAlert} from '../contexts/alert.context'
 import {useBasicBackdrop} from '../contexts/backdrop.context'
 import {createNewUser, getRoles} from '../services/api'
-import {Routes} from '../types'
-import {defaultUser, getNestedProp} from '../utils'
-import {BasicInfo} from '../components/common/basic.info.component'
-import {userSchema} from '../utils'
+import {Routes, User} from '../types'
+import {defaultUser} from '../utils'
 import {handleFieldValidationAndUpdateErrors, handleOnChange} from './helper'
 import {BasePageTemplate} from '../../../base-components'
 
 function AddUserRole() {
-  const navigate = useNavigate()
   const {showAlert, hideAlert} = useAlert()
   const {showBackdrop, hideBackdrop} = useBasicBackdrop()
   const [user, setUser] = React.useState(structuredClone(defaultUser))
-  const [validationErrors, setValidationErrors] = React.useState<{
-    [key: string]: string
-  }>({})
   const queryKey = React.useMemo(() => ['query.AddUserRole'], [])
   const query = useQuery(queryKey, getRoles, {
     staleTime: 1000 * 30 // Data is fresh for 30 seconds seconds
@@ -44,36 +37,21 @@ function AddUserRole() {
       hideBackdrop()
       window.history.pushState({}, '', `/#${Routes.USERS}`)
     },
-    onError: error => {
+    onError: (error: any) => {
       hideBackdrop()
-      showAlert('Error creating a new user', 'Error', 'error')
+      showAlert(
+        'Error creating a new user. ' + error?.response?.data,
+        'Error',
+        'error'
+      )
     }
   })
   const roles = query.data || []
   const [isFormDataValid, setIsFormDataValid] = React.useState(false)
 
-  const onBasicInfoChange = (event: {user: any; isValid: boolean}) => {
+  const onBasicInfoChange = (event: {user: User; isValid: boolean}) => {
     setUser(event.user)
-  }
-
-  const onChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string[]>,
-    nestedKey?: string
-  ) => {
-    handleOnChange(nestedKey, user, e, setUser, validateUserField)
-  }
-
-  const validateUserField = (field: string, newBasicInfoState?: object) => {
-    handleFieldValidationAndUpdateErrors(
-      newBasicInfoState,
-      user,
-      field,
-      setValidationErrors,
-      validationErrors,
-      setIsFormDataValid
-    )
+    setIsFormDataValid(event.isValid)
   }
 
   const handleAddUser = async () => {
@@ -105,10 +83,8 @@ function AddUserRole() {
             <CardContent>
               <BasicInfo
                 roles={roles}
-                onChange={onChange}
+                onChange={onBasicInfoChange}
                 user={user}
-                validationErrors={validationErrors}
-                validateUserField={validateUserField}
               />
             </CardContent>
             <Divider />

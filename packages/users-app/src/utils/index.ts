@@ -1,28 +1,29 @@
 import z, {boolean, string} from 'zod'
 import {User} from '../types'
 
-export const userSchema = z.object({
-  _id: z.string(),
+export const basicInfoSchema = z.object({
   email: z.string().email(),
   firstname: z.string().min(1, 'Firstname cannot be empty'),
   surname: z.string().min(1, 'Surname cannot be empty'),
   provider: z.string().optional(),
-  groups: z.array(z.string()).min(1),
+  groups: z.array(z.string()).min(1).optional(),
   msisdn: z.string().optional(),
   dailyReport: z.boolean().optional(),
   weeklyReport: z.boolean().optional(),
   expiry: z.date().optional(),
   locked: z.boolean().optional(),
   passports: z.string().optional(),
-  settings: z.object({
-    list: z.object({
-      tabview: z.boolean(),
-      autoupdate: z.boolean()
-    }),
-    general: z.object({
-      showTooltips: z.boolean()
+  settings: z
+    .object({
+      list: z.object({
+        tabview: z.boolean(),
+        autoupdate: z.boolean()
+      }),
+      general: z.object({
+        showTooltips: z.boolean()
+      })
     })
-  }),
+    .optional(),
   token: z.string().optional(),
   tokenType: z.string().nullable().optional()
 })

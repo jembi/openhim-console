@@ -56,20 +56,10 @@ export default function OpenhimAppBar() {
           link: '#!/clients',
           permissions: ['client-manage-all']
         },
-        {
-          name: 'Add Client',
-          link: '#!/clients/add',
-          permissions: ['client-manage-all']
-        },
         DIVIDER_MENU_ITEM,
         {
           name: 'Manage Client Roles',
           link: '#!/client-roles',
-          permissions: ['client-role-manage-all']
-        },
-        {
-          name: 'Add Client Role',
-          link: '#!/client-roles/add',
           permissions: ['client-role-manage-all']
         }
       ]
@@ -79,20 +69,10 @@ export default function OpenhimAppBar() {
       permissions: ['user-view'],
       children: [
         {name: 'Manage Users', link: '#!/users', permissions: ['user-manage']},
-        {
-          name: 'Add User',
-          link: '#!/users/create-user',
-          permissions: ['user-manage']
-        },
         DIVIDER_MENU_ITEM,
         {
           name: 'Role Based Access Control',
           link: '#!/rbac',
-          permissions: ['user-role-manage']
-        },
-        {
-          name: 'Role Based Access Control - Add',
-          link: '#!/rbac/create-role',
           permissions: ['user-role-manage']
         }
       ]
@@ -122,16 +102,10 @@ export default function OpenhimAppBar() {
           permissions: ['import-export']
         },
         {
-          name: 'Manage Apps',
-          link: '#!/portal-admin',
-          permissions: ['app-manage-all']
-        },
-        {
           name: 'Mediators',
           link: '#!/mediators',
           permissions: ['mediator-manage-all']
         },
-        {name: 'Portal', link: '#!/portal'},
         {
           name: 'Server Logs',
           link: '#!/logs',
@@ -147,7 +121,14 @@ export default function OpenhimAppBar() {
     },
     {
       name: 'APPS',
-      children: []
+      children: [
+        DIVIDER_MENU_ITEM,
+        {
+          name: 'Manage Apps',
+          link: '#!/portal-admin',
+          permissions: ['app-manage-all']
+        }
+      ]
     }
   ])
   const settings: Page[] = [
@@ -209,17 +190,37 @@ export default function OpenhimAppBar() {
   const fetchApps = async () => {
     try {
       const apps = await getApps()
+
+      // if there aren't any apps then remove the divider menu item from the apps menu
       if (apps.length === 0) {
+        const pagesClone = structuredClone(pages)
+        const appsChildren = pagesClone
+          .at(-1)
+          .children.filter(child => child.name != DIVIDER_MENU_ITEM.name)
+        pagesClone.at(-1).children = appsChildren
+
+        setPages(pagesClone)
+
         return
       }
+
       const updatedPages = pages.map((page, index) =>
         index === pages.length - 1
           ? {
               ...page,
-              children: apps.sort((a, b) => a.name.localeCompare(b.name)).map(app => ({
-                name: app.name,
-                link: app.type === 'esmodule' ? `#!/` + app.url.split('/').pop().split('.')[0] : app.url
-              }))
+              children: [
+                ...apps
+                  .filter(app => app.type !== 'internal')
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map(app => ({
+                    name: app.name,
+                    link:
+                      app.type === 'esmodule'
+                        ? `#!/` + app.url.split('/').pop().split('.')[0]
+                        : app.url
+                  })),
+                ...page.children
+              ]
             }
           : page
       )
@@ -238,9 +239,9 @@ export default function OpenhimAppBar() {
   useEffect(() => {
     const loadEvent = function (e?: PopStateEvent | HashChangeEvent) {
       const newRef = document.location.href
+      setCurrentPage(newRef)
       fetchApps()
       fetchMe()
-      setCurrentPage(newRef)
     }
 
     window.addEventListener('popstate', loadEvent)
@@ -415,9 +416,9 @@ export default function OpenhimAppBar() {
                         {page.children
                           .filter(child => canViewPageBasedOnPermissions(child))
                           .map((child, index, items) =>
-                            child === DIVIDER_MENU_ITEM ? null : (
+                            child.name == DIVIDER_MENU_ITEM.name ? null : (
                               <MenuItem
-                                divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                                divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
                                 key={child.name}
                                 onClick={() =>
                                   handleCloseMoreMenu(
@@ -462,7 +463,7 @@ export default function OpenhimAppBar() {
                     key={page.name}
                     onClick={handleCloseNavMenu}
                     style={
-                      window.location.href.includes(page.link)
+                      window.location.href.endsWith(page.link)
                         ? {
                             textTransform: 'none',
                             fontWeight: 500,
@@ -495,8 +496,8 @@ export default function OpenhimAppBar() {
                       style={
                         page.children?.some(
                           child =>
-                            child != DIVIDER_MENU_ITEM &&
-                            window.location.href.includes(child.link)
+                            child.name != DIVIDER_MENU_ITEM.name &&
+                            window.location.href.endsWith(child.link)
                         )
                           ? {
                               display: 'flex',
@@ -542,9 +543,9 @@ export default function OpenhimAppBar() {
                       {page.children
                         .filter(child => canViewPageBasedOnPermissions(child))
                         .map((child, index, items) =>
-                          child === DIVIDER_MENU_ITEM ? null : (
+                          child.name == DIVIDER_MENU_ITEM.name ? null : (
                             <MenuItem
-                              divider={items[index + 1] === DIVIDER_MENU_ITEM}
+                              divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
                               key={child.name}
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
