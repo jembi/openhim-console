@@ -619,7 +619,6 @@ const AppsDataGrid = () => {
           <Button
             variant="contained"
             color="primary"
-            size="small"
             onClick={loadContent}
             startIcon={<RefreshIcon />}
           >
@@ -631,7 +630,6 @@ const AppsDataGrid = () => {
               setOpenDialog(true)
               setSelectedApp(formInitialState)
             }}
-            size="small"
             color="primary"
             variant="contained"
             startIcon={<AddIcon />}
