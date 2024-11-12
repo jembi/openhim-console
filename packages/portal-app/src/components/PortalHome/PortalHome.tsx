@@ -7,6 +7,7 @@ import EmptyState from '../EmptyState/EmptyState'
 import AppsShelfSkeleton from '../AppsShelfSkeleton/AppsShelfSkeleton'
 import AppsShelf from '../AppsShelf/AppsShelf'
 import {fetchApps} from '@jembi/openhim-core-api'
+import {BasePageTemplate} from '../../../../base-components'
 
 const preloadedPortalApps = [
   {
@@ -130,20 +131,15 @@ function PortalHome() {
   }, [])
 
   return (
-    <Box mt={'5%'} ml={'10%'} mr={'10%'}>
-      <section id="PortalHeader">
-        <Grid sx={{ml: 0, mt: 0}}>
-          <Box width="100%" display="flex" justifyContent="space-between">
-            <Typography variant="h2" color={green[700]}>
-              Portal
-            </Typography>
-            <Button href="#!/portal-admin" startIcon={<Settings />}>
-              Manage
-            </Button>
-          </Box>
-        </Grid>
-        <Divider sx={{mb: 3, borderBlockColor: 'rgba(0, 0, 0, 0.50)'}} />
-      </section>
+    <BasePageTemplate
+      title="Portal"
+      subtitle="Setup and Manage your apps"
+      button={
+        <Button href="#!/portal-admin" startIcon={<Settings />}>
+          Manage
+        </Button>
+      }
+    >
       <section id="CategoriesSection">
         {isLoading ? (
           <AppsShelfSkeleton />
@@ -156,7 +152,7 @@ function PortalHome() {
           <AppsShelf appsGroupedByCat={appsGroupedByCat} />
         )}
       </section>
-    </Box>
+    </BasePageTemplate>
   )
 }
 
