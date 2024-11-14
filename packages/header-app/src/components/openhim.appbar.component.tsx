@@ -17,7 +17,6 @@ import {Page, Role, UserProfile} from '../types'
 import {getApps, getUser, getUserPermissionRoles} from '../services/api'
 import {useAlert} from '../contexts/alert.context'
 import {OpenhimLogo} from './common/openhim.logo'
-import {alpha} from '@mui/material'
 
 const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
   name: '__',
@@ -31,11 +30,10 @@ const navbarTextStyle = {
   lineHeight: '24px',
   textTransform: 'capitalize',
   fontWeight: '500',
-  fontFamily: 'Roboto',
+  fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
   fontStyle: 'normal',
   order: 1
 }
-
 
 export default function OpenhimAppBar() {
   const [pages, setPages] = useState<Page[]>([
@@ -418,7 +416,10 @@ export default function OpenhimAppBar() {
                           .map((child, index, items) =>
                             child.name == DIVIDER_MENU_ITEM.name ? null : (
                               <MenuItem
-                                divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
+                                divider={
+                                  items[index + 1]?.name ==
+                                  DIVIDER_MENU_ITEM.name
+                                }
                                 key={child.name}
                                 onClick={() =>
                                   handleCloseMoreMenu(
@@ -469,14 +470,14 @@ export default function OpenhimAppBar() {
                             fontWeight: 500,
                             marginRight: '20px',
                             color: '#049D84',
-                            fontFamily:"Roboto",  
+                            fontFamily: 'Roboto',
                             lineHeight: '24px'
                           }
                         : {
                             textTransform: 'none',
                             fontWeight: 500,
                             marginRight: '20px',
-                            fontFamily:"Roboto",                            
+                            fontFamily: 'Roboto',
                             color: 'rgba(0, 0, 0, 0.6)'
                           }
                     }
@@ -505,7 +506,7 @@ export default function OpenhimAppBar() {
                               textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
-                              fontFamily:"Roboto",  
+                              fontFamily: 'Roboto',
                               color: '#049D84'
                             }
                           : {
@@ -514,7 +515,7 @@ export default function OpenhimAppBar() {
                               textTransform: 'capitalize',
                               fontWeight: 500,
                               marginRight: '20px',
-                              fontFamily:"Roboto",
+                              fontFamily: 'Roboto',
                               color: 'rgba(0, 0, 0, 0.6)'
                             }
                       }
@@ -545,7 +546,9 @@ export default function OpenhimAppBar() {
                         .map((child, index, items) =>
                           child.name == DIVIDER_MENU_ITEM.name ? null : (
                             <MenuItem
-                              divider={items[index + 1]?.name == DIVIDER_MENU_ITEM.name}
+                              divider={
+                                items[index + 1]?.name == DIVIDER_MENU_ITEM.name
+                              }
                               key={child.name}
                               onClick={() =>
                                 handleCloseMoreMenu(getCorrectAnchorEl(page)[1])
@@ -556,7 +559,10 @@ export default function OpenhimAppBar() {
                               component="a"
                               href={child.link}
                             >
-                              <Typography sx={navbarTextStyle} textAlign="center">
+                              <Typography
+                                sx={navbarTextStyle}
+                                textAlign="center"
+                              >
                                 {child.name}
                               </Typography>
                             </MenuItem>
