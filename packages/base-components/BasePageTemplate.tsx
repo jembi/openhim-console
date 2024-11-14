@@ -35,7 +35,7 @@ export function BasePageTemplate({
               fontSize: '34px',
               letterSpacing: '0.25px',
               lineHeight: '123.5%',
-              fontFamily: 'Fira Sans',
+              fontFamily: 'Fira Sans, Roboto, Helvetica, Arial, sans-serif',
               color: alpha('#000', 0.87),
               textAlign: 'left',
               display: 'inline-block',
