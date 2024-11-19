@@ -623,7 +623,7 @@ export default function OpenhimAppBar() {
         )}
       </Toolbar>
       <Box
-        sx={{height: 5, background: 'linear-gradient(90deg, #5EF26F, #058568)'}}
+        sx={{height: 5, background: 'linear-gradient(90deg, #4EC75C, #066B54)'}}
       />
     </AppBar>
   )
