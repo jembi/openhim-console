@@ -17,6 +17,7 @@ import {Page, Role, UserProfile} from '../types'
 import {getApps, getUser, getUserPermissionRoles} from '../services/api'
 import {useAlert} from '../contexts/alert.context'
 import {OpenhimLogo} from './common/openhim.logo'
+import { SxProps, Theme } from '@mui/material'
 
 const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
   name: '__',
@@ -24,7 +25,7 @@ const DIVIDER_MENU_ITEM: Readonly<Page> = Object.freeze({
   link: ''
 })
 
-const navbarTextStyle = {
+const navbarTextStyle: SxProps<Theme> = {
   fontSize: '14px',
   letterSpacing: '0.4px',
   lineHeight: '24px',
