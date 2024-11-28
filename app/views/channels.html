@@ -57,20 +57,20 @@
                     <span ng-if="channel.status=='deleted'">{{ channel.name }}</span>
                   </td>
                   <td data-title="Channel URL Pattern">{{ channel.urlPattern }}</td>
-                  
+
                   <td data-title="Access">
                     <div class="channelAccessControlDiv" ng-if="channel.status!='deleted'" href="">
-                      
+
                       <span ng-if="channel.allow" uib-tooltip="Clients and Roles" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-th"></i>
                         <a>{{ channel.allow.join(', ') }}</a>
                       </span>
-                      
+
                       <span ng-if="channel.whitelist" uib-tooltip="Whitelisted ip addresses" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-ok"></i>
                         <a>{{ channel.whitelist.join(', ') }}</a>
                       </span>
-                      
+
                       <span ng-if="channel.authType=='public'" uib-tooltip="Channel is publically available" ng-click="editChannel(channel, 'Request Matching')">
                         <i class="glyphicon glyphicon-cloud-upload"></i>
                         <a > {{ channel.authType }}</a>
@@ -81,7 +81,7 @@
                       <span>{{ channel.authType }}</span>
                     </div>
                   </td>
-                  
+
                   <td data-title="Monitoring"><a href="#!/channels/{{channel._id}}">Show metrics</a></td>
                   <td data-title="status">
 
