@@ -78,11 +78,12 @@ function UsersList() {
     window.history.pushState({}, '', `/#!/users/edit-user/` + user._id)
   }
 
-  const onDeleteUser = (user: User) => {
-    const isRootRole =
-      user?.groups?.includes('admin') && user.email == 'root@openhim.org'
+  const isRootRole = (user: User) =>
+    user?.groups?.includes('admin') && user.email == 'root@openhim.org'
+    
 
-    if (isRootRole) {
+  const onDeleteUser = (user: User) => {
+    if (isRootRole(user)) {
       return showAlert('Cannot delete the root user', 'Error', 'error')
     }
 
@@ -132,7 +133,7 @@ function UsersList() {
           <IconButton onClick={() => onEditUser(params.row)}>
             <CreateIcon />
           </IconButton>
-          <IconButton onClick={() => onDeleteUser(params.row)}>
+          <IconButton disabled={isRootRole(params.row)} onClick={() => onDeleteUser(params.row)}>
             <GridDeleteForeverIcon />
           </IconButton>
         </>
@@ -142,7 +143,7 @@ function UsersList() {
 
   return (
     <BasePageTemplate
-      title="Manager Users"
+      title="Manage Users"
       subtitle="View and manage OpenHIM users, add new users and assign them specific roles to ensure appropriate access and functionality."
       button={
         <Button

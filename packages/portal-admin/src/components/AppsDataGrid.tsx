@@ -476,7 +476,7 @@ const AppsDataGrid = () => {
         await fetch(appLinkValue)
       } catch (error) {
         setAppLinkHelperMessage(
-          'Service Unreachable Please Check The URL Or Contact The Services Administrator'
+          'Service unreachable. Please check the URL or contact the services administrator'
         )
         return false
       }
@@ -615,7 +615,7 @@ const AppsDataGrid = () => {
       title="Manage Apps"
       subtitle="Add and update all the Portal apps details and settings"
       button={
-        <Stack direction="row" spacing={2} p={2} justifyContent="flex-end">
+        <Stack direction="row" spacing={2} justifyContent="flex-end">
           <Button
             variant="contained"
             color="primary"
