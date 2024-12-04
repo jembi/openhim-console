@@ -34,7 +34,7 @@ import {useBasicBackdrop} from '../../contexts/backdrop.context'
 import Loader from '../helpers/loader.helper.component'
 import {useConfirmation} from '../../contexts/confirmation.context'
 import {BasePageTemplate} from '../../../../base-components'
-import { CircularProgress } from '@mui/material'
+import {CircularProgress} from '@mui/material'
 
 const App: React.FC = () => {
   const NO_FILTER = 'NoFilter'
@@ -610,7 +610,12 @@ const App: React.FC = () => {
         <Card elevation={4}>
           <CardContent>
             {filterLoading ? (
-              <Box display="flex" justifyContent="center" alignItems="center" p={3}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p={3}
+              >
                 <CircularProgress />
               </Box>
             ) : (
