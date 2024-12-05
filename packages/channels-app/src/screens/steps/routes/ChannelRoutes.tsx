@@ -163,7 +163,7 @@ export function ChannelRoutes(props: {
                       <Tooltip title="This route is a Primary Route">
                         <Chip
                           label="primary"
-                          color="primary"
+                          color="info"
                           style={{marginLeft: '5px'}}
                         />
                       </Tooltip>

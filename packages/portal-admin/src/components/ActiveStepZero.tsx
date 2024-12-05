@@ -9,8 +9,13 @@ import {
   FormControlLabel,
   MenuItem,
   Radio,
-  Autocomplete
+  Autocomplete,
+  Typography,
+  Box
 } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
+import ExtensionIcon from '@mui/icons-material/Extension'
+import LinkIcon from '@mui/icons-material/Link'
 import {AppProps} from './FormInputProps'
 import {useEffect} from 'react'
 
@@ -52,16 +57,19 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
 }) => {
   const radioButtonOptions = [
     {
-      label: '🏠 Built-in',
-      value: 'internal'
+      label: 'Built-in',
+      value: 'internal',
+      icon: <HomeIcon htmlColor="brown" />
     },
     {
-      label: '🧩 Extension',
-      value: 'esmodule'
+      label: 'Extension',
+      value: 'esmodule',
+      icon: <ExtensionIcon htmlColor="lightgreen" />
     },
     {
-      label: '🔗 Shortcut',
-      value: 'external'
+      label: 'Shortcut',
+      value: 'external',
+      icon: <LinkIcon htmlColor="silver" />
     }
   ]
 
@@ -94,7 +102,12 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         <FormControlLabel
           key={option.value}
           value={option.value}
-          label={option.label}
+          label={
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+              {option.icon}
+              <Typography sx={{px: '2px'}}>{option.label}</Typography>
+            </Box>
+          }
           control={<Radio />}
         />
       )
@@ -118,17 +131,19 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         <FormLabel required component="legend">
           {'What is the type of your app?'}
         </FormLabel>
-        <RadioGroup
-          id={'type'}
-          name={'type'}
-          row
-          value={values.type}
-          onChange={e => {
-            handleChange(e)
-          }}
-        >
-          {generateRadioOptions(radioButtonOptions)}
-        </RadioGroup>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+          <RadioGroup
+            id={'type'}
+            name={'type'}
+            row
+            value={values.type}
+            onChange={e => {
+              handleChange(e)
+            }}
+          >
+            {generateRadioOptions(radioButtonOptions)}
+          </RadioGroup>
+        </Box>
       </FormControl>
       <FormControl fullWidth required sx={{mt: 1}}>
         <Autocomplete

@@ -77,47 +77,50 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
 
   return (
     <>
-      {values.type === 'esmodule' && (
-        <TextField
-          margin="dense"
-          multiline
-          id="url"
-          label="Bundle URL"
-          type="url"
-          required
-          inputRef={appLinkFieldRef}
-          fullWidth
-          variant="outlined"
-          name="url"
-          value={values.url}
-          onChange={e => {
-            handleChange(e)
-            setAppLinkHelperMessage('')
-          }}
-          error={appLinkHelperMessage ? true : false}
-          helperText={appLinkHelperMessage}
-        />
-      )}
-      {(values.type === 'internal' || values.type === 'external') && (
-        <TextField
-          margin="dense"
-          multiline
-          id="page"
-          inputRef={appLinkFieldRef}
-          label="Link"
-          value={values.url}
-          fullWidth
-          required
-          variant="outlined"
-          name="url"
-          onChange={e => {
-            handleChange(e)
-            setAppLinkHelperMessage('')
-          }}
-          error={appLinkHelperMessage ? true : false}
-          helperText={appLinkHelperMessage}
-        />
-      )}
+      <FormControl>
+        {values.type === 'esmodule' && (
+          <TextField
+            margin="dense"
+            multiline
+            id="url"
+            label="Bundle URL"
+            type="url"
+            required
+            inputRef={appLinkFieldRef}
+            fullWidth
+            variant="outlined"
+            name="url"
+            value={values.url}
+            onChange={e => {
+              handleChange(e)
+              setAppLinkHelperMessage('')
+            }}
+            error={appLinkHelperMessage ? true : false}
+            helperText={appLinkHelperMessage}
+          />
+        )}
+        {(values.type === 'internal' || values.type === 'external') && (
+          <TextField
+            margin="dense"
+            type="url"
+            id="url"
+            multiline
+            inputRef={appLinkFieldRef}
+            label="Link"
+            value={values.url}
+            fullWidth
+            required
+            variant="outlined"
+            name="url"
+            onChange={e => {
+              handleChange(e)
+              setAppLinkHelperMessage('')
+            }}
+            error={appLinkHelperMessage ? true : false}
+            helperText={appLinkHelperMessage}
+          />
+        )}
+      </FormControl>
       <FormControl fullWidth required sx={{mt: 1}}>
         <InputLabel>{'Access Roles'}</InputLabel>
         <Select
