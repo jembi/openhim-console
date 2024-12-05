@@ -316,27 +316,29 @@ const TransactionLogTable: React.FC<TransactionLogTableProps> = ({
                 </TableRow>
               )}
             </TableBody>
-            <TableFooter>
-              <TableRow sx={{borderBottom: 'none'}}>
-                <TableCell
-                  colSpan={11}
-                  align="right"
-                  sx={{borderBottom: 'none'}}
-                >
-                  <Button
-                    onClick={loadMore}
-                    endIcon={<ChevronRight />}
-                    disabled={loading}
+            {!(initialTransactionLoadComplete && transactions.length === 0) && (
+              <TableFooter>
+                <TableRow sx={{borderBottom: 'none'}}>
+                  <TableCell
+                    colSpan={11}
+                    align="right"
+                    sx={{borderBottom: 'none'}}
                   >
-                    {loading ? (
-                      <CircularProgress size={24} />
-                    ) : (
-                      'Load 20 more results'
-                    )}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableFooter>
+                    <Button
+                      onClick={loadMore}
+                      endIcon={<ChevronRight />}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        'Load 20 more results'
+                      )}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            )}
           </Table>
         </TableContainer>
       </Box>
