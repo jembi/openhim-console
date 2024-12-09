@@ -173,29 +173,6 @@ const ManageChannelsScreen: React.FC = () => {
           >
             <MoreVertIcon />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseContextMenu}
-            sx={{boxShadow: 'none'}}
-          >
-            <MenuItem onClick={handleEditChannel}>
-              <EditIcon className={classes.actionsIcon} />
-              Edit Channel
-            </MenuItem>
-            <MenuItem onClick={handleViewChannelMetrics}>
-              <ViewIcon className={classes.actionsIcon} />
-              View Metrics
-            </MenuItem>
-            <MenuItem divider onClick={handleViewChannelLogs}>
-              <SearchIcon className={classes.actionsIcon} />
-              View Logs
-            </MenuItem>
-            <MenuItem onClick={onActionDisableChannel}>
-              <CancelIcon className={classes.actionsIcon} />
-              Toggle Status
-            </MenuItem>
-          </Menu>
         </div>
       )
     }
@@ -277,6 +254,32 @@ const ManageChannelsScreen: React.FC = () => {
           }}
         />
       </Paper>
+
+      {anchorEl && selectedChannel && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleCloseContextMenu}
+          sx={{boxShadow: 'none'}}
+        >
+          <MenuItem onClick={handleEditChannel}>
+            <EditIcon className={classes.actionsIcon} />
+            Edit Channel
+          </MenuItem>
+          <MenuItem onClick={handleViewChannelMetrics}>
+            <ViewIcon className={classes.actionsIcon} />
+            View Metrics
+          </MenuItem>
+          <MenuItem divider onClick={handleViewChannelLogs}>
+            <SearchIcon className={classes.actionsIcon} />
+            View Logs
+          </MenuItem>
+          <MenuItem onClick={onActionDisableChannel}>
+            <CancelIcon className={classes.actionsIcon} />
+            Toggle Status
+          </MenuItem>
+        </Menu>
+      )}
     </BasePageTemplate>
   )
 }
