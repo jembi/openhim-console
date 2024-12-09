@@ -127,13 +127,14 @@ const AppsDataGrid = () => {
   var showInSideBar = false
 
   const columns: GridColDef[] = [
-    {field: '_id', headerName: 'ID'},
+    {field: '_id', headerName: 'ID', flex: 0.25},
     {
       field: 'icon',
       headerName: 'Icon',
       type: 'string',
       align: 'center',
       width: 35,
+      flex: 0.25,
       renderCell: params => (
         <Avatar
           variant="rounded"
@@ -155,38 +156,45 @@ const AppsDataGrid = () => {
     },
     {
       field: 'name',
+      flex: 1,
       headerName: 'Application Name'
     },
     {
       field: 'description',
-      headerName: 'Description'
+      headerName: 'Description',
+      flex: 1
     },
     {
       field: 'category',
       headerName: 'Category',
       type: 'singleSelect',
-      valueOptions: ['OpenHIM', 'Operations', 'Reports', 'Other']
+      valueOptions: ['OpenHIM', 'Operations', 'Reports', 'Other'],
+      flex: 0.5
     },
     {
       field: 'type',
       headerName: 'Type',
       type: 'singleSelect',
-      valueOptions: ['internal', 'external', 'esmodule']
+      valueOptions: ['internal', 'external', 'esmodule'],
+      flex: 0.5
     },
     {
       field: 'url',
-      headerName: 'URL'
+      headerName: 'URL',
+      flex: 1
     },
     {
       field: 'access_roles',
       headerName: 'Access Roles',
       type: 'singleSelect',
-      valueOptions: ['admin', 'user']
+      valueOptions: ['admin', 'user'],
+      flex: 0.5
     },
     {
       field: 'showInPortal',
       headerName: 'Show In Portal',
       type: 'boolean',
+      flex: 0.75,
       renderCell: params => (
         <Checkbox
           disabled
@@ -201,6 +209,7 @@ const AppsDataGrid = () => {
     {
       field: 'actions',
       headerName: 'Actions',
+      flex: 0.5,
       type: 'actions',
       getActions: (params: GridRowParams) => [
         <GridActionsCellItem
@@ -664,6 +673,21 @@ const AppsDataGrid = () => {
               }
             }}
             pageSizeOptions={[10]}
+            sx={{
+              border: 'none',
+              '& .MuiDataGrid-cell': {
+                borderBottom: 'none'
+              },
+              '& .MuiDataGrid-columnHeaders': {
+                borderBottom: 'none'
+              },
+              '& .MuiDataGrid-cell:focus': {
+                outline: 'none'
+              },
+              '& .MuiDataGrid-columnHeaderTitle': {
+                fontWeight: 'bold'
+              }
+            }}
           />
         </Box>
       </Paper>
