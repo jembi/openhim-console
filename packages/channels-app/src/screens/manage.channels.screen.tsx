@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import CancelIcon from '@mui/icons-material/Cancel'
+import EnableIcon from '@mui/icons-material/PlayArrow'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
@@ -173,29 +174,6 @@ const ManageChannelsScreen: React.FC = () => {
           >
             <MoreVertIcon />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseContextMenu}
-            sx={{boxShadow: 'none'}}
-          >
-            <MenuItem onClick={handleEditChannel}>
-              <EditIcon className={classes.actionsIcon} />
-              Edit Channel
-            </MenuItem>
-            <MenuItem onClick={handleViewChannelMetrics}>
-              <ViewIcon className={classes.actionsIcon} />
-              View Metrics
-            </MenuItem>
-            <MenuItem divider onClick={handleViewChannelLogs}>
-              <SearchIcon className={classes.actionsIcon} />
-              View Logs
-            </MenuItem>
-            <MenuItem onClick={onActionDisableChannel}>
-              <CancelIcon className={classes.actionsIcon} />
-              Toggle Status
-            </MenuItem>
-          </Menu>
         </div>
       )
     }
@@ -277,6 +255,44 @@ const ManageChannelsScreen: React.FC = () => {
           }}
         />
       </Paper>
+
+      {anchorEl && selectedChannel && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleCloseContextMenu}
+          sx={{boxShadow: 'none'}}
+        >
+          <MenuItem onClick={handleEditChannel}>
+            <EditIcon className={classes.actionsIcon} />
+            Edit Channel
+          </MenuItem>
+          <MenuItem onClick={handleViewChannelMetrics}>
+            <ViewIcon className={classes.actionsIcon} />
+            View Metrics
+          </MenuItem>
+          <MenuItem divider onClick={handleViewChannelLogs}>
+            <SearchIcon className={classes.actionsIcon} />
+            View Logs
+          </MenuItem>
+          <MenuItem onClick={onActionDisableChannel}>
+            {selectedChannel.status === 'enabled' && (
+              <>
+                <CancelIcon className={classes.actionsIcon} />
+                Disable Channel
+              </>
+            )}
+          </MenuItem>
+          <MenuItem onClick={onActionDisableChannel}>
+            {selectedChannel.status !== 'enabled' && (
+              <>
+                <EnableIcon className={classes.actionsIcon} />
+                Enable Channel
+              </>
+            )}
+          </MenuItem>
+        </Menu>
+      )}
     </BasePageTemplate>
   )
 }
