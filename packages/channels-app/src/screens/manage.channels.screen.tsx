@@ -275,22 +275,18 @@ const ManageChannelsScreen: React.FC = () => {
             <SearchIcon className={classes.actionsIcon} />
             View Logs
           </MenuItem>
-          <MenuItem onClick={onActionDisableChannel}>
-            {selectedChannel.status === 'enabled' && (
-              <>
-                <CancelIcon className={classes.actionsIcon} />
-                Disable Channel
-              </>
-            )}
-          </MenuItem>
-          <MenuItem onClick={onActionDisableChannel}>
-            {selectedChannel.status !== 'enabled' && (
-              <>
-                <EnableIcon className={classes.actionsIcon} />
-                Enable Channel
-              </>
-            )}
-          </MenuItem>
+          {selectedChannel.status === 'enabled' && (
+            <MenuItem onClick={onActionDisableChannel}>
+              <CancelIcon className={classes.actionsIcon} />
+              Disable Channel
+            </MenuItem>
+          )}
+          {selectedChannel.status !== 'enabled' && (
+            <MenuItem onClick={onActionDisableChannel}>
+              <EnableIcon className={classes.actionsIcon} />
+              Enable Channel
+            </MenuItem>
+          )}
         </Menu>
       )}
     </BasePageTemplate>
