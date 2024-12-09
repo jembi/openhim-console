@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import CancelIcon from '@mui/icons-material/Cancel'
+import EnableIcon from '@mui/icons-material/PlayArrow'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
@@ -275,8 +276,20 @@ const ManageChannelsScreen: React.FC = () => {
             View Logs
           </MenuItem>
           <MenuItem onClick={onActionDisableChannel}>
-            <CancelIcon className={classes.actionsIcon} />
-            Toggle Status
+            {selectedChannel.status === 'enabled' && (
+              <>
+                <CancelIcon className={classes.actionsIcon} />
+                Disable Channel
+              </>
+            )}
+          </MenuItem>
+          <MenuItem onClick={onActionDisableChannel}>
+            {selectedChannel.status !== 'enabled' && (
+              <>
+                <EnableIcon className={classes.actionsIcon} />
+                Enable Channel
+              </>
+            )}
           </MenuItem>
         </Menu>
       )}
