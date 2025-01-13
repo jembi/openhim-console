@@ -45,7 +45,7 @@ export function ChannelRoute(props: {
 
       <Grid spacing={1} container sx={{pt: '10px'}}>
         <Grid item xs={12}>
-          <Typography variant="h6">Essential Details</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">Essential Details</Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -205,13 +205,13 @@ export function ChannelRoute(props: {
             }
             label="Enable Route"
           />
-          <FormHelperText style={{marginLeft: '45px'}}>
+          {/* <FormHelperText style={{marginLeft: '45px'}}>
             Toggle on to enable this route.
-          </FormHelperText>
+          </FormHelperText> */}
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="h6">Route Type</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">Route Type</Typography>
           <RadioGroup
             style={{paddingLeft: '10px'}}
             defaultValue="http"
@@ -230,7 +230,7 @@ export function ChannelRoute(props: {
       </Grid>
 
       <Grid item xs={12}>
-        <Typography variant="h6">Settings</Typography>
+        <Typography sx={{fontWeight: 'bold'}} variant="h6">Settings</Typography>
         <FormHelperText>Choose all that apply.</FormHelperText>
       </Grid>
 
