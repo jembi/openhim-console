@@ -1,17 +1,16 @@
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
   Radio,
   RadioGroup,
-  Switch,
   TextField,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
@@ -193,7 +192,7 @@ export function ChannelRoute(props: {
         <Grid item xs={12}>
           <FormControlLabel
             control={
-              <Switch
+              <Checkbox
                 checked={route.status === 'enabled'}
                 onChange={e =>
                   setRoute({
@@ -205,9 +204,6 @@ export function ChannelRoute(props: {
             }
             label="Enable Route"
           />
-          {/* <FormHelperText style={{marginLeft: '45px'}}>
-            Toggle on to enable this route.
-          </FormHelperText> */}
         </Grid>
 
         <Grid item xs={12}>
@@ -239,7 +235,7 @@ export function ChannelRoute(props: {
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={route.primary}
                   onChange={e =>
                     setRoute({...route, primary: e.target.checked})
@@ -248,14 +244,11 @@ export function ChannelRoute(props: {
               }
               label="Primary Route?"
             />
-            <FormHelperText style={{marginLeft: '45px'}}>
-              Toggle on if this is the primary route.
-            </FormHelperText>
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={route.waitPrimaryResponse}
                   onChange={e =>
                     setRoute({...route, waitPrimaryResponse: e.target.checked})
@@ -264,10 +257,6 @@ export function ChannelRoute(props: {
               }
               label="Wait for Primary Response?"
             />
-            <FormHelperText style={{marginLeft: '45px'}}>
-              Toggle on to wait for the response from the primary route before
-              proceeding.
-            </FormHelperText>
           </Grid>
         </React.Fragment>
       )}
@@ -275,22 +264,19 @@ export function ChannelRoute(props: {
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Switch
+            <Checkbox
               checked={route.secured}
               onChange={e => setRoute({...route, secured: e.target.checked})}
             />
           }
           label="Secured Route?"
         />
-        <FormHelperText style={{marginLeft: '45px'}}>
-          Toggle on if the route is secured. Uses default certificate authority.
-        </FormHelperText>
       </Grid>
 
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Switch
+            <Checkbox
               checked={route.forwardAuthHeader}
               onChange={e =>
                 setRoute({
@@ -302,9 +288,6 @@ export function ChannelRoute(props: {
           }
           label="Forward Auth Header?"
         />
-        <FormHelperText style={{marginLeft: '45px'}}>
-          Toggle on to foward the existing authorization header
-        </FormHelperText>
       </Grid>
 
       <Divider sx={{pt: '10px'}} />
