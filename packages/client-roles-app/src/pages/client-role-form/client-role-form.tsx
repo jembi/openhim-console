@@ -165,6 +165,10 @@ export const ClientRoleForm = () => {
           ? pageHeadingTypography.editClientUserRole.caption
           : pageHeadingTypography.addClientUserRole.caption
       }
+      breadcrumbs={[
+        {label: 'Client Roles', href: '/#!/client-roles'},
+        {label: existingClientRole ? 'Edit' : 'Add'}
+      ]}
     >
       <Card variant="outlined" sx={{margin: 'auto', maxWidth: 610}}>
         <Box sx={{margin: 1}} role="form" aria-label="Client Role Form">
@@ -174,8 +178,8 @@ export const ClientRoleForm = () => {
               label="Role Name"
               variant="outlined"
               helperText="Choose a short but descriptive name"
-              aria-required="true"  
-              aria-describedby="role-name-helper-text" 
+              aria-required="true"
+              aria-describedby="role-name-helper-text"
               value={clientRole.roleName}
               onChange={e => {
                 setClientRole(prevClientRole => ({
