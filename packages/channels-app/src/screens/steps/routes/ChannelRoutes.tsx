@@ -146,12 +146,13 @@ export function ChannelRoutes(props: {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Host | Port</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Path</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}}>Name</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}}>Host</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}}>Path</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}} align="right">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -170,18 +171,9 @@ export function ChannelRoutes(props: {
                     )}
                   </TableCell>
                   <TableCell>{route.type}</TableCell>
-                  <TableCell>{`${route.host ?? '-'} : ${
-                    route.port ?? '-'
-                  }`}</TableCell>
-                  <TableCell>
-                    {route.status === 'enabled' ? (
-                      <Chip label="enabled" color="success" />
-                    ) : (
-                      <Chip label="disabled" color="error" />
-                    )}
-                  </TableCell>
+                  <TableCell>{`${route.host ?? '-'}`}</TableCell>
                   <TableCell>{route.path ?? '-'}</TableCell>
-                  <TableCell>
+                  <TableCell align="right">
                     <IconButton onClick={onClickEditRoute(route)}>
                       <EditIcon />
                     </IconButton>
