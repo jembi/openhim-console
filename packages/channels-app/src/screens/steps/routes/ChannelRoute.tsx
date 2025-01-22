@@ -44,7 +44,9 @@ export function ChannelRoute(props: {
 
       <Grid spacing={1} container sx={{pt: '10px'}}>
         <Grid item xs={12}>
-          <Typography sx={{fontWeight: 'bold'}} variant="h6">Essential Details</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">
+            Essential Details
+          </Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -53,7 +55,7 @@ export function ChannelRoute(props: {
             variant="outlined"
             fullWidth
             margin="normal"
-            size='small'
+            size="small"
             value={route.name}
             onChange={e => {
               setFormIsTouched(true)
@@ -77,7 +79,7 @@ export function ChannelRoute(props: {
                     label="Host"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.host}
                     onChange={e => setRoute({...route, host: e.target.value})}
@@ -88,7 +90,7 @@ export function ChannelRoute(props: {
                     label="Port"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     type="number"
                     margin="normal"
                     value={route.port}
@@ -107,7 +109,7 @@ export function ChannelRoute(props: {
                     label="Route Path"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.path}
                     onChange={e => setRoute({...route, path: e.target.value})}
@@ -118,7 +120,7 @@ export function ChannelRoute(props: {
                     label="Route Path Transform"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.pathTransform}
                     onChange={e =>
@@ -136,7 +138,7 @@ export function ChannelRoute(props: {
                     label="Basic Authentication Username"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.username}
                     onChange={e =>
@@ -151,7 +153,7 @@ export function ChannelRoute(props: {
                     fullWidth
                     type="password"
                     margin="normal"
-                    size='small'
+                    size="small"
                     value={route.password}
                     onChange={e =>
                       setRoute({...route, password: e.target.value})
@@ -172,7 +174,7 @@ export function ChannelRoute(props: {
                     label="Client ID"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.kafkaClientId}
                     onChange={e =>
@@ -185,7 +187,7 @@ export function ChannelRoute(props: {
                     label="Topic Name"
                     variant="outlined"
                     fullWidth
-                    size='small'
+                    size="small"
                     margin="normal"
                     value={route.kafkaTopic}
                     onChange={e =>
@@ -216,7 +218,9 @@ export function ChannelRoute(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{fontWeight: 'bold'}} variant="h6">Route Type</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">
+            Route Type
+          </Typography>
           <RadioGroup
             style={{paddingLeft: '10px'}}
             defaultValue="http"
@@ -235,7 +239,9 @@ export function ChannelRoute(props: {
       </Grid>
 
       <Grid item xs={12}>
-        <Typography sx={{fontWeight: 'bold'}} variant="h6">Settings</Typography>
+        <Typography sx={{fontWeight: 'bold'}} variant="h6">
+          Settings
+        </Typography>
         <FormHelperText>Choose all that apply.</FormHelperText>
       </Grid>
 

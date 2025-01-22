@@ -5,6 +5,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   Grid,
   IconButton,
   Paper,
@@ -98,6 +99,7 @@ export function BasicInfo(props: {
                 : undefined
             }
           />
+          <FormHelperText>Choose a short but descriptive name</FormHelperText>
         </Grid>
 
         <Grid item xs={12}>
@@ -164,6 +166,9 @@ export function BasicInfo(props: {
                     setChannel({...channel, description: e.target.value})
                   }
                 />
+                <FormHelperText>
+                  Help other users understand this channel
+                </FormHelperText>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6">Channel Type</Typography>

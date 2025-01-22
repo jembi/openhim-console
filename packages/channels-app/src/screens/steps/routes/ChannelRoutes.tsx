@@ -221,13 +221,10 @@ export function ChannelRoutes(props: {
       )}
 
       {channel.routes?.length > 0 && (
-        <Grid container style={{padding: '10px'}}>
-          <Grid item xs={8}></Grid>
-          <Grid item xs={4}>
-            <Button variant="text" color="primary" onClick={onClickAddNewRoute}>
-              Add New Route
-            </Button>
-          </Grid>
+        <Grid container justifyContent="flex-end" style={{padding: '10px'}}>
+          <Button variant="text" color="primary" onClick={onClickAddNewRoute}>
+            Add New Route
+          </Button>
         </Grid>
       )}
     </Box>
