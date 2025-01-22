@@ -948,7 +948,7 @@ const AppsDataGrid = () => {
         <Divider />
 
         <DialogContent sx={{p: 2}}>
-          <Typography variant="h6">
+          <Typography >
             {`Are you sure you want to delete the application ${deleteAppData?.name}? This action is irreversible and will permanently remove all associated data.`}
           </Typography>
         </DialogContent>
@@ -963,7 +963,7 @@ const AppsDataGrid = () => {
             Cancel
           </Button>
           <Button
-            variant="contained"
+            variant="text"
             color="error"
             onClick={() => {
               setOpenWarningDialog(false)
