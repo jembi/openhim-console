@@ -22,7 +22,11 @@ const AppCard = ({app}) => {
   }, [])
   return (
     <div>
-      <Card sx={{width: '320px'}} elevation={3}>
+      <Card
+        sx={{width: '320px', cursor: 'pointer'}}
+        onClick={() => (window.location.href = appPath)}
+        elevation={3}
+      >
         <CardHeader
           href={appPath}
           avatar={
