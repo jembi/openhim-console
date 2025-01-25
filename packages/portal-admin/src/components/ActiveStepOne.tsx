@@ -10,43 +10,20 @@ import {
   Switch,
   FormHelperText
 } from '@mui/material'
-import {AppProps} from './FormInputProps'
 import {useEffect} from 'react'
+import {App} from '../types'
+import React from 'react'
 
-interface ActiveStepOneProps {
-  appLinkFieldRef: React.MutableRefObject<HTMLInputElement>
-  values: AppProps
-  handleChange: {
-    (e: React.ChangeEvent<any>): void
-    <T = string | React.ChangeEvent<any>>(
-      field: T
-    ): T extends React.ChangeEvent<any>
-      ? void
-      : (e: string | React.ChangeEvent<any>) => void
-  }
-  handleFormChanges: (values: AppProps) => void
-  setAppLinkHelperMessage: React.Dispatch<React.SetStateAction<string>>
-  setAppAccessRoleHelperMessage: React.Dispatch<React.SetStateAction<string>>
-  appLinkHelperMessage: string
-  appAccessRoleieldRef: React.MutableRefObject<HTMLInputElement>
-  appAccessRoleHelperMessage: string
-  setShowInPortalValue: (value: boolean) => boolean
-  setShowInSideBarValue: (value: boolean) => boolean
+export interface ActiveStepOneProps {
+  app: App
+  onChange: (event: {app: App; isValid: boolean}) => unknown
 }
 
-const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
-  appLinkFieldRef,
-  values,
-  handleChange,
-  handleFormChanges,
-  setAppLinkHelperMessage,
-  setAppAccessRoleHelperMessage,
-  appLinkHelperMessage,
-  appAccessRoleieldRef,
-  appAccessRoleHelperMessage,
-  setShowInSideBarValue,
-  setShowInPortalValue
-}) => {
+function ActiveStepOne(props: ActiveStepOneProps) {
+  const [app, setApp] = React.useState<App>(structuredClone(props.app))
+  const [appLinkHelperMessage, setAppLinkHelperMessage] = React.useState('')
+  const [appAccessRoleHelperMessage, setAppAccessRoleHelperMessage] =
+    React.useState('')
   const accessRoleOptions = [
     {
       label: 'Super Admin',
@@ -57,6 +34,12 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
       value: 'user'
     }
   ]
+
+  useEffect(() => {
+    validateData().then(isValid => {
+      props.onChange({app, isValid})
+    })
+  }, [app])
 
   const generateSingleOptions = options => {
     if (!options) {
@@ -71,14 +54,41 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
     })
   }
 
-  useEffect(() => {
-    handleFormChanges(values)
-  }, [values])
+  const validateData = async () => {
+    if (!app.url) {
+      setAppLinkHelperMessage('App Link is required')
+      return false
+    }
+
+    const regExp =
+      /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
+
+    if (!regExp.test(app.url)) {
+      setAppLinkHelperMessage('Invalid URL')
+      return false
+    }
+
+    try {
+      await fetch(app.url)
+    } catch (error) {
+      setAppLinkHelperMessage(
+        'Service unreachable. Please check the URL or contact the services administrator'
+      )
+      return false
+    }
+
+    if (app.access_roles.length === 0) {
+      setAppAccessRoleHelperMessage('User Access Role is required')
+      return false
+    }
+
+    return true
+  }
 
   return (
     <>
       <FormControl>
-        {values.type === 'esmodule' && (
+        {app.type === 'esmodule' && (
           <TextField
             margin="dense"
             multiline
@@ -86,34 +96,32 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
             label="Bundle URL"
             type="url"
             required
-            inputRef={appLinkFieldRef}
             fullWidth
             variant="outlined"
             name="url"
-            value={values.url}
+            value={app.url}
             onChange={e => {
-              handleChange(e)
+              setApp({...app, url: e.target.value})
               setAppLinkHelperMessage('')
             }}
             error={appLinkHelperMessage ? true : false}
             helperText={appLinkHelperMessage}
           />
         )}
-        {(values.type === 'internal' || values.type === 'external') && (
+        {(app.type === 'internal' || app.type === 'external') && (
           <TextField
             margin="dense"
             type="url"
             id="url"
             multiline
-            inputRef={appLinkFieldRef}
             label="Link"
-            value={values.url}
+            value={app.url}
             fullWidth
             required
             variant="outlined"
             name="url"
             onChange={e => {
-              handleChange(e)
+              setApp({...app, url: e.target.value})
               setAppLinkHelperMessage('')
             }}
             error={appLinkHelperMessage ? true : false}
@@ -126,15 +134,14 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
         <Select
           margin="dense"
           fullWidth
-          inputRef={appAccessRoleieldRef}
           onChange={e => {
-            handleChange(e)
+            setApp({...app, access_roles: e.target.value as string[]})
             setAppAccessRoleHelperMessage('')
           }}
-          id={'access_roles'}
-          name={'access_roles'}
-          value={values.access_roles}
-          label={'Access Roles'}
+          id="access_roles"
+          name="access_roles"
+          value={app.access_roles}
+          label="Access Roles"
           multiple
           error={appAccessRoleHelperMessage ? true : false}
         >
@@ -154,10 +161,9 @@ const ActiveStepOne: React.FC<ActiveStepOneProps> = ({
               id="showInPortal"
               sx={{'& .MuiSvgIcon-root': {fontSize: 18}}}
               onChange={e => {
-                setShowInPortalValue(e.target.checked)
-                handleChange(e)
+                setApp({...app, showInPortal: e.target.checked})
               }}
-              checked={values.showInPortal}
+              checked={app.showInPortal}
             />
           }
           label="Display in Portal Apps Shelf"
