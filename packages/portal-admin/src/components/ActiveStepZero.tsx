@@ -106,11 +106,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
 
   const generateRadioOptions = options =>
     options.map(option => {
-      console.log({
-        checked: app.type.toLowerCase() === option.value,
-        app,
-        options
-      })
       return (
         <FormControlLabel
           key={option.value}

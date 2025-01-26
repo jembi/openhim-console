@@ -170,16 +170,7 @@ const AppsDataGrid = () => {
     try {
       setLoading(true)
       const apps = await getAllApps()
-      const mappings = {
-        internal: 'Built-in',
-        external: 'Shortcut',
-        esmodule: 'Extension'
-      }
-      const updatedApps = apps.map(app => ({
-        ...app,
-        type: mappings[app.type]
-      }))
-      setApps(updatedApps)
+      setApps(apps)
     } catch (error) {
       enqueueSnackbar('Unable to fetch Apps', {variant: 'error'})
       setApps([])
