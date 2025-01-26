@@ -211,8 +211,8 @@ const AppsDataGrid = () => {
     )
   }
 
-  const handleEditApp = async app => {
-    window.history.pushState(null, '', `/#!/portal-admin/edit-app/${app._id}`)
+  const handleEditApp = app => {
+    window.history.pushState(app, '', `/#!/portal-admin/edit-add`)
   }
 
   useEffect(() => {

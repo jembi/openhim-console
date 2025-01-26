@@ -1,5 +1,6 @@
 import {createHashRouter} from 'react-router-dom'
 import AddAppScreen from '../screens/add.app.screen'
+import EditAppScreen from '../screens/edit.app.screen'
 import {Routes} from '../types'
 import AppsDataGrid from '../components/AppsDataGrid'
 
@@ -14,7 +15,7 @@ const router = createHashRouter([
   },
   {
     path: Routes.EDIT_APP,
-    element: <AddAppScreen />
+    element: <EditAppScreen />
   }
 ])
 

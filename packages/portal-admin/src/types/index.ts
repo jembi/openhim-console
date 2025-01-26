@@ -1,7 +1,7 @@
 export enum Routes {
   MANAGE_APPS = '!/portal-admin',
   CREATE_APP = '!/portal-admin/create-add',
-  EDIT_APP = '!/portal-admin/edit-add/:appId'
+  EDIT_APP = '!/portal-admin/edit-add'
 }
 
 export type ModuleTypes = 'internal' | 'esmodule' | 'external'
