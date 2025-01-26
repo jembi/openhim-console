@@ -1,25 +1,22 @@
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  InputLabel,
-  Select,
-  TextField,
-  FormHelperText,
-  FormControlLabel,
-  MenuItem,
-  Radio,
-  Autocomplete,
-  Typography,
-  Box
-} from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
 import ExtensionIcon from '@mui/icons-material/Extension'
+import HomeIcon from '@mui/icons-material/Home'
 import LinkIcon from '@mui/icons-material/Link'
-import {App} from '../types'
+import {
+  Autocomplete,
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography
+} from '@mui/material'
 import React, {useEffect} from 'react'
+import {App} from '../types'
 
-interface ActiveStepZeroProps {
+export interface ActiveStepZeroProps {
   app: App
   onChange: (event: {app: App; isValid: boolean}) => unknown
 }
@@ -109,10 +106,16 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
 
   const generateRadioOptions = options =>
     options.map(option => {
+      console.log({
+        checked: app.type.toLowerCase() === option.value,
+        app,
+        options
+      })
       return (
         <FormControlLabel
           key={option.value}
           value={option.value}
+          checked={app.type === option.value}
           label={
             <Box sx={{display: 'flex', alignItems: 'center'}}>
               {option.icon}
@@ -123,18 +126,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
         />
       )
     })
-  const generateSingleOptions = options => {
-    if (!options) {
-      return null
-    }
-    return options.map((option: any) => {
-      return (
-        <MenuItem key={option.value} value={option.value as string}>
-          {option.label}
-        </MenuItem>
-      )
-    })
-  }
 
   return (
     <>

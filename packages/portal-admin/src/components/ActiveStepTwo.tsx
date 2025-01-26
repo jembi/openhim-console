@@ -60,7 +60,10 @@ const ActiveStepTwo: React.FC<ActiveStepTwoProps> = (
           variant="standard"
         >
           <FormLabel component="label">Icon Settings</FormLabel>
-          <IconToggleButton updateIcon={icon => setApp({...app, icon})} />
+          <IconToggleButton
+            icon={app.icon}
+            updateIcon={icon => setApp({...app, icon})}
+          />
         </FormControl>
         <Button
           variant="text"
