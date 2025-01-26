@@ -1,19 +1,13 @@
-import { editApp } from '@jembi/openhim-core-api'
-import { TabContext, TabList, TabPanel } from '@mui/lab'
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Tab
-} from '@mui/material'
+import {editApp} from '@jembi/openhim-core-api'
+import {TabContext, TabList, TabPanel} from '@mui/lab'
+import {Box, Button, Grid, Paper, Tab} from '@mui/material'
 import React from 'react'
-import { BasePageTemplate } from '../../../base-components'
+import {BasePageTemplate} from '../../../base-components'
 import ActiveStepOne from '../components/ActiveStepOne'
 import ActiveStepTwo from '../components/ActiveStepTwo'
 import ActiveStepZero from '../components/ActiveStepZero'
-import { useAlert } from '../contexts/alert.context'
-import { App, Routes } from '../types'
+import {useAlert} from '../contexts/alert.context'
+import {App, Routes} from '../types'
 
 export default function EditAppScreen() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -97,7 +91,9 @@ export default function EditAppScreen() {
               <Button
                 variant="outlined"
                 color="primary"
-                onClick={() => window.location.href = `/#${Routes.MANAGE_APPS}`}
+                onClick={() =>
+                  (window.location.href = `/#${Routes.MANAGE_APPS}`)
+                }
               >
                 CANCEL
               </Button>
