@@ -2,12 +2,12 @@ import {createHashRouter} from 'react-router-dom'
 import AddAppScreen from '../screens/add.app.screen'
 import EditAppScreen from '../screens/edit.app.screen'
 import {Routes} from '../types'
-import AppsDataGrid from '../components/AppsDataGrid'
+import ListAppsScreen from '../screens/list.apps.screen'
 
 const router = createHashRouter([
   {
     path: Routes.MANAGE_APPS,
-    element: <AppsDataGrid />
+    element: <ListAppsScreen />
   },
   {
     path: Routes.CREATE_APP,

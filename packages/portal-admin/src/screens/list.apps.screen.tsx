@@ -1,4 +1,4 @@
-import {deleteApp, editApp, getAllApps} from '@jembi/openhim-core-api'
+import {deleteApp, getAllApps} from '@jembi/openhim-core-api'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -11,13 +11,10 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   LinearProgress,
   Paper,
   Stack,
-  styled,
-  useMediaQuery,
-  useTheme
+  styled
 } from '@mui/material'
 import {
   DataGrid,
@@ -28,9 +25,9 @@ import {
 import {enqueueSnackbar} from 'notistack'
 import {useEffect, useState} from 'react'
 import {BasePageTemplate} from '../../../base-components'
-import {App} from '../types'
-import {useConfirmation} from '../contexts/confirmation.context'
 import {useAlert} from '../contexts/alert.context'
+import {useConfirmation} from '../contexts/confirmation.context'
+import {App} from '../types'
 
 const StyledGridOverlay = styled('div')(() => ({
   display: 'flex',
@@ -40,7 +37,7 @@ const StyledGridOverlay = styled('div')(() => ({
   height: '100%'
 }))
 
-const AppsDataGrid = () => {
+const ListAppsScreen = () => {
   const {showAlert} = useAlert()
   const {showConfirmation, hideConfirmation} = useConfirmation()
   const [loading, setLoading] = useState(true)
@@ -283,4 +280,4 @@ const AppsDataGrid = () => {
   )
 }
 
-export default AppsDataGrid
+export default ListAppsScreen

@@ -11,13 +11,11 @@ import {
 } from '@mui/material'
 import React from 'react'
 import {BasePageTemplate} from '../../../base-components'
-import ActiveStepOne from '../components/ActiveStepOne'
-import ActiveStepTwo from '../components/ActiveStepTwo'
-import ActiveStepZero from '../components/ActiveStepZero'
-import {countdown} from '../components/utils'
 import {useAlert} from '../contexts/alert.context'
 import {App, Routes} from '../types'
-import _ from 'lodash'
+import ActiveStepOne from './steps/ActiveStepOne'
+import ActiveStepTwo from './steps/ActiveStepTwo'
+import ActiveStepZero from './steps/ActiveStepZero'
 
 const formInitialState: App = {
   _id: '',

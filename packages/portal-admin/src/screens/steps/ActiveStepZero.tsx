@@ -14,7 +14,7 @@ import {
   Typography
 } from '@mui/material'
 import React, {useEffect} from 'react'
-import {App} from '../types'
+import {App} from '../../types'
 
 export interface ActiveStepZeroProps {
   app: App

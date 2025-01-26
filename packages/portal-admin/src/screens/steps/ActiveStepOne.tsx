@@ -11,7 +11,7 @@ import {
   FormHelperText
 } from '@mui/material'
 import {useEffect} from 'react'
-import {App} from '../types'
+import {App} from '../../types'
 import React from 'react'
 
 export interface ActiveStepOneProps {

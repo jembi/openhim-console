@@ -1,9 +1,9 @@
 import {Stack, Button, FormControl, FormLabel, TextField} from '@mui/material'
 
 import {useEffect, useState} from 'react'
-import IconToggleButton from './FormFieldsComponents/IconToggleButton'
-import {App} from '../types'
-import {useAlert} from '../contexts/alert.context'
+import IconToggleButton from '../../components/FormFieldsComponents/IconToggleButton'
+import {App} from '../../types'
+import {useAlert} from '../../contexts/alert.context'
 
 export type ActiveStepTwoProps = {
   app: App
