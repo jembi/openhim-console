@@ -1,21 +1,23 @@
+import {addApp} from '@jembi/openhim-core-api'
 import {
   Box,
   Button,
-  Stack,
+  Divider,
+  Grid,
+  Paper,
   Step,
   StepLabel,
-  Stepper,
-  Typography
+  Stepper
 } from '@mui/material'
+import React from 'react'
 import {BasePageTemplate} from '../../../base-components'
 import ActiveStepOne from '../components/ActiveStepOne'
 import ActiveStepTwo from '../components/ActiveStepTwo'
 import ActiveStepZero from '../components/ActiveStepZero'
-import {addApp} from '@jembi/openhim-core-api'
-import React from 'react'
-import {App} from '../types'
-import {useAlert} from '../contexts/alert.context'
 import {countdown} from '../components/utils'
+import {useAlert} from '../contexts/alert.context'
+import {App, Routes} from '../types'
+import _ from 'lodash'
 
 const formInitialState: App = {
   _id: '',
@@ -31,90 +33,39 @@ const formInitialState: App = {
 }
 
 export default function AddAppScreen() {
-  const [app, setApp] = React.useState(formInitialState)
+  const [app, setApp] = React.useState(structuredClone(formInitialState))
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isFormValid, setIsFormValid] = React.useState(false)
   const steps = ['Add App details', 'Add App Configuration', 'Choose Icon']
   const [activeStep, setActiveStep] = React.useState(0)
-  const [skipped, setSkipped] = React.useState(new Set<number>())
   const {showAlert} = useAlert()
 
-  const onAppChange = (event: {app: App; isValid: boolean}) => {}
-
-  const isStepOptional = (step: number) => {
-    return step === 2
-  }
-
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step)
-  }
-
-  const validateData = async () => {
-    return true
+  const onAppChange = (event: {app: App; isValid: boolean}) => {
+    setApp(event.app)
+    setIsFormValid(event.isValid)
   }
 
   const handleNext = async () => {
-    let newSkipped = skipped
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values())
-      newSkipped.delete(activeStep)
-    }
-    const isValid = await validateData()
-
-    if (isValid) {
-      setActiveStep(activeStep + 1)
-      setSkipped(newSkipped)
-    }
-
-    if (activeStep === 2) {
-      setActiveStep(activeStep + 1)
-      setSkipped(newSkipped)
-    }
+    setActiveStep(currStep => currStep + 1)
   }
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1)
+    setActiveStep(currStep => currStep - 1)
   }
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("You can't skip a step that isn't optional.")
-    }
-
-    setActiveStep(prevActiveStep => prevActiveStep + 1)
-    setSkipped(prevSkipped => {
-      const newSkipped = new Set(prevSkipped.values())
-      newSkipped.add(activeStep)
-      return newSkipped
-    })
-  }
-
-  const handleReset = () => {
-    setActiveStep(0)
-  }
-
-  const handleAddApp = async data => {
+  const handleAddApp = async () => {
     try {
-      data.name = data.name.trim()
-      data.description = data.description.trim()
-      data.url = data.url.trim()
+      setIsSubmitting(true)
 
-      await addApp(data)
-
-      //seconds for countdown
-      const seconds = 5
+      await addApp({...app, _id: undefined})
 
       showAlert('App was registered successfully', 'Success', 'success')
 
-      if (app.type === 'esmodule') {
-        await countdown(seconds, remainingSeconds =>
-          showAlert(
-            `The app will have to reload in ${remainingSeconds} seconds.`,
-            'Info',
-            'info'
-          )
-        )
-        window.location.reload()
-      }
+      setTimeout(() => {
+        window.location.href = `/#${Routes.MANAGE_APPS}`
+      }, 500)
     } catch (error) {
+      console.error(error)
       if (
         error.response &&
         error.response.status === 400 &&
@@ -123,11 +74,13 @@ export default function AddAppScreen() {
         showAlert('App already exists', 'Error', 'error')
       } else {
         showAlert(
-          'Failed to add app ! ' + error.response.data?.error,
+          'Failed to add app ! ' + error.response?.data?.error,
           'Error',
           'error'
         )
       }
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -136,121 +89,83 @@ export default function AddAppScreen() {
       title="Add App"
       subtitle="Use the form below to add your portal item."
     >
-      <Stepper activeStep={activeStep} alternativeLabel sx={{mt: 2}}>
-        {steps.map((label, index) => {
-          const stepProps: {completed?: boolean} = {}
-          const labelProps: {
-            optional?: React.ReactNode
-          } = {}
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            )
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          )
-        })}
-      </Stepper>
-      return (
-      <>
-        <Stack spacing={2}>
-          {activeStep === 0 && (
-            <>
-              <ActiveStepZero app={app} onChange={onAppChange} />
-            </>
-          )}
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Grid item xs={12}>
+          <Paper
+            style={{width: '680px', borderRadius: '15px', padding: '20px'}}
+            elevation={4}
+          >
+            <div style={{marginBottom: '10px'}}>
+              <Stepper activeStep={activeStep}>
+                {steps.map(label => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </div>
+            <Divider />
+            <div style={{marginTop: '10px'}}>
+              {activeStep === 0 && (
+                <ActiveStepZero app={app} onChange={onAppChange} />
+              )}
+              {activeStep === 1 && (
+                <ActiveStepOne app={app} onChange={onAppChange} />
+              )}
+              {activeStep === 2 && (
+                <ActiveStepTwo app={app} onChange={onAppChange} />
+              )}
+            </div>
 
-          {activeStep === 1 && (
-            <>
-              <ActiveStepOne app={app} onChange={onAppChange} />
-            </>
-          )}
-
-          {activeStep === 2 && (
-            <ActiveStepTwo app={app} onChange={onAppChange} />
-          )}
-
-          {activeStep === steps.length && (
-            <>
-              <Typography
-                sx={{
-                  mt: 2,
-                  mb: 1,
-                  alignContent: 'center',
-                  textAlign: 'center'
-                }}
-              >
-                All steps completed
-              </Typography>
-              <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
-                <Box sx={{flex: '1 1 auto'}} />
-                <Button onClick={handleReset} variant="text">
-                  Reset
+            <Box style={{marginTop: '30px'}}>
+              {activeStep === 0 && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  href={`/#${Routes.MANAGE_APPS}`}
+                >
+                  CANCEL
                 </Button>
-              </Box>
-            </>
-          )}
-        </Stack>
-      </>
-      )
-      {activeStep < steps.length && (
-        <>
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            sx={{mr: 1}}
-            variant="outlined"
-          >
-            Back
-          </Button>
-          <Box>
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{mr: 1}}>
-                Skip
-              </Button>
-            )}
-            {activeStep === steps.length ? (
-              <Button form="AppForm" type="submit" variant="contained">
-                Confirm
-              </Button>
-            ) : (
-              <Button onClick={handleNext} variant="outlined">
-                Continue
-              </Button>
-            )}
-
-            {activeStep < 2 && (
-              <Button onClick={handleAddApp} variant="contained" sx={{ml: 1}}>
-                Update
-              </Button>
-            )}
-          </Box>
-        </>
-      )}
-      {/* An empty box outside of the button box is needed to enforce the right position of the box belo */}
-      {/* {activeStep === 3 && <Box />}
-
-      {activeStep === 3 && (
-        <Box>
-          <Button variant="outlined" onClick={handleDialogClose} sx={{mr: 1}}>
-            Cancel
-          </Button>
-          <Button
-            form="AppForm"
-            type="submit"
-            variant="contained"
-            onClick={handleApp}
-          >
-            {openEditDialog ? 'Update' : 'Add App'}
-          </Button>
-        </Box>
-      )} */}
+              )}
+              {activeStep > 0 && (
+                <Button color="info" variant="contained" onClick={handleBack}>
+                  BACK
+                </Button>
+              )}
+              <span style={{marginRight: '10px'}}></span>
+              {activeStep != steps.length - 1 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  disabled={isSubmitting || !isFormValid}
+                >
+                  NEXT
+                </Button>
+              )}
+              {activeStep == steps.length - 1 && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={
+                    isSubmitting ||
+                    !isFormValid ||
+                    JSON.stringify(app) === JSON.stringify(formInitialState)
+                  }
+                  onClick={handleAddApp}
+                >
+                  ADD APP
+                </Button>
+              )}
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
     </BasePageTemplate>
   )
 }

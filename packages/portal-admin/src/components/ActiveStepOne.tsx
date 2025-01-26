@@ -37,7 +37,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
 
   useEffect(() => {
     validateData().then(isValid => {
-      props.onChange({app, isValid})
+      props.onChange({app: structuredClone(app), isValid})
     })
   }, [app])
 
@@ -87,7 +87,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
 
   return (
     <>
-      <FormControl>
+      <FormControl fullWidth>
         {app.type === 'esmodule' && (
           <TextField
             margin="dense"

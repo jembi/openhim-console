@@ -1,6 +1,6 @@
 import {Stack, Button, FormControl, FormLabel, TextField} from '@mui/material'
 
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import IconToggleButton from './FormFieldsComponents/IconToggleButton'
 import {App} from '../types'
 import {useAlert} from '../contexts/alert.context'
@@ -16,17 +16,18 @@ const ActiveStepTwo: React.FC<ActiveStepTwoProps> = (
   const [displayIcon, setDisplayIcon] = useState(false)
   const {showAlert} = useAlert()
 
+  useEffect(() => {
+    props.onChange({app: structuredClone(app), isValid: true})
+  }, [app])
+
   // When adding a custom icon than what provided in the form this function is called to set the icon url.
   const handleFileRead = async ({target}) => {
     const file = target.files[0]
     if (!file) {
-      showAlert('No file selected', 'Error', 'error')
-      return
+      return showAlert('No file selected', 'Error', 'error')
     }
     if (file && file.size > 50000) {
-      // Handle error when file size exceeds 3kb
-      showAlert('File size exceeds 50kb', 'Error', 'error')
-      return
+      return showAlert('File size exceeds 50kb', 'Error', 'error')
     }
     try {
       const base64 = await convertBase64(file)

@@ -72,9 +72,9 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
 
   useEffect(() => {
     validateData().then(isValid => {
-      props.onChange({app, isValid})
+      props.onChange({app: structuredClone(app), isValid})
     })
-  })
+  }, [app])
 
   const validateData = async () => {
     if (!app.category) {
@@ -91,6 +91,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
       setAppTitleHelperMessage(
         'Application title should be at least 3 characters long'
       )
+      return false
     } else if (app.name.length > 25) {
       setAppTitleHelperMessage(
         'Application title should be at most 25 characters long'
@@ -143,8 +144,8 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
         </FormLabel>
         <Box sx={{display: 'flex', justifyContent: 'center'}}>
           <RadioGroup
-            id={'type'}
-            name={'type'}
+            id="type"
+            name="type"
             row
             value={app.type}
             onChange={e => {
@@ -166,14 +167,15 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
               label="Category *"
               onChange={e => {
                 setApp({...app, category: e.target.value})
+                setAppCategoryHelperMessage('')
               }}
             />
           )}
           options={categoryOptions}
           value={app.category}
-          onBlur={e => {
-            // setApp({...app, category: e.target.value})
-            setAppCategoryHelperMessage('')
+          onChange={e => {
+            // setApp({...app, category: e.nativeEvent.targ})
+            // setAppCategoryHelperMessage('')
           }}
         />
         <FormHelperText error={appCategoryHelperMessage ? true : false}>

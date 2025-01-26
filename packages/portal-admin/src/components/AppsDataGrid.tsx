@@ -29,7 +29,6 @@ import {enqueueSnackbar} from 'notistack'
 import {useEffect, useState} from 'react'
 import {BasePageTemplate} from '../../../base-components'
 import {App} from '../types'
-import {countdown} from './utils'
 import {useConfirmation} from '../contexts/confirmation.context'
 import {useAlert} from '../contexts/alert.context'
 
@@ -49,10 +48,6 @@ const AppsDataGrid = () => {
   const [apps, setApps] = useState([])
   //Selected app in the data grid.
   const [selectedApp, setSelectedApp] = useState()
-
-  const [deleteAppData, setDeleteApp] = useState<any>()
-
-  const theme = useTheme()
 
   const columns: GridColDef[] = [
     {field: '_id', headerName: 'ID', flex: 0.25},
@@ -163,7 +158,7 @@ const AppsDataGrid = () => {
         <StyledGridOverlay sx={{py: 1}}>
           <ErrorIcon fontSize="large" color="disabled" />
           <Box sx={{m: 1}}>No apps found</Box>
-          <Button startIcon={<AddIcon />} onClick={() => {}}>
+          <Button startIcon={<AddIcon />} onClick={handleAddApp}>
             Add
           </Button>
         </StyledGridOverlay>
@@ -191,6 +186,10 @@ const AppsDataGrid = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleAddApp = () => {
+    window.history.pushState(null, '', `/#!/portal-admin/create-add`)
   }
 
   const handleDeleteApp = async (app: App) => {
@@ -236,7 +235,7 @@ const AppsDataGrid = () => {
           </Button>
           <Button
             aria-label="add app"
-            onClick={() => {}}
+            onClick={handleAddApp}
             color="primary"
             variant="contained"
             startIcon={<AddIcon />}
