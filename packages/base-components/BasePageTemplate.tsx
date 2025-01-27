@@ -35,7 +35,7 @@ export function BasePageTemplate({
     <Box padding={1}>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
+          <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: '24px'}}>
             {breadcrumbs?.map(breadcrumb => {
               if (breadcrumb.href) {
                 return (
@@ -72,6 +72,9 @@ export function BasePageTemplate({
               textAlign: 'left',
               display: 'inline-block',
               fontSmooth: 'never',
+              ...(breadcrumbs && {
+                marginBottom: '24px'
+              }),
               '-webkit-font-smoothing': 'antialiased',
               '-moz-osx-font-smoothing': 'grayscale'
             }}
