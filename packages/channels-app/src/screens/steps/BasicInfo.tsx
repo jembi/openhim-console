@@ -96,7 +96,7 @@ export function BasicInfo(props: {
             helperText={
               channel.name.trim() === '' && formTouched
                 ? 'Channel Name cannot be empty'
-                : undefined
+                : 'Choose a short but descriptive name.'
             }
           />
           <FormHelperText>Choose a short but descriptive name</FormHelperText>
