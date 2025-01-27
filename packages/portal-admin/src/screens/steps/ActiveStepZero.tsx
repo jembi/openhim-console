@@ -159,9 +159,9 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
           )}
           options={categoryOptions}
           value={app.category}
-          onChange={e => {
-            // setApp({...app, category: e.nativeEvent.targ})
-            // setAppCategoryHelperMessage('')
+          onInputChange={(evt, value) => {
+            setApp({...app, category: value})
+            setAppCategoryHelperMessage('')
           }}
         />
         <FormHelperText error={appCategoryHelperMessage ? true : false}>
