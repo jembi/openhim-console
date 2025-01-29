@@ -8,43 +8,61 @@ import Stack from '@mui/material/Stack'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
-interface IconToggleButtonProps {
+export interface IconToggleButtonProps {
+  icon?: string
   updateIcon: (icon: string) => void
 }
 
-const IconToggleButton: React.FC<IconToggleButtonProps> = ({updateIcon}) => {
-  const [icon, setIcon] = React.useState('AppsIcon')
+const IconToggleButton: React.FC<IconToggleButtonProps> = (
+  props: IconToggleButtonProps
+) => {
+  const [icon, setIcon] = React.useState(props.icon ?? 'AppsIcon')
 
   const handleToggleChange = (
     event: React.MouseEvent<HTMLElement>,
     newIcon: string
   ) => {
     setIcon(newIcon)
-    updateIcon(newIcon)
+    props.updateIcon(newIcon)
   }
 
   const children = [
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/dashboard/v12/24px.svg"
       key="DashboardIcon"
+      selected={
+        icon ===
+        'https://fonts.gstatic.com/s/i/materialicons/dashboard/v12/24px.svg'
+      }
     >
       <DashboardIcon />
     </ToggleButton>,
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/apps/v12/24px.svg"
       key="AppsIcon"
+      selected={
+        icon === 'https://fonts.gstatic.com/s/i/materialicons/apps/v12/24px.svg'
+      }
     >
       <AppsIcon />
     </ToggleButton>,
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/medical_information/v1/24px.svg"
       key="MedicalInformationIcon"
+      selected={
+        icon ===
+        'https://fonts.gstatic.com/s/i/materialicons/medical_information/v1/24px.svg'
+      }
     >
       <MedicalInformationIcon />
     </ToggleButton>,
     <ToggleButton
       value="https://fonts.gstatic.com/s/i/materialicons/cloud/v12/24px.svg"
       key="CloudIcon"
+      selected={
+        icon ===
+        'https://fonts.gstatic.com/s/i/materialicons/cloud/v12/24px.svg'
+      }
     >
       <CloudIcon />
     </ToggleButton>,
@@ -52,6 +70,10 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({updateIcon}) => {
       value="https://fonts.gstatic.com/s/i/materialicons/extension/v12/24px.svg"
       key="ExtensionIcon"
       className="ExtensionIcon"
+      selected={
+        icon ===
+        'https://fonts.gstatic.com/s/i/materialicons/extension/v12/24px.svg'
+      }
     >
       <ExtensionIcon />
     </ToggleButton>
@@ -66,7 +88,7 @@ const IconToggleButton: React.FC<IconToggleButtonProps> = ({updateIcon}) => {
 
   return (
     <Stack spacing={2} alignItems="center">
-      <ToggleButtonGroup size="large" {...control} aria-label="Large sizes">
+      <ToggleButtonGroup size="large" {...control}>
         {children}
       </ToggleButtonGroup>
     </Stack>

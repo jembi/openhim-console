@@ -5,6 +5,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Grid,
   IconButton,
@@ -102,6 +103,9 @@ export function RequestMatching(props: {
                 : undefined
             }
           />
+          <FormHelperText>
+            Which URL patterns will match this channel?
+          </FormHelperText>
         </Grid>
 
         <Grid item xs={12}>
@@ -173,6 +177,11 @@ export function RequestMatching(props: {
                     setChannel({...channel, priority: Number(e.target.value)})
                   }
                 />
+                <FormHelperText>
+                  Transactions matched to multiple channels go to the highest
+                  channel. Priority 1 is highest; higher numbers are lower
+                  priority.
+                </FormHelperText>
               </Grid>
               <Grid item xs={12} style={{marginBottom: '20px'}}>
                 <Typography variant="h6">
