@@ -65,6 +65,7 @@ function EditChannelScreen() {
     <BasePageTemplate
       title="Edit Channel"
       subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel accesss managment."
+      breadcrumbs={[{label: 'Channels', href: '/#!/channels'}, {label: 'Edit'}]}
     >
       <Grid
         container

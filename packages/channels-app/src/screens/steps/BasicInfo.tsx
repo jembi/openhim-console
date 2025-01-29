@@ -4,6 +4,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   Grid,
   Radio,
   RadioGroup,
@@ -94,6 +95,7 @@ export function BasicInfo(props: {
                 : 'Choose a short but descriptive name.'
             }
           />
+          <FormHelperText>Choose a short but descriptive name</FormHelperText>
         </Grid>
 
         <Grid item xs={12}>

@@ -1,17 +1,16 @@
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
   Radio,
   RadioGroup,
-  Switch,
   TextField,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {ChannelRoute as ChannelRouteDef, ChannelRouteType} from '../../../types'
 
@@ -45,7 +44,9 @@ export function ChannelRoute(props: {
 
       <Grid spacing={1} container sx={{pt: '10px'}}>
         <Grid item xs={12}>
-          <Typography variant="h6">Essential Details</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">
+            Essential Details
+          </Typography>
         </Grid>
 
         <Grid item xs={12}>
@@ -54,6 +55,7 @@ export function ChannelRoute(props: {
             variant="outlined"
             fullWidth
             margin="normal"
+            size="small"
             value={route.name}
             onChange={e => {
               setFormIsTouched(true)
@@ -77,6 +79,7 @@ export function ChannelRoute(props: {
                     label="Host"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.host}
                     onChange={e => setRoute({...route, host: e.target.value})}
@@ -87,6 +90,7 @@ export function ChannelRoute(props: {
                     label="Port"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     type="number"
                     margin="normal"
                     value={route.port}
@@ -105,6 +109,7 @@ export function ChannelRoute(props: {
                     label="Route Path"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.path}
                     onChange={e => setRoute({...route, path: e.target.value})}
@@ -115,6 +120,7 @@ export function ChannelRoute(props: {
                     label="Route Path Transform"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.pathTransform}
                     onChange={e =>
@@ -132,6 +138,7 @@ export function ChannelRoute(props: {
                     label="Basic Authentication Username"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.username}
                     onChange={e =>
@@ -146,6 +153,7 @@ export function ChannelRoute(props: {
                     fullWidth
                     type="password"
                     margin="normal"
+                    size="small"
                     value={route.password}
                     onChange={e =>
                       setRoute({...route, password: e.target.value})
@@ -166,6 +174,7 @@ export function ChannelRoute(props: {
                     label="Client ID"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.kafkaClientId}
                     onChange={e =>
@@ -178,6 +187,7 @@ export function ChannelRoute(props: {
                     label="Topic Name"
                     variant="outlined"
                     fullWidth
+                    size="small"
                     margin="normal"
                     value={route.kafkaTopic}
                     onChange={e =>
@@ -193,7 +203,7 @@ export function ChannelRoute(props: {
         <Grid item xs={12}>
           <FormControlLabel
             control={
-              <Switch
+              <Checkbox
                 checked={route.status === 'enabled'}
                 onChange={e =>
                   setRoute({
@@ -205,13 +215,12 @@ export function ChannelRoute(props: {
             }
             label="Enable Route"
           />
-          <FormHelperText style={{marginLeft: '45px'}}>
-            Toggle on to enable this route.
-          </FormHelperText>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="h6">Route Type</Typography>
+          <Typography sx={{fontWeight: 'bold'}} variant="h6">
+            Route Type
+          </Typography>
           <RadioGroup
             style={{paddingLeft: '10px'}}
             defaultValue="http"
@@ -230,7 +239,9 @@ export function ChannelRoute(props: {
       </Grid>
 
       <Grid item xs={12}>
-        <Typography variant="h6">Settings</Typography>
+        <Typography sx={{fontWeight: 'bold'}} variant="h6">
+          Settings
+        </Typography>
         <FormHelperText>Choose all that apply.</FormHelperText>
       </Grid>
 
@@ -239,7 +250,7 @@ export function ChannelRoute(props: {
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={route.primary}
                   onChange={e =>
                     setRoute({...route, primary: e.target.checked})
@@ -248,14 +259,11 @@ export function ChannelRoute(props: {
               }
               label="Primary Route?"
             />
-            <FormHelperText style={{marginLeft: '45px'}}>
-              Toggle on if this is the primary route.
-            </FormHelperText>
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={
-                <Switch
+                <Checkbox
                   checked={route.waitPrimaryResponse}
                   onChange={e =>
                     setRoute({...route, waitPrimaryResponse: e.target.checked})
@@ -264,10 +272,6 @@ export function ChannelRoute(props: {
               }
               label="Wait for Primary Response?"
             />
-            <FormHelperText style={{marginLeft: '45px'}}>
-              Toggle on to wait for the response from the primary route before
-              proceeding.
-            </FormHelperText>
           </Grid>
         </React.Fragment>
       )}
@@ -275,22 +279,19 @@ export function ChannelRoute(props: {
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Switch
+            <Checkbox
               checked={route.secured}
               onChange={e => setRoute({...route, secured: e.target.checked})}
             />
           }
           label="Secured Route?"
         />
-        <FormHelperText style={{marginLeft: '45px'}}>
-          Toggle on if the route is secured. Uses default certificate authority.
-        </FormHelperText>
       </Grid>
 
       <Grid item xs={12}>
         <FormControlLabel
           control={
-            <Switch
+            <Checkbox
               checked={route.forwardAuthHeader}
               onChange={e =>
                 setRoute({
@@ -302,9 +303,6 @@ export function ChannelRoute(props: {
           }
           label="Forward Auth Header?"
         />
-        <FormHelperText style={{marginLeft: '45px'}}>
-          Toggle on to foward the existing authorization header
-        </FormHelperText>
       </Grid>
 
       <Divider sx={{pt: '10px'}} />

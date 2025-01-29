@@ -108,6 +108,7 @@ function AddChannelScreen() {
     <BasePageTemplate
       title="Add Channel"
       subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel accesss managment."
+      breadcrumbs={[{label: 'Channels', href: '/#!/channels'}, {label: 'Add'}]}
     >
       <Grid
         container

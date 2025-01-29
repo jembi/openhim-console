@@ -1,60 +1,35 @@
-import {
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  InputLabel,
-  Select,
-  TextField,
-  FormHelperText,
-  FormControlLabel,
-  MenuItem,
-  Radio,
-  Autocomplete,
-  Typography,
-  Box
-} from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
 import ExtensionIcon from '@mui/icons-material/Extension'
+import HomeIcon from '@mui/icons-material/Home'
 import LinkIcon from '@mui/icons-material/Link'
-import {AppProps} from './FormInputProps'
-import {useEffect} from 'react'
+import {
+  Autocomplete,
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography
+} from '@mui/material'
+import React, {useEffect} from 'react'
+import {App} from '../../types'
 
-interface ActiveStepZeroProps {
-  values: AppProps
-  handleChange: {
-    (e: React.ChangeEvent<any>): void
-    <T = string | React.ChangeEvent<any>>(
-      field: T
-    ): T extends React.ChangeEvent<any>
-      ? void
-      : (e: string | React.ChangeEvent<any>) => void
-  }
-  setAppCategoryHelperMessage: React.Dispatch<React.SetStateAction<string>>
-  setAppTitleHelperMessage: React.Dispatch<React.SetStateAction<string>>
-  setAppDescriptionHelperMessage: React.Dispatch<React.SetStateAction<string>>
-  appCategoryFieldRef: React.MutableRefObject<HTMLInputElement>
-  appCategoryHelperMessage: string
-  appTitleFieldRef: React.MutableRefObject<HTMLInputElement>
-  appTitleHelperMessage: string
-  appDescriptionHelperMessage: string
-  appDescriptionFieldRef: React.MutableRefObject<HTMLInputElement>
-  handleFormChanges: (values: AppProps) => void
+export interface ActiveStepZeroProps {
+  app: App
+  onChange: (event: {app: App; isValid: boolean}) => unknown
 }
 
-const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
-  values,
-  handleChange,
-  handleFormChanges,
-  setAppCategoryHelperMessage,
-  setAppTitleHelperMessage,
-  setAppDescriptionHelperMessage,
-  appCategoryFieldRef,
-  appCategoryHelperMessage,
-  appTitleFieldRef,
-  appTitleHelperMessage,
-  appDescriptionHelperMessage,
-  appDescriptionFieldRef
-}) => {
+const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
+  props: ActiveStepZeroProps
+) => {
+  const [app, setApp] = React.useState<App>(props.app)
+  const [appDescriptionHelperMessage, setAppDescriptionHelperMessage] =
+    React.useState('')
+  const [appTitleHelperMessage, setAppTitleHelperMessage] = React.useState('')
+  const [appCategoryHelperMessage, setAppCategoryHelperMessage] =
+    React.useState('')
   const radioButtonOptions = [
     {
       label: 'Built-in',
@@ -93,8 +68,41 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
   ]
 
   useEffect(() => {
-    handleFormChanges(values)
-  }, [values])
+    validateData().then(isValid => {
+      props.onChange({app: structuredClone(app), isValid})
+    })
+  }, [app])
+
+  const validateData = async () => {
+    if (!app.category) {
+      setAppCategoryHelperMessage(
+        'Category is required. Select one of the categories'
+      )
+      return false
+    } else if (!app.name) {
+      setAppTitleHelperMessage(
+        'App Title is required. Type a title between 3-25 characters'
+      )
+      return false
+    } else if (app.name.length < 3) {
+      setAppTitleHelperMessage(
+        'Application title should be at least 3 characters long'
+      )
+      return false
+    } else if (app.name.length > 25) {
+      setAppTitleHelperMessage(
+        'Application title should be at most 25 characters long'
+      )
+      return false
+    } else if (app.description.length > 70) {
+      setAppDescriptionHelperMessage(
+        'Description should be at most 70 characters long'
+      )
+      return false
+    } else {
+      return true
+    }
+  }
 
   const generateRadioOptions = options =>
     options.map(option => {
@@ -102,6 +110,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         <FormControlLabel
           key={option.value}
           value={option.value}
+          checked={app.type === option.value}
           label={
             <Box sx={{display: 'flex', alignItems: 'center'}}>
               {option.icon}
@@ -112,18 +121,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         />
       )
     })
-  const generateSingleOptions = options => {
-    if (!options) {
-      return null
-    }
-    return options.map((option: any) => {
-      return (
-        <MenuItem key={option.value} value={option.value as string}>
-          {option.label}
-        </MenuItem>
-      )
-    })
-  }
 
   return (
     <>
@@ -133,12 +130,12 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         </FormLabel>
         <Box sx={{display: 'flex', justifyContent: 'center'}}>
           <RadioGroup
-            id={'type'}
-            name={'type'}
+            id="type"
+            name="type"
             row
-            value={values.type}
+            value={app.type}
             onChange={e => {
-              handleChange(e)
+              setApp({...app, type: e.target.value as App['type']})
             }}
           >
             {generateRadioOptions(radioButtonOptions)}
@@ -154,20 +151,16 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
               id="category"
               name="category"
               label="Category *"
-              inputRef={appCategoryFieldRef}
               onChange={e => {
-                appCategoryFieldRef.current.value = e.target.value
+                setApp({...app, category: e.target.value})
+                setAppCategoryHelperMessage('')
               }}
             />
           )}
           options={categoryOptions}
-          value={values.category}
-          onBlur={e => {
-            console.log(
-              `appCategoryFieldRef.current.value: ${appCategoryFieldRef.current.value}`
-            )
-
-            handleChange(e)
+          value={app.category}
+          onInputChange={(evt, value) => {
+            setApp({...app, category: value})
             setAppCategoryHelperMessage('')
           }}
         />
@@ -177,9 +170,8 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
       </FormControl>
       <TextField
         margin="dense"
-        value={values.name}
+        value={app.name}
         id="name"
-        inputRef={appTitleFieldRef}
         label="App Title"
         type="text"
         fullWidth
@@ -187,7 +179,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
         required
         name="name"
         onChange={e => {
-          handleChange(e)
+          setApp({...app, name: e.target.value})
           setAppTitleHelperMessage('')
         }}
         error={appTitleHelperMessage ? true : false}
@@ -196,16 +188,15 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = ({
       <TextField
         margin="dense"
         multiline
-        inputRef={appDescriptionFieldRef}
         id="description"
         label="Description"
         type="text"
         fullWidth
         variant="outlined"
         name="description"
-        value={values.description}
+        value={app.description}
         onChange={e => {
-          handleChange(e)
+          setApp({...app, description: e.target.value})
           setAppDescriptionHelperMessage('')
         }}
         error={appDescriptionHelperMessage ? true : false}
