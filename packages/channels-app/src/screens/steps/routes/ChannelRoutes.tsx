@@ -122,22 +122,19 @@ export function ChannelRoutes(props: {
   }, [channel])
 
   return (
-    <Box>
+    <Box style={{position: 'relative'}}>
       <Typography variant="h5">Routes</Typography>
-      <Typography variant="subtitle1">
-        Add or modify routes to this channel. Any requests that match this
-        channel will be forwarded to each route in the channel. One route can be
-        marked as a primary route. The response from the primary route will be
-        the one that is returned to the request sender.
+      <Typography variant="subtitle1" sx={{color: 'grey'}}>
+        Add or modify routes to this channel. Mark one primary to determine the
+        response returned to the sender.
       </Typography>
 
       <Divider
         style={{
           marginTop: '10px',
-          margin: '0px',
-          width: '100%',
           marginBottom: '10px',
-          overflow: 'visible'
+          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
+          marginLeft: '-22px'
         }}
       />
 

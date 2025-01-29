@@ -1,5 +1,4 @@
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import {
   Box,
   Checkbox,
@@ -7,15 +6,15 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
-  IconButton,
-  Paper,
   Radio,
   RadioGroup,
   Switch,
   TextField,
   Typography
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import React from 'react'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
@@ -37,8 +36,6 @@ export function BasicInfo(props: {
   ]
   const [formTouched, setFormTouched] = React.useState(false)
   const channelTypes: Array<ChannelType> = ['http', 'polling']
-  const [expandOptionalSettings, setExpandOptionalSettings] =
-    React.useState(false)
 
   React.useEffect(() => {
     props.onChange({
@@ -62,9 +59,9 @@ export function BasicInfo(props: {
   }
 
   return (
-    <Box>
+    <Box style={{position: 'relative'}}>
       <Typography variant="h5">Basic Info</Typography>
-      <Typography variant="subtitle1">
+      <Typography sx={{color: 'grey'}} variant="subtitle1">
         Describe some basic information about the channel and choose its overall
         type.
       </Typography>
@@ -72,10 +69,9 @@ export function BasicInfo(props: {
       <Divider
         style={{
           marginTop: '10px',
-          margin: '0px',
-          width: '100%',
           marginBottom: '10px',
-          overflow: 'visible'
+          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
+          marginLeft: '-22px'
         }}
       />
       <br />
@@ -137,135 +133,137 @@ export function BasicInfo(props: {
       />
       <br />
 
-      <Paper elevation={2} style={{borderRadius: '20px', padding: '12px'}}>
-        <Grid container>
-          <Grid item xs={11}>
-            <Typography variant="body1">Optional Settings</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              onClick={() => setExpandOptionalSettings(!expandOptionalSettings)}
-            >
-              {expandOptionalSettings ? <ArrowDropUp /> : <ArrowDropDown />}
-            </IconButton>
-          </Grid>
-        </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <Accordion sx={{borderRadius: '32px'}}>
+            <AccordionSummary expandIcon={<KeyboardArrowDown />}>
+              <Typography variant="body1">Optional Settings</Typography>
+            </AccordionSummary>
 
-        {expandOptionalSettings && (
-          <React.Fragment>
-            <Divider />
-            <Grid container spacing={2}>
-              <Grid item xs={8}>
-                <TextField
-                  label="Channel Description"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
-                  value={channel.description}
-                  onChange={e =>
-                    setChannel({...channel, description: e.target.value})
-                  }
-                />
-                <FormHelperText>
-                  Help other users understand this channel
-                </FormHelperText>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6">Channel Type</Typography>
+            <Divider
+              style={{
+                marginTop: '5px',
+                marginBottom: '5px',
+                width: 'calc(100% + 2px)', // Assuming the parent has 1px padding on both sides
+                marginLeft: '-1px'
+              }}
+            />
 
-                <Box style={{padding: '10px'}}>
-                  <RadioGroup
-                    defaultValue="http"
-                    value={channel.type}
-                    onChange={e =>
-                      setChannel({
-                        ...channel,
-                        type: e.target.value as ChannelType
-                      })
-                    }
-                  >
-                    {channelTypes.map(type => (
-                      <FormControlLabel
-                        key={type}
-                        value={type}
-                        control={<Radio />}
-                        label={type.toUpperCase()}
-                      />
-                    ))}
-                  </RadioGroup>
-                </Box>
-
-                <Grid item xs={5}>
-                  {channel.type === 'polling' && (
-                    <TextField
-                      label="Polling Schedule"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      type="string"
-                      value={channel.pollingSchedule}
-                      onChange={e =>
-                        setChannel({
-                          ...channel,
-                          pollingSchedule: e.target.value
-                        })
-                      }
-                      error={
-                        channel.type === 'polling' &&
-                        channel.pollingSchedule === ''
-                      }
-                      helperText={
-                        channel.type === 'polling' &&
-                        channel.pollingSchedule === ''
-                          ? `Cron format: '*/10 * * * *'\nor Written format: '10 minutes'`
-                          : undefined
-                      }
-                    />
-                  )}
+            <AccordionDetails>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <TextField
-                    label="Timeout ms"
+                    label="Channel Description"
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    type="number"
-                    value={channel.timeout}
+                    value={channel.description}
                     onChange={e =>
-                      setChannel({...channel, timeout: Number(e.target.value)})
+                      setChannel({...channel, description: e.target.value})
                     }
-                    error={
-                      Number.isSafeInteger(channel.timeout) &&
-                      channel.timeout < 0
-                    }
-                    helperText={
-                      Number.isSafeInteger(channel.timeout) &&
-                      channel.timeout < 0
-                        ? 'Timeout cannot be negative'
-                        : undefined
-                    }
+                    helperText={'Help other users understand the channel'}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h6">Channel Type</Typography>
 
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={channel.status === 'enabled'}
+                  <Box style={{padding: '10px'}}>
+                    <RadioGroup
+                      defaultValue="http"
+                      value={channel.type}
+                      onChange={e =>
+                        setChannel({
+                          ...channel,
+                          type: e.target.value as ChannelType
+                        })
+                      }
+                    >
+                      {channelTypes.map(type => (
+                        <FormControlLabel
+                          key={type}
+                          value={type}
+                          control={<Radio />}
+                          label={type.toUpperCase()}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </Box>
+
+                  <Grid item xs={5}>
+                    {channel.type === 'polling' && (
+                      <TextField
+                        label="Polling Schedule"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        type="string"
+                        value={channel.pollingSchedule}
                         onChange={e =>
                           setChannel({
                             ...channel,
-                            status: e.target.checked ? 'enabled' : 'disabled'
+                            pollingSchedule: e.target.value
                           })
                         }
+                        error={
+                          channel.type === 'polling' &&
+                          channel.pollingSchedule === ''
+                        }
+                        helperText={
+                          channel.type === 'polling' &&
+                          channel.pollingSchedule === ''
+                            ? `Cron format: '*/10 * * * *'\nor Written format: '10 minutes'`
+                            : undefined
+                        }
                       />
-                    }
-                    label="Enable channel"
-                  />
+                    )}
+                    <TextField
+                      label="Timeout ms"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      type="number"
+                      value={channel.timeout}
+                      onChange={e =>
+                        setChannel({
+                          ...channel,
+                          timeout: Number(e.target.value)
+                        })
+                      }
+                      error={
+                        Number.isSafeInteger(channel.timeout) &&
+                        channel.timeout < 0
+                      }
+                      helperText={
+                        Number.isSafeInteger(channel.timeout) &&
+                        channel.timeout < 0
+                          ? 'Timeout cannot be negative'
+                          : undefined
+                      }
+                    />
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={channel.status === 'enabled'}
+                          onChange={e =>
+                            setChannel({
+                              ...channel,
+                              status: e.target.checked ? 'enabled' : 'disabled'
+                            })
+                          }
+                        />
+                      }
+                      label="Enable channel"
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </React.Fragment>
-        )}
-      </Paper>
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+      </Grid>
     </Box>
   )
 }

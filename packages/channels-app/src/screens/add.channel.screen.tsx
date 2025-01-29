@@ -160,6 +160,15 @@ function AddChannelScreen() {
                 />
               )}
             </div>
+            <br />
+            <Divider
+              style={{
+                marginTop: '10px',
+                marginBottom: '10px',
+                width: 'calc(100% + 40px)', // Assuming the parent has 0.5px padding on both sides
+                marginLeft: '-21px'
+              }}
+            />
 
             <Box style={{marginTop: '30px'}}>
               {activeStep === 0 && (
@@ -172,7 +181,7 @@ function AddChannelScreen() {
                 </Button>
               )}
               {activeStep > 0 && (
-                <Button color="info" variant="contained" onClick={handleBack}>
+                <Button color="primary" variant="outlined" onClick={handleBack}>
                   BACK
                 </Button>
               )}
