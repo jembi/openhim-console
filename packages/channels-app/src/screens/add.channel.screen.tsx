@@ -182,7 +182,7 @@ function AddChannelScreen() {
               {activeStep > 0 && (
                 <Button
                   color="primary"
-                  variant="contained"
+                  variant="outlined"
                   onClick={handleBack}
                 >
                   BACK
