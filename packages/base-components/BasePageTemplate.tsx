@@ -6,26 +6,58 @@ import {
   Button,
   Card,
   Divider,
-  alpha
+  alpha,
+  Link
 } from '@mui/material'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
 
 interface BasePageTemplateProps {
   children: React.ReactNode | React.ReactNode[]
   title: string
   subtitle: string | React.ReactNode
   button?: React.ReactNode
+  breadcrumbs?: Breadcrumb[]
+}
+
+interface Breadcrumb {
+  label: string
+  href?: string
 }
 
 export function BasePageTemplate({
   children,
   title,
   subtitle,
-  button
+  button,
+  breadcrumbs
 }: BasePageTemplateProps) {
   return (
     <Box padding={1}>
       <Grid container padding={2} spacing={2}>
         <Grid item xs={12}>
+          <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: '24px'}}>
+            {breadcrumbs?.map(breadcrumb => {
+              if (breadcrumb.href) {
+                return (
+                  <Link
+                    underline="hover"
+                    sx={{
+                      color: '#049D84'
+                    }}
+                    key={breadcrumb.label}
+                    href={breadcrumb.href}
+                  >
+                    {breadcrumb.label}
+                  </Link>
+                )
+              }
+              return (
+                <Typography key={breadcrumb.label}>
+                  {breadcrumb.label}
+                </Typography>
+              )
+            })}
+          </Breadcrumbs>
           <Typography
             variant="h4"
             gutterBottom
@@ -40,6 +72,9 @@ export function BasePageTemplate({
               textAlign: 'left',
               display: 'inline-block',
               fontSmooth: 'never',
+              ...(breadcrumbs && {
+                marginBottom: '24px'
+              }),
               '-webkit-font-smoothing': 'antialiased',
               '-moz-osx-font-smoothing': 'grayscale'
             }}
