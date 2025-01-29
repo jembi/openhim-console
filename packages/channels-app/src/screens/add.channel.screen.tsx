@@ -181,11 +181,7 @@ function AddChannelScreen() {
                 </Button>
               )}
               {activeStep > 0 && (
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  onClick={handleBack}
-                >
+                <Button color="primary" variant="outlined" onClick={handleBack}>
                   BACK
                 </Button>
               )}
