@@ -153,7 +153,7 @@ export function BasicInfo(props: {
           <React.Fragment>
             <Divider />
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              <Grid item xs={12}>
                 <TextField
                   label="Channel Description"
                   variant="outlined"
@@ -163,6 +163,12 @@ export function BasicInfo(props: {
                   onChange={e =>
                     setChannel({...channel, description: e.target.value})
                   }
+                  helperText="Help other users understand this channel"
+                  FormHelperTextProps={{
+                    style: {
+                      marginLeft: '0'
+                    }
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
