@@ -314,7 +314,7 @@ export function ChannelRoute(props: {
         <Grid item xs={6}>
           <Grid container spacing={1} sx={{pt: '20px'}}>
             <Grid item xs={6}>
-              <Button variant="text" color="info" onClick={props.onCancel}>
+              <Button variant="outlined" color="primary" onClick={props.onCancel}>
                 CANCEL
               </Button>
             </Grid>
