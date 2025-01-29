@@ -59,7 +59,7 @@ export function BasePageTemplate({
                 variant="subtitle1"
                 gutterBottom
                 sx={{
-                  color: alpha('#000', 0.6),
+                  color: 'grey',
                   fontSmooth: 'never',
                   '-webkit-font-smoothing': 'antialiased',
                   '-moz-osx-font-smoothing': 'grayscale'

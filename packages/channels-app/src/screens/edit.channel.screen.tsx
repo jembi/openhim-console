@@ -1,7 +1,7 @@
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
-import {Box, Button, Grid, Paper, Typography} from '@mui/material'
+import {Box, Button, Divider, Grid, Paper, Typography} from '@mui/material'
 import Tab from '@mui/material/Tab'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
@@ -112,6 +112,15 @@ function EditChannelScreen() {
                 />
               </TabPanel>
             </TabContext>
+
+            <Divider
+              style={{
+                marginTop: '10px',
+                marginBottom: '10px',
+                width: 'calc(100% + 1px)', // Assuming the parent has 0.5px padding on both sides
+                marginLeft: '-1px'
+              }}
+            />
 
             <Box style={{padding: '10px'}}>
               <Button

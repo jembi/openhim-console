@@ -46,13 +46,20 @@ export function RequestMatching(props: {
   }, [channel])
 
   return (
-    <Box>
+    <Box style={{position: 'relative'}}>
       <Typography variant="h5">Request Matching</Typography>
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" sx={{color: 'grey'}}>
         Set criteria for requests to be forwarded to this channel.
       </Typography>
 
-      <Divider style={{marginTop: '10px', marginBottom: '10px'}} />
+      <Divider
+        style={{
+          marginTop: '10px',
+          marginBottom: '10px',
+          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
+          marginLeft: '-22px'
+        }}
+      />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
