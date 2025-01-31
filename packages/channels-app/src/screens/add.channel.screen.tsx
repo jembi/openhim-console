@@ -138,10 +138,10 @@ function AddChannelScreen() {
                   width: '100%',
                   padding: '16px',
                   '& .MuiStepLabel-root .Mui-active': {
-                    color: '#00A47C',
+                    color: '#007F68',
                   },
                   '& .MuiStepLabel-root .Mui-completed': {
-                    color: '#00A47C',
+                    color: '#007F68',
                   },
                   '& .MuiStepConnector-line': {
                     borderColor: '#E0E0E0',
@@ -235,11 +235,11 @@ function AddChannelScreen() {
                   <Button
                     variant="outlined"
                     sx={{
-                      color: '#00A47C',
-                      borderColor: '#00A47C',
+                      color: '#007F68',
+                      borderColor: '#007F68',
                       '&:hover': {
-                        borderColor: '#00916D',
-                        backgroundColor: 'rgba(0, 164, 124, 0.04)'
+                        borderColor: '#006D5A',
+                        backgroundColor: 'rgba(0, 127, 104, 0.04)'
                       }
                     }}
                     href={`/#${Routes.MANAGE_CHANNELS}`}
@@ -250,11 +250,11 @@ function AddChannelScreen() {
                   <Button 
                     variant="outlined"
                     sx={{
-                      color: '#00A47C',
-                      borderColor: '#00A47C',
+                      color: '#007F68',
+                      borderColor: '#007F68',
                       '&:hover': {
-                        borderColor: '#00916D',
-                        backgroundColor: 'rgba(0, 164, 124, 0.04)'
+                        borderColor: '#006D5A',
+                        backgroundColor: 'rgba(0, 127, 104, 0.04)'
                       }
                     }}
                     onClick={handleBack}
@@ -266,13 +266,13 @@ function AddChannelScreen() {
                 <Button
                   variant="contained"
                   sx={{
-                    backgroundColor: '#00A47C',
+                    backgroundColor: '#007F68',
                     '&:hover': {
-                      backgroundColor: '#00916D'
+                      backgroundColor: '#006D5A'
                     },
                     '&.Mui-disabled': {
-                      backgroundColor: 'rgba(0, 164, 124, 0.12)',
-                      color: 'rgba(0, 164, 124, 0.38)'
+                      backgroundColor: 'rgba(0, 127, 104, 0.12)',
+                      color: 'rgba(0, 127, 104, 0.38)'
                     }
                   }}
                   onClick={activeStep === steps.length - 1 ? handleAddChannel : handleNext}
