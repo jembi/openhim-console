@@ -7,7 +7,11 @@ import {
   Step,
   StepLabel,
   Stepper,
-  Typography
+  Typography,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions
 } from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import React from 'react'
@@ -109,99 +113,181 @@ function AddChannelScreen() {
       title="Add Channel"
       subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel accesss managment."
     >
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Grid container direction="column">
+        {/* Stepper Section */}
         <Grid item xs={12}>
-          <Paper
-            style={{width: '680px', borderRadius: '15px', padding: '20px'}}
-            elevation={4}
-          >
-            <div style={{marginBottom: '10px'}}>
-              <Stepper activeStep={activeStep}>
+          <Box sx={{ 
+            width: '100%', 
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <Box sx={{
+              width: '800px',
+              height: '56px',
+              background: '#FFFFFF',
+              boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)',
+              borderRadius: '16px 16px 0px 0px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              padding: 0,
+            }}>
+              <Stepper 
+                activeStep={activeStep}
+                sx={{
+                  width: '100%',
+                  padding: '16px',
+                  '& .MuiStepLabel-root .Mui-active': {
+                    color: '#00A47C',
+                  },
+                  '& .MuiStepLabel-root .Mui-completed': {
+                    color: '#00A47C',
+                  },
+                  '& .MuiStepConnector-line': {
+                    borderColor: '#E0E0E0',
+                  },
+                  '& .MuiStepLabel-label': {
+                    fontSize: '14px',
+                    fontWeight: 500,
+                  }
+                }}
+              >
                 {steps.map(label => (
                   <Step key={label}>
                     <StepLabel>{label}</StepLabel>
                   </Step>
                 ))}
               </Stepper>
-            </div>
-            <Divider />
-            <div style={{marginTop: '10px'}}>
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* Main Card Section */}
+        <Grid item xs={12}>
+          <Box sx={{ 
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <Card sx={{ 
+              width: '800px',
+              borderRadius: '0px 0px 8px 8px',
+              boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)',
+            }}>
+              {/* Dynamic Card Header based on active step */}
               {activeStep === 0 && (
-                <BasicInfo
-                  channel={channel}
-                  onChange={({channel, isValid}) => {
-                    setIsFormValid(isValid)
-                    setChannel(channel)
-                  }}
+                <CardHeader
+                  title="Basic Info"
+                  subheader="Describe some basic information about the channel and choose its overall type."
                 />
               )}
               {activeStep === 1 && (
-                <RequestMatching
-                  channel={channel}
-                  onChange={({channel, isValid}) => {
-                    setIsFormValid(isValid)
-                    setChannel(channel)
-                  }}
+                <CardHeader
+                  title="Request Matching"
+                  subheader="Set criteria for requests to be forwarded to this channel."
                 />
               )}
               {activeStep === 2 && (
-                <ChannelRoutes
-                  channel={channel}
-                  onChange={({channel, isValid}) => {
-                    setIsFormValid(isValid)
-                    setChannel(channel)
-                  }}
+                <CardHeader
+                  title="Channel Routes"
+                  subheader="Configure the routes for this channel."
                 />
               )}
-            </div>
+              
+              <Divider />
+              
+              {/* Dynamic Card Content based on active step */}
+              <CardContent>
+                {activeStep === 0 && (
+                  <BasicInfo
+                    channel={channel}
+                    onChange={({channel, isValid}) => {
+                      setIsFormValid(isValid)
+                      setChannel(channel)
+                    }}
+                  />
+                )}
+                {activeStep === 1 && (
+                  <RequestMatching
+                    channel={channel}
+                    onChange={({channel, isValid}) => {
+                      setIsFormValid(isValid)
+                      setChannel(channel)
+                    }}
+                  />
+                )}
+                {activeStep === 2 && (
+                  <ChannelRoutes
+                    channel={channel}
+                    onChange={({channel, isValid}) => {
+                      setIsFormValid(isValid)
+                      setChannel(channel)
+                    }}
+                  />
+                )}
+              </CardContent>
 
-            <Box style={{marginTop: '30px'}}>
-              {activeStep === 0 && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  href={`/#${Routes.MANAGE_CHANNELS}`}
-                >
-                  CANCEL
-                </Button>
-              )}
-              {activeStep > 0 && (
-                <Button color="primary" variant="contained" onClick={handleBack}>
-                  BACK
-                </Button>
-              )}
-              <span style={{marginRight: '10px'}}></span>
-              {activeStep != steps.length - 1 && (
+              <Divider />
+              
+              {/* Card Actions with Buttons */}
+              <CardActions sx={{ p: 2, justifyContent: 'flex-start' }}>
+                {activeStep === 0 ? (
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: '#00A47C',
+                      borderColor: '#00A47C',
+                      '&:hover': {
+                        borderColor: '#00916D',
+                        backgroundColor: 'rgba(0, 164, 124, 0.04)'
+                      }
+                    }}
+                    href={`/#${Routes.MANAGE_CHANNELS}`}
+                  >
+                    CANCEL
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="outlined"
+                    sx={{
+                      color: '#00A47C',
+                      borderColor: '#00A47C',
+                      '&:hover': {
+                        borderColor: '#00916D',
+                        backgroundColor: 'rgba(0, 164, 124, 0.04)'
+                      }
+                    }}
+                    onClick={handleBack}
+                  >
+                    BACK
+                  </Button>
+                )}
+                <span style={{marginRight: '10px'}}></span>
                 <Button
                   variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  disabled={mutation.isLoading || !isFormValid}
-                >
-                  NEXT
-                </Button>
-              )}
-              {activeStep == steps.length - 1 && (
-                <Button
-                  variant="contained"
-                  color="primary"
+                  sx={{
+                    backgroundColor: '#00A47C',
+                    '&:hover': {
+                      backgroundColor: '#00916D'
+                    },
+                    '&.Mui-disabled': {
+                      backgroundColor: 'rgba(0, 164, 124, 0.12)',
+                      color: 'rgba(0, 164, 124, 0.38)'
+                    }
+                  }}
+                  onClick={activeStep === steps.length - 1 ? handleAddChannel : handleNext}
                   disabled={
-                    mutation.isLoading ||
-                    !isFormValid ||
-                    JSON.stringify(channel) === JSON.stringify(defaultChannel)
+                    mutation.isLoading || 
+                    !isFormValid || 
+                    (activeStep === steps.length - 1 && 
+                      JSON.stringify(channel) === JSON.stringify(defaultChannel))
                   }
-                  onClick={handleAddChannel}
                 >
-                  ADD CHANNEL
+                  {activeStep === steps.length - 1 ? 'ADD CHANNEL' : 'NEXT'}
                 </Button>
-              )}
-            </Box>
-          </Paper>
+              </CardActions>
+            </Card>
+          </Box>
         </Grid>
       </Grid>
     </BasePageTemplate>
