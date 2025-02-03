@@ -203,8 +203,11 @@ export function ChannelRoutes(props: {
                 <TableRow 
                   key={index}
                   sx={{
+                    backgroundColor: selectedRoutes.includes(route._id) ? 'rgba(0, 127, 104, 0.08)' : 'transparent',
                     '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                      backgroundColor: selectedRoutes.includes(route._id) 
+                        ? 'rgba(0, 127, 104, 0.12)' 
+                        : 'rgba(0, 0, 0, 0.04)'
                     }
                   }}
                 >
@@ -228,7 +231,7 @@ export function ChannelRoutes(props: {
                       variant="outlined"
                       sx={{ 
                         backgroundColor: 'rgba(0, 0, 0, 0.08)',
-                        borderRadius: 1
+                        borderRadius: '16px'
                       }} 
                     />
                   </TableCell>
