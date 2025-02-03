@@ -190,7 +190,10 @@ function AddChannelScreen() {
               {activeStep === 2 && (
                 <CardHeader
                   title="Channel Routes"
-                  subheader="Configure the routes for this channel."
+                  subheader="Add or modify routes to this channel. Any requests that match this
+        channel will be forwarded to each route in the channel. One route can be
+        marked as a primary route. The response from the primary route will be
+        the one that is returned to the request sender."
                 />
               )}
               
