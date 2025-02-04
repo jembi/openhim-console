@@ -121,21 +121,22 @@ export function ChannelRoutes(props: {
     )
   }
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectAll(event.target.checked)
-    if (event.target.checked) {
-      setSelectedRoutes(channel.routes?.map(r => r._id) || [])
-    } else {
-      setSelectedRoutes([])
-    }
-  }
-
-  const handleSelectRoute = (routeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setSelectedRoutes(prev => [...prev, routeId])
-    } else {
-      setSelectedRoutes(prev => prev.filter(id => id !== routeId))
-    }
+  const handleDeleteRoute = (route: ChannelRoute) => () => {
+    showConfirmation(
+      'Are you sure you want to delete this route?',
+      'Delete Route',
+      () => {
+        setChannel(
+          structuredClone({
+            ...channel,
+            routes: channel.routes?.filter(r => r.name !== route.name)
+          })
+        )
+        setSelectedRoutes(prev => prev.filter(id => id !== route._id))
+        hideConfirmation()
+      },
+      hideConfirmation
+    )
   }
 
   React.useEffect(() => {
