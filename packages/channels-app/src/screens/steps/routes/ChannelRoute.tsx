@@ -305,36 +305,37 @@ export function ChannelRoute(props: {
         />
       </Grid>
 
-      <Divider sx={{pt: '10px'}} />
+      <Box
+        id="actions"
+        sx={{
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 100000,
+          pt: '10px',
+          justifyContent: 'flex-end',
+          gap: '10px',
+          display: 'flex'
+          // borderTop: '1px solid #ddd'
+        }}
+      >
+        <Button variant="text" color="info" onClick={props.onCancel}>
+          CANCEL
+        </Button>
 
-      <Grid container>
-        <Grid item xs={6}></Grid>
-        <Grid item xs={6}>
-          <Grid container spacing={1} sx={{pt: '20px'}}>
-            <Grid item xs={6}>
-              <Button variant="text" color="info" onClick={props.onCancel}>
-                CANCEL
-              </Button>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  props.onChange?.({
-                    route: structuredClone(route),
-                    isValid: !!route.name.trim()
-                  })
-                }
-                disabled={!route.name.trim()}
-              >
-                {isCreateMode ? 'ADD ROUTE' : 'EDIT ROUTE'}
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            props.onChange?.({
+              route: structuredClone(route),
+              isValid: !!route.name.trim()
+            })
+          }
+          disabled={!route.name.trim()}
+        >
+          {isCreateMode ? 'ADD ROUTE' : 'EDIT ROUTE'}
+        </Button>
+      </Box>
     </Box>
   )
 }
