@@ -4,6 +4,7 @@ import {
   ButtonGroup,
   Checkbox,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Grid,
   Radio,
@@ -96,6 +97,9 @@ export function RequestMatching(props: {
               }
             }}
           />
+          <FormHelperText>
+            Which URL patterns will match this channel?
+          </FormHelperText>
         </Grid>
 
         <Grid item xs={12}>
@@ -198,6 +202,11 @@ export function RequestMatching(props: {
                     }
                   }}
                 />
+                <FormHelperText>
+                  Transactions matched to multiple channels go to the highest
+                  channel. Priority 1 is highest; higher numbers are lower
+                  priority.
+                </FormHelperText>
               </Grid>
               
               <Grid item xs={12} sx={{ mt: 1 }}>

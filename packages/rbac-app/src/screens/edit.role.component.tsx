@@ -107,6 +107,10 @@ function EditUserRole() {
     <BasePageTemplate
       title="Edit User Role"
       subtitle="Easily assign and manage roles and permissions to users by selecting a role, viewing and editing its permissions, or creating a new role with customized permissions."
+      breadcrumbs={[
+        {label: 'User Roles', href: '/#!/user-roles'},
+        {label: 'Edit'}
+      ]}
     >
       <Grid
         container

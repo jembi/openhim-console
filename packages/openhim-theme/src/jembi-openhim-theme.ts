@@ -4,7 +4,7 @@ import {green} from '@mui/material/colors'
 const overrides = createTheme({
   palette: {
     primary: {
-      main: green[700]
+      main: '#049D84'
     },
     secondary: {
       main: green['A100']

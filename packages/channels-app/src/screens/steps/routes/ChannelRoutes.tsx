@@ -194,7 +194,7 @@ export function ChannelRoutes(props: {
                 fontSize: '14px',
                 lineHeight: '24px',
                 letterSpacing: '0.17px'
-              }}>Status</TableCell>
+              }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -224,7 +224,21 @@ export function ChannelRoutes(props: {
                       }}
                     />
                   </TableCell>
-                  <TableCell>{route.name}</TableCell>
+                  <TableCell>
+                    {route.name}
+                    {route.primary && (
+                      <Tooltip title="This route is a Primary Route">
+                        <Chip
+                          label="primary"
+                          sx={{ 
+                            bgcolor: '#007F68',
+                            color: 'white',
+                            marginLeft: '5px'
+                          }}
+                        />
+                      </Tooltip>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Chip 
                       label={route.type} 
@@ -237,7 +251,14 @@ export function ChannelRoutes(props: {
                   </TableCell>
                   <TableCell>{route.host}</TableCell>
                   <TableCell>{route.path}</TableCell>
-                  <TableCell>{route.status}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={onClickEditRoute(route)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={handleDeleteRoute(route)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

@@ -1,16 +1,4 @@
-type ModuleTypes = 'internal' | 'esmodule' | 'external'
-
-export interface AppProps {
-  name: string
-  description: string
-  category: string
-  type: ModuleTypes
-  url: string
-  showInPortal: boolean
-  showInSideBar: boolean
-  access_roles: string[]
-  icon: string
-}
+import {ModuleTypes} from '../types'
 
 export interface FormInputProps {
   name: string

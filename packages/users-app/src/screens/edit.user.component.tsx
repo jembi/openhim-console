@@ -90,6 +90,7 @@ function AddUserRole() {
     <BasePageTemplate
       title="Edit User"
       subtitle="Control client systems and their access roles. Edit clients to enable their request routing and group them by roles for streamlined channel management."
+      breadcrumbs={[{label: 'Users', href: '/#!/users'}, {label: 'Edit'}]}
     >
       <Grid
         container

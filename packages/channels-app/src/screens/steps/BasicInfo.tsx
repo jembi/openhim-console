@@ -1,13 +1,12 @@
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import { ArrowDropDown } from '@mui/icons-material'
 import {
   Box,
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   Grid,
-  IconButton,
-  Paper,
   Radio,
   RadioGroup,
   Switch,
@@ -17,7 +16,6 @@ import {
   AccordionSummary,
   AccordionDetails
 } from '@mui/material'
-import {makeStyles} from '@mui/styles'
 import React from 'react'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
@@ -39,8 +37,6 @@ export function BasicInfo(props: {
   ]
   const [formTouched, setFormTouched] = React.useState(false)
   const channelTypes: Array<ChannelType> = ['http', 'polling']
-  const [expandOptionalSettings, setExpandOptionalSettings] =
-    React.useState(false)
 
   React.useEffect(() => {
     props.onChange({
@@ -240,25 +236,35 @@ export function BasicInfo(props: {
                     />
                   )}
                   <TextField
-                    label="Timeout ms"
-                    variant="outlined"
-                    fullWidth
-                    type="number"
-                    value={channel.timeout}
-                    onChange={e =>
-                      setChannel({...channel, timeout: Number(e.target.value)})
-                    }
-                    error={
-                      Number.isSafeInteger(channel.timeout) &&
-                      channel.timeout < 0
-                    }
-                    helperText={
-                      Number.isSafeInteger(channel.timeout) &&
-                      channel.timeout < 0
-                        ? 'Timeout cannot be negative'
-                        : undefined
-                    }
-                  />
+                      label="Timeout ms"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      type="number"
+                      value={channel.timeout}
+                      onChange={e =>
+                        setChannel({
+                          ...channel,
+                          timeout: Number(e.target.value)
+                        })
+                      }
+                      error={
+                        Number.isSafeInteger(channel.timeout) &&
+                        channel.timeout < 0
+                      }
+                      helperText={
+                        Number.isSafeInteger(channel.timeout) &&
+                        channel.timeout < 0
+                          ? 'Timeout cannot be negative'
+                          : undefined
+                      }
+                      FormHelperTextProps={{
+                        sx: {
+                          marginLeft: '0',
+                          color: 'rgba(0, 0, 0, 0.6)',
+                        }
+                      }}
+                    />
                 </Box>
 
                 <Box sx={{ mt: 3 }}>
@@ -269,7 +275,7 @@ export function BasicInfo(props: {
                         onChange={e =>
                           setChannel({
                             ...channel,
-                            status: e.target.checked ? 'enabled' : 'disabled'
+                            pollingSchedule: e.target.value
                           })
                         }
                         sx={{

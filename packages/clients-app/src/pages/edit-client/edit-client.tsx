@@ -202,6 +202,7 @@ const EditClient = () => {
       <BasePageTemplate
         title="Edit Client"
         subtitle="Control client systems and their access roles. Add clients to enable their request routing and group them by roles for streamlined channel access management"
+        breadcrumbs={[{label: 'Clients', href: '/#!/clients'}, {label: 'Edit'}]}
       >
         <Grid item xs={12}>
           <Card sx={{width: 550, margin: 'auto'}}>

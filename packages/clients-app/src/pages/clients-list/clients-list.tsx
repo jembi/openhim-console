@@ -1,11 +1,6 @@
-import {
-  Button,
-  Typography
-} from '@mui/material'
+import {Button, Typography} from '@mui/material'
 import {Client} from '../../types'
-import {
-  GridColDef,
-} from '@mui/x-data-grid'
+import {GridColDef} from '@mui/x-data-grid'
 import {useEffect, useState} from 'react'
 import {fetchClients, deleteClient} from '@jembi/openhim-core-api'
 import CreateIcon from '@mui/icons-material/Create'
