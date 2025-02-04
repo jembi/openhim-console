@@ -275,7 +275,7 @@ export function BasicInfo(props: {
                         onChange={e =>
                           setChannel({
                             ...channel,
-                            pollingSchedule: e.target.value
+                            status: e.target.checked ? 'enabled' : 'disabled'
                           })
                         }
                         sx={{
