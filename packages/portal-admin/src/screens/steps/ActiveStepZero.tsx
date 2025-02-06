@@ -1,6 +1,7 @@
 import ExtensionIcon from '@mui/icons-material/Extension'
 import HomeIcon from '@mui/icons-material/Home'
 import LinkIcon from '@mui/icons-material/Link'
+import BuiltInIcon from '../../assets/icons/openhim-icon-logo.svg'
 import {
   Autocomplete,
   Box,
@@ -11,7 +12,8 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Typography
+  Typography,
+  Stack
 } from '@mui/material'
 import React, {useEffect} from 'react'
 import {App} from '../../types'
@@ -37,19 +39,29 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
     React.useState('')
   const radioButtonOptions = [
     {
-      label: 'Built-in',
+      label: 'BUILT-IN',
       value: 'internal',
-      icon: <HomeIcon htmlColor="brown" />
+      icon: (isSelected) => (
+        <img 
+          src={BuiltInIcon} 
+          alt="" 
+          style={{ 
+            width: 24, 
+            height: 24,
+            filter: isSelected ? 'brightness(0) invert(1)' : 'none'
+          }} 
+        />
+      )
     },
     {
-      label: 'Extension',
+      label: 'EXTENSION',
       value: 'esmodule',
-      icon: <ExtensionIcon htmlColor="lightgreen" />
+      icon: <ExtensionIcon sx={{ fontSize: 24, color: 'inherit' }} />
     },
     {
-      label: 'Shortcut',
+      label: 'SHORTCUT',
       value: 'external',
-      icon: <LinkIcon htmlColor="silver" />
+      icon: <LinkIcon sx={{ fontSize: 24, color: 'inherit' }} />
     }
   ]
 
@@ -133,45 +145,107 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
     })
   }, [app])
 
-  const generateRadioOptions = options =>
-    options.map(option => {
-      return (
-        <FormControlLabel
-          key={option.value}
-          value={option.value}
-          checked={app.type === option.value}
-          label={
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-              {option.icon}
-              <Typography sx={{px: '2px'}}>{option.label}</Typography>
-            </Box>
-          }
-          control={<Radio />}
-        />
-      )
-    })
-
   return (
-    <>
+    <Stack spacing={3}>
       <FormControl fullWidth component="fieldset" required>
-        <FormLabel required component="legend">
-          {'What is the type of your app?'}
+        <FormLabel 
+          component="legend"
+          sx={{
+            mb: 2,
+            color: 'text.primary',
+            '&.Mui-focused': {
+              color: 'text.primary'
+            }
+          }}
+        >
+          Select app type
         </FormLabel>
-        <Box sx={{display: 'flex', justifyContent: 'center'}}>
-          <RadioGroup
-            id="type"
-            name="type"
-            row
-            value={app.type}
-            onChange={e => {
-              setApp({...app, type: e.target.value as App['type']})
-            }}
-          >
-            {generateRadioOptions(radioButtonOptions)}
-          </RadioGroup>
-        </Box>
+        <RadioGroup
+          id="type"
+          name="type"
+          row
+          value={app.type}
+          onChange={e => {
+            setApp({...app, type: e.target.value as App['type']})
+          }}
+          sx={{
+            display: 'flex',
+            border: '1px solid',
+            borderColor: 'primary.main',
+            borderRadius: '8px',
+            bgcolor: 'background.paper',
+            overflow: 'hidden',
+            '& .MuiFormControlLabel-root': {
+              flex: 1,
+              margin: 0,
+              padding: 0,
+              minHeight: 48,
+              borderRight: '1px solid',
+              borderColor: 'primary.main',
+              '&:last-of-type': {
+                borderRight: 'none'
+              }
+            }
+          }}
+        >
+          {radioButtonOptions.map(option => (
+            <FormControlLabel
+              key={option.value}
+              value={option.value}
+              sx={{
+                bgcolor: app.type === option.value ? 'primary.main' : 'transparent',
+                '&:hover': {
+                  bgcolor: app.type === option.value 
+                    ? 'primary.dark' 
+                    : 'primary.lighter'
+                },
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              control={
+                <Radio
+                  sx={{
+                    display: 'none',
+                  }}
+                />
+              }
+              label={
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 1.5,
+                    width: '100%',
+                    color: app.type === option.value ? 'common.white' : 'primary.main',
+                    transition: 'all 0.2s',
+                    '& svg': {
+                      color: 'inherit'
+                    }
+                  }}
+                >
+                  {typeof option.icon === 'function' 
+                    ? option.icon(app.type === option.value)
+                    : option.icon}
+                  <Typography
+                    variant="button"
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      letterSpacing: '0.1em'
+                    }}
+                  >
+                    {option.label}
+                  </Typography>
+                </Box>
+              }
+              labelPlacement="start"
+            />
+          ))}
+        </RadioGroup>
       </FormControl>
-      <FormControl fullWidth required sx={{mt: 1}}>
+      <FormControl fullWidth required>
         <Autocomplete
           freeSolo
           renderInput={params => (
@@ -201,7 +275,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
         />
       </FormControl>
       <TextField
-        margin="dense"
         value={app.name}
         id="name"
         label="App Title"
@@ -222,7 +295,6 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
         }}
       />
       <TextField
-        margin="dense"
         multiline
         id="description"
         label="Description"
@@ -242,7 +314,7 @@ const ActiveStepZero: React.FC<ActiveStepZeroProps> = (
           sx: { marginLeft: 0 }
         }}
       />
-    </>
+    </Stack>
   )
 }
 

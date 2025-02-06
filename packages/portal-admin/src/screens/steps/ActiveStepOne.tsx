@@ -8,7 +8,8 @@ import {
   TextField,
   FormGroup,
   Switch,
-  FormHelperText
+  FormHelperText,
+  Stack
 } from '@mui/material'
 import {useEffect} from 'react'
 import {App} from '../../types'
@@ -106,12 +107,10 @@ function ActiveStepOne(props: ActiveStepOneProps) {
   }
 
   return (
-    <>
+    <Stack spacing={3}>
       <FormControl fullWidth>
         {app.type === 'esmodule' && (
           <TextField
-            margin="dense"
-            multiline
             id="url"
             label="Bundle URL"
             type="url"
@@ -134,10 +133,8 @@ function ActiveStepOne(props: ActiveStepOneProps) {
         )}
         {(app.type === 'internal' || app.type === 'external') && (
           <TextField
-            margin="dense"
             type="url"
             id="url"
-            multiline
             label="Link"
             value={app.url}
             fullWidth
@@ -157,10 +154,10 @@ function ActiveStepOne(props: ActiveStepOneProps) {
           />
         )}
       </FormControl>
-      <FormControl fullWidth required sx={{mt: 1}}>
+
+      <FormControl fullWidth required>
         <InputLabel>{'Access Roles'}</InputLabel>
         <Select
-          margin="dense"
           fullWidth
           onChange={e => {
             setApp({...app, access_roles: e.target.value as string[]})
@@ -184,7 +181,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
         </FormHelperText>
       </FormControl>
 
-      <FormGroup sx={{mt: 2}}>
+      <FormControl component="fieldset">
         <FormLabel component="legend">Visibility Settings</FormLabel>
         <FormControlLabel
           control={
@@ -200,8 +197,8 @@ function ActiveStepOne(props: ActiveStepOneProps) {
           }
           label="Display in Portal Apps Shelf"
         />
-      </FormGroup>
-    </>
+      </FormControl>
+    </Stack>
   )
 }
 
