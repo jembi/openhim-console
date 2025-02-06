@@ -21,6 +21,10 @@ export interface ActiveStepOneProps {
 
 function ActiveStepOne(props: ActiveStepOneProps) {
   const [app, setApp] = React.useState<App>(structuredClone(props.app))
+  const [touched, setTouched] = React.useState({
+    url: false,
+    access_roles: false
+  })
   const [appLinkHelperMessage, setAppLinkHelperMessage] = React.useState('')
   const [appAccessRoleHelperMessage, setAppAccessRoleHelperMessage] =
     React.useState('')
@@ -55,34 +59,50 @@ function ActiveStepOne(props: ActiveStepOneProps) {
   }
 
   const validateData = async () => {
+    let isValid = true
+
+    // Clear previous messages
+    setAppLinkHelperMessage('')
+    setAppAccessRoleHelperMessage('')
+
+    // URL validation
     if (!app.url) {
-      setAppLinkHelperMessage('App Link is required')
-      return false
+      isValid = false
+      if (touched.url) {
+        setAppLinkHelperMessage('App Link is required')
+      }
+    } else {
+      const regExp =
+        /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
+
+      if (!regExp.test(app.url)) {
+        isValid = false
+        if (touched.url) {
+          setAppLinkHelperMessage('Invalid URL')
+        }
+      } else {
+        try {
+          await fetch(app.url)
+        } catch (error) {
+          isValid = false
+          if (touched.url) {
+            setAppLinkHelperMessage(
+              'Service unreachable. Please check the URL or contact the services administrator'
+            )
+          }
+        }
+      }
     }
 
-    const regExp =
-      /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(:[0-9]+)?(\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=]*)*$/
-
-    if (!regExp.test(app.url)) {
-      setAppLinkHelperMessage('Invalid URL')
-      return false
-    }
-
-    try {
-      await fetch(app.url)
-    } catch (error) {
-      setAppLinkHelperMessage(
-        'Service unreachable. Please check the URL or contact the services administrator'
-      )
-      return false
-    }
-
+    // Access roles validation
     if (app.access_roles.length === 0) {
-      setAppAccessRoleHelperMessage('User Access Role is required')
-      return false
+      isValid = false
+      if (touched.access_roles) {
+        setAppAccessRoleHelperMessage('User Access Role is required')
+      }
     }
 
-    return true
+    return isValid
   }
 
   return (
@@ -104,8 +124,12 @@ function ActiveStepOne(props: ActiveStepOneProps) {
               setApp({...app, url: e.target.value})
               setAppLinkHelperMessage('')
             }}
-            error={appLinkHelperMessage ? true : false}
+            onBlur={() => setTouched({...touched, url: true})}
+            error={touched.url && appLinkHelperMessage ? true : false}
             helperText={appLinkHelperMessage}
+            FormHelperTextProps={{
+              sx: { marginLeft: 0 }
+            }}
           />
         )}
         {(app.type === 'internal' || app.type === 'external') && (
@@ -124,8 +148,12 @@ function ActiveStepOne(props: ActiveStepOneProps) {
               setApp({...app, url: e.target.value})
               setAppLinkHelperMessage('')
             }}
-            error={appLinkHelperMessage ? true : false}
+            onBlur={() => setTouched({...touched, url: true})}
+            error={touched.url && appLinkHelperMessage ? true : false}
             helperText={appLinkHelperMessage}
+            FormHelperTextProps={{
+              sx: { marginLeft: 0 }
+            }}
           />
         )}
       </FormControl>
@@ -138,16 +166,20 @@ function ActiveStepOne(props: ActiveStepOneProps) {
             setApp({...app, access_roles: e.target.value as string[]})
             setAppAccessRoleHelperMessage('')
           }}
+          onBlur={() => setTouched({...touched, access_roles: true})}
           id="access_roles"
           name="access_roles"
           value={app.access_roles}
           label="Access Roles"
           multiple
-          error={appAccessRoleHelperMessage ? true : false}
+          error={touched.access_roles && appAccessRoleHelperMessage ? true : false}
         >
           {generateSingleOptions(accessRoleOptions)}
         </Select>
-        <FormHelperText error={appAccessRoleHelperMessage ? true : false}>
+        <FormHelperText 
+          error={touched.access_roles && appAccessRoleHelperMessage ? true : false}
+          sx={{ marginLeft: 0 }}
+        >
           {appAccessRoleHelperMessage}
         </FormHelperText>
       </FormControl>
