@@ -95,7 +95,7 @@ export function BasicInfo(props: {
                 : 'Choose a short but descriptive name.'
             }
           />
-          <FormHelperText>Choose a short but descriptive name</FormHelperText>
+          {/* <FormHelperText>Choose a short but descriptive name</FormHelperText> */}
         </Grid>
 
         <Grid item xs={12}>
