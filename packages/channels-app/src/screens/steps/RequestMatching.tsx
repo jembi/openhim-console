@@ -59,11 +59,13 @@ export function RequestMatching(props: {
       <Divider
         style={{
           marginTop: '10px',
-          marginBottom: '10px',
-          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
-          marginLeft: '-22px'
+          margin: '0px',
+          width: '100%',
+          marginBottom: '30px',
+          overflow: 'visible'
         }}
       />
+      <br />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -161,6 +163,15 @@ export function RequestMatching(props: {
         <AccordionSummary expandIcon={<KeyboardArrowDown />}>
           <Typography variant="body1">Optional Settings</Typography>
         </AccordionSummary>
+
+        <Divider
+          style={{
+            marginTop: '5px',
+            marginBottom: '5px',
+            width: 'calc(100% + 2px)', // Assuming the parent has 1px padding on both sides
+            marginLeft: '-1px'
+          }}
+        />
 
         <AccordionDetails>
           <Grid container spacing={2}>
