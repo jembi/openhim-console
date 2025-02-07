@@ -41,7 +41,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
   ]
 
   useEffect(() => {
-    validateData().then(isValid => {
+    validateData().then((isValid: boolean) => {
       props.onChange({app: structuredClone(app), isValid})
     })
   }, [app])
@@ -85,17 +85,19 @@ function ActiveStepOne(props: ActiveStepOneProps) {
         try {
           const controller = new AbortController()
           const timeoutId = setTimeout(() => controller.abort(), 5000)
-          await fetch(app.url, { signal: controller.signal })
+          await fetch(app.url, {signal: controller.signal})
           clearTimeout(timeoutId)
         } catch (error) {
           isValid = false
-          const message = error.name === 'AbortError' 
-            ? 'Connection timed out. Please check the URL or try again later'
-            : 'Service unreachable. Please check the URL or contact the services administrator'
+          const message =
+            error.name === 'AbortError'
+              ? 'Connection timed out. Please check the URL or try again later'
+              : 'Service unreachable. Please check the URL or contact the services administrator'
           if (touched.url) {
             setAppLinkHelperMessage(message)
           }
         }
+      }
     }
 
     // Access roles validation
@@ -130,7 +132,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
             error={touched.url && appLinkHelperMessage ? true : false}
             helperText={appLinkHelperMessage}
             FormHelperTextProps={{
-              sx: { marginLeft: 0 }
+              sx: {marginLeft: 0}
             }}
           />
         )}
@@ -152,7 +154,7 @@ function ActiveStepOne(props: ActiveStepOneProps) {
             error={touched.url && appLinkHelperMessage ? true : false}
             helperText={appLinkHelperMessage}
             FormHelperTextProps={{
-              sx: { marginLeft: 0 }
+              sx: {marginLeft: 0}
             }}
           />
         )}
@@ -172,13 +174,17 @@ function ActiveStepOne(props: ActiveStepOneProps) {
           value={app.access_roles}
           label="Access Roles"
           multiple
-          error={touched.access_roles && appAccessRoleHelperMessage ? true : false}
+          error={
+            touched.access_roles && appAccessRoleHelperMessage ? true : false
+          }
         >
           {generateSingleOptions(accessRoleOptions)}
         </Select>
-        <FormHelperText 
-          error={touched.access_roles && appAccessRoleHelperMessage ? true : false}
-          sx={{ marginLeft: 0 }}
+        <FormHelperText
+          error={
+            touched.access_roles && appAccessRoleHelperMessage ? true : false
+          }
+          sx={{marginLeft: 0}}
         >
           {appAccessRoleHelperMessage}
         </FormHelperText>
