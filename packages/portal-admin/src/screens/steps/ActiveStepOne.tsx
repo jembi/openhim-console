@@ -83,16 +83,19 @@ function ActiveStepOne(props: ActiveStepOneProps) {
         }
       } else {
         try {
-          await fetch(app.url)
+          const controller = new AbortController()
+          const timeoutId = setTimeout(() => controller.abort(), 5000)
+          await fetch(app.url, { signal: controller.signal })
+          clearTimeout(timeoutId)
         } catch (error) {
           isValid = false
+          const message = error.name === 'AbortError' 
+            ? 'Connection timed out. Please check the URL or try again later'
+            : 'Service unreachable. Please check the URL or contact the services administrator'
           if (touched.url) {
-            setAppLinkHelperMessage(
-              'Service unreachable. Please check the URL or contact the services administrator'
-            )
+            setAppLinkHelperMessage(message)
           }
         }
-      }
     }
 
     // Access roles validation
