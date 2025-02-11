@@ -1,5 +1,5 @@
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
-import { ArrowDropDown } from '@mui/icons-material'
+import {ArrowDropDown} from '@mui/icons-material'
 import {
   Box,
   Checkbox,
@@ -87,15 +87,19 @@ export function BasicInfo(props: {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="h6" sx={{ mb: 2 }}>Allowed Methods</Typography>
-          <Grid container sx={{ pl: 2 }}>
+          <Typography variant="h6" sx={{mb: 2}}>
+            Allowed Methods
+          </Typography>
+          <Grid container sx={{pl: 2}}>
             {allowedMethods.map(method => (
               <Grid item xs={6} key={method}>
                 <FormControlLabel
                   control={
                     <Checkbox
                       checked={channel.methods?.includes(method)}
-                      onChange={e => handleCheckToggle(method, e.target.checked)}
+                      onChange={e =>
+                        handleCheckToggle(method, e.target.checked)
+                      }
                       sx={{
                         '&.Mui-checked': {
                           color: '#007F68'
@@ -111,29 +115,29 @@ export function BasicInfo(props: {
         </Grid>
       </Grid>
 
-      <Box sx={{ mt: 3 }}>
-        <Accordion 
+      <Box sx={{mt: 3}}>
+        <Accordion
           elevation={0}
           sx={{
             border: '1px solid rgba(0, 0, 0, 0.12)',
             borderRadius: '8px !important',
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
             '&:before': {
-              display: 'none',
+              display: 'none'
             },
             '& .MuiAccordionSummary-root': {
               minHeight: '48px',
-              padding: '0 16px',
+              padding: '0 16px'
             },
             '& .MuiAccordionSummary-content': {
-              margin: '12px 0',
+              margin: '12px 0'
             },
             '& .MuiAccordionDetails-root': {
               padding: '16px',
-              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)'
             },
             '&.Mui-expanded': {
-              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
             }
           }}
         >
@@ -141,16 +145,16 @@ export function BasicInfo(props: {
             expandIcon={<ArrowDropDown />}
             sx={{
               '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-                transform: 'rotate(180deg)',
+                transform: 'rotate(180deg)'
               },
               '& .MuiAccordionSummary-expandIconWrapper': {
-                color: 'rgba(0, 0, 0, 0.54)',
-              },
+                color: 'rgba(0, 0, 0, 0.54)'
+              }
             }}
           >
             <Typography>Optional settings</Typography>
           </AccordionSummary>
-          
+
           <AccordionDetails>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -166,17 +170,17 @@ export function BasicInfo(props: {
                   FormHelperTextProps={{
                     sx: {
                       marginLeft: '0',
-                      color: 'rgba(0, 0, 0, 0.6)',
+                      color: 'rgba(0, 0, 0, 0.6)'
                     }
                   }}
                 />
               </Grid>
-              
-              <Grid item xs={12} sx={{ mt: 1 }}>
-                <Typography variant="subtitle1" sx={{ mb: 2 }}>
+
+              <Grid item xs={12} sx={{mt: 1}}>
+                <Typography variant="subtitle1" sx={{mb: 2}}>
                   Channel Type
                 </Typography>
-                
+
                 <RadioGroup
                   value={channel.type}
                   onChange={e =>
@@ -185,14 +189,14 @@ export function BasicInfo(props: {
                       type: e.target.value as ChannelType
                     })
                   }
-                  sx={{ pl: 2 }}
+                  sx={{pl: 2}}
                 >
                   {channelTypes.map(type => (
                     <FormControlLabel
                       key={type}
                       value={type}
                       control={
-                        <Radio 
+                        <Radio
                           sx={{
                             '&.Mui-checked': {
                               color: '#007F68'
@@ -204,18 +208,18 @@ export function BasicInfo(props: {
                         />
                       }
                       label={type.toUpperCase()}
-                      sx={{ mb: 1 }}
+                      sx={{mb: 1}}
                     />
                   ))}
                 </RadioGroup>
-                
-                <Box sx={{ mt: 2, maxWidth: '400px' }}>
+
+                <Box sx={{mt: 2, maxWidth: '400px'}}>
                   {channel.type === 'polling' && (
                     <TextField
                       label="Polling Schedule"
                       variant="outlined"
                       fullWidth
-                      sx={{ mb: 2 }}
+                      sx={{mb: 2}}
                       value={channel.pollingSchedule}
                       onChange={e =>
                         setChannel({
@@ -236,38 +240,38 @@ export function BasicInfo(props: {
                     />
                   )}
                   <TextField
-                      label="Timeout ms"
-                      variant="outlined"
-                      fullWidth
-                      margin="normal"
-                      type="number"
-                      value={channel.timeout}
-                      onChange={e =>
-                        setChannel({
-                          ...channel,
-                          timeout: Number(e.target.value)
-                        })
+                    label="Timeout ms"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type="number"
+                    value={channel.timeout}
+                    onChange={e =>
+                      setChannel({
+                        ...channel,
+                        timeout: Number(e.target.value)
+                      })
+                    }
+                    error={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                    }
+                    helperText={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                        ? 'Timeout cannot be negative'
+                        : undefined
+                    }
+                    FormHelperTextProps={{
+                      sx: {
+                        marginLeft: '0',
+                        color: 'rgba(0, 0, 0, 0.6)'
                       }
-                      error={
-                        Number.isSafeInteger(channel.timeout) &&
-                        channel.timeout < 0
-                      }
-                      helperText={
-                        Number.isSafeInteger(channel.timeout) &&
-                        channel.timeout < 0
-                          ? 'Timeout cannot be negative'
-                          : undefined
-                      }
-                      FormHelperTextProps={{
-                        sx: {
-                          marginLeft: '0',
-                          color: 'rgba(0, 0, 0, 0.6)',
-                        }
-                      }}
-                    />
+                    }}
+                  />
                 </Box>
 
-                <Box sx={{ mt: 3 }}>
+                <Box sx={{mt: 3}}>
                   <FormControlLabel
                     control={
                       <Switch
@@ -285,9 +289,10 @@ export function BasicInfo(props: {
                               backgroundColor: 'rgba(0, 127, 104, 0.04)'
                             }
                           },
-                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#007F68'
-                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track':
+                            {
+                              backgroundColor: '#007F68'
+                            },
                           '& .MuiSwitch-track': {
                             backgroundColor: 'rgba(0, 0, 0, 0.38)'
                           }

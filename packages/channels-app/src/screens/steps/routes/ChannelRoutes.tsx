@@ -123,16 +123,17 @@ export function ChannelRoutes(props: {
   }
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectAll(event.target.checked);
-  };
+    setSelectAll(event.target.checked)
+  }
 
-  const handleSelectRoute = (routeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRoutes(prev => 
-      event.target.checked 
-        ? [...prev, routeId]
-        : prev.filter(id => id !== routeId)
-    );
-  };
+  const handleSelectRoute =
+    (routeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedRoutes(prev =>
+        event.target.checked
+          ? [...prev, routeId]
+          : prev.filter(id => id !== routeId)
+      )
+    }
 
   React.useEffect(() => {
     props.onChange({
@@ -143,7 +144,6 @@ export function ChannelRoutes(props: {
 
   return (
     <Box>
-
       <TableContainer>
         <Table>
           <TableHead>
@@ -156,67 +156,89 @@ export function ChannelRoutes(props: {
                   checkedIcon={<CheckBoxIcon />}
                   sx={{
                     '&.Mui-checked': {
-                      color: '#007F68',
-                    },
+                      color: '#007F68'
+                    }
                   }}
                 />
               </TableCell>
-              <TableCell sx={{ 
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '24px',
-                letterSpacing: '0.17px'
-              }}>Name</TableCell>
-              <TableCell sx={{ 
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '24px',
-                letterSpacing: '0.17px'
-              }}>Type</TableCell>
-              <TableCell sx={{ 
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '24px',
-                letterSpacing: '0.17px'
-              }}>Host</TableCell>
-              <TableCell sx={{ 
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '24px',
-                letterSpacing: '0.17px'
-              }}>Path</TableCell>
-              <TableCell sx={{ 
-                fontWeight: 600,
-                fontSize: '14px',
-                lineHeight: '24px',
-                letterSpacing: '0.17px'
-              }}>Actions</TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Name
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Type
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Host
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Path
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {channel.routes?.length > 0 ? (
               channel.routes.map((route, index) => (
-                <TableRow 
+                <TableRow
                   key={index}
                   sx={{
-                    backgroundColor: selectedRoutes.includes(route._id) ? 'rgba(0, 127, 104, 0.08)' : 'transparent',
+                    backgroundColor: selectedRoutes.includes(route._id)
+                      ? 'rgba(0, 127, 104, 0.08)'
+                      : 'transparent',
                     '&:hover': {
-                      backgroundColor: selectedRoutes.includes(route._id) 
-                        ? 'rgba(0, 127, 104, 0.12)' 
+                      backgroundColor: selectedRoutes.includes(route._id)
+                        ? 'rgba(0, 127, 104, 0.12)'
                         : 'rgba(0, 0, 0, 0.04)'
                     }
                   }}
                 >
                   <TableCell>
-                    <Checkbox 
+                    <Checkbox
                       checked={selectedRoutes.includes(route._id)}
                       onChange={handleSelectRoute(route._id)}
                       icon={<CheckBoxOutlineBlankIcon />}
                       checkedIcon={<CheckBoxIcon />}
                       sx={{
                         '&.Mui-checked': {
-                          color: '#007F68',
-                        },
+                          color: '#007F68'
+                        }
                       }}
                     />
                   </TableCell>
@@ -226,7 +248,7 @@ export function ChannelRoutes(props: {
                       <Tooltip title="This route is a Primary Route">
                         <Chip
                           label="primary"
-                          sx={{ 
+                          sx={{
                             bgcolor: '#007F68',
                             color: 'white',
                             marginLeft: '5px'
@@ -236,13 +258,13 @@ export function ChannelRoutes(props: {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Chip 
-                      label={route.type} 
+                    <Chip
+                      label={route.type}
                       variant="outlined"
-                      sx={{ 
+                      sx={{
                         backgroundColor: 'rgba(0, 0, 0, 0.08)',
                         borderRadius: '16px'
-                      }} 
+                      }}
                     />
                   </TableCell>
                   <TableCell>{route.host}</TableCell>
@@ -268,17 +290,17 @@ export function ChannelRoutes(props: {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      justifyContent: 'center'
                     }}
                   >
                     <InfoOutlinedIcon
-                      sx={{ fontSize: 48, mb: 1, color: '#999' }}
+                      sx={{fontSize: 48, mb: 1, color: '#999'}}
                     />
                     <Typography variant="body1">
                       No routes have been added yet. Click{' '}
-                      <Button 
-                        variant="text" 
-                        sx={{ color: '#007F68' }} 
+                      <Button
+                        variant="text"
+                        sx={{color: '#007F68'}}
                         onClick={onClickAddNewRoute}
                       >
                         Add New Route
@@ -293,12 +315,12 @@ export function ChannelRoutes(props: {
         </Table>
       </TableContainer>
 
-      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button 
-          variant="text" 
-          sx={{ 
+      <Box sx={{mt: 3, display: 'flex', justifyContent: 'flex-end'}}>
+        <Button
+          variant="text"
+          sx={{
             color: '#007F68',
-            textTransform: 'uppercase' 
+            textTransform: 'uppercase'
           }}
           onClick={onClickAddNewRoute}
         >

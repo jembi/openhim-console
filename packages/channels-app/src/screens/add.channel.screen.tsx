@@ -117,39 +117,44 @@ function AddChannelScreen() {
       <Grid container direction="column">
         {/* Stepper Section */}
         <Grid item xs={12}>
-          <Box sx={{ 
-            width: '100%', 
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
-            <Box sx={{
-              width: '800px',
-              height: '56px',
-              background: '#FFFFFF',
-              boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)',
-              borderRadius: '16px 16px 0px 0px',
+          <Box
+            sx={{
+              width: '100%',
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              padding: 0,
-            }}>
-              <Stepper 
+              justifyContent: 'center'
+            }}
+          >
+            <Box
+              sx={{
+                width: '800px',
+                height: '56px',
+                background: '#FFFFFF',
+                boxShadow:
+                  '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)',
+                borderRadius: '16px 16px 0px 0px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                padding: 0
+              }}
+            >
+              <Stepper
                 activeStep={activeStep}
                 sx={{
                   width: '100%',
                   padding: '16px',
                   '& .MuiStepLabel-root .Mui-active': {
-                    color: '#007F68',
+                    color: '#007F68'
                   },
                   '& .MuiStepLabel-root .Mui-completed': {
-                    color: '#007F68',
+                    color: '#007F68'
                   },
                   '& .MuiStepConnector-line': {
-                    borderColor: '#E0E0E0',
+                    borderColor: '#E0E0E0'
                   },
                   '& .MuiStepLabel-label': {
                     fontSize: '14px',
-                    fontWeight: 500,
+                    fontWeight: 500
                   }
                 }}
               >
@@ -165,16 +170,21 @@ function AddChannelScreen() {
 
         {/* Main Card Section */}
         <Grid item xs={12}>
-          <Box sx={{ 
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
-            <Card sx={{ 
-              width: '800px',
-              borderRadius: '0px 0px 8px 8px',
-              boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)',
-            }}>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
+            <Card
+              sx={{
+                width: '800px',
+                borderRadius: '0px 0px 8px 8px',
+                boxShadow:
+                  '0px 1px 10px rgba(0, 0, 0, 0.12), 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 2px 4px -1px rgba(0, 0, 0, 0.2)'
+              }}
+            >
               {/* Dynamic Card Header based on active step */}
               {activeStep === 0 && (
                 <CardHeader
@@ -197,9 +207,9 @@ function AddChannelScreen() {
         the one that is returned to the request sender."
                 />
               )}
-              
+
               <Divider />
-              
+
               {/* Dynamic Card Content based on active step */}
               <CardContent>
                 {activeStep === 0 && (
@@ -232,9 +242,9 @@ function AddChannelScreen() {
               </CardContent>
 
               <Divider />
-              
+
               {/* Card Actions with Buttons */}
-              <CardActions sx={{ p: 2, justifyContent: 'flex-start' }}>
+              <CardActions sx={{p: 2, justifyContent: 'flex-start'}}>
                 {activeStep === 0 ? (
                   <Button
                     variant="outlined"
@@ -251,7 +261,7 @@ function AddChannelScreen() {
                     CANCEL
                   </Button>
                 ) : (
-                  <Button 
+                  <Button
                     variant="outlined"
                     sx={{
                       color: '#007F68',
@@ -279,12 +289,17 @@ function AddChannelScreen() {
                       color: 'rgba(0, 127, 104, 0.38)'
                     }
                   }}
-                  onClick={activeStep === steps.length - 1 ? handleAddChannel : handleNext}
+                  onClick={
+                    activeStep === steps.length - 1
+                      ? handleAddChannel
+                      : handleNext
+                  }
                   disabled={
-                    mutation.isLoading || 
-                    !isFormValid || 
-                    (activeStep === steps.length - 1 && 
-                      JSON.stringify(channel) === JSON.stringify(defaultChannel))
+                    mutation.isLoading ||
+                    !isFormValid ||
+                    (activeStep === steps.length - 1 &&
+                      JSON.stringify(channel) ===
+                        JSON.stringify(defaultChannel))
                   }
                 >
                   {activeStep === steps.length - 1 ? 'ADD CHANNEL' : 'NEXT'}

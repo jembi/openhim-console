@@ -9,7 +9,8 @@ interface BasicDialogContextProps {
     children: ReactNode,
     title?: string,
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
-    sx?: BasicDialogProps['sx']
+    sx?: BasicDialogProps['sx'],
+    actions?: React.ReactNode
   ) => void
   hideBasicDialog: () => void
 }
@@ -27,9 +28,11 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
     open: boolean
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     sx?: BasicDialogProps['sx']
+    actions?: React.ReactNode
   }>({
     title: '',
     children: null,
+    actions: null,
     open: false,
     size: 'xs',
     sx: undefined
@@ -39,9 +42,10 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
     children: ReactNode,
     title?: string,
     size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs',
-    sx?: BasicDialogProps['sx']
+    sx?: BasicDialogProps['sx'],
+    actions?: React.ReactNode
   ) => {
-    setDialogProps({title, children, open: true, size, sx})
+    setDialogProps({title, children, open: true, size, sx, actions})
   }
 
   const hideBasicDialog = () => {
@@ -57,6 +61,7 @@ export const BasicDialogProvider: React.FC<{children: ReactNode}> = ({
         onClose={hideBasicDialog}
         size={dialogProps.size}
         sx={dialogProps.sx}
+        actions={dialogProps.actions}
       >
         {dialogProps.children}
       </BasicDialog>
