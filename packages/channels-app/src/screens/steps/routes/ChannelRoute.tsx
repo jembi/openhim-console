@@ -310,12 +310,12 @@ export function ChannelRoute(props: {
         sx={{
           position: 'sticky',
           bottom: 0,
-          zIndex: 100000,
+          background: 'white',
+          zIndex: 1000,
           pt: '10px',
+          pb: '10px',
+          display: 'flex',
           justifyContent: 'flex-end',
-          gap: '10px',
-          display: 'flex'
-          // borderTop: '1px solid #ddd'
         }}
       >
         <Button variant="text" color="info" onClick={props.onCancel}>

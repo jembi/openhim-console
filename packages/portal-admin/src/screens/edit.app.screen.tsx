@@ -57,6 +57,7 @@ export default function EditAppScreen() {
     <BasePageTemplate
       title="Edit App"
       subtitle="Use the form below to edit your portal app."
+      breadcrumbs={[{label: 'Apps', href: '/#!/apps'}, {label: 'Edit'}]}
     >
       <Grid
         container

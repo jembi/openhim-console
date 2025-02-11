@@ -1,4 +1,5 @@
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
+import {ArrowDropDown} from '@mui/icons-material'
 import {
   Box,
   Checkbox,
@@ -10,11 +11,11 @@ import {
   RadioGroup,
   Switch,
   TextField,
-  Typography
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material'
-import Accordion from '@mui/material/Accordion'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import AccordionSummary from '@mui/material/AccordionSummary'
 import React from 'react'
 import {Channel, ChannelMethod, ChannelType} from '../../types'
 
@@ -59,30 +60,13 @@ export function BasicInfo(props: {
   }
 
   return (
-    <Box style={{position: 'relative'}}>
-      <Typography variant="h5">Basic Info</Typography>
-      <Typography sx={{color: 'grey'}} variant="subtitle1">
-        Describe some basic information about the channel and choose its overall
-        type.
-      </Typography>
-
-      <Divider
-        style={{
-          marginTop: '10px',
-          marginBottom: '10px',
-          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
-          marginLeft: '-22px'
-        }}
-      />
-      <br />
-
+    <Box>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
             label="Channel Name"
             variant="outlined"
             fullWidth
-            margin="normal"
             value={channel.name}
             onChange={e => {
               setFormTouched(true)
@@ -94,176 +78,235 @@ export function BasicInfo(props: {
                 ? 'Channel Name cannot be empty'
                 : 'Choose a short but descriptive name.'
             }
+            FormHelperTextProps={{
+              style: {
+                marginLeft: '0'
+              }
+            }}
           />
-          {/* <FormHelperText>Choose a short but descriptive name</FormHelperText> */}
         </Grid>
 
         <Grid item xs={12}>
-          <Box style={{padding: '10px'}}>
-            <Typography variant="h6">Allowed Methods</Typography>
-            <Grid container>
-              {allowedMethods.map(method => (
-                <Grid item xs={6} key={method}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={channel.methods?.includes(method)}
-                        onChange={e =>
-                          handleCheckToggle(method, e.target.checked)
+          <Typography variant="h6" sx={{mb: 2}}>
+            Allowed Methods
+          </Typography>
+          <Grid container sx={{pl: 2}}>
+            {allowedMethods.map(method => (
+              <Grid item xs={6} key={method}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={channel.methods?.includes(method)}
+                      onChange={e =>
+                        handleCheckToggle(method, e.target.checked)
+                      }
+                      sx={{
+                        '&.Mui-checked': {
+                          color: '#007F68'
                         }
-                      />
-                    }
-                    label={method}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+                      }}
+                    />
+                  }
+                  label={method}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
 
-      <Divider
-        style={{
-          marginTop: '10px',
-          margin: '0px',
-          width: '100%',
-          marginBottom: '30px',
-          overflow: 'visible'
-        }}
-      />
-      <br />
+      <Box sx={{mt: 3}}>
+        <Accordion
+          elevation={0}
+          sx={{
+            border: '1px solid rgba(0, 0, 0, 0.12)',
+            borderRadius: '8px !important',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+            '&:before': {
+              display: 'none'
+            },
+            '& .MuiAccordionSummary-root': {
+              minHeight: '48px',
+              padding: '0 16px'
+            },
+            '& .MuiAccordionSummary-content': {
+              margin: '12px 0'
+            },
+            '& .MuiAccordionDetails-root': {
+              padding: '16px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)'
+            },
+            '&.Mui-expanded': {
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)'
+            }
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ArrowDropDown />}
+            sx={{
+              '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                transform: 'rotate(180deg)'
+              },
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                color: 'rgba(0, 0, 0, 0.54)'
+              }
+            }}
+          >
+            <Typography>Optional settings</Typography>
+          </AccordionSummary>
 
-      <Grid container>
-        <Grid item xs={12}>
-          <Accordion sx={{borderRadius: '32px'}}>
-            <AccordionSummary expandIcon={<KeyboardArrowDown />}>
-              <Typography variant="body1">Optional Settings</Typography>
-            </AccordionSummary>
-
-            <Divider
-              style={{
-                marginTop: '5px',
-                marginBottom: '5px',
-                width: 'calc(100% + 2px)', // Assuming the parent has 1px padding on both sides
-                marginLeft: '-1px'
-              }}
-            />
-
-            <AccordionDetails>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Channel Description"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={channel.description}
-                    onChange={e =>
-                      setChannel({...channel, description: e.target.value})
+          <AccordionDetails>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Channel Description"
+                  variant="outlined"
+                  fullWidth
+                  value={channel.description}
+                  onChange={e =>
+                    setChannel({...channel, description: e.target.value})
+                  }
+                  helperText="Help other users understand this channel"
+                  FormHelperTextProps={{
+                    sx: {
+                      marginLeft: '0',
+                      color: 'rgba(0, 0, 0, 0.6)'
                     }
-                    helperText={'Help other users understand the channel'}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6">Channel Type</Typography>
+                  }}
+                />
+              </Grid>
 
-                  <Box style={{padding: '10px'}}>
-                    <RadioGroup
-                      defaultValue="http"
-                      value={channel.type}
-                      onChange={e =>
-                        setChannel({
-                          ...channel,
-                          type: e.target.value as ChannelType
-                        })
-                      }
-                    >
-                      {channelTypes.map(type => (
-                        <FormControlLabel
-                          key={type}
-                          value={type}
-                          control={<Radio />}
-                          label={type.toUpperCase()}
+              <Grid item xs={12} sx={{mt: 1}}>
+                <Typography variant="subtitle1" sx={{mb: 2}}>
+                  Channel Type
+                </Typography>
+
+                <RadioGroup
+                  value={channel.type}
+                  onChange={e =>
+                    setChannel({
+                      ...channel,
+                      type: e.target.value as ChannelType
+                    })
+                  }
+                  sx={{pl: 2}}
+                >
+                  {channelTypes.map(type => (
+                    <FormControlLabel
+                      key={type}
+                      value={type}
+                      control={
+                        <Radio
+                          sx={{
+                            '&.Mui-checked': {
+                              color: '#007F68'
+                            },
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                            }
+                          }}
                         />
-                      ))}
-                    </RadioGroup>
-                  </Box>
+                      }
+                      label={type.toUpperCase()}
+                      sx={{mb: 1}}
+                    />
+                  ))}
+                </RadioGroup>
 
-                  <Grid item xs={5}>
-                    {channel.type === 'polling' && (
-                      <TextField
-                        label="Polling Schedule"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        type="string"
-                        value={channel.pollingSchedule}
-                        onChange={e =>
-                          setChannel({
-                            ...channel,
-                            pollingSchedule: e.target.value
-                          })
-                        }
-                        error={
-                          channel.type === 'polling' &&
-                          channel.pollingSchedule === ''
-                        }
-                        helperText={
-                          channel.type === 'polling' &&
-                          channel.pollingSchedule === ''
-                            ? `Cron format: '*/10 * * * *'\nor Written format: '10 minutes'`
-                            : undefined
-                        }
-                      />
-                    )}
+                <Box sx={{mt: 2, maxWidth: '400px'}}>
+                  {channel.type === 'polling' && (
                     <TextField
-                      label="Timeout ms"
+                      label="Polling Schedule"
                       variant="outlined"
                       fullWidth
-                      margin="normal"
-                      type="number"
-                      value={channel.timeout}
+                      sx={{mb: 2}}
+                      value={channel.pollingSchedule}
                       onChange={e =>
                         setChannel({
                           ...channel,
-                          timeout: Number(e.target.value)
+                          pollingSchedule: e.target.value
                         })
                       }
                       error={
-                        Number.isSafeInteger(channel.timeout) &&
-                        channel.timeout < 0
+                        channel.type === 'polling' &&
+                        channel.pollingSchedule === ''
                       }
                       helperText={
-                        Number.isSafeInteger(channel.timeout) &&
-                        channel.timeout < 0
-                          ? 'Timeout cannot be negative'
+                        channel.type === 'polling' &&
+                        channel.pollingSchedule === ''
+                          ? `Cron format: '*/10 * * * *'\nor Written format: '10 minutes'`
                           : undefined
                       }
                     />
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={channel.status === 'enabled'}
-                          onChange={e =>
-                            setChannel({
-                              ...channel,
-                              status: e.target.checked ? 'enabled' : 'disabled'
-                            })
-                          }
-                        />
+                  )}
+                  <TextField
+                    label="Timeout ms"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type="number"
+                    value={channel.timeout}
+                    onChange={e =>
+                      setChannel({
+                        ...channel,
+                        timeout: Number(e.target.value)
+                      })
+                    }
+                    error={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                    }
+                    helperText={
+                      Number.isSafeInteger(channel.timeout) &&
+                      channel.timeout < 0
+                        ? 'Timeout cannot be negative'
+                        : undefined
+                    }
+                    FormHelperTextProps={{
+                      sx: {
+                        marginLeft: '0',
+                        color: 'rgba(0, 0, 0, 0.6)'
                       }
-                      label="Enable channel"
-                    />
-                  </Grid>
-                </Grid>
+                    }}
+                  />
+                </Box>
+
+                <Box sx={{mt: 3}}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={channel.status === 'enabled'}
+                        onChange={e =>
+                          setChannel({
+                            ...channel,
+                            status: e.target.checked ? 'enabled' : 'disabled'
+                          })
+                        }
+                        sx={{
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#007F68',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                            }
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track':
+                            {
+                              backgroundColor: '#007F68'
+                            },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.38)'
+                          }
+                        }}
+                      />
+                    }
+                    label="Enable channel"
+                  />
+                </Box>
               </Grid>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-      </Grid>
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
     </Box>
   )
 }

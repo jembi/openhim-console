@@ -1,3 +1,4 @@
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import {
   Accordion,
   AccordionDetails,
@@ -11,21 +12,15 @@ import {
   FormHelperText,
   FormLabel,
   Grid,
-  IconButton,
-  Paper,
   Radio,
   RadioGroup,
   Switch,
   TextField,
   Typography
 } from '@mui/material'
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
-import {Channel, ChannelAuthType, ChannelMethod, ChannelType} from '../../types'
 import {TagInputAutocomplete} from '../../components/helpers/tags.input.autocomplete'
+import {Channel, ChannelAuthType} from '../../types'
 
 type MatchBodyType = 'NO MATCHING' | 'REGEX' | 'XML' | 'JSON'
 
@@ -35,8 +30,6 @@ export function RequestMatching(props: {
 }) {
   const [formTouched, setFormTouched] = React.useState(false)
   const [channel, setChannel] = React.useState(props.channel)
-  const [expandOptionalSettings, setExpandOptionalSettings] =
-    React.useState(false)
   const [isMatchSpecificRequestContent, setIsMatchSpecificRequestContent] =
     React.useState(false)
   const [matchBodyType, setMatchBodyType] =
@@ -114,6 +107,12 @@ export function RequestMatching(props: {
                 ? 'URL patterns cannot be empty'
                 : undefined
             }
+            FormHelperTextProps={{
+              sx: {
+                marginLeft: '0',
+                color: 'rgba(0, 0, 0, 0.6)'
+              }
+            }}
           />
           <FormHelperText>
             Which URL patterns will match this channel?
@@ -147,6 +146,11 @@ export function RequestMatching(props: {
                     urlPattern,
                     addAutoRewriteRules: e.target.checked
                   })
+                }}
+                sx={{
+                  '&.Mui-checked': {
+                    color: '#007F68'
+                  }
                 }}
               />
             }

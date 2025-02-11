@@ -14,27 +14,57 @@ const ActiveStepTwo: React.FC<ActiveStepTwoProps> = (
 ) => {
   const [app, setApp] = useState<App>(props.app)
   const [displayIcon, setDisplayIcon] = useState(false)
+  const [touched, setTouched] = useState({
+    icon: false
+  })
+  const [iconHelperMessage, setIconHelperMessage] = useState('')
   const {showAlert} = useAlert()
 
+  const validateData = async () => {
+    let isValid = true
+    setIconHelperMessage('')
+
+    // Icon is optional, but if provided via file upload, validate its size
+    if (app.icon && app.icon.startsWith('data:')) {
+      // Rough estimation of base64 string size
+      const base64Size = app.icon.length * (3/4) - 2
+      if (base64Size > 50000) {
+        isValid = false
+        if (touched.icon) {
+          setIconHelperMessage('Icon size exceeds 50kb')
+        }
+      }
+    }
+
+    return isValid
+  }
+
   useEffect(() => {
-    props.onChange({app: structuredClone(app), isValid: true})
+    validateData().then(isValid => {
+      props.onChange({app: structuredClone(app), isValid})
+    })
   }, [app])
 
   // When adding a custom icon than what provided in the form this function is called to set the icon url.
   const handleFileRead = async ({target}) => {
     const file = target.files[0]
     if (!file) {
-      return showAlert('No file selected', 'Error', 'error')
+      showAlert('No file selected', 'Error', 'error')
+      return
     }
     if (file && file.size > 50000) {
-      return showAlert('File size exceeds 50kb', 'Error', 'error')
+      showAlert('File size exceeds 50kb', 'Error', 'error')
+      setIconHelperMessage('File size exceeds 50kb')
+      return
     }
     try {
       const base64 = await convertBase64(file)
       setApp({...app, icon: base64})
+      setIconHelperMessage('')
     } catch (error) {
       console.error('Error reading file:', error)
       showAlert('Error reading file', 'Error', 'error')
+      setIconHelperMessage('Error reading file')
     }
   }
 
@@ -62,7 +92,10 @@ const ActiveStepTwo: React.FC<ActiveStepTwoProps> = (
           <FormLabel component="label">Icon Settings</FormLabel>
           <IconToggleButton
             icon={app.icon}
-            updateIcon={icon => setApp({...app, icon})}
+            updateIcon={icon => {
+              setApp({...app, icon})
+              setIconHelperMessage('')
+            }}
           />
         </FormControl>
         <Button
@@ -88,6 +121,12 @@ const ActiveStepTwo: React.FC<ActiveStepTwoProps> = (
               fullWidth
               inputProps={{accept: 'image/*'}}
               onChange={handleFileRead}
+              onBlur={() => setTouched({...touched, icon: true})}
+              error={touched.icon && iconHelperMessage ? true : false}
+              helperText={iconHelperMessage}
+              FormHelperTextProps={{
+                sx: { marginLeft: 0 }
+              }}
             />
           </div>
         ) : null}

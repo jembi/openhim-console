@@ -13,7 +13,8 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
+  Typography,
+  Checkbox
 } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import EditIcon from '@mui/icons-material/Edit'
@@ -25,6 +26,10 @@ import {Channel, ChannelRoute, Routes} from '../../../types'
 import {ChannelRoute as ChannelRouteComponent} from './ChannelRoute'
 import {useBasicDialog} from '../../../contexts/dialog.context'
 import {useConfirmation} from '../../../contexts/confirmation.context'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import CheckBoxIcon from '@mui/icons-material/CheckBox'
 
 export function ChannelRoutes(props: {
   channel: Channel
@@ -34,6 +39,8 @@ export function ChannelRoutes(props: {
   const {showConfirmation, hideConfirmation} = useConfirmation()
   const navigate = useNavigate()
   const [channel, setChannel] = React.useState(props.channel)
+  const [selectAll, setSelectAll] = React.useState(false)
+  const [selectedRoutes, setSelectedRoutes] = React.useState<string[]>([])
 
   const handleAddRoute = ({
     route,
@@ -108,11 +115,25 @@ export function ChannelRoutes(props: {
             routes: channel.routes?.filter(r => r.name !== route.name)
           })
         )
+        setSelectedRoutes(prev => prev.filter(id => id !== route._id))
         hideConfirmation()
       },
       hideConfirmation
     )
   }
+
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectAll(event.target.checked)
+  }
+
+  const handleSelectRoute =
+    (routeId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedRoutes(prev =>
+        event.target.checked
+          ? [...prev, routeId]
+          : prev.filter(id => id !== routeId)
+      )
+    }
 
   React.useEffect(() => {
     props.onChange({
@@ -122,55 +143,133 @@ export function ChannelRoutes(props: {
   }, [channel])
 
   return (
-    <Box style={{position: 'relative'}}>
-      <Typography variant="h5">Routes</Typography>
-      <Typography variant="subtitle1" sx={{color: 'grey'}}>
-        Add or modify routes to this channel. Mark one primary to determine the
-        response returned to the sender.
-      </Typography>
-
-      <Divider
-        style={{
-          marginTop: '10px',
-          marginBottom: '10px',
-          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
-          marginLeft: '-22px'
-        }}
-      />
-
-      {channel.routes?.length > 0 ? (
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{fontWeight: 'bold'}}>Name</TableCell>
-                <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                <TableCell sx={{fontWeight: 'bold'}}>Host</TableCell>
-                <TableCell sx={{fontWeight: 'bold'}}>Path</TableCell>
-                <TableCell sx={{fontWeight: 'bold'}} align="right">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.channel.routes?.map((route, index) => (
-                <TableRow key={index}>
+    <Box>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell width="48px">
+                <Checkbox
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                  icon={<CheckBoxOutlineBlankIcon />}
+                  checkedIcon={<CheckBoxIcon />}
+                  sx={{
+                    '&.Mui-checked': {
+                      color: '#007F68'
+                    }
+                  }}
+                />
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Name
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Type
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Host
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Path
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '14px',
+                  lineHeight: '24px',
+                  letterSpacing: '0.17px'
+                }}
+              >
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {channel.routes?.length > 0 ? (
+              channel.routes.map((route, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    backgroundColor: selectedRoutes.includes(route._id)
+                      ? 'rgba(0, 127, 104, 0.08)'
+                      : 'transparent',
+                    '&:hover': {
+                      backgroundColor: selectedRoutes.includes(route._id)
+                        ? 'rgba(0, 127, 104, 0.12)'
+                        : 'rgba(0, 0, 0, 0.04)'
+                    }
+                  }}
+                >
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedRoutes.includes(route._id)}
+                      onChange={handleSelectRoute(route._id)}
+                      icon={<CheckBoxOutlineBlankIcon />}
+                      checkedIcon={<CheckBoxIcon />}
+                      sx={{
+                        '&.Mui-checked': {
+                          color: '#007F68'
+                        }
+                      }}
+                    />
+                  </TableCell>
                   <TableCell>
                     {route.name}
                     {route.primary && (
                       <Tooltip title="This route is a Primary Route">
                         <Chip
                           label="primary"
-                          color="info"
-                          style={{marginLeft: '5px'}}
+                          sx={{
+                            bgcolor: '#007F68',
+                            color: 'white',
+                            marginLeft: '5px'
+                          }}
                         />
                       </Tooltip>
                     )}
                   </TableCell>
-                  <TableCell>{route.type}</TableCell>
-                  <TableCell>{`${route.host ?? '-'}`}</TableCell>
-                  <TableCell>{route.path ?? '-'}</TableCell>
-                  <TableCell align="right">
+                  <TableCell>
+                    <Chip
+                      label={route.type}
+                      variant="outlined"
+                      sx={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                        borderRadius: '16px'
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>{route.host}</TableCell>
+                  <TableCell>{route.path}</TableCell>
+                  <TableCell>
                     <IconButton onClick={onClickEditRoute(route)}>
                       <EditIcon />
                     </IconButton>
@@ -179,43 +278,55 @@ export function ChannelRoutes(props: {
                     </IconButton>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <Box
-          style={{
-            padding: '20px',
-            textAlign: 'center',
-            color: '#999',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '200px'
-          }}
-        >
-          <InfoOutlinedIcon
-            style={{fontSize: '48px', marginBottom: '10px', color: '#999'}}
-          />
-          <Typography variant="body1">
-            No routes have been added yet. Click{' '}
-            <Button variant="text" color="primary" onClick={onClickAddNewRoute}>
-              Add New Route
-            </Button>{' '}
-            to start.
-          </Typography>
-        </Box>
-      )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Box
+                    sx={{
+                      py: 6,
+                      textAlign: 'center',
+                      color: '#999',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <InfoOutlinedIcon
+                      sx={{fontSize: 48, mb: 1, color: '#999'}}
+                    />
+                    <Typography variant="body1">
+                      No routes have been added yet. Click{' '}
+                      <Button
+                        variant="text"
+                        sx={{color: '#007F68'}}
+                        onClick={onClickAddNewRoute}
+                      >
+                        Add New Route
+                      </Button>{' '}
+                      to start.
+                    </Typography>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {channel.routes?.length > 0 && (
-        <Grid container justifyContent="flex-end" style={{padding: '10px'}}>
-          <Button variant="text" color="primary" onClick={onClickAddNewRoute}>
-            Add New Route
-          </Button>
-        </Grid>
-      )}
+      <Box sx={{mt: 3, display: 'flex', justifyContent: 'flex-end'}}>
+        <Button
+          variant="text"
+          sx={{
+            color: '#007F68',
+            textTransform: 'uppercase'
+          }}
+          onClick={onClickAddNewRoute}
+        >
+          Add New Route
+        </Button>
+      </Box>
     </Box>
   )
 }
