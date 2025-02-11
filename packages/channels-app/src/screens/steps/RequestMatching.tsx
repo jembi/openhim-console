@@ -3,25 +3,22 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
-  Divider,
   FormControlLabel,
   FormHelperText,
   FormLabel,
   Grid,
-  IconButton,
-  Paper,
   Radio,
   RadioGroup,
   Switch,
   TextField,
-  Typography
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material'
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp'
-import {makeStyles} from '@mui/styles'
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
-import {Channel, ChannelAuthType, ChannelMethod, ChannelType} from '../../types'
+import {Channel, ChannelAuthType} from '../../types'
 import {TagInputAutocomplete} from '../../components/helpers/tags.input.autocomplete'
 
 type MatchBodyType = 'NO MATCHING' | 'REGEX' | 'XML' | 'JSON'
@@ -32,8 +29,6 @@ export function RequestMatching(props: {
 }) {
   const [formTouched, setFormTouched] = React.useState(false)
   const [channel, setChannel] = React.useState(props.channel)
-  const [expandOptionalSettings, setExpandOptionalSettings] =
-    React.useState(false)
   const [isMatchSpecificRequestContent, setIsMatchSpecificRequestContent] =
     React.useState(false)
   const [matchBodyType, setMatchBodyType] =
@@ -47,21 +42,7 @@ export function RequestMatching(props: {
   }, [channel])
 
   return (
-    <Box style={{position: 'relative'}}>
-      <Typography variant="h5">Request Matching</Typography>
-      <Typography variant="subtitle1" sx={{color: 'grey'}}>
-        Set criteria for requests to be forwarded to this channel.
-      </Typography>
-
-      <Divider
-        style={{
-          marginTop: '10px',
-          marginBottom: '10px',
-          width: 'calc(100% + 44px)', // Assuming the parent has 22px padding on both sides
-          marginLeft: '-22px'
-        }}
-      />
-
+    <Box>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -109,6 +90,12 @@ export function RequestMatching(props: {
                 ? 'URL patterns cannot be empty'
                 : undefined
             }
+            FormHelperTextProps={{
+              sx: {
+                marginLeft: '0',
+                color: 'rgba(0, 0, 0, 0.6)',
+              }
+            }}
           />
           <FormHelperText>
             Which URL patterns will match this channel?
@@ -143,6 +130,11 @@ export function RequestMatching(props: {
                     addAutoRewriteRules: e.target.checked
                   })
                 }}
+                sx={{
+                  '&.Mui-checked': {
+                    color: '#007F68'
+                  }
+                }}
               />
             }
             label="Auto-add regex delimiters (Recommended)"
@@ -150,27 +142,47 @@ export function RequestMatching(props: {
         </Grid>
       </Grid>
 
-      <br />
-      <Divider style={{marginTop: '10px', marginBottom: '30px'}} />
-      <br />
-
-      <Paper elevation={2} style={{borderRadius: '20px', padding: '12px'}}>
-        <Grid container>
-          <Grid item xs={11}>
-            <Typography variant="body1">Optional Settings</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              onClick={() => setExpandOptionalSettings(!expandOptionalSettings)}
-            >
-              {expandOptionalSettings ? <ArrowDropUp /> : <ArrowDropDown />}
-            </IconButton>
-          </Grid>
-        </Grid>
-
-        {expandOptionalSettings && (
-          <React.Fragment>
-            <Divider />
+      <Box sx={{ mt: 3 }}>
+        <Accordion 
+          elevation={0}
+          sx={{
+            border: '1px solid rgba(0, 0, 0, 0.12)',
+            borderRadius: '8px !important',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+            '&:before': {
+              display: 'none',
+            },
+            '& .MuiAccordionSummary-root': {
+              minHeight: '48px',
+              padding: '0 16px',
+            },
+            '& .MuiAccordionSummary-content': {
+              margin: '12px 0',
+            },
+            '& .MuiAccordionDetails-root': {
+              padding: '16px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+            },
+            '&.Mui-expanded': {
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+            }
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ArrowDropDown />}
+            sx={{
+              '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                transform: 'rotate(180deg)',
+              },
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                color: 'rgba(0, 0, 0, 0.54)',
+              },
+            }}
+          >
+            <Typography>Optional settings</Typography>
+          </AccordionSummary>
+          
+          <AccordionDetails>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -183,6 +195,12 @@ export function RequestMatching(props: {
                   onChange={e =>
                     setChannel({...channel, priority: Number(e.target.value)})
                   }
+                  FormHelperTextProps={{
+                    sx: {
+                      marginLeft: '0',
+                      color: 'rgba(0, 0, 0, 0.6)',
+                    }
+                  }}
                 />
                 <FormHelperText>
                   Transactions matched to multiple channels go to the highest
@@ -190,39 +208,63 @@ export function RequestMatching(props: {
                   priority.
                 </FormHelperText>
               </Grid>
-              <Grid item xs={12} style={{marginBottom: '20px'}}>
-                <Typography variant="h6">
+              
+              <Grid item xs={12} sx={{ mt: 1 }}>
+                <Typography variant="subtitle1" sx={{ mb: 2 }}>
                   Is this channel public or private?
                 </Typography>
 
-                <Box style={{padding: '10px'}}>
-                  <RadioGroup
-                    defaultValue="public"
-                    value={channel.authType}
-                    onChange={e =>
-                      setChannel({
-                        ...channel,
-                        authType: e.target.value as ChannelAuthType
-                      })
+                <RadioGroup
+                  defaultValue="public"
+                  value={channel.authType}
+                  onChange={e =>
+                    setChannel({
+                      ...channel,
+                      authType: e.target.value as ChannelAuthType
+                    })
+                  }
+                  sx={{ pl: 2 }}
+                >
+                  <FormControlLabel
+                    value="public"
+                    control={
+                      <Radio 
+                        sx={{
+                          '&.Mui-checked': {
+                            color: '#007F68'
+                          },
+                          '&:hover': {
+                            backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                          }
+                        }}
+                      />
                     }
-                  >
-                    <FormControlLabel
-                      value="public"
-                      control={<Radio />}
-                      label="Public"
-                    />
-                    <FormControlLabel
-                      value="private"
-                      control={<Radio />}
-                      label="Private"
-                    />
-                    <Typography variant="caption">
-                      Private requires authentication.
-                    </Typography>
-                  </RadioGroup>
-                </Box>
+                    label="Public"
+                    sx={{ mb: 1 }}
+                  />
+                  <FormControlLabel
+                    value="private"
+                    control={
+                      <Radio 
+                        sx={{
+                          '&.Mui-checked': {
+                            color: '#007F68'
+                          },
+                          '&:hover': {
+                            backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                          }
+                        }}
+                      />
+                    }
+                    label="Private"
+                    sx={{ mb: 1 }}
+                  />
+                  <Typography variant="caption" sx={{ pl: 2, color: 'rgba(0, 0, 0, 0.6)' }}>
+                    Private requires authentication.
+                  </Typography>
+                </RadioGroup>
 
-                <Grid item xs={12} style={{marginBottom: '20px'}}>
+                <Grid item xs={12} sx={{ mt: 3 }}>
                   <TagInputAutocomplete
                     tags={channel.whitelist}
                     onChange={whitelist => setChannel({...channel, whitelist})}
@@ -231,7 +273,7 @@ export function RequestMatching(props: {
                   />
                 </Grid>
 
-                <Grid item xs={12} style={{marginBottom: '20px'}}>
+                <Grid item xs={12} sx={{ mt: 3 }}>
                   <FormControlLabel
                     control={
                       <Switch
@@ -241,6 +283,20 @@ export function RequestMatching(props: {
                             !isMatchSpecificRequestContent
                           )
                         }
+                        sx={{
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#007F68',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                            }
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                            backgroundColor: '#007F68'
+                          },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.38)'
+                          }
+                        }}
                       />
                     }
                     label="Match specific request content"
@@ -249,8 +305,7 @@ export function RequestMatching(props: {
 
                 {isMatchSpecificRequestContent && (
                   <React.Fragment>
-                    <br />
-                    <Grid item xs={12} style={{marginBottom: '20px'}}>
+                    <Grid item xs={12} sx={{ mt: 3 }}>
                       <TagInputAutocomplete
                         tags={channel.matchContentTypes}
                         onChange={matchContentTypes =>
@@ -260,41 +315,94 @@ export function RequestMatching(props: {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
-                      <FormLabel>Match on BODY Content?</FormLabel>
-                      <br />
+                    <Grid item xs={12} sx={{ mt: 3 }}>
+                      <FormLabel sx={{ mb: 2, display: 'block' }}>Match on BODY Content?</FormLabel>
                       <ButtonGroup size="small" variant="outlined">
                         <Button
                           onClick={() => setMatchBodyType('NO MATCHING')}
-                          variant={
-                            matchBodyType == 'NO MATCHING'
-                              ? 'contained'
-                              : 'outlined'
-                          }
+                          variant={matchBodyType == 'NO MATCHING' ? 'contained' : 'outlined'}
+                          sx={{
+                            '&.MuiButton-contained': {
+                              backgroundColor: '#007F68',
+                              color: '#fff',
+                              '&:hover': {
+                                backgroundColor: '#006854'
+                              }
+                            },
+                            '&.MuiButton-outlined': {
+                              borderColor: '#007F68',
+                              color: '#007F68',
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                              }
+                            }
+                          }}
                         >
                           NO MATCHING
                         </Button>
                         <Button
                           onClick={() => setMatchBodyType('REGEX')}
-                          variant={
-                            matchBodyType == 'REGEX' ? 'contained' : 'outlined'
-                          }
+                          variant={matchBodyType == 'REGEX' ? 'contained' : 'outlined'}
+                          sx={{
+                            '&.MuiButton-contained': {
+                              backgroundColor: '#007F68',
+                              color: '#fff',
+                              '&:hover': {
+                                backgroundColor: '#006854'
+                              }
+                            },
+                            '&.MuiButton-outlined': {
+                              borderColor: '#007F68',
+                              color: '#007F68',
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                              }
+                            }
+                          }}
                         >
                           REGEX
                         </Button>
                         <Button
                           onClick={() => setMatchBodyType('XML')}
-                          variant={
-                            matchBodyType == 'XML' ? 'contained' : 'outlined'
-                          }
+                          variant={matchBodyType == 'XML' ? 'contained' : 'outlined'}
+                          sx={{
+                            '&.MuiButton-contained': {
+                              backgroundColor: '#007F68',
+                              color: '#fff',
+                              '&:hover': {
+                                backgroundColor: '#006854'
+                              }
+                            },
+                            '&.MuiButton-outlined': {
+                              borderColor: '#007F68',
+                              color: '#007F68',
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                              }
+                            }
+                          }}
                         >
                           XML
                         </Button>
                         <Button
                           onClick={() => setMatchBodyType('JSON')}
-                          variant={
-                            matchBodyType == 'JSON' ? 'contained' : 'outlined'
-                          }
+                          variant={matchBodyType == 'JSON' ? 'contained' : 'outlined'}
+                          sx={{
+                            '&.MuiButton-contained': {
+                              backgroundColor: '#007F68',
+                              color: '#fff',
+                              '&:hover': {
+                                backgroundColor: '#006854'
+                              }
+                            },
+                            '&.MuiButton-outlined': {
+                              borderColor: '#007F68',
+                              color: '#007F68',
+                              '&:hover': {
+                                backgroundColor: 'rgba(0, 127, 104, 0.04)'
+                              }
+                            }
+                          }}
                         >
                           JSON
                         </Button>
@@ -314,6 +422,12 @@ export function RequestMatching(props: {
                             })
                           }
                           helperText="E.g. [abc]+"
+                          FormHelperTextProps={{
+                            sx: {
+                              marginLeft: '0',
+                              color: 'rgba(0, 0, 0, 0.6)',
+                            }
+                          }}
                         />
                       )}
 
@@ -333,6 +447,12 @@ export function RequestMatching(props: {
                                 })
                               }
                               helperText="E.g. /bookstore/book[1]/title"
+                              FormHelperTextProps={{
+                                sx: {
+                                  marginLeft: '0',
+                                  color: 'rgba(0, 0, 0, 0.6)',
+                                }
+                              }}
                             />
                           </Grid>
                           <Grid item xs={6}>
@@ -348,6 +468,12 @@ export function RequestMatching(props: {
                                   matchContentValue: e.target.value
                                 })
                               }
+                              FormHelperTextProps={{
+                                sx: {
+                                  marginLeft: '0',
+                                  color: 'rgba(0, 0, 0, 0.6)',
+                                }
+                              }}
                             />
                           </Grid>
                         </Grid>
@@ -369,6 +495,12 @@ export function RequestMatching(props: {
                                 })
                               }
                               helperText="E.g. store.book[0].title"
+                              FormHelperTextProps={{
+                                sx: {
+                                  marginLeft: '0',
+                                  color: 'rgba(0, 0, 0, 0.6)',
+                                }
+                              }}
                             />
                           </Grid>
                           <Grid item xs={6}>
@@ -384,6 +516,12 @@ export function RequestMatching(props: {
                                   matchContentValue: e.target.value
                                 })
                               }
+                              FormHelperTextProps={{
+                                sx: {
+                                  marginLeft: '0',
+                                  color: 'rgba(0, 0, 0, 0.6)',
+                                }
+                              }}
                             />
                           </Grid>
                         </Grid>
@@ -393,9 +531,9 @@ export function RequestMatching(props: {
                 )}
               </Grid>
             </Grid>
-          </React.Fragment>
-        )}
-      </Paper>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
     </Box>
   )
 }

@@ -214,7 +214,7 @@ const ListAppsScreen = () => {
       button={
         <Stack direction="row" spacing={2} justifyContent="flex-end">
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={loadContent}
             startIcon={<RefreshIcon />}
