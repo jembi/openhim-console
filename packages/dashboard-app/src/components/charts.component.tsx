@@ -54,8 +54,7 @@ export default function Charts() {
           return
         }
       }
-
-      setError(new Error('No data found'))
+      setTimeSeries([])
     } catch (err) {
       console.error(err)
       setError(err)
@@ -70,7 +69,7 @@ export default function Charts() {
     const int = window.setInterval(getFilteredTransactions, 30000)
 
     return () => window.clearInterval(int)
-  }, [])
+  }, [filterData])
 
   if (error) {
     return <ErrorMessage onRetry={getFilteredTransactions} />
