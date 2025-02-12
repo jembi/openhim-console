@@ -22,22 +22,46 @@ export default function Charts() {
     option: '1h'
   })
 
-  const getFilteredTransactions = () => {
+  const getFilteredTransactions = async () => {
     setIsFetchingTransactions(true)
     setError(null)
-    getTimeSeries(filterData.period, {
-      startDate: filterData.from,
-      endDate: filterData.until
-    })
-      .then(timeSeries => {
-        setIsFetchingTransactions(false)
-        setTimeSeries(timeSeries)
-      })
-      .catch(err => {
-        console.error(err)
-        setError(err)
-        setIsFetchingTransactions(false)
-      })
+
+    const timeRanges = [
+      { scale: TimeSeriesScale.minute, duration: { hours: 1 }, option: '1h' },
+      { scale: TimeSeriesScale.day, duration: { days: 1 }, option: '1d' },
+      { scale: TimeSeriesScale.day, duration: { weeks: 1 }, option: '1w' },
+      { scale: TimeSeriesScale.day, duration: { months: 1 }, option: '1m' },
+      { scale: TimeSeriesScale.day, duration: { years: 1 }, option: '1y' },
+      { scale: TimeSeriesScale.day, duration: { years: 5 }, option: '5y' }
+    ]
+
+    try {
+      for (const range of timeRanges) {
+        const data = await getTimeSeries(range.scale, {
+          startDate: sub(now, range.duration),
+          endDate: now
+        })
+        type BasicFilterOption = '1h' | '1d' | '1w' | '1m' | '1y' | '5y'; // Define this type if not already defined
+
+        if (data && data.length > 0) {
+          setFilterData({
+            period: range.scale,
+            from: sub(now, range.duration),
+            until: now,
+            option: range.option as BasicFilterOption
+          })
+          setTimeSeries(data)
+          return
+        }
+      }
+
+      setError(new Error('No data found'))
+    } catch (err) {
+      console.error(err)
+      setError(err)
+    } finally {
+      setIsFetchingTransactions(false)
+    }
   }
 
   React.useEffect(() => {
@@ -46,7 +70,7 @@ export default function Charts() {
     const int = window.setInterval(getFilteredTransactions, 30000)
 
     return () => window.clearInterval(int)
-  }, [filterData])
+  }, [])
 
   if (error) {
     return <ErrorMessage onRetry={getFilteredTransactions} />
