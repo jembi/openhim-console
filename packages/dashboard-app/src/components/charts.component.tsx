@@ -44,12 +44,14 @@ export default function Charts() {
         type BasicFilterOption = '1h' | '1d' | '1w' | '1m' | '1y' | '5y'; // Define this type if not already defined
 
         if (data && data.length > 0) {
-          setFilterData({
-            period: range.scale,
-            from: sub(now, range.duration),
-            until: now,
-            option: range.option as BasicFilterOption
-          })
+          if (filterData.option !== range.option) {
+            setFilterData({
+              period: range.scale,
+              from: sub(now, range.duration),
+              until: now,
+              option: range.option as BasicFilterOption
+            })
+          }
           setTimeSeries(data)
           return
         }
@@ -69,7 +71,7 @@ export default function Charts() {
     const int = window.setInterval(getFilteredTransactions, 30000)
 
     return () => window.clearInterval(int)
-  }, [filterData])
+  }, [])
 
   if (error) {
     return <ErrorMessage onRetry={getFilteredTransactions} />
