@@ -384,11 +384,11 @@ const App: React.FC = () => {
 
     const params = {
       ...(getFilters() as any),
-      filterLimit: 1000,
+      filterLimit: limit,
       filterRepresentation: 'bulkrerun'
     } satisfies BulkRunFilterCountParams[0]
 
-    getBulkRunFilterCount(params)
+    await getBulkRunFilterCount(params)
       .then(res => {
         hideBackdrop()
 
@@ -396,8 +396,8 @@ const App: React.FC = () => {
           (!(startDate && endDate)
             ? ''
             : 'No date range has been supplied, querying all transactions with the defined filters\n') +
-          `Your filters returned a total of ${res.count} transaction(s) that can be re-run`
-        const title = 'You have opted to do a Bulk Rerun!'
+          `Using filters this broad could rerun thousands of transactions`
+        const title = 'Confirm bulk rerun!'
 
         showConfirmation(
           message,
@@ -416,7 +416,7 @@ const App: React.FC = () => {
                   const params = {
                     ...(getFilters() as any),
                     batchSize: event.batchSize,
-                    filterLimit: 1000,
+                    filterLimit: limit,
                     pauseQueue: event.paused
                   } satisfies BulkReRunParams[0]
 
