@@ -111,14 +111,14 @@ describe('Controller: ChannelsModalCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
   })
 
   it('should create a duplicate channel from an existing channel', function () {
     createController(null, 'test')
     httpBackend.flush()
 
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
     scope.channel.should.not.have.property('_id')
     scope.channel.should.not.have.property('name')
   })
@@ -215,7 +215,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
 
-    scope.channel.$save.should.have.been.called()
+    scope.channel.$save.should.have.been.called
   })
 
   it('should run submitFormChannels() and add the regex delimiters to the URL Pattern', function () {
@@ -239,7 +239,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
     scope.channel.should.have.property('urlPattern', '^sample/api$')
-    scope.channel.$save.should.have.been.called()
+    scope.channel.$save.should.have.been.called
   })
 
   it('should run submitFormChannels() and check any validation errors - TRUE - Should create the record', function () {
@@ -271,7 +271,7 @@ describe('Controller: ChannelsModalCtrl', function () {
       'CONNECT',
       'PATCH'
     ])
-    scope.channel.$save.should.have.been.called()
+    scope.channel.$save.should.have.been.called
   })
 
   it('should run submitFormChannels() and check any validation errors - TRUE - Should not update the record', function () {
@@ -335,7 +335,7 @@ describe('Controller: ChannelsModalCtrl', function () {
     // run the submit
     scope.submitFormChannels()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.channel.$update.should.have.been.called()
+    scope.channel.$update.should.have.been.called
 
     scope.channel.should.have.property('name', 'ChannelName')
     scope.channel.should.have.property('methods')
@@ -381,7 +381,7 @@ describe('Controller: channelBasicInfoCtrl', function () {
     scope.update = false
 
     createController()
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
 
     scope.channel.type.should.equal('http')
     scope.channel.authType.should.equal('private')
@@ -425,7 +425,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
       scope.channel.urlPattern = '^/example/path$'
 
       createController()
-      scope.channel.should.be.ok()
+      scope.channel.should.be.ok
 
       scope.channel.urlPattern.should.equal('/example/path')
     })
@@ -442,7 +442,7 @@ describe('Controller: channelRequestMatchingCtrl', function () {
       scope.channel.matchContentValue = 'JSONMatchingValue'
       createController()
 
-      scope.channel.should.be.ok()
+      scope.channel.should.be.ok
       scope.matching.contentMatching.should.equal('JSON matching')
     })
   })
@@ -498,7 +498,7 @@ describe('Controller: channelUserAccessCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
 
     // Each unique role
     scope.taglistUserRoleOptions.length.should.equal(3)
@@ -536,7 +536,7 @@ describe('Controller: channelDataControlCtrl', function () {
     scope.update = false
     createController()
 
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
     scope.channel.requestBody.should.equal(true)
     scope.channel.responseBody.should.equal(true)
   })
@@ -618,7 +618,7 @@ describe('Controller: channelRoutesCtrl', function () {
     createController()
     httpBackend.flush()
 
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
 
     scope.mediatorRoutes.length.should.equal(3)
     scope.trustedCerts.length.should.equal(2)
@@ -803,7 +803,7 @@ describe('Controller: channelRoutesCtrl', function () {
         primary: true
       }
     ]
-    expect(scope.multiplePrimaries()).to.be.true()
+    expect(scope.multiplePrimaries()).to.be.true
   })
 
   it('should return false if there is enabled primary route and multiple disabled primary routes', function () {
@@ -834,7 +834,7 @@ describe('Controller: channelRoutesCtrl', function () {
         status: 'disabled'
       }
     ]
-    expect(scope.multiplePrimaries()).to.be.false()
+    expect(scope.multiplePrimaries()).to.be.false
   })
 
   it('should return false if there is only one primary route', function () {
@@ -863,7 +863,7 @@ describe('Controller: channelRoutesCtrl', function () {
         primary: true
       }
     ]
-    expect(scope.multiplePrimaries()).to.be.false()
+    expect(scope.multiplePrimaries()).to.be.false
   })
 })
 
@@ -896,7 +896,7 @@ describe('Controller: channelAlertsCtrl', function () {
   it('should create a new channel if this is not an update', function () {
     createControllerParent()
     createController()
-    scope.channel.should.be.ok()
+    scope.channel.should.be.ok
     /* STILL NEEDED */
   })
 })

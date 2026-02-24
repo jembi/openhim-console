@@ -100,14 +100,14 @@ describe('Controller: UsersCtrl', function () {
     createController()
     httpBackend.flush()
     scope.confirmDelete(scope.users[0])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should open a modal to add a user', function () {
     createController()
     scope.addUser()
 
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
 
     httpBackend.flush()
   })
@@ -116,7 +116,7 @@ describe('Controller: UsersCtrl', function () {
     createController()
     scope.editUser()
 
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
 
     httpBackend.flush()
   })

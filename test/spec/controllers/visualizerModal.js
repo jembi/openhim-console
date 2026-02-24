@@ -268,12 +268,12 @@ describe('Controller: VisualizerModalCtrl', function () {
     httpBackend.flush()
 
     scope.validateVisualizer(validSettings, function (err) {
-      expect(err).not.to.exist()
-      expect(scope.ngError.hasErrors).to.be.false()
-      expect(scope.ngError.hasNoName).not.to.exist()
-      expect(scope.ngError.hasNoComponents).not.to.exist()
-      expect(scope.ngError.hasNoChannels).not.to.exist()
-      expect(scope.ngError.nameNotUnique).not.to.exist()
+      expect(err).not.to.exist
+      expect(scope.ngError.hasErrors).to.be.false
+      expect(scope.ngError.hasNoName).not.to.exist
+      expect(scope.ngError.hasNoComponents).not.to.exist
+      expect(scope.ngError.hasNoChannels).not.to.exist
+      expect(scope.ngError.nameNotUnique).not.to.exist
     })
   })
 
@@ -282,13 +282,13 @@ describe('Controller: VisualizerModalCtrl', function () {
     httpBackend.flush()
 
     scope.validateVisualizer(defaultVisualizerSettings, function (err) {
-      err.should.exist()
+      err.should.exist
 
-      expect(scope.ngError.hasErrors).to.be.true()
-      expect(scope.ngError.hasNoName).to.be.true()
-      expect(scope.ngError.hasNoComponents).to.be.true()
-      expect(scope.ngError.hasNoChannels).to.be.true()
-      expect(scope.ngError.nameNotUnique).not.to.exist()
+      expect(scope.ngError.hasErrors).to.be.true
+      expect(scope.ngError.hasNoName).to.be.true
+      expect(scope.ngError.hasNoComponents).to.be.true
+      expect(scope.ngError.hasNoChannels).to.be.true
+      expect(scope.ngError.nameNotUnique).not.to.exist
     })
   })
 
@@ -299,13 +299,13 @@ describe('Controller: VisualizerModalCtrl', function () {
     validSettings.name = 'Test Visualizer 1'
 
     scope.validateVisualizer(validSettings, function (err) {
-      err.should.exist()
-      expect(scope.ngError.hasErrors).to.be.true()
-      expect(scope.ngError.nameNotUnique).to.be.true()
+      err.should.exist
+      expect(scope.ngError.hasErrors).to.be.true
+      expect(scope.ngError.nameNotUnique).to.be.true
 
-      expect(scope.ngError.hasNoName).not.to.exist()
-      expect(scope.ngError.hasNoComponents).not.to.exist()
-      expect(scope.ngError.hasNoChannels).not.to.exist()
+      expect(scope.ngError.hasNoName).not.to.exist
+      expect(scope.ngError.hasNoComponents).not.to.exist
+      expect(scope.ngError.hasNoChannels).not.to.exist
     })
   })
 
@@ -313,14 +313,14 @@ describe('Controller: VisualizerModalCtrl', function () {
     createController({}, null)
     httpBackend.flush()
 
-    expect(scope.update).to.be.true()
+    expect(scope.update).to.be.true
   })
 
   it('should set update to false when duplicate visualizer is present', function () {
     createController(null, { _id: '123', name: 'Test' })
     httpBackend.flush()
 
-    expect(scope.update).to.be.false()
+    expect(scope.update).to.be.false
   })
 
   it('should delete name and _id from duplicate visualizer', function () {

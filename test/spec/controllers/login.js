@@ -120,7 +120,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
     })
 
     // process correct credentials and log user and create the session - Testing Complete Process
@@ -131,7 +131,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       scope.loginEmail = 'test@user.org'
       scope.loginPassword = 'test-password'
@@ -147,7 +147,7 @@ describe('Controller: LoginCtrl', function () {
       // user should exist when vald login details supplied
       user = login.getLoggedInUser()
 
-      user.should.exist()
+      user.should.exist
       user.should.have.property('email', 'test@user.org')
     })
   })
@@ -161,7 +161,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -194,7 +194,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -229,7 +229,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.to.empty()
+      user.should.to.empty
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -262,7 +262,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       scope.loginEmail = 'root@openhim.org'
       scope.loginPassword = 'openhim-password'
@@ -284,7 +284,7 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.flush()
 
       var consoleSession = localStorage.getItem('consoleSession')
-      consoleSession.should.exist()
+      consoleSession.should.exist
 
       scope.alerts.login.length.should.equal(2)
       scope.alerts.login[0].type.should.equal('success')
@@ -303,7 +303,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       // check if login credentials valid and log the user in - User should not be logged in
       scope.checkLoginCredentials('incorrect@user.org', 'incorrect-password')
@@ -317,7 +317,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
     })
 
     it('should run the checkLoginCredentials() function and return error with server errors (< 100 code status)', function () {
@@ -327,7 +327,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       // check if login credentials valid and log the user in - User should not be logged in
       scope.checkLoginCredentials('incorrect@user.org', 'incorrect-password')
@@ -338,7 +338,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if there is a server error
       user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
     })
 
     // process the checkLoginCredentials() function - user should be valid and logged in - session created
@@ -349,7 +349,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should be empty before valid login
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
 
       // check if login credentials valid and log the user in - create user session
       scope.checkLoginCredentials('test@user.org', 'test-password')
@@ -359,7 +359,7 @@ describe('Controller: LoginCtrl', function () {
       // user should exist when vald login details supplied
       user = login.getLoggedInUser()
 
-      user.should.exist()
+      user.should.exist
       user.should.have.property('email', 'test@user.org')
     })
   })
@@ -384,8 +384,8 @@ describe('Controller: LoginCtrl', function () {
 
       // user should exist when vald login details supplied
       var user = login.getLoggedInUser()
-      user.should.exist()
-      user.should.be.empty()
+      user.should.exist
+      user.should.be.empty
     })
 
     // process the createUserSession() function and create user session successfully
@@ -398,14 +398,14 @@ describe('Controller: LoginCtrl', function () {
         var user = login.getLoggedInUser()
 
         // check that user is created
-        user.should.exist()
+        user.should.exist
         user.should.have.property('email', 'test@user.org')
 
         // creeate the session object to store session data
         scope.createUserSession('test@user.org')
 
         var consoleSession = localStorage.getItem('consoleSession')
-        consoleSession.should.exist()
+        consoleSession.should.exist
       })
 
       httpBackend.flush()
@@ -462,7 +462,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should exist
       var user = login.getLoggedInUser()
-      user.should.exist()
+      user.should.exist
       user.should.have.property('email', 'test@user.org')
     })
 
@@ -484,7 +484,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
     })
 
     it('should return an server error if login failed after getting the redirected url (<100 status code)', function () {
@@ -501,7 +501,7 @@ describe('Controller: LoginCtrl', function () {
 
       // user should not exist if incorrect login credentials
       var user = login.getLoggedInUser()
-      user.should.be.empty()
+      user.should.be.empty
     })
   })
 
@@ -524,7 +524,7 @@ describe('Controller: LoginCtrl', function () {
       httpBackend.flush()
 
       const consoleSession = localStorage.getItem('consoleSession')
-      expect(consoleSession === null).to.be.true()
+      expect(consoleSession === null).to.be.true
     })
   })
 })

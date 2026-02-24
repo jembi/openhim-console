@@ -69,14 +69,14 @@ describe('Controller: ContactGroupsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmDelete(scope.contactGroups[0])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should open a modal to add a contact group', function () {
     createController()
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.addContactGroup()
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
 
     httpBackend.flush()
   })
@@ -85,7 +85,7 @@ describe('Controller: ContactGroupsCtrl', function () {
     createController()
     httpBackend.expectGET(new RegExp('.*/users'))
     scope.editContactGroup()
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
     httpBackend.flush()
   })
 })
