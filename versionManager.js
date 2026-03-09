@@ -78,7 +78,7 @@ const req = https.request(options, res => {
       // Update README badge
       replaceStringInline(
         /badge\/openhim--core-\d+\.\d+/,
-        `badge/openhim--core-${minimumCoreVersion.slice(0, 3)}`,
+        `badge/openhim--core-${minimumCoreVersion.split('.').slice(0, 2).join('.')}`,
         ['README.md']
       )
 

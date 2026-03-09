@@ -91,7 +91,7 @@
 	"scripts": {
 		"start": "http-server ./dist -p 9000",
 		"start:dev": "webpack-dev-server --config webpack.development.js",
-		"clean": "rm -rf dist",
+		"clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
 		"lint": "standard 'app/**/*.js'",
 		"lint:fix": "npm run lint -- --fix",
 		"test": "karma start --single-run",
