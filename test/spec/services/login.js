@@ -52,7 +52,7 @@ describe('Service: login', function () {
 
     var user = login.getLoggedInUser()
 
-    user.should.exist()
+    user.should.exist
     user.should.have.property('email', 'test@user.org')
   })
 
@@ -63,22 +63,22 @@ describe('Service: login', function () {
     httpBackend.flush()
 
     var user = login.getLoggedInUser()
-    expect((user === null)).to.be.true()
-    expect(login.isLoggedIn()).to.be.false()
+    expect((user === null)).to.be.true
+    expect(login.isLoggedIn()).to.be.false
   })
 
   it('should check if a user is currently logged in', function () {
     httpBackend.flush()
-    expect(login.isLoggedIn()).to.be.false()
+    expect(login.isLoggedIn()).to.be.false
 
     login.login('test@user.org', 'test-password', function () {})
     httpBackend.flush()
 
-    expect(login.isLoggedIn()).to.be.true()
+    expect(login.isLoggedIn()).to.be.true
     
     login.logout(function () {})
     httpBackend.flush()
 
-    expect(login.isLoggedIn()).to.be.false()
+    expect(login.isLoggedIn()).to.be.false
   })
 })

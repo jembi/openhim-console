@@ -1,0 +1,41 @@
+name: Node CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - '16.x'
+          - '18.x'
+          - 'node'
+
+    env:
+      TZ: Africa/Johannesburg
+
+    continue-on-error: ${{ matrix.node-version == 'node' }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build:prod
+
+      - name: Run tests
+        run: npm test

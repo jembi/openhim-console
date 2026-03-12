@@ -69,14 +69,14 @@ describe('Controller: ClientsModalCtrl', function () {
     createController(client)
     httpBackend.flush()
 
-    scope.client.should.be.ok()
+    scope.client.should.be.ok
   })
 
   it('should query and attach certs to scope', function () {
     createController()
     httpBackend.flush()
 
-    scope.certs.should.be.ok()
+    scope.certs.should.be.ok
     scope.certs.should.have.length(2)
   })
 
@@ -172,7 +172,7 @@ describe('Controller: ClientsModalCtrl', function () {
     // run the submit
     scope.submitFormClients()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.client.$save.should.have.been.called()
+    scope.client.$save.should.have.been.called
   })
 
   it('should run submitFormClients() and check any validation errors - TRUE - Should update the record', function () {
@@ -193,7 +193,7 @@ describe('Controller: ClientsModalCtrl', function () {
     // run the submit
     scope.submitFormClients()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.client.$update.should.have.been.called()
+    scope.client.$update.should.have.been.called
 
     scope.client.should.have.property('passwordSalt')
     scope.client.should.have.property('passwordHash')

@@ -78,20 +78,20 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmClientDelete(scope.clients[0])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should open a modal to add a client', function () {
     createController()
     scope.addClient()
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
     httpBackend.flush()
   })
 
   it('should open a modal to edit a client', function () {
     createController()
     scope.editClient()
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
     httpBackend.flush()
   })
 
@@ -243,6 +243,6 @@ describe('Controller: ClientsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmRoleDelete(role)
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 })

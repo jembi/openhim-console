@@ -66,7 +66,7 @@ describe('Controller: ContactGroupsModalCtrl', function () {
   it('should create a new contact group if this is not an update', function () {
     createController()
     httpBackend.flush()
-    scope.contactGroup.should.be.ok()
+    scope.contactGroup.should.be.ok
   })
 
   it('should run validateFormContactGroups() for any validation errors - ngErrors.hasErrors -> TRUE', function () {
@@ -122,7 +122,7 @@ describe('Controller: ContactGroupsModalCtrl', function () {
     // run the submit
     scope.submitFormContactGroups()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.contactGroup.$save.should.have.been.called()
+    scope.contactGroup.$save.should.have.been.called
   })
 
   it('should run submitFormContactGroups() and check any validation errors - TRUE - Should update the record', function () {
@@ -138,7 +138,7 @@ describe('Controller: ContactGroupsModalCtrl', function () {
     // run the submit
     scope.submitFormContactGroups()
     scope.ngError.should.have.property('hasErrors', false)
-    scope.contactGroup.$update.should.have.been.called()
+    scope.contactGroup.$update.should.have.been.called
 
     scope.contactGroup.should.have.property('group', 'Group 1')
     scope.contactGroup.should.have.property('users')

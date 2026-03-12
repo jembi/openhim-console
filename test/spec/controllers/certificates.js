@@ -132,7 +132,7 @@ describe('Controller: CertificatesCtrl', function () {
     httpBackend.flush()
 
     scope.confirmDelete(scope.trustedCertificates[0])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should add a passphrase', function () {

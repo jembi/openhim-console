@@ -118,7 +118,7 @@ describe('Controller: ChannelsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmDelete(scope.channels[0])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should open a modal to confirm restoration of a deleted channel', function () {
@@ -126,14 +126,14 @@ describe('Controller: ChannelsCtrl', function () {
     httpBackend.flush()
 
     scope.confirmRestore(scope.channels[2])
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
   })
 
   it('should open a modal to add a channel', function () {
     createController()
     scope.addChannel()
 
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
     httpBackend.flush()
   })
 
@@ -141,7 +141,7 @@ describe('Controller: ChannelsCtrl', function () {
     createController()
     scope.editChannel()
 
-    modalSpy.should.have.been.calledOnce()
+    modalSpy.should.have.been.calledOnce
     httpBackend.flush()
   })
 
@@ -180,8 +180,8 @@ describe('Controller: ChannelsCtrl', function () {
     scope.updateChannelPriority(scope.channels[2], 'down')
     scope.channels[2].should.have.property('priority', 10)
 
-    scope.channels[0].$update.should.have.been.called()
-    scope.channels[1].$update.should.have.been.called()
-    scope.channels[2].$update.should.have.been.called()
+    scope.channels[0].$update.should.have.been.called
+    scope.channels[1].$update.should.have.been.called
+    scope.channels[2].$update.should.have.been.called
   })
 })

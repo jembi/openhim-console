@@ -96,7 +96,7 @@ describe('Controller: LogsCtrl', function () {
     httpBackend.flush()
     
     scope.params.level.should.equal('info')
-    expect(scope.params.from).to.not.exist()
-    expect(scope.params.until).to.not.exist()
+    expect(scope.params.from).to.not.exist
+    expect(scope.params.until).to.not.exist
   })
 })
