@@ -132,7 +132,7 @@ npm test
 
 ## Deployments
 
-All commits to the `master` branch will automatically trigger a build of the latest changes into a docker image on dockerhub.
+All commits to the `master` branch will automatically trigger a build of the latest changes into a Docker image at `harbor.jembidev.org/platform/openhim-console`.
 
 ---
 

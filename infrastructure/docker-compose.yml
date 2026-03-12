@@ -34,7 +34,7 @@ services:
 
   openhim-console:
     container_name: openhim-console
-    image: jembi/openhim-console:latest
+    image: harbor.jembidev.org/platform/openhim-console:latest
     restart: unless-stopped
     networks:
       - openhim
