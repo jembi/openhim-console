@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - harbor_config
 
   workflow_dispatch:
 
