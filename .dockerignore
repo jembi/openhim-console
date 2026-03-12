@@ -5,7 +5,6 @@ test
 Dockerfile
 .dockerignore
 .travis
-.travis.yml
 .editorconfig
 .gitignore
 .gitattributes
