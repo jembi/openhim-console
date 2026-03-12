@@ -1,30 +1,41 @@
-name: Tests
+name: Node CI
 
 on:
   push:
-    branches: [master, main]
   pull_request:
-    branches: [master, main]
-  workflow_dispatch:
 
 jobs:
-  build-and-test:
-    name: Build and test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  test:
+    runs-on: ubuntu-22.04
 
-      - name: Set up Node
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - '16.x'
+          - '18.x'
+          - 'node'
+
+    env:
+      TZ: Africa/Johannesburg
+
+    continue-on-error: ${{ matrix.node-version == 'node' }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/gallium'
-          cache: 'npm'
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build
         run: npm run build:prod
 
-      - name: Test
+      - name: Run tests
         run: npm test
