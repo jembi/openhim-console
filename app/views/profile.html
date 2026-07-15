@@ -71,14 +71,20 @@
               </div>
 
 
+              <div class="form-group" ng-show="sessionProvider !== 'openid'" ng-class="{ 'has-error' : ngError.currentPassword }">
+                <label>Current Password</label>
+                <input class="form-control" type="password" ng-model="temp.currentPassword" autocomplete="current-password"/>
+                <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Current password is required to set a new password.</div>
+              </div>
+
               <div class="form-group-2columns">
                 <div class="form-group" style="float: left;">
-                  <label>Password</label>
-                  <input class="form-control" type="password" ng-model="temp.password" ng-disabled="sessionProvider === 'openid'"/>
+                  <label>New Password</label>
+                  <input class="form-control" type="password" ng-model="temp.password" ng-disabled="sessionProvider === 'openid'" autocomplete="new-password"/>
                 </div>
                 <div class="form-group" style="float: right;" ng-class="{ 'has-error' : ngError.passwordConfirm }">
-                  <label>Confirm password</label>
-                  <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-disabled="sessionProvider === 'openid'"/>
+                  <label>Confirm new password</label>
+                  <input class="form-control" type="password" ng-model="temp.passwordConfirm" ng-disabled="sessionProvider === 'openid'" autocomplete="new-password"/>
                   <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>{{validationPasswordConfirmMsg}}</div>
                 </div>
               </div>

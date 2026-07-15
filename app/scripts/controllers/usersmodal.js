@@ -9,6 +9,10 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
   $scope.update = false
   $scope.phoneNumberTooltip = $sce.trustAsHtml('Accepted format: <br />27123456789 <br />( 5 - 15 digits )')
 
+  let consoleSession = localStorage.getItem('consoleSession')
+  consoleSession = JSON.parse(consoleSession) || {}
+  $scope.consoleSession = consoleSession
+
   // object for the taglist roles
   $scope.taglistUserRoleOptions = []
 
@@ -125,9 +129,9 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
     notifyUser()
   }
 
-  $scope.save = function (user, password) {
+  $scope.save = function (user, password, currentPassword) {
     if ($scope.update) {
-      const userObject = { ...angular.copy(user), id: user._id, password }
+      const userObject = { ...angular.copy(user), id: user._id, password, currentPassword }
       Api.Users.update(userObject, function () {
         success(userObject, password)
         // rootScope function to scroll to top
@@ -198,6 +202,12 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
           $scope.ngError.passwordConfirm = true
           $scope.ngError.hasErrors = true
         }
+
+        // editing your own account requires your current password to set a new one
+        if ($scope.user.email === $scope.consoleSession.sessionUser && !$scope.temp.currentPassword) {
+          $scope.ngError.currentPassword = true
+          $scope.ngError.hasErrors = true
+        }
       }
     }
 
@@ -216,7 +226,7 @@ export function UsersModalCtrl ($http, $scope, $uibModalInstance, $sce, $timeout
 
     // save the user object if no errors are present
     if ($scope.ngError.hasErrors === false) {
-      $scope.save($scope.user, $scope.temp.password)
+      $scope.save($scope.user, $scope.temp.password, $scope.temp.currentPassword)
     }
   }
 
