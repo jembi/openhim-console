@@ -176,6 +176,7 @@ describe('Controller: ProfileCtrl', function () {
     scope.user.weeklyAlert = true
     scope.user.dailyAlert = true
     scope.user.groups = ['group1', 'group2']
+    scope.temp.currentPassword = 'oldpassword'
     scope.temp.password = 'password'
     scope.temp.passwordConfirm = 'password'
 

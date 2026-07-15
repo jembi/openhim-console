@@ -153,8 +153,8 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     Alerting.AlertAddMsg('top', 'success', 'Your user details have been updated succesfully.')
   }
 
-  $scope.save = function (user, password) {
-    const userObject = { ...angular.copy(user), id: user._id, password }
+  $scope.save = function (user, password, currentPassword) {
+    const userObject = { ...angular.copy(user), id: user._id, password, currentPassword }
     Api.Users.update(userObject, function () {
       success(userObject, password)
 
@@ -254,6 +254,11 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
         $scope.ngError.passwordConfirm = true
         $scope.ngError.hasErrors = true
       }
+
+      if (!$scope.temp.currentPassword) {
+        $scope.ngError.currentPassword = true
+        $scope.ngError.hasErrors = true
+      }
     }
 
     if ($scope.ngError.hasErrors) {
@@ -270,7 +275,7 @@ export function ProfileCtrl ($http, $scope, $timeout, Api, login, Alerting) {
     $scope.validateFormProfile()
     // save the user object if no errors are present
     if ($scope.ngError.hasErrors === false) {
-      $scope.save($scope.user, $scope.temp.password)
+      $scope.save($scope.user, $scope.temp.password, $scope.temp.currentPassword)
     }
   }
 

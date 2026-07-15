@@ -60,6 +60,13 @@
         </div>
       </div>
 
+      <!-- Current password - only required when a user edits their own account -->
+      <div class="form-group" ng-show="update && user.email === consoleSession.sessionUser" ng-class="{ 'has-error' : ngError.currentPassword }">
+        <label>Current Password</label>
+        <input class="form-control" type="password" ng-model="temp.currentPassword" autocomplete="current-password"/>
+        <div class="has-error-msg"><i class="glyphicon glyphicon-warning-sign"></i>Current password is required to set a new password for your own account.</div>
+      </div>
+
       <!-- Password fields - only on update -->
       <div class="form-group-2columns" ng-show="update" >
         <div class="form-group" style="float: left;">
